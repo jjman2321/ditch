@@ -24,6 +24,11 @@ Bobby's squirrel is only on the icon. None of its 6 App Store screenshots show i
 | Minimal line duck on white | 4 | Looks like Daak. |
 | Rubber duck | 4 | Toy/kids feel. Wrong for a money app. |
 
+## Owner direction (Nov 9)
+- Wants the **Daak style**: minimal bold line drawing on white, one colour accent.
+- Owner's point: Daak is a budgeting app, not a subscription tracker, so it's a different product. True: the risk drops. It's still in the same Finance category and the same "money tracker" searches, so ours must be clearly different at a glance (teal accent, different pose, the ditch water line).
+- Concepts: `design/icon/duck-concepts-round2.jpg` (source: `design/icon/concepts.html`). Round 1 dropped B (read as a snowman) and C (unreadable small).
+
 ## Pick
 **Go with a duck icon, drawn to be distinct, and keep the app minimal with the stamp.** Rules for the drawing:
 1. Teal background (our accent), not white and not orange.

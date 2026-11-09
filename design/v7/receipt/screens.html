@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Ditch v6</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+ --canvas:#F3F1EB;--paper:#FFFFFF;--ink:#121212;--ink2:#3D3B36;--mute:#7A766D;--rule:#E3DFD5;--red:#DD3B26;--bill:#F5A524;--fill:#EAE7DF;
+ --ease:cubic-bezier(.23,1,.32,1)}
+*{box-sizing:border-box}
+body{margin:0;background:#DCDAD3;font-family:Inter,system-ui,sans-serif;color:var(--ink);letter-spacing:-.2px}
+.stage{display:flex;flex-wrap:nowrap;gap:36px;padding:44px;width:2340px}
+.cell{display:flex;flex-direction:column;align-items:center}
+.cap{font:600 14px Inter,sans-serif;color:#45433d;margin-top:16px}
+.phone{width:393px;height:852px;border-radius:54px;position:relative;overflow:hidden;box-shadow:0 0 0 10px #151515,0 30px 60px rgba(0,0,0,.18);background:var(--canvas);flex:none}
+.sb{position:absolute;top:0;left:0;right:0;height:54px;display:flex;align-items:center;justify-content:space-between;padding:6px 32px 0 48px;font:600 17px Inter,sans-serif;z-index:20}
+.sb .isl{position:absolute;left:50%;top:11px;width:124px;height:36px;margin-left:-62px;background:#000;border-radius:20px}
+.hi{position:absolute;bottom:8px;left:50%;width:140px;height:5px;margin-left:-70px;border-radius:3px;background:var(--ink);z-index:20}
+.scr{position:absolute;inset:0;padding:58px 22px 34px;display:flex;flex-direction:column}
+.h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:40px;line-height:40px;letter-spacing:-1.6px;margin:0}
+.h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:32px;line-height:34px;letter-spacing:-1.1px;margin:0}
+.lead{font-size:17px;line-height:24px;color:var(--ink2);margin:10px 0 0}
+.mono{font-family:'DM Mono',monospace;letter-spacing:-.3px}
+.eyebrow{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:var(--mute)}
+.num{font-variant-numeric:tabular-nums}
+.foot{margin-top:auto;display:flex;flex-direction:column;gap:2px}
+.cta{height:56px;border-radius:28px;border:0;width:100%;background:var(--ink);color:#fff;font:600 17px Inter,sans-serif;letter-spacing:-.3px;display:flex;align-items:center;justify-content:center;gap:8px}
+.sec{height:44px;border:0;background:none;font:600 16px Inter,sans-serif;color:var(--ink);width:100%}
+.fine{font-size:12.5px;line-height:17px;text-align:center;margin:0;color:var(--mute)}
+.top{height:44px;display:flex;align-items:center;gap:12px;flex:none}
+.back{width:44px;height:44px;margin-left:-12px;display:flex;align-items:center;justify-content:center}
+.steps{flex:1;display:flex;gap:5px}.steps i{flex:1;height:3px;border-radius:2px;background:#DAD6CC}.steps i.on{background:var(--ink)}
+.logo{width:36px;height:36px;border-radius:8px;box-shadow:0 0 0 .5px rgba(0,0,0,.1);display:block;flex:none}
+/* receipt */
+.rc{background:var(--paper);position:relative;padding:18px 18px 20px;box-shadow:0 1px 1px rgba(0,0,0,.04),0 12px 28px rgba(60,50,30,.10)}
+.rc.zz:after{content:"";position:absolute;left:0;right:0;bottom:-9px;height:9px;background:linear-gradient(-45deg,transparent 6.5px,var(--paper) 0) 0 0/13px 9px repeat-x,linear-gradient(45deg,transparent 6.5px,var(--paper) 0) 0 0/13px 9px repeat-x}
+.rc.zt:before{content:"";position:absolute;left:0;right:0;top:-9px;height:9px;background:linear-gradient(-135deg,transparent 6.5px,var(--paper) 0) 0 0/13px 9px repeat-x,linear-gradient(135deg,transparent 6.5px,var(--paper) 0) 0 0/13px 9px repeat-x}
+.rh{display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:11.5px;letter-spacing:1.4px;text-transform:uppercase;color:var(--mute)}
+.dash{border-top:1.5px dashed var(--rule);margin:10px 0}
+.solid{border-top:1.5px solid var(--ink);margin:10px 0}
+.li{display:flex;align-items:center;gap:11px;min-height:40px}
+.li img{width:26px;height:26px;border-radius:6px;flex:none;box-shadow:0 0 0 .5px rgba(0,0,0,.08)}
+.li .n{flex:1;font-size:15px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li .a{font-family:'DM Mono',monospace;font-size:15px;letter-spacing:-.3px;white-space:nowrap}
+.li.void .n,.li.void .a{color:#B3AEA3;text-decoration:line-through;text-decoration-thickness:1.5px}
+.li.void img{opacity:.35}
+.stamp{display:inline-block;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;text-transform:uppercase;color:var(--red);letter-spacing:1.5px;line-height:1;border:2.5px solid currentColor;border-radius:5px;padding:4px 7px 3px;transform:rotate(-7deg);filter:url(#ink);font-size:12px;box-shadow:inset 0 0 0 1.5px #fff,inset 0 0 0 3px currentColor}
+.stamp.big{font-size:40px;border-width:5px;border-radius:10px;padding:10px 16px 8px;letter-spacing:3px;box-shadow:inset 0 0 0 3px #fff,inset 0 0 0 6px currentColor}
+/* rows */
+.row{display:flex;align-items:center;gap:14px;height:60px;border-bottom:1px solid var(--rule)}
+.row .n{flex:1;font-weight:600;font-size:16.5px}.row .s{display:block;font-weight:400;font-size:14px;color:var(--mute);margin-top:1px}
+.tick{width:26px;height:26px;border-radius:13px;border:2px solid #CFCAC0;flex:none;display:flex;align-items:center;justify-content:center;background:#fff}
+.tick.on{background:var(--ink);border-color:var(--ink)}
+.chip{height:34px;padding:0 13px;border-radius:17px;background:var(--fill);font-weight:600;font-size:14.5px;display:flex;align-items:center;white-space:nowrap}
+.chip.on{background:var(--ink);color:#fff}
+.plan{background:var(--paper);border-radius:14px;height:60px;display:flex;align-items:center;padding:0 16px;gap:10px;position:relative;box-shadow:0 0 0 1px var(--rule)}
+.plan.on{box-shadow:0 0 0 2px var(--ink)}
+.plan .nm{flex:1;font-weight:600;font-size:16px;display:flex;align-items:center;gap:8px}
+.plan .pr{text-align:right}.plan .pr b{display:block;font-family:'DM Mono',monospace;font-weight:500;font-size:15.5px}.plan .pr small{font-size:12.5px;color:var(--mute)}
+.plan:before,.plan:after{content:"";position:absolute;top:50%;width:12px;height:12px;margin-top:-6px;border-radius:6px;background:var(--canvas)}
+.plan:before{left:-6px}.plan:after{right:-6px}
+.tag{font:600 11px Inter,sans-serif;color:#fff;background:var(--red);border-radius:5px;padding:3px 6px;letter-spacing:.2px}
+.note{background:rgba(255,255,255,.86);backdrop-filter:blur(18px);border-radius:20px;padding:11px 13px;display:flex;gap:10px;align-items:flex-start}
+.note .h{display:flex;justify-content:space-between;font-size:14.5px;font-weight:600}.note .h span{font-weight:400;color:#6E6E73;font-size:13px}
+.note .m{font-size:14.5px;line-height:19px;color:#1c1c1e}
+.appicon{width:36px;height:36px;border-radius:8px;background:#fff;overflow:hidden;flex:none;display:flex;align-items:flex-end;justify-content:center;box-shadow:0 0 0 .5px rgba(0,0,0,.1)}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.grid div{height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:15px;background:var(--paper);box-shadow:0 0 0 1px var(--rule)}
+.grid div.on{background:var(--ink);color:#fff;box-shadow:none}
+.ring{position:relative;width:64px;height:64px}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><filter id="ink"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="11"/><feDisplacementMap in="SourceGraphic" scale="2.2"/><feComponentTransfer><feFuncA type="discrete" tableValues="0 1 1 1 .25 1 1 1 1 1 .5 1 1"/></feComponentTransfer></filter></svg>
+<div class="stage" id="stage"></div>
+<script>
+const L='../../../assets/logos/', DUCK='../../brand/duck-orange.png';
+const lg=(id,st='')=>`<img src="${L}${id}.png" alt="" style="${st}">`;
+const S=[['chatgpt-plus','ChatGPT Plus','20.00','240.00','Sat, Nov 21'],['netflix','Netflix','17.99','215.88','Sat, Nov 14'],['amazon-prime','Amazon Prime','14.99','179.88','Thu, Dec 3'],['youtube-premium','YouTube Premium','13.99','167.88','Fri, Nov 27'],['spotify','Spotify','11.99','143.88','Mon, Nov 16'],['disney-plus','Disney+','11.99','143.88','Wed, Nov 18']];
+const duck=(w,st='')=>`<img src="${DUCK}" alt="Ditch the duck" style="display:block;width:${w}px;height:auto;${st}">`;
+const chev=`<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="#121212" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const ck=(c='#fff',s=14)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="${c}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const bell=(c='#121212',s=14)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none"><path d="M6 16V11a6 6 0 1112 0v5l1.5 2h-15L6 16z" stroke="${c}" stroke-width="2.2" stroke-linejoin="round"/><path d="M10 20.5a2 2 0 004 0" stroke="${c}" stroke-width="2.2" stroke-linecap="round"/></svg>`;
+const topBar=n=>`<div class="top"><span class="back">${chev}</span><div class="steps">${[1,2,3,4,5].map(i=>`<i class="${i<=n?'on':''}"></i>`).join('')}</div></div>`;
+const sb=`<div class="sb"><span>9:41</span><div class="isl"></div><span style="display:flex;gap:6px;align-items:center"><svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="26" height="13" viewBox="0 0 26 13"><rect x=".5" y=".5" width="22" height="12" rx="3.5" stroke="#121212" opacity=".4" fill="none"/><rect x="2.5" y="2.5" width="18" height="8" rx="2"/></svg></span></div>`;
+const ICON={
+ Receipt:`<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 3h12v18l-2-1.5-2 1.5-2-1.5-2 1.5-2-1.5L6 21V3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 8h6M9 12h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+ Calendar:`<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="15.5" rx="3" stroke="currentColor" stroke-width="2"/><path d="M8 3v4M16 3v4M3.5 10h17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+ Ditched:`<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="10" rx="2.5" stroke="currentColor" stroke-width="2" transform="rotate(-8 12 12)"/><path d="M8 12.5h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" transform="rotate(-8 12 12)"/></svg>`};
+const P=[];const ph=(cap,html)=>P.push(`<div class="cell"><div class="phone">${sb}${html}<div class="hi"></div></div><div class="cap">${cap}</div></div>`);
+
+/* 1 WELCOME */
+ph('1 · Welcome',`<div class="scr">
+ <div style="margin:120px 4px 0;position:relative">
+  <div style="position:absolute;left:34px;top:-80px;z-index:0">${duck(140)}</div>
+  <div class="rc zz" style="position:relative;z-index:1;transform:rotate(-1.2deg)">
+   <div class="rh"><span>Ditch · receipt</span><span>Nov 9</span></div><div class="dash"></div>
+   <div class="li">${lg('chatgpt-plus')}<span class="n">ChatGPT Plus</span><span class="a">$20.00</span></div>
+   <div class="li void">${lg('netflix')}<span class="n">Netflix</span><span class="a" style="text-decoration:none"><span class="stamp">Ditched</span></span></div>
+   <div class="li">${lg('amazon-prime')}<span class="n">Amazon Prime</span><span class="a">$14.99</span></div>
+   <div class="li">${lg('youtube-premium')}<span class="n">YouTube Premium</span><span class="a">$13.99</span></div>
+   <div class="li">${lg('spotify')}<span class="n">Spotify</span><span class="a">$11.99</span></div>
+   <div class="dash"></div>
+   <div class="li"><span class="n mono" style="font-size:12.5px;letter-spacing:1.4px;color:var(--mute)">NEXT CHARGE</span><span class="a" style="font-size:13.5px">SPOTIFY · MON</span></div>
+  </div>
+ </div>
+ <h1 class="h1" style="margin-top:auto;font-size:42px;line-height:42px">Ditch it before it renews.</h1>
+ <p class="lead">Everything you pay for, on one receipt. A heads-up before every charge.</p>
+ <div class="foot" style="margin-top:24px"><button class="cta">See what I pay</button><p class="fine" style="margin-top:10px">Free forever for tracking · Your list stays on your phone</p></div>
+</div>`);
+
+/* 2 PICK */
+ph('2 · What do you pay for?',`<div class="scr" style="padding-bottom:0">${topBar(1)}
+ <h1 class="h2" style="margin-top:14px">What do you pay for?</h1>
+ <div style="height:44px;border-radius:12px;background:var(--paper);box-shadow:0 0 0 1px var(--rule);display:flex;align-items:center;gap:8px;padding:0 12px;color:var(--mute);font-size:16.5px;margin-top:16px">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="#7A766D" stroke-width="2.2"/><path d="M16 16l4 4" stroke="#7A766D" stroke-width="2.2" stroke-linecap="round"/></svg>Search 44 services</div>
+ <div style="display:flex;gap:8px;margin:12px -22px 0;padding:0 22px;overflow:hidden"><span class="chip on">Popular</span><span class="chip">Streaming</span><span class="chip">Music</span><span class="chip">AI</span><span class="chip">Shopping</span></div>
+ <div style="margin-top:6px;flex:1;overflow:hidden">${[['netflix','Netflix','17.99',1],['spotify','Spotify','11.99',1],['chatgpt-plus','ChatGPT Plus','20.00',1],['amazon-prime','Amazon Prime','14.99',1],['youtube-premium','YouTube Premium','13.99',1],['disney-plus','Disney+','11.99',1],['max','Max','16.99',0],['hulu','Hulu','9.99',0]].map(r=>`<div class="row">${lg(r[0],'width:40px;height:40px;border-radius:9px;box-shadow:0 0 0 .5px rgba(0,0,0,.1)')}<div class="n">${r[1]}<span class="s num">about $${r[2]} a month</span></div><span class="tick ${r[3]?'on':''}">${r[3]?ck():''}</span></div>`).join('')}</div>
+ <div style="margin:0 -22px;padding:0 22px 34px;background:var(--canvas);position:relative">
+  <div class="rc zt" style="padding:12px 16px;margin:0 0 12px;box-shadow:0 -6px 20px rgba(60,50,30,.08)"><div style="display:flex;justify-content:space-between;align-items:center" class="mono"><span style="font-size:12.5px;letter-spacing:1.4px;color:var(--mute)">6 ITEMS</span><span style="font-size:16px">$90.95/mo</span></div></div>
+  <button class="cta">Print my receipt</button></div>
+</div>`);
+
+/* 3 RECEIPT */
+ph('3 · Your receipt',`<div class="scr">${topBar(2)}
+ <div class="rc zz" style="margin-top:14px">
+  <div style="text-align:center;font-family:'Bricolage Grotesque';font-weight:800;font-size:22px;letter-spacing:-.5px">DITCH</div>
+  <div class="rh" style="justify-content:center;gap:10px;margin-top:2px"><span>Your subscriptions</span><span>·</span><span>Nov 9, 2026</span></div>
+  <div class="dash"></div>
+  ${S.map(s=>`<div class="li">${lg(s[0])}<span class="n">${s[1]}</span><span class="a">$${s[2]}</span></div>`).join('')}
+  <div class="dash"></div>
+  <div class="li" style="min-height:26px"><span class="n mono" style="font-size:13px;letter-spacing:1.2px;color:var(--mute)">MONTHLY</span><span class="a">$90.95</span></div>
+  <div class="solid"></div>
+  <div style="display:flex;justify-content:space-between;align-items:flex-end"><span class="mono" style="font-size:13px;letter-spacing:1.2px;padding-bottom:8px">TOTAL / YEAR</span><span class="num" style="font-family:'Bricolage Grotesque';font-weight:800;font-size:52px;line-height:52px;letter-spacing:-2px">$1,091</span></div>
+  <div class="mono" style="text-align:center;font-size:12px;letter-spacing:1.4px;color:var(--mute);margin-top:14px">*** THAT’S $2.99 EVERY DAY ***</div>
+ </div>
+ <div class="foot"><p class="lead" style="margin:0 0 14px;color:var(--ink)">Let’s make sure none of it surprises you.</p><button class="cta">Set my charge dates</button></div>
+</div>`);
+
+/* 4 DATES */
+ph('4 · Charge dates',`<div class="scr">${topBar(3)}
+ <h1 class="h2" style="margin-top:14px">When does Netflix charge you?</h1>
+ <p class="lead" style="margin-top:8px">Check your last receipt. Close enough is fine.</p>
+ <div class="rc" style="margin-top:18px;padding:14px 16px;border-radius:14px;display:flex;align-items:center;gap:12px">${lg('netflix','width:44px;height:44px;border-radius:10px')}<div style="flex:1"><div style="font-weight:600;font-size:16.5px">Netflix</div><div class="mono" style="font-size:13px;color:var(--mute);margin-top:2px">2 OF 6</div></div><span class="chip mono" style="background:var(--fill);font-weight:500">$17.99/mo ✎</span></div>
+ <div class="grid" style="margin-top:16px">${Array.from({length:31},(_,i)=>`<div class="${i+1===14?'on':''}">${i+1}</div>`).join('')}</div>
+ <div style="margin-top:14px;font-size:15px;color:var(--ink2);display:flex;gap:8px;align-items:center">${ck('#121212',15)}<span>Next charge <b style="color:var(--ink)">Sat, Nov 14</b>, then every 14th.</span></div>
+ <div class="foot"><button class="cta">Next: Amazon Prime</button><div style="display:flex"><button class="sec">Not sure</button><button class="sec" style="color:var(--mute)">Skip</button></div></div>
+</div>`);
+
+/* 5 REMINDERS */
+ph('5 · Reminders',`<div class="scr">${topBar(4)}
+ <h1 class="h2" style="margin-top:14px">Ditch taps you on the shoulder.</h1>
+ <p class="lead" style="margin-top:8px">3 days and 1 day before each charge, at 9 AM. Nothing else. Ever.</p>
+ <div style="margin:22px -4px 0;border-radius:30px;background:linear-gradient(160deg,#3C4A57,#1B2229);padding:20px 12px 14px">
+  <div style="text-align:center;color:#fff;font-weight:600;font-size:15px">Wednesday, November 11</div>
+  <div style="text-align:center;color:#fff;font-family:'Bricolage Grotesque';font-weight:700;font-size:64px;line-height:68px;letter-spacing:-1px">9:00</div>
+  <div class="note" style="margin-top:10px"><span class="appicon">${duck(34,'margin-bottom:-1px')}</span><div style="flex:1"><div class="h">Ditch<span>now</span></div><div class="m">Netflix renews Saturday. $17.99. Still watching?</div></div></div>
+  <div class="note" style="margin-top:8px;opacity:.9"><span class="appicon">${duck(34,'margin-bottom:-1px')}</span><div style="flex:1"><div class="h">Ditch<span>Nov 18</span></div><div class="m">ChatGPT Plus renews in 3 days. $20.00.</div></div></div>
+ </div>
+ <div class="foot"><button class="cta">Turn on reminders</button><button class="sec">Maybe later</button></div>
+</div>`);
+
+/* 6 PAYWALL */
+ph('6 · Paywall',`<div class="scr" style="padding-top:60px">
+ <div style="position:absolute;right:14px;top:56px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;z-index:5"><span style="width:30px;height:30px;border-radius:15px;background:var(--fill);display:flex;align-items:center;justify-content:center"><svg width="11" height="11" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="#121212" stroke-width="3" stroke-linecap="round"/></svg></span></div>
+ <h1 class="h2" style="margin-top:22px;padding-right:30px">We’ll remind you before we charge you, too.</h1>
+ <p class="lead" style="margin-top:8px;font-size:15.5px;line-height:21px">Pro puts a heads-up on all 6 renewals. And Ditch Pro goes on your receipt like everything else.</p>
+ <div class="rc zz" style="margin-top:14px;padding:12px 16px 14px">
+  <div class="li" style="min-height:30px">${bell('#121212',15)}<span class="n" style="font-size:14.5px">Reminders on all 6</span><span class="a" style="font-size:13px">PRO</span></div>
+  <div class="li" style="min-height:30px">${ck('#121212',15)}<span class="n" style="font-size:14.5px">Import, widget, iCloud backup</span><span class="a" style="font-size:13px">PRO</span></div>
+  <div class="dash" style="margin:8px 0"></div>
+  <div class="li" style="min-height:34px"><span style="width:26px;height:26px;border-radius:6px;overflow:hidden;background:#fff;box-shadow:0 0 0 .5px rgba(0,0,0,.1);display:flex;align-items:flex-end;justify-content:center;flex:none">${duck(26)}</span><span class="n" style="font-size:14.5px">Ditch Pro trial</span><span class="a" style="font-size:13.5px">$0 today</span></div>
+  <div class="mono" style="font-size:12px;color:var(--ink2);padding-left:37px;line-height:18px">🔔 SAT NOV 14 · WE REMIND YOU<br>MON NOV 16 · $29.99 UNLESS YOU DITCH US</div>
+ </div>
+ <div style="display:flex;flex-direction:column;gap:8px;margin-top:20px">
+  <div class="plan on"><div class="nm">Yearly <span class="tag">7 DAYS FREE</span></div><div class="pr"><b class="num">$29.99/yr</b><small>$2.50 a month</small></div></div>
+  <div class="plan"><div class="nm">Monthly</div><div class="pr"><b class="num">$4.99/mo</b><small>$59.88 a year</small></div></div>
+  <div class="plan"><div class="nm">Lifetime</div><div class="pr"><b class="num">$49.99</b><small>Pay once</small></div></div>
+ </div>
+ <div class="foot" style="gap:0"><button class="cta">Start 7-day free trial</button><button class="sec">Continue free: reminders for 3</button><p class="fine">Renews at $29.99/yr. Cancel anytime in Settings. Restore · Terms · Privacy</p></div>
+</div>`);
+
+/* 7 HOME + HOLD TO DITCH */
+ph('7 · Home: hold to ditch',`<div class="scr" style="padding-top:62px">
+ <div style="display:flex;justify-content:space-between;align-items:center"><span class="eyebrow">Your receipt</span><span style="width:34px;height:34px;border-radius:17px;background:var(--fill);display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="#121212" stroke-width="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1" stroke="#121212" stroke-width="2" stroke-linecap="round"/></svg></span></div>
+ <div style="display:flex;align-items:baseline;gap:8px;margin-top:6px"><span class="num" style="font-family:'Bricolage Grotesque';font-weight:800;font-size:48px;line-height:50px;letter-spacing:-2px">$90.95</span><span style="font-size:17px;color:var(--mute);font-weight:500">a month</span></div>
+ <div class="mono" style="font-size:12.5px;color:var(--ink2);margin-top:2px">$1,091/YR · NEXT: NETFLIX SAT $17.99</div>
+ <div class="rc zz" style="margin-top:16px;padding:6px 16px 8px">
+  ${S.map((s,i)=>`<div class="li" style="min-height:52px;${i<5?'border-bottom:1px dashed var(--rule)':''};${i==1?'background:#FFF4F1;margin:0 -16px;padding:0 16px':''}">${lg(s[0])}<span class="n">${s[1]}<span style="display:block;font-size:12.5px;color:var(--mute);font-weight:400">${s[4]}</span></span><span class="a">$${s[2]}</span></div>`).join('')}
+ </div>
+ <div style="position:absolute;left:0;right:0;bottom:0;height:84px;background:rgba(243,241,235,.94);backdrop-filter:blur(12px);border-top:1px solid var(--rule);display:flex;justify-content:space-around;padding-top:8px;z-index:6">
+  ${[['Receipt',1],['Calendar',0],['Ditched',0]].map(t=>`<div style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600;color:${t[1]?'#121212':'#9C978C'};width:90px">${ICON[t[0]]}${t[0]}</div>`).join('')}</div>
+ <div style="position:absolute;left:16px;right:16px;bottom:96px;z-index:7">
+  <div style="background:var(--ink);color:#fff;border-radius:22px;padding:14px 16px;display:flex;align-items:center;gap:14px;box-shadow:0 12px 30px rgba(0,0,0,.25)">
+   <div class="ring"><svg width="64" height="64" viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" stroke="rgba(255,255,255,.18)" stroke-width="5" fill="none"/><circle cx="32" cy="32" r="28" stroke="#DD3B26" stroke-width="5" fill="none" stroke-linecap="round" stroke-dasharray="176" stroke-dashoffset="62" transform="rotate(-90 32 32)"/></svg><img src="${L}netflix.png" style="position:absolute;left:16px;top:16px;width:32px;height:32px;border-radius:7px"></div>
+   <div style="flex:1"><div style="font-weight:600;font-size:16.5px">Keep holding to ditch Netflix</div><div style="font-size:13.5px;color:rgba(255,255,255,.65);margin-top:2px">You still cancel with Netflix.</div></div>
+  </div></div>
+</div>`);
+
+/* 8 DITCHED */
+ph('8 · Ditched',`<div class="scr" style="padding-top:62px">
+ <div style="margin:64px 8px 0;position:relative">
+  <div style="position:absolute;right:26px;top:-70px;z-index:0">${duck(124)}</div>
+  <div class="rc zz" style="position:relative;z-index:1;transform:rotate(1.2deg)">
+   <div class="rh"><span>Netflix</span><span>Nov 9</span></div><div class="dash"></div>
+   <div class="li void">${lg('netflix')}<span class="n">Netflix Standard</span><span class="a">$17.99/mo</span></div>
+   <div class="li void"><span class="n" style="padding-left:37px">Next charge Sat, Nov 14</span></div>
+   <div style="height:84px;display:flex;align-items:center;justify-content:center"><span class="stamp big">Ditched</span></div>
+   <div class="dash" style="margin-top:2px"></div>
+   <div class="li"><span class="n mono" style="font-size:13px;letter-spacing:1.2px">BACK IN YOUR POCKET</span><span class="a" style="font-weight:500">$215.88/yr</span></div>
+  </div>
+ </div>
+ <div style="text-align:center;margin-top:38px"><div class="num" style="font-family:'Bricolage Grotesque';font-weight:800;font-size:54px;line-height:56px;letter-spacing:-2px">+$215.88</div>
+ <p class="lead" style="margin-top:4px">a year back. You’ve kept <b style="color:var(--ink)">$431</b> since June.</p></div>
+ <div style="margin-top:22px;background:var(--paper);border-radius:16px;box-shadow:0 0 0 1px var(--rule);padding:14px 16px;display:flex;align-items:center;gap:12px">
+  <span class="mono" style="width:28px;height:28px;border-radius:14px;background:var(--ink);color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none">1</span>
+  <div style="flex:1"><div style="font-weight:600;font-size:15.5px">Now cancel it with Netflix</div><div style="font-size:13.5px;color:var(--mute);margin-top:2px">Account → Cancel membership. Takes 1 minute.</div></div>
+  <span style="font-weight:600;font-size:15px;color:var(--red);white-space:nowrap">Show me</span></div>
+ <div class="foot" style="flex-direction:row;gap:10px"><button class="cta" style="flex:1;background:var(--paper);color:var(--ink);box-shadow:0 0 0 1px var(--rule)">Undo</button><button class="cta" style="flex:2">Done</button></div>
+</div>`);
+
+document.getElementById('stage').innerHTML=[0,2,5,6,7].map(i=>P[i]).join('');
+</script></body></html>

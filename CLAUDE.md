@@ -84,10 +84,11 @@ This is the #1 complaint about Bobby, so it's the product.
 - $49.99 one-time, covers **Pro only**. Future bank sync would be a separate plan.
 - Never write "all future features included".
 
-### 8. No mascot: the stamp and the voice
-- **No mascot or character** (owner decision, Nov 9, 2026; why: `docs/research/mascot-or-not.md`). The raccoon is retired.
+### 8. Ditch the duck, the stamp and the voice
+- **Look: Sunflower** (DECISIONS #14, `design/v9/`): sunflower yellow, ink, cream, Archivo display, the duck with a tangerine bill.
+- **Ditch the duck** (owner decision, Nov 9) replaces the retired raccoon. He only appears where he has a job: welcome, the notification icon, watching your trial, celebrating a ditch, empty states. Never next to a moving price. Needs a professional redraw before launch.
 - Ditch's personality comes from four things:
-  - the **DITCHED stamp** moment: card flicks off, a hand-drawn teal stamp lands with a firm haptic, "$X a year back" counts up
+  - the **DITCHED stamp** moment: hold to ditch, the ring fills, a hand-drawn ink stamp lands with a firm haptic, then "$X a year you won't pay" (never "saved" or "back")
   - the **yearly total reveal** in onboarding
   - **real service logos** as the illustration
   - a **short, dry voice** in copy and notifications that's on the user's side and never shames them ("Netflix renews in 3 days. $17.99. Still watching?")

@@ -56,9 +56,14 @@ This is for v2 (Apple Card data). Approval is slow, so asking early costs nothin
 2. Install **Expo Go** on your iPhone.
 3. Don't share the password in chat.
 
-### 5. Confirm (just reply in chat)
-- Do you own **ditchsubs.app**?
-- Is there a working **support@ditchsubs.app** inbox (or similar)? The paywall and the App Store both need a support contact.
+### 5. Support inbox: support@ditchsubs.app (before M5)
+You own ditchsubs.app (confirmed Nov 9). There's no inbox yet. Easiest free route, if you pay for any iCloud+ plan (even 50 GB):
+1. On a Mac or at icloud.com, open **Settings → iCloud → Custom Email Domain**.
+2. Pick **Only you**, enter `ditchsubs.app` and add the address `support@ditchsubs.app`.
+3. Apple shows a few DNS records (MX, TXT, SPF, DKIM). Add them where you bought the domain: its DNS settings page.
+4. Back in iCloud, tap **Finish setup**. Mail to support@ now lands in the Mail app on your phone, and you can reply from it.
+
+No iCloud+? Cloudflare Email Routing is free but forward-only (replies come from your personal address).
 
 ### 6. Create the Pro products (at M2, steps will come then)
 - **$4.99/mo** and **$29.99/yr with a 7-day free trial**, in one subscription group.

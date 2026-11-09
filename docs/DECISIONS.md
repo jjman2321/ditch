@@ -115,6 +115,7 @@ A trial timeline (Today → reminder day → charge day) with real dates. Refere
 Ditch twist: when a trial starts, Ditch adds "Ditch Pro trial" to the user's own list and reminds them 2 days before the charge.
 
 ## Still open (next interview rounds)
+- **App icon (parked Nov 9, owner: "not bad but doesn't feel professional, later"):** favourite so far is duck 6 reframed (`design/icon/hf-6-peek-up240.png`). Needs a professional redraw before it ships.
 - **App icon: stamp or a flat animal mark?** Bobby (4.7★, 8,033 US ratings, no update since Dec 2025) uses a squirrel *only* as its icon: no squirrel in its App Store screenshots, which sell colourful real-logo cards. An icon is the one place a character can't sit near money, and it helps stand out in search. If we try it: a flat, hand-finished mark (not the AI 3D raccoon, not raccoon-like BitePal), tested against the stamp icon with App Store Product Page Optimization after launch. In-app stays character-free either way (#5).
 - Screen-by-screen onboarding and home designs.
 - Languages.

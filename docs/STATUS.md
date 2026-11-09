@@ -2,7 +2,7 @@
 
 _Update this at the end of every session._
 
-**Last updated:** Nov 9, 2026 (late) · **Milestone:** M0 → M1 (look locked, rebuilding onboarding)
+**Last updated:** Nov 9, 2026 (night) · **Milestone:** M1, Phase 1 done (Sunflower onboarding built)
 
 ## Where we are
 - ✅ Docs, decisions, spec. Expo SDK 58 app with money/date logic and 23 passing tests.
@@ -10,20 +10,27 @@ _Update this at the end of every session._
 - ✅ **Rewards rule:** no streaks, badges or points; only real money kept (DECISIONS #13).
 - ✅ Research: premium-white motion (`docs/research/premium-white-motion.md`), Tim Gabe videos (`docs/research/tim-gabe-notes.md`), states and failures (`docs/research/premium-states.md`).
 - ✅ **Total reveal prototype** built in code: `design/premium-white/proto/total-reveal.mp4`.
-- ⚠️ The onboarding in the app (v4) still uses the old Kiwi look and raccoon. It gets rebuilt next.
-- ⚠️ Purchases are stubbed (RevenueCat in M2). Home, Subs and Ditched are placeholders. Nothing is saved to SQLite yet.
+- ✅ **Phase 1 built: Sunflower design system + onboarding 01–08 and the paywall** (matches `design/v10`; screenshots in `design/build-phase1/`).
+  - Design system in `src/ui/sunflower/` (colours with dark mode, Archivo/Inter type, buttons, logo tiles, the duck, timeline, plan cards, sheet…).
+  - Fonts: five wide Archivo cuts bundled in `assets/fonts/` (OFL).
+  - Every number comes from the user's picks and the catalog. Charge dates start as labelled guesses; the date sheet takes a next charge or a last receipt and rolls it forward.
+  - Paywall follows the honest rules and the plan-card research: Save 49% (rounded down), $2.50 a month (rounded up), Monthly says "No free trial".
+  - "Turn on reminders" asks for the real iPhone permission.
+  - 55 Jest tests pass (money, dates, guesses, receipts, heads-ups, totals, prices, You're set copy).
+  - The Kiwi kit, raccoon, 3D emoji and Plus Jakarta Sans are gone.
+- ⚠️ Purchases are stubbed (RevenueCat in M2). Home, Calendar and Ditched are placeholders. Nothing is saved to SQLite yet, so onboarding answers are lost when the app closes. Reminders are not scheduled yet.
+- ⚠️ "Import from a screenshot" (DECISIONS #16) is a placeholder screen.
 - 🗄️ Retired: raccoon poses and Seedance loops in `design/premium-white/anim/` (kept for reference, not used).
 
 ## Next
-1. Owner approves mockups of the **DITCHED stamp moment** and the **real-logo Welcome**.
-2. Rebuild all 8 onboarding screens in premium white (token sheet in `docs/design/AUDIT-premium-white.md`, motion in `premium-white-motion.md`), with every state from `premium-states.md`.
-3. Home / Subs / Ditched, then SQLite, local reminders, and running on the owner's iPhone (Expo Go).
+1. Per-country catalog prices (DECISIONS #17) and the plan chip on ticked rows.
+2. Phase 2: Home, Calendar, Ditched (hold to ditch, the stamp), SQLite with migrations, and real reminder scheduling.
+3. Owner runs the onboarding checklist (`docs/MANUAL-TESTS.md` §1) on the iPhone with Expo Go.
 
 ## How to run the app
-Not yet: the app gets created at the start of M1. The plan:
 1. Install **Expo Go** from the App Store on your iPhone.
-2. Claude starts the dev server.
-3. You scan the QR code with the iPhone Camera.
+2. On your Mac, in the `ditch` folder: `npm install`, then `npx expo start`.
+3. Scan the QR code with the iPhone Camera. The onboarding opens.
 
 Once native modules arrive (M2), we switch to an **EAS development build**, installed on your iPhone through a link. No Xcode needed.
 

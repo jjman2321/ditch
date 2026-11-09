@@ -12,16 +12,64 @@ Sections get added as each feature is built. ⏳ = not built yet.
 - [ ] Check the free tier in SPEC §7: unlimited tracking, reminders on 3.
 - [ ] Reply "OK" or list what to change.
 
-## 1. Onboarding ⏳ (M1)
-- [ ] Delete the app or reset it, then open it. The Welcome screen shows real service logos.
-- [ ] Tap Get started. A catalog with logos and typical prices appears.
-- [ ] Tick 5 services and search for one more, then tick it.
-- [ ] Tap "Something else?" and add a custom one.
-- [ ] Next screen: "That's $X a year" equals the sum of what you ticked. Check it with a calculator.
-- [ ] Reminder screen: the example notification is visible. Tap **Maybe later**: no iOS prompt appears.
-- [ ] You ticked more than 3, so the 3-pick sheet shows with the 3 biggest yearly charges pre-selected. Swap one and confirm.
-- [ ] You land on Home with everything you ticked.
-- [ ] Force-quit midway through onboarding, then reopen. It resumes where you left off.
+## 1. Onboarding (built Nov 9, Phase 1: Sunflower look)
+Start the app fresh (close it fully in the app switcher, then open it). Phone in **light mode** first.
+
+**Welcome**
+- [ ] Yellow screen, big "Ditch it before it renews.", a duck peeking over a Ditch notification about Netflix.
+- [ ] The three dates under it are real: 2 days from today, 4 days from today, 5 days from today.
+- [ ] Tap **See what I pay**.
+
+**What do you pay for?**
+- [ ] Real logos. Tick Netflix, Spotify, ChatGPT Plus, Amazon Prime, YouTube Premium and Disney+. Each tick gives a tiny tap.
+- [ ] A yellow bar appears: "6 picked · $90.95 a month" (with today's catalog prices).
+- [ ] Try the search box and a category chip. Untick one: the bar updates.
+- [ ] Scroll to the bottom: "Import from a screenshot" opens a "not in this build yet" screen. Tap **Pick them by hand** to come back.
+- [ ] Tap **See my total**.
+
+**Your total**
+- [ ] The big number rolls up digit by digit, then you feel one light tap. It should be the yearly total of what you ticked (6 picks above: **$1,091**). Check it with a calculator: monthly price × 12, added up.
+- [ ] "$90.95 a month" and "$2.99 a day" show under it, and the bars grow in.
+- [ ] Go back and forward again: the number does **not** roll a second time.
+
+**When do they charge you?**
+- [ ] Every date starts grey with a GUESS tag. "0 of 6 confirmed".
+- [ ] Tap Netflix's date. A sheet slides up. Pick **From my last receipt**, then a day last month (e.g. Oct 14). The card says "Last charged Oct 14, so next is Sat, Nov 14" and lists 2 heads-ups.
+- [ ] Tap **Set next charge…**. Netflix's chip turns solid black, the GUESS tag goes away, "1 of 6 confirmed".
+- [ ] Open another one, choose **Next charge**, pick a future day, set it. Past days can't be picked in this mode; future days can't be picked in receipt mode.
+- [ ] Open one more and tap **Not sure: use a guess**: it stays a guess.
+- [ ] The button reads "Save 2 dates, keep 4 guesses". Tap it.
+
+**A heads-up before every charge**
+- [ ] A yellow lock screen shows your soonest real date. Two notifications drop in one after the other, then the duck rises.
+- [ ] Tap **Turn on reminders**: the real iPhone permission prompt appears. Allow it.
+- [ ] (Second run) Tap **Maybe later** instead: no prompt.
+
+**Paywall**
+- [ ] The × is visible straight away, and the plans, the black button and "Continue free" all fit without scrolling.
+- [ ] Headline says "before all 6 renewals". The timeline shows Today $0, two 9 AM heads-ups (3 days and 1 day before), then the charge 7 days from today.
+- [ ] Yearly is pre-selected with a **Save 49%** tab, "$29.99/yr" and "$2.50 a month". Monthly says "No free trial" (no yearly price). Lifetime says "Pay once".
+- [ ] Tap Monthly and Lifetime: a light tap, the card text and the button change, nothing jumps. Lifetime says bank sync would be a separate plan.
+- [ ] Tap **Start 7-day free trial**: a box says purchases aren't switched on yet and nothing was charged.
+- [ ] **Restore** says there's nothing to restore. **Terms** and **Privacy** open the website.
+- [ ] Tap **Continue free: reminders for 3** (or ×).
+
+**Which 3 get reminders?**
+- [ ] Your 3 biggest yearly charges have yellow bells. Tap a 4th bell: the "Reminders 3 of 3" badge wiggles and you feel a warning buzz. Nothing changes.
+- [ ] Turn one off, turn another on. Tap **Save my 3**.
+
+**You're set**
+- [ ] "First heads-ups" lists your 3, soonest first. Guessed ones say "around".
+- [ ] The line under it names the subs with no heads-up and quotes a guessed one's wording.
+- [ ] Counts: 6 tracked · 3 with heads-ups · 4 dates to check.
+- [ ] If you said **Maybe later** to notifications, the line says notifications are off instead.
+- [ ] **Go to my list** opens Home (a simple list for now).
+
+**Dark mode, text size, VoiceOver, motion**
+- [ ] Switch the iPhone to Dark mode and run through again. Everything is readable; the lock-screen picture stays yellow.
+- [ ] Settings → Accessibility → Display & Text Size → Larger Text, near the largest. Body text grows, big headlines stay put, the paywall timeline turns into a list.
+- [ ] Turn on VoiceOver: every button, tick, bell, plan and calendar day reads out what it is.
+- [ ] Turn on Reduce Motion: the total fades in instead of rolling, the duck doesn't rise.
 
 ## 2. Money math ⏳ (M1)
 - [ ] Add Netflix at $15.49 monthly. Detail shows $185.88 a year.

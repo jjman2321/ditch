@@ -162,3 +162,52 @@ export function relativeDay(target: DateOnly, today: DateOnly): string {
 }
 
 export { MONTH_SHORT, WEEKDAY_SHORT };
+
+const MONTH_LONG = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const WEEKDAY_LONG = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+/** 0 = Sunday … 6 = Saturday. */
+export function weekdayOf(s: DateOnly): number {
+  const { y, m, d } = parseDate(s);
+  return new Date(Date.UTC(y, m - 1, d)).getUTCDay();
+}
+
+/** "Saturday" */
+export function weekdayName(s: DateOnly): string {
+  return WEEKDAY_LONG[weekdayOf(s)];
+}
+
+/** "Wed" */
+export function weekdayShort(s: DateOnly): string {
+  return WEEKDAY_SHORT[weekdayOf(s)];
+}
+
+/** "Friday, November 13" */
+export function longDate(s: DateOnly): string {
+  const { m, d } = parseDate(s);
+  return `${weekdayName(s)}, ${MONTH_LONG[m - 1]} ${d}`;
+}
+
+/** "October 2026" */
+export function monthTitle(y: number, m: number): string {
+  return `${MONTH_LONG[m - 1]} ${y}`;
+}
+
+/**
+ * Cells for a Sunday-first month grid: nulls for the blank days before
+ * the 1st, then each date of the month.
+ */
+export function monthGrid(y: number, m: number): (DateOnly | null)[] {
+  const first = formatDate({ y, m, d: 1 });
+  const blanks: null[] = Array.from({ length: weekdayOf(first) }, () => null);
+  const days = Array.from({ length: daysInMonth(y, m) }, (_, i) => formatDate({ y, m, d: i + 1 }));
+  return [...blanks, ...days];
+}
+
+/** Move a {y, m} by n months. */
+export function shiftMonth(y: number, m: number, n: number): { y: number; m: number } {
+  const total = y * 12 + (m - 1) + n;
+  return { y: Math.floor(total / 12), m: (total % 12) + 1 };
+}
+
+export { MONTH_LONG, WEEKDAY_LONG };

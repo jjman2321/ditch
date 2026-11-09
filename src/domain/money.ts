@@ -88,3 +88,46 @@ export const CYCLE_SHORT: Record<Cycle, string> = {
   quarterly: '/qtr',
   yearly: '/yr',
 };
+
+/** "a month", "a year"… for "about $17.99 a month". */
+export const CYCLE_WORDS: Record<Cycle, string> = {
+  weekly: 'a week',
+  monthly: 'a month',
+  quarterly: 'every 3 months',
+  yearly: 'a year',
+};
+
+/** Whole major units for a headline, rounded half-up: $1,091.40 → "$1,091". */
+export function formatWholeMoney(amountMinor: number, currency: string, locale = 'en-US'): string {
+  const digits = currencyDigits(currency);
+  const major = roundMinor(amountMinor / 10 ** digits);
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(major);
+}
+
+export type SpendTotal = {
+  currency: string;
+  /** Exact, always whole minor units. */
+  yearlyMinor: number;
+  /** Unrounded. Round only for display. */
+  monthlyMinor: number;
+  /** Unrounded. Yearly ÷ 365. */
+  dailyMinor: number;
+};
+
+/**
+ * Yearly, monthly and daily spend, one entry per currency (biggest first).
+ * Monthly and daily come from the exact yearly sum, so nothing is
+ * rounded twice.
+ */
+export function spendTotals(
+  items: { amountMinor: number; currency: string; cycle: Cycle }[],
+): SpendTotal[] {
+  return totalsByCurrency(items.map((x) => ({ currency: x.currency, amountMinor: yearlyMinor(x.amountMinor, x.cycle) }))).map(
+    (t) => ({ currency: t.currency, yearlyMinor: t.amountMinor, monthlyMinor: t.amountMinor / 12, dailyMinor: t.amountMinor / 365 }),
+  );
+}

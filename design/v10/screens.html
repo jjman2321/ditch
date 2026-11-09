@@ -48,8 +48,23 @@ section.darksec .sh h2,section.darksec .sh p,section.darksec .cap{color:#EDE6D6}
 .nav{height:44px;display:flex;align-items:center;gap:12px;flex:none}
 .back{width:44px;height:44px;margin-left:-12px;display:flex;align-items:center;justify-content:center;flex:none}
 .steps{flex:1;display:flex;gap:5px}.steps i{flex:1;height:4px;border-radius:2px;background:var(--track)}.steps i.on{background:var(--fg)}
-.logo{border-radius:9px;display:block;flex:none;box-shadow:0 0 0 .5px rgba(0,0,0,.14)}
-.duckicon{background:#FFCC2E;overflow:hidden;position:relative;flex:none;box-shadow:0 0 0 .5px rgba(0,0,0,.14)}
+.lt{position:relative;display:block;flex:none;overflow:hidden;border-radius:22.5%}
+.lt img{display:block;width:100%;height:100%}
+.lt:after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 .5px rgba(22,20,15,.18);pointer-events:none}
+.dark .lt:after{box-shadow:inset 0 0 0 .5px rgba(246,240,227,.18)}
+.lockup{display:inline-flex;align-items:center;gap:max(5px,.3em);white-space:nowrap;vertical-align:middle}
+.lockup .w{font-family:Archivo;font-stretch:125%;font-weight:900;letter-spacing:-.033em;line-height:1}
+.lockup .pp{font:800 max(10px,.5em) Inter;letter-spacing:.02em;line-height:1;color:#16140F;background:#FFCC2E;border-radius:999px;padding:3px 7px 3px;box-shadow:inset 0 0 0 1.5px #16140F}
+.dark .lockup .pp{box-shadow:none}
+.lrow .n span.lockup{display:inline-flex;color:var(--cardfg);margin-top:0}
+.lrow .n .lockup span,.lrow .n .lockup span.pp{display:inline-block;margin-top:0;line-height:1;color:inherit}
+.lrow .n .lockup span.w{color:inherit;font-size:1em}
+.lrow .n .lockup span.pp{color:#16140F;font-size:10px}
+.lrow .n span.gtag,.lrow.dim .n span.gtag{color:#5E584D;background:#EFE8D9}
+.dark .lrow .n span.gtag,.dark .gtag{color:#CFC7B6;background:#2E2B25}
+.pill{height:34px;border-radius:17px;display:inline-flex;align-items:center;gap:4px;padding:0 13px;font:600 14px Inter;white-space:nowrap}
+.duckicon{background:#FFCC2E;overflow:hidden;position:relative;flex:none;border-radius:22.5%}
+.duckicon:after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 .5px rgba(22,20,15,.18)}
 .duckicon img{position:absolute;display:block}
 .card{background:var(--card);color:var(--cardfg);border-radius:20px;box-shadow:0 1px 0 rgba(0,0,0,.03),0 6px 20px rgba(70,50,0,.07)}
 .dark .card{box-shadow:inset 0 0 0 1px #2C2924}
@@ -103,9 +118,9 @@ section.darksec .sh h2,section.darksec .sh p,section.darksec .cap{color:#EDE6D6}
 .lrow .p{font-family:Archivo;font-stretch:108%;font-weight:700;font-size:16.5px;letter-spacing:-.2px;width:62px;text-align:right;flex:none}
 .lrow.dim .n b,.lrow.dim .n span,.lrow.dim .p{color:#837D71}
 .dark .lrow.dim .n b,.dark .lrow.dim .n span,.dark .lrow.dim .p{color:#8E877A}
-.lrow.dim .logo,.lrow.dim .bellc,.lrow.dim .duckicon{opacity:.55}
+.lrow.dim .lt,.lrow.dim .bellc,.lrow.dim .duckicon{opacity:.55}
 .bellc{width:22px;display:flex;justify-content:center;flex:none}
-.grp{font:700 12.5px Inter;letter-spacing:1.3px;text-transform:uppercase;color:var(--mute);margin:16px 4px 8px;height:18px;display:flex;align-items:center;justify-content:space-between;flex:none}
+.grp{font:700 12.5px Inter;letter-spacing:1.3px;text-transform:uppercase;color:var(--mute);margin:14px 4px 8px;height:18px;display:flex;align-items:center;justify-content:space-between;flex:none}
 .grp em{font:500 13px Inter;letter-spacing:0;text-transform:none;font-style:normal}
 .tick{width:28px;height:28px;border-radius:14px;box-shadow:inset 0 0 0 2px #C4BBA8;flex:none;display:flex;align-items:center;justify-content:center}
 .tick.on{background:var(--ink);box-shadow:none}
@@ -186,8 +201,13 @@ const tabs = (on) => '<div class="tabs">' +
   '<div class="' + (on === 1 ? 'on' : '') + '">' + calI('currentColor', on === 1) + 'Calendar</div>' +
   '<div class="' + (on === 2 ? 'on' : '') + '">' + stampI('currentColor', on === 2) + 'Ditched</div></div>';
 const searchI = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="#6B6559" stroke-width="2.2"/><path d="M16 16l4 4" stroke="#6B6559" stroke-width="2.2" stroke-linecap="round"/></svg>';
-const logo = (id, s) => '<img class="logo" src="' + LG + id + '.png" width="' + s + '" height="' + s + '" alt="">';
-const dicon = (s) => '<div class="duckicon" style="width:' + s + 'px;height:' + s + 'px;border-radius:' + Math.round(s * .225) + 'px"><img src="' + DUCK + '" alt="" style="width:' + Math.round(s * 1.2) + 'px;left:' + Math.round(-s * .17) + 'px;bottom:' + Math.round(-s * .04) + 'px"></div>';
+const logo = (id, s, extra = '') => '<span class="lt" style="width:' + s + 'px;height:' + s + 'px;' + extra + '"><img src="' + LG + id + '.png" alt=""></span>';
+// The Ditch app icon: sunflower tile, continuous-style corners (22.5%), duck centred and peeking up from the bottom edge.
+const dicon = (s) => { const w = Math.round(s * .86); return '<div class="duckicon" style="width:' + s + 'px;height:' + s + 'px"><img src="' + DUCK + '" alt="" style="width:' + w + 'px;left:' + Math.round((s - w) / 2) + 'px;bottom:0"></div>'; };
+// "ditch [Pro]" lockup: the wordmark plus a small sunflower pill
+const lockup = (size, extra = '') => '<span class="lockup" style="font-size:' + size + 'px"><span class="w">ditch</span><span class="pp">Pro</span>' + (extra ? '<span style="font:600 ' + Math.round(size * .94) + 'px Inter;letter-spacing:-.2px">' + extra + '</span>' : '') + '</span>';
+const bellOff = (c, s) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none"><path d="M6 16V11a6 6 0 1112 0v5l1.6 2.2H4.4L6 16z" stroke="' + c + '" stroke-width="2" stroke-linejoin="round"/><path d="M10 20.5a2 2 0 004 0" stroke="' + c + '" stroke-width="2" stroke-linecap="round"/><path d="M3.5 3.5l17 17" stroke="' + c + '" stroke-width="2.2" stroke-linecap="round"/></svg>';
+const extI = (c, s = 16) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" stroke="' + c + '" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const duck = (d, w, st) => '<img src="' + (d ? DUCKD : DUCK) + '" alt="Ditch the duck" style="position:absolute;display:block;width:' + w + 'px;' + st + '">';
 const peekTop = (d, w, sink = 4) => -(Math.round(w * (d ? 367 / 620 : 357 / 600)) - sink);
 const steps = (n, of = 5) => '<div class="nav"><div class="back">' + chev() + '</div><div class="steps">' + Array.from({ length: of }, (_, i) => '<i class="' + (i < n ? 'on' : '') + '"></i>').join('') + '</div></div>';
@@ -225,7 +245,7 @@ function stamp(color, w, date = 'NOV 9 · 2026') {
     '</g><text x="150" y="94" text-anchor="middle" fill="currentColor" filter="url(#stampInkLite)" style="font-family:Archivo;font-stretch:118%;font-weight:900;font-size:13.5px;letter-spacing:3.4px">' + date + '</text></svg>';
 }
 // small stamp tag for lists
-const miniStamp = (color, text) => `<span style="display:inline-block;transform:rotate(-5deg);border:1.8px solid ${color};border-radius:5px;padding:2px 5px 1px;font-family:Archivo;font-stretch:120%;font-weight:900;font-size:10px;letter-spacing:1.2px;color:${color};filter:url(#stampInkLite);white-space:nowrap">${text}</span>`;
+const miniStamp = (color, text) => `<span style="display:inline-block;transform:rotate(-4deg);border:1.8px solid ${color};border-radius:5px;padding:2px 6px 1px;font-family:Archivo;font-stretch:120%;font-weight:900;font-size:11px;letter-spacing:1.2px;color:${color};filter:url(#stampInkLite);white-space:nowrap">${text}</span>`;
 
 /* ---------- data ---------- */
 const SUBS = {
@@ -237,6 +257,7 @@ const SUBS = {
   disney: ['disney-plus', 'Disney+', '11.99', '143.88', 143.88, 'Wed, Nov 18', 9],
 };
 const REMIND = { chatgpt: 1, netflix: 1, amazon: 1 };
+const GUESS = { amazon: 1, youtube: 1, spotify: 1, disney: 1 }; // dates the user never confirmed
 
 /* ---------- screens ---------- */
 const S = {};
@@ -335,46 +356,50 @@ S.dates = () => ['cream', `
 <div class="scr">
   ${steps(3)}
   <h1 class="h2" style="margin-top:12px">When do they charge you?</h1>
-  <p class="lead" style="margin-top:8px;font-size:16px;line-height:22px">We filled in typical dates. Tap one to fix it. Your last receipt has the real day.</p>
+  <p class="lead" style="margin-top:8px;font-size:16px;line-height:22px">Grey dates are guesses. Tap one to fix it. Your last receipt has the real day.</p>
   <div style="display:flex;justify-content:space-between;align-items:center;margin:18px 4px 8px"><span class="eyebrow">Next charge</span><span style="font:600 13.5px Inter;color:var(--fg2)">2 of 6 confirmed</span></div>
   <div class="card" style="padding:2px 0">${datesList()}</div>
   <div style="flex:1"></div>
-  <button class="cta">Save dates</button>
+  <button class="cta">Save 2 dates, keep 4 guesses</button>
   <button class="txtbtn" style="margin-top:4px">Do the rest later</button>
 </div>`];
 
 S.dateSheet = () => {
-  const cells = [];
-  for (let i = 1; i <= 30; i++) {
-    const past = i < 9, today = i === 9, sel = i === 14;
-    cells.push(`<div style="height:42px;display:flex;align-items:center;justify-content:center"><span class="num" style="width:40px;height:40px;border-radius:20px;display:flex;align-items:center;justify-content:center;font:${sel ? 800 : 600} 16px Inter;${past ? 'color:#958D7B;' : ''}${today ? 'box-shadow:inset 0 0 0 1.5px #16140F;' : ''}${sel ? 'background:#FFCC2E;box-shadow:inset 0 0 0 2px #16140F;' : ''}">${i}</span></div>`);
+  // October 2026 starts on a Thursday: 4 empty cells (S M T W)
+  const cells = ['', '', '', ''].map(() => '<div></div>');
+  for (let i = 1; i <= 31; i++) {
+    const sel = i === 14;
+    cells.push(`<div style="height:42px;display:flex;align-items:center;justify-content:center"><span class="num" style="width:40px;height:40px;border-radius:20px;display:flex;align-items:center;justify-content:center;font:${sel ? 800 : 600} 16px Inter;${sel ? 'background:#FFCC2E;box-shadow:inset 0 0 0 2px #16140F;' : ''}">${i}</span></div>`);
   }
   return ['cream', `
-<div class="scr" style="filter:saturate(.9)">
+<div class="scr">
   ${steps(3)}
   <h1 class="h2" style="margin-top:12px">When do they charge you?</h1>
-  <p class="lead" style="margin-top:8px;font-size:16px;line-height:22px">We filled in typical dates. Tap one to fix it. Your last receipt has the real day.</p>
-  <div class="card" style="padding:2px 0;margin-top:44px">${datesList()}</div>
+  <p class="lead" style="margin-top:8px;font-size:16px;line-height:22px">Grey dates are guesses. Tap one to fix it.</p>
 </div>
 <div style="position:absolute;inset:0;background:rgba(22,20,15,.42);z-index:10"></div>
-<div style="position:absolute;left:0;right:0;bottom:0;height:604px;background:#FBF7EE;border-radius:28px 28px 0 0;z-index:11;padding:8px 24px 34px;display:flex;flex-direction:column">
+<div style="position:absolute;left:0;right:0;bottom:0;height:648px;background:#FBF7EE;border-radius:28px 28px 0 0;z-index:11;padding:8px 24px 34px;display:flex;flex-direction:column">
   <div style="width:40px;height:5px;border-radius:3px;background:#D6CDBB;margin:0 auto 12px;flex:none"></div>
   <div style="display:flex;align-items:center;gap:12px;flex:none">
     ${logo('netflix', 40)}
     <div style="flex:1"><b style="display:block;font-size:17px">Netflix</b><span style="font-size:14px;color:#6B6559">$17.99 a month</span></div>
     <div class="seg" style="width:150px;height:36px"><div class="on" style="font-size:13.5px">Monthly</div><div style="font-size:13.5px">Yearly</div></div>
   </div>
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;flex:none">
-    <span class="wide" style="font-size:20px;letter-spacing:-.4px">November 2026</span>
-    <span style="display:flex;gap:4px"><span class="ib" style="width:36px;height:36px;opacity:.35">${chev('#16140F')}</span><span class="ib" style="width:36px;height:36px">${chevR('#16140F', 22)}</span></span>
+  <div class="seg" style="margin-top:14px;flex:none"><div>Next charge</div><div class="on">From my last receipt</div></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;flex:none">
+    <span class="wide" style="font-size:20px;letter-spacing:-.4px">October 2026</span>
+    <span style="display:flex;gap:4px"><span class="ib" style="width:36px;height:36px">${chev('#16140F')}</span><span class="ib" style="width:36px;height:36px">${chevR('#16140F', 22)}</span></span>
   </div>
-  <div class="cal" style="margin-top:8px;gap:2px 4px">
+  <div class="cal" style="margin-top:6px;gap:2px 4px">
     ${['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((w) => `<div class="wd">${w}</div>`).join('')}
     ${cells.join('')}
   </div>
-  <div style="display:flex;gap:9px;align-items:center;margin-top:10px;font-size:14.5px;line-height:20px">${bell('#16140F', 16, '#FFCC2E')}<span>Heads-ups <b>Wed, Nov 11</b> and <b>Fri, Nov 13</b> · 9 AM</span></div>
+  <div class="card" style="margin-top:12px;padding:11px 14px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:20px;flex:none">
+    <div style="display:flex;gap:9px;align-items:center">${card$('#16140F', 17)}<span>Last charged <b>Oct 14</b>, so next is <b>Sat, Nov 14</b></span></div>
+    <div style="display:flex;gap:9px;align-items:center">${bell('#16140F', 17, '#FFCC2E')}<span>Heads-ups <b>Wed, Nov 11</b> and <b>Fri, Nov 13</b></span></div>
+  </div>
   <div style="flex:1"></div>
-  <button class="cta">Set Sat, Nov 14</button>
+  <button class="cta">Set next charge Sat, Nov 14</button>
   <button class="txtbtn" style="margin-top:4px">Not sure: use a guess</button>
 </div>`];
 };
@@ -412,7 +437,7 @@ S.paywall = (d) => {
 ${d ? '' : '<div style="position:absolute;left:0;right:0;top:0;height:250px;background:#FFCC2E"></div>'}
 <div class="scr" style="padding-top:50px">
   <div style="display:flex;justify-content:space-between;align-items:center;height:44px;flex:none">
-    <span class="eyebrow" style="color:var(--fg)">Ditch Pro</span>
+    ${lockup(24)}
     <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;margin-right:-6px"><i style="width:32px;height:32px;border-radius:16px;background:${d ? '#2A2722' : 'rgba(22,20,15,.12)'};display:flex;align-items:center;justify-content:center">${xI(d ? '#F6F0E3' : '#16140F')}</i></div>
   </div>
   <h1 class="disp" style="font-size:31px;line-height:33px;letter-spacing:-1px;margin-top:4px">Get a heads-up before all 6 renewals.</h1>
@@ -421,7 +446,7 @@ ${d ? '' : '<div style="position:absolute;left:0;right:0;top:0;height:250px;back
     <div class="card" style="padding:14px 14px;position:relative">
       <div style="display:flex;align-items:center;gap:12px">
         ${dicon(40)}
-        <div style="flex:1"><b style="display:block;font-size:16px">Ditch Pro trial</b><span style="font-size:13.5px;color:var(--mute)">We’ll remind you before we charge, too.</span></div>
+        <div style="flex:1"><b style="display:block;line-height:22px">${lockup(16, 'trial')}</b><span style="font-size:13.5px;color:var(--mute)">We’ll remind you before we charge, too.</span></div>
       </div>
       <div class="tl sm" style="${tlv};margin-top:14px">
         <div class="ln"></div>
@@ -473,9 +498,10 @@ S.pick3 = () => {
 };
 
 S.set = (pro) => {
+  // [logo id, name html, date, guess?]
   const rows = pro
-    ? [['netflix', 'Netflix', 'Wed, Nov 11'], ['duck', 'Ditch Pro trial', 'Fri, Nov 13'], ['spotify', 'Spotify', 'Fri, Nov 13'], ['disney-plus', 'Disney+', 'Sun, Nov 15']]
-    : [['netflix', 'Netflix', 'Wed, Nov 11'], ['chatgpt-plus', 'ChatGPT Plus', 'Wed, Nov 18'], ['amazon-prime', 'Amazon Prime', 'Mon, Nov 30']];
+    ? [['netflix', 'Netflix', 'Wed, Nov 11', 0], ['duck', lockup(15, 'trial'), 'Fri, Nov 13', 0], ['spotify', 'Spotify', 'Fri, Nov 13', 1], ['disney-plus', 'Disney+', 'Sun, Nov 15', 1]]
+    : [['netflix', 'Netflix', 'Wed, Nov 11', 0], ['chatgpt-plus', 'ChatGPT Plus', 'Wed, Nov 18', 0], ['amazon-prime', 'Amazon Prime', 'Mon, Nov 30', 1]];
   return ['sun', `
 <div class="scr">
   <h1 class="disp" style="font-size:64px;line-height:60px;letter-spacing:-2.4px;margin-top:40px">You’re set.</h1>
@@ -486,59 +512,65 @@ S.set = (pro) => {
     <div class="card" style="padding:16px 18px 8px;position:relative">
       <div class="eyebrow">First heads-ups</div>
       <div style="margin-top:4px">
-        ${rows.map((r) => `<div style="display:flex;align-items:center;gap:12px;height:52px;${r[0] !== 'netflix' ? 'border-top:1px solid var(--hair)' : ''}">${r[0] === 'duck' ? dicon(32) : logo(r[0], 32)}<span style="flex:1;font-size:15.5px;font-weight:600">${r[1]}</span>${bell('#16140F', 15, '#FFCC2E')}<span class="num" style="font-size:15px;width:100px;text-align:right">${r[2]}</span></div>`).join('')}
+        ${rows.map((r, i) => `<div style="display:flex;align-items:center;gap:12px;height:52px;${i ? 'border-top:1px solid var(--hair)' : ''}">${r[0] === 'duck' ? dicon(32) : logo(r[0], 32)}<span style="flex:1;font-size:15.5px;font-weight:600">${r[1]}</span><span class="num" style="font-size:15px;text-align:right;white-space:nowrap">${r[3] ? '<span style="color:var(--mute)">around </span>' : ''}${r[2]}</span></div>`).join('')}
       </div>
     </div>
   </div>
-  ${pro ? '' : '<p style="margin:12px 4px 0;font-size:14.5px;line-height:20px;color:#4B4220">YouTube Premium, Spotify and Disney+ are tracked with no heads-up. Swap them anytime.</p>'}
-  <div class="split" style="margin-top:${pro ? 22 : 16}px">
+  <p style="margin:12px 4px 0;font-size:14.5px;line-height:20px;color:#4B4220">${pro
+    ? '4 dates are still guesses, like Spotify’s and Disney+’s. Their heads-ups say “renews around…” until you fix them.'
+    : 'YouTube Premium, Spotify and Disney+ have no heads-up. Amazon’s date is a guess, so its heads-up says “renews around Thu, Dec 3.”'}</p>
+  <div class="split" style="margin-top:16px">
     <div><b class="num">6</b><span>tracked</span></div>
     <div><b class="num">${pro ? '6 + trial' : '3'}</b><span>with heads-ups</span></div>
-    <div><b class="num">$90.95</b><span>a month</span></div>
+    <div><b class="num">4</b><span>dates to check</span></div>
   </div>
   <div style="flex:1;min-height:24px"></div>
   <button class="cta">Go to my list</button>
-  ${pro ? '' : '<button class="txtbtn" style="margin-top:4px">Change which 3</button>'}
 </div>`];
 };
 
 /* Home: the list lives in white cards at the 24pt edge; bells and prices share one column */
-const R = 20, C = 2 * Math.PI * R;
-const bellCol = (on, d) => '<span class="bellc">' + (on ? bell(d ? '#FFCC2E' : '#16140F', 17, d ? '#FFCC2E' : '#FFCC2E') : bell(d ? '#5E584E' : '#A39B8A', 17)) + '</span>';
+const bellCol = (on, d, off) => '<span class="bellc">' + (off ? bellOff(d ? '#6E685D' : '#A39B8A', 17) : on ? bell(d ? '#FFCC2E' : '#16140F', 17, '#FFCC2E') : bell(d ? '#5E584E' : '#A39B8A', 17)) + '</span>';
+const sub = (k) => { const s = SUBS[k]; return GUESS[k] ? `${s[5]}<span class="gtag">Guess</span>` : `${s[5]} · in ${s[6]} days`; };
 const hrow = (k, d, opts = {}) => {
   const s = SUBS[k];
-  return `<div class="lrow ${opts.dim ? 'dim' : ''}">${logo(s[0], 36)}<div class="n"><b>${s[1]}</b><span>${s[5]} · in ${s[6]} days</span></div>${bellCol(opts.pro || REMIND[k], d)}<span class="p num">$${s[2]}</span></div>`;
+  return `<div class="lrow ${opts.dim ? 'dim' : ''}">${logo(s[0], 36)}<div class="n"><b>${s[1]}</b><span>${sub(k)}</span></div>${bellCol(opts.pro || REMIND[k], d, opts.off)}<span class="p num">$${s[2]}</span></div>`;
 };
-const trialRow = (d) => `<div class="lrow">${dicon(36)}<div class="n"><b>Ditch Pro trial</b><span>Mon, Nov 16 · trial ends</span></div>${bellCol(1, d)}<span class="p num">$29.99</span></div>`;
-const totalCard = (d, pro) => `<div style="border-radius:20px;padding:12px 18px 11px;flex:none;margin-top:18px;${d ? 'background:#1E1C18;box-shadow:inset 0 0 0 1px #2C2924' : 'background:#FFCC2E'}">
+const trialRow = (d) => `<div class="lrow">${dicon(36)}<div class="n"><b>${lockup(15, 'trial')}</b><span>Mon, Nov 16 · trial ends</span></div>${bellCol(1, d)}<span class="p num">$29.99</span></div>`;
+const totalCard = (d, o = {}) => `<div style="border-radius:20px;padding:12px 18px 11px;flex:none;margin-top:${o.mt || 18}px;${d ? 'background:#1E1C18;box-shadow:inset 0 0 0 1px #2C2924' : 'background:#FFCC2E'}">
     <div style="display:flex;align-items:baseline;gap:8px">
-      <span class="disp num" style="font-size:42px;line-height:46px;letter-spacing:-1.8px;color:var(--money)">$90.95</span><span style="font-size:17px;font-weight:600">a month</span>
+      <span class="disp num" style="font-size:42px;line-height:46px;letter-spacing:-1.8px;color:var(--money)">$${o.month || '90.95'}</span><span style="font-size:17px;font-weight:600">a month</span>
     </div>
     <div class="num" style="display:flex;gap:6px;align-items:center;margin-top:6px;padding-top:9px;border-top:1px solid ${d ? '#33302A' : 'rgba(22,20,15,.18)'};font-size:14px;font-weight:500">
-      <span><b>$1,091</b> a year</span><span>·</span>${bell(d ? '#FFCC2E' : '#16140F', 14, d ? '#FFCC2E' : '#16140F')}<span>Reminders on <b>${pro ? 'all 6' : '3 of 6'}</b></span>
+      <span><b>$${o.year || '1,091'}</b> a year</span><span>·</span>${o.off ? bellOff(d ? '#F6F0E3' : '#16140F', 15) + '<span><b>Reminders off</b></span>' : bell(d ? '#FFCC2E' : '#16140F', 14, d ? '#FFCC2E' : '#16140F') + `<span>Reminders on <b>${o.pro ? 'all 6' : '3 of 6'}</b></span>`}
     </div>
   </div>`;
+// Hold ring: perfect circle, 3pt stroke, 3.5pt gap to a 32pt logo tile, round caps, starts at 12 o'clock
+const holdRing = (d, pct) => {
+  const L = 30, sw = 3, r = 23.5, box = 50, c = 25, C = 2 * Math.PI * r;
+  return `<div style="position:relative;width:${box}px;height:${box}px;flex:none;margin:0 -10px 0 -4px">
+    <svg width="${box}" height="${box}" viewBox="0 0 ${box} ${box}" style="position:absolute;inset:0;display:block">
+      <circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="${d ? 'rgba(246,240,227,.18)' : 'rgba(22,20,15,.15)'}" stroke-width="${sw}"/>
+      <circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="${d ? '#FFCC2E' : '#16140F'}" stroke-width="${sw}" stroke-linecap="round" stroke-dasharray="${(C * pct).toFixed(2)} ${C.toFixed(2)}" transform="rotate(-90 ${c} ${c})"/>
+    </svg>
+    <div style="position:absolute;left:${(box - L) / 2}px;top:${(box - L) / 2}px">${logo('netflix', L)}</div>
+  </div>`;
+};
 S.home = (d) => {
   const n = SUBS.netflix;
   const lifted = `
   <div style="border-radius:20px;padding:0 0 10px;flex:none;position:relative;z-index:2;${d ? 'background:#2A2721;box-shadow:inset 0 0 0 1.5px #FFCC2E,0 16px 34px rgba(0,0,0,.5)' : 'background:#FFCC2E;box-shadow:0 14px 30px rgba(90,60,0,.22)'}">
-    <div class="lrow" style="height:60px">
-      <div style="position:relative;width:46px;height:46px;flex:none;margin:0 -5px">
-        <svg width="46" height="46" viewBox="0 0 46 46" style="position:absolute;inset:0;transform:rotate(-90deg)">
-          <circle cx="23" cy="23" r="${R}" stroke="${d ? 'rgba(255,255,255,.18)' : '#FFFFFF'}" stroke-width="4" fill="none"/>
-          <circle cx="23" cy="23" r="${R}" stroke="${d ? '#FFCC2E' : '#16140F'}" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C * .34).toFixed(1)}"/>
-        </svg>
-        <div style="position:absolute;left:8px;top:8px">${logo('netflix', 30)}</div>
-      </div>
+    <div class="lrow" style="height:62px">
+      ${holdRing(d, .66)}
       <div class="n"><b>Netflix</b><span style="color:${d ? '#BFB7A7' : '#4B4220'}">Sat, Nov 14 · in 5 days</span></div>
       <span class="bellc">${bell(d ? '#FFCC2E' : '#16140F', 17, d ? '#FFCC2E' : '#16140F')}</span><span class="p num">$${n[2]}</span>
     </div>
-    <div style="margin:0 12px;border-radius:13px;padding:9px 12px;font-size:14.5px;line-height:19px;${d ? 'background:#1E1C18;color:#E4DDCF' : 'background:rgba(255,255,255,.75);color:#16140F'}"><b style="color:${d ? '#FFCC2E' : '#16140F'}">Keep holding to ditch Netflix.</b><br>Saves <b class="num">$215.88 a year</b>. Let go to keep it.</div>
+    <div style="margin:0 12px;border-radius:13px;padding:9px 12px;font-size:14.5px;line-height:19px;${d ? 'background:#1E1C18;color:#E4DDCF' : 'background:rgba(255,255,255,.75);color:#16140F'}"><b style="color:${d ? '#FFCC2E' : '#16140F'}">Keep holding to ditch.</b> Let go to keep it.<br>Saves <b class="num">$215.88 a year</b> once you cancel.</div>
   </div>`;
   return [d ? 'dark' : 'cream', `
 <div class="scr" style="padding-bottom:84px">
   ${header(d)}
-  ${totalCard(d, false)}
+  ${totalCard(d)}
   <div class="grp"><span>This week</span></div>
   ${lifted}
   <div class="grp"><span>Next week</span></div>
@@ -551,7 +583,10 @@ ${tabs(0)}`];
 S.homePro = () => ['cream', `
 <div class="scr" style="padding-bottom:84px">
   ${header(false)}
-  ${totalCard(false, true)}
+  ${totalCard(false, { pro: 1, mt: 12 })}
+  <div class="card" style="flex:none;margin-top:8px;display:flex;align-items:center;gap:10px;padding:0 12px 0 14px;height:40px;font-size:14.5px">
+    <span class="gtag" style="margin:0">Guess</span><span style="flex:1"><b>4 dates</b> are guesses</span><span style="font-weight:600;display:flex;align-items:center;gap:2px">Check them${chevR('#16140F', 14)}</span>
+  </div>
   <div class="grp"><span>This week</span><em>Hold a sub to ditch it</em></div>
   <div class="card" style="flex:none">${hrow('netflix', false, { pro: 1 })}</div>
   <div class="grp"><span>Next week</span></div>
@@ -560,38 +595,63 @@ S.homePro = () => ['cream', `
   <div class="card" style="flex:none">${hrow('youtube', false, { pro: 1 })}${hrow('amazon', false, { pro: 1 })}</div>
 </div>
 ${tabs(0)}`];
+// 9c · after ditching Netflix, with notifications switched off in iPhone Settings
+S.homeOff = (d) => {
+  const warn = `<span style="width:30px;height:30px;border-radius:15px;background:#FF6C2C;display:flex;align-items:center;justify-content:center;flex:none;color:#16140F;font:900 17px Inter">!</span>`;
+  return [d ? 'dark' : 'cream', `
+<div class="scr" style="padding-bottom:84px">
+  ${header(d)}
+  <div style="margin-top:12px;border-radius:18px;padding:11px 10px 11px 14px;display:flex;align-items:center;gap:12px;flex:none;${d ? 'background:#2A2721;box-shadow:inset 0 0 0 1.5px #FF6C2C' : 'background:#16140F;color:#F6F0E3'}">
+    ${warn}
+    <div style="flex:1"><b style="display:block;font-size:16px;line-height:20px">Reminders are off.</b><span style="font-size:13.5px;line-height:18px;color:${d ? '#BFB7A7' : '#CFC7B6'}">Nothing can reach you.</span></div>
+    <span class="pill" style="background:#FFCC2E;color:#16140F;height:36px">Turn on</span>
+  </div>
+  ${totalCard(d, { month: '72.96', year: '876', off: 1, mt: 12 })}
+  <div class="grp"><span>This week</span></div>
+  <div class="card" style="flex:none">
+    <div class="lrow" style="height:60px">${logo('netflix', 36)}<div class="n"><b style="display:flex;align-items:center;gap:8px">Netflix ${miniStamp(d ? '#FFCC2E' : '#16140F', 'DITCHED')}</b><span>Cancel by Sat, Nov 14</span></div>${bellCol(1, d, 1)}<span class="p num">$17.99</span></div>
+  </div>
+  <div class="grp"><span>Next week</span></div>
+  <div class="card" style="flex:none">${hrow('spotify', d, { off: 1 })}${hrow('disney', d, { off: 1 })}${hrow('chatgpt', d, { off: 1 })}</div>
+  <div class="grp"><span>Later</span></div>
+  <div class="card" style="flex:none">${hrow('youtube', d, { off: 1 })}${hrow('amazon', d, { off: 1 })}</div>
+</div>
+${tabs(0)}`];
+};
 
-S.ditched = (d, se) => {
-  const k = se ? .82 : 1;
+// 10 · Ditched. Ditching is a decision, not a cancellation: one "did you cancel?" check stays on until she confirms.
+S.ditched = (d, se, trial) => {
+  const k = se ? .82 : 1, ink = d ? '#F6F0E3' : '#16140F';
+  const t = trial
+    ? { icon: dicon(se ? 34 : 40), name: lockup(16, 'trial'), sub: 'Charges Mon, Nov 16 · $29.99 a year', amount: '29.99', now: 'You keep your whole list. Reminders drop back to 3.',
+        check: 'Sun, Nov 15 · 9 AM', q: '“Did you cancel your Ditch Pro trial? It charges tomorrow.”', cta: 'Cancel in iPhone Settings', fine: 'Settings → your name → Subscriptions → Ditch.' }
+    : { icon: logo('netflix', se ? 34 : 40), name: 'Netflix', sub: 'Cancel by Sat, Nov 14 · $17.99 a month', amount: '215.88', now: 'Cancel it and you’ll be saving $647 a year.',
+        check: 'Fri, Nov 13 · 9 AM', q: '“Did you cancel Netflix? It charges tomorrow.”', cta: 'Cancel in Netflix', fine: 'Billed by Apple? Settings → Subscriptions.' };
   return [d ? 'dark' : 'sun', `
-<div class="scr" style="${se ? 'padding:20px 20px 16px' : ''}">
-  <div style="flex:1;min-height:${se ? 52 : 60}px"></div>
+<div class="scr" style="${se ? 'padding:20px 20px 14px' : ''}">
+  <div style="height:${se ? 40 : 44}px;display:flex;align-items:center;flex:none"><span style="font:600 16px Inter;height:44px;display:flex;align-items:center;padding-right:12px">Undo</span></div>
+  <div style="flex:1;min-height:${se ? 46 : 64}px"></div>
   <div style="position:relative;flex:none">
-    ${duck(d, Math.round((se ? 108 : 124) * k), 'left:20px;top:' + peekTop(d, Math.round((se ? 108 : 124) * k), 4) + 'px')}
-    <div class="card" style="position:relative;display:flex;align-items:center;gap:13px;padding:${se ? '10px 14px' : '13px 16px'}">
-      ${logo('netflix', se ? 34 : 40)}
-      <div style="flex:1"><b style="display:block;font-size:16.5px;color:${d ? '#A9A192' : '#6B6559'};text-decoration:line-through;text-decoration-thickness:1.5px">Netflix</b><span class="num" style="font-size:14px;color:${d ? '#A9A192' : '#6B6559'}">$17.99 a month · reminders off</span></div>
+    ${duck(d, Math.round((se ? 100 : 116) * k), 'left:20px;top:' + peekTop(d, Math.round((se ? 100 : 116) * k), 4) + 'px')}
+    <div class="card" style="position:relative;display:flex;align-items:center;gap:13px;padding:${se ? '10px 14px' : '12px 16px'}">
+      ${t.icon}
+      <div style="flex:1"><b style="display:block;font-size:16.5px;line-height:22px">${t.name}</b><span class="num" style="font-size:14px;color:var(--mute)">${t.sub}</span></div>
     </div>
   </div>
-  <div style="display:flex;justify-content:center;margin:${se ? '22px 0 18px' : '38px 0 34px'};transform:rotate(-6deg);flex:none" data-noaudit>${stamp(d ? '#FFCC2E' : '#16140F', se ? 236 : 306)}</div>
+  <div style="display:flex;justify-content:center;margin:${se ? '16px 0 12px' : '26px 0 22px'};transform:rotate(-6deg);flex:none" data-noaudit>${stamp(d ? '#FFCC2E' : '#16140F', se ? 216 : 272)}</div>
   <div style="text-align:center;flex:none">
-    <div class="disp num fit" data-max="${se ? 300 : 330}" style="font-size:${se ? 64 : 80}px;line-height:${se ? 62 : 76}px;letter-spacing:-3px;white-space:nowrap;display:inline-block;color:var(--money)">$215.88</div>
-    <div class="disp" style="font-size:${se ? 20 : 23}px;line-height:28px;letter-spacing:-.4px;margin-top:2px">a year you won’t pay.</div>
-    <div style="font-size:15px;margin-top:${se ? 8 : 12}px;color:var(--fg2)" class="num">New total <b style="color:var(--fg)">$72.96</b> a month · was $90.95</div>
+    <div class="disp num fit" data-max="${se ? 300 : 330}" style="font-size:${se ? 60 : 78}px;line-height:${se ? 58 : 74}px;letter-spacing:-3px;white-space:nowrap;display:inline-block;color:var(--money)">$${t.amount}</div>
+    <div class="disp" style="font-size:${se ? 19 : 22}px;line-height:${se ? 23 : 27}px;letter-spacing:-.4px;margin-top:2px">a year you won’t pay,<br>once you cancel.</div>
+    ${se && !trial ? '' : `<div class="num" style="font-size:14.5px;line-height:20px;margin-top:${se ? 6 : 10}px;color:var(--fg2)">${t.now}</div>`}
   </div>
-  <div style="margin:${se ? '14px 0 0' : '20px 0 0'};padding-top:${se ? 10 : 12}px;border-top:2px solid ${d ? '#33302A' : '#16140F'};display:flex;align-items:center;gap:12px;flex:none">
-    <div style="flex:1"><b class="num" style="display:block;font-size:16.5px;line-height:21px">You’re saving $431 a year</b><span style="font-size:14px;line-height:19px;color:var(--fg2)">from 3 subs you ditched</span></div>
-    <span style="font:600 14px Inter;display:flex;align-items:center;gap:2px">See all${chevR(d ? '#F6F0E3' : '#16140F', 14)}</span>
+  <div style="flex:1;min-height:${se ? 10 : 14}px;max-height:28px"></div>
+  <div class="card" style="display:flex;align-items:center;gap:12px;padding:${se ? '10px 14px' : '12px 14px'};flex:none">
+    <span style="width:36px;height:36px;border-radius:18px;background:#FFCC2E;display:flex;align-items:center;justify-content:center;flex:none;${d ? '' : 'box-shadow:inset 0 0 0 1.5px #16140F'}">${bell('#16140F', 18, '#16140F')}</span>
+    <div style="flex:1;min-width:0"><b style="display:block;font-size:15px;line-height:20px">One last check: ${t.check}</b><span style="display:block;font-size:13.5px;line-height:18px;color:var(--mute)">${t.q}</span></div>
   </div>
-  <div style="flex:1;min-height:${se ? 12 : 16}px;max-height:${se ? 200 : 30}px"></div>
-  <div class="card" style="display:flex;align-items:center;gap:12px;padding:${se ? '11px 14px 11px 16px' : '13px 14px 13px 18px'};margin-bottom:12px;flex:none">
-    <div style="flex:1"><b style="display:block;font-size:16.5px;line-height:21px">Now cancel it in Netflix</b><span style="display:block;font-size:14px;line-height:19px;color:var(--mute)">So Saturday’s $17.99 doesn’t go through.</span>${se ? '' : `<span style="display:block;font-size:13px;line-height:18px;color:var(--mute);margin-top:3px">Billed by Apple? Settings → Subscriptions.</span>`}</div>
-    ${chevR(d ? '#F6F0E3' : '#16140F')}
-  </div>
-  <div style="display:flex;gap:10px;flex:none">
-    <button class="sec" style="height:${se ? 52 : 56}px;border-radius:28px;width:116px;flex:none">Undo</button>
-    <button class="cta" style="flex:1;width:auto;height:${se ? 52 : 56}px">Done</button>
-  </div>
+  <button class="cta" style="margin-top:${se ? 10 : 12}px;height:${se ? 50 : 56}px">${t.cta}${extI(d ? '#16140F' : '#FFCC2E', 17)}</button>
+  <button class="sec" style="margin-top:8px;height:${se ? 46 : 50}px">I already cancelled</button>
+  <p class="fine" style="margin-top:${se ? 6 : 8}px">${t.fine}</p>
 </div>`];
 };
 
@@ -620,15 +680,17 @@ ${tabs(0)}`];
 // 12 · Calendar
 S.calendar = (d) => {
   const charge = { 14: 'netflix', 16: 'spotify', 18: 'disney-plus', 21: 'chatgpt-plus', 27: 'youtube-premium' };
+  const guess = { 16: 1, 18: 1, 27: 1 };
   const heads = { 11: 1, 13: 1, 18: 1, 20: 1, 30: 1 };
+  const dash = d ? 'rgba(246,240,227,.6)' : 'rgba(22,20,15,.55)';
   const cells = [];
   for (let i = 1; i <= 30; i++) {
     const past = i < 9, today = i === 9, sel = i === 14;
     const bg = sel ? 'background:#FFCC2E;box-shadow:inset 0 0 0 2px #16140F;' : (d ? 'background:#1E1C18;' : 'background:#fff;');
-    cells.push(`<div style="height:66px;border-radius:12px;${bg}display:flex;flex-direction:column;align-items:center;padding-top:6px;position:relative">
-      <span class="num" style="font:${today || sel ? 800 : 600} 13.5px Inter;${sel ? 'color:#16140F;' : past ? 'color:' + (d ? '#857E71' : '#958D7B') + ';' : ''}${today ? 'width:22px;height:22px;margin-top:-3px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:' + (d ? '#F6F0E3;color:#12110E' : '#16140F;color:#fff') + ';' : ''}">${i}</span>
-      ${charge[i] ? `<div style="margin-top:${today ? 3 : 6}px">${logo(charge[i], 22).replace('border-radius:9px', '')}</div>` : ''}
-      ${heads[i] ? `<span style="position:absolute;left:50%;margin-left:-4px;bottom:7px;width:8px;height:8px;border-radius:4px;background:${sel ? '#16140F' : '#FFCC2E'};${d || sel ? '' : 'box-shadow:0 0 0 1.5px #16140F'}"></span>` : ''}
+    cells.push(`<div style="height:66px;border-radius:12px;${bg}display:flex;flex-direction:column;align-items:center;padding-top:5px;position:relative">
+      <span class="num" style="font:${today || sel ? 800 : 600} 13.5px Inter;${sel ? 'color:#16140F;' : past ? 'color:' + (d ? '#A9A192' : '#6B6559') + ';' : ''}align-self:flex-start;margin-left:6px;${today ? 'width:22px;height:22px;margin:-2px 0 0 3px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:' + (d ? '#F6F0E3;color:#12110E' : '#16140F;color:#fff') + ';' : ''}">${i}</span>
+      ${charge[i] ? `<div style="margin-top:${today ? 4 : 7}px;padding:2px;border-radius:8px;${guess[i] ? 'outline:1.5px dashed ' + dash + ';outline-offset:0' : ''}">${logo(charge[i], 22)}</div>` : ''}
+      ${heads[i] ? `<span style="position:absolute;right:6px;top:8px;width:8px;height:8px;border-radius:4px;background:${sel ? '#16140F' : '#FFCC2E'};${d || sel ? '' : 'box-shadow:0 0 0 1.5px #16140F'}"></span>` : ''}
     </div>`);
   }
   return [d ? 'dark' : 'cream', `
@@ -645,54 +707,61 @@ S.calendar = (d) => {
     ${cells.join('')}
   </div>
   <div style="display:flex;gap:14px;align-items:center;margin:10px 4px 0;font-size:13px;color:var(--fg2)">
-    <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:4px;background:#FFCC2E;${d ? '' : 'box-shadow:0 0 0 1.5px #16140F'}"></span>Heads-up day</span>
+    <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:4px;background:#FFCC2E;${d ? '' : 'box-shadow:0 0 0 1.5px #16140F'}"></span>Heads-up</span>
+    <span style="display:flex;align-items:center;gap:6px"><span style="width:16px;height:16px;border-radius:5px;outline:1.5px dashed ${dash}"></span>Guessed date</span>
     <span style="display:flex;align-items:center;gap:6px"><span style="width:16px;height:16px;border-radius:8px;background:${d ? '#F6F0E3' : '#16140F'}"></span>Today</span>
   </div>
   <div class="grp" style="margin-top:16px"><span>Sat, Nov 14</span><em>1 charge</em></div>
   <div class="card" style="flex:none">
     <div class="lrow" style="height:58px">${logo('netflix', 36)}<div class="n"><b>Netflix</b><span>Heads-ups at 9:00 AM</span></div>${bellCol(1, d)}<span class="p num">$17.99</span></div>
     <div style="display:flex;gap:8px;padding:0 14px 14px 62px">
-      ${['Wed, Nov 11', 'Fri, Nov 13'].map((t) => `<span style="height:30px;border-radius:15px;display:flex;align-items:center;gap:5px;padding:0 10px;font:600 13px Inter;${d ? 'background:#2A2721;color:#F6F0E3' : 'background:#FFF1BC;color:#16140F'}">${bell(d ? '#FFCC2E' : '#16140F', 13, d ? '#FFCC2E' : '#FFCC2E')}${t}</span>`).join('')}
+      ${['Wed, Nov 11', 'Fri, Nov 13'].map((t) => `<span style="height:30px;border-radius:15px;display:flex;align-items:center;gap:5px;padding:0 10px;font:600 13px Inter;${d ? 'background:#2A2721;color:#F6F0E3' : 'background:#FFF1BC;color:#16140F'}">${bell(d ? '#FFCC2E' : '#16140F', 13, '#FFCC2E')}${t}</span>`).join('')}
     </div>
   </div>
 </div>
 ${tabs(1)}`];
 };
 
-// 13 · Ditched tab
+// 13 · Ditched tab. "You're saving" only counts ditches she has confirmed as cancelled.
 S.ditchedTab = (d) => {
-  const items = [
-    ['netflix', 'Netflix', 'Mon, Nov 9', '17.99', '215.88', 'Cancel in Netflix by Sat, Nov 14', 'NOV 9'],
-    ['audible', 'Audible Plus', 'Sat, Aug 22', '7.95', '95.40', '', 'AUG 22'],
-    ['hulu', 'Hulu', 'Sun, Jun 14', '9.99', '119.88', '', 'JUN 14'],
+  const done = [
+    ['apple-music', 'Apple Music', 'Thu, Sep 17', '131.88'],
+    ['audible', 'Audible Premium Plus', 'Sat, Aug 22', '179.40'],
+    ['hulu', 'Hulu', 'Sun, Jun 14', '119.88'],
   ];
-  const rows = items.map((r) => `<div class="lrow" style="height:${r[5] ? 76 : 64}px;align-items:center">
-      ${logo(r[0], 38)}
-      <div class="n"><b>${r[1]}</b><span>Ditched ${r[2]}</span>${r[5] ? `<span style="color:${d ? '#FFCC2E' : '#16140F'};font-weight:600;display:flex;align-items:center;gap:2px">${r[5]}${chevR(d ? '#FFCC2E' : '#16140F', 13)}</span>` : ''}</div>
-      <div style="text-align:right;flex:none"><div class="num wide" style="font-size:16.5px;font-weight:700">$${r[4]}</div><div style="font-size:12.5px;color:var(--mute)">a year</div></div>
+  const rows = done.map((r) => `<div class="lrow" style="height:56px">
+      ${logo(r[0], 36)}
+      <div class="n"><b>${r[1]}</b><span>Cancelled ${r[2]}</span></div>
+      <div style="text-align:right;flex:none"><div class="num wide" style="font-size:16px;font-weight:700">$${r[3]}</div><div style="font-size:12.5px;color:var(--mute)">a year</div></div>
     </div>`).join('');
+  const ink = d ? '#FFCC2E' : '#16140F';
   return [d ? 'dark' : 'cream', `
 <div class="scr" style="padding-bottom:84px">
   <div style="display:flex;align-items:center;height:48px;flex:none;margin-top:2px"><span class="disp" style="font-size:30px;letter-spacing:-1px">Ditched</span></div>
-  <div style="position:relative;margin-top:14px;border-radius:24px;padding:20px 20px 18px;flex:none;overflow:hidden;${d ? 'background:#1E1C18;box-shadow:inset 0 0 0 1px #2C2924' : 'background:#FFCC2E'}">
+  <div style="margin-top:12px;border-radius:22px;padding:16px 20px 15px;flex:none;${d ? 'background:#1E1C18;box-shadow:inset 0 0 0 1px #2C2924' : 'background:#FFCC2E'}">
     <div style="font-size:16px;font-weight:600">You’re saving</div>
-    <div class="disp num" style="font-size:64px;line-height:66px;letter-spacing:-2.6px;margin-top:2px;color:var(--money)">$431</div>
-    <div class="disp" style="font-size:22px;line-height:26px;letter-spacing:-.4px">a year.</div>
-    <div style="font-size:14.5px;margin-top:8px;color:${d ? '#BFB7A7' : '#4B4220'}" class="num">From 3 subs you ditched · $35.93 a month</div>
-    <div style="position:absolute;right:16px;top:20px;transform:rotate(-9deg)" data-noaudit>${stamp(d ? '#FFCC2E' : '#16140F', 112, 'SINCE JUNE')}</div>
+    <div style="display:flex;align-items:baseline;gap:10px;margin-top:2px"><span class="disp num" style="font-size:58px;line-height:62px;letter-spacing:-2.4px;color:var(--money)">$431</span><span class="disp" style="font-size:22px;letter-spacing:-.4px">a year.</span></div>
+    <div style="font-size:14.5px;margin-top:4px;color:${d ? '#BFB7A7' : '#4B4220'}" class="num">From 3 subs you cancelled since June · $35.93 a month</div>
   </div>
-  <div class="grp" style="margin-top:20px"><span>Your ditches</span><em>Newest first</em></div>
+  <div class="grp"><span>Waiting for you to cancel</span><em class="num">+$215.88 a year</em></div>
+  <div class="card" style="flex:none;padding-bottom:12px">
+    <div class="lrow" style="height:60px">${logo('netflix', 36)}<div class="n"><b style="display:flex;align-items:center;gap:8px">Netflix ${miniStamp(ink, 'DITCHED')}</b><span>Cancel by Sat, Nov 14 · $17.99 a month</span></div></div>
+    <div style="display:flex;gap:8px;padding:0 14px 0 62px">
+      <span class="pill" style="background:${d ? '#FFCC2E' : '#16140F'};color:${d ? '#16140F' : '#fff'}">I cancelled it</span>
+      <span class="pill" style="box-shadow:inset 0 0 0 1.5px ${d ? 'rgba(246,240,227,.45)' : '#16140F'}">How to cancel${chevR(d ? '#F6F0E3' : '#16140F', 13)}</span>
+    </div>
+  </div>
+  <div class="grp"><span>Cancelled</span><em>You confirmed these</em></div>
   <div class="card" style="flex:none">${rows}</div>
-  <div class="grp" style="margin-top:20px"><span>Adding up</span><em class="num">a year, after each ditch</em></div>
-  <div class="card" style="flex:none;padding:14px 16px 10px">
-    <svg width="313" height="66" viewBox="0 0 313 66" style="display:block">
-      <path d="M0 62 H24 V44 H122 V34 H232 V6 H313 V64 H0Z" fill="${d ? 'rgba(255,204,46,.12)' : 'rgba(255,204,46,.45)'}"/>
-      <path d="M0 62 H24 V44 H122 V34 H232 V6 H313" fill="none" stroke="${d ? '#FFCC2E' : '#16140F'}" stroke-width="3" stroke-linejoin="round"/>
-      <circle cx="24" cy="44" r="4.5" fill="${d ? '#FFCC2E' : '#16140F'}"/><circle cx="122" cy="34" r="4.5" fill="${d ? '#FFCC2E' : '#16140F'}"/><circle cx="232" cy="6" r="4.5" fill="${d ? '#FFCC2E' : '#16140F'}"/>
+  <div class="grp"><span>Adding up</span><em class="num">a year, after each one</em></div>
+  <div class="card" style="flex:none;padding:12px 16px 8px">
+    <svg width="313" height="52" viewBox="0 0 313 52" style="display:block">
+      <path d="M0 48 H24 V34 H122 V22 H210 V5 H313 V50 H0Z" fill="${d ? 'rgba(255,204,46,.12)' : 'rgba(255,204,46,.45)'}"/>
+      <path d="M0 48 H24 V34 H122 V22 H210 V5 H313" fill="none" stroke="${ink}" stroke-width="3" stroke-linejoin="round"/>
+      <circle cx="24" cy="34" r="4.5" fill="${ink}"/><circle cx="122" cy="22" r="4.5" fill="${ink}"/><circle cx="210" cy="5" r="4.5" fill="${ink}"/>
     </svg>
-    <div class="num" style="position:relative;height:18px;font-size:12.5px;color:var(--mute);margin-top:6px"><span style="position:absolute;left:12px">Jun · $119.88</span><span style="position:absolute;left:110px">Aug · $215.28</span><span style="position:absolute;right:0;color:var(--fg);font-weight:600">Nov · $431.16</span></div>
+    <div class="num" style="position:relative;height:18px;font-size:12.5px;color:var(--mute);margin-top:5px"><span style="position:absolute;left:10px">Jun · $119.88</span><span style="position:absolute;left:106px">Aug · $299.28</span><span style="position:absolute;right:0;color:var(--fg);font-weight:600">Sep · $431.16</span></div>
   </div>
-  <p style="margin:12px 4px 0;font-size:13.5px;line-height:19px;color:var(--fg2)">Ditch can’t see your bank. These numbers assume you cancelled with each service.</p>
 </div>
 ${tabs(2)}`];
 };
@@ -703,18 +772,22 @@ S.settings = (d) => {
   const r = (l, v, opts = {}) => `<div class="srow"${opts.h ? ` style="min-height:${opts.h}px"` : ''}>${opts.icon || ''}<span class="l"${opts.lc ? ` style="color:${opts.lc};font-weight:600"` : ''}>${l}</span><span class="v">${v || ''}${opts.nochev ? '' : chevR(d ? '#6E685D' : '#B5AD9C', 15)}</span></div>`;
   const ok = `<span style="width:28px;height:28px;border-radius:14px;background:#FFCC2E;display:flex;align-items:center;justify-content:center;flex:none">${ck('#16140F', 15)}</span>`;
   const warn = `<span style="width:28px;height:28px;border-radius:14px;background:#FF6C2C;display:flex;align-items:center;justify-content:center;flex:none;color:#16140F;font:900 16px Inter">!</span>`;
+  const pro = `<span class="tag" style="margin-left:6px">PRO</span>`;
+  const test = d
+    ? `<div class="srow">${bellOff('#8E877A', 18)}<span class="l" style="color:#A9A192">Send me a test reminder<br><span style="font-size:13px">Turn notifications on first</span></span></div>`
+    : r('Send me a test reminder', '', { lc: '#16140F', icon: bell('#16140F', 18) });
   const health = d
     ? `<div class="srow" style="min-height:64px">${warn}<span class="l"><b style="display:block;font-size:16px">Notifications are off</b><span style="font-size:13.5px;color:var(--mute)">No heads-ups can reach you right now.</span></span></div>${r('Turn on in iPhone Settings', '', { lc: '#FFCC2E' })}`
     : `<div class="srow" style="min-height:64px">${ok}<span class="l"><b style="display:block;font-size:16px">All good</b><span style="font-size:13.5px;color:var(--mute)">Next 12 reminders scheduled</span></span></div>`;
-  const pro = `<span class="tag" style="margin-left:6px">PRO</span>`;
+  const danger = d ? '#FF8A5C' : '#B23A0E';
   return [d ? 'dark' : 'cream', `
 <div class="scr" style="padding-bottom:48px">
   <div class="nav"><div class="back">${chev()}</div><span style="font:600 17px Inter">Home</span></div>
   <h1 class="disp" style="font-size:34px;letter-spacing:-1.2px;margin-top:6px">Settings</h1>
-  ${g('Reminders', health + r('Heads-ups', '3 days + 1 day before') + r('Time', '9:00 AM') + r('Send me a test reminder', '', { lc: d ? '#FFCC2E' : '#16140F', icon: bell(d ? '#FFCC2E' : '#16140F', 18) }))}
+  ${g('Reminders', health + r('Heads-ups', '3 days + 1 day' + pro) + r('Time', '9:00 AM') + test, 'Custom heads-up timing comes with Pro.')}
   ${g('Free reminders', r('Reminders on', '<b style="color:var(--fg)">3 of 3</b> · Change'), 'ChatGPT Plus, Netflix and Amazon Prime.')}
   ${g('Ditch Pro', r('Plan', 'Free') + r('Try Pro free for 7 days', '', { lc: d ? '#FFCC2E' : '#16140F' }) + r('Restore purchases', '') + r('Manage subscription', 'App Store'))}
-  ${g('Data', r('iCloud backup' + pro, 'Off') + r('Export CSV', '') + r('Currency', 'USD $'))}
+  ${g('Data', r('iCloud backup' + pro, 'Off') + r('Export CSV', '') + r('Currency', 'USD $') + r('Delete all my data', '', { lc: danger }))}
   ${g('About', `<div class="srow" style="min-height:58px">${dicon(30)}<span class="l" style="font-size:15px;line-height:20px">Your list stays on your phone.<br><span style="color:var(--mute);font-size:13.5px">No account, no bank link.</span></span></div>` + r('Contact support', '') + r('Rate Ditch', '') + r('Terms', '') + r('Privacy', ''))}
   <p class="fine" style="margin-top:18px;color:var(--mute)">Ditch 1.0 (1) · Grasp Labs</p>
 </div>`];
@@ -723,18 +796,19 @@ S.settings = (d) => {
 /* ---------- board ---------- */
 const P = (id, cap, scr, opts = {}) => ({ id, cap, scr, opts });
 const sections = [
-  ['onboarding', 'Onboarding', 'Welcome to You’re set. The progress bar has 5 steps; the paywall is a sheet with no bar. The heads-up timeline is the same everywhere: date on top, “9 AM heads-up” or the charge below.', [
+  ['onboarding', 'Onboarding', 'Welcome to You’re set. 5-step progress bar; the paywall is a sheet with no bar. Guessed dates stay labelled “Guess” and their heads-ups say “around”.', [
     P('01-welcome', '1 · Welcome', S.welcome(false)), P('02-pick', '2 · What do you pay for?', S.pick()), P('03-total', '3 · Your total', S.total(false)),
-    P('04-dates', '4 · Charge dates (one screen)', S.dates()), P('04b-date-sheet', '4b · Date sheet open on Netflix', S.dateSheet()), P('05-reminders', '5 · Reminders pre-ask', S.notify()),
+    P('04-dates', '4 · Charge dates (one screen)', S.dates()), P('04b-date-sheet', '4b · Date sheet: from my last receipt', S.dateSheet()), P('05-reminders', '5 · Reminders pre-ask', S.notify()),
     P('06-paywall', '6 · Paywall', S.paywall(false)), P('07-pick3', '7 · Which 3 get reminders? (free path)', S.pick3()), P('08-set', '8 · You’re set (free)', S.set(false)), P('08b-set-pro', '8b · You’re set (Pro trial)', S.set(true))]],
-  ['app', 'App', 'Tabs: Home · Calendar · Ditched. Settings sits behind the gear on Home. 10-se proves Ditched fits a 375×667 iPhone SE.', [
-    P('09-home-hold', '9 · Home, holding Netflix (free)', S.home(false)), P('09b-home-pro', '9b · Home, Pro trial on the list', S.homePro()), P('10-ditched', '10 · Ditched', S.ditched(false)),
-    P('10-se', '10-se · Ditched on iPhone SE', S.ditched(false, true), { se: 1 }), P('11-empty', '11 · Home, empty', S.empty()), P('12-calendar', '12 · Calendar tab', S.calendar(false)),
-    P('13-ditched-tab', '13 · Ditched tab', S.ditchedTab(false)), P('14-settings', '14 · Settings (full scroll)', S.settings(false), { h: 1330 })]],
-  ['dark', 'Dark mode', 'Warm ink canvas. Sunflower only for big money, CTAs and key fills. Settings in dark shows the “notifications are off” fix state.', [
+  ['app', 'App', 'Tabs: Home · Calendar · Ditched. Ditching keeps one “Did you cancel?” check until she confirms; savings only count once she does.', [
+    P('09-home-hold', '9 · Home, holding Netflix (free)', S.home(false)), P('09b-home-pro', '9b · Home, Pro trial on the list', S.homePro()), P('09c-home-off', '9c · Home, reminders off (after ditching)', S.homeOff(false)),
+    P('10-ditched', '10 · Ditched', S.ditched(false)), P('10b-ditched-trial', '10b · Ditching the Pro trial', S.ditched(false, false, true)), P('10-se', '10-se · Ditched on iPhone SE', S.ditched(false, true), { se: 1 }),
+    P('11-empty', '11 · Home, empty', S.empty()), P('12-calendar', '12 · Calendar tab', S.calendar(false)),
+    P('13-ditched-tab', '13 · Ditched tab', S.ditchedTab(false)), P('14-settings', '14 · Settings (full scroll)', S.settings(false), { h: 1400 })]],
+  ['dark', 'Dark mode', 'Warm ink canvas. Sunflower only for big money, CTAs and key fills. Settings in dark shows the “notifications are off” state.', [
     P('d01-welcome', '1 · Welcome', S.welcome(true)), P('d03-total', '3 · Your total', S.total(true)), P('d06-paywall', '6 · Paywall', S.paywall(true)),
-    P('d09-home-hold', '9 · Home, holding', S.home(true)), P('d10-ditched', '10 · Ditched', S.ditched(true)), P('d12-calendar', '12 · Calendar', S.calendar(true)),
-    P('d13-ditched-tab', '13 · Ditched tab', S.ditchedTab(true)), P('d14-settings', '14 · Settings (notifications off)', S.settings(true), { h: 1380 })]],
+    P('d09-home-hold', '9 · Home, holding', S.home(true)), P('d09c-home-off', '9c · Home, reminders off', S.homeOff(true)), P('d10-ditched', '10 · Ditched', S.ditched(true)), P('d12-calendar', '12 · Calendar', S.calendar(true)),
+    P('d13-ditched-tab', '13 · Ditched tab', S.ditchedTab(true)), P('d14-settings', '14 · Settings (notifications off)', S.settings(true), { h: 1460 })]],
 ];
 document.getElementById('stage').innerHTML = sections.map((s) =>
   '<section data-name="' + s[0] + '" class="' + (s[0] === 'dark' ? 'darksec' : '') + '"><div class="sh"><h2>' + s[1] + '</h2><p>' + s[2] + '</p></div><div class="row">' +

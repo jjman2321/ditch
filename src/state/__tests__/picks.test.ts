@@ -21,7 +21,7 @@ describe('picking a service', () => {
   });
 
   it('has no price (Add your price) when we have none for the country', () => {
-    const p = newPick(svc('amazon-prime'), 'US', TODAY);
+    const p = newPick(svc('duolingo'), 'US', TODAY);
     expect(isPriced(p)).toBe(false);
     expect(p.priceSource).toBe('none');
   });

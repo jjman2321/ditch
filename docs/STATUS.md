@@ -21,11 +21,12 @@ _Update this at the end of every session._
 - ⚠️ Purchases are stubbed (RevenueCat in M2). Home, Calendar and Ditched are placeholders. Nothing is saved to SQLite yet, so onboarding answers are lost when the app closes. Reminders are not scheduled yet.
 - ⚠️ "Import from a screenshot" (DECISIONS #16) is a placeholder screen.
 - ✅ **Prices by country (DECISIONS #17):** 102 verified rows for 12 countries, generated into `src/catalog/prices.data.ts` by `npm run prices`. Country from the iPhone Region with "Prices for 🇺🇸 US · Change", one-tap plan pills, "Add your price" where we have no checked price, one total per currency (US$ vs A$ kept apart). 81 Jest tests pass.
-- ⚠️ **Conversion risk:** only *verified* rows ship, so in the US Amazon Prime, YouTube Premium, ChatGPT Plus and Disney+ show "Add your price". With the 6 popular picks the US total drops to $396 until people add those. Checking those 4 prices by hand (and Disney+'s Hulu bundle) is the top data job.
+- ✅ **Price research, round 2 (Nov 9, headless browser):** 148 verified rows. New: Amazon Prime (10 countries), Disney+ US/CA/AU/ES/NL, PS Plus and Xbox Game Pass (all 12), Hulu, Peacock, Paramount+, Canva Pro (US), Spotify ES, Dropbox and Notion US (monthly vs yearly now split). US total for the 6 popular picks: $396 → $726 a year.
+- ⚠️ **Still "Add your price":** YouTube Premium (youtube.com says "not available in your country" to our cloud browser) and ChatGPT Plus (chatgpt.com loads amounts from a request we never get; openai.com blocks bots). Both US rows stay unverified at $15.99 / $20. Amazon NL unverified (blocked). Google One, Adobe CC, Crunchyroll not checked; see `notChecked` in the research file.
 - 🗄️ Retired: raccoon poses and Seedance loops in `design/premium-white/anim/` (kept for reference, not used).
 
 ## Next
-1. Verify Amazon Prime, YouTube Premium, ChatGPT Plus and Disney+ (US first) in `docs/research/prices-2026-11.json`, then `npm run prices`.
+1. **Only you can do this (5 min):** on your iPhone or Mac in the US, open youtube.com/premium and chatgpt.com/pricing and tell me the prices you see (Individual / Family / Student; Plus). I'll mark them verified, then `npm run prices`.
 2. Phase 2: Home, Calendar, Ditched (hold to ditch, the stamp), SQLite with migrations, and real reminder scheduling.
 3. Owner runs the onboarding checklist (`docs/MANUAL-TESTS.md` §1) on the iPhone with Expo Go.
 

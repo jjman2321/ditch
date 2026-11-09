@@ -68,7 +68,7 @@ describe('price lookup by country', () => {
   });
 
   it('"Add your price" fallback: no checked price means null, not another country’s', () => {
-    expect(catalogPrice('amazon-prime', 'US')).toBeNull(); // not checked
+    expect(catalogPrice('duolingo', 'US')).toBeNull(); // no public price page
     expect(catalogPrice('youtube-premium', 'US')).toBeNull(); // unverified, not shipped
     expect(catalogPrice('max', 'GB')).toBeNull(); // US-only row
     expect(catalogPrice('netflix', null)).toBeNull(); // region we don't cover
@@ -83,7 +83,11 @@ describe('price lookup by country', () => {
   it('offers plan choices only when there is more than one plan', () => {
     expect(planChoices('netflix', 'US').map((p) => p.id)).toEqual(['standard-ads', 'standard', 'premium']);
     expect(planChoices('apple-tv', 'US')).toEqual([]);
-    expect(planChoices('amazon-prime', 'US')).toEqual([]);
+    expect(planChoices('duolingo', 'US')).toEqual([]);
+    expect(planChoices('amazon-prime', 'US').map((p) => [p.id, p.cycle])).toEqual([
+      ['prime', 'monthly'],
+      ['prime-yearly', 'yearly'],
+    ]);
   });
 
   it('reads the Region code', () => {

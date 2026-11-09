@@ -679,8 +679,15 @@
    "serviceId": "spotify",
    "country": "ES",
    "currency": "EUR",
-   "status": "partial",
+   "status": "verified",
    "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
     {
      "id": "duo",
      "name": "Premium Duo",
@@ -689,14 +696,13 @@
     },
     {
      "id": "family",
-     "name": "Premium Family",
+     "name": "Premium Familiar",
      "amountMinor": 2099,
      "cycle": "monthly"
     }
    ],
    "source": "https://www.spotify.com/es/premium/",
-   "checked": "2026-11-09",
-   "note": "Individual price was not in the page text; not verified."
+   "checked": "2026-11-09"
   },
   {
    "serviceId": "spotify",
@@ -2561,7 +2567,7 @@
    "serviceId": "disney-plus",
    "country": "ES",
    "currency": "EUR",
-   "status": "partial",
+   "status": "verified",
    "plans": [
     {
      "id": "standard-ads",
@@ -2577,27 +2583,57 @@
      "default": true
     },
     {
+     "id": "premium",
+     "name": "Prémium",
+     "amountMinor": 1599,
+     "cycle": "monthly"
+    },
+    {
      "id": "standard-yearly",
      "name": "Estándar (yearly)",
      "amountMinor": 10990,
      "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Prémium (yearly)",
+     "amountMinor": 15990,
+     "cycle": "yearly"
     }
    ],
    "source": "https://www.disneyplus.com/es-es",
-   "checked": "2026-11-09",
-   "note": "Premium price not found in the page text."
+   "checked": "2026-11-09"
   },
   {
    "serviceId": "disney-plus",
    "country": "NL",
    "currency": "EUR",
-   "status": "partial",
+   "status": "verified",
    "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standaard met reclame",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standaard",
+     "amountMinor": 1099,
+     "cycle": "monthly",
+     "default": true
+    },
     {
      "id": "premium",
      "name": "Premium",
      "amountMinor": 1599,
      "cycle": "monthly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standaard (yearly)",
+     "amountMinor": 10990,
+     "cycle": "yearly"
     },
     {
      "id": "premium-yearly",
@@ -2607,21 +2643,38 @@
     }
    ],
    "source": "https://www.disneyplus.com/nl-nl",
-   "checked": "2026-11-09",
-   "note": "Only Premium found in the page text."
+   "checked": "2026-11-09"
   },
   {
    "serviceId": "disney-plus",
    "country": "US",
    "currency": "USD",
-   "status": "partial",
+   "status": "verified",
    "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Disney+ (With Ads)",
+     "amountMinor": 1249,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Disney+ Premium (No Ads)",
+     "amountMinor": 2149,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Disney+ Premium (yearly)",
+     "amountMinor": 21499,
+     "cycle": "yearly"
+    },
     {
      "id": "bundle-ads",
      "name": "Disney+, Hulu Bundle (with ads)",
      "amountMinor": 1299,
-     "cycle": "monthly",
-     "default": true
+     "cycle": "monthly"
     },
     {
      "id": "bundle-premium",
@@ -2632,7 +2685,7 @@
    ],
    "source": "https://www.disneyplus.com/en-us",
    "checked": "2026-11-09",
-   "note": "In the US, Disney now sells Disney+ with Hulu. These are the regular monthly prices after the 6-month offer. Standalone Disney+ not confirmed."
+   "note": "Standalone prices from the page's FAQ; bundle prices are the regular monthly price after the 6-month offer (match help.hulu.com). US prices exclude sales tax."
   },
   {
    "serviceId": "microsoft-365",
@@ -3205,37 +3258,49 @@
    "serviceId": "dropbox",
    "country": "US",
    "currency": "USD",
-   "status": "partial",
+   "status": "verified",
    "plans": [
     {
      "id": "plus",
-     "name": "Plus",
-     "amountMinor": 999,
+     "name": "Plus (billed monthly)",
+     "amountMinor": 1199,
      "cycle": "monthly",
      "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Plus (billed yearly)",
+     "amountMinor": 11988,
+     "cycle": "yearly"
     }
    ],
    "source": "https://www.dropbox.com/plans",
    "checked": "2026-11-09",
-   "note": "Page shows $9.99/month for Plus; it didn't say in text whether that's billed yearly. Check before use."
+   "note": "Yearly is $9.99/month billed yearly ($119.88). US prices exclude sales tax."
   },
   {
    "serviceId": "notion",
    "country": "US",
    "currency": "USD",
-   "status": "partial",
+   "status": "verified",
    "plans": [
     {
      "id": "plus",
-     "name": "Plus (per member)",
-     "amountMinor": 1000,
+     "name": "Plus (billed monthly)",
+     "amountMinor": 1200,
      "cycle": "monthly",
      "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Plus (billed yearly)",
+     "amountMinor": 12000,
+     "cycle": "yearly"
     }
    ],
    "source": "https://www.notion.com/pricing",
    "checked": "2026-11-09",
-   "note": "Page shows $10 per member/month; billing period (yearly vs monthly) not confirmed."
+   "note": "Per member. Yearly is $10/month billed yearly ($120). US prices exclude sales tax."
   },
   {
    "serviceId": "youtube-premium",
@@ -3251,21 +3316,33 @@
      "default": true
     },
     {
+     "id": "individual-yearly",
+     "name": "Individual (yearly)",
+     "amountMinor": 15999,
+     "cycle": "yearly"
+    },
+    {
      "id": "family",
      "name": "Family",
      "amountMinor": 2699,
      "cycle": "monthly"
     },
     {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
      "id": "lite",
-     "name": "Lite",
+     "name": "Premium Lite",
      "amountMinor": 899,
      "cycle": "monthly"
     }
    ],
-   "source": "https://www.tomsguide.com/entertainment/streaming/google-just-announced-a-price-hike-for-youtube-premium-heres-what-youll-pay-now",
+   "source": "https://www.youtube.com/premium",
    "checked": "2026-11-09",
-   "note": "youtube.com/premium only shows prices in the browser. Press reports; sources disagree on the start date."
+   "note": "youtube.com/premium tells our cloud browser 'YouTube Premium is not available in your country', so we couldn't read it. Amounts are from a search index snapshot of that page. Check from a real US phone or browser before shipping."
   },
   {
    "serviceId": "chatgpt-plus",
@@ -3281,9 +3358,9 @@
      "default": true
     }
    ],
-   "source": "https://openai.com/chatgpt/pricing/",
+   "source": "https://chatgpt.com/pricing/",
    "checked": "2026-11-09",
-   "note": "OpenAI's page blocked our fetch. $20 is the long-standing US price."
+   "note": "chatgpt.com/pricing loads in a browser but fills in the amounts later from a request our cloud browser doesn't get; openai.com and help.openai.com block automated reads. $20 is the long-standing US price. Check from a real browser before shipping."
   },
   {
    "serviceId": "chatgpt-plus",
@@ -3302,19 +3379,1701 @@
    "source": "https://bestmediainfo.com/mediainfo/mediainfo-digital/chatgpt-introduces-india-exclusive-pricing-with-plus-plan-at-rs-1999-pro-plan-at-rs-19900-9662640",
    "checked": "2026-11-09",
    "note": "Press report, includes GST."
+  },
+  {
+   "serviceId": "amazon-prime",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "prime",
+     "name": "Prime (monthly)",
+     "amountMinor": 1499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "prime-yearly",
+     "name": "Prime (yearly)",
+     "amountMinor": 13900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.aboutamazon.com/news/retail/prime-membership-cost-benefits",
+   "checked": "2026-11-09",
+   "note": "Read on Amazon's own news site (updated Jul 2025, still the current fee). amazon.com help pages block automated reads. Excludes sales tax where it applies."
+  },
+  {
+   "serviceId": "amazon-prime",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "prime",
+     "name": "Prime (monthly)",
+     "amountMinor": 899,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "prime-yearly",
+     "name": "Prime (yearly)",
+     "amountMinor": 9500,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.amazon.co.uk/gp/help/customer/display.html?nodeId=G34EUPKVMYFW8N2U",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "amazon-prime",
+   "country": "CA",
+   "currency": "CAD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "prime",
+     "name": "Prime (monthly)",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "prime-yearly",
+     "name": "Prime (yearly)",
+     "amountMinor": 9900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.aboutamazon.ca/news/retail/heres-how-much-a-prime-membership-costs-and-how-to-make-the-most-of-its-benefits",
+   "checked": "2026-11-09",
+   "note": "Read on Amazon Canada's own news site (Apr 2024); amazon.ca help page blocks automated reads. Plus applicable taxes."
+  },
+  {
+   "serviceId": "amazon-prime",
+   "country": "AU",
+   "currency": "AUD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "prime",
+     "name": "Prime (monthly)",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "prime-yearly",
+     "name": "Prime (yearly)",
+     "amountMinor": 9900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.amazon.com.au/gp/help/customer/display.html?nodeId=G34EUPKVMYFW8N2U",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "amazon-prime",
+   "country": "IE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "prime",
+     "name": "Prime (monthly)",
+     "amountMinor": 699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "prime-yearly",
+     "name": "Prime (yearly)",
+     "amountMinor": 6990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.amazon.ie/prime",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "amazon-prime",
+   "country": "DE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "prime",
+     "name": "Prime (monthly)",
+     "amountMinor": 899,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "prime-yearly",
+     "name": "Prime (yearly)",
+     "amountMinor": 8990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.amazon.de/gp/help/customer/display.html?nodeId=G34EUPKVMYFW8N2U",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "amazon-prime",
+   "country": "FR",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "prime",
+     "name": "Prime (monthly)",
+     "amountMinor": 699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "prime-yearly",
+     "name": "Prime (yearly)",
+     "amountMinor": 6990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.amazon.fr/gp/help/customer/display.html?nodeId=G34EUPKVMYFW8N2U",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "amazon-prime",
+   "country": "IT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "prime",
+     "name": "Prime (monthly)",
+     "amountMinor": 499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "prime-yearly",
+     "name": "Prime (yearly)",
+     "amountMinor": 4990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.amazon.it/gp/help/customer/display.html?nodeId=G34EUPKVMYFW8N2U",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "amazon-prime",
+   "country": "ES",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "prime",
+     "name": "Prime (monthly)",
+     "amountMinor": 499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "prime-yearly",
+     "name": "Prime (yearly)",
+     "amountMinor": 4990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.amazon.es/gp/help/customer/display.html?nodeId=G34EUPKVMYFW8N2U",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "amazon-prime",
+   "country": "NL",
+   "currency": "EUR",
+   "status": "unverified",
+   "plans": [
+    {
+     "id": "prime",
+     "name": "Prime (monthly)",
+     "amountMinor": 499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "prime-yearly",
+     "name": "Prime (yearly)",
+     "amountMinor": 4990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.amazon.nl/gp/help/customer/display.html?nodeId=G34EUPKVMYFW8N2U",
+   "checked": "2026-11-09",
+   "note": "amazon.nl blocked our browser. Search results quoting this official page show EUR 4.99/month, EUR 49.90/year. Not read directly."
+  },
+  {
+   "serviceId": "amazon-prime",
+   "country": "IN",
+   "currency": "INR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "prime",
+     "name": "Prime (monthly)",
+     "amountMinor": 29900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "prime-quarterly",
+     "name": "Prime (3 months)",
+     "amountMinor": 59900,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "prime-yearly",
+     "name": "Prime (yearly)",
+     "amountMinor": 149900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "prime-lite-yearly",
+     "name": "Prime Lite (yearly)",
+     "amountMinor": 79900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "shopping-yearly",
+     "name": "Prime Shopping Edition (yearly)",
+     "amountMinor": 39900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.amazon.in/gp/help/customer/display.html?nodeId=G34EUPKVMYFW8N2U",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "CA",
+   "currency": "CAD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard With Ads",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 15999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 16999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/en-ca",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "AU",
+   "currency": "AUD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard with Ads",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1799,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 17999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 24999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/en-au",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "hulu",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "with-ads",
+     "name": "Hulu (With Ads)",
+     "amountMinor": 1249,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "with-ads-yearly",
+     "name": "Hulu (With Ads, yearly)",
+     "amountMinor": 12499,
+     "cycle": "yearly"
+    },
+    {
+     "id": "no-ads",
+     "name": "Hulu Premium (No Ads)",
+     "amountMinor": 2149,
+     "cycle": "monthly"
+    },
+    {
+     "id": "bundle-ads",
+     "name": "Disney+, Hulu Bundle (with ads)",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "bundle-premium",
+     "name": "Disney+, Hulu Bundle Premium (no ads)",
+     "amountMinor": 2199,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
+   "checked": "2026-11-09",
+   "note": "Prices for new subscriptions as of Sep 23, 2026. Excludes sales tax."
+  },
+  {
+   "serviceId": "peacock",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "select",
+     "name": "Select",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "select-yearly",
+     "name": "Select (yearly)",
+     "amountMinor": 8999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 12999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-plus",
+     "name": "Premium Plus",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-plus-yearly",
+     "name": "Premium Plus (yearly)",
+     "amountMinor": 19999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.peacocktv.com/plans/all-monthly",
+   "checked": "2026-11-09",
+   "note": "Premium is marked \"Most popular\". Excludes sales tax."
+  },
+  {
+   "serviceId": "paramount-plus",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Paramount+ Essential",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Paramount+ Essential (yearly)",
+     "amountMinor": 8999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium",
+     "name": "Paramount+ Premium",
+     "amountMinor": 1399,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Paramount+ Premium (yearly)",
+     "amountMinor": 13999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.paramountplus.com/account/signup/pickplan/",
+   "checked": "2026-11-09",
+   "note": "Premium is marked \"Most popular\". Excludes sales tax."
+  },
+  {
+   "serviceId": "canva-pro",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro-yearly",
+     "name": "Canva Pro (yearly)",
+     "amountMinor": 14400,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "pro",
+     "name": "Canva Pro (monthly)",
+     "amountMinor": 1800,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.canva.com/pricing/",
+   "checked": "2026-11-09",
+   "note": "For one person. Excludes sales tax."
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-yearly",
+     "name": "Premium (12 months)",
+     "amountMinor": 15999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-quarterly",
+     "name": "Premium (3 months)",
+     "amountMinor": 5499,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium (1 month)",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 13499,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 4399,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 1699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 7999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 2799,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 1099,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.playstation.com/en-us/ps-plus/",
+   "checked": "2026-11-09",
+   "note": "Excludes sales tax."
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-yearly",
+     "name": "Premium (12 months)",
+     "amountMinor": 11999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-quarterly",
+     "name": "Premium (3 months)",
+     "amountMinor": 4399,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium (1 month)",
+     "amountMinor": 1499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 9999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 3499,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 1199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 5999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 2199,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 799,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.playstation.com/en-gb/ps-plus/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "CA",
+   "currency": "CAD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-yearly",
+     "name": "Premium (12 months)",
+     "amountMinor": 22499,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-quarterly",
+     "name": "Premium (3 months)",
+     "amountMinor": 7499,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium (1 month)",
+     "amountMinor": 2699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 18999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 5999,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 2299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 10999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 3799,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 1499,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.playstation.com/en-ca/ps-plus/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "AU",
+   "currency": "AUD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "deluxe-yearly",
+     "name": "Deluxe (12 months)",
+     "amountMinor": 22595,
+     "cycle": "yearly"
+    },
+    {
+     "id": "deluxe-quarterly",
+     "name": "Deluxe (3 months)",
+     "amountMinor": 7995,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "deluxe",
+     "name": "Deluxe (1 month)",
+     "amountMinor": 2695,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 19695,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 6895,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 2495,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 11295,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 4395,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 1495,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.playstation.com/en-au/ps-plus/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "IE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-yearly",
+     "name": "Premium (12 months)",
+     "amountMinor": 15199,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-quarterly",
+     "name": "Premium (3 months)",
+     "amountMinor": 5499,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium (1 month)",
+     "amountMinor": 1899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 12599,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 4399,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 1599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 7199,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 2799,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.playstation.com/en-ie/ps-plus/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "NZ",
+   "currency": "NZD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "deluxe-yearly",
+     "name": "Deluxe (12 months)",
+     "amountMinor": 25095,
+     "cycle": "yearly"
+    },
+    {
+     "id": "deluxe-quarterly",
+     "name": "Deluxe (3 months)",
+     "amountMinor": 9195,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "deluxe",
+     "name": "Deluxe (1 month)",
+     "amountMinor": 3095,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 22395,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 7995,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 2895,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 12695,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 5095,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 1795,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.playstation.com/en-nz/ps-plus/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "DE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-yearly",
+     "name": "Premium (12 months)",
+     "amountMinor": 15199,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-quarterly",
+     "name": "Premium (3 months)",
+     "amountMinor": 5499,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium (1 month)",
+     "amountMinor": 1899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 12599,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 4399,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 1599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 7199,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 2799,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.playstation.com/de-de/ps-plus/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "NL",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-yearly",
+     "name": "Premium (12 months)",
+     "amountMinor": 15199,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-quarterly",
+     "name": "Premium (3 months)",
+     "amountMinor": 5499,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium (1 month)",
+     "amountMinor": 1899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 12599,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 4399,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 1599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 7199,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 2799,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.playstation.com/nl-nl/ps-plus/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "FR",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-yearly",
+     "name": "Premium (12 months)",
+     "amountMinor": 15199,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-quarterly",
+     "name": "Premium (3 months)",
+     "amountMinor": 5499,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium (1 month)",
+     "amountMinor": 1899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 12599,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 4399,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 1599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 7199,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 2799,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.playstation.com/fr-fr/ps-plus/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "IT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-yearly",
+     "name": "Premium (12 months)",
+     "amountMinor": 15199,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-quarterly",
+     "name": "Premium (3 months)",
+     "amountMinor": 5499,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium (1 month)",
+     "amountMinor": 1899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 12599,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 4399,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 1599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 7199,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 2799,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.playstation.com/it-it/ps-plus/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "ES",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-yearly",
+     "name": "Premium (12 months)",
+     "amountMinor": 15199,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-quarterly",
+     "name": "Premium (3 months)",
+     "amountMinor": 5499,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium (1 month)",
+     "amountMinor": 1899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 12599,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 4399,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 1599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 7199,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 2799,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.playstation.com/es-es/ps-plus/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "IN",
+   "currency": "INR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "deluxe-yearly",
+     "name": "Deluxe (12 months)",
+     "amountMinor": 987900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "deluxe-quarterly",
+     "name": "Deluxe (3 months)",
+     "amountMinor": 298900,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "deluxe",
+     "name": "Deluxe (1 month)",
+     "amountMinor": 110900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 870900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 259900,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 97900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 513900,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 155900,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 64900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.playstation.com/en-in/ps-plus/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Game Pass Essential",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Game Pass Premium",
+     "amountMinor": 1499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Game Pass Ultimate",
+     "amountMinor": 2299,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.xbox.com/en-US/xbox-game-pass",
+   "checked": "2026-11-09",
+   "note": "Regular monthly price after the 14-day $1 intro offer. Excludes sales tax."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Game Pass Essential",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Game Pass Premium",
+     "amountMinor": 1099,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Game Pass Ultimate",
+     "amountMinor": 1699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pc",
+     "name": "PC Game Pass",
+     "amountMinor": 1099,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.xbox.com/en-GB/xbox-game-pass",
+   "checked": "2026-11-09",
+   "note": "Regular monthly price after the 14-day $1 intro offer."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "CA",
+   "currency": "CAD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Game Pass Essential",
+     "amountMinor": 1399,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Game Pass Premium",
+     "amountMinor": 1799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Game Pass Ultimate",
+     "amountMinor": 2599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pc",
+     "name": "PC Game Pass",
+     "amountMinor": 1699,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.xbox.com/en-CA/xbox-game-pass",
+   "checked": "2026-11-09",
+   "note": "Regular monthly price after the 14-day $1 intro offer."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "AU",
+   "currency": "AUD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Game Pass Essential",
+     "amountMinor": 1295,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Game Pass Premium",
+     "amountMinor": 1795,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Game Pass Ultimate",
+     "amountMinor": 2595,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pc",
+     "name": "PC Game Pass",
+     "amountMinor": 1695,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.xbox.com/en-AU/xbox-game-pass",
+   "checked": "2026-11-09",
+   "note": "Regular monthly price after the 14-day $1 intro offer."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "IE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Game Pass Essential",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Game Pass Premium",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Game Pass Ultimate",
+     "amountMinor": 2099,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pc",
+     "name": "PC Game Pass",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.xbox.com/en-IE/xbox-game-pass",
+   "checked": "2026-11-09",
+   "note": "Regular monthly price after the 14-day $1 intro offer."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "NZ",
+   "currency": "NZD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Game Pass Essential",
+     "amountMinor": 1595,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Game Pass Premium",
+     "amountMinor": 2195,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Game Pass Ultimate",
+     "amountMinor": 3295,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pc",
+     "name": "PC Game Pass",
+     "amountMinor": 2095,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.xbox.com/en-NZ/xbox-game-pass",
+   "checked": "2026-11-09",
+   "note": "Regular monthly price after the 14-day $1 intro offer."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "DE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Game Pass Essential",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Game Pass Premium",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Game Pass Ultimate",
+     "amountMinor": 2099,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.xbox.com/de-DE/xbox-game-pass",
+   "checked": "2026-11-09",
+   "note": "Regular monthly price after the 14-day $1 intro offer."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "NL",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Game Pass Essential",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Game Pass Premium",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Game Pass Ultimate",
+     "amountMinor": 2099,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.xbox.com/nl-NL/xbox-game-pass",
+   "checked": "2026-11-09",
+   "note": "Regular monthly price after the 14-day $1 intro offer."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "FR",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Game Pass Essential",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Game Pass Premium",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Game Pass Ultimate",
+     "amountMinor": 2099,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.xbox.com/fr-FR/xbox-game-pass",
+   "checked": "2026-11-09",
+   "note": "Regular monthly price after the 14-day $1 intro offer."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "IT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Game Pass Essential",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Game Pass Premium",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Game Pass Ultimate",
+     "amountMinor": 2099,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.xbox.com/it-IT/xbox-game-pass",
+   "checked": "2026-11-09",
+   "note": "Regular monthly price after the 14-day $1 intro offer."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "ES",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Game Pass Essential",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Game Pass Premium",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Game Pass Ultimate",
+     "amountMinor": 2099,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.xbox.com/es-ES/xbox-game-pass",
+   "checked": "2026-11-09",
+   "note": "Regular monthly price after the 14-day $1 intro offer."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "IN",
+   "currency": "INR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Game Pass Essential",
+     "amountMinor": 49900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Game Pass Premium",
+     "amountMinor": 69900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Game Pass Ultimate",
+     "amountMinor": 108900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pc",
+     "name": "PC Game Pass",
+     "amountMinor": 87900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.xbox.com/en-IN/xbox-game-pass",
+   "checked": "2026-11-09",
+   "note": "Monthly prices as listed."
   }
  ],
  "notChecked": {
-  "amazon-prime": "Amazon blocked automated reads of amazon.com/amazonprime.",
-  "google-one": "one.google.com shows prices only in the browser.",
-  "ps-plus": "playstation.com plan prices weren't in the page text.",
-  "xbox-game-pass": "xbox.com plan prices weren't in the page text.",
-  "hulu": "hulu.com now sells Hulu mainly as a Disney+ bundle (see disney-plus US).",
+  "google-one": "one.google.com shows only the free 15 GB tier to our cloud browser (Google treats the cloud IP as an unsupported country); no plan prices to read.",
   "duolingo": "No public price page; price shows only in the app.",
-  "canva-pro": "canva.com shows prices only in the browser.",
-  "adobe-cc": "adobe.com blocked the fetch.",
-  "peacock": "peacocktv.com plan page had no prices in text.",
-  "paramount-plus": "paramountplus.com plan page had no prices in text.",
-  "crunchyroll": "crunchyroll.com blocked the fetch."
+  "adobe-cc": "adobe.com returns 403 to our browser; the fetch tool reached a non-US storefront (VAT-inclusive US$), so no US price was recorded.",
+  "crunchyroll": "crunchyroll.com/premium redirects our browser to an error page.",
+  "canva-pro": "Only US checked: canva.com/pricing picks the currency from your IP, so other countries need a local browser.",
+  "paramount-plus": "Only US checked: paramountplus.com picks the country from your IP.",
+  "amazon-prime": "NZ: Amazon has no Prime membership for New Zealand. NL: amazon.nl blocked our browser (row kept unverified).",
+  "disney-plus": "IN: Disney+ is sold in India only as JioHotstar, not Disney+.",
+  "youtube-premium": "Not checked anywhere: youtube.com/premium says 'not available in your country' to our cloud browser. US row is unverified.",
+  "chatgpt-plus": "Only US/IN rows, both unverified: chatgpt.com/pricing loads its amounts from a request our cloud browser never gets; openai.com blocks automated reads."
  }
 }

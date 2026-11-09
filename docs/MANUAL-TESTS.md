@@ -65,3 +65,14 @@ Sections get added as each feature is built. ⏳ = not built yet.
 - [ ] "Continue free" works. Restore purchases works, and with nothing to restore it says so.
 - [ ] Start the trial (sandbox account). A "Ditch Pro trial" entry appears in your list, with a reminder 2 days before the charge.
 - [ ] No weekly plan, no countdown timer, no fake strike-through price.
+
+## 9. States and failures ⏳ (M1–M2)
+Why: an app feels premium when the bad moments are handled well, not only the happy path. See `docs/research/premium-states.md`.
+- [ ] Ditch a sub. A message says what you'll save, and **Undo** brings it back.
+- [ ] Delete a sub. **Undo** brings it back.
+- [ ] Turn a reminder on. The message shows the real reminder dates.
+- [ ] Free limit: wherever it shows (Pick 3, sub detail, Settings, paywall), it reads "Reminders 3 of 3" with the same **Swap** and **See Pro** buttons.
+- [ ] iPhone Settings → Ditch → Notifications off. Open Ditch. A banner says reminders are off, and **Turn on** opens Settings.
+- [ ] Airplane mode, then open the paywall. It says it can't reach the App Store, **Try again** works, and × still closes it.
+- [ ] Empty Home, empty Ditched, and a search with no match each show a friendly line and one clear button.
+- [ ] Set a charge date in the past. It moves to the next charge and says so.

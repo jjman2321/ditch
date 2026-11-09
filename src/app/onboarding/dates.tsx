@@ -2,148 +2,86 @@
 
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn, SlideInRight, SlideOutLeft } from 'react-native-reanimated';
 
-import { OnboardingTopBar } from '@/components/onboarding';
-import { Button, haptic, Screen, ServiceTile, T } from '@/components/ui';
-import {
-  anchorForDayOfMonth,
-  anchorForMonthDay,
-  daysInMonth,
-  MONTH_SHORT,
-  nextChargeDate,
-  nextForWeekday,
-  toDateOnly,
-  WEEKDAY_SHORT,
-  weekdayDate,
-} from '@/domain/dates';
+import { Btn, LogoTile, Say, Screen, TopBar } from '@/components/kit';
+import { haptic } from '@/components/ui';
+import { anchorForDayOfMonth, anchorForMonthDay, daysInMonth, MONTH_SHORT, nextChargeDate, nextForWeekday, toDateOnly, WEEKDAY_SHORT, weekdayDate } from '@/domain/dates';
 import { CYCLE_SHORT, formatMoney } from '@/domain/money';
 import { byYearlyDesc, useOnboarding, usePickedList } from '@/state/onboarding';
-import { radius, space, tabular, usePalette } from '@/theme/tokens';
+import { font, ink, num, text } from '@/theme/brand';
 
 export default function Dates() {
-  const p = usePalette();
   const { setAnchor } = useOnboarding();
   const list = usePickedList();
   const queue = useMemo(() => [...list].sort(byYearlyDesc), [list]);
   const [index, setIndex] = useState(0);
-  const [month, setMonth] = useState<number | null>(null); // yearly: picked month
-  const [gridW, setGridW] = useState(0);
-  const cell7 = gridW ? Math.floor((gridW - 6 * 6) / 7) : 40;
-  const cell4 = gridW ? Math.floor((gridW - 3 * 6) / 4) : 70;
+  const [month, setMonth] = useState<number | null>(null);
+  const [w, setW] = useState(0);
   const today = toDateOnly();
-
   const current = queue[index];
   const finish = () => router.push('/onboarding/reminders');
-  const advance = () => {
-    setMonth(null);
-    if (index + 1 >= queue.length) finish();
-    else setIndex(index + 1);
-  };
   const save = (anchor: string | null) => {
     if (!current) return;
     haptic.tap();
     setAnchor(current.id, anchor);
-    setTimeout(advance, 160);
+    setTimeout(() => {
+      setMonth(null);
+      if (index + 1 >= queue.length) finish();
+      else setIndex(index + 1);
+    }, 140);
   };
+  if (!current) return null;
 
-  if (!current) {
-    return null;
-  }
-
-  const lastSaved = index > 0 ? queue[index - 1] : null;
-  const lastNext = lastSaved?.anchorDate ? nextChargeDate(lastSaved.anchorDate, lastSaved.cycle, today) : null;
+  const cell7 = w ? Math.floor((w - 6 * 7) / 7) : 40;
+  const cell4 = w ? Math.floor((w - 3 * 8) / 4) : 70;
+  const prev = index > 0 ? queue[index - 1] : null;
+  const prevNext = prev?.anchorDate ? nextChargeDate(prev.anchorDate, prev.cycle, today) : null;
+  const yearlyMonth = current.cycle === 'yearly' && month !== null;
 
   return (
     <Screen>
-      <OnboardingTopBar step={2 + (index + 1) / queue.length} onSkip={finish} skipLabel="Finish later" />
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={{ gap: space.xs }}>
-          <T v="title1" accessibilityRole="header">
-            When does {current.name} charge?
-          </T>
-          <T v="subhead" tone="secondary">
-            Check your bank app or the receipt email. Not sure? Skip it.
-          </T>
-        </View>
+      <TopBar progress={0.45 + (0.25 * (index + 1)) / queue.length} onSkip={finish} skipLabel="Later" />
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 24, gap: 18 }}>
+        <Say pose="wave" size={88}>
+          When does {current.name} charge you?
+        </Say>
 
-        <Animated.View
-          key={current.id + (month ?? '')}
-          entering={SlideInRight.springify().damping(18).stiffness(180)}
-          exiting={SlideOutLeft.duration(160)}
-          style={[styles.card, { backgroundColor: p.surface }]}
-        >
+        <Animated.View key={current.id + (month ?? '')} entering={SlideInRight.springify().duration(380).dampingRatio(0.85)} exiting={SlideOutLeft.duration(150)} style={styles.card}>
           <View style={styles.cardHead}>
-            <ServiceTile color={current.color} ink={current.ink} mono={current.mono} size={44} />
+            <LogoTile id={current.id} color={current.color} ink={current.ink} mono={current.mono} size={44} />
             <View style={{ flex: 1 }}>
-              <T v="headline">{current.name}</T>
-              <T v="subhead" tone="tertiary" style={tabular}>
+              <Text style={text.bodyStrong}>{current.name}</Text>
+              <Text style={[text.small, num]}>
                 {formatMoney(current.amountMinor, current.currency)}
                 {CYCLE_SHORT[current.cycle]}
-              </T>
+              </Text>
             </View>
-            <T v="footnote" tone="tertiary" style={tabular}>
-              {index + 1} of {queue.length}
-            </T>
+            <Text style={[text.small, num, { fontFamily: font.heavy }]}>
+              {index + 1}/{queue.length}
+            </Text>
           </View>
-
-          {current.cycle === 'weekly' ? (
-            <>
-              <T v="subhead" tone="secondary">
-                Which day of the week?
-              </T>
-              <View style={styles.grid} onLayout={(e) => setGridW(e.nativeEvent.layout.width)}>
-                {WEEKDAY_SHORT.map((w, i) => (
-                  <DayCell key={w} label={w} size={cell4} onPress={() => save(nextForWeekday(i, today))} wide />
-                ))}
-              </View>
-            </>
-          ) : current.cycle === 'yearly' && month === null ? (
-            <>
-              <T v="subhead" tone="secondary">
-                Which month does it renew?
-              </T>
-              <View style={styles.grid} onLayout={(e) => setGridW(e.nativeEvent.layout.width)}>
-                {MONTH_SHORT.map((m, i) => (
-                  <DayCell key={m} label={m} size={cell4} wide onPress={() => (haptic.tap(), setMonth(i + 1))} />
-                ))}
-              </View>
-            </>
-          ) : (
-            <>
-              <T v="subhead" tone="secondary">
-                {current.cycle === 'yearly' && month ? `${MONTH_SHORT[month - 1]}, which day?` : 'Which day of the month?'}
-              </T>
-              <View style={styles.grid} onLayout={(e) => setGridW(e.nativeEvent.layout.width)}>
-                {Array.from({ length: current.cycle === 'yearly' && month ? daysInMonth(2028, month) : 31 }, (_, i) => i + 1).map(
-                  (d) => (
-                    <DayCell
-                      key={d}
-                      label={String(d)}
-                      size={cell7}
-                      onPress={() =>
-                        save(
-                          current.cycle === 'yearly' && month
-                            ? anchorForMonthDay(month, d, today)
-                            : anchorForDayOfMonth(d, today),
-                        )
-                      }
-                    />
-                  ),
-                )}
-              </View>
-            </>
-          )}
-
-          <Button label="Not sure" kind="plain" onPress={() => save(null)} />
+          <Text style={text.label}>
+            {current.cycle === 'weekly' ? 'Which day of the week?' : current.cycle === 'yearly' && !yearlyMonth ? 'Which month?' : yearlyMonth ? `${MONTH_SHORT[month! - 1]}, which day?` : 'Which day of the month?'}
+          </Text>
+          <View style={styles.grid} onLayout={(e) => setW(e.nativeEvent.layout.width)}>
+            {current.cycle === 'weekly'
+              ? WEEKDAY_SHORT.map((d, i) => <Key key={d} label={d} width={cell4} onPress={() => save(nextForWeekday(i, today))} />)
+              : current.cycle === 'yearly' && !yearlyMonth
+                ? MONTH_SHORT.map((m, i) => <Key key={m} label={m} width={cell4} onPress={() => (haptic.tap(), setMonth(i + 1))} />)
+                : Array.from({ length: yearlyMonth ? daysInMonth(2028, month!) : 31 }, (_, i) => i + 1).map((d) => (
+                    <Key key={d} label={String(d)} width={cell7} square onPress={() => save(yearlyMonth ? anchorForMonthDay(month!, d, today) : anchorForDayOfMonth(d, today))} />
+                  ))}
+          </View>
+          <Btn label="Not sure" kind="ghost" onPress={() => save(null)} />
         </Animated.View>
 
-        {lastSaved && lastNext ? (
-          <Animated.View key={lastSaved.id} entering={FadeIn.duration(250)}>
-            <T v="footnote" tone="tertiary" style={{ textAlign: 'center' }}>
-              ✓ {lastSaved.name}: next charge {weekdayDate(lastNext)}
-            </T>
+        {prev && prevNext ? (
+          <Animated.View key={prev.id} entering={FadeIn.duration(250)}>
+            <Text style={[text.label, { textAlign: 'center', color: ink.tealInk }]}>
+              ✓ {prev.name}: next charge {weekdayDate(prevNext)}
+            </Text>
           </Animated.View>
         ) : null}
       </ScrollView>
@@ -151,32 +89,27 @@ export default function Dates() {
   );
 }
 
-function DayCell({ label, onPress, wide, size }: { label: string; onPress: () => void; wide?: boolean; size: number }) {
-  const p = usePalette();
+function Key({ label, onPress, width, square }: { label: string; onPress: () => void; width: number; square?: boolean }) {
   return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={label}
-      onPress={onPress}
-      style={({ pressed }) => [
-        styles.cell,
-        { width: size, height: wide ? 48 : Math.max(44, size) },
-        { backgroundColor: pressed ? p.primary : p.surfaceSunken },
-      ]}
-    >
+    <Pressable accessibilityRole="button" accessibilityLabel={label} onPress={onPress}>
       {({ pressed }) => (
-        <T v="callout" style={[tabular, { fontWeight: '600', color: pressed ? p.onPrimary : p.text }]}>
-          {label}
-        </T>
+        <View
+          style={[
+            styles.key,
+            { width, height: square ? Math.max(44, width) : 48 },
+            pressed && { backgroundColor: ink.tealSoft, borderColor: ink.teal, borderBottomWidth: 2, marginTop: 2 },
+          ]}
+        >
+          <Text style={[text.bodyStrong, num, pressed && { color: ink.tealInk }]}>{label}</Text>
+        </View>
       )}
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  content: { paddingHorizontal: space.lg, paddingTop: space.md, paddingBottom: space.xxl, gap: space.xl },
-  card: { borderRadius: radius.xl, padding: space.lg, gap: space.lg },
-  cardHead: { flexDirection: 'row', alignItems: 'center', gap: space.md },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
-  cell: { borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center' },
+  card: { borderWidth: 2, borderBottomWidth: 4, borderColor: ink.line, borderRadius: 22, padding: 16, gap: 14 },
+  cardHead: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 7 },
+  key: { borderRadius: 12, borderWidth: 2, borderBottomWidth: 4, borderColor: ink.line, backgroundColor: ink.white, alignItems: 'center', justifyContent: 'center' },
 });

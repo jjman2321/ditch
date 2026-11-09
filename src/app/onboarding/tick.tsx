@@ -1,40 +1,28 @@
-// 2 · Tick everything you pay for
+// 2 · What do you pay for?
 
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
-import {
-  FlatList,
-  KeyboardAvoidingView,
-  Modal,
-  Platform,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  View,
-} from 'react-native';
-import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated';
+import { FlatList, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CATEGORIES, SERVICES, type CatalogService, type Category } from '@/catalog/services';
 import { PlusIcon, SearchIcon } from '@/components/icons';
-import { OnboardingTopBar, TickCircle } from '@/components/onboarding';
-import { Button, haptic, Screen, ServiceTile, Squish, T } from '@/components/ui';
+import { Btn, Check, LogoTile, Option, Say, Screen, TopBar } from '@/components/kit';
+import { haptic } from '@/components/ui';
 import { CYCLE_SHORT, formatMoney, totalsByCurrency, yearlyMinor, type Cycle } from '@/domain/money';
 import { useOnboarding, usePickedList } from '@/state/onboarding';
-import { radius, space, tabular, type, usePalette } from '@/theme/tokens';
+import { font, ink, num, text } from '@/theme/brand';
 
 type Filter = 'Popular' | Category;
 const FILTERS: Filter[] = ['Popular', ...CATEGORIES];
 
-export default function Tick() {
-  const p = usePalette();
+export default function TickScreen() {
+  const insets = useSafeAreaInsets();
   const { picked, toggleService } = useOnboarding();
   const pickedList = usePickedList();
   const [filter, setFilter] = useState<Filter>('Popular');
   const [query, setQuery] = useState('');
   const [customOpen, setCustomOpen] = useState(false);
-  const insets = useSafeAreaInsets();
 
   const data = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -43,85 +31,60 @@ export default function Tick() {
     return SERVICES.filter((s) => s.category === filter);
   }, [filter, query]);
 
-  const totals = totalsByCurrency(pickedList.map((x) => ({ currency: x.currency, amountMinor: yearlyMinor(x.amountMinor, x.cycle) })));
   const count = pickedList.length;
-  const totalLabel = totals.map((t) => formatMoney(t.amountMinor, t.currency, { trimWhole: true })).join(' + ');
-
+  const totals = totalsByCurrency(pickedList.map((x) => ({ currency: x.currency, amountMinor: yearlyMinor(x.amountMinor, x.cycle) })));
+  const totalLabel = totals.map((t) => formatMoney(t.amountMinor, t.currency, { trimWhole: true }).replace(/\.\d\d$/, '')).join(' + ');
   const next = () => router.push(count > 0 ? '/onboarding/reveal' : '/onboarding/reminders');
 
   const renderRow = ({ item }: { item: CatalogService }) => {
     const on = !!picked[item.id];
     return (
-      <Squish
-        scaleTo={0.985}
-        accessibilityRole="checkbox"
-        accessibilityState={{ checked: on }}
-        accessibilityLabel={`${item.name}, about ${formatMoney(item.amountMinor, item.currency)} ${cycleWord(item.cycle)}`}
-        onPress={() => {
-          haptic.tap();
-          toggleService(item);
-        }}
-        style={[styles.row, { backgroundColor: on ? p.selectedSoft : p.surface }]}
-      >
-        <ServiceTile color={item.color} ink={item.ink} mono={item.mono} size={42} />
+      <Option selected={on} onPress={() => toggleService(item)} label={`${item.name}, about ${formatMoney(item.amountMinor, item.currency)}`}>
+        <LogoTile id={item.id} color={item.color} ink={item.ink} mono={item.mono} size={42} />
         <View style={{ flex: 1 }}>
-          <T v="headline" numberOfLines={1}>
+          <Text style={text.bodyStrong} numberOfLines={1}>
             {item.name}
-          </T>
-          <T v="subhead" tone="tertiary" style={tabular}>
+          </Text>
+          <Text style={[text.small, num]}>
             ~{formatMoney(item.amountMinor, item.currency)}
             {CYCLE_SHORT[item.cycle]}
-          </T>
+          </Text>
         </View>
-        <TickCircle on={on} />
-      </Squish>
+        <Check on={on} />
+      </Option>
     );
   };
 
   return (
     <Screen edges={['top']}>
-      <OnboardingTopBar step={1} onSkip={() => router.push('/onboarding/reminders')} />
-
+      <TopBar progress={0.15 + Math.min(count, 6) * 0.025} onSkip={() => router.push('/onboarding/reminders')} />
       <FlatList
         data={data}
         keyExtractor={(s) => s.id}
         renderItem={renderRow}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
-        contentContainerStyle={{ paddingHorizontal: space.lg, paddingBottom: 140, gap: space.sm }}
+        contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 140 + insets.bottom, gap: 10 }}
         ListHeaderComponent={
-          <View style={{ gap: space.md, paddingBottom: space.sm }}>
-            <View style={{ gap: space.xs, paddingHorizontal: space.xs, paddingTop: space.sm }}>
-              <T v="title1" accessibilityRole="header">
-                Tick everything you pay for
-              </T>
-              <T v="subhead" tone="secondary">
-                Typical US prices. You can fix any of them later.
-              </T>
-            </View>
-
-            <View style={[styles.search, { backgroundColor: p.surfaceSunken }]}>
-              <SearchIcon color={p.textTertiary} />
+          <View style={{ gap: 16, paddingBottom: 6 }}>
+            <Say pose="wave" size={92}>
+              What do you pay for? Tap them all!
+            </Say>
+            <View style={styles.search}>
+              <SearchIcon color={ink.textFaint} />
               <TextInput
                 value={query}
                 onChangeText={setQuery}
                 placeholder={`Search ${SERVICES.length} services`}
-                placeholderTextColor={p.textTertiary}
-                style={[type.body, { flex: 1, color: p.text, paddingVertical: 0 }]}
-                returnKeyType="search"
-                clearButtonMode="while-editing"
+                placeholderTextColor={ink.textFaint}
+                style={styles.searchInput}
                 autoCorrect={false}
+                clearButtonMode="while-editing"
                 accessibilityLabel="Search services"
               />
             </View>
-
             {!query ? (
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ gap: space.sm, paddingRight: space.lg }}
-                style={{ marginHorizontal: -space.lg, paddingLeft: space.lg }}
-              >
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginHorizontal: -18 }} contentContainerStyle={{ gap: 8, paddingHorizontal: 18 }}>
                 {FILTERS.map((f) => {
                   const on = f === filter;
                   return (
@@ -133,14 +96,9 @@ export default function Tick() {
                         haptic.tap();
                         setFilter(f);
                       }}
-                      style={[
-                        styles.chip,
-                        { backgroundColor: on ? p.text : p.surface, borderColor: on ? p.text : p.separator },
-                      ]}
+                      style={[styles.chip, on && { backgroundColor: ink.tealSoft, borderColor: ink.teal }]}
                     >
-                      <T v="subhead" style={{ color: on ? p.bg : p.text, fontWeight: '600' }}>
-                        {f}
-                      </T>
+                      <Text style={[text.label, { fontFamily: font.heavy, color: on ? ink.tealInk : ink.textSoft }]}>{f}</Text>
                     </Pressable>
                   );
                 })}
@@ -148,59 +106,31 @@ export default function Tick() {
             ) : null}
           </View>
         }
-        ListEmptyComponent={
-          <View style={{ paddingVertical: space.xl, alignItems: 'center', gap: space.sm }}>
-            <T v="body" tone="secondary">
-              No match for “{query}”.
-            </T>
-          </View>
-        }
+        ListEmptyComponent={<Text style={[text.body, { textAlign: 'center', paddingVertical: 24 }]}>No match for “{query}”.</Text>}
         ListFooterComponent={
-          <Squish
-            accessibilityRole="button"
-            accessibilityLabel={query ? `Add ${query} as your own` : 'Add something else'}
-            onPress={() => setCustomOpen(true)}
-            style={[styles.row, styles.customRow, { borderColor: p.separator }]}
-          >
-            <View style={[styles.plus, { backgroundColor: p.surfaceSunken }]}>
-              <PlusIcon color={p.text} />
+          <Option selected={false} onPress={() => setCustomOpen(true)} label="Add something else" style={{ borderStyle: 'dashed' }}>
+            <View style={styles.plus}>
+              <PlusIcon color={ink.textSoft} />
             </View>
-            <T v="headline" style={{ flex: 1 }}>
-              {query ? `Add “${query}” as your own` : 'Something else?'}
-            </T>
-          </Squish>
+            <Text style={text.bodyStrong}>{query ? `Add “${query}”` : 'Something else?'}</Text>
+          </Option>
         }
       />
 
-      {/* sticky footer with the running total */}
-      <View
-        style={[
-          styles.footer,
-          { backgroundColor: p.scrim, borderTopColor: p.separator, paddingBottom: Math.max(insets.bottom, space.lg) + space.xs },
-        ]}
-      >
-        <Animated.View layout={LinearTransition} style={{ flex: 1 }}>
+      <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, 16) + 2 }]}>
+        <View style={{ flex: 1 }}>
           {count > 0 ? (
-            <Animated.View key={totalLabel} entering={FadeIn.duration(180)}>
-              <T v="caption" tone="tertiary">
-                {count} ticked
-              </T>
-              <T v="headline" style={tabular} numberOfLines={1} adjustsFontSizeToFit>
-                about {totalLabel} a year
-              </T>
-            </Animated.View>
+            <>
+              <Text style={[text.small, { fontFamily: font.heavy }]}>{count} PICKED</Text>
+              <Text style={[text.heading, num]} numberOfLines={1} adjustsFontSizeToFit>
+                ~{totalLabel} a year
+              </Text>
+            </>
           ) : (
-            <T v="subhead" tone="tertiary">
-              Tap what you pay for
-            </T>
+            <Text style={text.label}>Tap what you pay for</Text>
           )}
-        </Animated.View>
-        <Button
-          label={count > 0 ? 'Next' : 'Skip for now'}
-          kind={count > 0 ? 'primary' : 'secondary'}
-          onPress={next}
-          style={{ minWidth: 130 }}
-        />
+        </View>
+        <Btn label={count > 0 ? 'Continue' : 'Skip'} kind={count > 0 ? 'primary' : 'secondary'} onPress={next} style={{ minWidth: 150 }} />
       </View>
 
       <CustomSheet visible={customOpen} initialName={query} onClose={() => setCustomOpen(false)} />
@@ -208,161 +138,58 @@ export default function Tick() {
   );
 }
 
-function cycleWord(c: Cycle) {
-  return { weekly: 'a week', monthly: 'a month', quarterly: 'every 3 months', yearly: 'a year' }[c];
-}
-
-// ---------- quick custom add ----------
 const CYCLES: Cycle[] = ['weekly', 'monthly', 'quarterly', 'yearly'];
-const CYCLE_LABEL: Record<Cycle, string> = { weekly: 'Week', monthly: 'Month', quarterly: '3 mo', yearly: 'Year' };
+const CYCLE_LABEL: Record<Cycle, string> = { weekly: 'Week', monthly: 'Month', quarterly: '3 months', yearly: 'Year' };
 
 function CustomSheet({ visible, initialName, onClose }: { visible: boolean; initialName: string; onClose: () => void }) {
-  const p = usePalette();
   const { addCustom } = useOnboarding();
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [cycle, setCycle] = useState<Cycle>('monthly');
-
   const amountMinor = Math.round(parseFloat(price.replace(',', '.')) * 100);
   const valid = name.trim().length > 0 && Number.isFinite(amountMinor) && amountMinor > 0;
 
   return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      presentationStyle="pageSheet"
-      onShow={() => setName(initialName)}
-      onRequestClose={onClose}
-    >
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1, backgroundColor: p.bg }}>
-        <View style={styles.sheetHeader}>
-          <Pressable accessibilityRole="button" onPress={onClose} hitSlop={8} style={styles.sheetBtn}>
-            <T v="body" tone="secondary">
-              Cancel
-            </T>
-          </Pressable>
-          <T v="headline">Add your own</T>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityState={{ disabled: !valid }}
-            disabled={!valid}
-            onPress={() => {
-              haptic.success();
-              addCustom({ name: name.trim(), amountMinor, cycle });
-              setName('');
-              setPrice('');
-              setCycle('monthly');
-              onClose();
-            }}
-            hitSlop={8}
-            style={[styles.sheetBtn, { alignItems: 'flex-end' }]}
-          >
-            <T v="headline" tone="accent" style={{ opacity: valid ? 1 : 0.35 }}>
-              Add
-            </T>
-          </Pressable>
+    <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onShow={() => setName(initialName)} onRequestClose={onClose}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1, backgroundColor: ink.bg, padding: 20, gap: 14 }}>
+        <Text style={[text.title, { marginTop: 8 }]}>Add your own</Text>
+        <TextInput value={name} onChangeText={setName} placeholder="Name (Gym, Patreon…)" placeholderTextColor={ink.textFaint} autoFocus style={styles.input} />
+        <TextInput value={price} onChangeText={setPrice} placeholder="Price, e.g. 9.99" placeholderTextColor={ink.textFaint} keyboardType="decimal-pad" style={[styles.input, num]} />
+        <View style={{ flexDirection: 'row', gap: 8 }}>
+          {CYCLES.map((c) => (
+            <Pressable
+              key={c}
+              accessibilityRole="radio"
+              accessibilityState={{ selected: c === cycle }}
+              onPress={() => setCycle(c)}
+              style={[styles.chip, { flex: 1, alignItems: 'center' }, c === cycle && { backgroundColor: ink.tealSoft, borderColor: ink.teal }]}
+            >
+              <Text style={[text.label, { fontFamily: font.heavy, color: c === cycle ? ink.tealInk : ink.textSoft }]}>{CYCLE_LABEL[c]}</Text>
+            </Pressable>
+          ))}
         </View>
-
-        <View style={{ padding: space.lg, gap: space.lg }}>
-          <View style={[styles.field, { backgroundColor: p.surface }]}>
-            <T v="footnote" tone="tertiary">
-              Name
-            </T>
-            <TextInput
-              value={name}
-              onChangeText={setName}
-              placeholder="e.g. Gym, Patreon"
-              placeholderTextColor={p.textTertiary}
-              autoFocus
-              style={[type.body, { color: p.text }]}
-              returnKeyType="next"
-            />
-          </View>
-          <View style={[styles.field, { backgroundColor: p.surface }]}>
-            <T v="footnote" tone="tertiary">
-              Price (US$)
-            </T>
-            <TextInput
-              value={price}
-              onChangeText={setPrice}
-              placeholder="9.99"
-              placeholderTextColor={p.textTertiary}
-              keyboardType="decimal-pad"
-              style={[type.body, tabular, { color: p.text }]}
-            />
-          </View>
-          <View style={[styles.segment, { backgroundColor: p.surfaceSunken }]}>
-            {CYCLES.map((c) => {
-              const on = c === cycle;
-              return (
-                <Pressable
-                  key={c}
-                  accessibilityRole="radio"
-                  accessibilityState={{ selected: on }}
-                  onPress={() => setCycle(c)}
-                  style={[styles.segmentItem, on && { backgroundColor: p.surface }]}
-                >
-                  <T v="subhead" style={{ fontWeight: on ? '600' : '400' }}>
-                    {CYCLE_LABEL[c]}
-                  </T>
-                </Pressable>
-              );
-            })}
-          </View>
-        </View>
+        <Btn
+          label="Add it"
+          disabled={!valid}
+          onPress={() => {
+            haptic.success();
+            addCustom({ name: name.trim(), amountMinor, cycle });
+            setName('');
+            setPrice('');
+            onClose();
+          }}
+        />
+        <Btn label="Cancel" kind="ghost" onPress={onClose} />
       </KeyboardAvoidingView>
     </Modal>
   );
 }
 
 const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: space.md,
-    paddingHorizontal: space.md,
-    paddingVertical: space.md,
-    borderRadius: radius.lg,
-    minHeight: 68,
-  },
-  customRow: { borderWidth: 1.5, borderStyle: 'dashed', marginTop: space.xs },
-  plus: { width: 42, height: 42, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
-  search: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: space.sm,
-    paddingHorizontal: space.md,
-    minHeight: 44,
-    borderRadius: radius.md,
-  },
-  chip: {
-    paddingHorizontal: space.lg,
-    minHeight: 38,
-    borderRadius: radius.pill,
-    borderWidth: StyleSheet.hairlineWidth,
-    justifyContent: 'center',
-  },
-  footer: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: space.md,
-    paddingHorizontal: space.lg,
-    paddingTop: space.md,
-    borderTopWidth: StyleSheet.hairlineWidth,
-  },
-  sheetHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: space.md,
-    height: 56,
-  },
-  sheetBtn: { minWidth: 64, minHeight: 44, justifyContent: 'center' },
-  field: { borderRadius: radius.md, paddingHorizontal: space.md, paddingVertical: space.sm, gap: 2 },
-  segment: { flexDirection: 'row', borderRadius: radius.md, padding: 3 },
-  segmentItem: { flex: 1, minHeight: 40, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center' },
+  search: { flexDirection: 'row', alignItems: 'center', gap: 10, height: 50, paddingHorizontal: 16, borderRadius: 16, borderWidth: 2, borderColor: ink.line, backgroundColor: ink.soft },
+  searchInput: { flex: 1, fontFamily: font.bold, fontSize: 16, color: ink.text },
+  chip: { height: 40, paddingHorizontal: 16, borderRadius: 14, borderWidth: 2, borderBottomWidth: 3, borderColor: ink.line, backgroundColor: ink.white, justifyContent: 'center' },
+  plus: { width: 42, height: 42, borderRadius: 12, backgroundColor: ink.soft, alignItems: 'center', justifyContent: 'center' },
+  footer: { position: 'absolute', left: 0, right: 0, bottom: 0, flexDirection: 'row', alignItems: 'center', gap: 14, paddingHorizontal: 18, paddingTop: 14, backgroundColor: ink.bg, borderTopWidth: 2, borderTopColor: ink.line },
+  input: { height: 54, borderRadius: 16, borderWidth: 2, borderColor: ink.line, backgroundColor: ink.soft, paddingHorizontal: 16, fontFamily: font.bold, fontSize: 17, color: ink.text },
 });

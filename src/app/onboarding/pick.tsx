@@ -2,17 +2,16 @@
 
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { TickCircle } from '@/components/onboarding';
-import { Button, haptic, Screen, ServiceTile, Squish, T } from '@/components/ui';
+import { Btn, Check, LogoTile, Option, Say, Screen } from '@/components/kit';
+import { haptic } from '@/components/ui';
 import { formatMoney, yearlyMinor } from '@/domain/money';
 import { byYearlyDesc, useOnboarding, usePickedList } from '@/state/onboarding';
-import { radius, space, tabular, usePalette } from '@/theme/tokens';
+import { font, ink, num, text } from '@/theme/brand';
 
 export default function Pick() {
-  const p = usePalette();
   const insets = useSafeAreaInsets();
   const { setReminderPicks } = useOnboarding();
   const list = usePickedList();
@@ -22,11 +21,9 @@ export default function Pick() {
 
   const toggle = (id: string) => {
     if (sel.includes(id)) {
-      haptic.tap();
       setSel(sel.filter((x) => x !== id));
       setNudge(false);
     } else if (sel.length < 3) {
-      haptic.tap();
       setSel([...sel, id]);
       setNudge(false);
     } else {
@@ -37,50 +34,27 @@ export default function Pick() {
 
   return (
     <Screen>
-      <ScrollView contentContainerStyle={[styles.content, { paddingBottom: 140 + insets.bottom }]}>
-        <View style={{ gap: space.sm }}>
-          <T v="title1" accessibilityRole="header">
-            Pick 3 for reminders
-          </T>
-          <T v="body" tone="secondary">
-            We picked your 3 biggest. Swap any, anytime. Free. Everything stays on your list either way.
-          </T>
-        </View>
-
-        <View style={{ gap: space.sm }}>
-          {sorted.map((x) => {
-            const on = sel.includes(x.id);
-            return (
-              <Squish
-                key={x.id}
-                scaleTo={0.985}
-                accessibilityRole="checkbox"
-                accessibilityState={{ checked: on }}
-                accessibilityLabel={`${x.name}, ${formatMoney(yearlyMinor(x.amountMinor, x.cycle), x.currency)} a year`}
-                onPress={() => toggle(x.id)}
-                style={[styles.row, { backgroundColor: on ? p.selectedSoft : p.surface }]}
-              >
-                <ServiceTile color={x.color} ink={x.ink} mono={x.mono} size={40} />
-                <View style={{ flex: 1 }}>
-                  <T v="headline" numberOfLines={1}>
-                    {x.name}
-                  </T>
-                  <T v="subhead" tone="tertiary" style={tabular}>
-                    {formatMoney(yearlyMinor(x.amountMinor, x.cycle), x.currency)}/yr
-                  </T>
-                </View>
-                <TickCircle on={on} />
-              </Squish>
-            );
-          })}
-        </View>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 18, paddingTop: 12, paddingBottom: 140 + insets.bottom, gap: 10 }}>
+        <Say pose="worried" size={96}>
+          Free gets 3 reminders. I picked your biggest. Swap any time!
+        </Say>
+        <View style={{ height: 6 }} />
+        {sorted.map((x) => (
+          <Option key={x.id} selected={sel.includes(x.id)} onPress={() => toggle(x.id)} label={`${x.name}, ${formatMoney(yearlyMinor(x.amountMinor, x.cycle), x.currency)} a year`}>
+            <LogoTile id={x.id} color={x.color} ink={x.ink} mono={x.mono} size={42} />
+            <View style={{ flex: 1 }}>
+              <Text style={text.bodyStrong}>{x.name}</Text>
+              <Text style={[text.small, num]}>{formatMoney(yearlyMinor(x.amountMinor, x.cycle), x.currency)}/yr</Text>
+            </View>
+            <Check on={sel.includes(x.id)} />
+          </Option>
+        ))}
       </ScrollView>
-
-      <View style={[styles.footer, { backgroundColor: p.scrim, borderTopColor: p.separator, paddingBottom: Math.max(insets.bottom, space.md) }]}>
-        <T v="footnote" tone={nudge ? 'primary' : 'tertiary'} style={[tabular, { textAlign: 'center' }]} accessibilityLiveRegion="polite">
-          {nudge ? 'That’s 3. Untick one to swap.' : `${sel.length} of 3 picked`}
-        </T>
-        <Button
+      <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, 16) }]}>
+        <Text style={[text.label, { textAlign: 'center', fontFamily: font.heavy, color: nudge ? ink.text : ink.textFaint }]} accessibilityLiveRegion="polite">
+          {nudge ? 'That’s 3! Untick one to swap.' : `${sel.length} OF 3 PICKED`}
+        </Text>
+        <Btn
           label="Done"
           disabled={sel.length === 0}
           onPress={() => {
@@ -95,16 +69,5 @@ export default function Pick() {
 }
 
 const styles = StyleSheet.create({
-  content: { paddingHorizontal: space.lg, paddingTop: space.xl, gap: space.xl },
-  row: { flexDirection: 'row', alignItems: 'center', gap: space.md, padding: space.md, borderRadius: radius.lg, minHeight: 68 },
-  footer: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    paddingHorizontal: space.xl,
-    paddingTop: space.md,
-    gap: space.sm,
-    borderTopWidth: StyleSheet.hairlineWidth,
-  },
+  footer: { position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: 20, paddingTop: 12, gap: 10, backgroundColor: ink.bg, borderTopWidth: 2, borderTopColor: ink.line },
 });

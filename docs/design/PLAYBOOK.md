@@ -1,3 +1,5 @@
+> **Superseded on Nov 9, 2026:** the owner dropped the mascot (DECISIONS #4, #5; `docs/research/mascot-or-not.md`). Ignore every raccoon or mascot instruction below; the rest still applies.
+
 # Onboarding + paywall playbook
 
 Distilled from ~1,000 screens studied on Mobbin (Nov 9, 2026). Sources:

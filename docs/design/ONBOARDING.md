@@ -1,3 +1,5 @@
+> **Superseded on Nov 9, 2026:** the owner dropped the mascot (DECISIONS #4, #5; `docs/research/mascot-or-not.md`). Ignore every raccoon or mascot instruction below; the rest still applies.
+
 # Onboarding plan
 
 Status: **plan, waiting for the owner's go-ahead** (Nov 9, 2026). Mockups come after approval.

@@ -24,7 +24,7 @@ Status: **draft v1, Nov 9, 2026.** Items marked **[open]** need the owner's call
 ### 3.1 Onboarding (first launch only, resumable)
 | # | Screen | What it does | Milestone |
 |---|---|---|---|
-| 1 | **Welcome** | Raccoon, one-line promise, "Get started". Small print: "Free forever for tracking." | M1 |
+| 1 | **Welcome** | Real service logos, one-line promise, "Get started". Small print: "Free forever for tracking." | M1 |
 | 2 | **Tick everything you pay for** | Catalog grid grouped by category, with logos and typical price ("about $15.49/mo"), plus search. Tap to tick. "Something else?" adds a custom one. Every ticked item is saved. | M1 |
 | 3 | **"That's $X a year. Ditch it."** | Yearly total of what they ticked, one line per currency. Marked "about" while prices are catalog estimates. Quick list of the biggest ones. | M1 |
 | 4 | **Reminders** | Example notification ("Netflix renews in 3 days · $15.49"), "Turn on reminders" (fires the iOS prompt) and "Maybe later". | M1 |
@@ -41,7 +41,7 @@ Status: **draft v1, Nov 9, 2026.** Items marked **[open]** need the owner's call
 - **Next 7 days:** real amounts due (not monthly equivalents) and how many charges.
 - **Upcoming:** next charges sorted by date, with logo, name, amount, date and a bell if a reminder is on.
 - **Nudge cards** when relevant: "Add dates", "Reminders are off — turn on in Settings", "Find more" (import, Pro, M3).
-- Empty state: raccoon plus "Add your first subscription".
+- Empty state: a few faded real logos plus "Add your first subscription".
 
 ### 3.3 Subs
 - List of active subs: search, sort by next charge (default), price or name.
@@ -70,8 +70,8 @@ Status: **draft v1, Nov 9, 2026.** Items marked **[open]** need the owner's call
 - Headline: "**$X/mo** in projected savings" plus the yearly figure, one per currency. The word "projected" is mandatory: we never say money was "saved" or "recovered".
 - List: logo, name, ditched date, former price.
 - Tap one to reactivate ("Oops, still paying"), which removes it from savings.
-- **Ditch celebration:** the raccoon flicks the card into a bin, with a success haptic and "Ditched! $X/mo back in your pocket". With Reduce Motion: a static image and a fade.
-- Empty state: raccoon plus "Nothing ditched yet. Your first one feels great."
+- **Ditch celebration:** the card tilts and slides off, a hand-drawn teal DITCHED stamp lands with a success haptic, and "$X a year back" counts up. With Reduce Motion: the stamp appears with a fade, no slide or count.
+- Empty state: a faded DITCHED stamp plus "Nothing ditched yet. Your first one feels great."
 
 ### 3.5 Settings
 - **Reminders:**
@@ -250,11 +250,11 @@ Schema version lives in `PRAGMA user_version`. Migrations are numbered files tha
 ## 11. Milestones
 | # | Scope | Test on iPhone with |
 |---|---|---|
-| **M0** | Repo docs ✔ · onboarding design · Home/Subs/Ditched/Settings mockups (light + dark) · raccoon design. **Owner approves before code.** | — |
+| **M0** | Repo docs ✔ · onboarding design · Home/Subs/Ditched/Settings mockups (light + dark) · DITCHED stamp design. **Owner approves before code.** | — |
 | **M1** | Expo project, theme tokens, strings file, SQLite + migrations, money/date logic + tests, catalog (~100 services), onboarding (without paywall), Home / Subs / Ditched / Settings, add / edit / ditch / delete / reactivate, cancel links, local reminders + 3-pick | Expo Go |
 | **M2** | RevenueCat, paywall, Ditch Pro trial entry, Pro gating, restore, lapse handling | EAS development build |
 | **M3** | On-phone import: screenshot OCR, PDF/CSV statements, share sheet. Review before save, duplicate detection | dev build |
-| **M4** | Widget (small, medium, lock screen; raccoon happy/worried/stuffed) via App Group · iCloud backup | dev build |
+| **M4** | Widget (small, medium, lock screen; next charge, logo, days left) via App Group · iCloud backup | dev build |
 | **M5** | App Store assets, listing, privacy label, privacy policy, TestFlight, submit | TestFlight |
 | v1.1 | Roast mode | |
 | After launch | ditchsubs.app/cancel/[service] guide pages from the same catalog data | |

@@ -8,11 +8,11 @@ The source of truth for Ditch. Copied from `jjman2321/MMTEST` (`docs/ditch/DECIS
 | 1 | Name | Keep **Ditch: Subscription Tracker**. Checked US trademarks (see below). | 2026-11-09 |
 | 2 | v1 scope | **Manual entry + on-phone import.** Includes a "tick what you pay for" checklist, a catalog, screenshot import (OCR on the phone), and CSV/PDF statement import. No bank link, no server, $0 a month to run, privacy label "Data Not Collected". | 2026-11-09 |
 | 3 | App Store subtitle | **"Ditch it before it renews."** The owner chose brand over keywords. "bill reminder" goes in the keyword field and on the screenshots. | 2026-11-09 |
-| 4 | Look | **Clean UI with a mascot.** The dashboard stays calm and readable. The mascot shows up only in onboarding, the "Ditched!" celebration, the paywall, the widget and TikTok. | 2026-11-09 |
-| 5 | Mascot | **Raccoon.** It flicks subscription cards into a bin ("Ditch it."). Widget states: happy, worried, stuffed. | 2026-11-09 |
+| 4 | Look | **Premium white, no mascot.** Apple-clean white UI, black text, one teal accent, real app logos. Personality comes from the DITCHED stamp moment, the total reveal and a short, dry voice. *(Replaces "clean UI with a mascot", Nov 9.)* | 2026-11-09 |
+| 5 | Mascot | **None. The raccoon is retired.** Our buyers are money-anxious adults who want reliability; top-grossing finance apps don't use mascots; cute signals warmth over competence; our raccoon was AI-made and close to BitePal's. It can come back only as a small hand-drawn image in empty states, and only if an App Store screenshot test says people miss it. Research: `docs/research/mascot-or-not.md`. | 2026-11-09 |
 | 6 | Pricing | **$4.99/mo · $29.99/yr (pre-selected, 7-day trial) · $49.99 lifetime.** | 2026-11-09 |
 | 6b | Lifetime rule | Lifetime is a one-time purchase that unlocks **Ditch Pro only**. Future bank sync ("Auto-sync") will be a **separate subscription**, because it costs money every month. Lifetime users can add it. Paywall text under lifetime: "Everything in Pro, forever. Bank sync, if we add it, is a separate plan because it costs us money every month." Never write "all future features included". We can stop selling lifetime to new buyers at any time. Worst case, even if lifetime users got bank sync for free: about $0.45 per user per month against about $42.50 net per sale, which covers about 8 years. | 2026-11-09 |
-| 7 | Onboarding | Welcome (raccoon) → tick what you pay for → "That's $X a year. Ditch it." → allow reminders → skippable paywall → home. Import lives on home as "Find more". The owner wants it top class: design each screen from Mobbin references before building. | 2026-11-09 |
+| 7 | Onboarding | Welcome (real logos) → tick what you pay for → "That's $X a year. Ditch it." → allow reminders → skippable paywall → home. Import lives on home as "Find more". The owner wants it top class: design each screen from Mobbin references before building. | 2026-11-09 |
 | 8 | Tabs | **Home · Subs · Ditched.** Settings sit behind a gear on Home. | 2026-11-09 |
 | 9 | Cancel-guide website | Publish the guides as ditchsubs.app/cancel/[service] pages **after the app ships**, using the same data as the app. Start with the top 50–100 services, each with a source link and a "checked on" date. | 2026-11-09 |
 | 10 | Roast mode | **v1.1**, not v1. | 2026-11-09 |
@@ -94,9 +94,9 @@ Checked through third-party aggregators, because the USPTO search API was blocke
 
 - **Using "Ditch" for a subscription tracker:** low risk.
 - **Registering plain "DITCH" ourselves in classes 9/42:** may be refused because of the live marks above.
-- **Option:** file a combined name + raccoon logo mark, or "DITCH SUBSCRIPTION TRACKER", after a 1-hour check with a trademark lawyer.
+- **Option:** file a combined name + DITCHED stamp mark, or "DITCH SUBSCRIPTION TRACKER", after a 1-hour check with a trademark lawyer.
 
-### Mascot research
+### Mascot research (historical: the mascot was dropped, see decision #5)
 - **Shortlist:** raccoon 8.5, hamster 7, beaver 6.5, capybara 6.
 - **Ruled out:**
   - Crab: SubsCrab owns the crab, and the Arabic سرطان means both crab and cancer.
@@ -115,6 +115,7 @@ A trial timeline (Today → reminder day → charge day) with real dates. Refere
 Ditch twist: when a trial starts, Ditch adds "Ditch Pro trial" to the user's own list and reminds them 2 days before the charge.
 
 ## Still open (next interview rounds)
+- **App icon: stamp or a flat animal mark?** Bobby (4.7★, 8,033 US ratings, no update since Dec 2025) uses a squirrel *only* as its icon: no squirrel in its App Store screenshots, which sell colourful real-logo cards. An icon is the one place a character can't sit near money, and it helps stand out in search. If we try it: a flat, hand-finished mark (not the AI 3D raccoon, not raccoon-like BitePal), tested against the stamp icon with App Store Product Page Optimization after launch. In-app stays character-free either way (#5).
 - Screen-by-screen onboarding and home designs.
 - Languages.
 - Testing setup: iPhone + Mac, Expo dev build via EAS.

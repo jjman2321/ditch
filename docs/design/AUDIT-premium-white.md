@@ -1,3 +1,5 @@
+> **Superseded on Nov 9, 2026:** the owner dropped the mascot (DECISIONS #4, #5; `docs/research/mascot-or-not.md`). Ignore every raccoon or mascot instruction below; the rest still applies.
+
 # Audit: "Premium white" onboarding mockups
 
 Nov 9, 2026 · Screens: `design/premium-white/1-welcome.jpg`, `2-pick.jpg`, `3-total.jpg`, `4-paywall.jpg`

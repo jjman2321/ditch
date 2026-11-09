@@ -13,7 +13,7 @@ Sections get added as each feature is built. ⏳ = not built yet.
 - [ ] Reply "OK" or list what to change.
 
 ## 1. Onboarding ⏳ (M1)
-- [ ] Delete the app or reset it, then open it. The Welcome screen shows the raccoon.
+- [ ] Delete the app or reset it, then open it. The Welcome screen shows real service logos.
 - [ ] Tap Get started. A catalog with logos and typical prices appears.
 - [ ] Tick 5 services and search for one more, then tick it.
 - [ ] Tap "Something else?" and add a custom one.
@@ -49,7 +49,7 @@ Sections get added as each feature is built. ⏳ = not built yet.
 
 ## 6. Ditch it ⏳ (M1)
 - [ ] Detail → How to cancel opens the right page (or Apple Subscriptions for Apple-billed). The sub is still active when you come back.
-- [ ] Tap Ditch it. It asks "Did you cancel it?". Confirm: the raccoon flicks it into the bin.
+- [ ] Tap Ditch it. It asks "Did you cancel it?". Confirm: the card slides off, the DITCHED stamp lands with a buzz, and "$X a year back" counts up.
 - [ ] The Ditched tab shows "$X/mo in projected savings", with X matching that sub's monthly price.
 - [ ] Reactivate it ("Oops, still paying"). Savings go back down and it's in Subs again.
 - [ ] Turn on Settings → Accessibility → Motion → Reduce Motion on the iPhone, then ditch something. You get a simple fade, no flick.

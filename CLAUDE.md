@@ -84,10 +84,15 @@ This is the #1 complaint about Bobby, so it's the product.
 - $49.99 one-time, covers **Pro only**. Future bank sync would be a separate plan.
 - Never write "all future features included".
 
-### 8. Mascot
-- A raccoon. Only in onboarding, the Ditched celebration, the paywall, the widget and empty states.
-- Never on top of an action. Respect Reduce Motion.
-- Never name it "Rocket". Keep it visually distinct from BitePal's raccoon, Goodfood's Richard the Raccoon and Rocket Raccoon.
+### 8. No mascot: the stamp and the voice
+- **No mascot or character** (owner decision, Nov 9, 2026; why: `docs/research/mascot-or-not.md`). The raccoon is retired.
+- Ditch's personality comes from four things:
+  - the **DITCHED stamp** moment: card flicks off, a hand-drawn teal stamp lands with a firm haptic, "$X a year back" counts up
+  - the **yearly total reveal** in onboarding
+  - **real service logos** as the illustration
+  - a **short, dry voice** in copy and notifications that's on the user's side and never shames them ("Netflix renews in 3 days. $17.99. Still watching?")
+- The stamp is hand-drawn (not a font). It can also be the app icon motif, the widget accent and the App Store screenshot device.
+- Nothing moves near a price. Never on top of an action. With Reduce Motion: show the stamp, skip the motion.
 
 ### 9. Accessibility
 - Tap targets ≥ 44pt. Dynamic Type. VoiceOver labels on every control. Dark mode. Tabular figures for money.

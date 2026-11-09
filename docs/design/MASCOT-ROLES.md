@@ -1,3 +1,5 @@
+> **Superseded on Nov 9, 2026:** the owner dropped the mascot (DECISIONS #4, #5; `docs/research/mascot-or-not.md`). Ignore every raccoon or mascot instruction below; the rest still applies.
+
 # The raccoon must make sense on every screen
 
 Owner rule (Nov 9, 2026): **the mascot always makes sense.** On each screen it shows what's happening there, or how to feel about it. It's never decoration.

@@ -2,23 +2,22 @@
 
 _Update this at the end of every session._
 
-**Last updated:** Nov 9, 2026 (evening) · **Milestone:** M0 → M1 (onboarding + paywall built, Home next)
+**Last updated:** Nov 9, 2026 (late) · **Milestone:** M0 → M1 (look locked, rebuilding onboarding)
 
 ## Where we are
-- ✅ Docs, decisions, spec (see below).
-- ✅ Expo SDK 58 app with money/date logic and 23 passing tests.
-- ✅ **Onboarding + paywall v3 built** in a Duolingo-style, mascot-led look. Screens: Welcome → What do you pay for? → yearly total → charge dates → reminders → paywall → pick 3 → You're set. Screenshots: `design/onboarding-v3-a.jpg`, `design/onboarding-v3-b.jpg`.
-- ✅ **Deep Mobbin research** on ~1,000 screens. Summary in `docs/design/PLAYBOOK.md`; full write-ups in `docs/research/`.
-- ✅ **Raccoon:** a friendly teal cartoon, no bandit mask. Poses are in `assets/mascot/duo/`. About 90 Higgsfield credits used so far.
-- ⚠️ **Not built yet:**
-  - Purchases are stubbed, so buttons explain "next build" (RevenueCat comes in M2).
-  - Home, Subs and Ditched are placeholders.
-  - Nothing is saved to the database yet (SQLite comes in M1).
+- ✅ Docs, decisions, spec. Expo SDK 58 app with money/date logic and 23 passing tests.
+- ✅ **Look locked: premium white, no mascot** (DECISIONS #4, #5). The raccoon is retired after research on our buyers (`docs/research/mascot-or-not.md`). Personality now comes from the DITCHED stamp, the total reveal, real logos and a dry, kind voice.
+- ✅ **Rewards rule:** no streaks, badges or points; only real money kept (DECISIONS #13).
+- ✅ Research: premium-white motion (`docs/research/premium-white-motion.md`), Tim Gabe videos (`docs/research/tim-gabe-notes.md`), states and failures (`docs/research/premium-states.md`).
+- ✅ **Total reveal prototype** built in code: `design/premium-white/proto/total-reveal.mp4`.
+- ⚠️ The onboarding in the app (v4) still uses the old Kiwi look and raccoon. It gets rebuilt next.
+- ⚠️ Purchases are stubbed (RevenueCat in M2). Home, Subs and Ditched are placeholders. Nothing is saved to SQLite yet.
+- 🗄️ Retired: raccoon poses and Seedance loops in `design/premium-white/anim/` (kept for reference, not used).
 
 ## Next
-1. Owner reviews v3 screenshots and answers the open questions in `docs/design/PLAYBOOK.md`: raccoon name, founder line, final mascot art.
-2. Home / Subs / Ditched in the same style.
-3. Save to SQLite, schedule local reminders, and get it running on the owner's iPhone (Expo Go).
+1. Owner approves mockups of the **DITCHED stamp moment** and the **real-logo Welcome**.
+2. Rebuild all 8 onboarding screens in premium white (token sheet in `docs/design/AUDIT-premium-white.md`, motion in `premium-white-motion.md`), with every state from `premium-states.md`.
+3. Home / Subs / Ditched, then SQLite, local reminders, and running on the owner's iPhone (Expo Go).
 
 ## How to run the app
 Not yet: the app gets created at the start of M1. The plan:
@@ -83,7 +82,7 @@ No iCloud+? Cloudflare Email Routing is free but forward-only (replies come from
 - Book a 1-hour check with a US trademark lawyer.
 - Plain "DITCH" is already registered by others in classes 9 and 42.
 - Options to ask about:
-  - a combined name + raccoon logo mark, or
+  - a combined name + DITCHED stamp mark, or
   - "DITCH SUBSCRIPTION TRACKER".
 
 ### 9. Free sign-ups for v3 bank sync (anytime, no rush)

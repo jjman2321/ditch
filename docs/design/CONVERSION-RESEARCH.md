@@ -1,3 +1,5 @@
+> **Superseded on Nov 9, 2026:** the owner dropped the mascot (DECISIONS #4, #5; `docs/research/mascot-or-not.md`). Ignore every raccoon or mascot instruction below; the rest still applies.
+
 # Conversion research: onboarding and paywall
 
 Written Nov 9, 2026. Research for `docs/design/ONBOARDING.md` and SPEC §3.1, §6, §7. It does not change any locked decision. Where it suggests something new, it says so.

@@ -1,0 +1,26 @@
+# Secrets
+.env
+.env*.local
+.env.*
+!.env.example
+*.p8
+*.p12
+*.mobileprovision
+*.key
+credentials.json
+
+# Dependencies and builds
+node_modules/
+.expo/
+dist/
+web-build/
+ios/
+android/
+*.tsbuildinfo
+coverage/
+
+# OS / editor
+.DS_Store
+*.log
+.idea/
+.vscode/

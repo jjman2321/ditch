@@ -7,9 +7,8 @@ import { Pressable, View } from 'react-native';
 
 import { datesCtaLabel } from '@/domain/copy';
 import { weekdayDate } from '@/domain/dates';
-import { CYCLE_SHORT, formatMoney } from '@/domain/money';
 import { DateSheet } from '@/onboarding/DateSheet';
-import { byYearlyDesc, chargeOf, useOnboarding, usePickedList, type Picked } from '@/state/onboarding';
+import { byYearlyDesc, chargeOf, useOnboarding, usePickedList, usePickPrice, type Picked } from '@/state/onboarding';
 import { Button, Card, ChevronDown, GuessTag, LogoTile, RowDivider, Screen, SectionHeader, StepHeader, Txt, haptic, usePalette } from '@/ui/sunflower';
 
 function DateChip({ p: sub, onPress }: { p: Picked; onPress: () => void }) {
@@ -47,6 +46,7 @@ function DateChip({ p: sub, onPress }: { p: Picked; onPress: () => void }) {
 
 export default function Dates() {
   const { setDate, setCycle, revertToGuess } = useOnboarding();
+  const priceOf = usePickPrice();
   const list = usePickedList();
   const sorted = useMemo(() => [...list].sort(byYearlyDesc), [list]);
   const [editing, setEditing] = useState<string | null>(null);
@@ -86,8 +86,7 @@ export default function Dates() {
                 </Txt>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 1 }}>
                   <Txt v="sub" tone="mute" num>
-                    {formatMoney(x.amountMinor, x.currency)}
-                    {CYCLE_SHORT[x.cycle]}
+                    {priceOf(x, 'short') ?? 'No price yet'}
                   </Txt>
                   {x.dateSource === 'guess' ? <GuessTag /> : null}
                 </View>

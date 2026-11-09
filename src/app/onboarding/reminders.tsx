@@ -10,14 +10,17 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SERVICE_BY_ID } from '@/catalog/services';
 import { stillUsingIt } from '@/domain/copy';
 import { addDays, longDate, toDateOnly, weekdayName, weekdayShort } from '@/domain/dates';
-import { formatMoney } from '@/domain/money';
-import { chargeOf, useOnboarding, usePickedList, type Picked } from '@/state/onboarding';
+import { catalogPrice } from '@/catalog/prices';
+import { chargeOf, useMoney, useOnboarding, usePickedList, usePickPrice, type Picked } from '@/state/onboarding';
 import { Button, Camera, Duck, F, Flashlight, ForceLightContext, Lock, NotificationPreview, Screen, StepHeader, Txt, brand } from '@/ui/sunflower';
 
 /** The example: the soonest real date (2+ days out), else the soonest guess. */
 function useExample() {
   const list = usePickedList();
   const today = toDateOnly();
+  const priceOf = usePickPrice();
+  const money = useMoney();
+  const { country } = useOnboarding();
   return useMemo(() => {
     const ok = list.filter((x) => chargeOf(x, today) >= addDays(today, 2));
     const soonest = (a: Picked, b: Picked) => (chargeOf(a, today) < chargeOf(b, today) ? -1 : 1);
@@ -25,15 +28,16 @@ function useExample() {
     if (pick) {
       return {
         name: pick.name,
-        price: formatMoney(pick.amountMinor, pick.currency),
+        price: priceOf(pick, 'amount'),
         charge: chargeOf(pick, today),
         guess: pick.dateSource === 'guess',
         nudge: stillUsingIt(pick.category),
       };
     }
     const n = SERVICE_BY_ID['netflix'];
-    return { name: n.name, price: formatMoney(n.amountMinor, n.currency), charge: addDays(today, 5), guess: false, nudge: stillUsingIt(n.category) };
-  }, [list, today]);
+    const local = catalogPrice('netflix', country);
+    return { name: n.name, price: local ? money(local.amountMinor, local.currency) : null, charge: addDays(today, 5), guess: false, nudge: stillUsingIt(n.category) };
+  }, [list, today, priceOf, money, country]);
 }
 
 export default function Reminders() {
@@ -115,10 +119,10 @@ export default function Reminders() {
         </View>
         <View importantForAccessibility="no-hide-descendants" style={{ zIndex: 2 }}>
           <Animated.View entering={FadeInDown.delay(900).springify().damping(18)} style={{ marginTop: 14 }}>
-            <NotificationPreview time="now" message={`${ex.name} renews ${around}tomorrow. ${ex.price}. Last call if you’re done with it.`} />
+            <NotificationPreview time="now" message={`${ex.name} renews ${around}tomorrow.${ex.price ? ` ${ex.price}.` : ''} Last call if you’re done with it.`} />
           </Animated.View>
           <Animated.View entering={FadeInDown.delay(350).springify().damping(18)} style={{ marginTop: 8 }}>
-            <NotificationPreview faded time={`${weekdayShort(threeBefore)} 9:00 AM`} message={`${ex.name} renews ${around}${weekdayName(ex.charge)}. ${ex.price}. ${ex.nudge}`} />
+            <NotificationPreview faded time={`${weekdayShort(threeBefore)} 9:00 AM`} message={`${ex.name} renews ${around}${weekdayName(ex.charge)}.${ex.price ? ` ${ex.price}.` : ''} ${ex.nudge}`} />
           </Animated.View>
         </View>
         <View pointerEvents="none" style={{ position: 'absolute', left: 0, right: 0, bottom: -4, alignItems: 'center' }}>

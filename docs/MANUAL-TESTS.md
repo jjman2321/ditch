@@ -71,6 +71,18 @@ Start the app fresh (close it fully in the app switcher, then open it). Phone in
 - [ ] Turn on VoiceOver: every button, tick, bell, plan and calendar day reads out what it is.
 - [ ] Turn on Reduce Motion: the total fades in instead of rolling, the duck doesn't rise.
 
+## 1b. Prices by country (built Nov 9)
+Prices come from the iPhone's Region (Settings → General → Language & Region → Region), not the language.
+- [ ] Region **United States**. On "What do you pay for?" the line under the title says "Prices for 🇺🇸 US · Change". Netflix shows "about $19.99 a month", Spotify "about $12.99".
+- [ ] Tick Netflix. A row of plan pills appears under it (Standard with ads · Standard · Premium). Tap Premium: one tap, the price and the yellow total change.
+- [ ] Tick Amazon Prime. It says **Add your price** (we haven't checked Amazon's price yet). Tap it, type 14.99, pick Monthly, Save. The row now shows $14.99 (no "about").
+- [ ] Tap **Change**, pick 🇬🇧 UK. Netflix becomes £ prices, HBO Max and Hulu disappear from the list (US-only or no UK price), and Amazon keeps the $14.99 you typed.
+- [ ] Tap **See my total**. The big number is in £, with a separate line "+ US$… a year" for Amazon. They are never added together.
+- [ ] Anything still without a price is listed under **No price yet** with an Add your price link.
+- [ ] Region **Australia**, then **India**: prices switch to A$/₹ local plans (India's Netflix has Mobile and Basic plans).
+- [ ] Region **Japan** (not supported yet): the line says "No local prices for your region · Choose" and every row says Add your price.
+- [ ] In the US the total screen says "US prices are before sales tax."
+
 ## 2. Money math ⏳ (M1)
 - [ ] Add Netflix at $15.49 monthly. Detail shows $185.88 a year.
 - [ ] Add something at $99 yearly. It counts as $8.25/mo in the Home total.

@@ -3,11 +3,12 @@
 
 import { router } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
-import { Text, useWindowDimensions, View } from 'react-native';
+import { Pressable, Text, useWindowDimensions, View } from 'react-native';
 import Animated, { Easing, FadeIn, useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 
-import { formatMoney, formatWholeMoney, spendTotals, yearlyMinor } from '@/domain/money';
-import { byYearlyDesc, useOnboarding, usePickedList, type Picked } from '@/state/onboarding';
+import { yearlyMinor } from '@/domain/money';
+import { PriceSheet } from '@/onboarding/PriceSheet';
+import { byYearlyDesc, isPriced, totalsFor, useCountry, useMoney, useOnboarding, usePickedList, type Picked, type PricedPick } from '@/state/onboarding';
 import { Button, Card, EDGE, F, LogoTile, RollingNumber, Screen, StepHeader, Txt, haptic, rollDuration, tabular, usePalette, useFitSize } from '@/ui/sunflower';
 
 const HERO = 118;
@@ -37,9 +38,11 @@ function Bar({ pct, play, delay }: { pct: number; play: boolean; delay: number }
   );
 }
 
-function WhereItGoes({ items, play, delay }: { items: Picked[]; play: boolean; delay: number }) {
+function WhereItGoes({ items, play, delay }: { items: PricedPick[]; play: boolean; delay: number }) {
   const p = usePalette();
-  const max = Math.max(...items.map((x) => yearlyMinor(x.amountMinor, x.cycle)), 1);
+  const money = useMoney();
+  // Bars compare within a currency only.
+  const max = (c: string) => Math.max(...items.filter((x) => x.currency === c).map((x) => yearlyMinor(x.amountMinor, x.cycle)), 1);
   return (
     <Card style={{ marginTop: 18, paddingHorizontal: 16, paddingVertical: 4 }}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10, paddingBottom: 4 }}>
@@ -52,7 +55,7 @@ function WhereItGoes({ items, play, delay }: { items: Picked[]; play: boolean; d
       </View>
       {items.map((x, i) => {
         const y = yearlyMinor(x.amountMinor, x.cycle);
-        const amount = formatMoney(y, x.currency);
+        const amount = money(y, x.currency);
         return (
           <View
             key={x.id}
@@ -65,7 +68,7 @@ function WhereItGoes({ items, play, delay }: { items: Picked[]; play: boolean; d
               <Txt v="label" color={p.cardFg} numberOfLines={1}>
                 {x.name}
               </Txt>
-              <Bar pct={y / max} play={play} delay={delay + i * 40} />
+              <Bar pct={y / max(x.currency)} play={play} delay={delay + i * 40} />
             </View>
             <Txt v="moneyS" num color={p.cardFg}>
               {amount}
@@ -77,20 +80,71 @@ function WhereItGoes({ items, play, delay }: { items: Picked[]; play: boolean; d
   );
 }
 
+/** Picks we have no local price for: ask for them here, in a short list. */
+function NoPriceYet({ items }: { items: Picked[] }) {
+  const p = usePalette();
+  const { setPrice } = useOnboarding();
+  const [editing, setEditing] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
+  const sub = items.find((x) => x.id === editing) ?? null;
+  return (
+    <Card style={{ marginTop: 12, paddingHorizontal: 16, paddingVertical: 4 }}>
+      <View style={{ paddingTop: 10, paddingBottom: 4 }}>
+        <Txt v="eyebrow" tone="mute">
+          No price yet
+        </Txt>
+      </View>
+      {items.map((x, i) => (
+        <Pressable
+          key={x.id}
+          accessibilityRole="button"
+          accessibilityLabel={`Add your price for ${x.name}`}
+          onPress={() => {
+            setEditing(x.id);
+            setOpen(true);
+          }}
+          style={({ pressed }) => ({ flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 48, borderTopWidth: i ? 1 : 0, borderTopColor: p.hair, opacity: pressed ? 0.6 : 1 })}
+        >
+          <LogoTile id={x.id} size={30} />
+          <Txt v="label" color={p.cardFg} style={{ flex: 1 }} numberOfLines={1}>
+            {x.name}
+          </Txt>
+          <Txt v="label" color={p.cardFg} style={{ textDecorationLine: 'underline', fontSize: 14 }}>
+            Add your price
+          </Txt>
+        </Pressable>
+      ))}
+      <PriceSheet
+        sub={sub}
+        visible={open}
+        onClose={() => setOpen(false)}
+        onSave={(amount, currency, cycle) => {
+          if (sub) setPrice(sub.id, amount, currency, cycle);
+          setOpen(false);
+        }}
+      />
+    </Card>
+  );
+}
+
 export default function Total() {
   const p = usePalette();
   const reduce = useReducedMotion();
   const { totalShown, markTotalShown } = useOnboarding();
   const list = usePickedList();
+  const country = useCountry();
+  const money = useMoney();
   const sorted = useMemo(() => [...list].sort(byYearlyDesc), [list]);
-  const totals = spendTotals(list);
+  const priced = sorted.filter(isPriced);
+  const unpriced = sorted.filter((x) => !isPriced(x));
+  const totals = totalsFor(list, country?.currency);
   const main = totals[0];
   const others = totals.slice(1);
-  const n = list.length;
+  const n = priced.length;
 
   // Play once per session; Reduce Motion gets a short fade instead.
   const [play] = useState(() => !totalShown && !reduce);
-  const hero = main ? formatWholeMoney(main.yearlyMinor, main.currency) : '$0';
+  const hero = main ? money(main.yearlyMinor, main.currency, { whole: true }) : '';
   const landed = play ? rollDuration(hero) : 0;
 
   useEffect(() => {
@@ -116,7 +170,11 @@ export default function Total() {
     >
       <StepHeader step={2} />
       <Txt v="label" style={{ fontSize: 17, marginTop: 16 }}>
-        Your {n} {n === 1 ? 'subscription costs' : 'subscriptions cost'}
+        {!main
+          ? 'Add your prices to see your total'
+          : unpriced.length
+            ? `${n} of your ${list.length} subscriptions cost`
+            : `Your ${n} ${n === 1 ? 'subscription costs' : 'subscriptions cost'}`}
       </Txt>
 
       {/* Measures the total once at full size so it can shrink to fit. */}
@@ -126,26 +184,36 @@ export default function Total() {
         </Text>
       </View>
 
-      <Animated.View entering={reduce ? FadeIn.duration(150) : undefined} style={{ marginTop: 2, marginLeft: -4 }}>
-        <RollingNumber text={hero} style={heroStyle} lineHeight={lh} play={play} accessibilityLabel={`${hero} a year`} />
-      </Animated.View>
-      <Animated.View style={yearStyle}>
-        <Txt v="displayS" style={{ marginTop: 2 }} importantForAccessibility="no">
-          a year.
-        </Txt>
-        {others.map((t) => (
-          <Txt key={t.currency} v="label" tone="fg2" num>
-            plus {formatWholeMoney(t.yearlyMinor, t.currency)} a year in {t.currency}
-          </Txt>
-        ))}
-      </Animated.View>
+      {main ? (
+        <>
+          <Animated.View entering={reduce ? FadeIn.duration(150) : undefined} style={{ marginTop: 2, marginLeft: -4 }}>
+            <RollingNumber text={hero} style={heroStyle} lineHeight={lh} play={play} accessibilityLabel={`${hero} a year`} />
+          </Animated.View>
+          <Animated.View style={yearStyle}>
+            <Txt v="displayS" style={{ marginTop: 2 }} importantForAccessibility="no">
+              a year.
+            </Txt>
+            {/* Other currencies get their own line. Never added, never converted. */}
+            {others.map((t) => (
+              <Txt key={t.currency} v="label" tone="fg2" num style={{ marginTop: 4 }}>
+                + {money(t.yearlyMinor, t.currency, { whole: true })} a year
+              </Txt>
+            ))}
+            {country?.code === 'US' ? (
+              <Txt v="sub" tone="fg2" style={{ marginTop: 4 }}>
+                US prices are before sales tax.
+              </Txt>
+            ) : null}
+          </Animated.View>
+        </>
+      ) : null}
 
       <Animated.View style={restStyle}>
         {main ? (
           <View style={{ flexDirection: 'row', marginTop: 16, borderTopWidth: 2, borderTopColor: p.dark ? p.rule : p.fg }}>
             {[
-              [formatMoney(main.monthlyMinor, main.currency), 'a month'],
-              [formatMoney(main.dailyMinor, main.currency), 'a day'],
+              [money(main.monthlyMinor, main.currency), 'a month'],
+              [money(main.dailyMinor, main.currency), 'a day'],
             ].map(([v, l], i) => (
               <View
                 key={l}
@@ -163,7 +231,8 @@ export default function Total() {
             ))}
           </View>
         ) : null}
-        {sorted.length ? <WhereItGoes items={sorted} play={play} delay={landed + 120} /> : null}
+        {priced.length ? <WhereItGoes items={priced} play={play} delay={landed + 120} /> : null}
+        {unpriced.length ? <NoPriceYet items={unpriced} /> : null}
         <Txt v="leadS" tone="fg2" style={{ marginTop: 18 }}>
           Bigger than you guessed? It usually is. Let’s make sure none of it surprises you.
         </Txt>

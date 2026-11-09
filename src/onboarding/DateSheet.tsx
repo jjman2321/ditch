@@ -8,8 +8,9 @@ import { Pressable, View } from 'react-native';
 
 import { headsUpDates, nextFromLastCharge, previousCharge } from '@/domain/charges';
 import { addDays, longDate, monthGrid, monthTitle, parseDate, shiftMonth, shortDate, toDateOnly, weekdayDate, type DateOnly } from '@/domain/dates';
-import { CYCLE_WORDS, formatMoney, type Cycle } from '@/domain/money';
-import { chargeOf, type Picked } from '@/state/onboarding';
+import { type Cycle } from '@/domain/money';
+import { chargeOf, usePickPrice, type Picked } from '@/state/onboarding';
+import { chooseCycle, cycleChoices } from '@/state/picks';
 import {
   Bell,
   Button,
@@ -39,6 +40,7 @@ function B({ children }: { children: string }) {
 
 function Body({ sub, onSave, onGuess }: { sub: Picked; onSave: (anchor: DateOnly, source: Mode, cycle: Cycle) => void; onGuess: () => void }) {
   const p = usePalette();
+  const priceOf = usePickPrice();
   const today = toDateOnly();
   const confirmed = sub.dateSource !== 'guess';
   const [mode, setMode] = useState<Mode>(sub.dateSource === 'next' ? 'next' : 'receipt');
@@ -74,7 +76,10 @@ function Body({ sub, onSave, onGuess }: { sub: Picked; onSave: (anchor: DateOnly
 
   const next = selected ? (mode === 'receipt' ? nextFromLastCharge(selected, cycle, today) : selected) : null;
   const heads = next ? headsUpDates(next, today, { nowHour: new Date().getHours() }) : [];
-  const price = formatMoney(sub.amountMinor, sub.currency);
+  // Preview the plan the cycle switch would move to.
+  const preview = chooseCycle(sub, cycle);
+  const price = priceOf(preview) ?? 'No price yet';
+  const cycles = cycleChoices(sub);
   const cells = monthGrid(view.y, view.m);
   const rows: (DateOnly | null)[][] = [];
   for (let i = 0; i < cells.length; i += 7) rows.push([...cells.slice(i, i + 7), ...Array(Math.max(0, i + 7 - cells.length)).fill(null)]);
@@ -88,9 +93,10 @@ function Body({ sub, onSave, onGuess }: { sub: Picked; onSave: (anchor: DateOnly
             {sub.name}
           </Txt>
           <Txt v="body" tone="mute" num style={{ fontSize: 14 }}>
-            {price} {CYCLE_WORDS[cycle]}
+            {price}
           </Txt>
         </View>
+        {cycles.length > 1 ? (
         <Segmented
           label="How often it charges"
           value={cycle === 'monthly' || cycle === 'yearly' ? cycle : null}
@@ -103,6 +109,7 @@ function Body({ sub, onSave, onGuess }: { sub: Picked; onSave: (anchor: DateOnly
           fontSize={13.5}
           style={{ width: 150 }}
         />
+        ) : null}
       </View>
 
       <Segmented

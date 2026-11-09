@@ -7,7 +7,8 @@ import { useColorScheme, useWindowDimensions, View } from 'react-native';
 import { SERVICE_BY_ID } from '@/catalog/services';
 import { headsUpDates } from '@/domain/charges';
 import { addDays, toDateOnly, weekdayDate, weekdayName, weekdayShort } from '@/domain/dates';
-import { formatMoney } from '@/domain/money';
+import { catalogPrice } from '@/catalog/prices';
+import { useMoney, useOnboarding } from '@/state/onboarding';
 import { stillUsingIt } from '@/domain/copy';
 import { Button, Duck, HeadsUpTimeline, NotificationPreview, Screen, Txt, Wordmark, brand, paletteFor } from '@/ui/sunflower';
 
@@ -18,7 +19,11 @@ export default function Welcome() {
   const netflix = SERVICE_BY_ID['netflix'];
   const charge = addDays(today, 5);
   const [early, late] = headsUpDates(charge, today);
-  const price = formatMoney(netflix.amountMinor, netflix.currency);
+  // The local Netflix price for the iPhone's Region (none: leave it out).
+  const money = useMoney();
+  const { country } = useOnboarding();
+  const local = catalogPrice('netflix', country);
+  const price = local ? money(local.amountMinor, local.currency) : null;
   // The 70pt headline is drawn for a 393pt-wide phone; scale it down on
   // narrower ones so "renews." never wraps.
   const { width } = useWindowDimensions();
@@ -70,7 +75,7 @@ export default function Welcome() {
             borderColor: '#2C2924',
           }}
         />
-        <NotificationPreview time={`${weekdayShort(early)} 9:00 AM`} message={`Netflix renews ${weekdayName(charge)}. ${price}. ${stillUsingIt(netflix.category)}`} />
+        <NotificationPreview time={`${weekdayShort(early)} 9:00 AM`} message={`Netflix renews ${weekdayName(charge)}.${price ? ` ${price}.` : ''} ${stillUsingIt(netflix.category)}`} />
       </View>
 
       <View style={{ marginTop: 18, marginHorizontal: 2 }}>
@@ -79,7 +84,7 @@ export default function Welcome() {
           stops={[
             { kind: 'bell', title: weekdayDate(early), sub: '9 AM heads-up' },
             { kind: 'bell', title: weekdayDate(late), sub: '9 AM heads-up' },
-            { kind: 'charge', title: weekdayDate(charge), sub: `${price} charge` },
+            { kind: 'charge', title: weekdayDate(charge), sub: price ? `${price} charge` : 'charge day' },
           ]}
         />
       </View>

@@ -8,8 +8,7 @@ import { AccessibilityInfo, Pressable, View } from 'react-native';
 import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withSequence, withTiming } from 'react-native-reanimated';
 
 import { weekdayDate } from '@/domain/dates';
-import { CYCLE_WORDS, formatMoney } from '@/domain/money';
-import { byYearlyDesc, chargeOf, defaultReminderPicks, useOnboarding, usePickedList } from '@/state/onboarding';
+import { byYearlyDesc, chargeOf, defaultReminderPicks, useOnboarding, usePickedList, usePickPrice } from '@/state/onboarding';
 import { Bell, BellMark, Button, Card, LogoTile, RowDivider, Screen, SectionHeader, StepHeader, Txt, brand, haptic } from '@/ui/sunflower';
 
 const FREE = 3;
@@ -17,6 +16,7 @@ const FREE = 3;
 export default function Which3() {
   const { reminderPicks, setReminderPicks } = useOnboarding();
   const list = usePickedList();
+  const priceOf = usePickPrice();
   const sorted = useMemo(() => [...list].sort(byYearlyDesc), [list]);
   const [on, setOn] = useState<string[]>(() => reminderPicks ?? defaultReminderPicks(list));
   const reduce = useReducedMotion();
@@ -97,7 +97,7 @@ export default function Which3() {
       <Card style={{ paddingVertical: 2 }}>
         {sorted.map((x, i) => {
           const isOn = on.includes(x.id);
-          const line = `${formatMoney(x.amountMinor, x.currency)} ${CYCLE_WORDS[x.cycle]} · ${weekdayDate(chargeOf(x))}`;
+          const line = `${priceOf(x) ?? 'No price yet'} · ${weekdayDate(chargeOf(x))}`;
           return (
             <View key={x.id}>
               {i ? <RowDivider inset={68} /> : null}

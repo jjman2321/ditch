@@ -4,13 +4,15 @@
 import { ScrollView, View } from 'react-native';
 
 import { weekdayDate } from '@/domain/dates';
-import { formatMoney, spendTotals } from '@/domain/money';
-import { chargeOf, usePickedList } from '@/state/onboarding';
+import { formatMoney } from '@/domain/money';
+import { chargeOf, totalsFor, useCountry, useMoney, usePickedList, usePickPrice } from '@/state/onboarding';
 import { Card, GuessTag, LogoTile, RowDivider, Screen, Txt, Wordmark } from '@/ui/sunflower';
 
 export default function Home() {
   const list = usePickedList();
-  const totals = spendTotals(list);
+  const money = useMoney();
+  const priceOf = usePickPrice();
+  const totals = totalsFor(list, useCountry()?.currency);
   return (
     <Screen>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 24 }}>
@@ -18,10 +20,10 @@ export default function Home() {
           <Wordmark />
         </View>
         <Txt v="displayM" tone="money" num style={{ marginTop: 12 }}>
-          {totals.map((t) => formatMoney(t.monthlyMinor, t.currency)).join(' + ') || formatMoney(0, 'USD')} a month
+          {totals.map((t) => money(t.monthlyMinor, t.currency)).join(' + ') || formatMoney(0, 'USD')} a month
         </Txt>
         <Txt v="leadS" tone="fg2" num style={{ marginTop: 4 }}>
-          {totals.map((t) => formatMoney(t.yearlyMinor, t.currency)).join(' + ') || formatMoney(0, 'USD')} a year · Home design comes next
+          {totals.map((t) => money(t.yearlyMinor, t.currency)).join(' + ') || formatMoney(0, 'USD')} a year · Home design comes next
         </Txt>
         <Card style={{ marginTop: 18, paddingVertical: 2 }}>
           {list.length === 0 ? (
@@ -44,7 +46,7 @@ export default function Home() {
                     </View>
                   </View>
                   <Txt v="moneyS" num>
-                    {formatMoney(x.amountMinor, x.currency)}
+                    {priceOf(x, 'amount') ?? 'No price'}
                   </Txt>
                 </View>
               </View>

@@ -49,24 +49,41 @@ type FormatOptions = {
   locale?: string;
   /** Drop ".00" on whole amounts, e.g. "$1,284" instead of "$1,284.00". */
   trimWhole?: boolean;
+  /**
+   * The user's own currency. It gets the plain local symbol ("$" for an
+   * Australian's AUD); every other currency gets one that can't be mixed
+   * up ("US$", "A$", "CA$", "NZ$"). Without it, en-US symbols are used.
+   */
+  home?: string;
 };
+
+/** Symbols that never collide, for currencies that aren't the user's own. */
+const DISTINCT_SYMBOL: Record<string, string> = { USD: 'US$', AUD: 'A$', CAD: 'CA$', NZD: 'NZ$' };
 
 export function formatMoney(
   amountMinor: number,
   currency: string,
-  { locale = 'en-US', trimWhole = false }: FormatOptions = {},
+  { locale = 'en-US', trimWhole = false, home }: FormatOptions = {},
 ): string {
   const digits = currencyDigits(currency);
   const rounded = roundMinor(amountMinor);
   const major = rounded / 10 ** digits;
   const isWhole = rounded % 10 ** digits === 0;
   const fraction = trimWhole && isWhole ? 0 : digits;
-  return new Intl.NumberFormat(locale, {
+  return withSymbol(major, currency, fraction, locale, home);
+}
+
+function withSymbol(major: number, currency: string, fraction: number, locale: string, home?: string): string {
+  const own = home === undefined || currency === home;
+  const parts = new Intl.NumberFormat(locale, {
     style: 'currency',
     currency,
+    currencyDisplay: own && home !== undefined ? 'narrowSymbol' : 'symbol',
     minimumFractionDigits: fraction,
     maximumFractionDigits: fraction,
-  }).format(major);
+  }).formatToParts(major);
+  const distinct = !own ? DISTINCT_SYMBOL[currency] : undefined;
+  return parts.map((p) => (p.type === 'currency' && distinct ? distinct : p.value)).join('');
 }
 
 /** Sum per currency. Returns one entry per currency, biggest first. */
@@ -98,15 +115,10 @@ export const CYCLE_WORDS: Record<Cycle, string> = {
 };
 
 /** Whole major units for a headline, rounded half-up: $1,091.40 → "$1,091". */
-export function formatWholeMoney(amountMinor: number, currency: string, locale = 'en-US'): string {
+export function formatWholeMoney(amountMinor: number, currency: string, { locale = 'en-US', home }: { locale?: string; home?: string } = {}): string {
   const digits = currencyDigits(currency);
   const major = roundMinor(amountMinor / 10 ** digits);
-  return new Intl.NumberFormat(locale, {
-    style: 'currency',
-    currency,
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(major);
+  return withSymbol(major, currency, 0, locale, home);
 }
 
 export type SpendTotal = {
@@ -130,4 +142,28 @@ export function spendTotals(
   return totalsByCurrency(items.map((x) => ({ currency: x.currency, amountMinor: yearlyMinor(x.amountMinor, x.cycle) }))).map(
     (t) => ({ currency: t.currency, yearlyMinor: t.amountMinor, monthlyMinor: t.amountMinor / 12, dailyMinor: t.amountMinor / 365 }),
   );
+}
+
+/**
+ * What the user typed ("12.99", "12,99", "£1,299.00") → whole minor units.
+ * Null if it isn't a positive amount. Never uses floats for the result.
+ */
+export function parseAmountInput(text: string, currency: string): number | null {
+  const digits = currencyDigits(currency);
+  let t = text.replace(/[^\d.,]/g, '');
+  if (!t) return null;
+  const lastDot = t.lastIndexOf('.');
+  const lastComma = t.lastIndexOf(',');
+  const sep = Math.max(lastDot, lastComma);
+  let whole = t;
+  let frac = '';
+  // The last separator is the decimal point if 1–2 digits follow it (or the currency has none).
+  if (sep >= 0 && t.length - sep - 1 >= 1 && t.length - sep - 1 <= 2 && digits > 0) {
+    whole = t.slice(0, sep);
+    frac = t.slice(sep + 1);
+  }
+  whole = whole.replace(/[.,]/g, '');
+  t = whole || '0';
+  const minor = Number(t) * 10 ** digits + Number((frac + '00').slice(0, digits) || 0);
+  return Number.isSafeInteger(minor) && minor > 0 ? minor : null;
 }

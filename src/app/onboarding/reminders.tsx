@@ -62,6 +62,7 @@ export default function Reminders() {
 
   return (
     <Screen
+      scroll
       footer={
         <>
           <Button label="Turn on reminders" hint="Shows the iPhone permission prompt" onPress={turnOn} />

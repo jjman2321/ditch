@@ -2,7 +2,7 @@
 // for a charge 5 days from today, and the timeline that leads to it.
 
 import { router } from 'expo-router';
-import { useColorScheme, View } from 'react-native';
+import { useColorScheme, useWindowDimensions, View } from 'react-native';
 
 import { SERVICE_BY_ID } from '@/catalog/services';
 import { headsUpDates } from '@/domain/charges';
@@ -19,6 +19,11 @@ export default function Welcome() {
   const charge = addDays(today, 5);
   const [early, late] = headsUpDates(charge, today);
   const price = formatMoney(netflix.amountMinor, netflix.currency);
+  // The 70pt headline is drawn for a 393pt-wide phone; scale it down on
+  // narrower ones so "renews." never wraps.
+  const { width } = useWindowDimensions();
+  const k = Math.min(1, (width - 48) / 345);
+  const head = { fontSize: Math.floor(70 * k), lineHeight: Math.floor(63 * k), letterSpacing: -2.8 * k };
 
   return (
     <Screen
@@ -36,9 +41,9 @@ export default function Welcome() {
       <View style={{ height: 44, justifyContent: 'center', marginTop: 4 }}>
         <Wordmark />
       </View>
-      <Txt v="displayXL" accessibilityRole="header" style={{ marginTop: 26 }}>
+      <Txt v="displayXL" accessibilityRole="header" style={[{ marginTop: 26 }, head]}>
         {'Ditch it\nbefore it\n'}
-        <Txt v="displayXL" color={dark ? brand.sunflower : p.fg}>
+        <Txt v="displayXL" color={dark ? brand.sunflower : p.fg} style={head}>
           renews.
         </Txt>
       </Txt>

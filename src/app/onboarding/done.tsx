@@ -73,7 +73,7 @@ export default function Done() {
                         {r.trial ? (
                           <ProLockup size={15} suffix="trial" color={p.cardFg} />
                         ) : (
-                          <Txt v="label" color={p.cardFg} style={{ fontSize: 15.5 }} numberOfLines={1}>
+                          <Txt v="label" color={p.cardFg} style={{ fontSize: 15.5 }} numberOfLines={2}>
                             {r.name}
                           </Txt>
                         )}

@@ -160,7 +160,7 @@ export default function Paywall() {
         {many ? `Get a heads-up before all ${n} renewals.` : 'Get a heads-up before every renewal.'}
       </Txt>
 
-      <View style={{ marginTop: compact ? 20 : 28 }}>
+      <View style={{ marginTop: compact ? 18 : 24 }}>
         {compact ? null : <Duck width={88} right={18} sink={0} />}
         <Card style={[{ padding: 14 }, cardH ? { minHeight: cardH } : null]}>
           <View
@@ -168,7 +168,8 @@ export default function Paywall() {
               if (planId === 'yearly' && !cardH) setCardH(e.nativeEvent.layout.height + 28);
             }}
           >
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+            {/* Small phones drop this row so all three plans fit in the first frame. */}
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, display: compact && planId === 'yearly' ? 'none' : 'flex' }}>
               <DuckIcon size={40} />
               <View style={{ flex: 1 }}>
                 <ProLockup size={16} suffix={planId === 'yearly' ? 'trial' : planId === 'lifetime' ? 'for life' : undefined} />
@@ -182,7 +183,7 @@ export default function Paywall() {
               </View>
             </View>
             {planId === 'yearly' ? (
-              <View style={{ marginTop: 14 }}>
+              <View style={{ marginTop: compact ? 0 : 14 }}>
                 <HeadsUpTimeline
                   small
                   behind={p.card}
@@ -208,7 +209,7 @@ export default function Paywall() {
       </View>
 
       {compact ? null : (
-        <View style={{ marginTop: 14, marginHorizontal: 2, gap: 6 }}>
+        <View style={{ marginTop: 12, marginHorizontal: 2, gap: 4 }}>
           {[many ? `Heads-ups on all ${n}, with your own timing` : 'Heads-ups on everything, with your own timing', 'Import, widget and iCloud backup'].map((b) => (
             <View key={b} style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
               <Check color={dark ? brand.sunflower : p.fg} size={17} />
@@ -220,7 +221,7 @@ export default function Paywall() {
         </View>
       )}
 
-      <View accessibilityRole="radiogroup" accessibilityLabel="Plans" style={{ gap: 8, marginTop: compact ? 22 : 24 }}>
+      <View accessibilityRole="radiogroup" accessibilityLabel="Plans" style={{ gap: 8, marginTop: compact ? 20 : 20 }}>
         <PlanCard
           title="Yearly"
           tag={`${yearly.trialDays} days free`}
@@ -248,7 +249,7 @@ export default function Paywall() {
           a11y={`Lifetime, ${lifetime.priceString}, pay once`}
         />
       </View>
-      <View style={{ height: 6 }} />
+      <View style={{ height: 4 }} />
     </Screen>
   );
 }

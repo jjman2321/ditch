@@ -1,84 +1,75 @@
-// 3 · "That's $X a year."
+// 3 · The reveal: "That's about $887 a year."
 
 import { router } from 'expo-router';
 import { useEffect } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import Animated, { FadeInDown, useReducedMotion } from 'react-native-reanimated';
+import { Text, View } from 'react-native';
 
-import { Btn, LogoTile, Mascot, Screen, TopBar } from '@/components/kit';
-import { useCountUp } from '@/components/onboarding';
-import { haptic } from '@/components/ui';
-import { formatMoney, monthlyMinorExact, totalsByCurrency, yearlyMinor } from '@/domain/money';
 import { byYearlyDesc, usePickedList } from '@/state/onboarding';
-import { font, ink, num, text } from '@/theme/brand';
+import { formatMoney, monthlyMinorExact, totalsByCurrency, yearlyMinor } from '@/domain/money';
+import { AppLogo, FlowHeader } from '@/ui/ditch';
+import { Btn, C, Card, CountUp, E, F, Float, Glow, Label, Raccoon, Rise, Row, Screen, Small, tap } from '@/ui/kit';
 
 export default function Reveal() {
   const list = usePickedList();
   const yearly = totalsByCurrency(list.map((x) => ({ currency: x.currency, amountMinor: yearlyMinor(x.amountMinor, x.cycle) })));
   const monthly = totalsByCurrency(list.map((x) => ({ currency: x.currency, amountMinor: monthlyMinorExact(x.amountMinor, x.cycle) })));
   const main = yearly[0] ?? { currency: 'USD', amountMinor: 0 };
-  const counted = useCountUp(main.amountMinor, 1000, 500);
-  const reduce = useReducedMotion();
+  const dollars = Math.round(main.amountMinor / 100);
   const biggest = [...list].sort(byYearlyDesc).slice(0, 3);
   const n = list.length;
 
   useEffect(() => {
-    const t = setTimeout(() => haptic.success(), reduce ? 0 : 1500);
+    const t = setTimeout(() => tap('success'), 1000);
     return () => clearTimeout(t);
-  }, [reduce]);
+  }, []);
 
   return (
-    <Screen>
-      <TopBar progress={0.42} />
-      <ScrollView contentContainerStyle={styles.content}>
-        <Mascot pose="shock" size={190} style={{ alignSelf: 'center' }} />
-        <View style={{ alignItems: 'center' }} accessible accessibilityLabel={`That's about ${formatMoney(main.amountMinor, main.currency)} a year.`}>
-          <Text style={[text.title, { color: ink.textSoft }]}>That&apos;s about</Text>
-          <Text style={[text.hero, num, { color: ink.teal }]} numberOfLines={1} adjustsFontSizeToFit maxFontSizeMultiplier={1.2}>
-            {formatMoney(counted, main.currency, { trimWhole: true }).replace(/\.\d+$/, '')}
-          </Text>
-          {yearly.slice(1).map((t) => (
-            <Text key={t.currency} style={[text.title, num]}>
-              + {formatMoney(t.amountMinor, t.currency, { trimWhole: true })}
-            </Text>
-          ))}
-          <Text style={text.display}>a year.</Text>
+    <Screen footer={<Btn label="Set my dates" onPress={() => router.push('/onboarding/dates')} />}>
+      <FlowHeader section={0} fill={1} />
+      <View style={{ alignItems: 'center', gap: 8 }}>
+        <View style={{ width: 300, height: 200, alignItems: 'center', justifyContent: 'center' }}>
+          <Glow color={C.lime} size={260} opacity={0.3} />
+          <Float amp={5} style={{ position: 'absolute', left: 22, top: 26 }}>
+            <E name="moneyWings" size={58} />
+          </Float>
+          <Float amp={7} style={{ position: 'absolute', right: 26, top: 60 }}>
+            <E name="receipt" size={52} />
+          </Float>
+          <Raccoon size={124} pose="oops" move="shake" />
         </View>
-
-        <Animated.View entering={FadeInDown.delay(1500).duration(320)}>
-          <Text style={[text.body, num, { textAlign: 'center' }]}>
-            {monthly.map((t) => formatMoney(t.amountMinor, t.currency)).join(' + ')} a month across {n} {n === 1 ? 'subscription' : 'subscriptions'}.
+        <Small center style={{ fontSize: 17, color: C.ink2 }}>
+          That&apos;s about
+        </Small>
+        <CountUp to={dollars} prefix="$" style={{ fontFamily: F.display, fontSize: 64, lineHeight: 70, letterSpacing: -2, color: C.ink }} />
+        {yearly.slice(1).map((t) => (
+          <Text key={t.currency} style={{ fontFamily: F.display, fontSize: 24, color: C.ink }}>
+            + {formatMoney(t.amountMinor, t.currency, { trimWhole: true })}
           </Text>
-          <Text style={[text.bodyStrong, { textAlign: 'center', marginTop: 6 }]}>Let&apos;s make sure none of it surprises you.</Text>
-        </Animated.View>
-
-        <Animated.View entering={FadeInDown.delay(1650).duration(320)} style={styles.card}>
-          <Text style={[text.small, { fontFamily: font.heavy, letterSpacing: 0.6 }]}>BIGGEST ONES</Text>
-          {biggest.map((x) => (
-            <View key={x.id} style={styles.bigRow}>
-              <LogoTile id={x.id} color={x.color} ink={x.ink} mono={x.mono} size={36} />
-              <Text style={[text.bodyStrong, { flex: 1 }]} numberOfLines={1}>
-                {x.name}
-              </Text>
-              <Text style={[text.bodyStrong, num]}>{formatMoney(yearlyMinor(x.amountMinor, x.cycle), x.currency)}/yr</Text>
-            </View>
-          ))}
-        </Animated.View>
-
-        <Animated.View entering={FadeInDown.delay(1800).duration(320)}>
-          <Text style={[text.small, { textAlign: 'center' }]}>In a 2022 survey, people guessed $86 a month. It was really $219. (C+R Research)</Text>
-        </Animated.View>
-      </ScrollView>
-      <View style={styles.footer}>
-        <Btn label="Set my dates" onPress={() => router.push('/onboarding/dates')} />
+        ))}
+        <Text style={{ fontFamily: F.display, fontSize: 26, color: C.ink, letterSpacing: -0.5 }}>a year.</Text>
+        <Small center style={{ fontSize: 16 }}>
+          {monthly.map((t) => formatMoney(t.amountMinor, t.currency)).join(' + ')} a month across {n} {n === 1 ? 'subscription' : 'subscriptions'}.
+        </Small>
       </View>
+
+      <Rise i={3}>
+        <Card outline gap={14}>
+          <Label style={{ color: C.ink2, fontSize: 14 }}>Your biggest ones</Label>
+          {biggest.map((x) => (
+            <Row key={x.id} gap={12}>
+              <AppLogo id={x.id} color={x.color} ink={x.ink} mono={x.mono} size={38} />
+              <Label style={{ flex: 1 }}>{x.name}</Label>
+              <Label>{formatMoney(yearlyMinor(x.amountMinor, x.cycle), x.currency)}</Label>
+              <Small>/yr</Small>
+            </Row>
+          ))}
+        </Card>
+      </Rise>
+      <Rise i={4}>
+        <Small center style={{ fontSize: 13.5, color: C.ink3 }}>
+          In a 2022 survey, people guessed $86 a month. It was really $219. (C+R Research)
+        </Small>
+      </Rise>
     </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  content: { paddingHorizontal: 22, paddingBottom: 24, gap: 18 },
-  card: { borderWidth: 2, borderBottomWidth: 4, borderColor: ink.line, borderRadius: 18, padding: 16, gap: 12 },
-  bigRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  footer: { paddingHorizontal: 20, paddingTop: 14, paddingBottom: 8, borderTopWidth: 2, borderTopColor: ink.line },
-});

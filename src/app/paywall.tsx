@@ -1,24 +1,22 @@
-// 6 · Paywall. One page, honest by design (docs/design/PLAYBOOK.md):
-// × and Restore from the first frame, a real "Continue free" button, the
-// billed amount as the biggest price, savings proven on screen, real trial
-// dates, and the user picks when Ditch reminds them about the trial.
+// 6 · Paywall in the Kiwi style, honest by design:
+// × and Restore from the first frame, billed amount is the biggest price,
+// savings proven on screen, real trial dates, the user picks the reminder
+// day, and "Continue free" is a real choice.
 
 import * as Notifications from 'expo-notifications';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Alert, Linking, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Linking, Platform, Pressable, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { CloseIcon } from '@/components/icons';
-import { Btn, LogoTile, Mascot, Option, Screen } from '@/components/kit';
-import { haptic } from '@/components/ui';
 import { addDays, shortDate, toDateOnly, weekdayDate } from '@/domain/dates';
 import { formatMoney } from '@/domain/money';
 import { PLANS, PURCHASES_LIVE, type PlanId } from '@/services/purchases';
 import { byYearlyDesc, usePickedList } from '@/state/onboarding';
-import { font, ink, num, text } from '@/theme/brand';
-
-const PERKS = ['Reminders on every sub, your timing', 'Import from a screenshot or statement', 'Home-screen widget', 'Backup to your own iCloud'];
+import { AppLogo } from '@/ui/ditch';
+import type { Emoji } from '@/ui/emoji';
+import { Icon } from '@/ui/icons';
+import { Btn, C, CircleBtn, E, F, Float, Glow, Label, Press, Raccoon, Rise, Row, Small, Tag, Tiny, tap } from '@/ui/kit';
 
 export default function Paywall() {
   const insets = useSafeAreaInsets();
@@ -26,14 +24,15 @@ export default function Paywall() {
   const n = list.length;
   const sorted = [...list].sort(byYearlyDesc);
   const [planId, setPlanId] = useState<PlanId>('yearly');
+  const [lead, setLead] = useState<2 | 3>(2);
   const [remindersOn, setRemindersOn] = useState(true);
-  const [lead, setLead] = useState<2 | 3>(2); // days before the trial charge
-  const plan = PLANS.find((p) => p.id === planId)!;
   const yearly = PLANS.find((p) => p.id === 'yearly')!;
   const monthly = PLANS.find((p) => p.id === 'monthly')!;
+  const lifetime = PLANS.find((p) => p.id === 'lifetime')!;
   const today = toDateOnly();
-  const chargeDay = addDays(today, yearly.trialDays);
-  const remindDay = addDays(chargeDay, -lead);
+  const charge = addDays(today, yearly.trialDays);
+  const remind = addDays(charge, -lead);
+  const trial = planId === 'yearly';
 
   useEffect(() => {
     if (Platform.OS === 'web') return;
@@ -47,214 +46,192 @@ export default function Paywall() {
     if (!PURCHASES_LIVE) Alert.alert('Not yet', 'Purchases arrive in the next build. For now, carry on free.', [{ text: 'OK', onPress: leaveFree }]);
   };
 
-  const trial = plan.id === 'yearly' && plan.trialDays > 0;
-  const cta = trial ? `Start ${plan.trialDays}-day free trial` : plan.id === 'monthly' ? `Subscribe · ${plan.priceString} a month` : `Buy once · ${plan.priceString}`;
-  const under = trial
-    ? `$0 today. Then ${plan.priceString} a year from ${weekdayDate(chargeDay)}.`
-    : plan.id === 'lifetime'
-      ? 'One payment. No renewal.'
-      : 'Renews monthly. Cancel anytime in Settings.';
+  const steps: { e: Emoji; when: string; what: string }[] = [
+    { e: 'unlocked', when: `Today · ${shortDate(today)}`, what: 'Pro is on. Every subscription gets reminders. $0 today.' },
+    remindersOn
+      ? { e: 'bell', when: `${weekdayDate(remind)}`, what: 'I remind you before anything is charged.' }
+      : { e: 'bell', when: `${weekdayDate(remind)}`, what: 'Turn on reminders so I can warn you.' },
+    { e: 'card', when: `${weekdayDate(charge)}`, what: `${yearly.priceString} charged, unless you cancel before.` },
+  ];
 
   return (
-    <Screen edges={['top']}>
-      <View style={styles.top}>
-        <Pressable accessibilityRole="button" accessibilityLabel="Close" onPress={leaveFree} style={styles.iconBtn} hitSlop={6}>
-          <CloseIcon color={ink.textSoft} size={22} strokeWidth={2.8} />
-        </Pressable>
-        <Pressable accessibilityRole="button" onPress={() => Alert.alert('Restore', 'Nothing to restore yet. Purchases arrive in the next build.')} style={styles.restore}>
-          <Text style={[text.label, { fontFamily: font.heavy, color: ink.textFaint, letterSpacing: 0.6 }]}>RESTORE</Text>
-        </Pressable>
-      </View>
+    <View style={{ flex: 1, backgroundColor: C.bg }}>
+      <Glow color="#8FE3D6" size={420} opacity={0.35} style={{ left: -210, top: -180 }} />
+      <Glow color="#D9F2A6" size={380} opacity={0.35} style={{ right: -190, top: -140 }} />
+      <ScrollView contentContainerStyle={{ paddingTop: insets.top + 4, paddingHorizontal: 20, paddingBottom: 24, gap: 22 }} showsVerticalScrollIndicator={false}>
+        <Row style={{ justifyContent: 'space-between' }}>
+          <CircleBtn name="close" label="Close" size={38} onPress={leaveFree} />
+          <Pressable accessibilityRole="button" hitSlop={8} onPress={() => Alert.alert('Restore', 'Nothing to restore yet. Purchases arrive in the next build.')}>
+            <Text style={{ fontFamily: F.semi, fontSize: 15, color: C.ink2 }}>Restore</Text>
+          </Pressable>
+        </Row>
 
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 200 + insets.bottom, gap: 16 }}>
-        {/* header: calm raccoon beside the headline */}
-        <View style={styles.header}>
-          <Mascot pose="bell" size={96} still />
-          <Text style={[text.title, { flex: 1 }]} accessibilityRole="header">
-            {n > 3 ? `Get a heads-up before all ${n} renewals.` : 'Add the rest from a screenshot.'}
-          </Text>
+        <View style={{ height: 170, alignItems: 'center', justifyContent: 'center', marginTop: -26 }}>
+          <Float amp={4} style={{ position: 'absolute', left: 34, top: 22 }}>
+            <E name="bell" size={60} />
+          </Float>
+          <Float amp={6} style={{ position: 'absolute', right: 36, top: 8 }}>
+            <E name="coin" size={52} />
+          </Float>
+          <Float amp={5} style={{ position: 'absolute', right: 56, bottom: 0 }}>
+            <E name="spiralCal" size={48} />
+          </Float>
+          <Raccoon size={112} pose="happy" style={{ marginTop: 30 }} />
         </View>
 
-        {n > 3 ? (
-          <View style={{ gap: 6 }}>
-            <View style={styles.logoRow}>
-              {sorted.slice(0, 8).map((x, i) => (
-                <View key={x.id} style={{ alignItems: 'center', gap: 3 }}>
-                  <LogoTile id={x.id} color={x.color} ink={x.ink} mono={x.mono} size={34} />
-                  <Text style={{ fontFamily: font.black, fontSize: 10, color: i < 3 ? ink.textFaint : ink.teal }}>{i < 3 ? 'FREE' : 'PRO'}</Text>
+        <Rise i={0} style={{ gap: 10, alignItems: 'center' }}>
+          <Text style={{ fontFamily: F.serifSemi, fontSize: 33, lineHeight: 39, color: C.ink, textAlign: 'center' }}>
+            {n > 3 ? (
+              <>
+                A heads-up before <Text style={{ color: C.kiwi }}>all {n} renewals</Text>
+              </>
+            ) : (
+              <>
+                Every renewal, <Text style={{ color: C.kiwi }}>covered</Text>
+              </>
+            )}
+          </Text>
+          <Small center style={{ fontSize: 15.5 }}>
+            {n > 3 ? `Free covers 3 of your ${n}. Pro covers every one, plus import, widget and iCloud backup.` : 'Reminders on everything, import from a screenshot, a widget and iCloud backup.'}
+          </Small>
+          {n > 3 ? (
+            <Row gap={8} style={{ flexWrap: 'wrap', justifyContent: 'center', marginTop: 4 }}>
+              {sorted.slice(0, 7).map((x, k) => (
+                <View key={x.id} style={{ alignItems: 'center', gap: 4 }}>
+                  <AppLogo id={x.id} color={x.color} ink={x.ink} mono={x.mono} size={34} />
+                  <Text style={{ fontFamily: F.bold, fontSize: 10, letterSpacing: 0.5, color: k < 3 ? C.ink3 : C.kiwiInk }}>{k < 3 ? 'FREE' : 'PRO'}</Text>
                 </View>
               ))}
-            </View>
-            <Text style={[text.label, { textAlign: 'center' }]}>
-              Free covers 3 of your {n}. Pro covers all {n}.
-            </Text>
-          </View>
-        ) : null}
+            </Row>
+          ) : null}
+        </Rise>
 
-        {/* plans: billed amount is always the biggest price */}
-        <View style={{ gap: 8 }} accessibilityRole="radiogroup">
-          <Option selected={planId === 'yearly'} onPress={() => setPlanId('yearly')} label={`Yearly, ${yearly.priceString} a year, ${yearly.trialDays} days free`} style={{ minHeight: 78 }}>
-            <Radio on={planId === 'yearly'} />
-            <View style={{ flex: 1, gap: 2 }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                <Text style={text.bodyStrong}>Yearly</Text>
-                <View style={styles.badge}>
-                  <Text style={styles.badgeText}>SAVE 50%</Text>
-                </View>
-              </View>
-              <Text style={[text.small, num]}>
-                {yearly.trialDays} days free · about {formatMoney(yearly.priceMinor / 12, yearly.currency)} a month
-              </Text>
-            </View>
-            <Price amount={yearly.priceString} per="/yr" />
-          </Option>
-          <Option selected={planId === 'monthly'} onPress={() => setPlanId('monthly')} label={`Monthly, ${monthly.priceString} a month`}>
-            <Radio on={planId === 'monthly'} />
-            <View style={{ flex: 1 }}>
-              <Text style={text.bodyStrong}>Monthly</Text>
-              <Text style={[text.small, num]}>{formatMoney(monthly.priceMinor * 12, monthly.currency)} a year</Text>
-            </View>
-            <Price amount={monthly.priceString} per="/mo" />
-          </Option>
-          <Option selected={planId === 'lifetime'} onPress={() => setPlanId('lifetime')} label={`Lifetime, ${PLANS[2].priceString} once`}>
-            <Radio on={planId === 'lifetime'} />
-            <View style={{ flex: 1 }}>
-              <Text style={text.bodyStrong}>Lifetime</Text>
-              <Text style={text.small}>Billed once · No trial</Text>
-            </View>
-            <Price amount={PLANS[2].priceString} per="" />
-          </Option>
-        </View>
+        <Rise i={1} style={{ gap: 14, marginTop: 2 }}>
+          <PlanCard on={planId === 'yearly'} onPress={() => setPlanId('yearly')} tag="7 days free" title="Yearly" sub={`About ${formatMoney(yearly.priceMinor / 12, yearly.currency)} a month`} price={yearly.priceString} per="/year" save="Save 50%" />
+          <PlanCard on={planId === 'monthly'} onPress={() => setPlanId('monthly')} title="Monthly" sub={`${formatMoney(monthly.priceMinor * 12, monthly.currency)} a year · no trial`} price={monthly.priceString} per="/month" />
+          <PlanCard on={planId === 'lifetime'} onPress={() => setPlanId('lifetime')} title="Lifetime" sub="Billed once · no trial" price={lifetime.priceString} per="once" />
+        </Rise>
 
-        {/* trial timeline with a reminder-day picker */}
         {trial ? (
-          <View style={styles.card}>
-            <Text style={[text.heading, { marginBottom: 12 }]}>How your free week works</Text>
-            <Step emoji="🔓" hot when={`Today · ${weekdayDate(today)}`} title="Pro is on. $0 today." />
-            <Step emoji={remindersOn ? '🔔' : '🔕'} when={weekdayDate(remindDay)} title={remindersOn ? 'I remind you' : 'Turn on reminders so I can warn you'}>
-              {remindersOn ? (
-                <>
-                  <View style={{ flexDirection: 'row', gap: 8, marginTop: 6 }}>
-                    {([3, 2] as const).map((d) => (
-                      <Pressable
-                        key={d}
-                        accessibilityRole="radio"
-                        accessibilityState={{ selected: lead === d }}
-                        onPress={() => {
-                          haptic.tap();
-                          setLead(d);
-                        }}
-                        style={[styles.chip, lead === d && styles.chipOn]}
-                      >
-                        <Text style={[text.small, { fontFamily: font.heavy, color: lead === d ? ink.tealInk : ink.textSoft }]}>
-                          {d} days before · {shortDate(addDays(chargeDay, -d))}
-                        </Text>
-                      </Pressable>
-                    ))}
-                  </View>
-                  <View style={styles.miniRow}>
-                    <View style={styles.miniIcon}>
-                      <Text style={{ color: ink.white, fontFamily: font.black, fontSize: 13 }}>D</Text>
+          <Rise i={2}>
+            <View style={{ backgroundColor: C.sunken, borderRadius: 22, padding: 18 }}>
+              <Label style={{ marginBottom: 14 }}>How your free week works</Label>
+              {steps.map((s, k) => (
+                <Row key={k} gap={14} align="flex-start">
+                  <View style={{ alignItems: 'center', width: 36 }}>
+                    <View style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: C.card, alignItems: 'center', justifyContent: 'center' }}>
+                      <E name={s.e} size={22} />
                     </View>
-                    <Text style={[text.label, { flex: 1, color: ink.text }]} numberOfLines={1}>
-                      Ditch Pro trial
-                    </Text>
-                    <Text style={[text.small, num]}>
-                      {yearly.priceString} · {shortDate(chargeDay)}
-                    </Text>
+                    {k < 2 ? <View style={{ width: 3, flex: 1, minHeight: 28, borderRadius: 2, backgroundColor: k === 0 ? C.kiwi : '#D9DBE1', marginVertical: 3 }} /> : null}
                   </View>
-                  <Text style={[text.small, { marginTop: 4 }]}>It goes in your list like any other sub.</Text>
-                </>
-              ) : (
-                <Pressable accessibilityRole="button" onPress={() => Linking.openSettings()} style={{ minHeight: 40, justifyContent: 'center' }}>
-                  <Text style={[text.label, { fontFamily: font.heavy, color: ink.teal }]}>Open Settings</Text>
-                </Pressable>
-              )}
-            </Step>
-            <Step emoji="💳" last when={weekdayDate(chargeDay)} title={`${yearly.priceString} charged, unless you cancel before.`} />
-            <Text style={[text.small, { marginTop: 10 }]}>Cancel at least 24 hours before, in Settings → your name → Subscriptions.</Text>
-          </View>
+                  <View style={{ flex: 1, paddingTop: 1, paddingBottom: k < 2 ? 12 : 0, gap: 2 }}>
+                    <Label style={{ fontSize: 15 }}>{s.when}</Label>
+                    <Small>{s.what}</Small>
+                    {k === 1 && remindersOn ? (
+                      <>
+                        <Row gap={8} style={{ marginTop: 8 }}>
+                          {([3, 2] as const).map((d) => (
+                            <Pressable
+                              key={d}
+                              accessibilityRole="radio"
+                              accessibilityState={{ selected: lead === d }}
+                              onPress={() => (tap(), setLead(d))}
+                              style={{ paddingHorizontal: 12, minHeight: 36, justifyContent: 'center', borderRadius: 18, backgroundColor: lead === d ? C.kiwiSoft : C.card, borderWidth: 1.5, borderColor: lead === d ? C.kiwi : C.line }}
+                            >
+                              <Text style={{ fontFamily: F.bold, fontSize: 13, color: lead === d ? C.kiwiInk : C.ink2 }}>
+                                {d} days before · {shortDate(addDays(charge, -d))}
+                              </Text>
+                            </Pressable>
+                          ))}
+                        </Row>
+                        <Row gap={10} style={{ marginTop: 10, backgroundColor: C.card, borderRadius: 14, padding: 10 }}>
+                          <View style={{ width: 30, height: 30, borderRadius: 8, backgroundColor: C.kiwiSoft, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+                            <Raccoon size={28} pose="idle" move="none" />
+                          </View>
+                          <View style={{ flex: 1 }}>
+                            <Text style={{ fontFamily: F.bold, fontSize: 14, color: C.ink }}>Ditch Pro trial</Text>
+                            <Tiny style={{ color: C.ink2 }}>Goes in your list like any other sub</Tiny>
+                          </View>
+                          <Tiny style={{ color: C.ink }}>
+                            {yearly.priceString} · {shortDate(charge)}
+                          </Tiny>
+                        </Row>
+                      </>
+                    ) : null}
+                    {k === 1 && !remindersOn ? (
+                      <Pressable accessibilityRole="button" onPress={() => Linking.openSettings()} style={{ minHeight: 40, justifyContent: 'center' }}>
+                        <Text style={{ fontFamily: F.bold, fontSize: 14, color: C.kiwiInk }}>Open Settings</Text>
+                      </Pressable>
+                    ) : null}
+                  </View>
+                </Row>
+              ))}
+            </View>
+          </Rise>
         ) : null}
 
-        <View style={styles.card}>
-          <Text style={[text.heading, { marginBottom: 10 }]}>What&apos;s in Pro</Text>
-          <View style={{ gap: 8 }}>
-            {PERKS.map((p) => (
-              <View key={p} style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                <View style={styles.tick}>
-                  <Text style={{ color: ink.white, fontFamily: font.black, fontSize: 12 }}>✓</Text>
-                </View>
-                <Text style={[text.bodyStrong, { flex: 1, fontSize: 15 }]}>{p}</Text>
-              </View>
-            ))}
-          </View>
-        </View>
-        <Text style={text.small}>Lifetime: everything in Pro, forever. Bank sync, if we add it, is a separate plan because it costs us money every month.</Text>
-        <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 18 }}>
-          <Text style={[text.small, { textDecorationLine: 'underline' }]}>Terms</Text>
-          <Text style={[text.small, { textDecorationLine: 'underline' }]}>Privacy</Text>
-        </View>
+        <Tiny center style={{ lineHeight: 17, color: C.ink2 }}>
+          {planId === 'yearly'
+            ? `Free for 7 days, then ${yearly.priceString} a year, billed on ${shortDate(charge)} and yearly after that unless you cancel at least 24 hours before.`
+            : planId === 'monthly'
+              ? `${monthly.priceString} a month, billed today and monthly until you cancel.`
+              : `${lifetime.priceString} once. Everything in Pro, forever. Bank sync, if we add it, is a separate plan because it costs us money every month.`}{' '}
+          Manage or cancel in Settings → your name → Subscriptions.
+        </Tiny>
+        <Row gap={18} style={{ justifyContent: 'center' }}>
+          {['Terms', 'Privacy'].map((l) => (
+            <Pressable key={l} accessibilityRole="link" hitSlop={8}>
+              <Text style={{ fontFamily: F.semi, fontSize: 13, color: C.ink2, textDecorationLine: 'underline' }}>{l}</Text>
+            </Pressable>
+          ))}
+        </Row>
       </ScrollView>
 
-      <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, 14) }]}>
-        <Btn label={cta} onPress={buy} />
-        <Text style={[text.bodyStrong, num, { textAlign: 'center', fontSize: 15 }]}>{under}</Text>
-        <Btn label={n > 3 ? 'Continue free: 3 reminders' : 'Continue free'} kind="secondary" onPress={leaveFree} />
-      </View>
-    </Screen>
-  );
-}
-
-function Radio({ on }: { on: boolean }) {
-  return <View style={[styles.radio, on && { borderColor: ink.teal }]}>{on ? <View style={styles.radioDot} /> : null}</View>;
-}
-
-function Price({ amount, per }: { amount: string; per: string }) {
-  return (
-    <Text style={[text.heading, num, { fontSize: 19 }]}>
-      {amount}
-      <Text style={[text.small, { fontSize: 13 }]}>{per}</Text>
-    </Text>
-  );
-}
-
-function Step({ emoji, when, title, hot, last, children }: { emoji: string; when: string; title: string; hot?: boolean; last?: boolean; children?: React.ReactNode }) {
-  return (
-    <View style={{ flexDirection: 'row', gap: 12 }}>
-      <View style={{ alignItems: 'center', width: 38 }}>
-        <View style={[styles.dot, hot && { backgroundColor: ink.teal, borderColor: ink.tealEdge }]}>
-          <Text allowFontScaling={false} style={{ fontSize: 17 }}>
-            {emoji}
+      <View style={{ paddingHorizontal: 20, paddingTop: 12, paddingBottom: insets.bottom + 10, gap: 8, backgroundColor: C.bg, borderTopWidth: 1, borderTopColor: C.line }}>
+        <Row gap={6} style={{ justifyContent: 'center' }}>
+          <Icon name="check" size={16} color={C.kiwi} weight={3} />
+          <Text style={{ fontFamily: F.semi, fontSize: 14, color: C.ink }}>
+            {trial ? `$0 today. Then ${yearly.priceString} a year from ${shortDate(charge)}.` : planId === 'monthly' ? `${monthly.priceString} today. Cancel anytime.` : `${lifetime.priceString} once. No renewal.`}
           </Text>
-        </View>
-        {!last ? <View style={styles.vline} /> : null}
-      </View>
-      <View style={{ flex: 1, paddingBottom: last ? 0 : 14 }}>
-        <Text style={[text.small, { fontFamily: font.heavy, color: ink.teal, letterSpacing: 0.4 }]}>{when.toUpperCase()}</Text>
-        <Text style={text.bodyStrong}>{title}</Text>
-        {children}
+        </Row>
+        <Btn label={trial ? 'Start my free week' : planId === 'monthly' ? `Subscribe for ${monthly.priceString}/month` : `Buy once for ${lifetime.priceString}`} onPress={buy} />
+        <Btn label={n > 3 ? 'Continue free: 3 reminders' : 'Continue free'} kind="ghost" small onPress={leaveFree} />
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  top: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 10, height: 50 },
-  iconBtn: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
-  restore: { minHeight: 44, justifyContent: 'center', paddingHorizontal: 8 },
-  header: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  logoRow: { flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', gap: 10 },
-  radio: { width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: ink.lineDark, alignItems: 'center', justifyContent: 'center' },
-  radioDot: { width: 12, height: 12, borderRadius: 6, backgroundColor: ink.teal },
-  badge: { backgroundColor: ink.lime, paddingHorizontal: 7, paddingVertical: 1, borderRadius: 7 },
-  badgeText: { fontFamily: font.black, fontSize: 10, color: '#1F3A0A', letterSpacing: 0.4 },
-  card: { borderWidth: 2, borderBottomWidth: 4, borderColor: ink.line, borderRadius: 20, padding: 14 },
-  dot: { width: 38, height: 38, borderRadius: 19, borderWidth: 2, borderBottomWidth: 4, borderColor: ink.line, backgroundColor: ink.white, alignItems: 'center', justifyContent: 'center' },
-  vline: { width: 3, flex: 1, backgroundColor: ink.line, borderRadius: 2, marginVertical: 2 },
-  chip: { paddingHorizontal: 10, paddingVertical: 6, minHeight: 36, justifyContent: 'center', borderRadius: 12, borderWidth: 2, borderBottomWidth: 3, borderColor: ink.line },
-  chipOn: { backgroundColor: ink.tealSoft, borderColor: ink.teal },
-  miniRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 8, padding: 8, borderRadius: 12, backgroundColor: ink.soft },
-  miniIcon: { width: 26, height: 26, borderRadius: 7, backgroundColor: ink.teal, alignItems: 'center', justifyContent: 'center' },
-  tick: { width: 22, height: 22, borderRadius: 11, backgroundColor: ink.teal, alignItems: 'center', justifyContent: 'center' },
-  footer: { position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: 18, paddingTop: 12, gap: 8, backgroundColor: ink.bg, borderTopWidth: 2, borderTopColor: ink.line },
-});
+function PlanCard({ on, onPress, tag, title, sub, price, per, save }: { on: boolean; onPress: () => void; tag?: string; title: string; sub: string; price: string; per: string; save?: string }) {
+  return (
+    <View>
+      <Press
+        role="radio"
+        selected={on}
+        label={`${title}, ${price} ${per}, ${sub}`}
+        onPress={onPress}
+        face={on ? '#F5FCFA' : C.card}
+        lip={on ? C.kiwi : C.line}
+        border={on ? C.kiwi : C.line}
+        bw={2}
+        radius={20}
+        inner={{ minHeight: 76, paddingHorizontal: 16, paddingVertical: 14, flexDirection: 'row', alignItems: 'center', gap: 14 }}
+      >
+        <View style={{ width: 24, height: 24, borderRadius: 12, borderWidth: on ? 0 : 2, borderColor: '#D3D5DB', backgroundColor: on ? C.kiwi : 'transparent', alignItems: 'center', justifyContent: 'center' }}>
+          {on ? <Icon name="check" size={14} color="#FFFFFF" weight={3.4} /> : null}
+        </View>
+        <View style={{ flex: 1, gap: 2 }}>
+          <Row gap={8}>
+            <Text style={{ fontFamily: F.display, fontSize: 18, color: C.ink }}>{title}</Text>
+            {save ? <Tag text={save} bg={C.limeSoft} color={C.limeInk} /> : null}
+          </Row>
+          <Small>{sub}</Small>
+        </View>
+        <View style={{ alignItems: 'flex-end' }}>
+          <Text style={{ fontFamily: F.display, fontSize: 21, color: C.ink }}>{price}</Text>
+          <Tiny>{per}</Tiny>
+        </View>
+      </Press>
+      {tag ? <Tag text={tag} bg={on ? C.kiwi : C.ink3} color="#FFFFFF" style={{ position: 'absolute', top: -10, left: 18 }} /> : null}
+    </View>
+  );
+}

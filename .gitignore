@@ -24,3 +24,8 @@ coverage/
 *.log
 .idea/
 .vscode/
+expo-env.d.ts
+.metro-health-check*
+*.jks
+*.pem
+.kotlin/

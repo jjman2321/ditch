@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Ditch v8 · Sunflower flow</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--sun:#FFCC2E;--ink:#16140F;--cream:#FBF7EE;--night:#12110E}
+*{box-sizing:border-box}
+body{margin:0;background:#E7E2D6;font-family:Inter,system-ui,sans-serif;color:var(--ink);letter-spacing:-.2px;-webkit-font-smoothing:antialiased}
+.stage{width:2700px;padding:56px 56px 40px}
+section{padding:24px 28px 64px;margin:0 -28px}
+section.darksec{background:#0B0A08;margin:0 -56px;padding:56px 56px 64px}
+section.darksec .sh h2,section.darksec .sh p,section.darksec .cap{color:#EDE6D6}
+.sh{margin-bottom:34px}
+.sh h2{font-family:Archivo;font-stretch:125%;font-weight:900;font-size:38px;letter-spacing:-1.2px;margin:0;line-height:1}
+.sh p{margin:8px 0 0;font-size:17px;color:#4A463E;max-width:1500px}
+.row{display:flex;gap:44px;flex-wrap:wrap}
+.cell{display:flex;flex-direction:column;align-items:center}
+.cap{font:600 15px Inter;color:#4A463E;margin-top:18px}
+
+/* ---------- phone + themes ---------- */
+.phone{width:393px;height:852px;border-radius:55px;position:relative;overflow:hidden;box-shadow:0 0 0 11px #121110,0 34px 70px rgba(40,30,0,.22);flex:none;background:var(--bg);color:var(--fg)}
+.phone.sun{--bg:#FFCC2E;--fg:#16140F;--fg2:#4B4220;--card:#fff;--cardfg:#16140F;--mute:#6B6559;--rule:rgba(22,20,15,.18);--hair:#EFE8D9;--cta:#16140F;--ctafg:#FFCC2E;--money:#16140F;--note:rgba(255,255,255,.97);--notefg:#1C1B19;--notemute:#6E6A62;--track:rgba(22,20,15,.16);--accent:#16140F;--onaccent:#FFCC2E}
+.phone.cream{--note:#fff;--notefg:#1C1B19;--notemute:#6E6A62;--bg:#FBF7EE;--fg:#16140F;--fg2:#5A544A;--card:#fff;--cardfg:#16140F;--mute:#6B6559;--rule:#E6DFD0;--hair:#EEE7D8;--cta:#16140F;--ctafg:#fff;--money:#16140F;--track:#E6DFD0;--accent:#FFCC2E;--onaccent:#16140F}
+.phone.dark{--bg:#12110E;--fg:#F6F0E3;--fg2:#BFB7A7;--card:#1E1C18;--cardfg:#F6F0E3;--mute:#A9A192;--rule:#33302A;--hair:#2B2823;--cta:#FFCC2E;--ctafg:#16140F;--money:#FFCC2E;--note:#25231E;--notefg:#F6F0E3;--notemute:#A9A192;--track:#33302A;--accent:#FFCC2E;--onaccent:#16140F;box-shadow:0 0 0 11px #2A2824,0 34px 70px rgba(0,0,0,.5)}
+.sb{position:absolute;top:0;left:0;right:0;height:54px;display:flex;align-items:center;justify-content:space-between;padding:6px 34px 0 50px;font:600 17px Inter;z-index:30;color:var(--fg)}
+.sb .isl{position:absolute;left:50%;top:11px;width:124px;height:36px;margin-left:-62px;background:#000;border-radius:20px}
+.sb .ic{display:flex;gap:6px;align-items:center}
+.hi{position:absolute;bottom:8px;left:50%;width:140px;height:5px;margin-left:-70px;border-radius:3px;background:var(--fg);z-index:30}
+.scr{position:absolute;inset:0;padding:54px 24px 34px;display:flex;flex-direction:column}
+
+/* ---------- type ---------- */
+.disp{font-family:Archivo;font-stretch:118%;font-weight:900;letter-spacing:-1.2px;margin:0}
+.wide{font-family:Archivo;font-stretch:110%;font-weight:800}
+.num{font-variant-numeric:tabular-nums lining-nums}
+.h2{font-family:Archivo;font-stretch:115%;font-weight:900;font-size:30px;line-height:32px;letter-spacing:-1px;margin:0}
+.lead{font-size:17px;line-height:24px;color:var(--fg2);margin:12px 0 0}
+.eyebrow{font:700 12.5px Inter;letter-spacing:1.3px;text-transform:uppercase;color:var(--mute)}
+.fine{font-size:13px;line-height:18px;text-align:center;margin:0;color:var(--fg2)}
+
+/* ---------- controls ---------- */
+.cta{height:56px;border-radius:28px;border:0;width:100%;background:var(--cta);color:var(--ctafg);font:600 17px Inter;letter-spacing:-.3px;display:flex;align-items:center;justify-content:center;gap:8px;flex:none}
+.sec{height:52px;border-radius:26px;width:100%;background:transparent;border:1.5px solid var(--fg);font:600 16px Inter;color:var(--fg);display:flex;align-items:center;justify-content:center;flex:none}
+.dark .sec{border-color:rgba(246,240,227,.45)}
+.txtbtn{height:44px;border:0;background:none;font:600 16px Inter;color:var(--fg);width:100%;flex:none}
+.nav{height:44px;display:flex;align-items:center;gap:12px;flex:none}
+.back{width:44px;height:44px;margin-left:-12px;display:flex;align-items:center;justify-content:center;flex:none}
+.steps{flex:1;display:flex;gap:5px}.steps i{flex:1;height:4px;border-radius:2px;background:var(--track)}.steps i.on{background:var(--fg)}
+.logo{border-radius:9px;display:block;flex:none;box-shadow:0 0 0 .5px rgba(0,0,0,.14)}
+.duckicon{background:#FFCC2E;overflow:hidden;position:relative;flex:none;box-shadow:0 0 0 .5px rgba(0,0,0,.14)}
+.duckicon img{position:absolute;display:block}
+.card{background:var(--card);color:var(--cardfg);border-radius:22px;box-shadow:0 1px 0 rgba(0,0,0,.03),0 8px 24px rgba(70,50,0,.08)}
+.dark .card{box-shadow:inset 0 0 0 1px #2C2924}
+.split{display:flex;border-top:2px solid var(--fg)}
+.split>div{flex:1;padding:10px 0 0}
+.split>div+div{padding-left:16px;border-left:1px solid var(--rule)}
+.split b{display:block;font-family:Archivo;font-stretch:110%;font-weight:800;font-size:22px;line-height:28px;color:var(--money)}
+.split span{font-size:14px;color:var(--fg2)}
+.dark .split{border-top-color:var(--rule)}
+
+/* notifications */
+.note{background:var(--note);border-radius:22px;padding:12px 14px 13px;display:flex;gap:11px;align-items:flex-start;box-shadow:0 10px 30px rgba(80,55,0,.16);color:var(--notefg)}
+.dark .note{box-shadow:inset 0 0 0 1px #34312B}
+.note .h{display:flex;justify-content:space-between;font-size:15px;font-weight:600;line-height:19px}
+.note .h span{font-weight:400;color:var(--notemute);font-size:13.5px}
+.note .m{font-size:15px;line-height:20px}
+
+/* timeline (shared: welcome, paywall, set) */
+.tl{display:flex;align-items:flex-start;position:relative}
+.tl .ln{position:absolute;left:12px;right:12px;top:11px;height:2px;background:repeating-linear-gradient(90deg,var(--tlc) 0 5px,transparent 5px 9px)}
+.tl .st{flex:1;display:flex;flex-direction:column;position:relative}
+.tl .st:nth-child(2){align-items:flex-start}.tl .st:nth-child(3){align-items:center}.tl .st:nth-child(4){align-items:flex-end;text-align:right}
+.tl .dot{width:24px;height:24px;border-radius:12px;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 2px var(--tlc);background:var(--tlbg)}
+.tl .dot.f{background:var(--tlc)}.tl .dot.y{background:#FFCC2E;box-shadow:inset 0 0 0 2px #16140F}
+.tl b{font-size:13.5px;margin-top:7px;white-space:nowrap;line-height:17px}
+.tl small{font-size:13px;white-space:nowrap;color:var(--tlm);line-height:17px}
+
+/* plans */
+.plan{background:var(--card);border-radius:16px;height:58px;display:flex;align-items:center;padding:0 16px 0 14px;gap:12px;box-shadow:inset 0 0 0 1.5px #D9D0BD;flex:none;color:var(--cardfg)}
+.dark .plan{box-shadow:inset 0 0 0 1.5px #3A3630}
+.plan.on{box-shadow:inset 0 0 0 2.5px var(--fg)}
+.dark .plan.on{box-shadow:inset 0 0 0 2.5px #FFCC2E}
+.radio{width:22px;height:22px;border-radius:11px;box-shadow:inset 0 0 0 2px #B9B09D;flex:none;display:flex;align-items:center;justify-content:center}
+.dark .radio{box-shadow:inset 0 0 0 2px #5A554C}
+.plan.on .radio{background:var(--fg);box-shadow:none}
+.dark .plan.on .radio{background:#FFCC2E}
+.plan .nm{flex:1;font-weight:600;font-size:16.5px;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.plan .pr{text-align:right;white-space:nowrap}
+.plan .pr b{display:block;font-family:Archivo;font-stretch:110%;font-weight:800;font-size:18px;letter-spacing:-.3px;line-height:21px}
+.plan .pr small{font-size:13px;color:var(--mute);line-height:16px}
+.tag{font:700 11.5px Inter;color:#16140F;background:#FFCC2E;border-radius:6px;padding:3px 7px}
+
+/* lists */
+.lrow{display:flex;align-items:center;gap:13px;height:58px;position:relative}
+.lrow+.lrow{border-top:1px solid var(--hair)}
+.lrow .n{flex:1;min-width:0}
+.lrow .n b{display:block;font-weight:600;font-size:16.5px;line-height:21px;white-space:nowrap}
+.lrow .n span{display:block;font-size:14px;color:var(--mute);line-height:19px;margin-top:1px;white-space:nowrap}
+.lrow .p{font-family:Archivo;font-stretch:108%;font-weight:700;font-size:17px;letter-spacing:-.2px;width:62px;text-align:right}
+.lrow.dim .n b,.lrow.dim .n span,.lrow.dim .p{color:#837D71}
+.dark .lrow.dim .n b,.dark .lrow.dim .n span,.dark .lrow.dim .p{color:#8E877A}
+.lrow.dim .logo,.lrow.dim .bellc{opacity:.55}
+.bellc{width:28px;display:flex;justify-content:center;flex:none}
+.grp{font:700 12.5px Inter;letter-spacing:1.3px;text-transform:uppercase;color:var(--mute);margin:14px 0 2px;height:20px;display:flex;align-items:center;justify-content:space-between}
+.tick{width:28px;height:28px;border-radius:14px;box-shadow:inset 0 0 0 2px #C4BBA8;flex:none;display:flex;align-items:center;justify-content:center}
+.tick.on{background:var(--ink);box-shadow:none}
+.chip{height:36px;padding:0 14px;border-radius:18px;background:#fff;box-shadow:inset 0 0 0 1.5px #E3DBCA;font-weight:600;font-size:14.5px;display:flex;align-items:center;white-space:nowrap;flex:none}
+.chip.on{background:var(--ink);color:#fff;box-shadow:none}
+.tabs{position:absolute;left:0;right:0;bottom:0;height:84px;background:var(--bg);border-top:1px solid var(--rule);display:flex;justify-content:space-around;padding:8px 30px 0;z-index:5}
+.tabs div{display:flex;flex-direction:column;align-items:center;gap:3px;font:600 11px Inter;color:var(--mute);width:72px}
+.tabs div.on{color:var(--fg)}
+.plus{width:44px;height:44px;border-radius:22px;background:var(--fg);display:flex;align-items:center;justify-content:center;margin-right:-4px}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.grid div{height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font:600 15.5px Inter;font-variant-numeric:tabular-nums;background:#fff;box-shadow:inset 0 0 0 1px #E6DFD0}
+.grid div.on{background:#FFCC2E;box-shadow:inset 0 0 0 2px #16140F;font-weight:800}
+.seg{display:flex;background:#EFE8D9;border-radius:12px;padding:3px;height:40px}
+.seg div{flex:1;display:flex;align-items:center;justify-content:center;border-radius:9px;font:600 14.5px Inter;color:#5A544A}
+.seg div.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+</style></head><body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- rubber stamp: uneven ink, speckle gaps, slightly chewed edges, a touch of ink spread -->
+    <filter id="stampInk" x="-6%" y="-12%" width="112%" height="124%" color-interpolation-filters="sRGB">
+      <!-- 1. ink spreads a hair into the paper -->
+      <feMorphology in="SourceGraphic" operator="dilate" radius=".45" result="spread"/>
+      <!-- 2. edges wobble like rubber pressed by hand -->
+      <feTurbulence type="fractalNoise" baseFrequency=".045 .07" numOctaves="2" seed="3" result="edgeN"/>
+      <feDisplacementMap in="spread" in2="edgeN" scale="2.2" xChannelSelector="R" yChannelSelector="G" result="wob"/>
+      <!-- 3. small dry-ink gaps: mostly solid, a few pinholes -->
+      <feTurbulence type="fractalNoise" baseFrequency=".32" numOctaves="3" seed="21" result="grain"/>
+      <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  20 0 0 0 -5.7" result="speckle"/>
+      <!-- 4. uneven pressure: big soft patches print lighter -->
+      <feTurbulence type="fractalNoise" baseFrequency=".008 .016" numOctaves="1" seed="14" result="press"/>
+      <feColorMatrix in="press" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  2.6 0 0 0 -.2" result="pressure"/>
+      <feComposite in="speckle" in2="pressure" operator="arithmetic" k1="1" k2="0" k3="0" k4="0" result="mask"/>
+      <feComposite in="wob" in2="mask" operator="in" result="inked"/>
+      <feGaussianBlur in="inked" stdDeviation=".22"/>
+    </filter>
+    <filter id="stampInkLite" x="-5%" y="-30%" width="110%" height="160%">
+      <feMorphology in="SourceGraphic" operator="dilate" radius=".3" result="s"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".02 .05" numOctaves="1" seed="5" result="n"/>
+      <feDisplacementMap in="s" in2="n" scale="1.2" xChannelSelector="R" yChannelSelector="G" result="w"/>
+      <feGaussianBlur in="w" stdDeviation=".2"/>
+    </filter>
+  </defs>
+</svg>
+
+<div class="stage" id="stage"></div>
+
+<script>
+const LG = '../../assets/logos/';
+const DUCK = 'duck.png', DUCKD = 'duck-dark.png';
+const INK = '#16140F', SUN = '#FFCC2E';
+
+/* ---------- small pieces ---------- */
+const sb = () => '<div class="sb"><span>9:41</span><div class="isl"></div><div class="ic">' +
+  '<svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>' +
+  '<svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 2.2c2.2 0 4.2.9 5.7 2.3l1.2-1.2C13.1 1.6 10.7.5 8 .5S2.9 1.6 1.1 3.3l1.2 1.2C3.8 3.1 5.8 2.2 8 2.2zm0 3.4c1.3 0 2.4.5 3.3 1.3l1.2-1.2C11.3 4.6 9.7 3.9 8 3.9s-3.3.7-4.5 1.8l1.2 1.2c.9-.8 2-1.3 3.3-1.3zM8 9l2-2c-.5-.5-1.2-.8-2-.8s-1.5.3-2 .8l2 2z"/></svg>' +
+  '<svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" stroke="currentColor" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="20" height="9" rx="2" fill="currentColor"/><path d="M25 4.5v4c.8-.3 1.4-1.1 1.4-2s-.6-1.7-1.4-2z" fill="currentColor" fill-opacity=".45"/></svg>' +
+  '</div></div>';
+const chev = (c = 'currentColor') => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="' + c + '" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const chevR = (c = 'currentColor', s = 18) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="' + c + '" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const ck = (c, s) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="' + c + '" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const bell = (c, s, fill) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none"><path d="M6 16V11a6 6 0 1112 0v5l1.6 2.2H4.4L6 16z" stroke="' + c + '" stroke-width="2" stroke-linejoin="round" fill="' + (fill || 'none') + '"/><path d="M10 20.5a2 2 0 004 0" stroke="' + c + '" stroke-width="2" stroke-linecap="round"/></svg>';
+const card$ = (c, s) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12.5" rx="2.5" stroke="' + c + '" stroke-width="2"/><path d="M3 10h18" stroke="' + c + '" stroke-width="2"/></svg>';
+const xI = (c) => '<svg width="13" height="13" viewBox="0 0 14 14"><path d="M2 2l10 10M12 2L2 12" stroke="' + c + '" stroke-width="2.2" stroke-linecap="round"/></svg>';
+const plusI = (c, s = 18) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 18 18"><path d="M9 2v14M2 9h14" stroke="' + c + '" stroke-width="2.6" stroke-linecap="round"/></svg>';
+const searchI = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="#6B6559" stroke-width="2.2"/><path d="M16 16l4 4" stroke="#6B6559" stroke-width="2.2" stroke-linecap="round"/></svg>';
+const logo = (id, s) => '<img class="logo" src="' + LG + id + '.png" width="' + s + '" height="' + s + '" alt="">';
+const dicon = (s) => '<div class="duckicon" style="width:' + s + 'px;height:' + s + 'px;border-radius:' + Math.round(s * .225) + 'px"><img src="' + DUCK + '" alt="" style="width:' + Math.round(s * 1.2) + 'px;left:' + Math.round(-s * .17) + 'px;bottom:' + Math.round(-s * .04) + 'px"></div>';
+const duck = (d, w, st) => '<img src="' + (d ? DUCKD : DUCK) + '" alt="Ditch the duck" style="position:absolute;display:block;width:' + w + 'px;' + st + '">';
+// duck peeking: returns top offset so the flat bottom sits `sink` px behind the next element
+const peekTop = (d, w, sink = 4) => -(Math.round(w * (d ? 367 / 620 : 357 / 600)) - sink);
+const tabs = (on) => '<div class="tabs">' +
+  '<div class="' + (on === 0 ? 'on' : '') + '"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>List</div>' +
+  '<div><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="15.5" rx="3" stroke="currentColor" stroke-width="2"/><path d="M3.5 10h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Calendar</div>' +
+  '<div><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Settings</div></div>';
+const steps = (n, of = 6) => '<div class="nav"><div class="back">' + chev() + '</div><div class="steps">' + Array.from({ length: of }, (_, i) => '<i class="' + (i < n ? 'on' : '') + '"></i>').join('') + '</div></div>';
+
+// Hand-made-looking stamp. Per-letter rotation + baseline jitter, a wobbly double border, dated line.
+function stamp(color, w) {
+  const rnd = (() => { let s = 7; return () => (s = (s * 16807) % 2147483647) / 2147483647; })();
+  const W = 300, H = 118;
+  const wob = (x, y, ww, hh, r, amp) => {
+    // rounded rect perimeter sampled every ~10px, nudged in/out
+    const pts = [];
+    const push = (px, py) => pts.push([px + (rnd() - .5) * amp, py + (rnd() - .5) * amp]);
+    for (let t = x + r; t <= x + ww - r; t += 11) push(t, y);
+    for (let a = -90; a <= 0; a += 30) push(x + ww - r + r * Math.cos(a * Math.PI / 180), y + r + r * Math.sin(a * Math.PI / 180));
+    for (let t = y + r; t <= y + hh - r; t += 11) push(x + ww, t);
+    for (let a = 0; a <= 90; a += 30) push(x + ww - r + r * Math.cos(a * Math.PI / 180), y + hh - r + r * Math.sin(a * Math.PI / 180));
+    for (let t = x + ww - r; t >= x + r; t -= 11) push(t, y + hh);
+    for (let a = 90; a <= 180; a += 30) push(x + r + r * Math.cos(a * Math.PI / 180), y + hh - r + r * Math.sin(a * Math.PI / 180));
+    for (let t = y + hh - r; t >= y + r; t -= 11) push(x, t);
+    for (let a = 180; a <= 270; a += 30) push(x + r + r * Math.cos(a * Math.PI / 180), y + r + r * Math.sin(a * Math.PI / 180));
+    return 'M' + pts.map((p) => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' L') + ' Z';
+  };
+  const letters = 'DITCHED'.split('');
+  const rot = letters.map(() => ((rnd() - .5) * 5).toFixed(1)).join(' ');
+  const dy = letters.map((_, i) => (i === 0 ? 0 : ((rnd() - .5) * 2.4).toFixed(1))).join(' ');
+  return '<svg width="' + w + '" height="' + Math.round(w * H / W) + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Ditched" style="display:block;overflow:visible;color:' + color + '">' +
+    '<g filter="url(#stampInk)" fill="currentColor" stroke="currentColor">' +
+    '<path d="' + wob(6, 6, W - 12, H - 12, 14, 2.2) + '" fill="none" stroke-width="7.5"/>' +
+    '<path d="' + wob(17, 17, W - 34, H - 34, 8, 1.6) + '" fill="none" stroke-width="2.6"/>' +
+    '<text x="34" y="70" stroke="none" rotate="' + rot + '" dy="' + dy + '" textLength="232" lengthAdjust="spacingAndGlyphs" style="font-family:Archivo;font-stretch:125%;font-weight:900;font-size:46px">DITCHED</text>' +
+    ''+
+    // ghost of a second, lighter hit: the stamp rocked a little
+    '<text x="35.2" y="71" stroke="none" opacity=".14" rotate="' + rot + '" dy="' + dy + '" textLength="232" lengthAdjust="spacingAndGlyphs" style="font-family:Archivo;font-stretch:125%;font-weight:900;font-size:46px">DITCHED</text>' +
+    '</g><text x="84" y="94" fill="currentColor" opacity=".9" filter="url(#stampInkLite)" textLength="134" lengthAdjust="spacing" style="font-family:Archivo;font-stretch:118%;font-weight:900;font-size:13.5px">NOV 9 · 2026</text></svg>';
+}
+
+/* ---------- data ---------- */
+const SUBS = {
+  chatgpt: ['chatgpt-plus', 'ChatGPT Plus', '20.00', '240.00', 240, 'Sat, Nov 21', 12],
+  netflix: ['netflix', 'Netflix', '17.99', '215.88', 215.88, 'Sat, Nov 14', 5],
+  amazon: ['amazon-prime', 'Amazon Prime', '14.99', '179.88', 179.88, 'Thu, Dec 3', 24],
+  youtube: ['youtube-premium', 'YouTube Premium', '13.99', '167.88', 167.88, 'Fri, Nov 27', 18],
+  spotify: ['spotify', 'Spotify', '11.99', '143.88', 143.88, 'Mon, Nov 16', 7],
+  disney: ['disney-plus', 'Disney+', '11.99', '143.88', 143.88, 'Wed, Nov 18', 9],
+};
+const REMIND = { chatgpt: 1, netflix: 1, amazon: 1 }; // the 3 biggest, picked on the free plan
+
+/* ---------- screens ---------- */
+const S = {};
+
+S.welcome = (d) => {
+  const tlv = d ? '--tlc:#F6F0E3;--tlbg:#12110E;--tlm:#A9A192' : '--tlc:#16140F;--tlbg:#FFCC2E;--tlm:#4B4220';
+  return [d ? 'dark' : 'sun', `
+<div class="scr">
+  <h1 class="disp" style="font-size:70px;line-height:63px;letter-spacing:-2.8px;margin-top:74px">Ditch it<br>before it<br>${d ? '<span style="color:#FFCC2E">renews.</span>' : 'renews.'}</h1>
+  <p class="lead" style="max-width:330px;margin-top:16px">See everything you pay for. Get a heads&#8209;up before every charge.</p>
+  <div style="flex:1"></div>
+  <div style="position:relative;flex:none">
+    ${duck(d, 146, 'right:14px;top:' + peekTop(d, 146, 6) + 'px')}
+    <div class="note" style="position:relative;z-index:2">
+      ${dicon(38)}
+      <div style="flex:1"><div class="h">Ditch<span>Wed 9:00 AM</span></div><div class="m">Netflix renews Saturday. $17.99. Still watching?</div></div>
+    </div>
+    <div style="position:relative;z-index:1;margin:-14px 12px 0;height:26px;border-radius:0 0 20px 20px;background:${d ? '#1C1A16' : 'rgba(255,255,255,.6)'};${d ? 'box-shadow:inset 0 0 0 1px #2C2924' : ''}"></div>
+  </div>
+  <div class="tl" style="${tlv};margin:18px 4px 0">
+    <div class="ln"></div>
+    <div class="st"><span class="dot f"${d ? ' style="background:#FFCC2E;box-shadow:none"' : ''}>${bell(d ? '#12110E' : '#FFCC2E', 13)}</span><b>Wed, 9:00 AM</b><small>Heads-up</small></div>
+    <div class="st"><span class="dot f"${d ? ' style="background:#FFCC2E;box-shadow:none"' : ''}>${bell(d ? '#12110E' : '#FFCC2E', 13)}</span><b>Fri, 9:00 AM</b><small>Heads-up</small></div>
+    <div class="st"><span class="dot">${card$(d ? '#F6F0E3' : '#16140F', 13)}</span><b>Sat, Nov 14</b><small>Netflix charges</small></div>
+  </div>
+  <div style="height:30px;flex:none"></div>
+  <button class="cta">See what I pay</button>
+  <p class="fine" style="margin-top:14px">Free forever for tracking · Your list stays on your phone</p>
+</div>`];
+};
+
+S.pick = () => {
+  const rows = [
+    ['netflix', 'Netflix', '17.99', 1], ['spotify', 'Spotify', '11.99', 1], ['chatgpt-plus', 'ChatGPT Plus', '20.00', 1],
+    ['amazon-prime', 'Amazon Prime', '14.99', 1], ['youtube-premium', 'YouTube Premium', '13.99', 1], ['disney-plus', 'Disney+', '11.99', 1],
+    ['max', 'Max', '16.99', 0], ['apple-music', 'Apple Music', '10.99', 0],
+  ].map((r) => `<div class="lrow">${logo(r[0], 40)}<div class="n"><b>${r[1]}</b><span class="num">about $${r[2]} a month</span></div><span class="tick ${r[3] ? 'on' : ''}">${r[3] ? ck('#FFCC2E', 15) : ''}</span></div>`).join('');
+  return ['cream', `
+<div class="scr" style="padding-bottom:0">
+  ${steps(1)}
+  <h1 class="h2" style="margin-top:12px">What do you pay for?</h1>
+  <div style="margin-top:16px;height:46px;border-radius:14px;background:#fff;box-shadow:inset 0 0 0 1.5px #E3DBCA;display:flex;align-items:center;gap:10px;padding:0 14px;font-size:16.5px;color:#6B6559;flex:none">${searchI}Search 44 services</div>
+  <div style="display:flex;gap:8px;margin:12px -24px 0 0;overflow:hidden;flex:none;-webkit-mask-image:linear-gradient(90deg,#000 80%,transparent)">
+    <span class="chip on">Popular</span><span class="chip">Streaming</span><span class="chip">Music</span><span class="chip">AI</span><span class="chip">Shopping</span>
+  </div>
+  <div style="margin-top:8px;flex:1;overflow:hidden;position:relative">${rows}</div>
+</div>
+<div style="position:absolute;left:0;right:0;bottom:0;padding:22px 24px 34px;background:linear-gradient(180deg,rgba(251,247,238,0),#FBF7EE 22px);z-index:4">
+  <div style="background:#FFCC2E;border-radius:18px;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;margin-bottom:10px">
+    <span style="font-size:15px;font-weight:600">6 picked</span>
+    <span class="num"><b class="wide" style="font-size:22px;letter-spacing:-.4px">$90.95</b><span style="font-size:15px;font-weight:600;margin-left:6px">a month</span></span>
+  </div>
+  <button class="cta">See my total</button>
+</div>`];
+};
+
+S.total = (d) => {
+  const list = ['chatgpt', 'netflix', 'amazon', 'youtube', 'spotify', 'disney'].map((k) => {
+    const s = SUBS[k];
+    return `<div style="display:flex;align-items:center;gap:12px;height:51px${k !== 'chatgpt' ? ';border-top:1px solid var(--hair)' : ''}">
+      ${logo(s[0], 30)}
+      <div style="flex:1;min-width:0"><div style="font-size:15px;font-weight:600;line-height:19px">${s[1]}</div>
+        <div style="height:5px;border-radius:3px;background:${d ? '#2E2B25' : '#F1EBDD'};margin-top:6px;width:150px"><div style="height:5px;border-radius:3px;background:${d ? '#FFCC2E' : '#16140F'};width:${(s[4] / 240 * 100).toFixed(1)}%"></div></div></div>
+      <span class="num wide" style="font-size:16px;font-weight:700">$${s[3]}</span></div>`;
+  }).join('');
+  return [d ? 'dark' : 'sun', `
+<div class="scr">
+  ${steps(2)}
+  <p style="margin:16px 0 0;font-size:17px;font-weight:600">Your 6 subscriptions cost</p>
+  <div class="disp num fit" data-max="345" style="font-size:118px;line-height:108px;letter-spacing:-5px;margin:2px 0 0 -4px;white-space:nowrap;align-self:flex-start;color:var(--money)">$1,091</div>
+  <div class="disp" style="font-size:30px;line-height:34px;letter-spacing:-.8px;margin-top:2px">a year.</div>
+  <div class="split" style="margin-top:16px"><div><b class="num">$90.95</b><span>a month</span></div><div><b class="num">$2.99</b><span>a day</span></div></div>
+  <div class="card" style="margin-top:18px;padding:4px 16px">
+    <div style="display:flex;justify-content:space-between;padding:10px 0 4px" class="eyebrow"><span>Where it goes</span><span>Per year</span></div>
+    ${list}
+  </div>
+  <div style="flex:1;min-height:12px"></div>
+  <p style="margin:0 0 14px;font-size:16px;line-height:22px;color:var(--fg2)">Bigger than you guessed? It usually is. Let’s make sure none of it surprises you.</p>
+  <button class="cta">Set my charge dates</button>
+</div>`];
+};
+
+S.dates = () => {
+  const days = Array.from({ length: 31 }, (_, i) => `<div class="${i + 1 === 14 ? 'on' : ''}">${i + 1}</div>`).join('');
+  return ['cream', `
+<div class="scr">
+  ${steps(3)}
+  <h1 class="h2" style="margin-top:12px">When does Netflix charge you?</h1>
+  <p class="lead" style="margin-top:8px;font-size:16px;line-height:22px">Check your last receipt. Close enough is fine.</p>
+  <div class="card" style="margin-top:16px;display:flex;align-items:center;gap:12px;padding:12px 14px">
+    ${logo('netflix', 42)}
+    <div style="flex:1"><b style="display:block;font-size:16.5px">Netflix</b><span style="font-size:13.5px;color:var(--mute)">2 of 6</span></div>
+    <span class="num" style="height:36px;border-radius:18px;background:#F4EEE1;display:flex;align-items:center;gap:6px;padding:0 13px;font-weight:600;font-size:15px">$17.99 a month <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M4 20h4L19 9l-4-4L4 16v4z" stroke="#16140F" stroke-width="2.2" stroke-linejoin="round"/></svg></span>
+  </div>
+  <div class="seg" style="margin-top:14px"><div class="on">Every month</div><div>Every year</div></div>
+  <div class="grid" style="margin-top:14px">${days}</div>
+  <div style="margin-top:14px;display:flex;flex-direction:column;gap:6px;font-size:15px;line-height:20px">
+    <div style="display:flex;gap:9px;align-items:center">${card$('#16140F', 17)}<span>Next charge <b>Sat, Nov 14</b>, then the 14th</span></div>
+    <div style="display:flex;gap:9px;align-items:center">${bell('#16140F', 17, '#FFCC2E')}<span>Heads-up <b>Wed, Nov 11</b> and <b>Fri, Nov 13</b></span></div>
+  </div>
+  <div style="flex:1"></div>
+  <button class="cta">Next: Amazon Prime</button>
+  <div style="display:flex;margin-top:4px"><button class="txtbtn" style="flex:1">Not sure</button><button class="txtbtn" style="flex:1;color:#5A544A">Skip</button></div>
+</div>`];
+};
+
+S.notify = () => ['cream', `
+<div class="scr">
+  ${steps(4)}
+  <h1 class="h2" style="margin-top:12px">A heads-up before every charge.</h1>
+  <p class="lead" style="margin-top:8px;font-size:16px;line-height:22px">3 days and 1 day before, at 9:00 AM. Nothing else. No ads, no nagging.</p>
+  <div style="margin-top:20px;flex:1;border-radius:34px;background:#FFCC2E;position:relative;overflow:hidden;padding:22px 14px 0;box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)">
+    <div style="text-align:center;color:#16140F">
+      <svg width="14" height="17" viewBox="0 0 14 17" fill="none" style="display:block;margin:0 auto 6px"><rect x="1" y="7" width="12" height="9" rx="2.2" fill="#16140F"/><path d="M3.8 7V5a3.2 3.2 0 016.4 0v2" stroke="#16140F" stroke-width="1.8"/></svg>
+      <div style="font:600 15px Inter">Friday, November 13</div>
+      <div style="font-family:Archivo;font-stretch:112%;font-weight:800;font-size:72px;line-height:76px;letter-spacing:-2px">9:00</div>
+    </div>
+    <div class="note" style="margin-top:16px;position:relative;z-index:2;box-shadow:0 8px 24px rgba(80,55,0,.18)">
+      ${dicon(38)}
+      <div style="flex:1"><div class="h">Ditch<span>now</span></div><div class="m">Netflix renews tomorrow. $17.99. Last call if you’re done with it.</div></div>
+    </div>
+    <div class="note" style="margin:8px 0 0;position:relative;z-index:1;background:rgba(255,255,255,.78);box-shadow:none">
+      ${dicon(38)}
+      <div style="flex:1"><div class="h">Ditch<span>Wed 9:00 AM</span></div><div class="m">Netflix renews Saturday. $17.99. Still watching?</div></div>
+    </div>
+    ${duck(false, 150, 'left:50%;margin-left:-75px;bottom:-4px')}
+    <span style="position:absolute;left:16px;bottom:16px;width:44px;height:44px;border-radius:22px;background:rgba(22,20,15,.14);display:flex;align-items:center;justify-content:center"><svg width="16" height="18" viewBox="0 0 16 18" fill="none"><path d="M4 1h8v4l-2 3v9H6V8L4 5V1z" stroke="#16140F" stroke-width="1.7" stroke-linejoin="round"/></svg></span>
+    <span style="position:absolute;right:16px;bottom:16px;width:44px;height:44px;border-radius:22px;background:rgba(22,20,15,.14);display:flex;align-items:center;justify-content:center"><svg width="20" height="17" viewBox="0 0 20 17" fill="none"><path d="M2 5.5A1.5 1.5 0 013.5 4h2.3L7.3 2h5.4l1.5 2h2.3A1.5 1.5 0 0118 5.5v8a1.5 1.5 0 01-1.5 1.5h-13A1.5 1.5 0 012 13.5v-8z" stroke="#16140F" stroke-width="1.7"/><circle cx="10" cy="9.3" r="3" stroke="#16140F" stroke-width="1.7"/></svg></span>
+  </div>
+  <button class="cta" style="margin-top:20px">Turn on reminders</button>
+  <button class="txtbtn" style="margin-top:4px">Maybe later</button>
+</div>`];
+
+S.paywall = (d) => {
+  const tlv = d ? '--tlc:#F6F0E3;--tlbg:#1E1C18;--tlm:#A9A192' : '--tlc:#16140F;--tlbg:#fff;--tlm:#6B6559';
+  return [d ? 'dark' : 'cream', `
+${d ? '' : '<div style="position:absolute;left:0;right:0;top:0;height:248px;background:#FFCC2E"></div>'}
+<div class="scr" style="padding-top:50px">
+  <div style="display:flex;justify-content:space-between;align-items:center;height:44px;flex:none">
+    <span class="eyebrow" style="color:var(--fg)">Ditch Pro</span>
+    <div style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;margin-right:-6px"><i style="width:32px;height:32px;border-radius:16px;background:${d ? '#2A2722' : 'rgba(22,20,15,.12)'};display:flex;align-items:center;justify-content:center">${xI(d ? '#F6F0E3' : '#16140F')}</i></div>
+  </div>
+  <h1 class="disp" style="font-size:31px;line-height:33px;letter-spacing:-1px;margin-top:4px">We’ll remind you before we charge you, too.</h1>
+  <div style="position:relative;margin-top:26px;flex:none">
+    ${duck(d, 88, 'right:18px;top:' + peekTop(d, 88, 0) + 'px')}
+    <div class="card" style="padding:14px 16px;position:relative">
+      <div style="display:flex;align-items:center;gap:12px">
+        ${dicon(40)}
+        <div style="flex:1"><b style="display:block;font-size:16px">Ditch Pro trial</b><span style="font-size:13.5px;color:var(--mute)">On your list, with a reminder like the rest</span></div>
+      </div>
+      <div class="tl" style="${tlv};margin-top:14px">
+        <div class="ln"></div>
+        <div class="st"><span class="dot f">${ck(d ? '#1E1C18' : '#fff', 13)}</span><b>Today</b><small>$0</small></div>
+        <div class="st"><span class="dot y">${bell('#16140F', 13)}</span><b>Sat, Nov 14</b><small>9 AM heads-up</small></div>
+        <div class="st"><span class="dot"></span><b>Mon, Nov 16</b><small class="num">$29.99</small></div>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:6px;margin:14px 2px 20px;font-size:15px;font-weight:500">
+    <div style="display:flex;gap:10px;align-items:center">${ck(d ? '#FFCC2E' : '#16140F', 17)}Reminders on all 6, not just 3</div>
+    <div style="display:flex;gap:10px;align-items:center">${ck(d ? '#FFCC2E' : '#16140F', 17)}Import, widget and iCloud backup</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div class="plan on"><span class="radio">${ck(d ? '#16140F' : '#fff', 13)}</span><span class="nm">Yearly <span class="tag">7 days free</span></span><span class="pr num"><b>$29.99/yr</b><small>$2.50 a month</small></span></div>
+    <div class="plan"><span class="radio"></span><span class="nm">Monthly</span><span class="pr num"><b>$4.99/mo</b><small>$59.88 a year</small></span></div>
+    <div class="plan"><span class="radio"></span><span class="nm">Lifetime</span><span class="pr num"><b>$49.99</b><small>Pay once</small></span></div>
+  </div>
+  <button class="cta" style="margin-top:14px">Start 7-day free trial</button>
+  <button class="sec" style="margin-top:8px">Continue free: reminders for 3</button>
+  <p class="fine num" style="margin-top:10px">$0 today, then $29.99/yr from Nov 16. Cancel anytime.</p>
+  <p class="fine" style="margin-top:2px"><u>Restore</u> · <u>Terms</u> · <u>Privacy</u></p>
+</div>`];
+};
+
+S.pick3 = () => {
+  const order = ['chatgpt', 'netflix', 'amazon', 'youtube', 'spotify', 'disney'];
+  const rows = order.map((k) => {
+    const s = SUBS[k], on = REMIND[k];
+    return `<div class="lrow" style="height:62px">${logo(s[0], 40)}<div class="n"><b>${s[1]}</b><span class="num">$${s[2]} a month · ${s[5]}</span></div>
+      <span style="width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center;flex:none;margin-right:-4px;${on ? 'background:#FFCC2E;box-shadow:inset 0 0 0 2px #16140F' : 'box-shadow:inset 0 0 0 1.5px #CFC6B3'}">${bell(on ? '#16140F' : '#8C8576', 19, on ? '#16140F' : 'none')}</span></div>`;
+  }).join('');
+  return ['cream', `
+<div class="scr">
+  ${steps(6)}
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-top:12px">
+    <h1 class="h2">Which 3 get reminders?</h1>
+  </div>
+  <p class="lead" style="margin-top:8px;font-size:16px;line-height:22px">Free covers 3. We picked your biggest. Tap a bell to swap.</p>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin:18px 0 4px">
+    <span class="eyebrow">Your 6</span>
+    <span style="height:30px;border-radius:15px;background:#FFCC2E;display:flex;align-items:center;gap:6px;padding:0 12px;font:700 13.5px Inter">${bell('#16140F', 14, '#16140F')}Reminders 3 of 3</span>
+  </div>
+  <div class="card" style="padding:2px 16px">${rows}</div>
+  <p style="margin:14px 2px 0;font-size:14px;line-height:20px;color:var(--fg2)">The other 3 stay on your list with real dates and totals. You just won’t get a heads-up.</p>
+  <div style="flex:1"></div>
+  <button class="cta">Save my 3</button>
+  <button class="txtbtn" style="margin-top:4px">Reminders on all 6 with Pro</button>
+</div>`];
+};
+
+S.set = () => ['sun', `
+<div class="scr">
+  <h1 class="disp" style="font-size:64px;line-height:60px;letter-spacing:-2.4px;margin-top:46px">You’re set.</h1>
+  <p class="lead" style="margin-top:12px">Ditch is keeping an eye on all 6. Here’s when you’ll hear from us first.</p>
+  <div style="flex:1;min-height:76px"></div>
+  <div style="position:relative;flex:none">
+    ${duck(false, 120, 'right:22px;top:' + peekTop(false, 120, 4) + 'px')}
+    <div class="card" style="padding:16px 18px;position:relative">
+      <div class="eyebrow">First heads-up</div>
+      <div class="wide num" style="font-size:26px;line-height:32px;letter-spacing:-.6px;margin-top:4px">Wed, Nov 11 · 9:00 AM</div>
+      <div style="font-size:15px;margin-top:2px;color:var(--mute)">Netflix renews Sat, Nov 14. <span class="num">$17.99</span>.</div>
+      <div style="margin-top:12px;padding-top:4px;border-top:1px solid var(--hair)">
+        ${[['netflix', 'Netflix', 'Wed, Nov 11'], ['chatgpt-plus', 'ChatGPT Plus', 'Wed, Nov 18'], ['amazon-prime', 'Amazon Prime', 'Mon, Nov 30']].map((r) => `<div style="display:flex;align-items:center;gap:10px;height:40px">${logo(r[0], 26)}<span style="flex:1;font-size:15px;font-weight:500">${r[1]}</span>${bell('#16140F', 15, '#FFCC2E')}<span class="num" style="font-size:14.5px;width:96px;text-align:right">${r[2]}</span></div>`).join('')}
+      </div>
+    </div>
+  </div>
+  <div class="split" style="margin-top:22px">
+    <div><b class="num">6</b><span>tracked</span></div>
+    <div><b class="num">3</b><span>with reminders</span></div>
+    <div><b class="num">$90.95</b><span>a month</span></div>
+  </div>
+  <div style="flex:1;min-height:24px"></div>
+  <button class="cta">Go to my list</button>
+</div>`];
+
+S.home = (d) => {
+  const R = 24, C = 2 * Math.PI * R;
+  const bellCol = (k) => '<span class="bellc">' + (REMIND[k] ? bell(d ? '#FFCC2E' : '#16140F', 18, d ? '#FFCC2E' : '#FFCC2E') : bell(d ? '#5E584E' : '#A39B8A', 18)) + '</span>';
+  const row = (k) => { const s = SUBS[k]; return `<div class="lrow dim">${logo(s[0], 38)}<div class="n"><b>${s[1]}</b><span>${s[5]} · in ${s[6]} days</span></div>${bellCol(k)}<span class="p num">$${s[2]}</span></div>`; };
+  const n = SUBS.netflix;
+  const lifted = `
+  <div style="margin:4px -10px 0;border-radius:20px;padding:10px 10px 10px;${d ? 'background:#2A2721;box-shadow:inset 0 0 0 1.5px #FFCC2E,0 16px 34px rgba(0,0,0,.5)' : 'background:#FFCC2E;box-shadow:0 14px 30px rgba(90,60,0,.22)'};transform:scale(1.0);position:relative;z-index:2">
+    <div style="display:flex;align-items:center;gap:13px;height:52px">
+      <div style="position:relative;width:52px;height:52px;flex:none">
+        <svg width="52" height="52" viewBox="0 0 52 52" style="position:absolute;inset:0;transform:rotate(-90deg)">
+          <circle cx="26" cy="26" r="${R}" stroke="${d ? 'rgba(255,255,255,.16)' : 'rgba(22,20,15,.16)'}" stroke-width="3.5" fill="none"/>
+          <circle cx="26" cy="26" r="${R}" stroke="${d ? '#FFCC2E' : '#16140F'}" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C * .34).toFixed(1)}"/>
+        </svg>
+        <div style="position:absolute;left:7px;top:7px">${logo('netflix', 38)}</div>
+      </div>
+      <div class="n" style="flex:1;min-width:0"><b style="display:block;font-weight:600;font-size:16.5px;line-height:21px">Netflix</b><span style="display:block;font-size:14px;line-height:19px;color:${d ? '#FFCC2E' : '#16140F'};font-weight:600">Keep holding to ditch</span></div>
+      <span class="bellc">${bell(d ? '#FFCC2E' : '#16140F', 18, d ? '#FFCC2E' : '#16140F')}</span>
+      <div style="text-align:right;width:76px"><div class="num wide" style="font-size:17px;font-weight:700">$${n[2]}</div><div style="font-size:13px;color:${d ? '#BFB7A7' : '#4B4220'}">Sat, Nov 14</div></div>
+    </div>
+    <div style="margin-top:10px;border-radius:13px;padding:10px 12px;font-size:14.5px;line-height:19px;${d ? 'background:#1E1C18;color:#E4DDCF' : 'background:rgba(255,255,255,.72);color:#16140F'}">Ditching saves <b class="num">$215.88 a year</b>.<br>Let go to keep it.</div>
+  </div>`;
+  return [d ? 'dark' : 'cream', `
+<div class="scr" style="padding-bottom:84px">
+  <div style="display:flex;justify-content:space-between;align-items:center;height:48px;flex:none">
+    <span class="eyebrow">Mon, Nov 9</span>
+    <div class="plus" style="background:${d ? '#FFCC2E' : '#16140F'}">${plusI(d ? '#16140F' : '#FFCC2E')}</div>
+  </div>
+  <div style="border-radius:22px;padding:14px 18px 13px;flex:none;${d ? 'background:#1E1C18;box-shadow:inset 0 0 0 1px #2C2924' : 'background:#FFCC2E'}">
+    <div style="display:flex;align-items:baseline;gap:8px">
+      <span class="disp num" style="font-size:48px;line-height:52px;letter-spacing:-2.2px;color:var(--money)">$90.95</span><span style="font-size:17px;font-weight:600">a month</span>
+    </div>
+    <div class="num" style="display:flex;gap:6px;align-items:center;margin-top:6px;padding-top:9px;border-top:1px solid ${d ? '#33302A' : 'rgba(22,20,15,.18)'};font-size:14px;font-weight:500">
+      <span><b>$1,091</b> a year</span><span>·</span>${bell(d ? '#FFCC2E' : '#16140F', 14, d ? '#FFCC2E' : '#16140F')}<span>Reminders on <b>3 of 6</b></span>
+    </div>
+  </div>
+  <div class="grp" style="margin-top:16px"><span>This week</span></div>
+  ${lifted}
+  <div class="grp"><span>Next week</span></div>
+  ${row('spotify')}${row('disney')}${row('chatgpt')}
+  <div class="grp"><span>Later</span></div>
+  ${row('youtube')}${row('amazon')}
+</div>
+${tabs(0)}`];
+};
+
+S.ditched = (d) => [d ? 'dark' : 'sun', `
+<div class="scr">
+  <div style="flex:1;min-height:70px"></div>
+  <div style="position:relative;flex:none">
+    ${duck(d, 116, 'left:20px;top:' + peekTop(d, 116, 4) + 'px')}
+    <div class="card" style="position:relative;display:flex;align-items:center;gap:13px;padding:13px 16px">
+      ${logo('netflix', 40)}
+      <div style="flex:1"><b style="display:block;font-size:16.5px;color:${d ? '#A9A192' : '#6B6559'};text-decoration:line-through;text-decoration-thickness:1.5px">Netflix</b><span class="num" style="font-size:14px;color:${d ? '#A9A192' : '#6B6559'}">$17.99 a month · reminders off</span></div>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:center;margin:30px 0 30px;transform:rotate(-6deg);flex:none" data-noaudit>${stamp(d ? '#FFCC2E' : '#16140F', 300)}</div>
+  <div style="text-align:center;flex:none">
+    <div class="disp num fit" data-max="330" style="font-size:72px;line-height:72px;letter-spacing:-3px;white-space:nowrap;display:inline-block;color:var(--money)">+$215.88</div>
+    <div class="disp" style="font-size:22px;line-height:28px;letter-spacing:-.4px">a year back.</div>
+    <div style="font-size:15.5px;margin-top:8px;color:var(--fg)">You’ve kept <b class="num">$431</b> since June.</div>
+  </div>
+  <div class="split" style="margin-top:20px"><div><b class="num">$72.96</b><span>new total a month</span></div><div><b class="num" style="color:var(--fg2)">$90.95</b><span>was</span></div></div>
+  <div style="flex:1;min-height:18px"></div>
+  <div class="card" style="display:flex;align-items:center;gap:12px;padding:13px 14px 13px 18px;margin-bottom:12px">
+    <div style="flex:1"><b style="display:block;font-size:16.5px;line-height:21px">Now cancel it in Netflix</b><span style="display:block;font-size:14px;line-height:19px;color:var(--mute)">So Saturday’s $17.99 doesn’t go through.</span><span style="display:block;font-size:14px;line-height:19px;margin-top:4px;font-weight:600">Account → Cancel membership · 1 min</span></div>
+    ${chevR(d ? '#F6F0E3' : '#16140F')}
+  </div>
+  <div style="display:flex;gap:10px">
+    <button class="sec" style="height:56px;border-radius:28px;width:120px;flex:none">Undo</button>
+    <button class="cta" style="flex:1;width:auto">Done</button>
+  </div>
+</div>`];
+
+S.empty = () => {
+  const quick = [['netflix', 'Netflix'], ['spotify', 'Spotify'], ['chatgpt-plus', 'ChatGPT'], ['amazon-prime', 'Prime'], ['youtube-premium', 'YouTube'], ['disney-plus', 'Disney+'], ['max', 'Max'], ['apple-music', 'Music']]
+    .map((q) => `<div style="display:flex;flex-direction:column;align-items:center;gap:6px;width:72px"><div style="position:relative">${logo(q[0], 52)}<span style="position:absolute;right:-6px;bottom:-6px;width:22px;height:22px;border-radius:11px;background:#16140F;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #FBF7EE">${plusI('#FFCC2E', 10)}</span></div><span style="font-size:13px;font-weight:500">${q[1]}</span></div>`).join('');
+  return ['cream', `
+<div class="scr" style="padding-bottom:84px">
+  <div style="display:flex;justify-content:space-between;align-items:center;height:48px;flex:none">
+    <span class="eyebrow">Mon, Nov 9</span>
+    <div class="plus">${plusI('#FFCC2E')}</div>
+  </div>
+  <div style="flex:1;min-height:20px"></div>
+  <div style="position:relative;flex:none">
+    ${duck(false, 128, 'left:50%;margin-left:-64px;top:' + peekTop(false, 128, 4) + 'px')}
+    <div style="position:relative;background:#FFCC2E;border-radius:24px;padding:24px 22px 22px;text-align:center">
+      <h2 class="disp" style="font-size:32px;line-height:33px;letter-spacing:-1px">Nothing to<br>watch yet.</h2>
+      <p style="margin:10px auto 0;font-size:16px;line-height:22px;color:#4B4220;max-width:290px">Add what you pay for. Ditch gives you a heads-up before each charge.</p>
+      <button class="cta" style="margin-top:18px">${plusI('#FFCC2E', 15)}Add a subscription</button>
+    </div>
+  </div>
+  <div class="grp" style="margin-top:26px"><span>Quick add</span></div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px 0;justify-items:center;margin-top:8px">${quick}</div>
+  <div style="flex:1;min-height:20px"></div>
+</div>
+${tabs(0)}`];
+};
+
+/* ---------- board ---------- */
+const sections = [
+  ['light-a', 'Light · Onboarding', 'Sunflower brand moments, calm cream for work. One heads-up timeline motif runs through Welcome, Charge dates, Paywall and You’re set.', [
+    ['01-welcome', '1 · Welcome', S.welcome(false)], ['02-pick', '2 · What do you pay for?', S.pick()], ['03-total', '3 · Your total', S.total(false)],
+    ['04-dates', '4 · Charge dates', S.dates()], ['05-reminders', '5 · Reminders pre-ask', S.notify()], ['06-paywall', '6 · Paywall', S.paywall(false)]]],
+  ['light-b', 'Light · Free path and everyday', 'Free path after “Continue free”, then Home, the hold, the stamp and the empty state.', [
+    ['07-pick3', '7 · Which 3 get reminders?', S.pick3()], ['08-set', '8 · You’re set', S.set()], ['09-home-hold', '9 · Home, holding Netflix', S.home(false)],
+    ['10-ditched', '10 · Ditched', S.ditched(false)], ['11-empty', '11 · Home, empty', S.empty()]]],
+  ['dark', 'Dark mode', 'Warm ink canvas. Sunflower only for big money, the CTA and key fills. The duck gets a thin cream sticker edge so its outline reads at night.', [
+    ['d01-welcome', '1 · Welcome (dark)', S.welcome(true)], ['d03-total', '3 · Your total (dark)', S.total(true)], ['d06-paywall', '6 · Paywall (dark)', S.paywall(true)],
+    ['d09-home-hold', '9 · Home, holding (dark)', S.home(true)], ['d10-ditched', '10 · Ditched (dark)', S.ditched(true)]]],
+];
+document.getElementById('stage').innerHTML = sections.map((s) =>
+  '<section data-name="' + s[0] + '" class="' + (s[0] === 'dark' ? 'darksec' : '') + '"><div class="sh"><h2>' + s[1] + '</h2><p>' + s[2] + '</p></div><div class="row">' +
+  s[3].map((p) => '<div class="cell"><div class="phone ' + p[2][0] + '" data-name="' + p[0] + '">' + sb() + p[2][1] + '<div class="hi"></div></div><div class="cap">' + p[1] + '</div></div>').join('') +
+  '</div></section>').join('');
+
+// shrink-to-fit, like adjustsFontSizeToFitWidth
+document.fonts.ready.then(() => document.querySelectorAll('.fit').forEach((el) => {
+  const max = +el.dataset.max; let f = parseFloat(getComputedStyle(el).fontSize);
+  while (el.getBoundingClientRect().width > max && f > 20) { f -= 1; el.style.fontSize = f + 'px'; el.style.lineHeight = Math.round(f * .95) + 'px'; }
+}));
+</script>
+</body></html>

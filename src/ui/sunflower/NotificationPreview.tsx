@@ -52,7 +52,7 @@ export function NotificationPreview({
             {time}
           </Txt>
         </View>
-        <Txt v="body" color={p.noteFg} num>
+        <Txt v="body" color={p.noteFg}>
           {message}
         </Txt>
       </View>

@@ -8,7 +8,7 @@ import { View } from 'react-native';
 import { addDays, toDateOnly, weekdayDate } from '@/domain/dates';
 import { buildSetSummary } from '@/onboarding/summary';
 import { planById } from '@/services/purchases';
-import { chargeOf, useOnboarding, usePickedList, useRemindedIds } from '@/state/onboarding';
+import { byYearlyDesc, chargeOf, useOnboarding, usePickedList, useRemindedIds } from '@/state/onboarding';
 import { Button, Card, Duck, DuckIcon, LogoTile, ProLockup, Screen, Txt, usePalette } from '@/ui/sunflower';
 
 export default function Done() {
@@ -23,7 +23,7 @@ export default function Done() {
   const s = useMemo(
     () =>
       buildSetSummary({
-        subs: list.map((x) => ({ id: x.id, name: x.name, charge: chargeOf(x, today), guess: x.dateSource === 'guess' })),
+        subs: [...list].sort(byYearlyDesc).map((x) => ({ id: x.id, name: x.name, charge: chargeOf(x, today), guess: x.dateSource === 'guess' })),
         remindedIds,
         trialCharge: trial,
         pro: !!pro,

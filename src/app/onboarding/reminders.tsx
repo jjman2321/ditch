@@ -11,16 +11,17 @@ import { SERVICE_BY_ID } from '@/catalog/services';
 import { stillUsingIt } from '@/domain/copy';
 import { addDays, longDate, toDateOnly, weekdayName, weekdayShort } from '@/domain/dates';
 import { formatMoney } from '@/domain/money';
-import { byYearlyDesc, chargeOf, useOnboarding, usePickedList } from '@/state/onboarding';
+import { chargeOf, useOnboarding, usePickedList, type Picked } from '@/state/onboarding';
 import { Button, Camera, Duck, F, Flashlight, ForceLightContext, Lock, NotificationPreview, Screen, StepHeader, Txt, brand } from '@/ui/sunflower';
 
-/** The pick whose reminder makes the best example: a real date first, then the biggest. */
+/** The example: the soonest real date (2+ days out), else the soonest guess. */
 function useExample() {
   const list = usePickedList();
   const today = toDateOnly();
   return useMemo(() => {
     const ok = list.filter((x) => chargeOf(x, today) >= addDays(today, 2));
-    const pick = ok.filter((x) => x.dateSource !== 'guess').sort(byYearlyDesc)[0] ?? ok.sort(byYearlyDesc)[0];
+    const soonest = (a: Picked, b: Picked) => (chargeOf(a, today) < chargeOf(b, today) ? -1 : 1);
+    const pick = ok.filter((x) => x.dateSource !== 'guess').sort(soonest)[0] ?? [...ok].sort(soonest)[0];
     if (pick) {
       return {
         name: pick.name,

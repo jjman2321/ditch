@@ -9,16 +9,16 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { EDGE, SurfaceContext, paletteFor, type Surface } from './tokens';
 
+// Read once at start-up, before the router rewrites the URL.
+const FAKE_PHONE = Platform.OS === 'web' && typeof window !== 'undefined' && !!window.location?.search.includes('phone');
+
 /**
- * Safe-area insets. On the web preview, `?phone` in the URL fakes an
+ * Safe-area insets. On the web preview, `?phone` in the first URL fakes an
  * iPhone 15's insets (54 top, 34 bottom) so screenshots match the design.
  */
 export function useInsets() {
   const insets = useSafeAreaInsets();
-  if (Platform.OS === 'web' && typeof window !== 'undefined' && window.location?.search.includes('phone')) {
-    return { ...insets, top: 54, bottom: 34 };
-  }
-  return insets;
+  return FAKE_PHONE ? { ...insets, top: 54, bottom: 34 } : insets;
 }
 
 export function Screen({
@@ -47,7 +47,7 @@ export function Screen({
   const insets = useInsets();
   const bottom = Math.max(insets.bottom, 16);
   const body = (
-    <View style={[{ flexGrow: 1, paddingHorizontal: EDGE, paddingTop: insets.top + (topPad ?? 0), paddingBottom: footer ? 8 : bottom }, contentStyle]}>
+    <View style={[{ flexGrow: 1, flex: scroll ? undefined : 1, paddingHorizontal: EDGE, paddingTop: insets.top + (topPad ?? 0), paddingBottom: footer ? 8 : bottom }, contentStyle]}>
       {children}
     </View>
   );

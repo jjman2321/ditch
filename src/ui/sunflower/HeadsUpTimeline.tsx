@@ -103,7 +103,7 @@ export function HeadsUpTimeline({
             <Txt v="label" color={line} numberOfLines={1} style={{ fontFamily: 'Inter_700Bold', fontSize: t, lineHeight: 17, marginTop: 7, textAlign }} maxFontSizeMultiplier={1.25}>
               {st.title}
             </Txt>
-            <Txt v="sub" color={subColor} num numberOfLines={1} style={{ fontSize: s, lineHeight: 17, textAlign }} maxFontSizeMultiplier={1.25}>
+            <Txt v="sub" color={subColor} numberOfLines={1} style={{ fontSize: s, lineHeight: 17, textAlign }} maxFontSizeMultiplier={1.25}>
               {st.sub}
             </Txt>
           </View>

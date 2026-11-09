@@ -1,0 +1,3320 @@
+{
+ "about": {
+  "what": "Per-country subscription prices for Ditch's catalog, checked by hand-run scripts on official pricing pages.",
+  "checked": "2026-11-09",
+  "amounts": "amountMinor is in the currency's minor unit (cents, pence; INR paise). 1999 = 19.99. Prices are the regular price after any free trial or intro offer.",
+  "status": {
+   "verified": "Read today from the official page in 'source'.",
+   "partial": "Some plans read from the official page; others missing (see note).",
+   "unverified": "Not read from an official page. Secondary source only. Don't ship without checking."
+  },
+  "taxes": "US prices exclude sales tax. UK, EU, AU, NZ and IN prices include VAT/GST.",
+  "serviceIds": "Match src/catalog/services.ts ids.",
+  "countries": {
+   "US": "USD",
+   "GB": "GBP",
+   "CA": "CAD",
+   "AU": "AUD",
+   "IE": "EUR",
+   "NZ": "NZD",
+   "DE": "EUR",
+   "NL": "EUR",
+   "FR": "EUR",
+   "IT": "EUR",
+   "ES": "EUR",
+   "IN": "INR"
+  }
+ },
+ "prices": [
+  {
+   "serviceId": "netflix",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard with ads",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2699,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/us",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "netflix",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard with adverts",
+     "amountMinor": 799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1399,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2099,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/gb",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "netflix",
+   "country": "CA",
+   "currency": "CAD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard with ads",
+     "amountMinor": 799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1899,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2399,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/ca",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "netflix",
+   "country": "AU",
+   "currency": "AUD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard with ads",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 2099,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2899,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/au",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "netflix",
+   "country": "IE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic",
+     "name": "Basic",
+     "amountMinor": 1199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1899,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2599,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/ie",
+   "checked": "2026-11-09",
+   "note": "No ad tier listed for this country."
+  },
+  {
+   "serviceId": "netflix",
+   "country": "NZ",
+   "currency": "NZD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic",
+     "name": "Basic",
+     "amountMinor": 1799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 2599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 3399,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/nz",
+   "checked": "2026-11-09",
+   "note": "No ad tier listed for this country."
+  },
+  {
+   "serviceId": "netflix",
+   "country": "DE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard with ads",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2199,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/de",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "netflix",
+   "country": "NL",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic",
+     "name": "Basic",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2099,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/nl",
+   "checked": "2026-11-09",
+   "note": "No ad tier listed for this country."
+  },
+  {
+   "serviceId": "netflix",
+   "country": "FR",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard with ads",
+     "amountMinor": 799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2199,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/fr",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "netflix",
+   "country": "IT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard with ads",
+     "amountMinor": 799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2199,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/it",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "netflix",
+   "country": "ES",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard with ads",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2199,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/es",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "netflix",
+   "country": "IN",
+   "currency": "INR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "mobile",
+     "name": "Mobile",
+     "amountMinor": 14900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "basic",
+     "name": "Basic",
+     "amountMinor": 19900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 49900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 64900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/in",
+   "checked": "2026-11-09",
+   "note": "Plan set differs: Mobile and Basic, no ad tier."
+  },
+  {
+   "serviceId": "spotify",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 1899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 2199,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/us/premium/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "spotify",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 1799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 2199,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/uk/premium/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "spotify",
+   "country": "CA",
+   "currency": "CAD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 1399,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 2399,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/ca/premium/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "spotify",
+   "country": "AU",
+   "currency": "AUD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 1599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 2299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 2799,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/au/premium/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "spotify",
+   "country": "IE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 1899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 2299,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/ie/premium/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "spotify",
+   "country": "NZ",
+   "currency": "NZD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 2099,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 2899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 3399,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/nz/premium/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "spotify",
+   "country": "DE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 1799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 2199,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/de/premium/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "spotify",
+   "country": "NL",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 1399,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 2399,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/nl/premium/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "spotify",
+   "country": "FR",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 1214,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 1720,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 2124,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/fr/premium/",
+   "checked": "2026-11-09",
+   "note": "France's prices include a local tax, hence the odd cents."
+  },
+  {
+   "serviceId": "spotify",
+   "country": "IT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 1699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 2099,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/it/premium/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "spotify",
+   "country": "ES",
+   "currency": "EUR",
+   "status": "partial",
+   "plans": [
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 1699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 2099,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/es/premium/",
+   "checked": "2026-11-09",
+   "note": "Individual price was not in the page text; not verified."
+  },
+  {
+   "serviceId": "spotify",
+   "country": "IN",
+   "currency": "INR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard",
+     "name": "Premium Standard",
+     "amountMinor": 13900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "platinum",
+     "name": "Premium Platinum",
+     "amountMinor": 29900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/in/premium/",
+   "checked": "2026-11-09",
+   "note": "India uses different plan names (Standard, Platinum; Lite not checked)."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 99,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 2999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 5999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "icloud",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 99,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 2699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 5499,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "icloud",
+   "country": "CA",
+   "currency": "CAD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 129,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 399,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 3999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 7999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "icloud",
+   "country": "AU",
+   "currency": "AUD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 149,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 449,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 1499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 4499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 8999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "icloud",
+   "country": "NZ",
+   "currency": "NZD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 5999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 11999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "icloud",
+   "country": "IN",
+   "currency": "INR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 7500,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 21900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 74900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 299900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 590000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "icloud",
+   "country": "IE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 99,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 2999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 5999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-09",
+   "note": "Apple lists one 'Euro' row for euro countries."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "DE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 99,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 2999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 5999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-09",
+   "note": "Apple lists one 'Euro' row for euro countries."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "NL",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 99,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 2999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 5999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-09",
+   "note": "Apple lists one 'Euro' row for euro countries."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "FR",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 99,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 2999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 5999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-09",
+   "note": "Apple lists one 'Euro' row for euro countries."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "IT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 99,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 2999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 5999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-09",
+   "note": "Apple lists one 'Euro' row for euro countries."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "ES",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 99,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 2999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 5999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-09",
+   "note": "Apple lists one 'Euro' row for euro countries."
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/apple-music/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 599,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/uk/apple-music/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "CA",
+   "currency": "CAD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 599,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/ca/apple-music/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "AU",
+   "currency": "AUD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 2399,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 799,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/au/apple-music/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "IE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/ie/apple-music/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "NZ",
+   "currency": "NZD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1849,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 2999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 1049,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/nz/apple-music/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "IN",
+   "currency": "INR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 13900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 22900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 6900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/in/apple-music/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "DE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/de/apple-music/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "NL",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/nl/apple-music/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "FR",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/fr/apple-music/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "IT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/it/apple-music/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "ES",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/es/apple-music/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-tv",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple TV",
+     "amountMinor": 1499,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/apple-tv/",
+   "checked": "2026-11-09",
+   "note": "Apple renamed Apple TV+ to Apple TV."
+  },
+  {
+   "serviceId": "apple-tv",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple TV",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/uk/apple-tv/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-tv",
+   "country": "CA",
+   "currency": "CAD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple TV",
+     "amountMinor": 1499,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/ca/apple-tv/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-tv",
+   "country": "AU",
+   "currency": "AUD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple TV",
+     "amountMinor": 1599,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/au/apple-tv/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-tv",
+   "country": "IE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple TV",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/ie/apple-tv/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-tv",
+   "country": "NZ",
+   "currency": "NZD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple TV",
+     "amountMinor": 1799,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/nz/apple-tv/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-tv",
+   "country": "DE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple TV",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/de/apple-tv/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-tv",
+   "country": "NL",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple TV",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/nl/apple-tv/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-tv",
+   "country": "FR",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple TV",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/fr/apple-tv/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-tv",
+   "country": "IT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple TV",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/it/apple-tv/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-tv",
+   "country": "ES",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple TV",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/es/apple-tv/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-arcade",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 4999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/apple-arcade/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-arcade",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 4999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/uk/apple-arcade/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-arcade",
+   "country": "CA",
+   "currency": "CAD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 899,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/ca/apple-arcade/",
+   "checked": "2026-11-09",
+   "note": "Yearly price not shown on the Canada page."
+  },
+  {
+   "serviceId": "apple-arcade",
+   "country": "AU",
+   "currency": "AUD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 7999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/au/apple-arcade/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-arcade",
+   "country": "IE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 4999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/ie/apple-arcade/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-arcade",
+   "country": "NZ",
+   "currency": "NZD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 8999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/nz/apple-arcade/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-arcade",
+   "country": "DE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 4999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/de/apple-arcade/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-arcade",
+   "country": "NL",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 4999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/nl/apple-arcade/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-arcade",
+   "country": "FR",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 4999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/fr/apple-arcade/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-arcade",
+   "country": "IT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 4999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/it/apple-arcade/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-arcade",
+   "country": "ES",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 4999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/es/apple-arcade/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-one",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 2195,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 2795,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premier",
+     "name": "Premier",
+     "amountMinor": 3995,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/apple-one/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-one",
+   "country": "CA",
+   "currency": "CAD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 2295,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 3095,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premier",
+     "name": "Premier",
+     "amountMinor": 4695,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/ca/apple-one/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-one",
+   "country": "AU",
+   "currency": "AUD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 2495,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 3495,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premier",
+     "name": "Premier",
+     "amountMinor": 5295,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/au/apple-one/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-one",
+   "country": "NZ",
+   "currency": "NZD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 2995,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 4295,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premier",
+     "name": "Premier",
+     "amountMinor": 5995,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/nz/apple-one/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-one",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1895,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 2495,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premier",
+     "name": "Premier",
+     "amountMinor": 3695,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/uk/apple-tv/",
+   "checked": "2026-11-09",
+   "note": "Prices read from the Apple One line on Apple's Apple TV page."
+  },
+  {
+   "serviceId": "apple-one",
+   "country": "IE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1995,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 2795,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premier",
+     "name": "Premier",
+     "amountMinor": 3695,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/ie/apple-tv/",
+   "checked": "2026-11-09",
+   "note": "Prices read from the Apple One line on Apple's Apple TV page."
+  },
+  {
+   "serviceId": "apple-one",
+   "country": "DE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1995,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 2595,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premier",
+     "name": "Premier",
+     "amountMinor": 3495,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/de/apple-tv/",
+   "checked": "2026-11-09",
+   "note": "Prices read from the Apple One line on Apple's Apple TV page."
+  },
+  {
+   "serviceId": "apple-one",
+   "country": "NL",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1995,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 2595,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/nl/apple-one/",
+   "checked": "2026-11-09",
+   "note": "No Premier plan listed in the Netherlands."
+  },
+  {
+   "serviceId": "apple-one",
+   "country": "FR",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1995,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 2595,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premier",
+     "name": "Premier",
+     "amountMinor": 3495,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/fr/apple-tv/",
+   "checked": "2026-11-09",
+   "note": "Prices read from the Apple One line on Apple's Apple TV page."
+  },
+  {
+   "serviceId": "apple-one",
+   "country": "IT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1995,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 2595,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premier",
+     "name": "Premier",
+     "amountMinor": 3495,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/it/apple-one/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "apple-one",
+   "country": "ES",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1995,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 2795,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premier",
+     "name": "Premier",
+     "amountMinor": 3695,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/es/apple-tv/",
+   "checked": "2026-11-09",
+   "note": "Prices read from the Apple One line on Apple's Apple TV page."
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard with Ads",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 11990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 15990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/en-gb",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "IE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard with Ads",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 11990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 15990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/en-ie",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "NZ",
+   "currency": "NZD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard with Ads",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1899,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 18999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 25999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/en-nz",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "DE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard mit Werbung",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1099,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1599,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/de-de",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "FR",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard avec pub",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1099,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 10990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 15990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/fr-fr",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "IT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard con pubblicità",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1099,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 10990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 15990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/it-it",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "ES",
+   "currency": "EUR",
+   "status": "partial",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Estándar con anuncios",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Estándar",
+     "amountMinor": 1099,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Estándar (yearly)",
+     "amountMinor": 10990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/es-es",
+   "checked": "2026-11-09",
+   "note": "Premium price not found in the page text."
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "NL",
+   "currency": "EUR",
+   "status": "partial",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 15990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/nl-nl",
+   "checked": "2026-11-09",
+   "note": "Only Premium found in the page text."
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "US",
+   "currency": "USD",
+   "status": "partial",
+   "plans": [
+    {
+     "id": "bundle-ads",
+     "name": "Disney+, Hulu Bundle (with ads)",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "bundle-premium",
+     "name": "Disney+, Hulu Bundle Premium (no ads)",
+     "amountMinor": 2199,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/en-us",
+   "checked": "2026-11-09",
+   "note": "In the US, Disney now sells Disney+ with Hulu. These are the regular monthly prices after the 6-month offer. Standalone Disney+ not confirmed."
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 9999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 12999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 19999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/en-us/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 8499,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 849,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 10499,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 1049,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/en-gb/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "CA",
+   "currency": "CAD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 11500,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 1150,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 14500,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 1450,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/en-ca/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "AU",
+   "currency": "AUD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 15900,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 1600,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 17900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 1800,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/en-au/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "NZ",
+   "currency": "NZD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 17900,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 1700,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 22900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 2300,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/en-nz/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "IE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 9900,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 1000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 12900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 1300,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/en-ie/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "DE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Single (yearly)",
+     "amountMinor": 9900,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Single (monthly)",
+     "amountMinor": 1000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 12900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 1300,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/de-de/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "NL",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 9900,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 1000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 12900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 1300,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/nl-nl/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "FR",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 9900,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 1000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 12900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 1300,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/fr-fr/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "IT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 9900,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 1000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 12900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 1300,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/it-it/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "ES",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 9900,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 1000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 12900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 1300,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/es-es/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "IN",
+   "currency": "INR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 689900,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 68900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 819900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 81900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/en-in/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "max",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic-ads",
+     "name": "Basic with Ads",
+     "amountMinor": 1099,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1849,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "basic-ads-yearly",
+     "name": "Basic with Ads (yearly)",
+     "amountMinor": 10999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 18499,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 22999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.hbomax.com/",
+   "checked": "2026-11-09",
+   "note": "The service is called HBO Max again. Our catalog says 'Max'."
+  },
+  {
+   "serviceId": "nintendo-online",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 3499,
+     "cycle": "yearly"
+    },
+    {
+     "id": "expansion-individual",
+     "name": "+ Expansion Pack, Individual",
+     "amountMinor": 4999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "expansion-family",
+     "name": "+ Expansion Pack, Family",
+     "amountMinor": 7999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.nintendo.com/us/switch/online/",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "audible",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-plus",
+     "name": "Premium Plus",
+     "amountMinor": 1495,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-plus-yearly",
+     "name": "Premium Plus (yearly, 12 credits)",
+     "amountMinor": 14950,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.audible.com/ep/memberbenefits",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "claude-pro",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Pro (monthly)",
+     "amountMinor": 2000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 20000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://claude.com/pricing",
+   "checked": "2026-11-09"
+  },
+  {
+   "serviceId": "dropbox",
+   "country": "US",
+   "currency": "USD",
+   "status": "partial",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Plus",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.dropbox.com/plans",
+   "checked": "2026-11-09",
+   "note": "Page shows $9.99/month for Plus; it didn't say in text whether that's billed yearly. Check before use."
+  },
+  {
+   "serviceId": "notion",
+   "country": "US",
+   "currency": "USD",
+   "status": "partial",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Plus (per member)",
+     "amountMinor": 1000,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.notion.com/pricing",
+   "checked": "2026-11-09",
+   "note": "Page shows $10 per member/month; billing period (yearly vs monthly) not confirmed."
+  },
+  {
+   "serviceId": "youtube-premium",
+   "country": "US",
+   "currency": "USD",
+   "status": "unverified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 2699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "lite",
+     "name": "Lite",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.tomsguide.com/entertainment/streaming/google-just-announced-a-price-hike-for-youtube-premium-heres-what-youll-pay-now",
+   "checked": "2026-11-09",
+   "note": "youtube.com/premium only shows prices in the browser. Press reports; sources disagree on the start date."
+  },
+  {
+   "serviceId": "chatgpt-plus",
+   "country": "US",
+   "currency": "USD",
+   "status": "unverified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Plus",
+     "amountMinor": 2000,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://openai.com/chatgpt/pricing/",
+   "checked": "2026-11-09",
+   "note": "OpenAI's page blocked our fetch. $20 is the long-standing US price."
+  },
+  {
+   "serviceId": "chatgpt-plus",
+   "country": "IN",
+   "currency": "INR",
+   "status": "unverified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Plus",
+     "amountMinor": 199900,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://bestmediainfo.com/mediainfo/mediainfo-digital/chatgpt-introduces-india-exclusive-pricing-with-plus-plan-at-rs-1999-pro-plan-at-rs-19900-9662640",
+   "checked": "2026-11-09",
+   "note": "Press report, includes GST."
+  }
+ ],
+ "notChecked": {
+  "amazon-prime": "Amazon blocked automated reads of amazon.com/amazonprime.",
+  "google-one": "one.google.com shows prices only in the browser.",
+  "ps-plus": "playstation.com plan prices weren't in the page text.",
+  "xbox-game-pass": "xbox.com plan prices weren't in the page text.",
+  "hulu": "hulu.com now sells Hulu mainly as a Disney+ bundle (see disney-plus US).",
+  "duolingo": "No public price page; price shows only in the app.",
+  "canva-pro": "canva.com shows prices only in the browser.",
+  "adobe-cc": "adobe.com blocked the fetch.",
+  "peacock": "peacocktv.com plan page had no prices in text.",
+  "paramount-plus": "paramountplus.com plan page had no prices in text.",
+  "crunchyroll": "crunchyroll.com blocked the fetch."
+ }
+}

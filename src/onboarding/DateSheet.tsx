@@ -193,7 +193,7 @@ function Body({ sub, onSave, onGuess }: { sub: Picked; onSave: (anchor: DateOnly
           <>
             <View style={{ flexDirection: 'row', gap: 9, alignItems: 'center' }}>
               <CardIcon color={p.fg} size={17} />
-              <Txt v="body" style={{ flex: 1, fontSize: 14 }} num>
+              <Txt v="body" style={{ flex: 1, fontSize: 14 }}>
                 {mode === 'receipt' ? (
                   <>
                     Last charged <B>{shortDate(selected)}</B>, so next is <B>{weekdayDate(next)}</B>
@@ -207,7 +207,7 @@ function Body({ sub, onSave, onGuess }: { sub: Picked; onSave: (anchor: DateOnly
             </View>
             <View style={{ flexDirection: 'row', gap: 9, alignItems: 'center' }}>
               <Bell color={p.fg} size={17} fill={brand.sunflower} />
-              <Txt v="body" style={{ flex: 1, fontSize: 14 }} num>
+              <Txt v="body" style={{ flex: 1, fontSize: 14 }}>
                 {heads.length === 2 ? (
                   <>
                     Heads-ups <B>{weekdayDate(heads[0])}</B> and <B>{weekdayDate(heads[1])}</B>

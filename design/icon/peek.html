@@ -1,0 +1,43 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+body{margin:0;background:#F2F2F7;font-family:-apple-system,Helvetica,Arial,sans-serif;color:#0A0A0A}
+.wrap{padding:36px;width:1520px}
+.row{display:flex;gap:44px;align-items:flex-start;margin-bottom:34px}
+.c{display:flex;flex-direction:column;align-items:center;gap:10px;width:270px}
+.c b{font-size:15px}
+.ic{border-radius:22.37%;overflow:hidden;background:#fff}
+.ic svg,.ic img{display:block;width:100%;height:100%}
+.sm{display:flex;gap:16px;align-items:flex-end}
+.home{border-radius:28px;padding:26px 30px;display:grid;grid-template-columns:repeat(6,60px);gap:24px 30px;width:max-content}
+.home .ic{width:60px;height:60px}
+.l{font-size:11px;color:#fff;text-align:center;margin-top:5px;width:60px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.homes{display:flex;gap:30px}
+</style></head><body><div class="wrap">
+<div class="row" id="big"></div>
+<div class="homes"><div class="home" id="h1" style="background:linear-gradient(160deg,#b2c6de,#7892b4)"></div><div class="home" id="h2" style="background:linear-gradient(160deg,#191e2d,#05060a)"></div></div>
+</div>
+<template id="P1"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#fff"/>
+<path d="M120 1100 V720 A392 330 0 0 1 904 720 V1100" fill="#fff" stroke="#0A0A0A" stroke-width="58"/>
+<circle cx="420" cy="640" r="34" fill="#0A0A0A"/><circle cx="610" cy="628" r="34" fill="#0A0A0A"/>
+<path d="M470 752 C560 712 812 708 912 730 C972 744 976 818 916 838 C812 872 576 870 484 832 C440 814 440 770 470 752 Z" fill="#0B9E8F" stroke="#0A0A0A" stroke-width="46" stroke-linejoin="round"/>
+</svg></template>
+<template id="P2"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#fff"/>
+<path d="M80 1100 V640 A412 352 0 0 1 904 640 V1100" fill="#fff" stroke="#0A0A0A" stroke-width="62"/>
+<circle cx="400" cy="560" r="38" fill="#0A0A0A"/><circle cx="604" cy="546" r="38" fill="#0A0A0A"/>
+<path d="M456 680 C556 634 836 630 944 654 C1010 670 1014 750 948 772 C834 810 568 808 468 766 C420 746 422 700 456 680 Z" fill="#0B9E8F" stroke="#0A0A0A" stroke-width="50" stroke-linejoin="round"/>
+</svg></template>
+<template id="P3"><svg viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="#fff"/>
+<path d="M60 1100 V700 A412 352 0 0 1 884 700 V1100" fill="#fff" stroke="#0A0A0A" stroke-width="62"/>
+<circle cx="390" cy="610" r="38" fill="#0A0A0A"/><circle cx="590" cy="598" r="38" fill="#0A0A0A"/>
+<path d="M446 730 C546 684 826 680 934 704 C1000 720 1004 800 938 822 C824 860 558 858 458 816 C410 796 412 750 446 730 Z" fill="#0B9E8F" stroke="#0A0A0A" stroke-width="50" stroke-linejoin="round"/>
+</svg></template>
+<script>
+const opts=[['orig','Original 6'],['P1','A · Level'],['P2','B · Level, bigger'],['P3','C · Level, lower']];
+function ic(id,s){const d=document.createElement('div');d.className='ic';d.style.width=d.style.height=s+'px';
+ if(id==='orig'){d.innerHTML='<img src="hf-6-peek.png">'}else if(id.endsWith('.png')){d.innerHTML=`<img src="${id}">`}else d.innerHTML=document.getElementById(id).innerHTML;return d}
+const big=document.getElementById('big');
+opts.forEach(([id,n])=>{const c=document.createElement('div');c.className='c';c.appendChild(ic(id,240));const sm=document.createElement('div');sm.className='sm';[60,40,29].forEach(z=>sm.appendChild(ic(id,z)));c.appendChild(sm);const b=document.createElement('b');b.textContent=n;c.appendChild(b);big.appendChild(c)});
+const S='/tmp/claude-0/-home-user/b6b27c63-8e53-560d-a517-60b6e884bad4/scratchpad/duck/';
+const items=[[S+'rocket.png','Rocket Money'],['P1','Ditch A'],[S+'bobby.png','Bobby'],['P2','Ditch B'],[S+'ynab.png','YNAB'],['P3','Ditch C'],[S+'daak.png','Daak'],[S+'subpilot.png','Subpilot'],['orig','Original 6'],[S+'mono.png','MonoBoost'],[S+'papaya.png','Papaya'],[S+'orbit.png','Orbit']];
+['h1','h2'].forEach(h=>{const home=document.getElementById(h);items.forEach(([id,n])=>{const w=document.createElement('div');w.appendChild(ic(id,60));const l=document.createElement('div');l.className='l';l.textContent=n;w.appendChild(l);home.appendChild(w)})});
+</script></body></html>

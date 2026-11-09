@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Ditch v7 · Sunflower</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sun:#FFCC2E; --ink:#16140F; --ink2:#3A362E; --cream:#FBF7EE; --paper:#FFFFFF;
+  --mute:#7A7468; --rule:#ECE5D6; --onsun:rgba(22,20,15,.72); --sunrule:rgba(22,20,15,.16);
+  --soft:#FFF1BC;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#E9E4D8;font-family:Inter,system-ui,sans-serif;color:var(--ink);letter-spacing:-.2px;-webkit-font-smoothing:antialiased}
+.stage{width:2260px;padding:56px 56px 60px}
+.head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:44px}
+.head h1{font-family:Archivo;font-stretch:125%;font-weight:900;font-size:44px;letter-spacing:-1.4px;margin:0;line-height:1}
+.head p{margin:8px 0 0;font-size:17px;color:var(--ink2)}
+.sw{display:flex;gap:10px;align-items:center}
+.sw div{display:flex;flex-direction:column;align-items:flex-start;gap:6px;font:500 12px Inter;color:var(--ink2)}
+.sw i{width:64px;height:40px;border-radius:10px;display:block;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+.row5{display:flex;gap:44px}
+.cell{display:flex;flex-direction:column;align-items:center}
+.cap{font:600 15px Inter;color:#4A463E;margin-top:18px}
+.phone{width:393px;height:852px;border-radius:55px;position:relative;overflow:hidden;box-shadow:0 0 0 11px #121110,0 34px 70px rgba(40,30,0,.22);background:var(--cream);flex:none}
+.phone.sun{background:var(--sun)}
+.sb{position:absolute;top:0;left:0;right:0;height:54px;display:flex;align-items:center;justify-content:space-between;padding:6px 34px 0 50px;font:600 17px Inter;z-index:30;color:var(--ink)}
+.sb .isl{position:absolute;left:50%;top:11px;width:124px;height:36px;margin-left:-62px;background:#000;border-radius:20px}
+.sb .ic{display:flex;gap:6px;align-items:center}
+.hi{position:absolute;bottom:8px;left:50%;width:140px;height:5px;margin-left:-70px;border-radius:3px;background:var(--ink);z-index:30}
+.scr{position:absolute;inset:0;padding:54px 24px 34px;display:flex;flex-direction:column}
+.disp{font-family:Archivo;font-stretch:118%;font-weight:900;letter-spacing:-1.2px;margin:0}
+.num{font-variant-numeric:tabular-nums lining-nums}
+.lead{font-size:17px;line-height:24px;color:var(--onsun);margin:14px 0 0}
+.cta{height:56px;border-radius:28px;border:0;width:100%;background:var(--ink);color:#fff;font:600 17px Inter;letter-spacing:-.3px;display:flex;align-items:center;justify-content:center;gap:8px;flex:none}
+.cta.y{color:var(--sun)}
+.sec{height:48px;border-radius:24px;width:100%;background:transparent;border:1.5px solid var(--ink);font:600 16px Inter;color:var(--ink);display:flex;align-items:center;justify-content:center;flex:none}
+.fine{font-size:13px;line-height:18px;text-align:center;margin:0;color:var(--onsun)}
+.nav{height:44px;display:flex;align-items:center;gap:12px;flex:none}
+.back{width:44px;height:44px;margin-left:-12px;display:flex;align-items:center;justify-content:center;flex:none}
+.steps{flex:1;display:flex;gap:5px}.steps i{flex:1;height:4px;border-radius:2px;background:var(--sunrule)}.steps i.on{background:var(--ink)}
+.logo{border-radius:9px;display:block;flex:none;box-shadow:0 0 0 .5px rgba(0,0,0,.12)}
+.duckicon{background:var(--sun);overflow:hidden;position:relative;flex:none;box-shadow:0 0 0 .5px rgba(0,0,0,.12)}
+.duckicon img{position:absolute;display:block}
+
+/* notifications */
+.note{background:rgba(255,255,255,.96);border-radius:22px;padding:12px 14px 13px;display:flex;gap:11px;align-items:flex-start;box-shadow:0 10px 30px rgba(80,55,0,.16)}
+.note .h{display:flex;justify-content:space-between;font-size:15px;font-weight:600;line-height:19px}
+.note .h span{font-weight:400;color:#86837C;font-size:13.5px}
+.note .m{font-size:15px;line-height:20px;color:#1C1B19}
+
+/* paywall */
+.x{width:44px;height:44px;display:flex;align-items:center;justify-content:center;margin-right:-10px}
+.x i{width:32px;height:32px;border-radius:16px;background:rgba(22,20,15,.12);display:flex;align-items:center;justify-content:center}
+.card{background:var(--paper);border-radius:22px;box-shadow:0 1px 0 rgba(0,0,0,.03),0 8px 24px rgba(70,50,0,.08)}
+.plan{background:var(--paper);border-radius:16px;height:58px;display:flex;align-items:center;padding:0 16px 0 14px;gap:12px;box-shadow:inset 0 0 0 1.5px var(--rule);flex:none}
+.plan.on{box-shadow:inset 0 0 0 2.5px var(--ink)}
+.radio{width:22px;height:22px;border-radius:11px;box-shadow:inset 0 0 0 2px #CFC7B6;flex:none;display:flex;align-items:center;justify-content:center}
+.plan.on .radio{background:var(--ink);box-shadow:none}
+.plan .nm{flex:1;font-weight:600;font-size:16.5px;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.plan .pr{text-align:right;white-space:nowrap}
+.plan .pr b{display:block;font-family:Archivo;font-stretch:110%;font-weight:800;font-size:18px;letter-spacing:-.3px;line-height:21px}
+.plan .pr small{font-size:13px;color:var(--mute);line-height:16px}
+.brow+.brow{border-top:1px solid #F1EBDD}
+.tag{font:700 11.5px Inter;color:var(--ink);background:var(--sun);border-radius:6px;padding:3px 7px;letter-spacing:.1px}
+
+/* home */
+.hrow{display:flex;align-items:center;gap:13px;height:64px;padding:0 16px;position:relative}
+.hrow + .hrow:before{content:"";position:absolute;top:0;left:66px;right:0;height:1px;background:var(--rule)}
+.hrow .n{flex:1;min-width:0}
+.hrow .n b{display:block;font-weight:600;font-size:16.5px;line-height:21px;white-space:nowrap}
+.hrow .n span{display:flex;align-items:center;gap:5px;font-size:14px;color:var(--mute);line-height:19px;margin-top:1px;white-space:nowrap}
+.hrow .p{font-family:Archivo;font-stretch:108%;font-weight:700;font-size:17px;letter-spacing:-.2px}
+.tabs{position:absolute;left:0;right:0;bottom:0;height:84px;background:rgba(251,247,238,.94);border-top:1px solid var(--rule);display:flex;justify-content:space-around;padding:8px 30px 0;z-index:5}
+.tabs div{display:flex;flex-direction:column;align-items:center;gap:3px;font:600 11px Inter;color:#A39C8E;width:72px}
+.tabs div.on{color:var(--ink)}
+
+/* stamp */
+.stamp{display:inline-flex;align-items:center;font-family:Archivo;font-stretch:125%;font-weight:900;color:var(--ink);text-transform:uppercase;letter-spacing:3px;line-height:1;border:5px solid currentColor;border-radius:14px;padding:13px 20px 11px 23px;font-size:42px;box-shadow:inset 0 0 0 3px var(--sun),inset 0 0 0 6px currentColor;filter:url(#rough);transform:rotate(-7deg)}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute">
+  <filter id="rough" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency=".75" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="2.4"/>
+    <feComponentTransfer><feFuncA type="discrete" tableValues="0 1 1 1 1 .2 1 1 1 1 1 .55 1 1 1"/></feComponentTransfer>
+  </filter>
+</svg>
+
+<div class="stage">
+  <div class="head">
+    <div>
+      <h1>Ditch · Sunflower</h1>
+      <p>One colour nobody in money owns: the yellow of a heads-up. Ink on sunflower for brand moments, calm cream for work.</p>
+    </div>
+    <div class="sw">
+      <div><i style="background:#FFCC2E"></i>Sunflower #FFCC2E</div>
+      <div><i style="background:#16140F"></i>Ink #16140F</div>
+      <div><i style="background:#FBF7EE"></i>Cream #FBF7EE</div>
+      <div><i style="background:#FF6C2C"></i>Bill #FF6C2C</div>
+    </div>
+  </div>
+  <div class="row5" id="row"></div>
+</div>
+
+<script>
+const LG = '../../../assets/logos/';
+const DUCK = 'duck-ditch.png';
+const SB = '<div class="sb"><span>9:41</span><div class="isl"></div><div class="ic">' +
+  '<svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#16140F"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#16140F"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#16140F"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#16140F"/></svg>' +
+  '<svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 2.2c2.2 0 4.2.9 5.7 2.3l1.2-1.2C13.1 1.6 10.7.5 8 .5S2.9 1.6 1.1 3.3l1.2 1.2C3.8 3.1 5.8 2.2 8 2.2zm0 3.4c1.3 0 2.4.5 3.3 1.3l1.2-1.2C11.3 4.6 9.7 3.9 8 3.9s-3.3.7-4.5 1.8l1.2 1.2c.9-.8 2-1.3 3.3-1.3zM8 9l2-2c-.5-.5-1.2-.8-2-.8s-1.5.3-2 .8l2 2z" fill="#16140F"/></svg>' +
+  '<svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" stroke="#16140F" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="20" height="9" rx="2" fill="#16140F"/><path d="M25 4.5v4c.8-.3 1.4-1.1 1.4-2s-.6-1.7-1.4-2z" fill="#16140F" fill-opacity=".45"/></svg>' +
+  '</div></div>';
+const HI = '<div class="hi"></div>';
+const chev = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="#16140F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const ck = (c, s) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="' + c + '" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const bell = (c, s, off) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="' + (off ? 'none' : c) + '"><path d="M6 16V11a6 6 0 1112 0v5l1.6 2.2H4.4L6 16z" stroke="' + c + '" stroke-width="2" stroke-linejoin="round"/><path d="M10 20.5a2 2 0 004 0" stroke="' + c + '" stroke-width="2" stroke-linecap="round" fill="none"/></svg>';
+const logo = (id, s) => '<img class="logo" src="' + LG + id + '.png" width="' + s + '" height="' + s + '" alt="">';
+// Duck as app icon: sunflower tile, duck peeking up from the bottom edge
+const dicon = (s) => '<div class="duckicon" style="width:' + s + 'px;height:' + s + 'px;border-radius:' + Math.round(s * .225) + 'px"><img src="' + DUCK + '" style="width:' + Math.round(s * 1.25) + 'px;left:' + Math.round(-s * .2) + 'px;bottom:' + Math.round(-s * .06) + 'px"></div>';
+
+const screens = [];
+
+/* 1 · WELCOME */
+screens.push(['1 · Welcome', 'sun', `
+<div class="scr">
+  <div style="height:44px;display:flex;align-items:center;justify-content:space-between;flex:none">
+    <span style="font-family:Archivo;font-stretch:125%;font-weight:900;font-size:22px;letter-spacing:-.6px">ditch</span>
+  </div>
+  <h1 class="disp" style="font-size:66px;line-height:60px;letter-spacing:-2.6px;margin-top:22px">Ditch it<br>before it<br>renews.</h1>
+  <p class="lead" style="max-width:320px">See everything you pay for. Get a heads-up before every charge.</p>
+
+  <div style="position:relative;margin-top:auto;margin-bottom:26px">
+    <img src="${DUCK}" alt="Ditch the duck" style="position:absolute;width:224px;right:-2px;top:-129px;display:block">
+    <div class="note" style="position:relative;z-index:2">
+      ${dicon(38)}
+      <div style="flex:1"><div class="h">Ditch<span>Wed 9:00 AM</span></div><div class="m">Netflix renews Saturday. $17.99. Still watching?</div></div>
+    </div>
+    <div style="position:relative;z-index:1;margin:-14px 12px 0;height:26px;border-radius:0 0 20px 20px;background:rgba(255,255,255,.62)"></div>
+  </div>
+
+  <button class="cta y">See what I pay</button>
+  <p class="fine" style="margin-top:14px">Free forever for tracking · Your list stays on your phone</p>
+</div>`]);
+
+/* 2 · YOUR TOTAL */
+const subs = [
+  ['chatgpt-plus', 'ChatGPT Plus', '240.00', 240],
+  ['netflix', 'Netflix', '215.88', 215.88],
+  ['amazon-prime', 'Amazon Prime', '179.88', 179.88],
+  ['youtube-premium', 'YouTube Premium', '167.88', 167.88],
+  ['spotify', 'Spotify', '143.88', 143.88],
+  ['disney-plus', 'Disney+', '143.88', 143.88],
+];
+const brk = subs.map(s => `
+  <div style="display:flex;align-items:center;gap:12px;height:44px;" class="brow">
+    ${logo(s[0], 28)}
+    <span style="width:132px;font-size:15px;font-weight:500;white-space:nowrap">${s[1]}</span>
+    <span style="flex:1"></span>
+    <span class="num" style="text-align:right;font-family:Archivo;font-stretch:108%;font-weight:700;font-size:16px">$${s[2]}<small style="font:500 13px Inter;color:var(--mute);margin-left:2px">/yr</small></span>
+  </div>`).join('');
+screens.push(['2 · Your total', 'sun', `
+<div class="scr">
+  <div class="nav"><div class="back">${chev}</div><div class="steps"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+  <p style="margin:18px 0 0;font-size:17px;font-weight:600">Your 6 subscriptions cost</p>
+  <div class="disp num fit" data-max="345" style="font-size:118px;line-height:108px;letter-spacing:-5px;margin:4px 0 0 -4px;white-space:nowrap;display:inline-block;align-self:flex-start">$1,091</div>
+  <div class="disp" style="font-size:30px;line-height:34px;letter-spacing:-.8px;margin-top:2px">a year.</div>
+  <div style="display:flex;gap:0;margin-top:18px;border-top:2px solid var(--ink)">
+    <div style="flex:1;padding:10px 0 0"><div class="num" style="font-family:Archivo;font-stretch:110%;font-weight:800;font-size:22px">$90.95</div><div style="font-size:14px;color:var(--onsun)">a month</div></div>
+    <div style="flex:1;padding:10px 0 0 16px;border-left:1px solid var(--sunrule)"><div class="num" style="font-family:Archivo;font-stretch:110%;font-weight:800;font-size:22px">$2.99</div><div style="font-size:14px;color:var(--onsun)">a day, on average</div></div>
+  </div>
+  <div class="card" style="margin-top:20px;padding:4px 16px">${brk}</div>
+  <p style="margin:auto 0 16px;font-size:16px;line-height:22px;color:var(--ink2)">Bigger than you guessed? It usually is. Let's make sure none of it surprises you.</p>
+  <button class="cta y">Set up my reminders</button>
+</div>`]);
+
+/* 3 · PAYWALL */
+const tl = `
+  <div style="display:flex;align-items:flex-start;margin-top:14px;position:relative">
+    <div style="position:absolute;left:12px;right:12px;top:11px;height:2px;background:repeating-linear-gradient(90deg,var(--ink) 0 5px,transparent 5px 9px)"></div>
+    ${[['Today', '$0', 'Trial starts'], ['Sat, Nov 14', 'We remind you', ''], ['Mon, Nov 16', '$29.99', 'First charge']].map((t, i) => `
+      <div style="flex:1;display:flex;flex-direction:column;align-items:${i === 0 ? 'flex-start' : i === 1 ? 'center' : 'flex-end'};position:relative">
+        <span style="width:24px;height:24px;border-radius:12px;background:${i === 1 ? 'var(--sun)' : i === 0 ? 'var(--ink)' : '#fff'};box-shadow:inset 0 0 0 2px var(--ink);display:flex;align-items:center;justify-content:center">${i === 0 ? ck('#fff', 13) : i === 1 ? bell('#16140F', 13) : ''}</span>
+        <b style="font-size:13.5px;margin-top:7px;white-space:nowrap">${t[0]}</b>
+        <span class="num" style="font-size:13px;color:var(--mute);white-space:nowrap">${t[1]}</span>
+      </div>`).join('')}
+  </div>`;
+screens.push(['3 · Paywall', '', `
+<div style="position:absolute;left:0;right:0;top:0;height:246px;background:var(--sun)"></div>
+<div class="scr" style="padding-top:50px">
+  <div style="display:flex;justify-content:space-between;align-items:center;height:44px;flex:none">
+    <span style="font:700 13px Inter;letter-spacing:1.4px">DITCH PRO</span>
+    <div class="x"><i><svg width="13" height="13" viewBox="0 0 14 14"><path d="M2 2l10 10M12 2L2 12" stroke="#16140F" stroke-width="2.2" stroke-linecap="round"/></svg></i></div>
+  </div>
+  <h1 class="disp" style="font-size:31px;line-height:33px;letter-spacing:-1px;margin-top:4px;position:relative">We'll remind you before we charge you, too.</h1>
+
+  <div style="position:relative;margin-top:30px;flex:none">
+  <img src="${DUCK}" alt="" style="position:absolute;width:88px;right:18px;top:-52px;display:block">
+  <div class="card" style="padding:14px 16px 14px;position:relative">
+    <div style="display:flex;align-items:center;gap:12px">
+      ${dicon(40)}
+      <div style="flex:1"><b style="display:block;font-size:16px">Ditch Pro trial</b><span style="font-size:13.5px;color:var(--mute)">Added to your list, with a reminder</span></div>
+    </div>
+    ${tl}
+  </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:7px;margin:16px 2px 14px;font-size:15px;font-weight:500">
+    <div style="display:flex;gap:10px;align-items:center">${ck('#16140F', 17)}Reminders on all 6, not just 3</div>
+    <div style="display:flex;gap:10px;align-items:center">${ck('#16140F', 17)}Import, widget and iCloud backup</div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div class="plan on"><span class="radio">${ck('#fff', 13)}</span><span class="nm">Yearly <span class="tag">7 days free</span></span><span class="pr num"><b>$29.99/yr</b><small>$2.50 a month</small></span></div>
+    <div class="plan"><span class="radio"></span><span class="nm">Monthly</span><span class="pr num"><b>$4.99/mo</b><small>$59.88 a year</small></span></div>
+    <div class="plan"><span class="radio"></span><span class="nm">Lifetime</span><span class="pr num"><b>$49.99</b><small>Pay once</small></span></div>
+  </div>
+
+  <button class="cta" style="margin-top:16px">Start 7-day free trial</button>
+  <button class="sec" style="margin-top:8px">Continue free: reminders for 3</button>
+  <p class="fine" style="margin-top:10px;color:var(--mute)">Free for 7 days, then $29.99 a year. Cancel in Settings.<br><u>Restore</u> · <u>Terms</u> · <u>Privacy</u></p>
+</div>`]);
+
+/* 4 · HOME, HOLDING NETFLIX */
+const list = [
+  ['netflix', 'Netflix', 'Sat, Nov 14', 'in 5 days', '17.99', 1],
+  ['spotify', 'Spotify', 'Mon, Nov 16', 'in 7 days', '11.99', 1],
+  ['disney-plus', 'Disney+', 'Wed, Nov 18', 'in 9 days', '11.99', 0],
+  ['chatgpt-plus', 'ChatGPT Plus', 'Sat, Nov 21', 'in 12 days', '20.00', 1],
+  ['youtube-premium', 'YouTube Premium', 'Fri, Nov 27', 'in 18 days', '13.99', 0],
+  ['amazon-prime', 'Amazon Prime', 'Thu, Dec 3', 'in 24 days', '14.99', 0],
+];
+const R = 25, C = 2 * Math.PI * R;
+const holdRow = `
+  <div style="margin:0 -6px;background:var(--ink);border-radius:20px;height:76px;display:flex;align-items:center;gap:14px;padding:0 18px 0 14px;color:#fff;box-shadow:0 12px 28px rgba(22,20,15,.28);position:relative;z-index:2">
+    <div style="position:relative;width:56px;height:56px;flex:none">
+      <svg width="56" height="56" viewBox="0 0 56 56" style="position:absolute;inset:0;transform:rotate(-90deg)">
+        <circle cx="28" cy="28" r="${R}" stroke="rgba(255,255,255,.18)" stroke-width="4" fill="none"/>
+        <circle cx="28" cy="28" r="${R}" stroke="#FFCC2E" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C * .32).toFixed(1)}"/>
+      </svg>
+      <div style="position:absolute;left:12px;top:12px">${logo('netflix', 32)}</div>
+    </div>
+    <div style="flex:1;min-width:0">
+      <b style="display:block;font-size:16.5px;line-height:21px">Keep holding to ditch Netflix</b>
+      <span style="font-size:13.5px;line-height:18px;color:rgba(255,255,255,.66);white-space:nowrap">Reminders stop. You cancel in Netflix.</span>
+    </div>
+  </div>`;
+const rows = list.map((s, i) => i === 0 ? '' : `
+  <div class="hrow">
+    ${logo(s[0], 38)}
+    <div class="n"><b>${s[1]}</b><span>${s[5] ? bell('#16140F', 13) : ''}${s[2]} · ${s[3]}</span></div>
+    <span class="p num">$${s[4]}</span>
+  </div>`).join('');
+screens.push(['4 · Home: holding to ditch Netflix', '', `
+<div class="scr" style="padding-bottom:84px">
+  <div style="display:flex;justify-content:space-between;align-items:center;height:48px;flex:none;margin-top:2px">
+    <span style="font-family:Archivo;font-stretch:125%;font-weight:900;font-size:22px;letter-spacing:-.6px">ditch</span>
+    <div style="width:44px;height:44px;border-radius:22px;background:var(--ink);display:flex;align-items:center;justify-content:center;margin-right:-4px"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 2v14M2 9h14" stroke="#FFCC2E" stroke-width="2.6" stroke-linecap="round"/></svg></div>
+  </div>
+  <div style="background:var(--sun);border-radius:24px;padding:16px 18px 16px;margin-top:10px;flex:none">
+    <div style="font-size:14px;font-weight:600;color:var(--onsun)">You pay</div>
+    <div style="display:flex;align-items:baseline;gap:8px;margin-top:2px">
+      <span class="disp num" style="font-size:52px;line-height:54px;letter-spacing:-2.4px">$90.95</span><span style="font-size:17px;font-weight:600">a month</span>
+    </div>
+    <div class="num" style="display:flex;gap:14px;margin-top:8px;padding-top:10px;border-top:1px solid var(--sunrule);font-size:14px;font-weight:500">
+      <span><b>$1,091</b> a year</span><span><b>6</b> subs</span><span style="display:flex;align-items:center;gap:5px">${bell('#16140F', 13)}<b>3</b> of 3 free</span>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:baseline;margin:20px 2px 10px;flex:none">
+    <span style="font-family:Archivo;font-stretch:112%;font-weight:800;font-size:20px;letter-spacing:-.4px">Coming up</span>
+    <span style="font-size:14px;color:var(--mute)">Hold a sub to ditch it</span>
+  </div>
+  <div class="card" style="overflow:visible;padding:0">
+    ${holdRow}
+    ${rows}
+  </div>
+</div>
+<div class="tabs">
+  <div class="on"><svg width="26" height="26" viewBox="0 0 24 24" fill="#16140F"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 01-1 1h-4.5v-6h-5v6H5a1 1 0 01-1-1v-9.5z"/></svg>Home</div>
+  <div><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="15.5" rx="3" stroke="#A39C8E" stroke-width="2"/><path d="M3.5 10h17M8 3v4M16 3v4" stroke="#A39C8E" stroke-width="2" stroke-linecap="round"/></svg>Calendar</div>
+  <div><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="#A39C8E" stroke-width="2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1" stroke="#A39C8E" stroke-width="2" stroke-linecap="round"/></svg>Settings</div>
+</div>`]);
+
+/* 5 · DITCHED */
+screens.push(['5 · Ditched', 'sun', `
+<div class="scr">
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:56px 0 18px">
+  <div style="position:relative;flex:none">
+    <img src="${DUCK}" alt="" style="position:absolute;width:132px;left:18px;top:-77px;display:block">
+    <div class="card" style="position:relative;display:flex;align-items:center;gap:13px;padding:14px 16px">
+      ${logo('netflix', 44)}
+      <div style="flex:1;color:#A8A195"><b style="display:block;font-size:17px;color:#8E877A;text-decoration:line-through;text-decoration-thickness:2px">Netflix</b><span class="num" style="font-size:14px;text-decoration:line-through">$17.99 a month · Sat, Nov 14</span></div>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:center;margin:34px 0 34px;flex:none"><span class="stamp">Ditched</span></div>
+  <div style="text-align:center">
+    <div class="disp num fit" data-max="330" style="font-size:80px;line-height:80px;letter-spacing:-3.5px;white-space:nowrap;display:inline-block">+$215.88</div>
+    <div class="disp" style="font-size:24px;line-height:30px;letter-spacing:-.5px">a year back.</div>
+    <div style="display:inline-flex;margin-top:14px;background:var(--ink);color:#fff;border-radius:20px;height:36px;align-items:center;padding:0 15px;font-size:15px;font-weight:500">You've kept <b class="num" style="color:var(--sun);margin:0 4px">$431</b> since June</div>
+  </div>
+  </div>
+  <div style="margin-bottom:16px;background:rgba(255,255,255,.55);border-radius:18px;padding:13px 15px;font-size:14.5px;line-height:20px">
+    Reminders for Netflix are off. Ditch can't cancel for you, so cancel in Netflix before <b>Sat, Nov 14</b>. <u style="font-weight:600;white-space:nowrap">How to cancel Netflix</u>
+  </div>
+  <div style="display:flex;gap:10px">
+    <button class="sec" style="height:56px;border-radius:28px;width:122px;flex:none">Undo</button>
+    <button class="cta" style="flex:1;width:auto">Done</button>
+  </div>
+</div>`]);
+
+document.getElementById('row').innerHTML = screens.map(s =>
+  '<div class="cell"><div class="phone ' + s[1] + '">' + SB + s[2] + HI + '</div><div class="cap">' + s[0] + '</div></div>').join('');
+// shrink-to-fit, like adjustsFontSizeToFitWidth
+document.fonts.ready.then(() => document.querySelectorAll('.fit').forEach(el => {
+  const max = +el.dataset.max; let f = parseFloat(getComputedStyle(el).fontSize);
+  while (el.getBoundingClientRect().width > max && f > 20) { f -= 1; el.style.fontSize = f + 'px'; el.style.lineHeight = Math.round(f * .95) + 'px'; }
+}));
+</script>
+</body></html>

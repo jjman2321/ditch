@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Ditch v7 · Tickets</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+ --night:#0C1322; --night2:#162036; --night3:#1F2A42; --hair:rgba(255,255,255,.09);
+ --paper:#F3F0E8; --paper2:#A3ABBD; --paper3:#6E7891;
+ --stock:#FBF8F1; --stock2:#EFEBE1; --ink:#0C1322; --ink2:#3A4256; --mute:#747B8C; --dot:#C8C2B4;
+ --gold:#FFB224; --gold2:#E89A0C; --teal:#0B8C7A; --teal2:#2FC2A8;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#D6D9E0;font-family:Inter,system-ui,sans-serif;color:var(--paper);letter-spacing:-.2px;-webkit-font-smoothing:antialiased}
+.stage{display:flex;gap:40px;padding:48px 48px 40px;width:max-content}
+.cell{display:flex;flex-direction:column;align-items:center}
+.cap{font:600 14px Inter,sans-serif;color:#3a3f4b;margin-top:18px}
+.phone{width:393px;height:852px;border-radius:54px;position:relative;overflow:hidden;box-shadow:0 0 0 10px #10131a,0 30px 60px rgba(10,20,40,.22);background:var(--night);flex:none}
+.sb{position:absolute;top:0;left:0;right:0;height:54px;display:flex;align-items:center;justify-content:space-between;padding:6px 34px 0 50px;font:600 17px Inter,sans-serif;z-index:30;color:#fff}
+.sb .isl{position:absolute;left:50%;top:11px;width:124px;height:36px;margin-left:-62px;background:#000;border-radius:20px}
+.sb .ic{display:flex;gap:6px;align-items:center}
+.hi{position:absolute;bottom:8px;left:50%;width:140px;height:5px;margin-left:-70px;border-radius:3px;background:#fff;z-index:30}
+.scr{position:absolute;inset:0;padding:58px 24px 34px;display:flex;flex-direction:column}
+
+/* type */
+.disp{font-family:Archivo,sans-serif;font-stretch:72%;font-weight:800;letter-spacing:-.6px}
+.h1{font-family:Archivo,sans-serif;font-stretch:74%;font-weight:800;font-size:46px;line-height:44px;letter-spacing:-.8px;margin:0;color:var(--paper)}
+.h2{font-family:Archivo,sans-serif;font-stretch:74%;font-weight:800;font-size:36px;line-height:36px;letter-spacing:-.5px;margin:0;color:var(--paper)}
+.lead{font-size:16.5px;line-height:23px;color:var(--paper2);margin:10px 0 0}
+.mono{font-family:'IBM Plex Mono',monospace}
+.lbl{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:500;letter-spacing:1.3px;text-transform:uppercase;color:var(--mute)}
+.eye{font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:500;letter-spacing:1.6px;text-transform:uppercase;color:var(--paper3)}
+.num{font-variant-numeric:tabular-nums lining-nums}
+.foot{margin-top:auto;display:flex;flex-direction:column}
+.cta{height:56px;border-radius:16px;border:0;width:100%;background:var(--gold);color:var(--ink);font:700 17px Inter,sans-serif;letter-spacing:-.3px;display:flex;align-items:center;justify-content:center;gap:8px}
+.sec{height:48px;border-radius:14px;border:1.5px solid rgba(255,255,255,.18);background:none;font:600 16px Inter,sans-serif;color:var(--paper);width:100%}
+.ghost{height:44px;border:0;background:none;font:600 16px Inter,sans-serif;color:var(--paper);width:100%}
+.fine{font-size:12.5px;line-height:17px;text-align:center;margin:0;color:var(--paper3)}
+.fine a{color:var(--paper2);text-decoration:none}
+.topbar{height:44px;display:flex;align-items:center;gap:14px;flex:none}
+.back{width:44px;height:44px;margin-left:-12px;display:flex;align-items:center;justify-content:center}
+.steps{flex:1;display:flex;gap:5px}.steps i{flex:1;height:3px;border-radius:2px;background:var(--night3)}.steps i.on{background:var(--gold)}
+.logo{border-radius:9px;display:block;flex:none;box-shadow:0 0 0 .5px rgba(0,0,0,.12)}
+
+/* ---------- PASS (vertical, wallet-style) ---------- */
+.passwrap{filter:drop-shadow(0 1px 1px rgba(0,0,0,.25)) drop-shadow(0 14px 24px rgba(0,0,0,.35))}
+.pass{background:var(--stock);color:var(--ink);border-radius:18px;position:relative;
+ --cut:120px; --r:11px;
+ -webkit-mask:radial-gradient(circle var(--r) at 0 var(--cut),#0000 97%,#000 100%),radial-gradient(circle var(--r) at 100% var(--cut),#0000 97%,#000 100%);
+ -webkit-mask-composite:source-in;mask-composite:intersect}
+.perf{position:absolute;left:18px;right:18px;height:3px;background:radial-gradient(circle,var(--dot) 1.3px,transparent 1.6px) 0 0/7px 3px repeat-x}
+.vperf{position:absolute;top:12px;bottom:12px;width:3px;background:radial-gradient(circle,var(--dot) 1.3px,transparent 1.6px) 0 0/3px 7px repeat-y}
+.field .lbl{display:block;margin-bottom:3px}
+.field b{font-family:Archivo,sans-serif;font-stretch:80%;font-weight:700;font-size:19px;letter-spacing:-.2px;font-variant-numeric:tabular-nums lining-nums;color:var(--ink);white-space:nowrap}
+.field.r{text-align:right}
+
+/* ---------- TICKET ROW (horizontal) ---------- */
+.tk{height:70px;background:var(--stock);color:var(--ink);border-radius:14px;display:flex;align-items:center;position:relative;
+ --stub:74px; --r:7px;
+ -webkit-mask:radial-gradient(circle var(--r) at calc(100% - var(--stub)) 0,#0000 97%,#000 100%),radial-gradient(circle var(--r) at calc(100% - var(--stub)) 100%,#0000 97%,#000 100%);
+ -webkit-mask-composite:source-in;mask-composite:intersect}
+.tk .main{flex:1;display:flex;align-items:center;gap:12px;padding:0 14px 0 13px;min-width:0}
+.tk .nm{flex:1;min-width:0}
+.tk .nm b{display:block;font-weight:600;font-size:16px;letter-spacing:-.3px;white-space:nowrap}
+.tk .nm span{display:block;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.6px;color:var(--mute);margin-top:3px;text-transform:uppercase;white-space:nowrap}
+.tk .pr{font-family:Archivo,sans-serif;font-stretch:82%;font-weight:700;font-size:18px;font-variant-numeric:tabular-nums lining-nums;letter-spacing:-.2px}
+.tk .pr small{display:block;font-family:'IBM Plex Mono',monospace;font-weight:500;font-size:10px;letter-spacing:.8px;color:var(--mute);text-align:right;margin-top:1px}
+.tk .vperf{right:calc(var(--stub) - 1.5px)}
+.tk .stub{width:var(--stub);height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none;position:relative}
+.tk .stub .m{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:1.2px;color:var(--mute)}
+.tk .stub .d{font-family:Archivo,sans-serif;font-stretch:72%;font-weight:800;font-size:27px;line-height:26px;font-variant-numeric:tabular-nums lining-nums}
+.bell{width:12px;height:12px;margin-top:2px}
+
+/* stamp */
+.stamp{display:block}
+</style></head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+ <defs>
+  <filter id="ink" x="-10%" y="-10%" width="120%" height="120%">
+   <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7" result="n"/>
+   <feDisplacementMap in="SourceGraphic" in2="n" scale="1.8" result="d"/>
+   <feTurbulence type="fractalNoise" baseFrequency=".55" numOctaves="1" seed="3" result="n2"/>
+   <feColorMatrix in="n2" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -3.2 2.55" result="holes"/>
+   <feComposite in="d" in2="holes" operator="in"/>
+  </filter>
+  <symbol id="bellI" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0-6 6v3.6L4.4 15.3A1 1 0 0 0 5.3 17h13.4a1 1 0 0 0 .9-1.7L18 12.6V9a6 6 0 0 0-6-6Zm-2.5 15.5a2.5 2.5 0 0 0 5 0" fill="currentColor"/></symbol>
+ </defs>
+</svg>
+
+<div class="stage">
+
+<!-- ================= 1 · WELCOME ================= -->
+<div class="cell"><div class="phone" id="p1">
+ <div class="scr">
+  <!-- pass stack -->
+  <div style="position:relative;height:430px;margin:8px -2px 0">
+   <!-- back passes (wallet stack) -->
+   <div class="passwrap" style="position:absolute;left:20px;right:20px;top:104px">
+    <div class="pass" style="height:60px;--cut:200px;background:#DCD6C9;border-radius:16px;display:flex;align-items:center;padding:0 16px;gap:10px">
+     <img class="logo" src="../../../assets/logos/spotify.png" style="width:26px;height:26px;border-radius:7px">
+     <span style="font-weight:600;font-size:15px;flex:1">Spotify</span>
+     <span class="lbl" style="color:#8a8f9a">Mon · Nov 16</span>
+    </div>
+   </div>
+   <div class="passwrap" style="position:absolute;left:10px;right:10px;top:148px">
+    <div class="pass" style="height:60px;--cut:200px;background:#ECE7DC;border-radius:17px;display:flex;align-items:center;padding:0 16px;gap:10px">
+     <img class="logo" src="../../../assets/logos/disney-plus.png" style="width:26px;height:26px;border-radius:7px">
+     <span style="font-weight:600;font-size:15px;flex:1">Disney+</span>
+     <span class="lbl" style="color:#8a8f9a">Wed · Nov 18</span>
+    </div>
+   </div>
+   <!-- duck peeking over the stack -->
+   <img src="../../brand/duck-orange.png" style="position:absolute;width:150px;left:44px;top:15px">
+   <!-- hero pass -->
+   <div class="passwrap" style="position:absolute;left:0;right:0;top:192px">
+    <div class="pass" style="height:226px;--cut:150px">
+     <div style="display:flex;align-items:center;gap:12px;padding:18px 18px 0">
+      <img class="logo" src="../../../assets/logos/netflix.png" style="width:40px;height:40px;border-radius:10px">
+      <div style="flex:1"><div class="disp" style="font-size:24px;line-height:24px;letter-spacing:.2px;text-transform:uppercase">Netflix</div><div class="lbl" style="margin-top:3px">Monthly pass</div></div>
+      <div style="text-align:right"><div class="lbl">Renews</div><div class="disp num" style="font-size:24px;line-height:26px">SAT NOV 14</div></div>
+     </div>
+     <div style="display:flex;justify-content:space-between;padding:20px 18px 0" >
+      <div class="field"><span class="lbl">Amount</span><b>$17.99</b></div>
+      <div class="field"><span class="lbl">Heads-up</span><b>Nov 11 + 13</b></div>
+      <div class="field r"><span class="lbl">At</span><b>9:00 AM</b></div>
+     </div>
+     <div class="perf" style="top:149px"></div>
+     <div style="position:absolute;left:18px;right:18px;top:162px;display:flex;align-items:center;justify-content:space-between">
+      <div><div class="lbl">Still watching?</div><div style="font-weight:600;font-size:15px;margin-top:4px;color:var(--ink)">Hold to ditch</div></div>
+      <div style="width:44px;height:44px;position:relative;display:flex;align-items:center;justify-content:center">
+       <svg width="44" height="44" viewBox="0 0 44 44" style="position:absolute"><circle cx="22" cy="22" r="19" fill="none" stroke="#E4DED0" stroke-width="3.5"/><circle cx="22" cy="22" r="19" fill="none" stroke="var(--teal)" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="119" stroke-dashoffset="84" transform="rotate(-90 22 22)"/></svg>
+       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round" style="position:relative"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <div style="margin-top:30px">
+   <h1 class="h1" style="font-size:54px;line-height:51px">Ditch it before<br>it renews.</h1>
+   <p class="lead" style="margin-top:14px">Every subscription you pay for, in one wallet. A&nbsp;<span style="white-space:nowrap">heads-up</span> before each charge.</p>
+  </div>
+  <div class="foot">
+   <button class="cta">See what I pay</button>
+   <p class="fine" style="margin-top:14px">Free for tracking · Your list stays on your phone</p>
+  </div>
+ </div>
+</div><div class="cap">1 · Welcome</div></div>
+
+<!-- ================= 2 · YOUR TOTAL ================= -->
+<div class="cell"><div class="phone" id="p2">
+ <div class="scr">
+  <div class="topbar">
+   <div class="back"><svg width="12" height="20" viewBox="0 0 12 20" fill="none" stroke="#F3F0E8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2 2 10l8 8"/></svg></div>
+   <div class="steps"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div>
+  </div>
+  <div class="eye" style="margin-top:18px">Your season pass</div>
+  <h2 class="h2" style="margin-top:8px;font-size:46px;line-height:46px">Your real number.</h2>
+
+  <div class="passwrap" style="margin-top:24px">
+   <div class="pass" style="height:420px;--cut:312px;background:var(--gold);overflow:hidden">
+    <!-- stock bottom -->
+    <div style="position:absolute;left:0;right:0;top:312px;bottom:0;background:var(--stock)"></div>
+    <div style="position:relative;padding:18px 20px 0">
+     <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div><div class="disp" style="font-size:22px;line-height:22px;letter-spacing:.6px;text-transform:uppercase">Season pass</div>
+       <div class="lbl" style="color:#5B4410;margin-top:4px">Nov 2026 – Nov 2027</div></div>
+      <div style="text-align:right"><div class="lbl" style="color:#5B4410">Holder</div><div class="disp" style="font-size:22px;line-height:22px;text-transform:uppercase">You</div></div>
+     </div>
+     <div style="margin-top:46px" class="lbl"><span style="color:#5B4410">You pay a year</span></div>
+     <div class="disp num" style="font-size:118px;line-height:104px;letter-spacing:-3px;font-weight:900;font-stretch:68%;margin-top:6px;margin-left:-4px">$1,091</div>
+     <div class="mono num" style="font-size:12px;color:#5B4410;letter-spacing:.4px;margin-top:8px">$1,091.40 EXACTLY · 6 SUBSCRIPTIONS</div>
+    </div>
+    <!-- notch perf -->
+    <div class="perf" style="top:311px;background:radial-gradient(circle,#CDBF9E 1.3px,transparent 1.6px) 0 0/7px 3px repeat-x"></div>
+    <div style="position:absolute;left:20px;right:20px;top:328px;display:flex;justify-content:space-between">
+     <div class="field"><span class="lbl">A month</span><b>$90.95</b></div>
+     <div class="field"><span class="lbl">A day</span><b>about $2.99</b></div>
+     <div class="field r"><span class="lbl">Admits</span><b>6 subs</b></div>
+    </div>
+    <div style="position:absolute;left:20px;right:20px;bottom:16px;display:flex;gap:7px">
+     <img class="logo" src="../../../assets/logos/chatgpt-plus.png" style="width:24px;height:24px;border-radius:6px">
+     <img class="logo" src="../../../assets/logos/netflix.png" style="width:24px;height:24px;border-radius:6px">
+     <img class="logo" src="../../../assets/logos/amazon-prime.png" style="width:24px;height:24px;border-radius:6px">
+     <img class="logo" src="../../../assets/logos/youtube-premium.png" style="width:24px;height:24px;border-radius:6px">
+     <img class="logo" src="../../../assets/logos/spotify.png" style="width:24px;height:24px;border-radius:6px">
+     <img class="logo" src="../../../assets/logos/disney-plus.png" style="width:24px;height:24px;border-radius:6px">
+     <div style="flex:1"></div>
+     <div class="bars" style="width:92px;height:24px"></div>
+    </div>
+   </div>
+  </div>
+
+  <p class="lead" style="margin-top:20px">Most people guess less than half that. Let's make sure none of it surprises you.</p>
+  <div class="foot">
+   <button class="cta">Set my reminders</button>
+  </div>
+ </div>
+</div><div class="cap">2 · Your total</div></div>
+
+<!-- ================= 3 · PAYWALL ================= -->
+<div class="cell"><div class="phone" id="p3">
+ <div class="scr" style="padding-bottom:30px">
+  <div class="topbar" style="justify-content:space-between">
+   <span class="eye" style="color:var(--gold)">Ditch Pro</span>
+   <div style="width:44px;height:44px;margin-right:-10px;display:flex;align-items:center;justify-content:center" aria-label="Close">
+    <div style="width:32px;height:32px;border-radius:16px;background:var(--night3);display:flex;align-items:center;justify-content:center">
+     <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#F3F0E8" stroke-width="2.2" stroke-linecap="round"><path d="M2 2l10 10M12 2 2 12"/></svg></div>
+   </div>
+  </div>
+  <h2 class="h2" style="margin-top:2px">We'll remind you before we charge you, too.</h2>
+  <p class="lead" style="margin-top:8px;font-size:15.5px;line-height:21px">Pro puts reminders on all 6, plus import, the widget and iCloud backup.</p>
+
+  <!-- trial pass -->
+  <div class="passwrap" style="margin-top:20px">
+   <div class="pass" style="height:150px;--cut:58px;--r:9px">
+    <div style="display:flex;align-items:center;gap:10px;padding:12px 16px 0">
+     <div style="width:36px;height:36px;border-radius:9px;background:var(--night);overflow:hidden;position:relative;flex:none"><img src="../../brand/duck-orange.png" style="position:absolute;width:40px;left:-2px;bottom:-1px"></div>
+     <div style="flex:1"><div style="font-weight:600;font-size:15.5px">Ditch Pro trial</div><div class="lbl" style="margin-top:2px">Now on your list</div></div>
+     <div class="field r"><span class="lbl">Trial</span><b>7 days</b></div>
+    </div>
+    <div class="perf" style="top:57px;left:14px;right:14px"></div>
+    <!-- route -->
+    <div style="position:absolute;left:16px;right:16px;top:72px">
+     <div style="position:relative;height:16px;margin:0 6px">
+      <div style="position:absolute;left:0;right:0;top:7px;height:2px;background:linear-gradient(90deg,var(--ink) 0 50%,transparent 50%) 0 0/8px 2px repeat-x;opacity:.35"></div>
+      <div style="position:absolute;left:0;top:2px;width:12px;height:12px;border-radius:6px;background:var(--ink)"></div>
+      <div style="position:absolute;left:50%;margin-left:-11px;top:-3px;width:22px;height:22px;border-radius:11px;background:var(--gold);display:flex;align-items:center;justify-content:center"><svg width="12" height="12" style="color:var(--ink)"><use href="#bellI"/></svg></div>
+      <div style="position:absolute;right:0;top:2px;width:12px;height:12px;border-radius:6px;border:2.5px solid var(--ink);background:var(--stock)"></div>
+     </div>
+     <div style="display:flex;justify-content:space-between;margin-top:10px">
+      <div class="field"><span class="lbl">Today</span><b>$0</b></div>
+      <div class="field" style="text-align:center"><span class="lbl">Sat, Nov 14</span><b>We remind you</b></div>
+      <div class="field r"><span class="lbl">Mon, Nov 16</span><b>$29.99</b></div>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <!-- plans -->
+  <div style="display:flex;flex-direction:column;gap:10px;margin-top:22px">
+   <div class="plan on">
+    <div class="pm"><b>Yearly <i class="tchip">7 days free</i></b><span>$2.50 a month</span></div>
+    <div class="pp"><b>$29.99</b><span>a year</span></div>
+   </div>
+   <div class="plan">
+    <div class="pm"><b>Monthly</b><span>$59.88 a year</span></div>
+    <div class="pp"><b>$4.99</b><span>a month</span></div>
+   </div>
+   <div class="plan">
+    <div class="pm"><b>Lifetime</b><span>Pay once</span></div>
+    <div class="pp"><b>$49.99</b><span>once</span></div>
+   </div>
+  </div>
+  <p class="fine" style="margin-top:14px;color:var(--paper2)">Every renewal gets a heads-up, ours included.</p>
+
+  <div class="foot">
+   <button class="cta">Start 7-day free trial</button>
+   <button class="sec" style="margin-top:8px">Continue free: reminders for 3</button>
+   <p class="fine" style="margin-top:10px">Free for 7 days, then $29.99 a year. Cancel anytime.<br><a>Restore</a> · <a>Terms</a> · <a>Privacy</a></p>
+  </div>
+ </div>
+</div><div class="cap">3 · Paywall</div></div>
+
+<!-- ================= 4 · HOME / HOLD ================= -->
+<div class="cell"><div class="phone" id="p4">
+ <div class="scr" style="padding-left:16px;padding-right:16px">
+  <div class="topbar" style="justify-content:space-between;padding:0 8px">
+   <span class="eye">Mon, Nov 9</span>
+   <div style="display:flex;gap:4px;margin-right:-10px">
+    <div class="ibtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F3F0E8" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+    <div class="ibtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F3F0E8" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></div>
+   </div>
+  </div>
+
+  <!-- season pass header -->
+  <div class="passwrap" style="margin-top:8px">
+   <div class="tk" style="height:104px;background:var(--gold);--stub:104px;--r:9px;border-radius:16px">
+    <div class="main" style="flex-direction:column;align-items:flex-start;gap:0;padding:0 16px">
+     <div class="lbl" style="color:#5B4410">Season pass · a month</div>
+     <div class="disp num" style="font-size:52px;line-height:50px;font-weight:900;font-stretch:68%;letter-spacing:-1.4px;margin-top:6px;color:var(--ink)">$90.95</div>
+    </div>
+    <div class="vperf" style="right:102.5px;background:radial-gradient(circle,#CDBF9E 1.3px,transparent 1.6px) 0 0/3px 7px repeat-y"></div>
+    <div class="stub" style="align-items:flex-start;padding-left:16px">
+     <div class="lbl" style="color:#5B4410">A year</div>
+     <div class="disp num" style="font-size:28px;line-height:30px;margin-top:4px;color:var(--ink)">$1,091</div>
+     <div class="lbl" style="color:#5B4410;margin-top:2px">6 subs</div>
+    </div>
+   </div>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;align-items:baseline;margin:22px 8px 10px">
+   <span class="eye">Up next</span><span class="eye" style="letter-spacing:1px">Sorted by date</span>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:10px;position:relative">
+   <!-- Netflix: holding -->
+   <div style="position:relative;z-index:2">
+    <div class="passwrap holdwrap">
+     <div class="tk holding">
+      <div class="main">
+       <img class="logo" src="../../../assets/logos/netflix.png" style="width:38px;height:38px">
+       <div class="nm"><b>Netflix</b><span>Sat Nov 14 · 5 days</span></div>
+       <div class="pr num">$17.99<small>/MO</small></div>
+      </div>
+      <div class="vperf prog"></div><div class="vperf prog2"></div>
+      <div class="stub">
+       <svg width="50" height="50" viewBox="0 0 50 50" style="position:absolute">
+        <circle cx="25" cy="25" r="21" fill="none" stroke="#E4DED0" stroke-width="4"/>
+        <circle cx="25" cy="25" r="21" fill="none" stroke="var(--teal)" stroke-width="4" stroke-linecap="round" stroke-dasharray="132" stroke-dashoffset="40" transform="rotate(-90 25 25)"/>
+       </svg>
+       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round" style="position:relative"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="rows-dim">
+    <div class="passwrap"><div class="tk"><div class="main"><img class="logo" src="../../../assets/logos/spotify.png" style="width:38px;height:38px"><div class="nm"><b>Spotify</b><span>In 7 days</span></div><div class="pr num">$11.99<small>/MO</small></div></div><div class="vperf"></div><div class="stub"><span class="m">MON</span><span class="d">16</span><span class="m">NOV</span></div></div></div>
+    <div class="passwrap"><div class="tk"><div class="main"><img class="logo" src="../../../assets/logos/disney-plus.png" style="width:38px;height:38px"><div class="nm"><b>Disney+</b><span>In 9 days</span></div><div class="pr num">$11.99<small>/MO</small></div></div><div class="vperf"></div><div class="stub"><span class="m">WED</span><span class="d">18</span><span class="m">NOV</span></div></div></div>
+    <div class="passwrap"><div class="tk"><div class="main"><img class="logo" src="../../../assets/logos/chatgpt-plus.png" style="width:38px;height:38px"><div class="nm"><b>ChatGPT Plus</b><span>In 12 days</span></div><div class="pr num">$20.00<small>/MO</small></div></div><div class="vperf"></div><div class="stub"><span class="m">SAT</span><span class="d">21</span><span class="m">NOV</span></div></div></div>
+    <div class="passwrap"><div class="tk"><div class="main"><img class="logo" src="../../../assets/logos/youtube-premium.png" style="width:38px;height:38px"><div class="nm"><b>YouTube Premium</b><span>In 18 days</span></div><div class="pr num">$13.99<small>/MO</small></div></div><div class="vperf"></div><div class="stub"><span class="m">FRI</span><span class="d">27</span><span class="m">NOV</span></div></div></div>
+    <div class="passwrap"><div class="tk"><div class="main"><img class="logo" src="../../../assets/logos/amazon-prime.png" style="width:38px;height:38px"><div class="nm"><b>Amazon Prime</b><span>In 24 days</span></div><div class="pr num">$14.99<small>/MO</small></div></div><div class="vperf"></div><div class="stub"><span class="m">THU</span><span class="d">3</span><span class="m">DEC</span></div></div></div>
+   </div>
+  </div>
+
+  <!-- hint -->
+  <div class="hint">
+   <div style="flex:1"><b>Keep holding to ditch Netflix</b><span>Let go to keep it. Ditching stops its reminders.</span></div>
+  </div>
+ </div>
+</div><div class="cap">4 · Home: hold to ditch</div></div>
+
+<!-- ================= 5 · DITCHED ================= -->
+<div class="cell"><div class="phone" id="p5">
+ <div class="scr">
+  <div style="position:relative;height:420px;margin-top:14px">
+   <img src="../../brand/duck-orange.png" style="position:absolute;width:132px;right:36px;top:0">
+   <!-- main pass part -->
+   <div class="passwrap" style="position:absolute;left:0;right:0;top:77px">
+    <div class="pass" style="height:150px;--cut:150px;border-radius:18px 18px 0 0;-webkit-mask:radial-gradient(circle 11px at 0 100%,#0000 97%,#000 100%),radial-gradient(circle 11px at 100% 100%,#0000 97%,#000 100%);-webkit-mask-composite:source-in">
+     <div style="display:flex;align-items:center;gap:12px;padding:18px 18px 0">
+      <img class="logo" src="../../../assets/logos/netflix.png" style="width:40px;height:40px;border-radius:10px">
+      <div style="flex:1"><div class="disp" style="font-size:24px;line-height:24px;letter-spacing:.2px;text-transform:uppercase">Netflix</div><div class="lbl" style="margin-top:3px">Monthly pass</div></div>
+      <div style="text-align:right"><div class="lbl">Ditched</div><div class="disp num" style="font-size:24px;line-height:26px">MON NOV 9</div></div>
+     </div>
+     <div style="display:flex;justify-content:space-between;padding:20px 18px 0">
+      <div class="field"><span class="lbl">Was</span><b style="color:var(--mute)">$17.99/mo</b></div>
+      <div class="field"><span class="lbl">Reminders</span><b>Off</b></div>
+      <div class="field r"><span class="lbl">History</span><b>Kept</b></div>
+     </div>
+     <div class="tear" style="bottom:0"></div>
+    </div>
+   </div>
+   <!-- torn stub -->
+   <div class="passwrap" style="position:absolute;left:8px;right:8px;top:250px;transform:rotate(-3deg) translateX(4px);transform-origin:8% 0">
+    <div class="pass stubpart" style="height:156px;border-radius:0 0 18px 18px;-webkit-mask:radial-gradient(circle 11px at 0 0,#0000 97%,#000 100%),radial-gradient(circle 11px at 100% 0,#0000 97%,#000 100%);-webkit-mask-composite:source-in;display:flex;align-items:center;justify-content:center">
+     <div class="tear top"></div>
+     <svg class="stamp" width="270" height="104" viewBox="0 0 270 104" style="transform:rotate(-4deg)">
+      <g filter="url(#ink)" fill="none" stroke="#0B8C7A">
+       <path d="M9 12 C 80 7, 200 8, 261 11 C 264 40, 263 70, 260 93 C 190 97, 80 98, 10 94 C 7 70, 6 40, 9 12 Z" stroke-width="5"/>
+       <path d="M18 21 C 90 17, 190 18, 252 20 C 254 44, 253 66, 251 85 C 185 88, 85 89, 19 86 C 17 66, 16 44, 18 21 Z" stroke-width="2"/>
+       <text x="135" y="68" text-anchor="middle" fill="#0B8C7A" stroke="none" style="font-family:Archivo;font-weight:900;font-stretch:96%;font-size:42px;letter-spacing:3px">DITCHED</text>
+      </g>
+     </svg>
+    </div>
+   </div>
+  </div>
+
+  <div style="text-align:center;margin-top:18px">
+   <div class="disp num" style="font-size:64px;line-height:62px;font-weight:900;font-stretch:68%;letter-spacing:-1.5px;color:var(--teal2)">+$215.88</div>
+   <div style="font-size:17px;color:var(--paper);margin-top:6px;font-weight:500">a year back</div>
+   <div style="font-size:15px;color:var(--paper2);margin-top:4px">You've kept <b style="color:var(--paper)" class="num">$431</b> since June.</div>
+  </div>
+
+  <div class="foot">
+   <div class="note">
+    <img class="logo" src="../../../assets/logos/netflix.png" style="width:28px;height:28px;border-radius:7px">
+    <div style="flex:1"><b>Now cancel it with Netflix</b><span>So Saturday's $17.99 doesn't go through.</span></div>
+    <svg width="8" height="14" viewBox="0 0 8 14" fill="none" stroke="#A3ABBD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1l6 6-6 6"/></svg>
+   </div>
+   <div style="display:flex;gap:10px;margin-top:12px">
+    <button class="sec" style="height:56px;width:120px;border-radius:16px;flex:none">Undo</button>
+    <button class="cta" style="flex:1">Done</button>
+   </div>
+  </div>
+ </div>
+</div><div class="cap">5 · Ditched</div></div>
+
+</div>
+
+<style>
+.plan{height:60px;border-radius:14px;background:var(--night2);display:flex;align-items:center;padding:0 16px;box-shadow:inset 0 0 0 1px var(--hair)}
+.plan.on{box-shadow:inset 0 0 0 2px var(--gold);background:#1B2438}
+.plan .pm{flex:1}.plan .pm b{display:block;font-weight:600;font-size:16px;color:var(--paper)}
+.plan .pm span{display:block;font-size:13px;color:var(--paper2);margin-top:2px}
+.plan .pp{text-align:right}
+.plan .pp b{display:block;font-family:Archivo,sans-serif;font-stretch:80%;font-weight:800;font-size:22px;line-height:22px;color:var(--paper);font-variant-numeric:tabular-nums lining-nums}
+.plan .pp span{display:block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--paper3);margin-top:3px}
+.ibtn{width:44px;height:44px;display:flex;align-items:center;justify-content:center}
+.rows-dim{display:flex;flex-direction:column;gap:10px;filter:brightness(.78)}
+.holdwrap{filter:drop-shadow(0 2px 2px rgba(0,0,0,.3)) drop-shadow(0 18px 28px rgba(0,0,0,.55));transform:scale(1.02)}
+.vperf.prog{background:radial-gradient(circle,var(--teal) 1.5px,transparent 1.8px) 0 0/3px 7px repeat-y;-webkit-mask:linear-gradient(#000 0 66%,transparent 66%)}
+.vperf.prog2{background:radial-gradient(circle,var(--dot) 1.3px,transparent 1.6px) 0 0/3px 7px repeat-y;-webkit-mask:linear-gradient(transparent 0 66%,#000 66%)}
+.hint{position:absolute;left:16px;right:16px;bottom:40px;background:var(--night3);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.hint b{display:block;font-size:15.5px;font-weight:600;color:var(--paper)}
+.hint span{display:block;font-size:13.5px;color:var(--paper2);margin-top:2px}
+.note{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:var(--night2);box-shadow:inset 0 0 0 1px var(--hair);min-height:60px}
+.note b{display:block;font-size:15px;font-weight:600;color:var(--paper)}
+.note span{display:block;font-size:13px;color:var(--paper2);margin-top:2px}
+.tear{position:absolute;left:12px;right:12px;height:3px;background:radial-gradient(circle at 50% 100%,var(--night) 1.6px,transparent 1.9px) 0 0/7px 3px repeat-x}
+.tear.top{top:0;bottom:auto;background:radial-gradient(circle at 50% 0,var(--night) 1.6px,transparent 1.9px) 0 0/7px 3px repeat-x}
+.tchip{font-style:normal;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;background:var(--gold);color:var(--ink);border-radius:5px;padding:3px 6px;margin-left:6px;vertical-align:2px}
+</style>
+<script>
+// status bar + home indicator
+document.querySelectorAll('.phone').forEach(p=>{
+ p.insertAdjacentHTML('afterbegin','<div class="sb"><span>9:41</span><div class="isl"></div><div class="ic"><svg width="18" height="12" viewBox="0 0 18 12" fill="#fff"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="16" height="12" viewBox="0 0 16 12" fill="#fff"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.2-1.2A10.2 10.2 0 0 0 8 .5C5.2.5 2.7 1.6.8 3.4L2 4.6a8.5 8.5 0 0 1 6-2.4Zm0 3.4c1.4 0 2.6.5 3.6 1.4l1.2-1.2A6.8 6.8 0 0 0 8 3.9c-1.8 0-3.5.7-4.8 1.9L4.4 7A5.1 5.1 0 0 1 8 5.6Zm0 3.4c-.6 0-1.2.2-1.6.6L8 11.2l1.6-1.6c-.4-.4-1-.6-1.6-.6Z"/></svg><svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="#fff" opacity=".4"/><rect x="2" y="2" width="20" height="9" rx="2" fill="#fff"/><path d="M25 4.5v4c.8-.3 1.3-1.1 1.3-2s-.5-1.7-1.3-2Z" fill="#fff" opacity=".45"/></svg></div></div>');
+ p.insertAdjacentHTML('beforeend','<div class="hi"></div>');
+});
+// barcode
+document.querySelectorAll('.bars').forEach(el=>{
+ let s=7,x=0,parts=[];const W=parseFloat(el.style.width);
+ while(x<W){s=(s*9301+49297)%233280;const w=1+Math.floor(s/233280*3);s=(s*9301+49297)%233280;const g=1+Math.floor(s/233280*2.4);
+  parts.push(`<rect x="${x}" y="0" width="${w}" height="24" fill="#0C1322"/>`);x+=w+g;}
+ el.innerHTML=`<svg width="${W}" height="24">${parts.join('')}</svg>`;
+});
+</script>
+</body></html>

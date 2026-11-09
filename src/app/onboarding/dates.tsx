@@ -45,7 +45,7 @@ export default function Dates() {
       <TopBar progress={0.45 + (0.25 * (index + 1)) / queue.length} onSkip={finish} skipLabel="Later" />
       <ScrollView contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 24, gap: 18 }}>
         <Say pose="wave" size={88}>
-          When does {current.name} charge you?
+          {`When does ${current.name} charge you?`}
         </Say>
 
         <Animated.View key={current.id + (month ?? '')} entering={SlideInRight.springify().duration(380).dampingRatio(0.85)} exiting={SlideOutLeft.duration(150)} style={styles.card}>

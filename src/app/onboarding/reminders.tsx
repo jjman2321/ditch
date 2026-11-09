@@ -31,7 +31,7 @@ export default function Reminders() {
         when: i === 0 ? 'now' : '9:00',
       }))
     : EXAMPLE;
-  const goNext = () => router.push(list.length > 0 ? '/paywall' : '/(tabs)');
+  const goNext = () => router.push(list.length > 0 ? '/paywall' : '/onboarding/done');
 
   const enable = async () => {
     try {
@@ -49,7 +49,7 @@ export default function Reminders() {
       <TopBar progress={0.8} />
       <ScrollView contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 20, gap: 20 }}>
         <Say pose="bell" size={96}>
-          I&apos;ll ring you 3 days and 1 day before anything charges.
+          {"I'll ping you 3 days and 1 day before a renewal. That's all I'll ever send."}
         </Say>
         <LockScreen items={items} />
       </ScrollView>

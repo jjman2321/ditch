@@ -41,11 +41,23 @@ export function Screen({ children, edges = ['top', 'bottom'] }: { children: Reac
 }
 
 // ---------- mascot ----------
-export function Mascot({ pose, size, delay = 0, style }: { pose: Pose; size: number; delay?: number; style?: StyleProp<ViewStyle> }) {
+export function Mascot({
+  pose,
+  size,
+  delay = 0,
+  still,
+  style,
+}: {
+  pose: Pose;
+  size: number;
+  delay?: number;
+  still?: boolean; // small guide avatar: no pop-in, so it doesn't jump between screens
+  style?: StyleProp<ViewStyle>;
+}) {
   const reduce = useReducedMotion();
   return (
     <Animated.View
-      entering={reduce ? FadeIn.duration(200) : ZoomIn.delay(delay).springify().duration(520).dampingRatio(0.62)}
+      entering={still ? undefined : reduce ? FadeIn.duration(200) : ZoomIn.delay(delay).springify().duration(520).dampingRatio(0.62)}
       style={[{ width: size, height: size }, style]}
       accessible
       accessibilityRole="image"
@@ -57,15 +69,18 @@ export function Mascot({ pose, size, delay = 0, style }: { pose: Pose; size: num
 }
 
 // ---------- the raccoon talks (speech bubble) ----------
-export function Say({ pose = 'wave', children, size = 96 }: { pose?: Pose; children: ReactNode; size?: number }) {
+export function Say({ pose = 'wave', children, size = 96 }: { pose?: Pose; children: string; size?: number }) {
   const reduce = useReducedMotion();
   return (
     <View style={styles.say}>
-      <Mascot pose={pose} size={size} />
-      <Animated.View entering={reduce ? FadeIn.duration(150) : FadeInLeft.delay(180).duration(300).easing(easeOut)} style={styles.bubbleWrap}>
+      <Mascot pose={pose} size={size} still />
+      <Animated.View entering={reduce ? FadeIn.duration(150) : FadeInLeft.duration(260).easing(easeOut)} style={styles.bubbleWrap}>
         <View style={styles.bubbleTail} />
-        <View style={styles.bubble}>
-          <Text style={text.bubble}>{children}</Text>
+        <View style={styles.bubble} accessibilityLiveRegion="polite">
+          {/* The line fades when the raccoon says something new. */}
+          <Animated.Text key={children} entering={FadeIn.duration(220)} style={text.bubble}>
+            {children}
+          </Animated.Text>
         </View>
       </Animated.View>
     </View>

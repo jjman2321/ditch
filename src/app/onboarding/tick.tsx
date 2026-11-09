@@ -57,7 +57,7 @@ export default function TickScreen() {
 
   return (
     <Screen edges={['top']}>
-      <TopBar progress={0.15 + Math.min(count, 6) * 0.025} onSkip={() => router.push('/onboarding/reminders')} />
+      <TopBar progress={0.15 + Math.min(count, 6) * 0.025} />
       <FlatList
         data={data}
         keyExtractor={(s) => s.id}
@@ -68,7 +68,13 @@ export default function TickScreen() {
         ListHeaderComponent={
           <View style={{ gap: 16, paddingBottom: 6 }}>
             <Say pose="wave" size={92}>
-              What do you pay for? Tap them all!
+              {count === 0
+                ? 'What do you pay for? Tap them all.'
+                : count === 1
+                  ? 'Nice! What else?'
+                  : count < 5
+                    ? `${count} so far. Keep going!`
+                    : `Ooh, ${count}! Anything else?`}
             </Say>
             <View style={styles.search}>
               <SearchIcon color={ink.textFaint} />
@@ -130,7 +136,7 @@ export default function TickScreen() {
             <Text style={text.label}>Tap what you pay for</Text>
           )}
         </View>
-        <Btn label={count > 0 ? 'Continue' : 'Skip'} kind={count > 0 ? 'primary' : 'secondary'} onPress={next} style={{ minWidth: 150 }} />
+        <Btn label={count > 0 ? 'Continue' : 'None of these'} kind={count > 0 ? 'primary' : 'secondary'} onPress={next} style={{ minWidth: 160 }} />
       </View>
 
       <CustomSheet visible={customOpen} initialName={query} onClose={() => setCustomOpen(false)} />

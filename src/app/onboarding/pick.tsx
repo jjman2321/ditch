@@ -35,8 +35,8 @@ export default function Pick() {
   return (
     <Screen>
       <ScrollView contentContainerStyle={{ paddingHorizontal: 18, paddingTop: 12, paddingBottom: 140 + insets.bottom, gap: 10 }}>
-        <Say pose="worried" size={96}>
-          Free gets 3 reminders. I picked your biggest. Swap any time!
+        <Say pose="cheer" size={96}>
+          Free it is! I picked your 3 biggest. Swap any time.
         </Say>
         <View style={{ height: 6 }} />
         {sorted.map((x) => (
@@ -60,7 +60,7 @@ export default function Pick() {
           onPress={() => {
             haptic.success();
             setReminderPicks(sel);
-            router.replace('/(tabs)');
+            router.replace('/onboarding/done');
           }}
         />
       </View>

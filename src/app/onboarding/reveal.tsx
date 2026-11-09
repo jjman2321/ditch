@@ -42,13 +42,14 @@ export default function Reveal() {
               + {formatMoney(t.amountMinor, t.currency, { trimWhole: true })}
             </Text>
           ))}
-          <Text style={text.display}>a year. Ditch it.</Text>
+          <Text style={text.display}>a year.</Text>
         </View>
 
         <Animated.View entering={FadeInDown.delay(1500).duration(320)}>
           <Text style={[text.body, num, { textAlign: 'center' }]}>
             {monthly.map((t) => formatMoney(t.amountMinor, t.currency)).join(' + ')} a month across {n} {n === 1 ? 'subscription' : 'subscriptions'}.
           </Text>
+          <Text style={[text.bodyStrong, { textAlign: 'center', marginTop: 6 }]}>Let&apos;s make sure none of it surprises you.</Text>
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(1650).duration(320)} style={styles.card}>
@@ -69,7 +70,7 @@ export default function Reveal() {
         </Animated.View>
       </ScrollView>
       <View style={styles.footer}>
-        <Btn label="Let's fix that" onPress={() => router.push('/onboarding/dates')} />
+        <Btn label="Set my dates" onPress={() => router.push('/onboarding/dates')} />
       </View>
     </Screen>
   );

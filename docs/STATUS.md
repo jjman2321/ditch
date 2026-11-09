@@ -2,21 +2,23 @@
 
 _Update this at the end of every session._
 
-**Last updated:** Nov 9, 2026 · **Milestone:** M0 (setup + design)
+**Last updated:** Nov 9, 2026 (evening) · **Milestone:** M0 → M1 (onboarding + paywall built, Home next)
 
 ## Where we are
-- ✅ Repo set up with these docs: `CLAUDE.md`, `docs/DECISIONS.md` (copied from MMTEST), `docs/SPEC.md`, `docs/STATUS.md`, `docs/MANUAL-TESTS.md`, `.env.example`. The old plan is in `docs/reference/`.
-- ✅ Checked RevenueCat's privacy rules. "Data Not Collected" isn't possible with RevenueCat. The label will be **"Data Not Linked to You: Purchases"**. Details in `CLAUDE.md` → Privacy label.
-- ⏸ **Waiting for the owner's OK on the docs** before starting the design step.
-- There's no app code yet.
+- ✅ Docs, decisions, spec (see below).
+- ✅ Expo SDK 58 app with money/date logic and 23 passing tests.
+- ✅ **Onboarding + paywall v3 built** in a Duolingo-style, mascot-led look. Screens: Welcome → What do you pay for? → yearly total → charge dates → reminders → paywall → pick 3 → You're set. Screenshots: `design/onboarding-v3-a.jpg`, `design/onboarding-v3-b.jpg`.
+- ✅ **Deep Mobbin research** on ~1,000 screens. Summary in `docs/design/PLAYBOOK.md`; full write-ups in `docs/research/`.
+- ✅ **Raccoon:** a friendly teal cartoon, no bandit mask. Poses are in `assets/mascot/duo/`. About 90 Higgsfield credits used so far.
+- ⚠️ **Not built yet:**
+  - Purchases are stubbed, so buttons explain "next build" (RevenueCat comes in M2).
+  - Home, Subs and Ditched are placeholders.
+  - Nothing is saved to the database yet (SQLite comes in M1).
 
 ## Next
-1. Owner reviews `docs/SPEC.md`, especially §12, "Open questions".
-2. **Design step (M0):**
-   - Onboarding, screen by screen, from Mobbin references.
-   - Home, Subs, Ditched and Settings mockups at phone size, light and dark.
-   - Raccoon mascot. Show the Higgsfield credit cost before generating anything.
-3. Owner approves the designs, then we build **M1** (local core).
+1. Owner reviews v3 screenshots and answers the open questions in `docs/design/PLAYBOOK.md`: raccoon name, founder line, final mascot art.
+2. Home / Subs / Ditched in the same style.
+3. Save to SQLite, schedule local reminders, and get it running on the owner's iPhone (Expo Go).
 
 ## How to run the app
 Not yet: the app gets created at the start of M1. The plan:

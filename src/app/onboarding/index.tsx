@@ -11,16 +11,16 @@ export default function Welcome() {
   return (
     <Screen>
       <View style={styles.hero}>
-        <Mascot pose="wave" size={290} />
+        <Mascot pose="flick" size={290} />
         <Animated.View entering={FadeInDown.delay(300).duration(400)} style={{ gap: 10 }}>
           <Text style={[text.display, styles.center]} accessibilityRole="header">
             Ditch it before{'\n'}it renews.
           </Text>
-          <Text style={[text.body, styles.center]}>Track every subscription. Get a heads-up before each charge. Cancel what you don&apos;t use.</Text>
+          <Text style={[text.body, styles.center]}>I&apos;ll add up what you pay and warn you before each charge. You decide what to ditch.</Text>
         </Animated.View>
       </View>
       <Animated.View entering={FadeInDown.delay(450).duration(400)} style={styles.footer}>
-        <Btn label="Get started" onPress={() => router.push('/onboarding/tick')} />
+        <Btn label="Let's see what I pay" onPress={() => router.push('/onboarding/tick')} />
         <Text style={[text.small, styles.center]}>Free. No account. Your list stays on your phone.</Text>
       </Animated.View>
     </Screen>

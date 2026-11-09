@@ -29,6 +29,7 @@ export function monthlyMinorExact(amountMinor: number, cycle: Cycle): number {
 
 /** How many decimals a currency really uses (USD 2, JPY 0, ...). */
 export function currencyDigits(currency: string): number {
+  if (ZERO_DECIMAL.has(currency)) return 0;
   try {
     return (
       new Intl.NumberFormat('en-US', { style: 'currency', currency }).resolvedOptions()
@@ -73,17 +74,46 @@ export function formatMoney(
   return withSymbol(major, currency, fraction, locale, home);
 }
 
+/** Currencies with no minor unit, so we don't depend on Intl for them. */
+const ZERO_DECIMAL = new Set(['JPY', 'KRW', 'CLP', 'VND', 'ISK', 'HUF', 'TWD', 'UGX', 'XAF', 'XOF']);
+
+type Display = 'symbol' | 'narrowSymbol' | 'code';
+
+/**
+ * iPhone's JavaScript engine (Hermes) has a smaller Intl than browsers and Node:
+ * no formatToParts, and some options can throw. Build formatters defensively.
+ */
+function currencyFormat(locale: string, currency: string, fraction: number, display: Display): Intl.NumberFormat {
+  const base = { style: 'currency' as const, currency, minimumFractionDigits: fraction, maximumFractionDigits: fraction };
+  try {
+    return new Intl.NumberFormat(locale, { ...base, currencyDisplay: display });
+  } catch {
+    return new Intl.NumberFormat(locale, base);
+  }
+}
+
 function withSymbol(major: number, currency: string, fraction: number, locale: string, home?: string): string {
   const own = home === undefined || currency === home;
-  const parts = new Intl.NumberFormat(locale, {
-    style: 'currency',
-    currency,
-    currencyDisplay: own && home !== undefined ? 'narrowSymbol' : 'symbol',
-    minimumFractionDigits: fraction,
-    maximumFractionDigits: fraction,
-  }).formatToParts(major);
   const distinct = !own ? DISTINCT_SYMBOL[currency] : undefined;
-  return parts.map((p) => (p.type === 'currency' && distinct ? distinct : p.value)).join('');
+  const fmt = currencyFormat(locale, currency, fraction, own && home !== undefined ? 'narrowSymbol' : 'symbol');
+  if (!distinct) return fmt.format(major);
+
+  if (typeof fmt.formatToParts === 'function') {
+    try {
+      return fmt
+        .formatToParts(major)
+        .map((p) => (p.type === 'currency' ? distinct : p.value))
+        .join('');
+    } catch {
+      // fall through to the code-based swap below
+    }
+  }
+  // Fallback: format with the ISO code ("USD 15.99" / "15,99 USD") and swap it for our symbol.
+  const withCode = currencyFormat(locale, currency, fraction, 'code').format(major);
+  if (withCode.includes(currency)) {
+    return withCode.replace(new RegExp(`${currency}[\\s\\u00a0\\u202f]?`), distinct).trim();
+  }
+  return fmt.format(major);
 }
 
 /** Sum per currency. Returns one entry per currency, biggest first. */

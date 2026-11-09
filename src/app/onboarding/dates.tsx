@@ -86,7 +86,7 @@ export default function Dates() {
                 </Txt>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 1 }}>
                   <Txt v="sub" tone="mute" num>
-                    {priceOf(x, 'short') ?? 'No price yet'}
+                    {priceOf(x, 'short') ?? 'No price'}
                   </Txt>
                   {x.dateSource === 'guess' ? <GuessTag /> : null}
                 </View>

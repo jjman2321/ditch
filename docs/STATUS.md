@@ -16,14 +16,16 @@ _Update this at the end of every session._
   - Every number comes from the user's picks and the catalog. Charge dates start as labelled guesses; the date sheet takes a next charge or a last receipt and rolls it forward.
   - Paywall follows the honest rules and the plan-card research: Save 49% (rounded down), $2.50 a month (rounded up), Monthly says "No free trial".
   - "Turn on reminders" asks for the real iPhone permission.
-  - 55 Jest tests pass (money, dates, guesses, receipts, heads-ups, totals, prices, You're set copy).
+  - Jest tests pass (money, dates, guesses, receipts, heads-ups, totals, prices, You're set copy).
   - The Kiwi kit, raccoon, 3D emoji and Plus Jakarta Sans are gone.
 - ⚠️ Purchases are stubbed (RevenueCat in M2). Home, Calendar and Ditched are placeholders. Nothing is saved to SQLite yet, so onboarding answers are lost when the app closes. Reminders are not scheduled yet.
 - ⚠️ "Import from a screenshot" (DECISIONS #16) is a placeholder screen.
+- ✅ **Prices by country (DECISIONS #17):** 102 verified rows for 12 countries, generated into `src/catalog/prices.data.ts` by `npm run prices`. Country from the iPhone Region with "Prices for 🇺🇸 US · Change", one-tap plan pills, "Add your price" where we have no checked price, one total per currency (US$ vs A$ kept apart). 81 Jest tests pass.
+- ⚠️ **Conversion risk:** only *verified* rows ship, so in the US Amazon Prime, YouTube Premium, ChatGPT Plus and Disney+ show "Add your price". With the 6 popular picks the US total drops to $396 until people add those. Checking those 4 prices by hand (and Disney+'s Hulu bundle) is the top data job.
 - 🗄️ Retired: raccoon poses and Seedance loops in `design/premium-white/anim/` (kept for reference, not used).
 
 ## Next
-1. Per-country catalog prices (DECISIONS #17) and the plan chip on ticked rows.
+1. Verify Amazon Prime, YouTube Premium, ChatGPT Plus and Disney+ (US first) in `docs/research/prices-2026-11.json`, then `npm run prices`.
 2. Phase 2: Home, Calendar, Ditched (hold to ditch, the stamp), SQLite with migrations, and real reminder scheduling.
 3. Owner runs the onboarding checklist (`docs/MANUAL-TESTS.md` §1) on the iPhone with Expo Go.
 

@@ -14,6 +14,7 @@ It's the owner's first app. The goal is to learn the whole Apple pipeline and st
 5. `docs/reference/BUILDOUT-ORIGINAL.md`: older plan. Only for money/date/reminder/paywall rules and acceptance checks. DECISIONS.md wins wherever they disagree.
 
 ## How the owner likes to work
+- **North star for every change:** does it serve our target user (iPhone, ~23–40, a bit guilty and anxious about money, wants control and reliability; see `docs/research/mascot-or-not.md`) and does it help conversion (onboarding completion, trial starts, trial→paid, retention)? If a change doesn't help either, cut it. Say how each change serves the user and conversions, and back it with research (Mobbin, AppKittie, RevenueCat/Adapty data, competitor reviews) where possible. Honesty rules (paywall, "never claim") still win over conversion.
 - Med student with limited coding experience. Explain in plain language, no jargon.
 - **After every change:** say what changed in plain words, then give a short click-through checklist to test it on the iPhone. Add or update the matching section in `docs/MANUAL-TESTS.md`.
 - **Secrets:** never ask the owner to paste API keys or passwords into chat. Tell them exactly where to put them: EAS environment variables (`eas env:create` or expo.dev → project → Environment variables), the RevenueCat dashboard, or claude.ai environment settings.

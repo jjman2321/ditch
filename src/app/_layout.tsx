@@ -1,31 +1,33 @@
-import { Newsreader_400Regular, Newsreader_400Regular_Italic, Newsreader_600SemiBold } from '@expo-google-fonts/newsreader';
-import { PlusJakartaSans_500Medium, PlusJakartaSans_600SemiBold, PlusJakartaSans_700Bold, PlusJakartaSans_800ExtraBold } from '@expo-google-fonts/plus-jakarta-sans';
+import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold, Inter_800ExtraBold } from '@expo-google-fonts/inter';
 import { useFonts } from 'expo-font';
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { OnboardingProvider } from '@/state/onboarding';
-import { C } from '@/ui/theme';
-import { usePalette } from '@/theme/tokens';
+import { brand, paletteFor } from '@/ui/sunflower';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
 export default function RootLayout() {
-  const scheme = useColorScheme();
-  const p = usePalette();
+  const dark = useColorScheme() === 'dark';
+  const p = paletteFor('cream', dark);
+  // The splash stays up until fonts are in, so there's never a blank or
+  // unstyled frame.
   const [loaded] = useFonts({
-    PlusJakartaSans_500Medium,
-    PlusJakartaSans_600SemiBold,
-    PlusJakartaSans_700Bold,
-    PlusJakartaSans_800ExtraBold,
-    Newsreader_400Regular,
-    Newsreader_400Regular_Italic,
-    Newsreader_600SemiBold,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    Inter_800ExtraBold,
+    'ArchivoDitch-Wordmark': require('../../assets/fonts/ArchivoDitch-Wordmark.ttf'),
+    'ArchivoDitch-Display': require('../../assets/fonts/ArchivoDitch-Display.ttf'),
+    'ArchivoDitch-Title': require('../../assets/fonts/ArchivoDitch-Title.ttf'),
+    'ArchivoDitch-WideHeavy': require('../../assets/fonts/ArchivoDitch-WideHeavy.ttf'),
+    'ArchivoDitch-WideBold': require('../../assets/fonts/ArchivoDitch-WideBold.ttf'),
   });
 
   useEffect(() => {
@@ -34,10 +36,10 @@ export default function RootLayout() {
 
   if (!loaded) return null;
 
-  const base = scheme === 'dark' ? DarkTheme : DefaultTheme;
+  const base = dark ? DarkTheme : DefaultTheme;
   const theme = {
     ...base,
-    colors: { ...base.colors, background: p.bg, card: p.bg, text: p.text, primary: p.primary, border: p.separator },
+    colors: { ...base.colors, background: p.bg, card: p.bg, text: p.fg, primary: p.fg, border: p.rule },
   };
 
   return (
@@ -45,12 +47,14 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <ThemeProvider value={theme}>
           <OnboardingProvider>
-            <StatusBar style="dark" />
-            <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: C.bg } }}>
+            <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: p.bg } }}>
               <Stack.Screen name="index" />
               <Stack.Screen name="onboarding" />
-              <Stack.Screen name="paywall" options={{ presentation: 'fullScreenModal', animation: 'slide_from_bottom' }} />
-              <Stack.Screen name="(tabs)" options={{ animation: 'fade', contentStyle: { backgroundColor: p.bg } }} />
+              <Stack.Screen
+                name="paywall"
+                options={{ presentation: 'fullScreenModal', animation: 'slide_from_bottom', contentStyle: { backgroundColor: dark ? brand.night : brand.cream } }}
+              />
+              <Stack.Screen name="(tabs)" options={{ animation: 'fade' }} />
             </Stack>
           </OnboardingProvider>
         </ThemeProvider>

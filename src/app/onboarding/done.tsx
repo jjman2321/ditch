@@ -1,86 +1,120 @@
-// 8 · You're set: ends onboarding on the first real reminder.
+// 08 / 08b · You're set. When the first heads-ups come, from the user's
+// own picks. 08b is the same screen once a Pro trial has started.
 
-import * as Notifications from 'expo-notifications';
 import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { Linking, Platform, Text, View } from 'react-native';
+import { useMemo } from 'react';
+import { View } from 'react-native';
 
-import { addDays, nextChargeDate, toDateOnly, weekdayDate } from '@/domain/dates';
-import { formatMoney } from '@/domain/money';
-import { useOnboarding, usePickedList } from '@/state/onboarding';
-import { AppLogo } from '@/ui/ditch';
-import { Btn, C, Card, Confetti, Display, E, F, Float, Glow, Label, Raccoon, Rise, Row, Screen, Small, tap } from '@/ui/kit';
+import { addDays, toDateOnly, weekdayDate } from '@/domain/dates';
+import { buildSetSummary } from '@/onboarding/summary';
+import { planById } from '@/services/purchases';
+import { chargeOf, useOnboarding, usePickedList, useRemindedIds } from '@/state/onboarding';
+import { Button, Card, Duck, DuckIcon, LogoTile, ProLockup, Screen, Txt, usePalette } from '@/ui/sunflower';
 
 export default function Done() {
+  const p = usePalette();
+  const { pro, notifications } = useOnboarding();
   const list = usePickedList();
-  const { reminderPicks } = useOnboarding();
-  const [on, setOn] = useState<boolean | null>(Platform.OS === 'web' ? true : null);
+  const remindedIds = useRemindedIds();
   const today = toDateOnly();
-  useEffect(() => {
-    tap('success');
-    if (Platform.OS === 'web') return;
-    Notifications.getPermissionsAsync()
-      .then((r) => setOn(r.granted))
-      .catch(() => setOn(false));
-  }, []);
+  const n = list.length;
+  const trial = pro === 'yearly' ? addDays(today, planById('yearly').trialDays) : null;
 
-  const watched = list.filter((x) => (list.length <= 3 ? true : reminderPicks.includes(x.id)));
-  const first = watched
-    .filter((x) => x.anchorDate)
-    .map((x) => ({ x, charge: nextChargeDate(x.anchorDate!, x.cycle, today) }))
-    .sort((a, b) => (a.charge < b.charge ? -1 : 1))[0];
-  const ping = first ? [addDays(first.charge, -3), addDays(first.charge, -1)].find((d) => d >= today) ?? null : null;
-
-  return (
-    <Screen scroll={false} footer={<Btn label="Go to my list" onPress={() => router.replace('/(tabs)')} />}>
-      <Confetti />
-      <View style={{ flex: 1, justifyContent: 'center', gap: 20 }}>
-        <View style={{ alignItems: 'center', gap: 14 }}>
-          <View style={{ width: 300, height: 210, alignItems: 'center', justifyContent: 'center' }}>
-            <Glow color={C.kiwi} size={280} opacity={0.22} />
-            <Float amp={5} style={{ position: 'absolute', left: 26, top: 30 }}>
-              <E name="bell" size={56} />
-            </Float>
-            <Float amp={7} style={{ position: 'absolute', right: 28, top: 44 }}>
-              <E name="spiralCal" size={50} />
-            </Float>
-            <Raccoon size={140} pose="happy" move="hop" />
-          </View>
-          <Display center>You&apos;re set</Display>
-        </View>
-        <Rise i={1}>
-          <Card outline gap={14}>
-            {first && ping ? (
-              <Row gap={12}>
-                <AppLogo id={first.x.id} color={first.x.color} ink={first.x.ink} mono={first.x.mono} size={42} />
-                <View style={{ flex: 1 }}>
-                  <Text style={{ fontFamily: F.bold, fontSize: 12, letterSpacing: 1, color: C.kiwiInk }}>FIRST HEADS-UP</Text>
-                  <Label>{weekdayDate(ping)} at 9:00</Label>
-                  <Small>
-                    {first.x.name} · {formatMoney(first.x.amountMinor, first.x.currency)} on {weekdayDate(first.charge)}
-                  </Small>
-                </View>
-              </Row>
-            ) : (
-              <Small>Add charge dates on Home and I&apos;ll start warning you.</Small>
-            )}
-            <View style={{ height: 1.5, backgroundColor: C.line }} />
-            <Line label="Tracking" value={`${list.length} ${list.length === 1 ? 'subscription' : 'subscriptions'}`} />
-            <Line label="Reminders" value={`${watched.length} of ${list.length}`} />
-            <Line label="Notifications" value={on === false ? 'Off' : 'On'} warn={on === false} />
-            {on === false ? <Btn label="Turn on in Settings" kind="secondary" small onPress={() => Linking.openSettings()} /> : null}
-          </Card>
-        </Rise>
-      </View>
-    </Screen>
+  const s = useMemo(
+    () =>
+      buildSetSummary({
+        subs: list.map((x) => ({ id: x.id, name: x.name, charge: chargeOf(x, today), guess: x.dateSource === 'guess' })),
+        remindedIds,
+        trialCharge: trial,
+        pro: !!pro,
+        today,
+        nowHour: new Date().getHours(),
+        notificationsOn: notifications === 'granted',
+      }),
+    [list, remindedIds, trial, pro, today, notifications],
   );
-}
 
-function Line({ label, value, warn }: { label: string; value: string; warn?: boolean }) {
+  const lead =
+    n === 0
+      ? 'Add what you pay for from your list and we’ll give you a heads-up before each charge.'
+      : pro
+        ? `All ${n} get a heads-up${trial ? ', and so does your trial' : ''}. Here’s when you’ll hear from us first.`
+        : `All ${n} ${n === 1 ? 'is' : 'are'} on your list. ${s.withHeadsUps} ${s.withHeadsUps === '1' ? 'gets' : 'get'} a heads-up. Here’s when you’ll hear from us first.`;
+
   return (
-    <Row style={{ justifyContent: 'space-between' }}>
-      <Small>{label}</Small>
-      <Label style={{ fontSize: 15, color: warn ? C.bad : C.ink }}>{value}</Label>
-    </Row>
+    <Screen surface="sun" scroll footer={<Button label="Go to my list" onPress={() => router.replace('/(tabs)')} />}>
+      <Txt v="displayL" accessibilityRole="header" style={{ marginTop: 40 }}>
+        {'You’re\nset.'}
+      </Txt>
+      <Txt v="lead" tone="fg2" style={{ marginTop: 12 }}>
+        {lead}
+      </Txt>
+
+      {n > 0 ? (
+        <>
+          <View style={{ flex: 1, minHeight: 76 }} />
+          {s.rows.length ? (
+            <View>
+              <Duck width={128} right={22} sink={4} />
+              <Card style={{ paddingTop: 16, paddingHorizontal: 18, paddingBottom: 8 }}>
+                <Txt v="eyebrow" tone="mute" accessibilityRole="header">
+                  First heads-ups
+                </Txt>
+                <View style={{ marginTop: 4 }}>
+                  {s.rows.map((r, i) => (
+                    <View
+                      key={r.id}
+                      accessible
+                      accessibilityLabel={`${r.trial ? 'Ditch Pro trial' : r.name}, ${r.guess ? 'around ' : ''}${weekdayDate(r.date)}`}
+                      style={{ flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 52, borderTopWidth: i ? 1 : 0, borderTopColor: p.hair }}
+                    >
+                      {r.trial ? <DuckIcon size={32} /> : <LogoTile id={r.id} size={32} />}
+                      <View style={{ flex: 1 }}>
+                        {r.trial ? (
+                          <ProLockup size={15} suffix="trial" color={p.cardFg} />
+                        ) : (
+                          <Txt v="label" color={p.cardFg} style={{ fontSize: 15.5 }} numberOfLines={1}>
+                            {r.name}
+                          </Txt>
+                        )}
+                      </View>
+                      <Txt v="body" num color={p.cardFg}>
+                        {r.guess ? <Txt v="body" tone="mute">around </Txt> : null}
+                        {weekdayDate(r.date)}
+                      </Txt>
+                    </View>
+                  ))}
+                </View>
+              </Card>
+            </View>
+          ) : null}
+          <Txt v="body" tone="fg2" style={{ marginTop: 12, marginHorizontal: 4, fontSize: 14.5 }}>
+            {s.note}
+          </Txt>
+          <View style={{ flexDirection: 'row', marginTop: 16, borderTopWidth: 2, borderTopColor: p.dark ? p.rule : p.fg }}>
+            {[
+              [String(s.tracked), 'tracked'],
+              [s.withHeadsUps, 'with heads-ups'],
+              [String(s.datesToCheck), s.datesToCheck === 1 ? 'date to check' : 'dates to check'],
+            ].map(([v, l], i) => (
+              <View
+                key={l}
+                accessible
+                accessibilityLabel={`${v} ${l}`}
+                style={{ flex: 1, paddingTop: 10, paddingLeft: i ? 16 : 0, borderLeftWidth: i ? 1 : 0, borderLeftColor: p.rule }}
+              >
+                <Txt v="moneyL" tone="money" num>
+                  {v}
+                </Txt>
+                <Txt v="body" tone="fg2" style={{ fontSize: 14 }} numberOfLines={1}>
+                  {l}
+                </Txt>
+              </View>
+            ))}
+          </View>
+          <View style={{ height: 16 }} />
+        </>
+      ) : null}
+    </Screen>
   );
 }

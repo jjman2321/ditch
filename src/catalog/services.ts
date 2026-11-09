@@ -1,8 +1,8 @@
 // Bundled catalog of popular US services.
 // Prices are typical US list prices for the most common plan, used only
 // as editable starting points ("about $15.49/mo"). Checked: Nov 2026.
-// Logos: brand-colour monogram tiles for now. Real logo assets are an
-// open question (licensing) — see docs/SPEC.md §12.
+// Logos: real app icons in src/catalog/logos.ts; services without one
+// fall back to a brand-colour monogram tile.
 
 import type { Cycle } from '@/domain/money';
 
@@ -108,3 +108,25 @@ export const SERVICES: CatalogService[] = [
 ];
 
 export const SERVICE_BY_ID = Object.fromEntries(SERVICES.map((x) => [x.id, x]));
+
+/** What "Popular" shows, most common first (US, Nov 2026). */
+export const POPULAR_ORDER = [
+  'netflix',
+  'spotify',
+  'chatgpt-plus',
+  'amazon-prime',
+  'youtube-premium',
+  'disney-plus',
+  'max',
+  'apple-music',
+  'hulu',
+  'icloud',
+  'apple-tv',
+  'audible',
+  'claude-pro',
+  'xbox-game-pass',
+  'peacock',
+  'paramount-plus',
+];
+
+export const POPULAR: CatalogService[] = POPULAR_ORDER.map((id) => SERVICE_BY_ID[id]).filter(Boolean);

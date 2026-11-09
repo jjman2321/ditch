@@ -1,15 +1,16 @@
-import { View } from 'react-native';
+// Ditched: placeholder until Phase 2.
 
-import { Screen, T } from '@/components/ui';
-import { space } from '@/theme/tokens';
+import { Screen, Txt } from '@/ui/sunflower';
 
-export default function Placeholder() {
+export default function Ditched() {
   return (
-    <Screen edges={['top']}>
-      <View style={{ padding: space.xl }}>
-        <T v="largeTitle">Ditched</T>
-        <T v="body" tone="secondary">Coming after the Home design.</T>
-      </View>
+    <Screen>
+      <Txt v="title" accessibilityRole="header" style={{ marginTop: 16 }}>
+        Ditched
+      </Txt>
+      <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
+        What you’ve cancelled and what it adds up to. Coming in the next build.
+      </Txt>
     </Screen>
   );
 }

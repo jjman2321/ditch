@@ -1,57 +1,55 @@
-// Home: placeholder until the Home design is approved.
+// Home: a plain list of what was picked in onboarding, until the Home
+// design (Phase 2) lands. Totals are per currency, never mixed.
 
 import { ScrollView, View } from 'react-native';
 
-import { Card, Divider, Screen, ServiceTile, T } from '@/components/ui';
-import { formatMoney, monthlyMinorExact, totalsByCurrency, yearlyMinor } from '@/domain/money';
-import { nextDateFor, usePickedList } from '@/state/onboarding';
 import { weekdayDate } from '@/domain/dates';
-import { space, tabular } from '@/theme/tokens';
+import { formatMoney, spendTotals } from '@/domain/money';
+import { chargeOf, usePickedList } from '@/state/onboarding';
+import { Card, GuessTag, LogoTile, RowDivider, Screen, Txt, Wordmark } from '@/ui/sunflower';
 
 export default function Home() {
   const list = usePickedList();
-  const monthly = totalsByCurrency(list.map((x) => ({ currency: x.currency, amountMinor: monthlyMinorExact(x.amountMinor, x.cycle) })));
-  const yearly = totalsByCurrency(list.map((x) => ({ currency: x.currency, amountMinor: yearlyMinor(x.amountMinor, x.cycle) })));
+  const totals = spendTotals(list);
   return (
-    <Screen edges={['top']}>
-      <ScrollView contentContainerStyle={{ padding: space.xl, gap: space.xl }}>
-        <View style={{ gap: space.xs }}>
-          <T v="footnote" tone="tertiary">
-            HOME (draft, design comes next)
-          </T>
-          <T v="largeTitle" style={tabular}>
-            {monthly.map((t) => formatMoney(t.amountMinor, t.currency)).join(' + ') || '$0'}/mo
-          </T>
-          <T v="body" tone="secondary" style={tabular}>
-            {yearly.map((t) => formatMoney(t.amountMinor, t.currency)).join(' + ') || '$0'} a year
-          </T>
+    <Screen>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 24 }}>
+        <View style={{ height: 48, justifyContent: 'center' }}>
+          <Wordmark />
         </View>
-        <Card>
-          {list.map((x, i) => {
-            const next = nextDateFor(x);
-            return (
+        <Txt v="displayM" tone="money" num style={{ marginTop: 12 }}>
+          {totals.map((t) => formatMoney(t.monthlyMinor, t.currency)).join(' + ') || formatMoney(0, 'USD')} a month
+        </Txt>
+        <Txt v="leadS" tone="fg2" num style={{ marginTop: 4 }}>
+          {totals.map((t) => formatMoney(t.yearlyMinor, t.currency)).join(' + ') || formatMoney(0, 'USD')} a year · Home design comes next
+        </Txt>
+        <Card style={{ marginTop: 18, paddingVertical: 2 }}>
+          {list.length === 0 ? (
+            <Txt v="leadS" tone="fg2" style={{ padding: 16 }}>
+              Nothing here yet.
+            </Txt>
+          ) : (
+            list.map((x, i) => (
               <View key={x.id}>
-                {i > 0 ? <Divider inset={68} /> : null}
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, padding: space.lg }}>
-                  <ServiceTile color={x.color} ink={x.ink} mono={x.mono} size={36} />
+                {i ? <RowDivider inset={62} /> : null}
+                <View style={{ minHeight: 54, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14 }}>
+                  <LogoTile id={x.id} size={36} />
                   <View style={{ flex: 1 }}>
-                    <T v="headline">{x.name}</T>
-                    <T v="footnote" tone="tertiary">
-                      {next ? `Next: ${weekdayDate(next)}` : 'Add a date'}
-                    </T>
+                    <Txt v="bodyStrong">{x.name}</Txt>
+                    <View style={{ flexDirection: 'row', gap: 6, alignItems: 'center' }}>
+                      <Txt v="sub" tone="mute" num>
+                        {weekdayDate(chargeOf(x))}
+                      </Txt>
+                      {x.dateSource === 'guess' ? <GuessTag /> : null}
+                    </View>
                   </View>
-                  <T v="body" style={tabular}>
+                  <Txt v="moneyS" num>
                     {formatMoney(x.amountMinor, x.currency)}
-                  </T>
+                  </Txt>
                 </View>
               </View>
-            );
-          })}
-          {list.length === 0 ? (
-            <T v="body" tone="secondary" style={{ padding: space.lg }}>
-              Nothing yet.
-            </T>
-          ) : null}
+            ))
+          )}
         </Card>
       </ScrollView>
     </Screen>

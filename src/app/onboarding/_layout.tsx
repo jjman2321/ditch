@@ -1,17 +1,18 @@
 import { Stack } from 'expo-router';
+import { useColorScheme } from 'react-native';
 import { useReducedMotion } from 'react-native-reanimated';
 
-import { C } from '@/ui/theme';
+import { brand } from '@/ui/sunflower';
 
-// Onboarding always uses the bright brand look, in light and dark mode alike.
 export default function OnboardingLayout() {
   const reduce = useReducedMotion();
+  const dark = useColorScheme() === 'dark';
   return (
     <Stack
       screenOptions={{
         headerShown: false,
         animation: reduce ? 'fade' : 'slide_from_right',
-        contentStyle: { backgroundColor: C.bg },
+        contentStyle: { backgroundColor: dark ? brand.night : brand.cream },
       }}
     />
   );

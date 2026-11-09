@@ -1,104 +1,125 @@
-// 4 · When does each one charge? One tap per subscription.
+// 04 · When do they charge you? One screen, one date chip per sub.
+// Every date starts as a labelled guess; tapping one opens the date sheet.
 
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
-import Animated, { FadeIn, FadeInRight } from 'react-native-reanimated';
+import { Pressable, View } from 'react-native';
 
-import { anchorForDayOfMonth, anchorForMonthDay, daysInMonth, MONTH_SHORT, nextChargeDate, nextForWeekday, toDateOnly, WEEKDAY_SHORT, weekdayDate } from '@/domain/dates';
+import { datesCtaLabel } from '@/domain/copy';
+import { weekdayDate } from '@/domain/dates';
 import { CYCLE_SHORT, formatMoney } from '@/domain/money';
-import { byYearlyDesc, useOnboarding, usePickedList } from '@/state/onboarding';
-import { AppLogo, FlowHeader } from '@/ui/ditch';
-import { Icon } from '@/ui/icons';
-import { Btn, C, F, Label, Press, RaccoonSays, Row, Screen, Small, tap } from '@/ui/kit';
+import { DateSheet } from '@/onboarding/DateSheet';
+import { byYearlyDesc, chargeOf, useOnboarding, usePickedList, type Picked } from '@/state/onboarding';
+import { Button, Card, ChevronDown, GuessTag, LogoTile, RowDivider, Screen, SectionHeader, StepHeader, Txt, haptic, usePalette } from '@/ui/sunflower';
 
-export default function Dates() {
-  const { setAnchor } = useOnboarding();
-  const list = usePickedList();
-  const queue = useMemo(() => [...list].sort(byYearlyDesc), [list]);
-  const [i, setI] = useState(0);
-  const [month, setMonth] = useState<number | null>(null);
-  const [w, setW] = useState(0);
-  const today = toDateOnly();
-  const cur = queue[i];
-  const finish = () => router.push('/onboarding/reminders');
-  const save = (anchor: string | null) => {
-    if (!cur) return;
-    tap();
-    setAnchor(cur.id, anchor);
-    setTimeout(() => {
-      setMonth(null);
-      if (i + 1 >= queue.length) finish();
-      else setI(i + 1);
-    }, 140);
-  };
-  if (!cur) return null;
-
-  const yearlyDay = cur.cycle === 'yearly' && month !== null;
-  const cell = w ? Math.floor((w - 6 * 8) / 7) : 40;
-  const wide = w ? Math.floor((w - 3 * 8) / 4) : 70;
-  const prev = i > 0 ? queue[i - 1] : null;
-  const prevNext = prev?.anchorDate ? nextChargeDate(prev.anchorDate, prev.cycle, today) : null;
-
+function DateChip({ p: sub, onPress }: { p: Picked; onPress: () => void }) {
+  const p = usePalette();
+  const guess = sub.dateSource === 'guess';
+  const date = weekdayDate(chargeOf(sub));
   return (
-    <Screen footer={<Btn label="Not sure" kind="secondary" onPress={() => save(null)} />}>
-      <FlowHeader
-        section={1}
-        fill={(i + 1) / queue.length}
-        right={
-          <Pressable accessibilityRole="button" onPress={finish} hitSlop={8} style={{ minHeight: 44, justifyContent: 'center' }}>
-            <Text style={{ fontFamily: F.semi, fontSize: 15, color: C.ink2 }}>Later</Text>
-          </Pressable>
-        }
-      />
-      <RaccoonSays text={`When does ${cur.name} charge you?`} />
-
-      <Animated.View key={cur.id + (month ?? '')} entering={FadeInRight.duration(260)} style={{ gap: 14 }}>
-        <Row gap={12}>
-          <AppLogo id={cur.id} color={cur.color} ink={cur.ink} mono={cur.mono} size={48} />
-          <View style={{ flex: 1 }}>
-            <Label>{cur.name}</Label>
-            <Small>
-              {formatMoney(cur.amountMinor, cur.currency)}
-              {CYCLE_SHORT[cur.cycle]}
-            </Small>
-          </View>
-          <Small style={{ fontFamily: F.bold }}>
-            {i + 1} of {queue.length}
-          </Small>
-        </Row>
-        <Small style={{ color: C.ink }}>
-          {cur.cycle === 'weekly' ? 'Which day of the week?' : cur.cycle === 'yearly' && !yearlyDay ? 'Which month does it renew?' : yearlyDay ? `${MONTH_SHORT[month! - 1]}, which day?` : 'Which day of the month?'}
-        </Small>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }} onLayout={(e) => setW(e.nativeEvent.layout.width)}>
-          {cur.cycle === 'weekly'
-            ? WEEKDAY_SHORT.map((d, k) => <Key key={d} label={d} width={wide} onPress={() => save(nextForWeekday(k, today))} />)
-            : cur.cycle === 'yearly' && !yearlyDay
-              ? MONTH_SHORT.map((m, k) => <Key key={m} label={m} width={wide} onPress={() => (tap(), setMonth(k + 1))} />)
-              : Array.from({ length: yearlyDay ? daysInMonth(2028, month!) : 31 }, (_, k) => k + 1).map((d) => (
-                  <Key key={d} label={String(d)} width={cell} square onPress={() => save(yearlyDay ? anchorForMonthDay(month!, d, today) : anchorForDayOfMonth(d, today))} />
-                ))}
-        </View>
-      </Animated.View>
-
-      {prev && prevNext ? (
-        <Animated.View key={prev.id} entering={FadeIn.duration(250)}>
-          <Row gap={6} style={{ justifyContent: 'center' }}>
-            <Icon name="check" size={16} color={C.kiwi} weight={3} />
-            <Small style={{ color: C.kiwiInk, fontFamily: F.semi }}>
-              {prev.name}: next charge {weekdayDate(prevNext)}
-            </Small>
-          </Row>
-        </Animated.View>
-      ) : null}
-    </Screen>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`${sub.name} next charge, ${guess ? 'guess: around ' : ''}${date}`}
+      accessibilityHint="Opens a calendar to set the real date"
+      onPress={onPress}
+      hitSlop={{ top: 4, bottom: 4 }}
+      style={({ pressed }) => ({
+        height: 36,
+        paddingLeft: 12,
+        paddingRight: 10,
+        borderRadius: 12,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 4,
+        backgroundColor: guess ? 'transparent' : p.card,
+        borderWidth: 1.5,
+        borderColor: guess ? p.guessBorder : p.fg,
+        opacity: pressed ? 0.7 : 1,
+      })}
+    >
+      <Txt v="label" num color={guess ? p.guessFg : p.cardFg} style={{ fontSize: 14.5 }} maxFontSizeMultiplier={1.3}>
+        {date}
+      </Txt>
+      <ChevronDown color={guess ? p.guessFg : p.cardFg} size={13} />
+    </Pressable>
   );
 }
 
-function Key({ label, onPress, width, square }: { label: string; onPress: () => void; width: number; square?: boolean }) {
+export default function Dates() {
+  const { setDate, setCycle, revertToGuess } = useOnboarding();
+  const list = usePickedList();
+  const sorted = useMemo(() => [...list].sort(byYearlyDesc), [list]);
+  const [editing, setEditing] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
+  const sub = editing ? (list.find((x) => x.id === editing) ?? null) : null;
+  const confirmed = list.filter((x) => x.dateSource !== 'guess').length;
+  const guesses = list.length - confirmed;
+  const next = () => router.push('/onboarding/reminders');
+
   return (
-    <Press label={label} onPress={onPress} face={C.card} lip={C.line} border={C.line} bw={1.5} radius={14} haptic={false} inner={{ width, height: square ? Math.max(44, width) : 50, alignItems: 'center', justifyContent: 'center' }}>
-      <Text style={{ fontFamily: F.bold, fontSize: 16, color: C.ink }}>{label}</Text>
-    </Press>
+    <Screen
+      scroll
+      footer={
+        <>
+          <Button label={datesCtaLabel(confirmed, guesses)} onPress={next} />
+          {confirmed > 0 && guesses > 0 ? <Button kind="text" label="Do the rest later" onPress={next} /> : null}
+        </>
+      }
+    >
+      <StepHeader step={3} />
+      <Txt v="title" accessibilityRole="header" style={{ marginTop: 12 }}>
+        When do they charge you?
+      </Txt>
+      <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
+        Grey dates are guesses. Tap one to fix it. Your last receipt has the real day.
+      </Txt>
+      <SectionHeader title="Next charge" right={`${confirmed} of ${list.length} confirmed`} style={{ marginTop: 18, marginBottom: 8 }} />
+      <Card style={{ paddingVertical: 2 }}>
+        {sorted.map((x, i) => (
+          <View key={x.id}>
+            {i ? <RowDivider inset={64} /> : null}
+            <View style={{ minHeight: 62, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, paddingVertical: 6 }}>
+              <LogoTile id={x.id} size={38} />
+              <View style={{ flex: 1, minWidth: 0 }}>
+                <Txt v="bodyStrong" numberOfLines={1}>
+                  {x.name}
+                </Txt>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 1 }}>
+                  <Txt v="sub" tone="mute" num>
+                    {formatMoney(x.amountMinor, x.currency)}
+                    {CYCLE_SHORT[x.cycle]}
+                  </Txt>
+                  {x.dateSource === 'guess' ? <GuessTag /> : null}
+                </View>
+              </View>
+              <DateChip
+                p={x}
+                onPress={() => {
+                  haptic.select();
+                  setEditing(x.id);
+                  setOpen(true);
+                }}
+              />
+            </View>
+          </View>
+        ))}
+      </Card>
+      <View style={{ height: 16 }} />
+
+      <DateSheet
+        sub={sub}
+        visible={open}
+        onClose={() => setOpen(false)}
+        onSave={(anchor, source, cycle) => {
+          if (sub && cycle !== sub.cycle) setCycle(sub.id, cycle);
+          if (sub) setDate(sub.id, anchor, source);
+          setOpen(false);
+        }}
+        onGuess={() => {
+          if (sub) revertToGuess(sub.id);
+          setOpen(false);
+        }}
+      />
+    </Screen>
   );
 }

@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Ditch brand directions</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#E7E7EC;font-family:Inter,system-ui,sans-serif;color:#111;letter-spacing:-.2px}
+.dir{padding:36px 40px 10px}
+.dir h2{font:700 26px Inter,sans-serif;margin:0 0 4px;letter-spacing:-.5px}
+.dir p.d{margin:0 0 22px;color:#55555c;font-size:16px}
+.row{display:flex;gap:34px}
+.cell{display:flex;flex-direction:column;align-items:center}
+.cap{font:600 14px Inter,sans-serif;color:#3C3C43;margin-top:16px}
+.phone{width:393px;height:852px;border-radius:54px;position:relative;overflow:hidden;box-shadow:0 0 0 10px #111,0 30px 60px rgba(0,0,0,.16);background:#fff;flex:none}
+.sb{position:absolute;top:0;left:0;right:0;height:54px;display:flex;align-items:center;justify-content:space-between;padding:6px 34px 0 46px;font:600 17px Inter,sans-serif;z-index:9}
+.sb .isl{position:absolute;left:50%;top:11px;width:124px;height:36px;margin-left:-62px;background:#000;border-radius:20px}
+.sb.w{color:#fff}
+.hi{position:absolute;bottom:8px;left:50%;width:140px;height:5px;margin-left:-70px;border-radius:3px;background:#111;z-index:9}
+.hi.w{background:#fff}
+.scr{position:absolute;inset:0;padding:58px 24px 34px;display:flex;flex-direction:column}
+.logo{width:40px;height:40px;border-radius:9px;box-shadow:0 0 0 .5px rgba(0,0,0,.1);display:block;flex:none}
+.cta{height:56px;border-radius:28px;border:0;width:100%;font:600 17px Inter,sans-serif;letter-spacing:-.3px}
+.sec{height:44px;border:0;background:none;font:600 16px Inter,sans-serif;width:100%}
+.fine{font-size:12.5px;line-height:17px;text-align:center;margin:0}
+.num{font-variant-numeric:tabular-nums}
+.foot{margin-top:auto;display:flex;flex-direction:column;gap:2px}
+.stamp{position:absolute;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:2px;line-height:1;padding:8px 14px 7px;border:4px solid currentColor;border-radius:8px;transform:rotate(-8deg);filter:url(#rough);pointer-events:none;mix-blend-mode:multiply}
+.stamp.dbl{box-shadow:inset 0 0 0 3px #fff,inset 0 0 0 5px currentColor}
+
+/* ===== A · RECEIPT ===== */
+.A{--ink:#141414;--paper:#FBFAF6;--red:#E5402A;--mute:#77756F;--rule:#D9D6CE}
+.A .scr{font-family:Inter,sans-serif}
+.A .h{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-1.2px;color:var(--ink)}
+.A .mono{font-family:'DM Mono',monospace;letter-spacing:-.2px}
+.rcpt{background:var(--paper);position:relative;padding:18px 18px 22px;box-shadow:0 1px 0 rgba(0,0,0,.03),0 14px 30px rgba(20,20,20,.08)}
+.rcpt:after{content:"";position:absolute;left:0;right:0;bottom:-10px;height:10px;background:linear-gradient(-45deg,transparent 7px,var(--paper) 0) 0 0/14px 10px repeat-x,linear-gradient(45deg,transparent 7px,var(--paper) 0) 0 0/14px 10px repeat-x}
+.rcpt .hd{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:1.5px;color:var(--mute);text-transform:uppercase;display:flex;justify-content:space-between}
+.rl{display:flex;align-items:center;gap:10px;height:40px;font-family:'DM Mono',monospace;font-size:15px}
+.rl img{width:26px;height:26px;border-radius:6px}
+.rl .n{flex:1;font-family:Inter,sans-serif;font-weight:500;font-size:15px}
+.dash{border-top:1.5px dashed var(--rule);margin:8px 0}
+.A .cta{background:var(--ink);color:#fff}
+.A .sec{color:var(--ink)}
+.A .fine{color:var(--mute)}
+.ticket{background:var(--paper);border-radius:14px;position:relative;display:flex;align-items:center;padding:0 16px;height:66px;border:1.5px solid transparent}
+.ticket.on{border-color:var(--ink);background:#fff}
+.ticket:before,.ticket:after{content:"";position:absolute;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:7px;background:#fff}
+.ticket:before{left:-8px}.ticket:after{right:-8px}
+.ticket.on:before,.ticket.on:after{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.A .ticket .nm{flex:1;font-weight:600;font-size:16px;display:flex;gap:8px;align-items:center}
+.A .ticket .pr{text-align:right;font-family:'DM Mono',monospace;font-size:16px;font-weight:500}
+.A .ticket .pr small{display:block;font-family:Inter,sans-serif;font-size:12.5px;color:var(--mute);font-weight:400;margin-top:2px}
+.tag{font:600 11.5px Inter,sans-serif;color:var(--red);border:1.5px solid var(--red);border-radius:6px;padding:2px 6px;letter-spacing:.2px}
+
+/* ===== B · SIGNATURE COLOUR ===== */
+.B{--g:#0F3B31;--g2:#14503F;--lime:#D9F86B;--ink:#0E0E0E;--mute:#6B6F6C;--surf:#F3F4F1}
+.B .h{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;letter-spacing:-1px}
+.B .band{background:var(--g);color:#fff;margin:-58px -24px 0;padding:70px 24px 26px;position:relative}
+.B .cta{background:var(--g);color:#fff}
+.B .cta.l{background:var(--lime);color:var(--g)}
+.B .sec{color:var(--ink)}
+.B .fine{color:var(--mute)}
+.B .card{background:#fff;border-radius:18px;padding:0 16px;display:flex;align-items:center;gap:12px;height:62px;box-shadow:0 1px 2px rgba(0,0,0,.05),0 0 0 1px rgba(0,0,0,.04)}
+.B .plan{border-radius:16px;background:var(--surf);height:64px;display:flex;align-items:center;padding:0 16px;border:2px solid transparent}
+.B .plan.on{border-color:var(--g);background:#fff}
+.B .plan .nm{flex:1;font-weight:600;font-size:16px;display:flex;gap:8px;align-items:center}
+.B .plan .pr{text-align:right;font-weight:600;font-size:16px}.B .plan .pr small{display:block;font-weight:400;font-size:12.5px;color:var(--mute)}
+.pillg{font-size:12px;font-weight:700;color:var(--g);background:var(--lime);padding:3px 8px;border-radius:10px}
+
+/* ===== C · EDITORIAL ===== */
+.C{--ink:#111;--mute:#76767B;--rule:#E3E3E6;--red:#E5402A;--surf:#F6F6F4}
+.C .h{font-family:'Instrument Serif',serif;font-weight:400;letter-spacing:-.6px}
+.C .cta{background:var(--ink);color:#fff}
+.C .sec{color:var(--ink)}
+.C .fine{color:var(--mute)}
+.C .ln{display:flex;align-items:center;gap:12px;height:52px;border-bottom:1px solid var(--rule)}
+.C .ln .n{flex:1;font-weight:500;font-size:16px}
+.C .plan{height:62px;display:flex;align-items:center;border-bottom:1px solid var(--rule);gap:12px}
+.C .radio{width:22px;height:22px;border-radius:11px;border:1.5px solid #BDBDC2;flex:none}
+.C .radio.on{border:7px solid var(--ink)}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><filter id="rough"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="3.4"/><feComponentTransfer><feFuncA type="discrete" tableValues="0 1 1 1 .15 1 1 1 1 1 .3 1"/></feComponentTransfer></filter></svg>
+<div id="root"></div>
+<script>
+const L='../../assets/logos/';
+const im=(id,c='logo',st='')=>`<img class="${c}" style="${st}" src="${L}${id}.png" alt="">`;
+const SUBS=[['chatgpt-plus','ChatGPT Plus','20.00','240.00','Nov 21'],['netflix','Netflix','17.99','215.88','Nov 14'],['amazon-prime','Amazon Prime','14.99','179.88','Dec 3'],['youtube-premium','YouTube Premium','13.99','167.88','Nov 27'],['spotify','Spotify','11.99','143.88','Nov 16'],['disney-plus','Disney+','11.99','143.88','Nov 18']];
+const sb=(w)=>`<div class="sb ${w?'w':''}"><span>9:41</span><div class="isl"></div><span>●●● ▮</span></div>`;
+const x=(c='#111',bg='rgba(0,0,0,.06)')=>`<div style="position:absolute;right:16px;top:58px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;z-index:5"><span style="width:30px;height:30px;border-radius:15px;background:${bg};display:flex;align-items:center;justify-content:center"><svg width="12" height="12" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="${c}" stroke-width="3" stroke-linecap="round"/></svg></span></div>`;
+const bell=(c)=>`<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6 16V11a6 6 0 1112 0v5l1.5 2h-15L6 16z" stroke="${c}" stroke-width="2.2" stroke-linejoin="round"/><path d="M10 20.5a2 2 0 004 0" stroke="${c}" stroke-width="2.2" stroke-linecap="round"/></svg>`;
+const DUCK={'#F2A33A':'duck-orange.png','#D9F86B':'duck-lime.png','#E5402A':'duck-red.png'};
+const duck=(w,bill,ink,st='')=>`<img src="${DUCK[bill]||'duck-teal.png'}" alt="Ditch the duck" style="display:block;width:${w*1.15}px;height:auto;${st}">`;
+const phone=(cls,inner,cap,dark)=>`<div class="cell"><div class="phone ${cls}">${sb(dark)}${inner}<div class="hi ${dark?'w':''}"></div></div><div class="cap">${cap}</div></div>`;
+
+/* ---------- A RECEIPT ---------- */
+const A=[];
+A.push(phone('A',`<div class="scr">
+ <div style="margin:30px 0 -14px 26px;position:relative;z-index:0">${duck(118,'#F2A33A')}</div>
+ <div class="rcpt" style="margin-top:0;transform:rotate(-1.5deg);z-index:1">
+  <div class="hd"><span>Your subscriptions</span><span>Nov 2026</span></div><div class="dash"></div>
+  ${SUBS.slice(0,5).map((s,i)=>`<div class="rl" style="${i==1?'opacity:.3':''}">${im(s[0],'')}<span class="n">${s[1]}</span><span class="num">$${s[2]}</span></div>`).join('')}
+  <div class="dash"></div>
+  <div class="rl" style="font-weight:500"><span class="n" style="font-weight:700">Per year</span><span class="num" style="font-weight:500;font-size:17px">$1,091.40</span></div>
+  <div class="stamp dbl" style="left:118px;top:84px;color:var(--red);font-size:24px">Ditched</div>
+ </div>
+ <h1 class="h" style="font-size:44px;line-height:44px;margin:auto 0 0">Ditch it before it renews.</h1>
+ <p style="font-size:17px;line-height:24px;color:#4a4945;margin:12px 0 0">See everything you pay for. Get a heads-up before each charge.</p>
+ <div class="foot" style="margin-top:26px"><button class="cta">See what I pay</button><p class="fine" style="margin-top:10px">Free forever for tracking · Your list stays on your phone</p></div>
+</div>`,'A1 · Welcome'));
+A.push(phone('A',`<div class="scr">
+ <div style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:1.5px;color:var(--mute);text-transform:uppercase;margin-top:18px">Your receipt</div>
+ <h1 class="h" style="font-size:34px;line-height:36px;margin:6px 0 18px">Here’s what you pay for.</h1>
+ <div class="rcpt">
+  ${SUBS.map(s=>`<div class="rl">${im(s[0],'')}<span class="n">${s[1]}</span><span class="num">$${s[3]}</span></div>`).join('')}
+  <div class="dash" style="border-color:#141414;border-top-style:solid;border-width:1.5px;margin-top:12px"></div>
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:6px"><span class="mono" style="font-size:13px;letter-spacing:1.5px;color:var(--mute)">TOTAL / YEAR</span><span class="h num" style="font-size:52px;line-height:52px;letter-spacing:-2px">$1,091</span></div>
+  <div style="display:flex;justify-content:space-between;margin-top:6px" class="mono"><span style="font-size:13px;color:var(--mute);letter-spacing:1.5px">PER MONTH</span><span style="font-size:15px">$90.95</span></div>
+ </div>
+ <div class="foot"><p style="font-size:17px;line-height:24px;margin:0 0 16px">Let’s make sure none of it surprises you.</p><button class="cta">Set my charge dates</button></div>
+</div>`,'A2 · Your total'));
+A.push(phone('A',`<div class="scr" style="padding-top:62px">${x()}
+ <div style="display:flex;align-items:flex-end;gap:10px;margin-top:2px">${duck(54,'#F2A33A')}<div style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:1.5px;color:var(--mute);text-transform:uppercase">Ditch Pro</div></div>
+ <h1 class="h" style="font-size:34px;line-height:36px;margin:6px 0 0">A heads-up before all 6 renewals.</h1>
+ <div class="rcpt" style="margin-top:16px;padding:12px 16px 16px">
+  ${SUBS.map((s,i)=>`<div class="rl" style="height:30px;font-size:13.5px">${im(s[0],'','width:20px;height:20px;border-radius:5px')}<span class="n" style="font-size:14px">${s[1]}</span><span style="display:flex;align-items:center;gap:6px;color:${i<3?'#141414':'var(--red)'}">${bell(i<3?'#141414':'#E5402A')}<span style="font-size:12.5px">${i<3?'FREE':'PRO'}</span></span></div>`).join('')}
+ </div>
+ <div style="display:flex;flex-direction:column;gap:8px;margin-top:22px">
+  <div class="ticket on"><div class="nm">Yearly <span class="tag">7 DAYS FREE</span></div><div class="pr num">$29.99/yr<small>$2.50 a month</small></div></div>
+  <div class="ticket"><div class="nm">Monthly</div><div class="pr num">$4.99/mo<small>$59.88 a year</small></div></div>
+  <div class="ticket"><div class="nm">Lifetime</div><div class="pr num">$49.99<small>One payment</small></div></div>
+ </div>
+ <div class="mono" style="font-size:12.5px;margin-top:14px;display:flex;justify-content:space-between;color:#141414"><span>TODAY $0</span><span>·</span><span>SAT NOV 14 🔔</span><span>·</span><span>MON NOV 16 $29.99</span></div>
+ <div class="foot"><button class="cta">Start 7-day free trial</button><button class="sec">Continue free: reminders for 3</button><p class="fine">Renews at $29.99/yr unless you cancel. Restore · Terms · Privacy</p></div>
+</div>`,'A3 · Paywall'));
+A.push(phone('A',`<div class="scr" style="justify-content:center;text-align:center">
+ <div style="margin:0 0 -12px 40px;position:relative;z-index:0">${duck(110,'#F2A33A')}</div>
+ <div class="rcpt" style="text-align:left;transform:rotate(2deg);margin:0 10px;z-index:1">
+  <div class="hd"><span>Netflix</span><span>Ditched Nov 9</span></div><div class="dash"></div>
+  <div class="rl" style="opacity:.3">${im('netflix','')}<span class="n">Standard plan</span><span class="num">$17.99/mo</span></div>
+  <div class="rl" style="opacity:.5"><span class="n" style="color:var(--mute)">Next charge</span><span class="num" style="text-decoration:line-through;color:var(--mute)">Sat Nov 14</span></div>
+  <div class="dash"></div>
+  <div class="rl"><span class="n" style="font-weight:700">Back in your pocket</span><span class="num" style="font-weight:500">$215.88/yr</span></div>
+  <div class="stamp dbl" style="left:84px;top:44px;color:var(--red);font-size:34px">Ditched</div>
+ </div>
+ <h1 class="h" style="font-size:52px;line-height:52px;margin:56px 0 0;letter-spacing:-2px" >+$215.88</h1>
+ <p style="font-size:17px;margin:6px 0 0;color:#4a4945">a year back. You’ve kept <b style="color:#141414">$431</b> since you started.</p>
+ <div style="display:flex;gap:10px;margin-top:auto"><button class="cta" style="flex:1;background:var(--paper);color:#141414">Undo</button><button class="cta" style="flex:2">Done</button></div>
+</div>`,'A4 · The Ditch moment'));
+
+/* ---------- B SIGNATURE COLOUR ---------- */
+const B=[];
+B.push(phone('B',`<div class="scr" style="background:var(--g);color:#fff">
+ <div style="margin-top:40px;display:flex;flex-direction:column;gap:10px">
+  ${SUBS.slice(0,4).map((s,i)=>`<div class="card" style="color:#111;transform:rotate(${[-2,1.5,-1,2][i]}deg);${i==1?'opacity:.55':''}">${im(s[0])}<span style="flex:1;font-weight:600">${s[1]}</span><span class="num" style="font-weight:600">$${s[2]}</span></div>`).join('')}
+ </div>
+ <div class="stamp" style="left:120px;top:150px;color:var(--lime);font-size:34px;mix-blend-mode:normal">Ditched</div>
+ <div style="margin:auto 0 0">${duck(96,'#D9F86B','#0F3B31','margin-bottom:14px')}</div>
+ <h1 class="h" style="font-size:46px;line-height:46px;margin:0">Ditch it before it renews.</h1>
+ <p style="font-size:17px;line-height:24px;color:rgba(255,255,255,.75);margin:12px 0 0">See everything you pay for. Get a heads-up before each charge.</p>
+ <div class="foot" style="margin-top:26px"><button class="cta l">See what I pay</button><p class="fine" style="color:rgba(255,255,255,.6);margin-top:10px">Free forever for tracking · Your list stays on your phone</p></div>
+</div>`,'B1 · Welcome',1));
+B.push(phone('B',`<div class="scr"><div class="band">
+ <div style="font-size:15px;color:rgba(255,255,255,.7)">That’s about</div>
+ <div class="h num" style="font-size:76px;line-height:78px;letter-spacing:-3px;color:var(--lime)">$1,091</div>
+ <div style="font-size:17px;color:#fff">a year · <span class="num">$90.95</span> a month</div></div>
+ <div style="margin-top:18px;display:flex;flex-direction:column;gap:8px">${SUBS.slice(0,4).map(s=>`<div class="card">${im(s[0])}<span style="flex:1;font-weight:600">${s[1]}</span><span class="num" style="font-weight:600">$${s[3]}<span style="color:var(--mute);font-weight:400;font-size:13px">/yr</span></span></div>`).join('')}
+ <div style="text-align:center;color:var(--mute);font-size:14px">+ 2 more</div></div>
+ <div class="foot"><p style="font-size:17px;margin:0 0 14px">Let’s make sure none of it surprises you.</p><button class="cta">Set my charge dates</button></div>
+</div>`,'B2 · Your total',1));
+B.push(phone('B',`<div class="scr"><div class="band" style="padding-bottom:22px">${x('#fff','rgba(255,255,255,.14)')}
+ <div style="display:flex;gap:6px;margin-top:6px">${SUBS.map((s,i)=>`<div style="position:relative">${im(s[0],'logo','width:38px;height:38px')}<span style="position:absolute;right:-4px;bottom:-4px;width:18px;height:18px;border-radius:9px;background:var(--lime);display:flex;align-items:center;justify-content:center">${bell('#0F3B31').replace(/15/g,'10')}</span></div>`).join('')}</div>
+ <h1 class="h" style="font-size:32px;line-height:34px;margin:18px 0 6px">A heads-up before all 6 renewals.</h1>
+ <div style="font-size:15px;color:rgba(255,255,255,.75)">Free covers 3. Pro covers every one, plus import, widget and iCloud backup.</div></div>
+ <div style="display:flex;flex-direction:column;gap:8px;margin-top:18px">
+  <div class="plan on"><div class="nm">Yearly <span class="pillg">7 DAYS FREE</span></div><div class="pr num">$29.99 a year<small>$2.50 a month</small></div></div>
+  <div class="plan"><div class="nm">Monthly</div><div class="pr num">$4.99 a month<small>$59.88 a year</small></div></div>
+  <div class="plan"><div class="nm">Lifetime</div><div class="pr num">$49.99<small>One payment</small></div></div></div>
+ <div style="display:flex;justify-content:space-between;margin-top:16px;font-size:13px;color:var(--mute)"><span><b style="color:#111">Today</b><br>$0</span><span style="text-align:center"><b style="color:#111">Sat, Nov 14</b><br>Reminder</span><span style="text-align:right"><b style="color:#111">Mon, Nov 16</b><br>$29.99</span></div>
+ <div class="foot"><button class="cta">Start 7-day free trial</button><button class="sec">Continue free: reminders for 3</button><p class="fine">Renews at $29.99 a year unless you cancel. Restore · Terms · Privacy</p></div>
+</div>`,'B3 · Paywall',1));
+B.push(phone('B',`<div class="scr" style="background:var(--g);color:#fff;justify-content:center;text-align:center">
+ <div style="display:flex;justify-content:center;margin-bottom:26px">${duck(100,'#D9F86B','#0F3B31')}</div>
+ <div style="position:relative;margin:0 20px"><div class="card" style="color:#111;opacity:.6;transform:rotate(-3deg)">${im('netflix')}<span style="flex:1;font-weight:600;text-align:left">Netflix</span><span class="num" style="font-weight:600">$17.99</span></div>
+ <div class="stamp" style="left:70px;top:-8px;color:var(--lime);font-size:40px;mix-blend-mode:normal">Ditched</div></div>
+ <div class="h num" style="font-size:64px;line-height:64px;letter-spacing:-2.5px;color:var(--lime);margin-top:60px">+$215.88</div>
+ <p style="font-size:17px;margin:8px 0 0;color:rgba(255,255,255,.8)">a year back. You’ve kept <b style="color:#fff">$431</b> since you started.</p>
+ <div style="display:flex;gap:10px;margin-top:auto"><button class="cta" style="flex:1;background:rgba(255,255,255,.12);color:#fff">Undo</button><button class="cta l" style="flex:2">Done</button></div>
+</div>`,'B4 · The Ditch moment',1));
+
+/* ---------- C EDITORIAL ---------- */
+const C=[];
+C.push(phone('C',`<div class="scr">
+ <div style="margin-top:26px">${duck(92,'#E5402A')}</div><div style="margin-top:14px;position:relative">${SUBS.slice(0,4).map((s,i)=>`<div class="ln" style="${i==1?'opacity:.4':''}">${im(s[0],'logo','width:32px;height:32px;border-radius:7px')}<span class="n">${s[1]}</span><span class="num">$${s[2]}</span></div>`).join('')}
+ <div class="stamp" style="left:110px;top:44px;color:var(--red);font-size:30px">Ditched</div></div>
+ <h1 class="h" style="font-size:58px;line-height:54px;margin:auto 0 0">Ditch it before it <i>renews.</i></h1>
+ <p style="font-size:17px;line-height:24px;color:#4b4b50;margin:14px 0 0">See everything you pay for. Get a heads-up before each charge.</p>
+ <div class="foot" style="margin-top:26px"><button class="cta">See what I pay</button><p class="fine" style="margin-top:10px">Free forever for tracking · Your list stays on your phone</p></div>
+</div>`,'C1 · Welcome'));
+C.push(phone('C',`<div class="scr">
+ <p style="font-size:17px;color:var(--mute);margin:40px 0 0">You pay about</p>
+ <div class="h num" style="font-size:96px;line-height:92px;letter-spacing:-3px">$1,091</div>
+ <p class="h" style="font-size:30px;margin:0"><i>a year.</i></p>
+ <div style="margin-top:22px">${SUBS.slice(0,4).map(s=>`<div class="ln">${im(s[0],'logo','width:30px;height:30px;border-radius:7px')}<span class="n">${s[1]}</span><span class="num">$${s[3]}</span></div>`).join('')}<div class="ln" style="color:var(--mute);border:0"><span class="n" style="color:var(--mute)">+ 2 more</span><span class="num">$287.76</span></div></div>
+ <div class="foot"><p style="font-size:17px;margin:0 0 14px">Let’s make sure none of it surprises you.</p><button class="cta">Set my charge dates</button></div>
+</div>`,'C2 · Your total'));
+C.push(phone('C',`<div class="scr" style="padding-top:62px">${x()}
+ <div style="margin-top:20px">${duck(64,'#E5402A')}</div><h1 class="h" style="font-size:44px;line-height:42px;margin:12px 0 0">A heads-up before <i>all six</i> renewals.</h1>
+ <p style="font-size:15px;line-height:20px;color:var(--mute);margin:12px 0 0">Free covers 3. Pro covers every one, plus import, widget and iCloud backup.</p>
+ <div style="margin-top:18px;border-top:1px solid var(--rule)">
+  <div class="plan"><span class="radio on"></span><span style="flex:1;font-weight:600">Yearly <span style="color:var(--red);font-weight:600;font-size:13px;margin-left:6px">7 days free</span></span><span class="num" style="text-align:right;font-weight:600">$29.99/yr<br><span style="font-weight:400;font-size:12.5px;color:var(--mute)">$2.50 a month</span></span></div>
+  <div class="plan"><span class="radio"></span><span style="flex:1;font-weight:600">Monthly</span><span class="num" style="text-align:right;font-weight:600">$4.99/mo<br><span style="font-weight:400;font-size:12.5px;color:var(--mute)">$59.88 a year</span></span></div>
+  <div class="plan"><span class="radio"></span><span style="flex:1;font-weight:600">Lifetime</span><span class="num" style="text-align:right;font-weight:600">$49.99<br><span style="font-weight:400;font-size:12.5px;color:var(--mute)">One payment</span></span></div></div>
+ <p style="font-size:14px;line-height:21px;margin:16px 0 0;color:#333"><b>Today</b> $0 → <b>Sat, Nov 14</b> we remind you → <b>Mon, Nov 16</b> $29.99 unless you cancel.</p>
+ <div class="foot"><button class="cta">Start 7-day free trial</button><button class="sec">Continue free: reminders for 3</button><p class="fine">Renews at $29.99 a year unless you cancel. Restore · Terms · Privacy</p></div>
+</div>`,'C3 · Paywall'));
+C.push(phone('C',`<div class="scr" style="justify-content:center">
+ <div style="margin-bottom:-2px">${duck(96,'#E5402A')}</div>
+ <div style="position:relative"><div class="ln" style="opacity:.4;border-top:1px solid var(--rule)">${im('netflix','logo','width:32px;height:32px;border-radius:7px')}<span class="n">Netflix</span><span class="num">$17.99/mo</span></div>
+ <div class="stamp" style="left:90px;top:-6px;color:var(--red);font-size:40px">Ditched</div></div>
+ <div class="h num" style="font-size:84px;line-height:80px;letter-spacing:-3px;margin-top:64px">$215.88</div>
+ <p class="h" style="font-size:30px;margin:0"><i>a year, back.</i></p>
+ <p style="font-size:16px;color:var(--mute);margin:12px 0 0">You’ve kept $431 since you started.</p>
+ <div style="display:flex;gap:10px;margin-top:auto"><button class="cta" style="flex:1;background:var(--surf);color:#111">Undo</button><button class="cta" style="flex:2">Done</button></div>
+</div>`,'C4 · The Ditch moment'));
+
+document.getElementById('root').innerHTML=
+ `<div class="dir"><h2>A · Receipt</h2><p class="d">Your subscriptions as a paper receipt. Mono numbers, ticket-style plans, a red rubber stamp.</p><div class="row">${A.join('')}</div></div>`+
+ `<div class="dir"><h2>B · Signature colour</h2><p class="d">Deep green and lime own the big moments. Bold type, white cards.</p><div class="row">${B.join('')}</div></div>`+
+ `<div class="dir"><h2>C · Editorial</h2><p class="d">Big serif headlines, black and white, thin rules, a red stamp.</p><div class="row">${C.join('')}</div></div>`;
+</script></body></html>

@@ -10,7 +10,7 @@ import { useState } from 'react';
 import { Alert, Linking, Platform, Pressable, Text, View } from 'react-native';
 
 import { DEV_TOOLS } from '@/dev/flags';
-import { addDays, weekdayDate } from '@/domain/dates';
+import { addDays, shortDate } from '@/domain/dates';
 import { balanceLines } from '@/domain/copy';
 import { formatWholeMoney } from '@/domain/money';
 import { perMonthFromYearly, yearlyBadge } from '@/domain/pricing';
@@ -150,7 +150,6 @@ export default function Paywall() {
   const lifetime = planById('lifetime');
   const today = onboardingToday();
   const charge = addDays(today, yearly.trialDays);
-  const reminder = addDays(charge, -3);
 
   // × is the free path: no purchase, reminders on the 3 biggest (picked on You're set).
   const leaveFree = () => (inApp ? router.back() : router.replace('/onboarding/done'));
@@ -215,7 +214,8 @@ export default function Paywall() {
           <Txt v="title" color={ink} accessibilityRole="header" accessibilityLabel={spokenHead} style={f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null}>
             {head}
           </Txt>
-          <Duck width={duckW} right={f.edge} bottom={overlap - 12} />
+          {/* Nudged left so his bill points at the Pro column, never over the title. */}
+          <Duck width={duckW} right={f.edge + (f.small ? 20 : f.tablet ? 48 : 36)} bottom={overlap - 12} />
         </View>
 
         <Compare rows={rows} width={f.content} overlap={overlap} />
@@ -254,7 +254,8 @@ export default function Paywall() {
 
         <View style={{ height: f.small ? 12 : 20 }} />
         <Button label={cta} onPress={buy} height={f.small ? 48 : 56} />
-        {/* A fixed slot, so the button never moves when the plan changes. */}
+        {/* A fixed slot, so the button never moves when the plan changes. Price and the real start date by the
+            button (App Review); no reminder text (owner, Nov 10). */}
         <View style={{ height: 48, alignItems: 'center', justifyContent: 'center', paddingHorizontal: planId === 'yearly' ? 0 : 4 }}>
           <Txt v="fine" tone="fg2" num center accessibilityLiveRegion="polite">
             {planId === 'yearly' ? (
@@ -262,7 +263,7 @@ export default function Paywall() {
                 <Txt v="fine" num style={{ fontFamily: F.semi }}>
                   {`${formatWholeMoney(0, yearly.currency)} today`}
                 </Txt>
-                {` · reminder ${weekdayDate(reminder)} · ${yearly.priceString} ${weekdayDate(charge)}`}
+                {` · ${yearly.priceString}/yr from ${shortDate(charge)} · Cancel${NB}anytime`}
               </>
             ) : planId === 'monthly' ? (
               `${monthly.priceString} today, then every month. Cancel anytime.`

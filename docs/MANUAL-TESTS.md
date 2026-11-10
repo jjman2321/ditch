@@ -142,6 +142,10 @@ Pull first: `git pull`, `npm install`, then `npx expo start --tunnel ngrok --cle
 - [ ] Type "Gym": "Add 'Gym' as your own" opens the full form with the name filled in. The date field says **Add date** and "No date, no reminder…". Remind me says "Starts once it has a date".
 - [ ] No import buttons anywhere yet (they appear once import works in the development build).
 
+**Paywall (DECISIONS #35)**
+- [ ] Under the Yearly button: "$0 today · $29.99/yr from <date 7 days out> · Cancel anytime". No reminder text.
+- [ ] The table's last row says "Import anytime". The duck's bill points at the PRO column and never covers the title.
+
 **Phones that had the old version**
 - [ ] After updating, subs that had a guessed date now show **Add date** (nothing is deleted).
 

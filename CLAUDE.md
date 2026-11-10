@@ -67,7 +67,7 @@ This is the #1 complaint about Bobby, so it's the product.
 ### 4. Honest paywall
 - Close button (×) visible from the first frame, 44pt, and it always leads to the free app. It is the only "continue free" control (owner decision Nov 10, DECISIONS #29); the Free | Pro table shows what Free includes.
 - Restore purchases.
-- Trial timeline with real dates (Today → reminder day → charge day).
+- One short line under the button with the price and the real start date: "$0 today · $29.99/yr from Nov 17 · Cancel anytime" (owner Nov 10: no reminder text, no visual timeline). Apple expects the renewal price next to the buy button.
 - No weekly plan, no countdown timers, no fake discounts, no free-trial toggle.
 
 ### 5. Never claim

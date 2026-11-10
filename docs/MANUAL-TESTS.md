@@ -86,6 +86,22 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
+## 1e. Rating ask + "Track a free trial" (Nov 10, DECISIONS #38–39)
+Pull first: `git pull`, `npm install`. The rating prompt **can't be fully tested in Expo Go or TestFlight**: Apple shows it in development builds only as a test sheet and never in TestFlight. Check the rules here; the real prompt is checked after launch.
+
+**Track a free trial**
+- [ ] Home → **+**. The first row says **Track a free trial · We'll remind you before it ends**.
+- [ ] Tap it. The title says **Track a free trial**, the switch "It's a free trial" is already on.
+- [ ] Type "Paramount", pick Paramount+. The title becomes **Paramount+ free trial**. The price label says **Price after the trial**.
+- [ ] Plan chips read short, e.g. **Essential $8.99/mo**, **Essential $89.99/yr** (no repeated "Paramount+").
+- [ ] Without a date: the line under "Trial ends" says **It's in the sign-up email**.
+- [ ] Pick the end date → **Track trial**. Home shows it as a trial with the end date.
+
+**Rating ask (needs a development build; skip in Expo Go)**
+- [ ] During onboarding: never shows.
+- [ ] Ditch something, then **I already cancelled**: on a brand-new install nothing shows (first 3 days).
+- [ ] It never appears from a button, and no screen offers anything for a rating.
+
 ## 1a. Fixes from your second recording (Nov 10)
 Pull first: `git pull`, `npm install`, then `npx expo start --tunnel ngrok --clear`.
 

@@ -12,7 +12,8 @@ import { SERVICES, SERVICE_BY_ID, availableIn, popularIn, searchServices, type C
 import { headsUpDates } from '@/domain/charges';
 import { weekdayDate, weekdayShort, type DateOnly } from '@/domain/dates';
 import { headsUpBody, trialBody } from '@/domain/reminders';
-import { CYCLE_WORDS, currencyDigits, formatMoney, parseAmountInput, type Cycle } from '@/domain/money';
+import { shortPlanName } from '@/domain/copy';
+import { CYCLE_SHORT, CYCLE_WORDS, currencyDigits, formatMoney, parseAmountInput, type Cycle } from '@/domain/money';
 import { leadsLabel, shortTimeLabel, effectiveLeads } from '@/domain/settings';
 import { FREE_REMINDERS, chargeOfSub, isActive, isProTrial, makeSub, remindedIds, type Sub } from '@/domain/subs';
 import { rowLine, SubLogo } from '@/home/SubRow';
@@ -24,8 +25,11 @@ import { chooseCycle, choosePlan, newPick, type Picked } from '@/state/picks';
 import { ask } from '@/ui/alert';
 import { Button, Card, ChevronRight, Chip, F, KEYBOARD_DONE, KeyboardDone, LogoTile, NotificationPreview, Search, Segmented, Sheet, SunSwitch, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
 
-/** add: the picker first; `custom` is a name typed there (the full form); `catalogId` opens one service's form. */
-type Open = { mode: 'add'; catalogId?: string; custom?: string } | { mode: 'edit'; id: string };
+/**
+ * add: the picker first; `custom` is a name typed there (the full form);
+ * `catalogId` opens one service's form; `trial` opens the form as a free trial.
+ */
+type Open = { mode: 'add'; catalogId?: string; custom?: string; trial?: boolean } | { mode: 'edit'; id: string };
 
 const Ctx = createContext<{ openAdd: (catalogId?: string) => void; openEdit: (id: string) => void } | null>(null);
 
@@ -52,7 +56,7 @@ export function EditorProvider({ children }: { children: ReactNode }) {
       {children}
       <Sheet visible={visible} onClose={() => setVisible(false)} maxHeight={780} label={open?.mode === 'edit' ? 'Edit subscription' : 'Add a subscription'}>
         {open?.mode === 'add' && !open.catalogId && open.custom === undefined ? (
-          <Picker onCustom={(name) => setOpen({ mode: 'add', custom: name })} onClose={() => setVisible(false)} />
+          <Picker onCustom={(name) => setOpen({ mode: 'add', custom: name })} onTrial={() => setOpen({ mode: 'add', custom: '', trial: true })} onClose={() => setVisible(false)} />
         ) : open ? (
           <EditorBody key={JSON.stringify(open)} open={open} close={() => setVisible(false)} />
         ) : null}
@@ -140,7 +144,8 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
     const picked = svc ? withService(base, svc, country, today) : base;
     // New ones get a reminder when there's room in the free 3.
     const room = pro || remindedIds(app.subs, false).size < FREE_REMINDERS;
-    return { ...picked, freePick: !pro && room, currency: picked.currency ?? settings.currency };
+    const trial = open.mode === 'add' && !!open.trial;
+    return { ...picked, isTrial: trial, freePick: !pro && room, currency: picked.currency ?? settings.currency };
   });
   const [query, setQuery] = useState(existing?.name ?? draft.name);
   const [searching, setSearching] = useState(open.mode === 'add' && !draft.catalogId && !draft.name);
@@ -289,7 +294,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
           {draft.catalogId || draft.name || trialEntry ? <SubLogo sub={{ ...draft, name: draft.name || query || '?' }} size={44} /> : <LogoTile id="?" size={44} mono="+" color={brand.sunflower} ink={brand.ink} />}
           <Txt v="heading" accessibilityRole="header" style={{ flex: 1 }} numberOfLines={2}>
-            {isNew ? (draft.catalogId ? `Add ${draft.name}` : 'Add a subscription') : trialEntry ? 'Ditch Pro trial' : draft.name}
+            {isNew ? (open.mode === 'add' && open.trial ? (draft.catalogId ? `${draft.name} free trial` : 'Track a free trial') : draft.catalogId ? `Add ${draft.name}` : 'Add a subscription') : trialEntry ? 'Ditch Pro trial' : draft.name}
           </Txt>
         </View>
 
@@ -365,7 +370,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                   {plans.map((pl) => (
                     <Chip
                       key={pl.id}
-                      label={pl.name}
+                      label={`${shortPlanName(pl.name, draft.name, plans.map((x) => x.name)).replace(/\s*\((yearly|monthly|annual)\)$/i, '')} ${money(pl.amountMinor, draft.currency ?? settings.currency)}${CYCLE_SHORT[pl.cycle]}`}
                       selected={pl.id === draft.planId}
                       onPress={() => {
                         haptic.select();
@@ -379,7 +384,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
               </>
             ) : null}
 
-            <FieldLabel>Price</FieldLabel>
+            <FieldLabel>{draft.isTrial ? 'Price after the trial' : 'Price'}</FieldLabel>
             <View style={{ height: 56, borderRadius: 14, backgroundColor: p.chipBg, borderWidth: 1.5, borderColor: p.chipBorder, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, gap: 6 }}>
               <Txt v="moneyL" tone="mute">
                 {formatMoney(0, currency).replace(/[\d.,\s]/g, '') || currency}
@@ -444,7 +449,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
             </Pressable>
             {!charge && !trialEntry ? (
               <Txt v="sub" tone="mute" style={{ marginTop: 6, marginHorizontal: 2 }}>
-                No date, no reminder. It’s on your bank app or the receipt email.
+                {draft.isTrial ? 'No date, no reminder. It’s in the sign-up email.' : 'No date, no reminder. It’s on your bank app or the receipt email.'}
               </Txt>
             ) : null}
 
@@ -516,7 +521,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
       <KeyboardDone />
       {searching ? null : (
         <View style={{ paddingTop: 10 }}>
-          <Button label={isNew ? `Add ${draft.name || query.trim() || 'it'}` : 'Save'} disabled={!canSave} onPress={save} />
+          <Button label={isNew ? (draft.isTrial ? 'Track trial' : `Add ${draft.name || query.trim() || 'it'}`) : 'Save'} disabled={!canSave} onPress={save} />
         </View>
       )}
     </View>

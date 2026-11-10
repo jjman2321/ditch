@@ -19,7 +19,7 @@ import { FREE_REMINDERS, isActive, isPending, remindedIds } from '@/domain/subs'
 import { subFromPick } from '@/state/fromOnboarding';
 import { useApp, useAppMoney } from '@/state/app';
 import { newPick } from '@/state/picks';
-import { Button, Camera, F, LogoTile, Search, Tick, Txt, haptic, radius, usePalette } from '@/ui/sunflower';
+import { Bell, Button, Camera, ChevronRight, F, LogoTile, Search, Tick, Txt, haptic, radius, usePalette } from '@/ui/sunflower';
 
 function ImportRow({ title, sub, onPress }: { title: string; sub: string; onPress: () => void }) {
   const p = usePalette();
@@ -62,7 +62,48 @@ function ImportRow({ title, sub, onPress }: { title: string; sub: string; onPres
   );
 }
 
-export function Picker({ onCustom, onClose }: { onCustom: (name: string) => void; onClose: () => void }) {
+/** "Track a free trial": the form with the trial switch already on. 7 in 10 people have paid for a forgotten one. */
+function TrialRow({ onPress }: { onPress: () => void }) {
+  const p = usePalette();
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Track a free trial. We'll remind you before it ends"
+      onPress={() => {
+        haptic.select();
+        onPress();
+      }}
+      style={({ pressed }) => ({
+        minHeight: 64,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 12,
+        borderRadius: 16,
+        paddingHorizontal: 14,
+        paddingVertical: 10,
+        backgroundColor: p.card,
+        borderWidth: 1.5,
+        borderColor: p.chipBorder,
+        opacity: pressed ? 0.75 : 1,
+      })}
+    >
+      <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: p.dark ? '#2A2721' : '#FFF1BC', alignItems: 'center', justifyContent: 'center' }}>
+        <Bell color={p.fg} size={20} />
+      </View>
+      <View style={{ flex: 1, minWidth: 0 }}>
+        <Txt v="label" color={p.cardFg}>
+          Track a free trial
+        </Txt>
+        <Txt v="sub" tone="mute">
+          We’ll remind you before it ends
+        </Txt>
+      </View>
+      <ChevronRight color={p.mute} />
+    </Pressable>
+  );
+}
+
+export function Picker({ onCustom, onTrial, onClose }: { onCustom: (name: string) => void; onTrial: () => void; onClose: () => void }) {
   const p = usePalette();
   const app = useApp();
   const money = useAppMoney();
@@ -121,6 +162,9 @@ export function Picker({ onCustom, onClose }: { onCustom: (name: string) => void
           <ImportRow title="From a screenshot or statement" sub="We fill in the prices and dates" onPress={() => (onClose(), router.push('/paywall?from=import'))} />
         </View>
       ) : null}
+      <View style={{ marginTop: 14 }}>
+        <TrialRow onPress={onTrial} />
+      </View>
       <View
         style={{
           marginTop: 14,

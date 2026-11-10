@@ -160,6 +160,8 @@ export default function DitchedTab() {
                                 onPress={async () => {
                                   await app.confirmCancelled(s.id);
                                   haptic.success();
+                                  // A win: offer the rating once the moment has landed.
+                                  setTimeout(() => app.maybeAskReview('cancelled').catch(() => {}), 1500);
                                 }}
                               />
                               <Pill label="How to cancel" chevron onPress={() => help.open(s)} />

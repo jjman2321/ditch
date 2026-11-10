@@ -45,6 +45,8 @@ const SHOTS = [
   { name: '14c-settings-pro', url: q('pro'), path: '/settings' },
   { name: '15-add', url: q('demo'), add: true },
   { name: '15b-edit', url: q('demo'), edit: 'ChatGPT' },
+  { name: '15c-add-trial', url: q('demo'), add: true, clicks: ['^Track a free trial'] },
+  { name: '15d-add-trial-filled', url: q('demo'), add: true, clicks: ['^Track a free trial'], type: 'Paramount', clicksAfter: ['^Paramount'] },
   { name: 'd09-home-hold', url: q('demo'), hold: 'Netflix', dark: true },
   { name: 'd09c-home-off', url: q('off', '&notif=denied'), dark: true },
   { name: 'd10-ditched', url: q('demo'), ditch: 'netflix', dark: true },
@@ -76,6 +78,18 @@ for (const s of SHOTS) {
   }
   if (s.add) {
     await page.getByRole('button', { name: 'Add a subscription' }).first().click();
+    await page.waitForTimeout(900);
+  }
+  for (const c of s.clicks ?? []) {
+    await page.getByLabel(new RegExp(c)).first().click();
+    await page.waitForTimeout(900);
+  }
+  if (s.type) {
+    await page.keyboard.type(s.type);
+    await page.waitForTimeout(700);
+  }
+  for (const c of s.clicksAfter ?? []) {
+    await page.getByLabel(new RegExp(c)).first().click();
     await page.waitForTimeout(900);
   }
   if (s.edit) {

@@ -11,7 +11,8 @@ import type { Repo } from '@/db/repo';
 import type { DateOnly } from '@/domain/dates';
 import { formatMoney, formatWholeMoney } from '@/domain/money';
 import { planReminders, type PlannedReminder } from '@/domain/reminders';
-import { DEFAULT_SETTINGS, type ProPlan, type Settings } from '@/domain/settings';
+import { markAsked, pastReminderDays, REVIEW_REMINDER_DAYS, shouldAskForReview, type ReviewMoment } from '@/domain/review';
+import { DEFAULT_SETTINGS, effectiveLeads, type ProPlan, type Settings } from '@/domain/settings';
 import {
   FREE_REMINDERS,
   confirmCancel,
@@ -31,6 +32,8 @@ import {
   setupNotifications,
   type NotifStatus,
 } from '@/services/notifications';
+import { offerReview } from '@/services/review';
+import { MARKETING_VERSION } from '@/settings/version';
 
 import { proTrialSub, subsFromOnboarding } from './fromOnboarding';
 import type { Picked } from './picks';
@@ -65,6 +68,8 @@ type Actions = {
   ditch: (id: string) => Promise<Sub | null>;
   undoDitch: (before: Sub) => Promise<void>;
   confirmCancelled: (id: string) => Promise<void>;
+  /** Offer Apple's rating prompt after a win, if the rules allow (src/domain/review.ts). */
+  maybeAskReview: (moment: ReviewMoment) => Promise<void>;
   reactivate: (id: string) => Promise<void>;
   /** Free: false when 3 are already on. */
   setReminder: (id: string, on: boolean) => Promise<boolean>;
@@ -129,7 +134,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const [subs, settings, notif] = await Promise.all([repo.loadSubs(), repo.loadSettings(), getNotifStatus()]);
       if (!alive) return;
       repoRef.current = repo;
-      set({ ready: true, subs, settings, notif, today: clockToday() });
+      // First launch with this code: remember the day, for the rating rules.
+      const withInstall = settings.review.installedOn ? settings : { ...settings, review: { ...settings.review, installedOn: clockToday() } };
+      if (withInstall !== settings) repo.saveSettings({ review: withInstall.review }).catch(() => {});
+      set({ ready: true, subs, settings: withInstall, notif, today: clockToday() });
       reschedule();
     })().catch(() => set({ ready: true }));
     return () => {
@@ -185,8 +193,41 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [set, reschedule],
   );
 
+  const maybeAskReview = useCallback(
+    async (moment: ReviewMoment) => {
+      const { settings, subs, notif } = ref.current;
+      const today = clockToday();
+      if (!shouldAskForReview(settings.review, { today, version: MARKETING_VERSION, onboardingDone: settings.onboardingDone })) return;
+      if (moment === 'reminders-worked') {
+        if (notif !== 'granted' && notif !== 'quiet') return;
+        const pro = isPro(settings);
+        const days = pastReminderDays(subs, { pro, leads: effectiveLeads(settings, pro), from: settings.review.installedOn!, today });
+        if (days < REVIEW_REMINDER_DAYS) return;
+      }
+      if (await offerReview()) await updateSettings({ review: markAsked(ref.current.settings.review, today, MARKETING_VERSION) });
+    },
+    [updateSettings],
+  );
+
+  // Reminders have done their job: offer the rating a moment after opening, never on top of launch.
+  useEffect(() => {
+    if (!data.ready) return;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const later = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => maybeAskReview('reminders-worked').catch(() => {}), 4000);
+    };
+    later();
+    const sub = AppState.addEventListener('change', (state) => (state === 'active' ? later() : clearTimeout(timer)));
+    return () => {
+      clearTimeout(timer);
+      sub.remove();
+    };
+  }, [data.ready, maybeAskReview]);
+
   const actions: Actions = useMemo(
     () => ({
+      maybeAskReview,
       addSub: (s) => commit([s]),
       addSubs: (list) => commit(list),
       saveSub: (s) => commit([{ ...s, updatedAt: stamp() }]),
@@ -266,7 +307,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         return notif;
       },
     }),
-    [commit, updateSettings, refreshNotif, reschedule, set],
+    [commit, updateSettings, refreshNotif, reschedule, set, maybeAskReview],
   );
 
   const value = useMemo(() => ({ ...data, ...actions, pro: isPro(data.settings) }), [data, actions]);

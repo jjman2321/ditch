@@ -99,6 +99,8 @@ export default function Ditched() {
     await app.confirmCancelled(sub.id);
     haptic.success();
     router.dismissTo('/ditched');
+    // A win: offer the rating once the Ditched tab has settled.
+    setTimeout(() => app.maybeAskReview('cancelled').catch(() => {}), 1500);
   };
 
   const check = blocked

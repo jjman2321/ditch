@@ -59,7 +59,7 @@ export default function Done() {
   const n = list.length;
   const many = n > 3;
   const on = notifications === 'granted';
-  const { reminders, undated, trialCharge } = useFirstReminders(f.small && (pro || notifications !== 'granted') ? 2 : 3);
+  const { reminders, undated, trialCharge } = useFirstReminders(pro || (f.small && notifications !== 'granted') ? 2 : 3);
   const [saving, setSaving] = useState(false);
   const [picking, setPicking] = useState(false);
   const sub2 = dark ? '#BFB7A7' : '#4B4220';
@@ -103,7 +103,7 @@ export default function Done() {
       ? { mark: 'ok', title: `${n} ${n === 1 ? 'subscription' : 'subscriptions'} on your list`, sub: yearly ? `${yearly} a year` : 'Add prices to see your total' }
       : { mark: 'todo', title: 'Your list is ready', sub: 'Add what you pay for, and we’ll remind you before each charge.' },
     on
-      ? { mark: 'ok', title: pro ? `Reminders on all ${n}` : 'Reminders are on', sub: '3 days and 1 day before, at 9:00 AM' }
+      ? { mark: 'ok', title: pro ? (undated.length ? `Reminders on all ${n - undated.length} with a date` : `Reminders on all ${n}`) : 'Reminders are on', sub: '3 days and 1 day before, at 9:00 AM' }
       : { mark: 'warn', title: 'Reminders are off', sub: 'Nothing can reach you until you turn them\u00A0on.' },
   ];
   if (trialDays.length) items.push({ mark: 'ok', title: 'Ditch Pro trial on your list', sub: `Reminders ${trialDays.map(weekdayDate).join(' and ')}` });
@@ -111,7 +111,7 @@ export default function Done() {
   if (n)
     items.push(
       undated.length
-        ? { mark: 'todo', title: `${undated.length} with no date yet`, sub: `${namesLine(undated)} · add ${undated.length === 1 ? 'it' : 'them'} from your list` }
+        ? { mark: 'todo', title: `${undated.length} with no date yet`, sub: `Add ${undated.length === 1 ? 'its date' : 'dates'} for ${namesLine(undated)} to get ${undated.length === 1 ? 'its' : 'their'} reminders` }
         : { mark: 'ok', title: 'Every date is set', sub: 'Reminders land on the right day.' },
     );
 

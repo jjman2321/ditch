@@ -6,6 +6,7 @@
 import { useMemo, useState } from 'react';
 import { AccessibilityInfo, ScrollView, View } from 'react-native';
 
+import { namesLine } from '@/domain/copy';
 import { weekdayDate } from '@/domain/dates';
 import { byYearlyDesc, chargeOf, pickHasDate, usePickPrice, type Picked } from '@/state/onboarding';
 import { Button, Close, IconButton, LogoTile, Sheet, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
@@ -20,6 +21,7 @@ function Body({ list, initial, onKeep }: { list: Picked[]; initial: string[]; on
   const priceOf = usePickPrice();
   // Only subs with a date can have reminders (DECISIONS #33).
   const sorted = useMemo(() => list.filter(pickHasDate).sort(byYearlyDesc), [list]);
+  const undated = list.filter((x) => !pickHasDate(x));
   const [on, setOn] = useState<string[]>(initial.slice(0, FREE));
   const slots = sorted.filter((x) => on.includes(x.id));
   const rest = sorted.filter((x) => !on.includes(x.id));
@@ -115,6 +117,12 @@ function Body({ list, initial, onKeep }: { list: Picked[]; initial: string[]; on
               {`These stay on your list with their totals and${NB}dates.`}
             </Txt>
           </>
+        ) : null}
+        {/* Undated ones can't have reminders yet; say where they went (DECISIONS #33). */}
+        {undated.length ? (
+          <Txt v="sub" tone="mute" style={{ marginTop: 16 }}>
+            {`${namesLine(undated.map((x) => x.name))} ${undated.length === 1 ? 'needs' : 'need'} a date first. You can add ${undated.length === 1 ? 'it' : 'them'} from your${NB}list.`}
+          </Txt>
         ) : null}
       </ScrollView>
       <Button label={on.length === FREE ? 'Keep these 3' : on.length ? `Keep ${on.length === 1 ? 'this 1' : `these ${on.length}`}` : 'No reminders for now'} onPress={() => onKeep(on)} />

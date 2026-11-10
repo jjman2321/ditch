@@ -69,7 +69,9 @@ export default function DitchedTab() {
               accessibilityLabel={
                 main
                   ? `You’re saving ${money(main.yearlyMinor, main.currency, { whole: true })} a year, from ${main.count} ${main.count === 1 ? 'sub' : 'subs'} you cancelled${sinceWord ? ` since ${sinceWord}` : ''}, ${money(main.monthlyMinor, main.currency)} a month.`
-                  : 'Nothing cancelled yet.'
+                  : confirmed.length
+                    ? `${confirmed.length} cancelled. No price on ${confirmed.length === 1 ? 'it' : 'them'}, so there’s nothing to add up yet.`
+                    : 'Nothing cancelled yet.'
               }
               style={[
                 { marginTop: 16, borderRadius: 24, paddingHorizontal: 20, paddingTop: 18, paddingBottom: 18, backgroundColor: p.dark ? p.card : brand.sunflower },
@@ -96,6 +98,16 @@ export default function DitchedTab() {
                   ))}
                   <Txt v="leadS" num color={p.dark ? p.fg2 : '#4B4220'} style={{ marginTop: 6 }}>
                     From {main.count} {main.count === 1 ? 'sub' : 'subs'} you cancelled{sinceWord ? ` since ${sinceWord}` : ''} · {money(main.monthlyMinor, main.currency)} a month
+                  </Txt>
+                </>
+              ) : confirmed.length ? (
+                // Cancelled, but nothing had a price: say so instead of "nothing cancelled".
+                <>
+                  <Txt v="heading" num color={p.dark ? p.fg : brand.ink}>
+                    {`${confirmed.length} cancelled. Nice.`}
+                  </Txt>
+                  <Txt v="leadS" color={p.dark ? p.fg2 : '#4B4220'} style={{ marginTop: 6 }}>
+                    {`No price on ${confirmed.length === 1 ? 'it' : 'them'}, so there’s nothing to add up yet.`}
                   </Txt>
                 </>
               ) : (

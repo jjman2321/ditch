@@ -160,7 +160,7 @@ export default function Ditched() {
               </>
             ) : (
               <Txt v="title" center style={{ fontSize: 24, lineHeight: 28 }}>
-                {'One less thing\nto pay for, once you cancel.'}
+                {'Now cancel it, and\nthat’s one less charge.'}
               </Txt>
             )}
             {compact ? null : trial ? (

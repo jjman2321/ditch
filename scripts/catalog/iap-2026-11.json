@@ -1,4 +1,51 @@
 {
+ "apple-tv": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/au/app/id1174078549"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/ca/app/id1174078549"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/de/app/id1174078549"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/fr/app/id1174078549"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/gb/app/id1174078549"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/ie/app/id1174078549"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/nl/app/id1174078549"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/nz/app/id1174078549"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/us/app/id1174078549"
+  }
+ },
  "disney-plus": {
   "AU": {
    "checked": "2026-11-10",
@@ -508,6 +555,131 @@
   }
  },
  "max": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Standard",
+     "$15.99"
+    ],
+    [
+     "Basic with Ads",
+     "$11.99"
+    ],
+    [
+     "Premium",
+     "$21.99"
+    ],
+    [
+     "Standard",
+     "$159.99"
+    ],
+    [
+     "Premium",
+     "$219.99"
+    ],
+    [
+     "Basic with Ads",
+     "$119.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/au/app/id1666653815"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/ca/app/id1666653815"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Basic with Ads",
+     "5,99 €"
+    ],
+    [
+     "Standard",
+     "11,99 €"
+    ],
+    [
+     "Premium",
+     "16,99 €"
+    ],
+    [
+     "Premium & Sports",
+     "19,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/de/app/id1666653815"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Standard",
+     "10,99 €"
+    ],
+    [
+     "Legacy Standard",
+     "10,99 €"
+    ],
+    [
+     "Basic with Ads",
+     "6,99 €"
+    ],
+    [
+     "Premium & Sports",
+     "20,99 €"
+    ],
+    [
+     "Premium",
+     "15,99 €"
+    ],
+    [
+     "Legacy Standard",
+     "109,00 €"
+    ],
+    [
+     "HBO Max DAZN",
+     "44,99 €"
+    ],
+    [
+     "Standard",
+     "109,00 €"
+    ],
+    [
+     "Basic with Ads",
+     "69,90 €"
+    ],
+    [
+     "Premium",
+     "159,00 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/es/app/id1666653815"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Standard",
+     "10,99 €"
+    ],
+    [
+     "Basic with Ads",
+     "6,99 €"
+    ],
+    [
+     "Premium",
+     "15,99 €"
+    ],
+    [
+     "Premium & Sports",
+     "20,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/fr/app/id1666653815"
+  },
   "GB": {
    "checked": "2026-11-10",
    "items": [
@@ -517,6 +689,48 @@
     ]
    ],
    "url": "https://apps.apple.com/gb/app/id1666653815"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/ie/app/id1666653815"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/in/app/id1666653815"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Basic with Ads",
+     "6,99 €"
+    ],
+    [
+     "Standard",
+     "11,99 €"
+    ],
+    [
+     "Premium",
+     "16,99 €"
+    ],
+    [
+     "Premium & Sports",
+     "19,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/it/app/id1666653815"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/nl/app/id1666653815"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/nz/app/id1666653815"
   },
   "US": {
    "checked": "2026-11-10",

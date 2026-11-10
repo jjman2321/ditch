@@ -1,8 +1,44 @@
 {
+ "adobe-acrobat": {
+  "trackId": 469337564,
+  "trackName": "Acrobat Reader: PDF Editor",
+  "seller": "Adobe Inc.",
+  "cc": "us"
+ },
+ "adobe-cc": {
+  "trackId": 1051937863,
+  "trackName": "Adobe Express: Create Anything",
+  "seller": "Adobe Inc.",
+  "cc": "us"
+ },
+ "adobe-lightroom": {
+  "trackId": 878783582,
+  "trackName": "Lightroom Photo Editor & Video",
+  "seller": "Adobe Inc.",
+  "cc": "us"
+ },
+ "amazon-music": {
+  "trackId": 510855668,
+  "trackName": "Amazon Music: Songs & Podcasts",
+  "seller": "AMZN Mobile LLC",
+  "cc": "us"
+ },
+ "apple-music": {
+  "trackId": 1108187390,
+  "trackName": "Apple Music",
+  "seller": "Apple Inc.",
+  "cc": "us"
+ },
  "apple-tv": {
   "trackId": 1174078549,
   "trackName": "Apple TV",
   "seller": "Apple Inc.",
+  "cc": "us"
+ },
+ "audible": {
+  "trackId": 379693831,
+  "trackName": "Audible: Audiobooks & Podcasts",
+  "seller": "Audible, Inc.",
   "cc": "us"
  },
  "britbox": {
@@ -17,6 +53,54 @@
   "seller": "Calm.com, Inc.",
   "cc": "us"
  },
+ "canal-plus": {
+  "trackId": 694580816,
+  "trackName": "CANAL+",
+  "seller": "GROUPE CANAL+",
+  "cc": "fr"
+ },
+ "canva-pro": {
+  "trackId": 897446215,
+  "trackName": "Canva AI Photo & Video Editor",
+  "seller": "Canva Pty Ltd",
+  "cc": "us"
+ },
+ "capcut": {
+  "trackId": 1500855883,
+  "trackName": "CapCut: Photo & Video Editor",
+  "seller": "BYTEDANCE PTE. LTD.",
+  "cc": "us"
+ },
+ "character-ai": {
+  "trackId": 1671705818,
+  "trackName": "Character AI: Chat, Talk, Text",
+  "seller": "Character Technologies, Inc.",
+  "cc": "us"
+ },
+ "chatgpt-plus": {
+  "trackId": 6448311069,
+  "trackName": "ChatGPT",
+  "seller": "OpenAI OpCo, LLC",
+  "cc": "us"
+ },
+ "claude-pro": {
+  "trackId": 6473753684,
+  "trackName": "Claude by Anthropic",
+  "seller": "Anthropic PBC",
+  "cc": "us"
+ },
+ "copilot-pro": {
+  "trackId": 541164041,
+  "trackName": "Microsoft Copilot",
+  "seller": "Microsoft Corporation",
+  "cc": "us"
+ },
+ "crave": {
+  "trackId": 942568279,
+  "trackName": "Crave",
+  "seller": "Bell Media Inc.",
+  "cc": "ca"
+ },
  "crunchyroll": {
   "trackId": 329913454,
   "trackName": "Crunchyroll",
@@ -28,6 +112,12 @@
   "trackName": "DAZN: Stream Live Sports",
   "seller": "DAZN Limited",
   "cc": "gb"
+ },
+ "deezer": {
+  "trackId": 292738169,
+  "trackName": "Deezer: Music Player, Podcast",
+  "seller": "DEEZER SA",
+  "cc": "us"
  },
  "discovery-plus": {
   "trackId": 1498327873,
@@ -41,10 +131,28 @@
   "seller": "Disney Electronic Content, Inc.",
   "cc": "us"
  },
+ "elevenlabs": {
+  "trackId": 6743162587,
+  "trackName": "ElevenLabs: AI Voice Generator",
+  "seller": "Eleven Labs Inc.",
+  "cc": "us"
+ },
  "espn": {
   "trackId": 317469184,
   "trackName": "ESPN: Live Sports & Scores",
   "seller": "Disney Electronic Content, Inc.",
+  "cc": "us"
+ },
+ "everand": {
+  "trackId": 542557212,
+  "trackName": "Everand: Audiobooks & Ebooks",
+  "seller": "Scribd",
+  "cc": "us"
+ },
+ "evernote": {
+  "trackId": 281796108,
+  "trackName": "Evernote: AI Notes & Notebook",
+  "seller": "Evernote Corporation",
   "cc": "us"
  },
  "f1-tv": {
@@ -53,10 +161,34 @@
   "seller": "Formula One Digital Media Limited",
   "cc": "gb"
  },
+ "figma": {
+  "trackId": 1152747299,
+  "trackName": "Figma",
+  "seller": "Figma, Inc.",
+  "cc": "us"
+ },
  "fubo": {
   "trackId": 905401434,
   "trackName": "Fubo: Watch Live TV & Sports",
   "seller": "fuboTV Inc.",
+  "cc": "us"
+ },
+ "github-copilot": {
+  "trackId": 1477376905,
+  "trackName": "GitHub",
+  "seller": "GitHub",
+  "cc": "us"
+ },
+ "google-ai-pro": {
+  "trackId": 6477489729,
+  "trackName": "Google Gemini",
+  "seller": "Google LLC",
+  "cc": "us"
+ },
+ "grok": {
+  "trackId": 6670324846,
+  "trackName": "Grok",
+  "seller": "X Corp.",
   "cc": "us"
  },
  "hulu": {
@@ -71,11 +203,35 @@
   "seller": "ITV PLC",
   "cc": "gb"
  },
+ "jiohotstar": {
+  "trackId": 934459219,
+  "trackName": "JioHotstar",
+  "seller": "JIOSTAR INDIA PRIVATE LIMITED",
+  "cc": "in"
+ },
+ "jiosaavn": {
+  "trackId": 441813332,
+  "trackName": "JioSaavn – Music & Podcasts",
+  "seller": "Saavn Media Limited",
+  "cc": "in"
+ },
  "joyn": {
   "trackId": 826510222,
   "trackName": "Joyn | deine Streaming App",
   "seller": "Joyn GmbH",
   "cc": "de"
+ },
+ "le-chat": {
+  "trackId": 6740410176,
+  "trackName": "Vibe by Mistral (ex-Le Chat)",
+  "seller": "MISTRAL AI",
+  "cc": "fr"
+ },
+ "linkedin-premium": {
+  "trackId": 288429040,
+  "trackName": "LinkedIn: Community & Network",
+  "seller": "LinkedIn Corporation",
+  "cc": "us"
  },
  "max": {
   "trackId": 1666653815,
@@ -83,11 +239,29 @@
   "seller": "WarnerMedia Global Digital Services, LLC",
   "cc": "us"
  },
+ "mediaset-infinity": {
+  "trackId": 412625083,
+  "trackName": "Mediaset Infinity Italia",
+  "seller": "RTI spa",
+  "cc": "it"
+ },
+ "microsoft-365": {
+  "trackId": 761397963,
+  "trackName": "Microsoft 365 Admin",
+  "seller": "Microsoft Corporation",
+  "cc": "us"
+ },
  "mlb-tv": {
   "trackId": 493619333,
   "trackName": "MLB",
   "seller": "Major League Baseball Advanced Media",
   "cc": "us"
+ },
+ "movistar-plus": {
+  "trackId": 540674767,
+  "trackName": "Movistar Plus",
+  "seller": "Telefonica Espana SAU",
+  "cc": "es"
  },
  "mubi": {
   "trackId": 626148774,
@@ -101,11 +275,23 @@
   "seller": "NBA MEDIA VENTURES, LLC",
   "cc": "us"
  },
+ "notion": {
+  "trackId": 1232780281,
+  "trackName": "Notion: Notes, Tasks, AI",
+  "seller": "Notion Labs, Incorporated",
+  "cc": "us"
+ },
  "now": {
   "trackId": 512266300,
   "trackName": "NOW: TV, Movies, Live Sport",
   "seller": "Sky UK Limited",
   "cc": "gb"
+ },
+ "pandora": {
+  "trackId": 284035177,
+  "trackName": "Pandora: Personalized Music",
+  "seller": "Pandora Media, LLC",
+  "cc": "us"
  },
  "paramount-plus": {
   "trackId": 530168168,
@@ -119,16 +305,46 @@
   "seller": "Peacock TV LLC",
   "cc": "us"
  },
+ "perplexity": {
+  "trackId": 1668000334,
+  "trackName": "Perplexity: AI Agent & Search",
+  "seller": "Perplexity AI Inc.",
+  "cc": "us"
+ },
  "philo": {
   "trackId": 1248646044,
   "trackName": "Philo: Shows, Movies & Live TV",
   "seller": "Philo, Inc.",
   "cc": "us"
  },
+ "pocket-casts": {
+  "trackId": 414834813,
+  "trackName": "Pocket Casts: Podcast Player",
+  "seller": "Automattic, Inc.",
+  "cc": "us"
+ },
+ "pocket-fm": {
+  "trackId": 1538433480,
+  "trackName": "Pocket FM: Audio Dramas",
+  "seller": "Pocket FM Corp",
+  "cc": "us"
+ },
  "prime-video": {
   "trackId": 545519333,
   "trackName": "Amazon Prime Video",
   "seller": "AMZN Mobile LLC",
+  "cc": "us"
+ },
+ "qobuz": {
+  "trackId": 946429340,
+  "trackName": "Qobuz: Music & Editorial",
+  "seller": "qobuz",
+  "cc": "us"
+ },
+ "remini": {
+  "trackId": 1470373330,
+  "trackName": "Remini - AI Photo Enhancer",
+  "seller": "BENDING SPOONS OPERATIONS SPA",
   "cc": "us"
  },
  "rtl-plus": {
@@ -143,11 +359,29 @@
   "seller": "Digital Store LLC",
   "cc": "us"
  },
+ "siriusxm": {
+  "trackId": 317951436,
+  "trackName": "SiriusXM: Music, Sports & News",
+  "seller": "Sirius XM Radio, LLC",
+  "cc": "us"
+ },
  "sky": {
   "trackId": 446086440,
   "trackName": "Sky Go (Q / +)",
   "seller": "Sky UK Limited",
   "cc": "gb"
+ },
+ "skyshowtime": {
+  "trackId": 1616478112,
+  "trackName": "SkyShowtime: Films en series",
+  "seller": "SkyShowtime Limited",
+  "cc": "nl"
+ },
+ "slack": {
+  "trackId": 618783545,
+  "trackName": "Slack",
+  "seller": "SLACK TECHNOLOGIES L.L.C.",
+  "cc": "us"
  },
  "sling-tv": {
   "trackId": 945077360,
@@ -155,11 +389,41 @@
   "seller": "Sling TV LLC",
   "cc": "us"
  },
+ "sonyliv": {
+  "trackId": 587794258,
+  "trackName": "Sony LIV",
+  "seller": "SONY PICTURES NETWORKS INDIA PVT LTD",
+  "cc": "in"
+ },
+ "soundcloud": {
+  "trackId": 336353151,
+  "trackName": "SoundCloud: Discover New Music",
+  "seller": "SoundCloud Global Limited & Co KG",
+  "cc": "us"
+ },
+ "spotify": {
+  "trackId": 324684580,
+  "trackName": "Spotify: Music and Podcasts",
+  "seller": "Spotify",
+  "cc": "us"
+ },
+ "stan": {
+  "trackId": 948095331,
+  "trackName": "Stan.",
+  "seller": "Stan Entertainment Pty Ltd",
+  "cc": "au"
+ },
  "starz": {
   "trackId": 550221096,
   "trackName": "STARZ",
   "seller": "Starz Entertainment",
   "cc": "us"
+ },
+ "storytel": {
+  "trackId": 348177651,
+  "trackName": "Storytel - luisterboeken app",
+  "seller": "Storytel Sweden AB",
+  "cc": "nl"
  },
  "strava": {
   "trackId": 426826309,
@@ -167,11 +431,41 @@
   "seller": "Strava Inc.",
   "cc": "us"
  },
+ "suno": {
+  "trackId": 6480136315,
+  "trackName": "Suno - AI Songs, Music, Lyrics",
+  "seller": "Suno Inc.",
+  "cc": "us"
+ },
+ "tidal": {
+  "trackId": 913943275,
+  "trackName": "TIDAL Music: HiFi Sound",
+  "seller": "TIDAL Music AS",
+  "cc": "us"
+ },
+ "timvision": {
+  "trackId": 408382666,
+  "trackName": "TIMVISION",
+  "seller": "Telecom Italia spa",
+  "cc": "it"
+ },
+ "videoland": {
+  "trackId": 1570409180,
+  "trackName": "Videoland",
+  "seller": "RTL Nederland B.V.",
+  "cc": "nl"
+ },
  "wow": {
   "trackId": 929190059,
   "trackName": "WOW",
   "seller": "Sky Deutschland Fernsehen GmbH & Co. KG",
   "cc": "de"
+ },
+ "youtube-music": {
+  "trackId": 1017492454,
+  "trackName": "YouTube Music",
+  "seller": "Google LLC",
+  "cc": "us"
  },
  "youtube-premium": {
   "trackId": 544007664,
@@ -183,6 +477,18 @@
   "trackId": 1193350206,
   "trackName": "YouTube TV",
   "seller": "Google LLC",
+  "cc": "us"
+ },
+ "zee5": {
+  "trackId": 743691886,
+  "trackName": "Zee 5",
+  "seller": "Z5X Global FZ-LLC",
+  "cc": "in"
+ },
+ "zoom": {
+  "trackId": 546505307,
+  "trackName": "Zoom Workplace",
+  "seller": "Zoom Communications, Inc.",
   "cc": "us"
  }
 }

@@ -5062,6 +5062,1023 @@
    "source": "https://www.xbox.com/en-IN/xbox-game-pass",
    "checked": "2026-11-09",
    "note": "Monthly prices as listed."
+  },
+  {
+   "serviceId": "apple-fitness",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 7999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/apple-fitness-plus/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "apple-fitness",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 7999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/uk/apple-fitness-plus/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "apple-fitness",
+   "country": "CA",
+   "currency": "CAD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 9999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/ca/apple-fitness-plus/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "apple-fitness",
+   "country": "AU",
+   "currency": "AUD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 1499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 11999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/au/apple-fitness-plus/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "apple-fitness",
+   "country": "IE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 7999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/ie/apple-fitness-plus/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "apple-fitness",
+   "country": "NZ",
+   "currency": "NZD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 1699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 13999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/nz/apple-fitness-plus/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "apple-fitness",
+   "country": "DE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 7999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/de/apple-fitness-plus/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "apple-fitness",
+   "country": "NL",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 7999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/nl/apple-fitness-plus/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "apple-fitness",
+   "country": "FR",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 7999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/fr/apple-fitness-plus/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "apple-fitness",
+   "country": "IT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 7999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/it/apple-fitness-plus/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "apple-fitness",
+   "country": "ES",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 7999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/es/apple-fitness-plus/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "apple-fitness",
+   "country": "IN",
+   "currency": "INR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 14900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 99900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/in/apple-fitness-plus/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "apple-news",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple News+",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/apple-news/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "apple-news",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple News+",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/uk/apple-news/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "apple-news",
+   "country": "CA",
+   "currency": "CAD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple News+",
+     "amountMinor": 1699,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/ca/apple-news/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "apple-news",
+   "country": "AU",
+   "currency": "AUD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple News+",
+     "amountMinor": 1999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/au/apple-news/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "apple-tv",
+   "country": "IN",
+   "currency": "INR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple TV",
+     "amountMinor": 9900,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/in/apple-tv/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "apple-one",
+   "country": "IN",
+   "currency": "INR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 19500,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/in/apple-tv/",
+   "checked": "2026-11-10",
+   "note": "Read from the Apple One line on Apple's India Apple TV page ('plans start at ₹195 per month'); the Family price isn't shown there."
+  },
+  {
+   "serviceId": "uber-one",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.uber.com/us/en/u/uber-one/",
+   "checked": "2026-11-10",
+   "note": "Only the monthly price is shown on this page."
+  },
+  {
+   "serviceId": "uber-one",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 4999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.uber.com/gb/en/u/uber-one/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "uber-one",
+   "country": "CA",
+   "currency": "CAD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.uber.com/ca/en/u/uber-one/",
+   "checked": "2026-11-10",
+   "note": "Only the monthly price is shown on this page."
+  },
+  {
+   "serviceId": "uber-one",
+   "country": "AU",
+   "currency": "AUD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.uber.com/au/en/u/uber-one/",
+   "checked": "2026-11-10",
+   "note": "Only the monthly price is shown on this page."
+  },
+  {
+   "serviceId": "uber-one",
+   "country": "IE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 5999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.uber.com/ie/en/u/uber-one/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "uber-one",
+   "country": "NZ",
+   "currency": "NZD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.uber.com/nz/en/u/uber-one/",
+   "checked": "2026-11-10",
+   "note": "Only the monthly price is shown on this page."
+  },
+  {
+   "serviceId": "uber-one",
+   "country": "DE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 4999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.uber.com/de/en/u/uber-one/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "uber-one",
+   "country": "NL",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 5999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.uber.com/nl/en/u/uber-one/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "uber-one",
+   "country": "FR",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 5999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.uber.com/fr/en/u/uber-one/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "uber-one",
+   "country": "ES",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 499,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.uber.com/es/en/u/uber-one/",
+   "checked": "2026-11-10",
+   "note": "Only the monthly price is shown on this page."
+  },
+  {
+   "serviceId": "costco",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "gold-star",
+     "name": "Gold Star",
+     "amountMinor": 6500,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "executive",
+     "name": "Executive",
+     "amountMinor": 13000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.costco.com/join-costco.html",
+   "checked": "2026-11-10",
+   "note": "Excludes sales tax."
+  },
+  {
+   "serviceId": "costco",
+   "country": "CA",
+   "currency": "CAD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "gold-star",
+     "name": "Gold Star",
+     "amountMinor": 6500,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "executive",
+     "name": "Executive",
+     "amountMinor": 13000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.costco.ca/join-costco.html",
+   "checked": "2026-11-10",
+   "note": "Plus applicable sales tax."
+  },
+  {
+   "serviceId": "costco",
+   "country": "AU",
+   "currency": "AUD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "gold-star",
+     "name": "Gold Star",
+     "amountMinor": 6500,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "executive",
+     "name": "Executive",
+     "amountMinor": 13000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.costco.com.au/membership",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "costco",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "gold-star",
+     "name": "Gold Star",
+     "amountMinor": 4200,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "executive",
+     "name": "Executive Gold Star",
+     "amountMinor": 8400,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.costco.co.uk/membership",
+   "checked": "2026-11-10",
+   "note": "Includes VAT (£35 / £70 ex VAT)."
+  },
+  {
+   "serviceId": "instacart",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "yearly",
+     "name": "Instacart+ (yearly)",
+     "amountMinor": 9900,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://www.instacart.com/instacart-plus",
+   "checked": "2026-11-10",
+   "note": "Only the yearly price is shown on this page."
+  },
+  {
+   "serviceId": "deliveroo-plus",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "gold",
+     "name": "Plus Gold",
+     "amountMinor": 499,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://deliveroo.co.uk/plus",
+   "checked": "2026-11-10",
+   "note": "Plus Silver is only sold through partners."
+  },
+  {
+   "serviceId": "midjourney",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic",
+     "name": "Basic",
+     "amountMinor": 1000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 3000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro",
+     "name": "Pro",
+     "amountMinor": 6000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "mega",
+     "name": "Mega",
+     "amountMinor": 12000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "basic-yearly",
+     "name": "Basic (yearly)",
+     "amountMinor": 9600,
+     "cycle": "yearly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 28800,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://docs.midjourney.com/hc/en-us/articles/27870484040333-Comparing-Midjourney-Plans",
+   "checked": "2026-11-10",
+   "note": "Midjourney bills in US dollars everywhere, so only a US row."
+  },
+  {
+   "serviceId": "github-copilot",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Pro",
+     "amountMinor": 1000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro-plus",
+     "name": "Pro+",
+     "amountMinor": 3900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://github.com/features/copilot/plans",
+   "checked": "2026-11-10",
+   "note": "GitHub bills in US dollars everywhere, so only a US row."
+  },
+  {
+   "serviceId": "nintendo-online",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1799,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 3149,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.nintendo.com/en-gb/Nintendo-Switch-Online/Nintendo-Switch-Online-1183143.html",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "deliveroo-plus",
+   "country": "IE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "gold",
+     "name": "Plus Gold",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://deliveroo.ie/plus",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "deliveroo-plus",
+   "country": "FR",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "gold",
+     "name": "Plus Gold",
+     "amountMinor": 399,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://deliveroo.fr/en/plus",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "deliveroo-plus",
+   "country": "IT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "gold",
+     "name": "Plus Gold",
+     "amountMinor": 399,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "silver",
+     "name": "Plus Silver",
+     "amountMinor": 299,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://deliveroo.it/en/plus",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "nintendo-online",
+   "country": "DE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 3499,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.nintendo.com/de-de/Nintendo-Switch-Online/Nintendo-Switch-Online-1183143.html",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "nintendo-online",
+   "country": "FR",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 3499,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.nintendo.com/fr-fr/Nintendo-Switch-Online/Nintendo-Switch-Online-1183143.html",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "nintendo-online",
+   "country": "IT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 3499,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.nintendo.com/it-it/Nintendo-Switch-Online/Nintendo-Switch-Online-1183143.html",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "nintendo-online",
+   "country": "ES",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 3499,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.nintendo.com/es-es/Nintendo-Switch-Online/Nintendo-Switch-Online-1183143.html",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "nintendo-online",
+   "country": "NL",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 3499,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.nintendo.com/nl-nl/Nintendo-Switch-Online/Nintendo-Switch-Online-1183143.html",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "nintendo-online",
+   "country": "CA",
+   "currency": "CAD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 2999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 4999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "expansion-individual",
+     "name": "+ Expansion Pack, Individual",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "expansion-family",
+     "name": "+ Expansion Pack, Family",
+     "amountMinor": 10999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.nintendo.com/en-ca/switch/online/",
+   "checked": "2026-11-10"
   }
  ],
  "notChecked": {

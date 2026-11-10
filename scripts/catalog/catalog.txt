@@ -42,15 +42,15 @@ joyn|Joyn PLUS+|ST|#000000|J|m|DE|joyn plus|joyn|de|^Joyn
 rtl-plus|RTL+|ST|#FF0000|RTL|m|DE|rtl plus,rtl|rtl+|de|^RTL
 canal-plus|CANAL+|ST|#000000|C+|m|FR|canal plus,canal|canal+|fr|^(CANAL|Groupe Canal)
 videoland|Videoland|ST|#E3007A|V|m|NL||videoland|nl|^(RTL|Videoland)
-npo-plus|NPO Plus|ST|#FF6D00|NPO|m|NL|npo start,npo|npo start|nl|^(NPO|Nederlandse Publieke)
+npo-plus|NPO Plus|ST|#FF6D00|NPO|m|NL|npo start,npo|npo start|nl|(NPO|Nederlandse Publieke)
 skyshowtime|SkyShowtime|ST|#14002E|SS|m|NL,ES|sky showtime|skyshowtime|nl|^SkyShowtime
 movistar-plus|Movistar Plus+|ST|#019DF4|M+|m|ES|movistar+,movistar plus|movistar plus+|es|^(Telef|DTS|Movistar)
 mediaset-infinity|Mediaset Infinity|ST|#0D1F4F|MI|m|IT|infinity+,mediaset|mediaset infinity|it|^(R\.T\.I|RTI|Mediaset)
 timvision|TIMVISION|ST|#00217A|TIM|m|IT|tim vision|timvision|it|^(TIM|Telecom Italia)
 stan|Stan|ST|#0072FF|S|m|AU||stan.|au|^Stan
-binge|Binge|ST|#000000|B|m|AU||binge|au|^(Streamotion|Foxtel|Binge)
-kayo|Kayo Sports|ST|#00E2A7|K|m|AU|kayo|kayo sports|au|^(Streamotion|Foxtel|Kayo)
-neon|Neon|ST|#E7008A|N|m|NZ|neon tv|neon nz|nz|^Sky
+binge|Binge|ST|#000000|B|m|AU||binge|au|^(Hubbl|Streamotion|Foxtel|Binge)
+kayo|Kayo Sports|ST|#00E2A7|K|m|AU|kayo|kayo sports|au|^(Hubbl|Streamotion|Foxtel|Kayo)
+neon|Neon|ST|#E7008A|N|m|NZ|neon tv|neon nz|nz|^(Lightbox|Sky)
 crave|Crave|ST|#0A1E3F|C|m|CA||crave|ca|^Bell
 jiohotstar|JioHotstar|ST|#0F1014|JH|m|IN|hotstar,jiocinema,disney+ hotstar|jiohotstar|in|^(Star India|Jio|STAR)
 zee5|ZEE5|ST|#8230C6|Z5|m|IN|zee|zee5|in|^(Z5X|Zee)

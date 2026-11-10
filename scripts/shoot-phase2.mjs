@@ -36,6 +36,8 @@ const SHOTS = [
   { name: '12-calendar', url: q('demo'), tab: 'Calendar' },
   { name: '13-ditched-tab', url: q('ditched'), tab: 'Ditched' },
   { name: '13c-ditched-chart', url: q('ditched'), tab: 'Ditched', scroll: 900 },
+  { name: '13d-howto', url: q('ditched'), tab: 'Ditched', clicks: ['^How to cancel'] },
+  { name: 'd13d-howto', url: q('ditched'), tab: 'Ditched', clicks: ['^How to cancel'], dark: true },
   { name: '13b-ditched-empty', url: q('empty'), tab: 'Ditched' },
   { name: '10-ditched', url: q('demo'), ditch: 'netflix' },
   { name: '10-se', url: q('demo'), ditch: 'netflix', size: { width: 375, height: 667 }, phone: 'se' },

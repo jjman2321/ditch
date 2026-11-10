@@ -86,7 +86,7 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
-## 1e. Rating ask + "Track a free trial" (Nov 10, DECISIONS #38–39)
+## 1e. Rating ask, "Track a free trial", cancel guides (Nov 10, DECISIONS #38–41)
 Pull first: `git pull`, `npm install`. The rating prompt **can't be fully tested in Expo Go or TestFlight**: Apple shows it in development builds only as a test sheet and never in TestFlight. Check the rules here; the real prompt is checked after launch.
 
 **Track a free trial**
@@ -96,6 +96,14 @@ Pull first: `git pull`, `npm install`. The rating prompt **can't be fully tested
 - [ ] Plan chips read short, e.g. **Essential $8.99/mo**, **Essential $89.99/yr** (no repeated "Paramount+").
 - [ ] Without a date: the line under "Trial ends" says **It's in the sign-up email**.
 - [ ] Pick the end date → **Track trial**. Home shows it as a trial with the end date.
+
+**Cancel guides (DECISIONS #41)**
+- [ ] Ditch Netflix → **Cancel in Netflix** opens netflix.com/cancelplan in Safari.
+- [ ] Ditched tab → Netflix → **How to cancel**: 3 Netflix steps, then **Cancel in Netflix**, then Done.
+- [ ] Ditch Amazon Prime → **How to cancel Amazon Prime** shows Amazon's steps and **Open Amazon Prime help**.
+- [ ] Ditch Apple Music → **Cancel in iPhone Settings** opens Apple's subscriptions page.
+- [ ] Ditch a custom one (e.g. "Gym") → the general steps, plus **Open Apple subscriptions**.
+- [ ] Tap-test these links once (they were checked from the web, not on a phone): YouTube TV, Spotify, Hulu, Disney+, HBO Max.
 
 **Rating ask (needs a development build; skip in Expo Go)**
 - [ ] During onboarding: never shows.

@@ -207,7 +207,7 @@ export default function Ditched() {
             <Button
               label={help1.label}
               hint={help1.kind === 'steps' ? 'Shows the steps' : 'Opens outside Ditch'}
-              onPress={() => help.open(sub)}
+              onPress={() => help.go(sub)}
               right={help1.kind === 'steps' ? undefined : <External color={p.dark ? brand.ink : brand.sunflower} size={19} />}
               style={[{ marginTop: compact ? 10 : 12 }, compact && { minHeight: 50, borderRadius: 25 }]}
             />

@@ -35,6 +35,7 @@ const SHOTS = [
   { name: '11-empty', url: q('empty') },
   { name: '12-calendar', url: q('demo'), tab: 'Calendar' },
   { name: '13-ditched-tab', url: q('ditched'), tab: 'Ditched' },
+  { name: '13c-ditched-chart', url: q('ditched'), tab: 'Ditched', scroll: 900 },
   { name: '13b-ditched-empty', url: q('empty'), tab: 'Ditched' },
   { name: '10-ditched', url: q('demo'), ditch: 'netflix' },
   { name: '10-se', url: q('demo'), ditch: 'netflix', size: { width: 375, height: 667 }, phone: 'se' },
@@ -80,6 +81,11 @@ for (const s of SHOTS) {
   if (s.edit) {
     await page.getByLabel(new RegExp(`^${s.edit},`)).first().click();
     await page.waitForTimeout(900);
+  }
+  if (s.scroll) {
+    await page.mouse.move(200, 400);
+    await page.mouse.wheel(0, s.scroll);
+    await page.waitForTimeout(700);
   }
   if (s.hold) {
     const row = page.getByLabel(new RegExp(`^${s.hold},`)).first();

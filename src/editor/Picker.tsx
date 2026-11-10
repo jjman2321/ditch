@@ -62,7 +62,7 @@ function ImportRow({ title, sub, onPress }: { title: string; sub: string; onPres
   );
 }
 
-/** "Track a free trial": the form with the trial switch already on. 7 in 10 people have paid for a forgotten one. */
+/** "Track a free trial": the form with the trial switch already on (DECISIONS #39). */
 function TrialRow({ onPress }: { onPress: () => void }) {
   const p = usePalette();
   return (

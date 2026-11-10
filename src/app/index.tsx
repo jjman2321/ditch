@@ -1,6 +1,10 @@
 import { Redirect } from 'expo-router';
 
-// M1 will check SQLite for "onboarding done" and go to Home instead.
+import { useApp } from '@/state/app';
+
+// First launch (or after "Delete all data") goes to onboarding; after that, Home.
 export default function Index() {
-  return <Redirect href="/onboarding" />;
+  const { ready, settings } = useApp();
+  if (!ready) return null;
+  return <Redirect href={settings.onboardingDone ? '/(tabs)' : '/onboarding'} />;
 }

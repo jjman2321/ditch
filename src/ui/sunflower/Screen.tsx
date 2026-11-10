@@ -11,13 +11,16 @@ import { EDGE, SurfaceContext, paletteFor, type Surface } from './tokens';
 
 // Read once at start-up, before the router rewrites the URL.
 const FAKE_PHONE = Platform.OS === 'web' && typeof window !== 'undefined' && !!window.location?.search.includes('phone');
+const FAKE_SE = FAKE_PHONE && window.location.search.includes('phone=se');
 
 /**
  * Safe-area insets. On the web preview, `?phone` in the first URL fakes an
- * iPhone 15's insets (54 top, 34 bottom) so screenshots match the design.
+ * iPhone 15's insets (54 top, 34 bottom) so screenshots match the design;
+ * `?phone=se` fakes an iPhone SE (20 top, no home indicator).
  */
 export function useInsets() {
   const insets = useSafeAreaInsets();
+  if (FAKE_SE) return { ...insets, top: 20, bottom: 0 };
   return FAKE_PHONE ? { ...insets, top: 54, bottom: 34 } : insets;
 }
 

@@ -1,12 +1,13 @@
 import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold, Inter_800ExtraBold } from '@expo-google-fonts/inter';
 import { useFonts } from 'expo-font';
-import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
+import { DarkTheme, DefaultTheme, router, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { useColorScheme } from 'react-native';
+import { Platform, useColorScheme } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { AppProvider, useApp } from '@/state/app';
 import { OnboardingProvider } from '@/state/onboarding';
 import { brand, paletteFor } from '@/ui/sunflower';
 
@@ -46,19 +47,34 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <ThemeProvider value={theme}>
-          <OnboardingProvider>
-            <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: p.bg } }}>
-              <Stack.Screen name="index" />
-              <Stack.Screen name="onboarding" />
-              <Stack.Screen
-                name="paywall"
-                options={{ presentation: 'fullScreenModal', animation: 'slide_from_bottom', contentStyle: { backgroundColor: dark ? brand.night : brand.cream } }}
-              />
-              <Stack.Screen name="(tabs)" options={{ animation: 'fade' }} />
-            </Stack>
-          </OnboardingProvider>
+          <AppProvider>
+            <Navigator dark={dark} bg={p.bg} />
+          </AppProvider>
         </ThemeProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
+  );
+}
+
+// Web preview only: lets the screenshot script open a screen directly.
+if (Platform.OS === 'web' && typeof window !== 'undefined') {
+  (window as unknown as { __ditchNavigate: (path: string) => void }).__ditchNavigate = (path) => router.push(path as never);
+}
+
+function Navigator({ dark, bg }: { dark: boolean; bg: string }) {
+  // A fresh onboarding after "Delete all data".
+  const { generation } = useApp();
+  const modal = { contentStyle: { backgroundColor: dark ? brand.night : brand.cream } };
+  return (
+    <OnboardingProvider key={generation}>
+      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: bg } }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="onboarding" />
+        <Stack.Screen name="paywall" options={{ presentation: 'fullScreenModal', animation: 'slide_from_bottom', ...modal }} />
+        <Stack.Screen name="(tabs)" options={{ animation: 'fade' }} />
+        <Stack.Screen name="ditch/[id]" options={{ presentation: 'fullScreenModal', animation: 'fade', contentStyle: { backgroundColor: dark ? brand.night : brand.sunflower } }} />
+        <Stack.Screen name="settings" />
+      </Stack>
+    </OnboardingProvider>
   );
 }

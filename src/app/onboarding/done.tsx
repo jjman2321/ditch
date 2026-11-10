@@ -1,19 +1,24 @@
 // 08 / 08b · You're set. When the first heads-ups come, from the user's
 // own picks. 08b is the same screen once a Pro trial has started.
 
+import { getLocales } from 'expo-localization';
 import { router } from 'expo-router';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 import { addDays, toDateOnly, weekdayDate } from '@/domain/dates';
 import { buildSetSummary } from '@/onboarding/summary';
 import { planById } from '@/services/purchases';
-import { byYearlyDesc, chargeOf, useOnboarding, usePickedList, useRemindedIds } from '@/state/onboarding';
+import { useApp } from '@/state/app';
+import { byYearlyDesc, chargeOf, useCountry, useOnboarding, usePickedList, useRemindedIds } from '@/state/onboarding';
 import { Button, Card, Duck, DuckIcon, LogoTile, ProLockup, Screen, Txt, usePalette } from '@/ui/sunflower';
 
 export default function Done() {
   const p = usePalette();
-  const { pro, notifications } = useOnboarding();
+  const { pro, notifications, country } = useOnboarding();
+  const { finishOnboarding } = useApp();
+  const countryInfo = useCountry();
+  const [saving, setSaving] = useState(false);
   const list = usePickedList();
   const remindedIds = useRemindedIds();
   const today = toDateOnly();
@@ -42,7 +47,17 @@ export default function Done() {
         : `All ${n} ${n === 1 ? 'is' : 'are'} on your list. ${s.withHeadsUps} ${s.withHeadsUps === '1' ? 'gets' : 'get'} a heads-up. Here’s when you’ll hear from us first.`;
 
   return (
-    <Screen surface="sun" scroll footer={<Button label="Go to my list" onPress={() => router.replace('/(tabs)')} />}>
+    <Screen surface="sun" scroll footer={<Button
+          label="Go to my list"
+          disabled={saving}
+          onPress={async () => {
+            // Save everything first, so nothing is lost if the app closes.
+            setSaving(true);
+            const currency = countryInfo?.currency ?? list.find((x) => x.currency)?.currency ?? getLocales()[0]?.currencyCode ?? 'USD';
+            await finishOnboarding({ picks: list, reminderIds: remindedIds, pro, country, currency });
+            router.replace('/(tabs)');
+          }}
+        />}>
       <Txt v="displayL" accessibilityRole="header" style={{ marginTop: 40 }}>
         {'You’re\nset.'}
       </Txt>

@@ -4,15 +4,18 @@
 // discounts, no trial toggle. The billed price is always the biggest price.
 // The first frame shows ×, the plans, the main button and the free option.
 
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Alert, Linking, Platform, Pressable, useWindowDimensions, View } from 'react-native';
 
+import { DEV_TOOLS } from '@/dev/flags';
 import { headsUpDates } from '@/domain/charges';
 import { addDays, shortDate, toDateOnly, weekdayDate } from '@/domain/dates';
 import { formatWholeMoney } from '@/domain/money';
 import { perMonthFromYearly, yearlyBadge } from '@/domain/pricing';
 import { PURCHASES_LIVE, billedLabel, planById, purchase, restorePurchases, type PlanId } from '@/services/purchases';
+import { listedUserSubs } from '@/domain/subs';
+import { useApp } from '@/state/app';
 import { useOnboarding, usePickedList } from '@/state/onboarding';
 import {
   Button,
@@ -66,8 +69,12 @@ export default function Paywall() {
   const insets = useInsets();
   const { height } = useWindowDimensions();
   const compact = height < 800;
-  const { setPro } = useOnboarding();
-  const n = usePickedList().length;
+  const { setPro: setOnboardingPro } = useOnboarding();
+  const app = useApp();
+  // Opened from Settings or a PRO tag (after onboarding) vs. during onboarding.
+  const inApp = useLocalSearchParams<{ from?: string }>().from === 'app';
+  const picked = usePickedList().length;
+  const n = inApp ? listedUserSubs(app.subs).length : picked;
   const many = n > 3;
   const [planId, setPlanId] = useState<PlanId>('yearly');
   const [cardH, setCardH] = useState(0);
@@ -80,7 +87,16 @@ export default function Paywall() {
   const charge = addDays(today, yearly.trialDays);
   const [h1, h2] = headsUpDates(charge, today);
 
-  const leaveFree = () => router.replace(many ? '/onboarding/which3' : '/onboarding/done');
+  const leaveFree = () => (inApp ? router.back() : router.replace(many ? '/onboarding/which3' : '/onboarding/done'));
+  const activate = async (id: PlanId) => {
+    if (inApp) {
+      await app.setPro(id, { startTrial: id === 'yearly' });
+      router.back();
+    } else {
+      setOnboardingPro(id);
+      router.replace('/onboarding/done');
+    }
+  };
   const select = (id: PlanId) => {
     if (id !== planId) haptic.select();
     setPlanId(id);
@@ -90,19 +106,17 @@ export default function Paywall() {
     haptic.medium();
     const r = await purchase(planId);
     if (r.status === 'purchased') {
-      setPro(planId);
-      router.replace('/onboarding/done');
+      await activate(planId);
       return;
     }
     if (!PURCHASES_LIVE) {
       const buttons: { text: string; onPress?: () => void }[] = [{ text: 'Continue free', onPress: leaveFree }];
       // Test builds only: see the Pro version of the next screen. Never in the App Store build.
-      if (__DEV__)
+      if (DEV_TOOLS)
         buttons.push({
           text: 'Preview Pro',
           onPress: () => {
-            setPro(planId);
-            router.replace('/onboarding/done');
+            activate(planId);
           },
         });
       notice('Not switched on yet', 'Purchases arrive in the next build. Nothing was charged.', buttons);

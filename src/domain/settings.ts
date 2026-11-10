@@ -114,6 +114,6 @@ export function settingsToKv(patch: Partial<Settings>): Record<string, string | 
 }
 
 /** Free always uses 3 days and 1 day; custom timing comes with Pro. */
-export function effectiveLeads(settings: Settings, pro: boolean): number[] {
+export function effectiveLeads(settings: Pick<Settings, 'leadDays'>, pro: boolean): number[] {
   return pro ? cleanLeads(settings.leadDays) : [...HEADS_UP_LEADS];
 }

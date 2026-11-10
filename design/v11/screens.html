@@ -117,14 +117,14 @@ section.darksec .sh h2,section.darksec .sh p,section.darksec .cap{color:#EDE6D6}
 .tickhit{width:44px;height:44px;display:flex;align-items:center;justify-content:center;margin-right:-8px;flex:none}
 .chip{height:36px;padding:0 16px;border-radius:18px;background:var(--chip);box-shadow:inset 0 0 0 1.5px var(--chipb);font-weight:600;font-size:15px;display:flex;align-items:center;white-space:nowrap;flex:none}
 .chip.on{background:var(--ink);color:#fff;box-shadow:none}
-.chg{font-weight:600;color:var(--fg);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1.5px}
+.lrow .n span.chg,.chg{display:inline;font-weight:600;color:var(--fg);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1.5px}
 .radio{width:24px;height:24px;border-radius:12px;box-shadow:inset 0 0 0 2px #B9B09D;flex:none;display:flex;align-items:center;justify-content:center}
 .radio.on{background:var(--ink);box-shadow:none}
 .dark .radio{box-shadow:inset 0 0 0 2px #5A554C}.dark .radio.on{background:#FFCC2E;box-shadow:none}
 .tag{font:700 12px/16px Inter;color:#16140F;background:#FFCC2E;border-radius:8px;padding:2px 8px;white-space:nowrap}
 
 /* guess chips */
-.gchip{height:56px;border-radius:18px;background:var(--chip);box-shadow:inset 0 0 0 1.5px var(--chipb);display:flex;align-items:center;justify-content:center;font:600 17px/24px Inter;letter-spacing:-.3px}
+.gchip{height:56px;border-radius:18px;background:var(--chip);box-shadow:inset 0 0 0 1.5px var(--chipb);display:flex;align-items:center;justify-content:space-between;padding:0 16px 0 24px;font:600 17px/24px Inter;letter-spacing:-.3px;flex:none}
 .gchip.on{background:var(--ink);color:#FFCC2E;box-shadow:none}
 
 /* day grid */
@@ -138,17 +138,17 @@ section.darksec .sh h2,section.darksec .sh p,section.darksec .cap{color:#EDE6D6}
 .ptable{border-radius:20px;background:var(--card);color:var(--cardfg);position:relative;overflow:hidden}
 .ptable .tr{display:flex;align-items:center;position:relative}
 .ptable .tr+.tr:before{content:"";position:absolute;top:0;left:16px;right:0;height:1px;background:var(--hair)}
-.ptable .f{flex:1;min-width:0;padding-left:16px;font-size:15px;line-height:20px;font-weight:500}
+.ptable .f{flex:1;min-width:0;padding-left:16px;font-size:14px;line-height:20px;font-weight:500;white-space:nowrap}
 .ptable .c{text-align:center;display:flex;align-items:center;justify-content:center;flex:none;font:700 15px/20px Inter}
 .ptable .procol{position:absolute;top:0;bottom:0;right:0;background:#FFE58F}
 .dark .ptable .procol{background:#3A3115}
-.tile{flex:1;min-width:0;border-radius:16px;background:var(--card);color:var(--cardfg);box-shadow:inset 0 0 0 1.5px var(--ctl);padding:16px 8px 12px;position:relative;display:flex;flex-direction:column;align-items:center;text-align:center}
+.tile{flex:1;min-width:0;border-radius:16px;background:var(--card);color:var(--cardfg);box-shadow:inset 0 0 0 1.5px var(--ctl);padding:16px 8px 8px;position:relative;display:flex;flex-direction:column;align-items:center;text-align:center}
 .tile.on{box-shadow:inset 0 0 0 2.5px var(--fg)}
 .dark .tile.on{box-shadow:inset 0 0 0 2.5px #FFCC2E}
 .tile .tn{font:600 14px/20px Inter}
 .tile .tp{font-family:Archivo;font-stretch:106%;font-weight:800;font-size:20px;line-height:24px;letter-spacing:-.4px;margin-top:4px}
 .tile .tu{font-size:13px;line-height:16px;color:var(--mute)}
-.tile .tf{margin-top:8px;font:600 12px/16px Inter;color:var(--mute);height:20px;display:flex;align-items:center}
+.tile .tf{margin-top:4px;font:600 12px/16px Inter;color:var(--mute);height:20px;display:flex;align-items:center}
 .tile .tab{position:absolute;top:-10px;left:50%;transform:translateX(-50%);height:20px;padding:0 8px;border-radius:10px;background:var(--fg);color:var(--bg);font:700 11px/20px Inter;letter-spacing:.3px;white-space:nowrap}
 .dark .tile .tab{background:#FFCC2E;color:#16140F}
 .trial{display:flex;justify-content:space-between;position:relative}
@@ -241,7 +241,7 @@ S.welcome = (c) => {
   return [d ? 'dark' : 'sun', `
 <div class="scr" style="${scrStyle(c, ipad ? 480 : 0)}">
   <div style="height:28px;margin-top:16px;display:flex;align-items:center;flex:none"><span class="wm">ditch</span></div>
-  <h1 class="disp" data-orphan style="font-size:${fs}px;line-height:${lh}px;letter-spacing:-${(fs * .04).toFixed(1)}px;margin-top:${se ? 24 : ipad ? 48 : 32}px">Ditch it<br>before it<br>${d ? '<span style="color:#FFCC2E">renews.</span>' : 'renews.'}</h1>
+  <h1 class="disp" style="font-size:${fs}px;line-height:${lh}px;letter-spacing:-${(fs * .04).toFixed(1)}px;margin-top:${se ? 24 : ipad ? 48 : 32}px">Ditch it<br>before it<br>${d ? '<span style="color:#FFCC2E">renews.</span>' : 'renews.'}</h1>
   <p class="lead" data-orphan style="margin-top:16px;max-width:${ipad ? 420 : 320}px${ipad ? ';font-size:20px;line-height:28px' : ''}">See everything you pay for. Get a reminder before every${NB}charge.</p>
   <div style="flex:1;min-height:${se ? 24 : 120}px"></div>
   <div style="position:relative;flex:none">
@@ -273,11 +273,11 @@ S.guess = (c) => {
   <div class="eyebrow" style="margin-top:16px">Quick guess</div>
   <h1 class="title" data-orphan style="margin-top:8px">How much do you think you spend a${NB}month?</h1>
   <p class="lead" style="margin-top:8px">On all your subscriptions together.</p>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px">
-    ${chips.map((t) => `<div class="gchip num${t === '$25–50' ? ' on' : ''}">${t}</div>`).join('')}
+  <div style="display:flex;flex-direction:column;gap:12px;margin-top:24px">
+    ${chips.map((t) => `<div class="gchip num${t === '$25–50' ? ' on' : ''}">${t}${t === '$25–50' ? ck('#FFCC2E', 20) : ''}</div>`).join('')}
   </div>
-  <p class="sub" style="margin-top:24px">No wrong answers. We’ll show you the real number in a${NB}minute.</p>
-  <div style="flex:1"></div>
+  <div style="flex:1;min-height:16px"></div>
+  <p class="sub" style="text-align:center">No wrong answers. We’ll show you the real number in a${NB}minute.</p>
 </div>`];
 };
 
@@ -300,7 +300,7 @@ S.pick = (c, sheet) => {
   <p class="sub" style="margin-top:8px;color:var(--fg2)">Prices for 🇺🇸 US · <span class="chg">Change</span></p>
   <div style="margin-top:16px;height:48px;border-radius:14px;background:#fff;box-shadow:inset 0 0 0 1.5px #E3DBCA;display:flex;align-items:center;gap:8px;padding:0 16px;font-size:16px;color:#6B6559;flex:none">${searchI}Search 220 services</div>
   <div style="display:flex;gap:8px;margin-top:12px;flex:none"><span class="chip on">Popular</span><span class="chip">Streaming</span><span class="chip">Music</span><span class="chip">AI</span></div>
-  <div style="margin-top:8px;flex:1;overflow:hidden;position:relative">${pickRows(c)}</div>
+  <div data-scroll style="margin-top:8px;flex:1;overflow:hidden;position:relative">${pickRows(c)}</div>
 </div>
 <div style="position:absolute;left:0;right:0;bottom:0;padding:12px 24px ${D.bot + 16}px;background:#FBF7EE;border-top:1px solid #E6DFD0;z-index:4">
   <div style="display:flex;align-items:center;justify-content:space-between;height:24px;margin-bottom:12px">
@@ -343,13 +343,13 @@ S.total = (c) => {
   return [d ? 'dark' : 'sun', `
 <div class="scr" style="padding:${D.top}px ${p}px 0">
   ${nav(3)}
-  <div class="label" style="margin-top:${se ? 8 : 16}px;font-size:17px;line-height:24px">You pay</div>
-  <div class="disp num" data-fit style="font-size:${ipad ? 128 : se ? 88 : 104}px;line-height:${ipad ? 116 : se ? 80 : 92}px;letter-spacing:-.045em;margin:0 0 0 -4px;white-space:nowrap;color:var(--money)">$1,157</div>
+  <div class="label" style="margin-top:8px;font-size:17px;line-height:24px">You pay</div>
+  <div class="disp num" data-fit style="font-size:${ipad ? 128 : se ? 88 : 104}px;line-height:${ipad ? 116 : se ? 80 : 88}px;letter-spacing:-.045em;margin:0 0 0 -4px;white-space:nowrap;color:var(--money)">$1,157</div>
   <div class="heading" style="font-size:${se ? 20 : 22}px;margin-top:0">a year.</div>
   <p class="lead num" style="margin-top:8px;color:var(--fg)">That’s $96.45 a month.</p>
   <div style="margin-top:${se ? 12 : 16}px;display:flex;flex:none"><span class="num" style="height:32px;border-radius:16px;padding:0 12px;display:inline-flex;align-items:center;font:600 15px/20px Inter;${d ? 'background:#2A2722;color:#F6F0E3' : 'background:#16140F;color:#FFCC2E'}">You guessed $25–50 a month.</span></div>
   <p class="sub" data-orphan style="margin-top:8px;color:var(--fg2);max-width:330px">Most people guess low. In one study, the real total was about 2.5× the${NB}guess.</p>
-  <div style="flex:none;height:${se ? 16 : 24}px"></div>
+  <div style="flex:none;height:${se ? 16 : ipad ? 32 : 16}px"></div>
   <div style="flex:1;margin:0 -${p}px;background:var(--sheet);border-radius:28px 28px 0 0;padding:${se ? 16 : 24}px ${p}px ${D.bot + 16}px;display:flex;flex-direction:column;${d ? 'box-shadow:inset 0 1px 0 #2C2924' : ''}">
     <div style="display:flex;justify-content:space-between;height:16px" class="eyebrow"><span>Per year</span><span>Before sales tax</span></div>
     <div style="margin-top:4px;flex:none">${rows}${more}</div>
@@ -366,25 +366,24 @@ S.notify = (c) => {
   return ['cream', `
 <div class="scr" style="${scrStyle(c)}">
   ${nav(4)}
-  <h1 class="title" data-orphan style="margin-top:16px">Get a reminder before your 6 subscriptions${NB}renew.</h1>
+  <h1 class="title" data-orphan style="margin-top:16px">Get a reminder before each${NB}charge.</h1>
   <p class="leadS" style="margin-top:8px">3 days and 1 day before, at 9:00 AM. Only about your subscriptions. Nothing${NB}else.</p>
-  <div style="margin-top:24px;flex:1;min-height:0;border-radius:32px;background:#FFCC2E;position:relative;overflow:hidden;padding:16px 12px 0;display:flex;flex-direction:column">
+  <div style="margin-top:24px;flex:1;min-height:0;border-radius:32px;background:#FFCC2E;position:relative;overflow:hidden;padding:${se ? 12 : 24}px 12px 12px;display:flex;flex-direction:column;justify-content:flex-start">
     <div style="text-align:center;color:#16140F;flex:none">
       ${lockI('#16140F').replace('<svg', '<svg style="display:block;margin:0 auto 4px"')}
       <div style="font:600 15px/20px Inter">Monday, November 16</div>
-      <div style="font-family:Archivo;font-stretch:112%;font-weight:800;font-size:56px;line-height:60px;letter-spacing:-1.6px">9:00</div>
+      <div style="font-family:Archivo;font-stretch:112%;font-weight:800;font-size:${se ? 44 : 56}px;line-height:${se ? 48 : 64}px;letter-spacing:-1.6px">9:00</div>
     </div>
-    <div class="note" style="margin-top:12px;position:relative;z-index:2;box-shadow:0 8px 24px rgba(80,55,0,.18);color:#1C1B19">
-      ${logo('netflix', 38)}
-      <div style="flex:1"><div class="h">Netflix renews in 3 days<span>now</span></div><div class="m num">$19.99 on Thu, Nov 19. Still${NB}watching?</div></div>
+    <div class="note" style="margin-top:${se ? 8 : 16}px;position:relative;z-index:2;box-shadow:0 8px 24px rgba(80,55,0,.18);color:#1C1B19;flex:none">
+      ${dicon(38)}
+      <div style="flex:1"><div class="h">Ditch<span>now</span></div><div class="m num">Netflix renews in 3 days. $19.99 on Thu, Nov 19. Still${NB}watching?</div></div>
     </div>
-    <div class="note" style="margin-top:8px;position:relative;z-index:1;background:rgba(255,255,255,.8);box-shadow:none;color:#1C1B19">
-      ${logo('youtube-premium', 38)}
-      <div style="flex:1"><div class="h">YouTube Premium renews tomorrow<span></span></div><div class="m num">$15.99. Last call if you’re done with${NB}it.</div></div>
+    <div class="note" style="margin-top:8px;position:relative;z-index:1;background:rgba(255,255,255,.82);box-shadow:none;color:#1C1B19;flex:none">
+      ${dicon(38)}
+      <div style="flex:1"><div class="h">Ditch<span>now</span></div><div class="m num">YouTube Premium renews tomorrow. $15.99. Last call if you’re done with${NB}it.</div></div>
     </div>
-    ${duck(false, 120, 'left:50%;margin-left:-60px;bottom:-4px')}
   </div>
-  <p class="sub" style="margin-top:16px;text-align:center;color:var(--fg2)">7 in 10 people have forgotten to cancel a free trial at least${NB}once.</p>
+  <p class="sub" style="margin-top:16px;text-align:center;color:var(--fg2)">7 in 10 people have forgotten to cancel a free trial.</p>
   <button class="cta" style="margin-top:16px">Turn on reminders</button>
   <p class="sub" style="margin-top:8px;text-align:center">Tap “Allow” on the next screen.</p>
   <button class="txtbtn" style="margin-top:0">Maybe later</button>
@@ -410,9 +409,9 @@ S.datesScan = (c) => {
   <p class="lead" style="margin-top:8px">So your reminders land on the right${NB}day.</p>
   <div class="card" style="margin-top:24px;padding:${se ? 16 : 24}px;flex:none">
     ${se ? '' : appleShot()}
-    <h2 class="heading" style="margin-top:${se ? 0 : 16}px">Scan your Apple subscriptions</h2>
-    <p class="body" style="margin-top:8px;color:var(--fg2)">Paid through Apple? Take a screenshot of this page and Ditch reads the dates on your${NB}phone.</p>
-    <div style="display:flex;align-items:center;gap:4px;margin-top:12px;flex-wrap:wrap">${crumb('Settings')}${chevR('#8C8576', 12)}${crumb('Your name')}${chevR('#8C8576', 12)}${crumb('Subscriptions')}</div>
+    <h2 class="heading" style="margin-top:${se ? 0 : 16}px">Paid through Apple?</h2>
+    <p class="body" style="margin-top:8px;color:var(--fg2)">Take a screenshot of your Apple subscriptions page. Ditch reads the dates on your${NB}phone.</p>
+    <div style="margin-top:12px;height:36px;border-radius:12px;background:var(--tint);display:flex;align-items:center;gap:4px;padding:0 12px;font:600 14px/20px Inter;white-space:nowrap;color:#16140F">Settings${chevR('#6B6559', 12)}Your name${chevR('#6B6559', 12)}Subscriptions</div>
   </div>
   <div style="flex:1;min-height:16px"></div>
   <button class="cta">${imgI('#fff', 20)}Choose screenshot</button>
@@ -448,28 +447,24 @@ S.datesDay = (c) => {
 // SE variant: the day cells are 44pt tall to fit without scrolling
 const seGrid = (html) => html.replace('class="dgrid"', 'class="dgrid se44"');
 
-// 07 · Paywall (layout A)
+// 07 · Paywall (layout A). Copy pending the wording-research job.
 S.paywall = (c) => {
   const d = c.d, se = c.dev === 'se', ipad = c.dev === 'ipad';
-  const D = DEV[c.dev];
-  const rh = se ? 32 : 36;
-  const colF = 56, colP = 88;
-  const rowsT = [
-    ['Full list, totals, calendar', 'ck', 'ck'],
-    ['Subscriptions with reminders', '3', 'Unlimited'],
-    ['Pick your reminder timing', '-', 'ck'],
-    ['Scan screenshots and statements', '-', 'ck'],
-    ['Widget and iCloud backup', '-', 'ck'],
-  ];
+  const rh = se ? 28 : 32;
+  const colF = se ? 40 : 44, colP = se ? 72 : 76;
+  const rowsT = se
+    ? [['List, totals, calendar', 'ck', 'ck'], ['Subscriptions with reminders', '3', 'Unlimited'], ['Timing, import, widget, backup', '-', 'ck']]
+    : [['List, totals, calendar', 'ck', 'ck'], ['Subscriptions with reminders', '3', 'Unlimited'], ['Pick your reminder timing', '-', 'ck'], ['Scan screenshots and PDFs', '-', 'ck'], ['Widget and iCloud backup', '-', 'ck']];
   const ink = d ? '#F6F0E3' : '#16140F';
-  const cell = (v, pro) => v === 'ck' ? ck(pro && d ? '#FFCC2E' : ink, 18) : v === '-' ? dash(d ? '#6E685D' : '#A39B8A') : `<span class="num">${v}</span>`;
+  const cell = (v, pro) => v === 'ck' ? ck(pro && d ? '#FFCC2E' : ink, 18) : v === '-' ? dash(d ? '#8E877A' : '#8C8576') : `<span class="num"${pro && d ? ' style="color:#FFCC2E"' : ''}>${v}</span>`;
   const table = `<div class="ptable" style="flex:none">
     <div class="procol" style="width:${colP}px"></div>
-    <div class="tr" style="height:${se ? 32 : 40}px"><span class="f eyebrow" style="font-weight:700;color:var(--mute)">What you get</span><span class="c eyebrow" style="width:${colF}px;color:var(--mute)">Free</span><span class="c" style="width:${colP}px">${lockup(13).replace('<span class="w">ditch</span>', '')}</span></div>
-    ${rowsT.map((r) => `<div class="tr" style="height:${rh}px"><span class="f">${r[0]}</span><span class="c" style="width:${colF}px">${cell(r[1])}</span><span class="c" style="width:${colP}px">${cell(r[2], 1)}</span></div>`).join('')}
+    <div class="tr" style="height:${se ? 28 : 36}px"><span class="f eyebrow" style="font-weight:700;color:var(--mute);padding-left:${se ? 12 : 16}px">What you get</span><span class="c eyebrow" style="width:${colF}px;color:var(--mute)">Free</span><span class="c eyebrow" style="width:${colP}px;color:${d ? '#FFCC2E' : '#16140F'}">Pro</span></div>
+    ${rowsT.map((r) => `<div class="tr" style="height:${rh}px"><span class="f" style="padding-left:${se ? 12 : 16}px">${r[0]}</span><span class="c" style="width:${colF}px">${cell(r[1])}</span><span class="c" style="width:${colP}px">${cell(r[2], 1)}</span></div>`).join('')}
+    <div style="height:4px"></div>
   </div>`;
   const tiles = `<div style="display:flex;gap:8px;flex:none;margin-top:${se ? 16 : 24}px">
-    <div class="tile on"><span class="tab">SAVE 49%</span><span class="tn">Yearly</span><span class="tp num">$29.99</span><span class="tu">a year</span><span class="tf"><span class="tag" style="font-size:12px">7 days free</span></span></div>
+    <div class="tile on"><span class="tab">SAVE 49%</span><span class="tn">Yearly</span><span class="tp num">$29.99</span><span class="tu">a year</span><span class="tf"><span class="tag">7 days free</span></span></div>
     <div class="tile"><span class="tn">Monthly</span><span class="tp num">$4.99</span><span class="tu">a month</span><span class="tf">No free trial</span></div>
     <div class="tile"><span class="tn">Lifetime</span><span class="tp num">$49.99</span><span class="tu">one time</span><span class="tf">Pay once</span></div>
   </div>`;
@@ -482,24 +477,22 @@ S.paywall = (c) => {
   const logos = `<div style="display:flex;align-items:center;gap:8px;margin-top:${se ? 8 : 12}px;flex:none">
     <span class="stack">${ORDER.slice(0, 5).map((k) => logo(SUBS[k][0], se ? 24 : 28)).join('')}</span>
     <span class="sub nw" style="color:var(--fg2)">ChatGPT Plus, Netflix + 4 more</span></div>`;
-  const xb = `<div class="xbtn" style="margin-right:-8px"><i>${xI(ink)}</i></div>`;
   return [d ? 'dark' : 'cream', `
-<div class="scr" style="${scrStyle(c, 440, se ? 12 : 16)}">
-  ${se ? '' : `<div style="display:flex;justify-content:space-between;align-items:center;height:44px;flex:none">${lockup(24)}${xb}</div>`}
-  <div style="display:flex;align-items:flex-start;gap:8px;flex:none;margin-top:${se ? 8 : ipad ? 24 : 8}px">
+<div class="scr" style="${scrStyle(c, 440, se ? 8 : 16)}">
+  <div style="display:flex;align-items:flex-start;gap:8px;flex:none;margin-top:${se ? 8 : ipad ? 48 : 12}px">
     <h1 class="title" data-orphan style="flex:1;${se ? 'font-size:26px;line-height:32px;letter-spacing:-.8px' : ''}">Get a reminder before all 6${NB}renewals.</h1>
-    ${se ? xb.replace('margin-right:-8px', 'margin:-6px -8px 0 0') : ''}
+    <div class="xbtn" style="margin:-6px -10px 0 0" aria-label="Close, continue free"><i>${xI(ink)}</i></div>
   </div>
   ${logos}
   <div style="flex:none;height:${se ? 12 : ipad ? 32 : 16}px"></div>
   ${table}
   ${tiles}
   ${strip}
-  <div style="flex:1;min-height:${se ? 12 : 16}px"></div>
-  <button class="cta">Start 7-day free trial</button>
-  <p class="sub num" style="text-align:center;margin-top:${se ? 4 : 8}px;color:var(--fg2)">Then $29.99 a year. Cancel anytime.</p>
-  <button class="sec" style="margin-top:${se ? 8 : 12}px;${se ? 'height:44px;' : ''}font-size:15px">Continue free: reminders for 3${NB}subscriptions</button>
-  <p class="links" style="margin-top:${se ? 4 : 8}px"><u>Restore</u> · <u>Terms</u> · <u>Privacy</u></p>
+  <div style="flex:1;min-height:${se ? 8 : 12}px"></div>
+  <button class="cta"${se ? ' style="height:52px"' : ''}>Start 7-day free trial</button>
+  <p class="sub num" style="text-align:center;margin-top:4px;color:var(--fg2)">Then $29.99 a year. Cancel anytime.</p>
+  <button class="sec" style="margin-top:${se ? 4 : 8}px;${se ? 'height:44px;font-size:14px' : 'font-size:15px'}">Continue free: reminders for 3${NB}subscriptions</button>
+  <p class="links" style="margin-top:${se ? 0 : 4}px;line-height:${se ? 20 : 24}px"><u>Restore</u> · <u>Terms</u> · <u>Privacy</u></p>
 </div>`];
 };
 
@@ -515,8 +508,8 @@ S.which3 = (c) => {
 <div class="scrim" style="background:rgba(0,0,0,.35)"></div>
 <div class="sheet" style="top:${D.top + 10}px;padding:0 24px ${D.bot + 16}px;border-radius:12px 12px 0 0">
   <div class="grab"></div>
-  <h1 class="title" style="margin-top:24px">Your 3 free reminders</h1>
-  <p class="leadS" style="margin-top:8px">We picked your biggest charges. Swap any of${NB}them.</p>
+  <h1 class="title" data-orphan style="margin-top:24px">Your 3 free${NB}reminders</h1>
+  <p class="leadS" data-orphan style="margin-top:8px">We picked your biggest charges. Swap any of${NB}them.</p>
   <div style="display:flex;flex-direction:column;gap:8px;margin-top:24px">${['chatgpt', 'netflix', 'youtube'].map(slot).join('')}</div>
   <div class="eyebrow" style="margin-top:32px">On your list, no reminder</div>
   <div style="margin-top:4px">${['amazon', 'spotify', 'disney'].map(rest).join('')}</div>

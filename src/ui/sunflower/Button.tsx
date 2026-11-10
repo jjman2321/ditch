@@ -17,19 +17,24 @@ export function Button({
   hint,
   style,
   right,
+  left,
+  danger,
 }: {
   label: string;
+  /** Red text, for destructive actions (Delete). */
+  danger?: boolean;
   onPress: () => void;
   kind?: Kind;
   disabled?: boolean;
   hint?: string;
   style?: StyleProp<ViewStyle>;
   right?: ReactNode;
+  left?: ReactNode;
 }) {
   const p = usePalette();
   const h = kind === 'primary' ? 56 : kind === 'secondary' ? 52 : TAP;
   const bg = kind === 'primary' ? p.cta : 'transparent';
-  const fg = kind === 'primary' ? p.ctaFg : p.fg;
+  const fg = kind === 'primary' ? p.ctaFg : danger ? p.danger : p.fg;
   return (
     <Pressable
       accessibilityRole="button"
@@ -56,6 +61,7 @@ export function Button({
         style,
       ]}
     >
+      {left}
       <Txt v="button" color={fg} center style={kind === 'secondary' ? { fontSize: 16 } : kind === 'text' ? { fontSize: 16 } : null}>
         {label}
       </Txt>

@@ -59,6 +59,8 @@ const cream = {
   accent: brand.ink, // ticks, selected radios
   accentFg: brand.white,
   disabledFg: '#A39B8A',
+  danger: '#B3361A',
+  warn: brand.bill,
 };
 
 export type Palette = typeof cream;
@@ -119,6 +121,8 @@ const night: Palette = {
   accent: brand.sunflower,
   accentFg: brand.ink,
   disabledFg: '#6E685D',
+  danger: '#FF8A65',
+  warn: brand.bill,
 };
 
 export function paletteFor(surface: Surface, dark: boolean): Palette {

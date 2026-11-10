@@ -38,7 +38,7 @@ function B({ children }: { children: string }) {
   return <Txt v="body" style={{ fontFamily: F.bold, fontSize: 14 }}>{children}</Txt>;
 }
 
-function Body({ sub, onSave, onGuess }: { sub: Picked; onSave: (anchor: DateOnly, source: Mode, cycle: Cycle) => void; onGuess: () => void }) {
+export function DateBody({ sub, onSave, onGuess }: { sub: Picked; onSave: (anchor: DateOnly, source: Mode, cycle: Cycle) => void; onGuess: () => void }) {
   const p = usePalette();
   const priceOf = usePickPrice();
   const today = toDateOnly();
@@ -87,7 +87,7 @@ function Body({ sub, onSave, onGuess }: { sub: Picked; onSave: (anchor: DateOnly
   return (
     <View style={{ flex: 1 }}>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-        <LogoTile id={sub.id} size={40} />
+        <LogoTile id={sub.id} size={40} color={sub.color} mono={sub.mono} ink={sub.ink} />
         <View style={{ flex: 1 }}>
           <Txt v="bodyStrong" style={{ fontSize: 17 }} accessibilityRole="header">
             {sub.name}
@@ -267,7 +267,7 @@ export function DateSheet({
 }) {
   return (
     <Sheet visible={visible && !!sub} onClose={onClose} label={sub ? `${sub.name} charge date` : 'Charge date'}>
-      {sub ? <Body key={sub.id + chargeOf(sub)} sub={sub} onSave={onSave} onGuess={onGuess} /> : null}
+      {sub ? <DateBody key={sub.id + chargeOf(sub)} sub={sub} onSave={onSave} onGuess={onGuess} /> : null}
     </Sheet>
   );
 }

@@ -7,6 +7,7 @@ import { Platform, useColorScheme } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { EditorProvider } from '@/editor/Editor';
 import { AppProvider, useApp } from '@/state/app';
 import { OnboardingProvider } from '@/state/onboarding';
 import { brand, paletteFor } from '@/ui/sunflower';
@@ -67,14 +68,16 @@ function Navigator({ dark, bg }: { dark: boolean; bg: string }) {
   const modal = { contentStyle: { backgroundColor: dark ? brand.night : brand.cream } };
   return (
     <OnboardingProvider key={generation}>
-      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: bg } }}>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="onboarding" />
-        <Stack.Screen name="paywall" options={{ presentation: 'fullScreenModal', animation: 'slide_from_bottom', ...modal }} />
-        <Stack.Screen name="(tabs)" options={{ animation: 'fade' }} />
-        <Stack.Screen name="ditch/[id]" options={{ presentation: 'fullScreenModal', animation: 'fade', contentStyle: { backgroundColor: dark ? brand.night : brand.sunflower } }} />
-        <Stack.Screen name="settings" />
-      </Stack>
+      <EditorProvider>
+        <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: bg } }}>
+          <Stack.Screen name="index" />
+          <Stack.Screen name="onboarding" />
+          <Stack.Screen name="paywall" options={{ presentation: 'fullScreenModal', animation: 'slide_from_bottom', ...modal }} />
+          <Stack.Screen name="(tabs)" options={{ animation: 'fade' }} />
+          <Stack.Screen name="ditch/[id]" options={{ presentation: 'fullScreenModal', animation: 'fade', contentStyle: { backgroundColor: dark ? brand.night : brand.sunflower } }} />
+          <Stack.Screen name="settings" />
+        </Stack>
+      </EditorProvider>
     </OnboardingProvider>
   );
 }

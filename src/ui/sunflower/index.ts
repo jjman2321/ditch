@@ -12,6 +12,7 @@ export * from './LogoTile';
 export * from './NotificationPreview';
 export * from './PlanCard';
 export * from './RollingNumber';
+export * from './Stamp';
 export * from './ProgressBar';
 export * from './Screen';
 export * from './Sheet';

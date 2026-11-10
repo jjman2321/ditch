@@ -1,10 +1,10 @@
 // Tabs: Home · Calendar · Ditched (DECISIONS #8). Placeholders until Phase 2.
 
 import { Tabs } from 'expo-router';
-import type { ColorValue } from 'react-native';
+import { Platform, type ColorValue } from 'react-native';
 import Svg, { Path, Rect } from 'react-native-svg';
 
-import { F, paletteFor, useIsDark } from '@/ui/sunflower';
+import { F, paletteFor, useInsets, useIsDark } from '@/ui/sunflower';
 
 type IconProps = { color: ColorValue; focused: boolean };
 
@@ -37,14 +37,17 @@ function StampIcon({ color, focused }: IconProps) {
 
 export default function TabsLayout() {
   const p = paletteFor('cream', useIsDark());
+  const insets = useInsets();
+  // iOS sizes the bar itself; the web preview needs the faked home-indicator space.
+  const webBar = Platform.OS === 'web' ? { height: 54 + insets.bottom, paddingBottom: insets.bottom, paddingTop: 4 } : null;
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: p.fg,
         tabBarInactiveTintColor: p.mute,
-        tabBarStyle: { backgroundColor: p.bg, borderTopColor: p.rule },
-        tabBarLabelStyle: { fontFamily: F.semi, fontSize: 11 },
+        tabBarStyle: { backgroundColor: p.bg, borderTopColor: p.rule, ...webBar },
+        tabBarLabelStyle: { fontFamily: F.semi, fontSize: 12 },
       }}
     >
       <Tabs.Screen name="index" options={{ title: 'Home', tabBarIcon: (x) => <HomeIcon {...x} /> }} />

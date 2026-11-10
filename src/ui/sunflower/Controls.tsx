@@ -2,7 +2,7 @@
 // They are visual only; the row or card around them is the control.
 
 import { useEffect, useRef } from 'react';
-import { View } from 'react-native';
+import { Switch, View } from 'react-native';
 import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withSequence, withSpring, withTiming } from 'react-native-reanimated';
 
 import { Bell, Check } from './icons';
@@ -81,5 +81,24 @@ export function BellMark({ on }: { on: boolean }) {
     >
       <Bell color={on ? brand.ink : p.disabledFg} size={19} fill={on ? brand.ink : undefined} />
     </Animated.View>
+  );
+}
+
+/** iOS switch in Sunflower colours: ink when on (sunflower in dark). */
+export function SunSwitch({ value, onValueChange, label, hint, disabled }: { value: boolean; onValueChange: (v: boolean) => void; label: string; hint?: string; disabled?: boolean }) {
+  const p = usePalette();
+  const on = p.dark ? brand.sunflower : brand.ink;
+  return (
+    <Switch
+      accessibilityLabel={label}
+      accessibilityHint={hint}
+      value={value}
+      disabled={disabled}
+      onValueChange={onValueChange}
+      trackColor={{ true: on, false: p.track }}
+      thumbColor={brand.white}
+      ios_backgroundColor={p.track}
+      {...({ activeThumbColor: brand.white, activeTrackColor: on } as object)}
+    />
   );
 }

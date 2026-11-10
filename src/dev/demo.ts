@@ -7,7 +7,7 @@ import type { Settings } from '@/domain/settings';
 import { makeSub, type Sub } from '@/domain/subs';
 import { proTrialSub } from '@/state/fromOnboarding';
 
-export type DemoName = 'demo' | 'pro' | 'off' | 'ditched' | 'empty' | 'onboarding';
+export type DemoName = 'demo' | 'pro' | 'off' | 'ditched' | 'empty' | 'onboarding' | 'mixed';
 
 const NOW = '2026-11-09T09:41:00.000Z';
 
@@ -62,6 +62,12 @@ export function demoData(name: DemoName, today: DateOnly): { subs: Sub[]; settin
     cancelled('audible', 'Audible Premium Plus', 'audible', 1495, '2026-08-22'),
     cancelled('hulu', 'Hulu', 'hulu', 999, '2026-06-14'),
   ];
+  if (name === 'mixed') {
+    // A UK list with two US-dollar subs: shows the "≈ in all" line (DECISIONS #32).
+    const gbp = (id: string, amountMinor: number) => ({ id, amountMinor, currency: 'GBP', priceCountry: 'GB' });
+    const uk: Record<string, ReturnType<typeof gbp>> = { netflix: gbp('netflix', 1299), spotify: gbp('spotify', 1199), disney: gbp('disney', 999), amazon: gbp('amazon', 899) };
+    return { subs: list.map((x) => (uk[x.id] ? { ...x, ...uk[x.id] } : x)), settings: { ...settings, country: 'GB', currency: 'GBP' } };
+  }
   if (name === 'pro') {
     list.push({ ...proTrialSub(today, NOW), id: 'trial' });
     return { subs: list, settings: { ...settings, proPlan: 'yearly' } };

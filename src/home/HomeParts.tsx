@@ -6,7 +6,9 @@ import { Linking, Pressable, View } from 'react-native';
 import { POPULAR_ORDER, SERVICE_BY_ID, availableIn } from '@/catalog/services';
 import type { SpendTotal } from '@/domain/money';
 import type { NotifStatus } from '@/services/notifications';
-import { useAppMoney } from '@/state/app';
+import { approxLine } from '@/domain/copy';
+import { useCombinedTotal } from '@/services/fx';
+import { useApp, useAppMoney } from '@/state/app';
 import { Bang, Bell, BellOff, Button, Card, ChevronRight, Duck, F, GuessTag, LogoTile, Plus, Txt, brand, usePalette } from '@/ui/sunflower';
 
 export function TotalCard({ totals, on, of, all, blocked }: { totals: SpendTotal[]; on: number; of: number; all: boolean; blocked: boolean }) {
@@ -14,9 +16,12 @@ export function TotalCard({ totals, on, of, all, blocked }: { totals: SpendTotal
   const money = useAppMoney();
   const [first, ...rest] = totals;
   const fg = p.dark ? p.fg : brand.ink;
+  // 2+ currencies: one rough line in their own currency. Never replaces the real totals.
+  const combined = useCombinedTotal(totals, useApp().settings.currency);
+  const approx = combined ? approxLine(money(combined.monthlyMinor, combined.currency, { whole: true }), 'a month', combined.date) : null;
   const reminders = blocked ? 'Reminders off' : all && of > 0 ? `all ${of}` : `${on} of ${of}`;
   const a11y = first
-    ? `${money(first.monthlyMinor, first.currency)} a month, ${money(first.yearlyMinor, first.currency, { whole: true })} a year. ${rest.map((t) => `Plus ${money(t.monthlyMinor, t.currency)} a month.`).join(' ')} ${blocked ? 'Reminders are off.' : `Reminders on ${reminders}.`}`
+    ? `${money(first.monthlyMinor, first.currency)} a month, ${money(first.yearlyMinor, first.currency, { whole: true })} a year. ${rest.map((t) => `Plus ${money(t.monthlyMinor, t.currency)} a month.`).join(' ')}${approx ? ` ${approx.spoken}` : ''} ${blocked ? 'Reminders are off.' : `Reminders on ${reminders}.`}`
     : 'No prices yet.';
   return (
     <View
@@ -46,6 +51,11 @@ export function TotalCard({ totals, on, of, all, blocked }: { totals: SpendTotal
           + {money(t.monthlyMinor, t.currency)} a month · {money(t.yearlyMinor, t.currency, { whole: true })} a year
         </Txt>
       ))}
+      {approx ? (
+        <Txt v="sub" num color={fg} style={{ marginTop: 4, opacity: 0.72 }}>
+          {approx.text}
+        </Txt>
+      ) : null}
       <View style={{ height: 1, backgroundColor: p.dark ? p.rule : 'rgba(22,20,15,0.18)', marginTop: 8, marginBottom: 9 }} />
       <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
         {first ? (

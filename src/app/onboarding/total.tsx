@@ -8,9 +8,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import Animated, { Easing, FadeIn, useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 
+import { approxLine } from '@/domain/copy';
 import { yearlyMinor } from '@/domain/money';
 import { FitScroll, OnbRoot, TextLink } from '@/onboarding/Parts';
 import { PriceSheet } from '@/onboarding/PriceSheet';
+import { useCombinedTotal } from '@/services/fx';
 import { byYearlyDesc, isPriced, totalsFor, useCountry, useMoney, useOnboarding, usePickedList } from '@/state/onboarding';
 import {
   Button,
@@ -55,6 +57,9 @@ export default function Total() {
   const totals = totalsFor(list, country?.currency);
   const main = totals[0];
   const others = totals.slice(1);
+  // 2+ currencies: one rough line in their own currency, under the real totals.
+  const combined = useCombinedTotal(totals, country?.currency);
+  const approx = combined ? approxLine(money(combined.yearlyMinor, combined.currency, { whole: true }), 'a year', combined.date) : null;
   const [showAll, setShowAll] = useState(false);
   const [priceFor, setPriceFor] = useState<string | null>(null);
 
@@ -118,6 +123,11 @@ export default function Total() {
                   {`+ ${money(t.yearlyMinor, t.currency, { whole: true })} a year`}
                 </Txt>
               ))}
+              {approx ? (
+                <Txt v="sub" tone="fg2" num accessibilityLabel={approx.spoken} style={{ marginTop: 4 }}>
+                  {approx.text}
+                </Txt>
+              ) : null}
             </Animated.View>
           </>
         ) : null}

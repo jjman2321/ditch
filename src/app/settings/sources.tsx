@@ -48,6 +48,13 @@ const SOURCES: Source[] = [
     url: 'https://www.westmonroe.com/press-releases/americans-are-spending-more-on-subscriptions-and-are-less-aware-of-spending',
     host: 'westmonroe.com',
   },
+  {
+    who: 'Exchange rates: Exchange Rate API',
+    found: 'The rough “≈ in all” total, shown only when your list has more than one currency. Your real prices and reminders are never converted.',
+    sample: 'Free daily rates, saved on your phone',
+    url: 'https://www.exchangerate-api.com',
+    host: 'exchangerate-api.com',
+  },
 ];
 
 export default function Sources() {

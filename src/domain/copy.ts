@@ -1,5 +1,7 @@
 // Small pure helpers for onboarding copy, kept here so they can be tested.
 
+import { shortDate, type DateOnly } from './dates';
+
 /** "A", "A and B", "A, B and C". */
 export function joinNames(names: string[]): string {
   if (names.length <= 1) return names[0] ?? '';
@@ -83,4 +85,12 @@ export function stillUsingIt(category: string | undefined): string {
     default:
       return 'Still using it?';
   }
+}
+
+/** "≈ £1,240 a year in all · Nov 10 rates": the rough combined total (DECISIONS #32). */
+export function approxLine(amount: string, period: 'a month' | 'a year', ratesDate: DateOnly): { text: string; spoken: string } {
+  return {
+    text: `≈ ${amount} ${period} in all · ${shortDate(ratesDate)} rates`,
+    spoken: `About ${amount} ${period} in all, at ${shortDate(ratesDate)} exchange rates.`,
+  };
 }

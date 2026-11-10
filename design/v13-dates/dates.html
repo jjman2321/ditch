@@ -10,7 +10,7 @@
 :root{--sun:#FFCC2E;--ink:#16140F;--cream:#FBF7EE;--fg2:#5A544A;--mute:#6B6559;--hair:#EEE7D8;--rule:#E6DFD0;--chipb:#E3DBCA;--tint:#FFF1BC}
 *{box-sizing:border-box}
 body{margin:0;background:#E7E2D6;font-family:Inter,system-ui,sans-serif;color:var(--ink);letter-spacing:-.2px;-webkit-font-smoothing:antialiased}
-.stage{width:2840px;padding:48px 56px}
+.stage{width:3290px;padding:48px 56px}
 h1{font-family:Archivo;font-stretch:125%;font-weight:900;font-size:40px;letter-spacing:-1.2px;margin:0 0 8px}
 .intro{font-size:18px;line-height:26px;color:#4A463E;margin:0 0 40px;max-width:1500px}
 .row{display:flex;gap:56px;align-items:flex-start}
@@ -76,13 +76,31 @@ h1{font-family:Archivo;font-stretch:125%;font-weight:900;font-size:40px;letter-s
 <p class="intro">Every tracker we checked asks for a real date; none guess. Bells are the app's own: sunflower = reminder on, grey outline = off. Import sits where Orbit puts it (top of Add, Pro) plus the two places a date is missing, and ends in a Brink-style check list. Apple Wallet's "Payment Date" picks the day of the month from a 1–31 grid and says the result in a sentence. Ditch does the same: one tap per subscription, skip what you don't know, and a skipped one shows "Add date" and gets no reminder until it has one. No GUESS tags anywhere.</p>
 <div class="row">
 
+<!-- 0 · pick step with find-for-me -->
+<div class="cell"><div class="phone"><div class="notch"></div><div class="sb"><span>9:41</span><span></span></div>
+<div class="scr">
+  <div class="nav"><span style="font-size:22px">‹</span><div class="steps"><i class="on"></i><i></i><i></i><i></i></div></div>
+  <h2 class="title">What do you pay for?</h2>
+  <p class="sub" style="margin-top:8px;color:#5A544A">Tick each one. Prices for 🇺🇸 US · <u><b>Change</b></u></p>
+  <div class="imp" style="margin-top:14px"><div style="display:flex;flex-direction:column;gap:6px;flex:1"><div class="nm" style="font-size:15px">Find them for me <span class="pro" style="margin-left:4px">PRO</span></div><div class="sub">Spots the ones you forgot. Read on your phone.</div><div style="display:flex;gap:8px;margin-top:4px"><span class="pick" style="height:34px;gap:6px;font-size:14px"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="3" y="6.5" width="18" height="13" rx="3" stroke="#16140F" stroke-width="2"/><circle cx="12" cy="13" r="3.5" stroke="#16140F" stroke-width="2"/><path d="M9 6.5l1.2-2h3.6l1.2 2" stroke="#16140F" stroke-width="2" stroke-linejoin="round"/></svg> Screenshot</span><span class="pick" style="height:34px;gap:6px;font-size:14px"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M6 3.5h8l4 4v13H6z" stroke="#16140F" stroke-width="2" stroke-linejoin="round"/><path d="M14 3.5v4h4M9 12h6M9 16h6" stroke="#16140F" stroke-width="2" stroke-linecap="round"/></svg> Bank statement</span></div></div></div>
+  <div class="srch"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="margin-right:8px"><circle cx="10.5" cy="10.5" r="6.5" stroke="#6B6559" stroke-width="2"/><path d="M15.5 15.5L20 20" stroke="#6B6559" stroke-width="2" stroke-linecap="round"/></svg>Search 176 services</div>
+  <div class="chips"><span class="on">Popular</span><span>Streaming</span><span>Music</span><span>AI</span></div>
+  <div class="card" style="margin-top:12px">
+    <div class="r"><div class="lt"><img src="../../assets/logos/netflix.png"></div><div style="flex:1"><div class="nm">Netflix</div><div class="sub num">Standard · $19.99/mo · <u>Change</u></div></div><span style="width:26px;height:26px;border-radius:13px;background:#16140F;display:flex;align-items:center;justify-content:center;flex:none"><svg width="13" height="13" viewBox="0 0 14 14"><path d="M2.5 7.4l3 3 6-6.6" stroke="#FFCC2E" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+    <div class="r"><div class="lt"><img src="../../assets/logos/amazon-prime.png"></div><div style="flex:1"><div class="nm">Amazon Prime</div><div class="sub num">Monthly · $14.99/mo</div></div><span style="width:26px;height:26px;border-radius:13px;box-shadow:inset 0 0 0 2px #D9D0BD"></span></div>
+    <div class="r"><div class="lt"><img src="../../assets/logos/spotify.png"></div><div style="flex:1"><div class="nm">Spotify</div><div class="sub num">Individual · $12.99/mo</div></div><span style="width:26px;height:26px;border-radius:13px;box-shadow:inset 0 0 0 2px #D9D0BD"></span></div>
+  </div>
+  <div class="foot"><div class="bar num"><span>1 picked</span><span>$19.99 a month</span></div><div class="cta">See my total</div></div>
+</div><div class="hi"></div></div>
+<div class="cap">0 · What do you pay for? "Find them for me" up top: a screenshot or a bank statement (PDF or CSV). It finds the subs you forgot, then the same check list (screen 6). Ticking by hand stays the main path.</div></div>
+
 <!-- 1 · onboarding dates step -->
 <div class="cell"><div class="phone"><div class="notch"></div><div class="sb"><span>9:41</span><span>􀙇</span></div>
 <div class="scr">
   <div class="nav"><span style="font-size:22px">‹</span><div class="steps"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
   <h2 class="title">Which day does each one charge?</h2>
   <p class="leadS">It's on your bank app or the receipt email. Skip any you're not sure of.</p>
-  <div class="imp"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="6.5" width="18" height="13" rx="3" stroke="#16140F" stroke-width="2"/><circle cx="12" cy="13" r="3.5" stroke="#16140F" stroke-width="2"/><path d="M9 6.5l1.2-2h3.6l1.2 2" stroke="#16140F" stroke-width="2" stroke-linejoin="round"/></svg></div><div style="flex:1"><div class="nm" style="font-size:15px">Fill them from a screenshot</div><div class="sub">Your Apple subscriptions page has the dates</div></div><span class="pro">PRO</span></div>
+  <div class="imp"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="6.5" width="18" height="13" rx="3" stroke="#16140F" stroke-width="2"/><circle cx="12" cy="13" r="3.5" stroke="#16140F" stroke-width="2"/><path d="M9 6.5l1.2-2h3.6l1.2 2" stroke="#16140F" stroke-width="2" stroke-linejoin="round"/></svg></div><div style="flex:1"><div class="nm" style="font-size:15px">Fill from a screenshot or statement</div><div class="sub">Apple subscriptions or a bank PDF</div></div><span class="pro">PRO</span></div>
   <div class="card" style="margin-top:12px">
     <div class="r"><div class="lt"><img src="../../assets/logos/netflix.png"></div><div style="flex:1"><div class="nm">Netflix</div><div class="sub num">Every 19th · next Thu, Nov 19</div></div><div class="day">19th</div></div>
     <div class="r"><div class="lt"><img src="../../assets/logos/chatgpt-plus.png"></div><div style="flex:1"><div class="nm">ChatGPT</div><div class="sub num">Every 21st · next Sat, Nov 21</div></div><div class="day">21st</div></div>
@@ -96,7 +114,7 @@ h1{font-family:Archivo;font-stretch:125%;font-weight:900;font-size:40px;letter-s
     <div class="cta">Continue</div>
   </div>
 </div><div class="hi"></div></div>
-<div class="cap">1 · Onboarding. A screenshot shortcut on top (Pro, shown before the paywall so it sells Pro). One row per sub. Monthly ones ask for a day, yearly ones a date. Set rows turn sunflower and say the next charge.</div></div>
+<div class="cap">1 · Onboarding. A shortcut on top: screenshot or statement (Pro, shown before the paywall so it sells Pro). One row per sub. Monthly ones ask for a day, yearly ones a date. Set rows turn sunflower and say the next charge.</div></div>
 
 <!-- 2 · day sheet -->
 <div class="cell"><div class="phone"><div class="notch"></div><div class="sb"><span>9:41</span><span></span></div>

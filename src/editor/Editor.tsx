@@ -235,7 +235,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
   const ditchIt = async () => {
     close();
     await app.ditch(draft.id);
-    router.push(`/ditch/${draft.id}`);
+    router.push(`/ditch/${draft.id}?fresh=1`);
   };
 
   if (step === 'date') {

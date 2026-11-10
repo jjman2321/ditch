@@ -39,7 +39,7 @@ export default function Home() {
   const ditch = async (id: string) => {
     await app.ditch(id);
     setHolding(null);
-    router.push(`/ditch/${id}`);
+    router.push(`/ditch/${id}?fresh=1`);
   };
 
   const turnOn = async () => {

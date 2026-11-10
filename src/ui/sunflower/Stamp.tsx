@@ -21,7 +21,7 @@ function rng(seed: number) {
 /** A rounded rectangle traced with small hand-drawn wobbles. */
 function wobblyRect(x: number, y: number, w: number, h: number, r: number, amp: number, rand: () => number): string {
   const pts: [number, number][] = [];
-  const steps = 18;
+  const steps = 9;
   const edge = (x1: number, y1: number, x2: number, y2: number) => {
     for (let i = 0; i < steps; i++) {
       const t = i / steps;
@@ -44,7 +44,7 @@ export function Stamp({ date, width = 280, bg }: { date: DateOnly; width?: numbe
   const rand = rng(y * 400 + m * 31 + d);
   const W = 300;
   const H = 128;
-  const specks = Array.from({ length: 70 }, () => ({ cx: 8 + rand() * (W - 16), cy: 6 + rand() * (H - 12), r: 0.6 + rand() * 1.6 }));
+  const specks = Array.from({ length: 90 }, () => ({ cx: 8 + rand() * (W - 16), cy: 6 + rand() * (H - 12), r: 0.5 + rand() * 1.3 }));
   return (
     <View
       accessible
@@ -53,9 +53,9 @@ export function Stamp({ date, width = 280, bg }: { date: DateOnly; width?: numbe
       style={{ width, height: (width * H) / W, transform: [{ rotate: '-6deg' }] }}
     >
       <Svg width={width} height={(width * H) / W} viewBox={`0 0 ${W} ${H}`}>
-        <Path d={wobblyRect(5, 5, W - 10, H - 10, 12, 2.6, rand)} stroke={ink} strokeWidth={7} fill="none" strokeLinejoin="round" />
-        <Path d={wobblyRect(17, 17, W - 34, H - 34, 7, 1.8, rand)} stroke={ink} strokeWidth={3.2} fill="none" strokeLinejoin="round" />
-        <SvgText x={W / 2} y={72} textAnchor="middle" fontFamily={F.display} fontSize={50} letterSpacing={-1} fill={ink}>
+        <Path d={wobblyRect(5, 5, W - 10, H - 10, 12, 1.6, rand)} stroke={ink} strokeWidth={7} fill="none" strokeLinejoin="round" />
+        <Path d={wobblyRect(17, 17, W - 34, H - 34, 7, 1.1, rand)} stroke={ink} strokeWidth={3.2} fill="none" strokeLinejoin="round" />
+        <SvgText x={W / 2} y={71} textAnchor="middle" fontFamily={F.display} fontSize={43} letterSpacing={-0.5} fill={ink}>
           DITCHED
         </SvgText>
         <SvgText x={W / 2} y={98} textAnchor="middle" fontFamily={F.wideHeavy} fontSize={15} letterSpacing={3.5} fill={ink}>

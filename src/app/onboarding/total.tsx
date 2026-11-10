@@ -1,11 +1,11 @@
 // 3 · Your total (design/v12 render 03). The one number that rolls
 // (MOTION.md §1): the yearly total of the user's own picks, then the month,
-// one fact, the biggest charges first, and what ditching one is worth.
+// one fact, the biggest charges first, and a nudge to ditch what they don't use.
 // One total per currency, never added together, never converted.
 
 import { router } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import Animated, { Easing, FadeIn, useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 
 import { approxLine } from '@/domain/copy';
@@ -19,13 +19,13 @@ import {
   ChevronDown,
   F,
   LogoTile,
+  RollingMeasure,
   RollingNumber,
   StepHeader,
   Txt,
   haptic,
   paletteFor,
   rollDuration,
-  tabular,
   useFitSize,
   useFrame,
   useIsDark,
@@ -78,7 +78,8 @@ export default function Total() {
 
   // 104pt (80 on SE, 128 on iPad), shrunk only if a big total won't fit.
   const base = f.tablet ? 128 : f.small ? 80 : 104;
-  const [size, onMeasure] = useFitSize(base, f.content + 4);
+  // A little air on the right so the last digit never touches the edge.
+  const [size, onMeasure] = useFitSize(base, f.content - 4);
   const lh = Math.round((size * 0.8) / 4) * 4;
   const heroStyle = { fontFamily: F.display, fontSize: size, letterSpacing: -0.045 * size, color: p.money };
 
@@ -89,10 +90,9 @@ export default function Total() {
   const rest1 = rest.length === 1 ? rest : [];
   const restMany = rest.length > 1 ? rest : [];
   const visible = [...rows, ...rest1];
-  const biggest = sorted.find(isPriced);
   const priceSub = priceFor ? (list.find((x) => x.id === priceFor) ?? null) : null;
 
-  const sheetPad = f.tablet ? { borderRadius: 28, padding: 24 } : { marginHorizontal: -f.edge, borderTopLeftRadius: 28, borderTopRightRadius: 28, paddingTop: f.small ? 16 : 24, paddingHorizontal: f.edge, paddingBottom: f.insets.bottom + 16 };
+  const sheetPad = f.tablet ? { borderRadius: 28, padding: 24 } : { marginHorizontal: -f.edge, borderTopLeftRadius: 28, borderTopRightRadius: 28, paddingTop: f.small ? 16 : 24, paddingHorizontal: f.edge, paddingBottom: 8 };
 
   return (
     <OnbRoot surface="sun">
@@ -102,12 +102,8 @@ export default function Total() {
           {main ? 'You pay' : 'Add your prices to see your total'}
         </Txt>
 
-        {/* Measures the total once at full size so it can shrink to fit. */}
-        <View pointerEvents="none" style={{ position: 'absolute', opacity: 0, width: 2000, alignItems: 'flex-start' }}>
-          <Text allowFontScaling={false} onLayout={(e) => onMeasure(e.nativeEvent.layout.width)} style={[{ fontFamily: F.display, fontSize: base, letterSpacing: -0.045 * base }, tabular]}>
-            {hero}
-          </Text>
-        </View>
+        {/* Measures the total at full size, drawn the same way, so it can shrink to fit. */}
+        <RollingMeasure text={hero} style={{ fontFamily: F.display, fontSize: base, letterSpacing: -0.045 * base }} onWidth={onMeasure} />
 
         {main ? (
           <>
@@ -143,7 +139,7 @@ export default function Total() {
             </Txt>
           ) : null}
           <Txt v="body" tone="fg2" style={{ marginTop: 8, maxWidth: 340 }}>
-            {`Most people guess way lower. In one study, the real total was about 2.5× the${NB}guess.`}
+            {`Most people think it’s way less. In one study, the real total was 2.5× what people${NB}thought.`}
           </Txt>
         </Animated.View>
 
@@ -213,15 +209,23 @@ export default function Total() {
               </Pressable>
             ) : null}
           </View>
-          {biggest && isPriced(biggest) ? (
-            <Txt v="strong" num color={cream.fg} style={{ marginTop: f.small ? 12 : 16 }}>
-              {`Ditch just one you don’t use: up to ${money(yearlyMinor(biggest.amountMinor, biggest.cycle), biggest.currency, { whole: true })} a${NB}year you won’t${NB}pay.`}
-            </Txt>
+          <Txt v="strong" color={cream.fg} style={{ marginTop: f.small ? 12 : 16 }}>
+            {`Not using one? Ditch it before it${NB}renews.`}
+          </Txt>
+          {f.tablet ? (
+            <>
+              <View style={{ flex: 1, minHeight: 16 }} />
+              <Button label="Set up reminders" onPress={() => router.push('/onboarding/dates')} />
+            </>
           ) : null}
-          <View style={{ flex: 1, minHeight: f.small ? 8 : 16 }} />
-          <Button label="Set up reminders" onPress={() => router.push('/onboarding/dates')} />
         </View>
       </FitScroll>
+      {/* Pinned, so "Show all" can never push it off the screen. */}
+      {f.tablet ? null : (
+        <View style={{ backgroundColor: cream.sheet, paddingHorizontal: f.edge, paddingTop: 8, paddingBottom: f.insets.bottom + 16 }}>
+          <Button label="Set up reminders" onPress={() => router.push('/onboarding/dates')} />
+        </View>
+      )}
       <PriceSheet
         sub={priceSub}
         visible={!!priceSub}

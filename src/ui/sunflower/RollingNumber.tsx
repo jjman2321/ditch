@@ -77,6 +77,31 @@ export function RollingNumber({
 }
 
 /**
+ * Invisible copy of a RollingNumber at `style`'s size, laid out exactly the
+ * same way (one Text per character), so the width it reports is the width
+ * that will really be drawn. Measuring the number as one string comes out
+ * narrower on iPhone, which pushed "$3,126" past the screen edge.
+ */
+export function RollingMeasure({ text, style, onWidth }: { text: string; style: TextStyle; onWidth: (w: number) => void }) {
+  return (
+    <View
+      pointerEvents="none"
+      accessible={false}
+      importantForAccessibility="no-hide-descendants"
+      style={{ position: 'absolute', opacity: 0, left: 0, top: 0, width: 4000, flexDirection: 'row', alignItems: 'flex-start' }}
+    >
+      <View style={{ flexDirection: 'row' }} onLayout={(e) => onWidth(e.nativeEvent.layout.width)}>
+        {text.split('').map((ch, i) => (
+          <Text key={i} allowFontScaling={false} style={[style, tabular]}>
+            {/\d/.test(ch) ? '0' : ch}
+          </Text>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+/**
  * Font size that fits `text` in `maxWidth`, measured once at a base size.
  * Returns [fontSize, onMeasure] — render a hidden <Text onLayout={onMeasure}>
  * at `base` to feed it.

@@ -1,0 +1,1077 @@
+{
+ "disney-plus": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Disney+ Premium",
+     "$24.99"
+    ],
+    [
+     "Disney+ Premium",
+     "$24.99"
+    ],
+    [
+     "Disney+ Premium",
+     "$24.99"
+    ],
+    [
+     "Disney+ Premium",
+     "$24.99"
+    ],
+    [
+     "Disney+ Standard",
+     "$17.99"
+    ],
+    [
+     "Disney+ Premium",
+     "$24.99"
+    ],
+    [
+     "Disney+ Standard",
+     "$17.99"
+    ],
+    [
+     "Disney+ Premium",
+     "$249.99"
+    ],
+    [
+     "Disney+ Standard",
+     "$17.99"
+    ],
+    [
+     "Disney+ Standard",
+     "$17.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/au/app/id1446075923"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Disney+ Premium",
+     "$16.99"
+    ],
+    [
+     "Disney+ Premium",
+     "$16.99"
+    ],
+    [
+     "Disney+ Premium",
+     "$16.99"
+    ],
+    [
+     "Disney+ Standard",
+     "$15.99"
+    ],
+    [
+     "Disney+ Standard with Ads",
+     "$8.99"
+    ],
+    [
+     "Disney+ Premium",
+     "$16.99"
+    ],
+    [
+     "Disney+ Premium",
+     "$169.99"
+    ],
+    [
+     "Disney+ Premium",
+     "$169.99"
+    ],
+    [
+     "Disney+ Standard",
+     "$15.99"
+    ],
+    [
+     "Disney+ Standard with Ads",
+     "$8.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ca/app/id1446075923"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Disney+ Premium",
+     "15,99 €"
+    ],
+    [
+     "Disney+ Premium",
+     "15,99 €"
+    ],
+    [
+     "Disney+ Premium",
+     "15,99 €"
+    ],
+    [
+     "Disney+ Standard",
+     "10,99 €"
+    ],
+    [
+     "Disney+ Premium",
+     "15,99 €"
+    ],
+    [
+     "Disney+ Standard with Ads",
+     "6,99 €"
+    ],
+    [
+     "Disney+ Standard",
+     "10,99 €"
+    ],
+    [
+     "Disney+ Premium",
+     "159,99 €"
+    ],
+    [
+     "Disney+ Standard with Ads",
+     "6,99 €"
+    ],
+    [
+     "Disney+ Premium",
+     "159,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/de/app/id1446075923"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Disney+ Premium",
+     "15,99 €"
+    ],
+    [
+     "Disney+ Standard with Ads",
+     "6,99 €"
+    ],
+    [
+     "Disney+ Premium",
+     "15,99 €"
+    ],
+    [
+     "Disney+ Standard",
+     "10,99 €"
+    ],
+    [
+     "Disney+ Premium",
+     "15,99 €"
+    ],
+    [
+     "Disney+ Premium",
+     "15,99 €"
+    ],
+    [
+     "Disney+ Standard",
+     "10,99 €"
+    ],
+    [
+     "Disney+ Standard with Ads",
+     "6,99 €"
+    ],
+    [
+     "Disney+ Premium",
+     "159,99 €"
+    ],
+    [
+     "Disney+ Premium",
+     "159,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/es/app/id1446075923"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Disney+ Premium",
+     "15,99 €"
+    ],
+    [
+     "Disney+ Premium",
+     "15,99 €"
+    ],
+    [
+     "Disney+ Premium",
+     "15,99 €"
+    ],
+    [
+     "Disney+ Standard",
+     "10,99 €"
+    ],
+    [
+     "Disney+ Standard with Ads",
+     "6,99 €"
+    ],
+    [
+     "Disney+ Premium",
+     "15,99 €"
+    ],
+    [
+     "Disney+ Standard",
+     "10,99 €"
+    ],
+    [
+     "Disney+ Standard with Ads",
+     "6,99 €"
+    ],
+    [
+     "Disney+ Premium",
+     "159,99 €"
+    ],
+    [
+     "Disney+ Standard",
+     "10,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/fr/app/id1446075923"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Disney+ Premium",
+     "£15.99"
+    ],
+    [
+     "Disney+ Premium",
+     "£15.99"
+    ],
+    [
+     "Disney+ Premium",
+     "£15.99"
+    ],
+    [
+     "Disney+ Standard",
+     "£11.99"
+    ],
+    [
+     "Disney+ Standard with Ads",
+     "£6.99"
+    ],
+    [
+     "Disney+ Premium",
+     "£15.99"
+    ],
+    [
+     "Disney+ Standard",
+     "£11.99"
+    ],
+    [
+     "Disney+ Standard",
+     "£11.99"
+    ],
+    [
+     "Disney+ Standard with Ads",
+     "£6.99"
+    ],
+    [
+     "Disney+ Standard",
+     "£11.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/gb/app/id1446075923"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Disney+ Premium",
+     "€15.99"
+    ],
+    [
+     "Disney+ Premium",
+     "€15.99"
+    ],
+    [
+     "Disney+ Premium",
+     "€15.99"
+    ],
+    [
+     "Disney+ Premium",
+     "€15.99"
+    ],
+    [
+     "Disney+ Standard",
+     "€11.99"
+    ],
+    [
+     "Disney+ Premium",
+     "€159.99"
+    ],
+    [
+     "Disney+ Standard",
+     "€11.99"
+    ],
+    [
+     "Disney+ Premium",
+     "€159.99"
+    ],
+    [
+     "Disney+ Standard",
+     "€11.99"
+    ],
+    [
+     "Disney+ Standard",
+     "€11.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ie/app/id1446075923"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Disney+ Premium",
+     "15,99 €"
+    ],
+    [
+     "Disney+ Premium",
+     "15,99 €"
+    ],
+    [
+     "Disney+ Standard with Ads",
+     "6,99 €"
+    ],
+    [
+     "Disney+ Premium",
+     "15,99 €"
+    ],
+    [
+     "Disney+ Standard",
+     "10,99 €"
+    ],
+    [
+     "Disney+ Premium",
+     "15,99 €"
+    ],
+    [
+     "Disney+ Standard",
+     "10,99 €"
+    ],
+    [
+     "Disney+ Standard with Ads",
+     "6,99 €"
+    ],
+    [
+     "Disney+ Premium",
+     "159,99 €"
+    ],
+    [
+     "Disney+ Premium",
+     "159,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/it/app/id1446075923"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Disney+ Premium",
+     "€ 15,99"
+    ],
+    [
+     "Disney+ Premium",
+     "€ 15,99"
+    ],
+    [
+     "Disney+ Premium",
+     "€ 15,99"
+    ],
+    [
+     "Disney+ Premium",
+     "€ 15,99"
+    ],
+    [
+     "Disney+ Premium",
+     "€ 15,99"
+    ],
+    [
+     "Disney+ Premium",
+     "€ 15,99"
+    ],
+    [
+     "Disney+ Standard",
+     "€ 10,99"
+    ],
+    [
+     "Disney+ Standard",
+     "€ 10,99"
+    ],
+    [
+     "Disney+ Premium",
+     "€ 159,99"
+    ],
+    [
+     "Disney+ Premium",
+     "€ 15,99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nl/app/id1446075923"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Disney+ Premium",
+     "$25.99"
+    ],
+    [
+     "Disney+ Premium",
+     "$25.99"
+    ],
+    [
+     "Disney+ Premium",
+     "$25.99"
+    ],
+    [
+     "Disney+ Premium",
+     "$25.99"
+    ],
+    [
+     "Disney+ Standard",
+     "$18.99"
+    ],
+    [
+     "Disney+ Premium",
+     "$25.99"
+    ],
+    [
+     "Disney+ Standard",
+     "$18.99"
+    ],
+    [
+     "Disney+ Premium",
+     "$259.99"
+    ],
+    [
+     "Disney+ Standard",
+     "$18.99"
+    ],
+    [
+     "Disney+ Standard",
+     "$18.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nz/app/id1446075923"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Disney+ Premium",
+     "$21.49"
+    ],
+    [
+     "Disney+ Premium",
+     "$21.49"
+    ],
+    [
+     "Disney+ Premium",
+     "$21.49"
+    ],
+    [
+     "Disney+ Premium",
+     "$21.49"
+    ],
+    [
+     "Disney+ Premium",
+     "$21.49"
+    ],
+    [
+     "Disney+ Basic Monthly",
+     "$12.49"
+    ],
+    [
+     "Disney+ Basic Monthly",
+     "$12.49"
+    ],
+    [
+     "Disney Bundle Duo Basic",
+     "$12.99"
+    ],
+    [
+     "Disney+, Hulu Bundle Premium",
+     "$21.99"
+    ],
+    [
+     "Disney+ Premium",
+     "$214.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id1446075923"
+  }
+ },
+ "prime-video": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/au/app/id545519333"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Ad free",
+     "$2.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ca/app/id545519333"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Ad free",
+     "2,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/de/app/id545519333"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Ad free",
+     "£2.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/gb/app/id545519333"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/ie/app/id545519333"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/nz/app/id545519333"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Ad free",
+     "$2.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id545519333"
+  }
+ },
+ "youtube-premium": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "人生学校名誉",
+     "$14.99"
+    ],
+    [
+     "HBO MAX AU",
+     "$15.99"
+    ],
+    [
+     "Pase de Diamante",
+     "$19.99"
+    ],
+    [
+     "Pase de Oro",
+     "$7.99"
+    ],
+    [
+     "Pase de Plata",
+     "$3.99"
+    ],
+    [
+     "National Theatre at Home",
+     "$9.99"
+    ],
+    [
+     "TIGER TV",
+     "$5.99"
+    ],
+    [
+     "SUPPORTER+",
+     "$19.99"
+    ],
+    [
+     "LIVE SUPERMATCHES",
+     "$29.99"
+    ],
+    [
+     "How To Win @Armwrestling",
+     "$7.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/au/app/id544007664"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "人生学校名誉",
+     "$16.99"
+    ],
+    [
+     "BritBox",
+     "$10.99"
+    ],
+    [
+     "BritBox",
+     "$10.99"
+    ],
+    [
+     "Pase de Diamante",
+     "$19.99"
+    ],
+    [
+     "Pase de Oro",
+     "$5.99"
+    ],
+    [
+     "Pase de Plata",
+     "$2.99"
+    ],
+    [
+     "SUPPORTER+",
+     "$19.99"
+    ],
+    [
+     "LIVE SUPERMATCHES",
+     "$29.99"
+    ],
+    [
+     "How To Win @Armwrestling",
+     "$5.99"
+    ],
+    [
+     "Supporter",
+     "$2.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ca/app/id544007664"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "人生学校名誉",
+     "11,99 €"
+    ],
+    [
+     "Pase de Diamante",
+     "12,99 €"
+    ],
+    [
+     "Pase de Oro",
+     "5,99 €"
+    ],
+    [
+     "Pase de Plata",
+     "2,99 €"
+    ],
+    [
+     "National Theatre at Home",
+     "9,99 €"
+    ],
+    [
+     "TIGER TV",
+     "5,99 €"
+    ],
+    [
+     "SUPPORTER+",
+     "12,99 €"
+    ],
+    [
+     "LIVE SUPERMATCHES",
+     "24,99 €"
+    ],
+    [
+     "How To Win @Armwrestling",
+     "5,99 €"
+    ],
+    [
+     "Supporter",
+     "2,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/de/app/id544007664"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "人生学校名誉",
+     "11,99 €"
+    ],
+    [
+     "Pase de Diamante",
+     "12,99 €"
+    ],
+    [
+     "Pase de Oro",
+     "5,99 €"
+    ],
+    [
+     "Pase de Plata",
+     "2,99 €"
+    ],
+    [
+     "SUPPORTER+",
+     "12,99 €"
+    ],
+    [
+     "LIVE SUPERMATCHES",
+     "24,99 €"
+    ],
+    [
+     "How To Win @Armwrestling",
+     "5,99 €"
+    ],
+    [
+     "Supporter",
+     "2,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/es/app/id544007664"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "人生学校名誉",
+     "11,99 €"
+    ],
+    [
+     "Pase de Diamante",
+     "12,99 €"
+    ],
+    [
+     "Pase de Oro",
+     "5,99 €"
+    ],
+    [
+     "Pase de Plata",
+     "2,99 €"
+    ],
+    [
+     "National Theatre at Home",
+     "9,99 €"
+    ],
+    [
+     "TIGER TV",
+     "5,99 €"
+    ],
+    [
+     "SUPPORTER+",
+     "12,99 €"
+    ],
+    [
+     "LIVE SUPERMATCHES",
+     "24,99 €"
+    ],
+    [
+     "How To Win @Armwrestling",
+     "5,99 €"
+    ],
+    [
+     "Supporter",
+     "2,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/fr/app/id544007664"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "人生学校名誉",
+     "£10.99"
+    ],
+    [
+     "HBO Max UK",
+     "£9.99"
+    ],
+    [
+     "Pase de Diamante",
+     "£11.99"
+    ],
+    [
+     "Pase de Oro",
+     "£5.99"
+    ],
+    [
+     "Pase de Plata",
+     "£2.99"
+    ],
+    [
+     "National Theatre at Home",
+     "£9.99"
+    ],
+    [
+     "TIGER TV",
+     "£5.99"
+    ],
+    [
+     "SUPPORTER+",
+     "£11.99"
+    ],
+    [
+     "LIVE SUPERMATCHES",
+     "£24.99"
+    ],
+    [
+     "How To Win @Armwrestling",
+     "£5.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/gb/app/id544007664"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "人生学校名誉",
+     "€11.99"
+    ],
+    [
+     "Pase de Diamante",
+     "€12.99"
+    ],
+    [
+     "Pase de Oro",
+     "€5.99"
+    ],
+    [
+     "Pase de Plata",
+     "€2.99"
+    ],
+    [
+     "SUPPORTER+",
+     "€12.99"
+    ],
+    [
+     "LIVE SUPERMATCHES",
+     "€24.99"
+    ],
+    [
+     "How To Win @Armwrestling",
+     "€5.99"
+    ],
+    [
+     "Supporter",
+     "€2.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ie/app/id544007664"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "人生学校名誉",
+     "₹ 749"
+    ],
+    [
+     "Pase de Diamante",
+     "₹ 999"
+    ],
+    [
+     "Pase de Oro",
+     "₹ 199"
+    ],
+    [
+     "Pase de Plata",
+     "₹ 79"
+    ],
+    [
+     "National Theatre at Home",
+     "₹ 249"
+    ],
+    [
+     "SUPPORTER+",
+     "₹ 999"
+    ],
+    [
+     "LIVE SUPERMATCHES",
+     "₹ 1,999"
+    ],
+    [
+     "How To Win @Armwrestling",
+     "₹ 199"
+    ],
+    [
+     "Supporter",
+     "₹ 79"
+    ]
+   ],
+   "url": "https://apps.apple.com/in/app/id544007664"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "人生学校名誉",
+     "11,99 €"
+    ],
+    [
+     "Pase de Diamante",
+     "12,99 €"
+    ],
+    [
+     "Pase de Oro",
+     "5,99 €"
+    ],
+    [
+     "Pase de Plata",
+     "2,99 €"
+    ],
+    [
+     "SUPPORTER+",
+     "12,99 €"
+    ],
+    [
+     "LIVE SUPERMATCHES",
+     "24,99 €"
+    ],
+    [
+     "How To Win @Armwrestling",
+     "5,99 €"
+    ],
+    [
+     "Supporter",
+     "2,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/it/app/id544007664"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "人生学校名誉",
+     "€ 11,99"
+    ],
+    [
+     "Pase de Diamante",
+     "€ 12,99"
+    ],
+    [
+     "Pase de Oro",
+     "€ 5,99"
+    ],
+    [
+     "Pase de Plata",
+     "€ 2,99"
+    ],
+    [
+     "SUPPORTER+",
+     "€ 12,99"
+    ],
+    [
+     "LIVE SUPERMATCHES",
+     "€ 24,99"
+    ],
+    [
+     "How To Win @Armwrestling",
+     "€ 5,99"
+    ],
+    [
+     "Supporter",
+     "€ 2,99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nl/app/id544007664"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "人生学校名誉",
+     "$19.99"
+    ],
+    [
+     "Pase de Diamante",
+     "$20.99"
+    ],
+    [
+     "Pase de Oro",
+     "$7.99"
+    ],
+    [
+     "Pase de Plata",
+     "$3.99"
+    ],
+    [
+     "SUPPORTER+",
+     "$20.99"
+    ],
+    [
+     "LIVE SUPERMATCHES",
+     "$39.99"
+    ],
+    [
+     "How To Win @Armwrestling",
+     "$7.99"
+    ],
+    [
+     "Supporter",
+     "$3.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nz/app/id544007664"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "HBO Max Basic with Ads",
+     "$10.99"
+    ],
+    [
+     "NFL Sunday Ticket+NFL RedZone",
+     "$404.99"
+    ],
+    [
+     "NFL Sunday Ticket 2026 season",
+     "$374.99"
+    ],
+    [
+     "人生学校名誉",
+     "$11.99"
+    ],
+    [
+     "BritBox",
+     "$10.99"
+    ],
+    [
+     "BritBox",
+     "$10.99"
+    ],
+    [
+     "Pase de Diamante",
+     "$12.99"
+    ],
+    [
+     "Pase de Oro",
+     "$6.99"
+    ],
+    [
+     "Pase de Plata",
+     "$2.99"
+    ],
+    [
+     "National Theatre at Home",
+     "$8.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id544007664"
+  }
+ }
+}

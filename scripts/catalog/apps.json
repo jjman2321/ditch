@@ -5,16 +5,46 @@
   "seller": "Apple Inc.",
   "cc": "us"
  },
+ "britbox": {
+  "trackId": 1206838907,
+  "trackName": "BritBox: The Best British TV",
+  "seller": "BritBox, LLC",
+  "cc": "us"
+ },
+ "calm": {
+  "trackId": 571800810,
+  "trackName": "Calm",
+  "seller": "Calm.com, Inc.",
+  "cc": "us"
+ },
  "crunchyroll": {
   "trackId": 329913454,
   "trackName": "Crunchyroll",
   "seller": "Crunchyroll, LLC",
   "cc": "us"
  },
+ "discovery-plus": {
+  "trackId": 1498327873,
+  "trackName": "discovery+ | Stream TV Shows",
+  "seller": "Discovery Communications",
+  "cc": "us"
+ },
  "disney-plus": {
   "trackId": 1446075923,
   "trackName": "Disney+",
   "seller": "Disney Electronic Content, Inc.",
+  "cc": "us"
+ },
+ "espn": {
+  "trackId": 317469184,
+  "trackName": "ESPN: Live Sports & Scores",
+  "seller": "Disney Electronic Content, Inc.",
+  "cc": "us"
+ },
+ "fubo": {
+  "trackId": 905401434,
+  "trackName": "Fubo: Watch Live TV & Sports",
+  "seller": "fuboTV Inc.",
   "cc": "us"
  },
  "hulu": {
@@ -29,6 +59,12 @@
   "seller": "WarnerMedia Global Digital Services, LLC",
   "cc": "us"
  },
+ "mubi": {
+  "trackId": 626148774,
+  "trackName": "MUBI: Stream Great Cinema",
+  "seller": "MUBI, Inc.",
+  "cc": "us"
+ },
  "paramount-plus": {
   "trackId": 530168168,
   "trackName": "Paramount+",
@@ -41,15 +77,51 @@
   "seller": "Peacock TV LLC",
   "cc": "us"
  },
+ "philo": {
+  "trackId": 1248646044,
+  "trackName": "Philo: Shows, Movies & Live TV",
+  "seller": "Philo, Inc.",
+  "cc": "us"
+ },
  "prime-video": {
   "trackId": 545519333,
   "trackName": "Amazon Prime Video",
   "seller": "AMZN Mobile LLC",
   "cc": "us"
  },
+ "shudder": {
+  "trackId": 919790315,
+  "trackName": "Shudder: Horror & Thrillers",
+  "seller": "Digital Store LLC",
+  "cc": "us"
+ },
+ "sling-tv": {
+  "trackId": 945077360,
+  "trackName": "Sling: Live TV, Sports & News",
+  "seller": "Sling TV LLC",
+  "cc": "us"
+ },
+ "starz": {
+  "trackId": 550221096,
+  "trackName": "STARZ",
+  "seller": "Starz Entertainment",
+  "cc": "us"
+ },
+ "strava": {
+  "trackId": 426826309,
+  "trackName": "Strava: Run, Bike, Walk",
+  "seller": "Strava Inc.",
+  "cc": "us"
+ },
  "youtube-premium": {
   "trackId": 544007664,
   "trackName": "YouTube",
+  "seller": "Google LLC",
+  "cc": "us"
+ },
+ "youtube-tv": {
+  "trackId": 1193350206,
+  "trackName": "YouTube TV",
   "seller": "Google LLC",
   "cc": "us"
  }

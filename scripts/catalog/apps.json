@@ -1,0 +1,56 @@
+{
+ "apple-tv": {
+  "trackId": 1174078549,
+  "trackName": "Apple TV",
+  "seller": "Apple Inc.",
+  "cc": "us"
+ },
+ "crunchyroll": {
+  "trackId": 329913454,
+  "trackName": "Crunchyroll",
+  "seller": "Crunchyroll, LLC",
+  "cc": "us"
+ },
+ "disney-plus": {
+  "trackId": 1446075923,
+  "trackName": "Disney+",
+  "seller": "Disney Electronic Content, Inc.",
+  "cc": "us"
+ },
+ "hulu": {
+  "trackId": 376510438,
+  "trackName": "Hulu: Stream TV shows & movies",
+  "seller": "Hulu, LLC",
+  "cc": "us"
+ },
+ "max": {
+  "trackId": 1666653815,
+  "trackName": "HBO Max: Stream Movies & TV",
+  "seller": "WarnerMedia Global Digital Services, LLC",
+  "cc": "us"
+ },
+ "paramount-plus": {
+  "trackId": 530168168,
+  "trackName": "Paramount+",
+  "seller": "CBS Mobile",
+  "cc": "us"
+ },
+ "peacock": {
+  "trackId": 1508186374,
+  "trackName": "Peacock TV: Stream TV & Movies",
+  "seller": "Peacock TV LLC",
+  "cc": "us"
+ },
+ "prime-video": {
+  "trackId": 545519333,
+  "trackName": "Amazon Prime Video",
+  "seller": "AMZN Mobile LLC",
+  "cc": "us"
+ },
+ "youtube-premium": {
+  "trackId": 544007664,
+  "trackName": "YouTube",
+  "seller": "Google LLC",
+  "cc": "us"
+ }
+}

@@ -4,6 +4,7 @@
 
 import { router } from 'expo-router';
 import { View } from 'react-native';
+import Animated, { FadeInDown, useReducedMotion } from 'react-native-reanimated';
 
 import { catalogPrice } from '@/catalog/prices';
 import { addDays, weekdayDate, weekdayName } from '@/domain/dates';
@@ -26,6 +27,7 @@ export default function Reminders() {
   const money = useMoney();
   const { reminders } = useFirstReminders(f.small ? 1 : 2);
   const today = onboardingToday();
+  const reduce = useReducedMotion();
 
   // Nothing picked yet: the Welcome example instead.
   const shown = reminders.length
@@ -75,19 +77,24 @@ export default function Reminders() {
             <Txt v="label" color={brand.ink} style={{ marginLeft: 4 }} importantForAccessibility="no">
               Your first reminders
             </Txt>
-            {shown.map((s) => (
-              <View key={s.key} importantForAccessibility="no-hide-descendants">
+            {shown.map((s, i) => (
+              // They arrive one after another, like on the lock screen. Reduce Motion: already there.
+              <Animated.View
+                key={s.key}
+                importantForAccessibility="no-hide-descendants"
+                entering={reduce ? undefined : FadeInDown.delay(350 + i * 550).springify().damping(18)}
+              >
                 <Txt v="eyebrow" num color="#4B4220" style={{ marginLeft: 4, marginBottom: 8 }}>
                   {s.date}
                 </Txt>
                 <NotificationPreview time="9:00 AM" message={noOrphan(s.body)} />
-              </View>
+              </Animated.View>
             ))}
           </View>
         </ForceLightContext.Provider>
 
         <Txt v="sub" tone="fg2" center style={{ marginTop: 16 }}>
-          7 in 10 people have forgotten to cancel a free trial.
+          7 in 10 people have paid for a forgotten free trial.
         </Txt>
         <Button
           label="Turn on reminders"

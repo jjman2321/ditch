@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Ditch v11 · Onboarding</title>
+<style>
+@font-face{font-family:Archivo;src:url(fonts/archivo-wdth.woff2) format('woff2');font-weight:100 900;font-stretch:62% 125%}
+@font-face{font-family:Inter;src:url(fonts/Inter_400Regular.ttf);font-weight:400}
+@font-face{font-family:Inter;src:url(fonts/Inter_500Medium.ttf);font-weight:500}
+@font-face{font-family:Inter;src:url(fonts/Inter_600SemiBold.ttf);font-weight:600}
+@font-face{font-family:Inter;src:url(fonts/Inter_700Bold.ttf);font-weight:700}
+@font-face{font-family:Inter;src:url(fonts/Inter_800ExtraBold.ttf);font-weight:800}
+:root{--sun:#FFCC2E;--ink:#16140F;--cream:#FBF7EE;--night:#12110E;--bill:#FF6C2C}
+*{box-sizing:border-box}
+body{margin:0;background:#E7E2D6;font-family:Inter,system-ui,sans-serif;color:var(--ink);letter-spacing:-.2px;-webkit-font-smoothing:antialiased}
+.stage{width:2800px;padding:48px 56px}
+section{padding:24px 28px 64px;margin:0 -28px}
+section.darksec{background:#0B0A08;margin:0 -56px;padding:56px 84px 64px}
+section.darksec .sh h2,section.darksec .sh p,section.darksec .cap{color:#EDE6D6}
+.sh{margin-bottom:40px}
+.sh h2{font-family:Archivo;font-stretch:125%;font-weight:900;font-size:40px;letter-spacing:-1.2px;margin:0;line-height:44px}
+.sh p{margin:8px 0 0;font-size:18px;line-height:26px;color:#4A463E;max-width:1700px}
+.row{display:flex;gap:56px;flex-wrap:wrap;align-items:flex-start;row-gap:64px}
+.cell{display:flex;flex-direction:column;align-items:center}
+.cap{font:600 16px Inter;color:#4A463E;margin-top:24px;text-align:center}
+
+/* ---------- devices + themes ---------- */
+.phone{position:relative;overflow:hidden;flex:none;background:var(--bg);color:var(--fg)}
+.phone.i12{border-radius:47px;box-shadow:0 0 0 11px #121110,0 34px 70px rgba(40,30,0,.22)}
+.phone.se{border-radius:0;box-shadow:0 0 0 12px #121110,0 -72px 0 12px #121110,0 72px 0 12px #121110,0 34px 70px rgba(40,30,0,.22);margin:72px 0}
+.phone.ipad{border-radius:18px;box-shadow:0 0 0 16px #121110,0 34px 70px rgba(40,30,0,.22)}
+.darksec .phone{box-shadow:0 0 0 11px #2A2824,0 34px 70px rgba(0,0,0,.5)}
+.phone.sun{--bg:#FFCC2E;--fg:#16140F;--fg2:#4B4220;--card:#fff;--cardfg:#16140F;--mute:#5C5230;--rule:rgba(22,20,15,.18);--hair:rgba(22,20,15,.14);--cta:#16140F;--ctafg:#FFCC2E;--money:#16140F;--note:rgba(255,255,255,.97);--notefg:#1C1B19;--notemute:#6E6A62;--track:rgba(22,20,15,.16);--sheet:#FBF7EE;--chip:#fff;--chipb:#E3DBCA;--ctl:#D9D0BD;--tint:#FFF1BC}
+.phone.cream{--bg:#FBF7EE;--fg:#16140F;--fg2:#5A544A;--card:#fff;--cardfg:#16140F;--mute:#6B6559;--rule:#E6DFD0;--hair:#EEE7D8;--cta:#16140F;--ctafg:#fff;--money:#16140F;--note:#fff;--notefg:#1C1B19;--notemute:#6E6A62;--track:#E6DFD0;--sheet:#FBF7EE;--chip:#fff;--chipb:#E3DBCA;--ctl:#D9D0BD;--tint:#FFF1BC}
+.phone.dark{--bg:#12110E;--fg:#F6F0E3;--fg2:#BFB7A7;--card:#1E1C18;--cardfg:#F6F0E3;--mute:#A9A192;--rule:#33302A;--hair:#2B2823;--cta:#FFCC2E;--ctafg:#16140F;--money:#FFCC2E;--note:#25231E;--notefg:#F6F0E3;--notemute:#A9A192;--track:#33302A;--sheet:#1A1916;--chip:#1E1C18;--chipb:#3A3630;--ctl:#3A3630;--tint:#2A2721}
+.sb{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;z-index:40;color:var(--fg);font:600 17px Inter;letter-spacing:-.3px}
+.sb .ic{display:flex;gap:6px;align-items:center}
+.notch{position:absolute;left:50%;top:0;width:210px;height:30px;margin-left:-105px;background:#000;border-radius:0 0 20px 20px;z-index:41}
+.notch:before,.notch:after{content:"";position:absolute;top:0;width:8px;height:8px}
+.notch:before{left:-8px;background:radial-gradient(circle at 0 100%,transparent 7.5px,#000 8px)}
+.notch:after{right:-8px;background:radial-gradient(circle at 100% 100%,transparent 7.5px,#000 8px)}
+.hi{position:absolute;bottom:8px;left:50%;width:134px;height:5px;margin-left:-67px;border-radius:3px;background:var(--fg);z-index:40}
+.ipad .hi{width:200px;margin-left:-100px;bottom:7px}
+.scr{position:absolute;inset:0;display:flex;flex-direction:column}
+
+/* ---------- type (Sunflower scale, line heights on 4) ---------- */
+.disp{font-family:Archivo;font-stretch:118%;font-weight:900;margin:0}
+.title{font-family:Archivo;font-stretch:115%;font-weight:900;font-size:30px;line-height:36px;letter-spacing:-1px;margin:0}
+.heading{font-family:Archivo;font-stretch:110%;font-weight:800;font-size:20px;line-height:28px;letter-spacing:-.4px;margin:0}
+.moneyM{font-family:Archivo;font-stretch:108%;font-weight:800;font-size:18px;line-height:24px;letter-spacing:-.3px}
+.moneyS{font-family:Archivo;font-stretch:106%;font-weight:700;font-size:16px;line-height:20px;letter-spacing:-.2px}
+.lead{font-size:17px;line-height:24px;color:var(--fg2);margin:0}
+.leadS{font-size:16px;line-height:24px;color:var(--fg2);margin:0}
+.bs{font-weight:600;font-size:16px;line-height:24px;margin:0}
+.body{font-size:15px;line-height:20px;margin:0}
+.label{font-weight:600;font-size:15px;line-height:20px}
+.sub{font-size:14px;line-height:20px;color:var(--mute);margin:0;letter-spacing:-.1px}
+.eyebrow{font:700 12px/16px Inter;letter-spacing:1.2px;text-transform:uppercase;color:var(--mute)}
+.num{font-variant-numeric:tabular-nums lining-nums}
+.wm{font-family:Archivo;font-stretch:125%;font-weight:900;font-size:24px;letter-spacing:-.8px;line-height:28px}
+.nw{white-space:nowrap}
+[data-fit]{width:max-content;max-width:none}
+
+/* ---------- controls ---------- */
+.cta{height:56px;border-radius:28px;border:0;width:100%;background:var(--cta);color:var(--ctafg);font:600 17px/24px Inter;letter-spacing:-.3px;display:flex;align-items:center;justify-content:center;gap:8px;flex:none;padding:0 16px}
+.sec{height:48px;border-radius:24px;width:100%;background:transparent;border:0;box-shadow:inset 0 0 0 1.5px var(--fg);font:600 16px/20px Inter;letter-spacing:-.2px;color:var(--fg);display:flex;align-items:center;justify-content:center;flex:none;padding:0 12px}
+.dark .sec{box-shadow:inset 0 0 0 1.5px rgba(246,240,227,.45)}
+.txtbtn{height:44px;border:0;background:none;font:600 16px/20px Inter;letter-spacing:-.2px;color:var(--fg);width:100%;flex:none;display:flex;align-items:center;justify-content:center}
+.nav{height:44px;display:flex;align-items:center;gap:12px;flex:none}
+.back{width:44px;height:44px;margin-left:-12px;display:flex;align-items:center;justify-content:center;flex:none}
+.steps{flex:1;display:flex;gap:4px}.steps i{flex:1;height:4px;border-radius:2px;background:var(--track)}.steps i.on{background:var(--fg)}
+.lt{position:relative;display:block;flex:none;overflow:hidden;border-radius:22.5%}
+.lt img{display:block;width:100%;height:100%}
+.lt:after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 .5px rgba(22,20,15,.18);pointer-events:none}
+.dark .lt:after{box-shadow:inset 0 0 0 .5px rgba(246,240,227,.18)}
+.stack{display:flex;align-items:center}
+.stack .lt{box-shadow:0 0 0 2px var(--bg)}
+.stack .lt+.lt,.stack .more{margin-left:-8px}
+.more{height:32px;min-width:32px;padding:0 8px;border-radius:16px;background:var(--fg);color:var(--bg);font:700 13px/16px Inter;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px var(--bg);flex:none}
+.lockup{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;vertical-align:middle}
+.lockup .w{font-family:Archivo;font-stretch:125%;font-weight:900;letter-spacing:-.033em;line-height:1}
+.lockup .pp{font:800 12px/1 Inter;letter-spacing:.02em;color:#16140F;background:#FFCC2E;border-radius:999px;padding:4px 8px;box-shadow:inset 0 0 0 1.5px #16140F}
+.dark .lockup .pp{box-shadow:none}
+.duckicon{background:#FFCC2E;overflow:hidden;position:relative;flex:none;border-radius:22.5%}
+.duckicon:after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 .5px rgba(22,20,15,.18)}
+.duckicon img{position:absolute;display:block}
+.card{background:var(--card);color:var(--cardfg);border-radius:20px;box-shadow:0 1px 0 rgba(0,0,0,.03),0 6px 20px rgba(70,50,0,.07)}
+.dark .card{box-shadow:inset 0 0 0 1px #2C2924}
+.ib{width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center;flex:none}
+.xbtn{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex:none}
+.xbtn i{width:32px;height:32px;border-radius:16px;background:rgba(22,20,15,.1);display:flex;align-items:center;justify-content:center}
+.dark .xbtn i{background:#2A2722}
+
+/* notification */
+.note{background:var(--note);border-radius:22px;padding:12px 16px 12px 12px;display:flex;gap:12px;align-items:flex-start;box-shadow:0 10px 30px rgba(80,55,0,.16);color:var(--notefg);text-align:left}
+.dark .note{box-shadow:inset 0 0 0 1px #34312B}
+.note .h{display:flex;justify-content:space-between;font-size:15px;font-weight:600;line-height:20px}
+.note .h span{font-weight:400;color:var(--notemute);font-size:14px}
+.note .m{font-size:15px;line-height:20px}
+
+/* 3-dot timeline */
+.tl{display:flex;align-items:flex-start;justify-content:space-between;position:relative}
+.tl .ln{position:absolute;left:12px;right:12px;top:11px;height:2px;background:repeating-linear-gradient(90deg,var(--tlc) 0 4px,transparent 4px 8px)}
+.tl .st{display:flex;flex-direction:column;align-items:center;position:relative;text-align:center}
+.tl .st:nth-child(2){align-items:flex-start;text-align:left}.tl .st:last-child{align-items:flex-end;text-align:right}
+.tl .dot{width:24px;height:24px;border-radius:12px;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 2px var(--tlc);background:var(--tlbg)}
+.tl .dot.f{background:var(--tlc)}
+.tl b{font-size:14px;line-height:20px;margin-top:8px;white-space:nowrap;font-weight:600}
+.tl small{font-size:13px;line-height:16px;white-space:nowrap;color:var(--tlm)}
+
+/* lists */
+.lrow{display:flex;align-items:center;gap:12px;min-height:64px;position:relative}
+.lrow .n{flex:1;min-width:0}
+.lrow .n b{display:block;font-weight:600;font-size:16px;line-height:20px}
+.lrow .n span{display:block;font-size:14px;line-height:20px;color:var(--mute)}
+.hl:before{content:"";position:absolute;top:0;right:0;height:1px;background:var(--hair)}
+.tick{width:28px;height:28px;border-radius:14px;box-shadow:inset 0 0 0 2px #C4BBA8;flex:none;display:flex;align-items:center;justify-content:center}
+.tick.on{background:var(--ink);box-shadow:none}
+.tickhit{width:44px;height:44px;display:flex;align-items:center;justify-content:center;margin-right:-8px;flex:none}
+.chip{height:36px;padding:0 16px;border-radius:18px;background:var(--chip);box-shadow:inset 0 0 0 1.5px var(--chipb);font-weight:600;font-size:15px;display:flex;align-items:center;white-space:nowrap;flex:none}
+.chip.on{background:var(--ink);color:#fff;box-shadow:none}
+.chg{font-weight:600;color:var(--fg);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1.5px}
+.radio{width:24px;height:24px;border-radius:12px;box-shadow:inset 0 0 0 2px #B9B09D;flex:none;display:flex;align-items:center;justify-content:center}
+.radio.on{background:var(--ink);box-shadow:none}
+.dark .radio{box-shadow:inset 0 0 0 2px #5A554C}.dark .radio.on{background:#FFCC2E;box-shadow:none}
+.tag{font:700 12px/16px Inter;color:#16140F;background:#FFCC2E;border-radius:8px;padding:2px 8px;white-space:nowrap}
+
+/* guess chips */
+.gchip{height:56px;border-radius:18px;background:var(--chip);box-shadow:inset 0 0 0 1.5px var(--chipb);display:flex;align-items:center;justify-content:center;font:600 17px/24px Inter;letter-spacing:-.3px}
+.gchip.on{background:var(--ink);color:#FFCC2E;box-shadow:none}
+
+/* day grid */
+.dgrid{display:grid;grid-template-columns:repeat(7,1fr)}
+.dgrid div{height:48px;display:flex;align-items:center;justify-content:center}
+.dgrid span{width:40px;height:40px;border-radius:20px;display:flex;align-items:center;justify-content:center;font:600 16px/20px Inter;font-variant-numeric:tabular-nums}
+.dgrid span.on{background:var(--ink);color:var(--cream)}
+.dchip{height:44px;border-radius:22px;background:var(--chip);box-shadow:inset 0 0 0 1.5px var(--chipb);display:flex;align-items:center;justify-content:center;font:600 15px/20px Inter;flex:1}
+
+/* paywall */
+.ptable{border-radius:20px;background:var(--card);color:var(--cardfg);position:relative;overflow:hidden}
+.ptable .tr{display:flex;align-items:center;position:relative}
+.ptable .tr+.tr:before{content:"";position:absolute;top:0;left:16px;right:0;height:1px;background:var(--hair)}
+.ptable .f{flex:1;min-width:0;padding-left:16px;font-size:15px;line-height:20px;font-weight:500}
+.ptable .c{text-align:center;display:flex;align-items:center;justify-content:center;flex:none;font:700 15px/20px Inter}
+.ptable .procol{position:absolute;top:0;bottom:0;right:0;background:#FFE58F}
+.dark .ptable .procol{background:#3A3115}
+.tile{flex:1;min-width:0;border-radius:16px;background:var(--card);color:var(--cardfg);box-shadow:inset 0 0 0 1.5px var(--ctl);padding:16px 8px 12px;position:relative;display:flex;flex-direction:column;align-items:center;text-align:center}
+.tile.on{box-shadow:inset 0 0 0 2.5px var(--fg)}
+.dark .tile.on{box-shadow:inset 0 0 0 2.5px #FFCC2E}
+.tile .tn{font:600 14px/20px Inter}
+.tile .tp{font-family:Archivo;font-stretch:106%;font-weight:800;font-size:20px;line-height:24px;letter-spacing:-.4px;margin-top:4px}
+.tile .tu{font-size:13px;line-height:16px;color:var(--mute)}
+.tile .tf{margin-top:8px;font:600 12px/16px Inter;color:var(--mute);height:20px;display:flex;align-items:center}
+.tile .tab{position:absolute;top:-10px;left:50%;transform:translateX(-50%);height:20px;padding:0 8px;border-radius:10px;background:var(--fg);color:var(--bg);font:700 11px/20px Inter;letter-spacing:.3px;white-space:nowrap}
+.dark .tile .tab{background:#FFCC2E;color:#16140F}
+.trial{display:flex;justify-content:space-between;position:relative}
+.trial .ln{position:absolute;left:8px;right:8px;top:7px;height:2px;background:var(--fg);opacity:.25}
+.trial .s{display:flex;flex-direction:column;position:relative}
+.trial .s:nth-child(3){align-items:center;text-align:center}.trial .s:last-child{align-items:flex-end;text-align:right}
+.trial .dt{width:16px;height:16px;border-radius:8px;background:var(--bg);box-shadow:inset 0 0 0 2px var(--fg)}
+.trial .dt.f{background:var(--fg)}
+.trial .dt.y{background:#FFCC2E;box-shadow:inset 0 0 0 2px #16140F}
+.trial b{font:600 14px/20px Inter;margin-top:4px;white-space:nowrap}
+.trial small{font-size:13px;line-height:16px;color:var(--mute);white-space:nowrap}
+.links{font-size:14px;line-height:20px;text-align:center;color:var(--fg2);margin:0}
+.links u{text-underline-offset:2px}
+
+/* sheets */
+.scrim{position:absolute;inset:0;background:rgba(22,20,15,.42);z-index:20}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--sheet);border-radius:28px 28px 0 0;z-index:21;display:flex;flex-direction:column}
+.grab{width:36px;height:5px;border-radius:3px;background:#D6CDBB;margin:8px auto 0;flex:none}
+.dark .grab{background:#4A463E}
+
+/* checklist */
+.chk{display:flex;align-items:flex-start;gap:12px;padding:12px 0;position:relative}
+.chk+.chk:before{content:"";position:absolute;top:0;left:36px;right:0;height:1px;background:var(--rule)}
+.chk .ic{width:24px;height:24px;border-radius:12px;flex:none;display:flex;align-items:center;justify-content:center}
+</style></head><body>
+
+<div class="stage" id="stage"></div>
+
+<script>
+const LG = '../../assets/logos/';
+const DUCK = 'duck.png', DUCKD = 'duck-dark.png';
+const DEV = {
+  i12: { w: 390, h: 844, top: 47, bot: 34, edge: 24 },
+  se: { w: 375, h: 667, top: 20, bot: 0, edge: 24 },
+  ipad: { w: 834, h: 1194, top: 24, bot: 20, edge: 24 },
+};
+
+/* ---------- icons ---------- */
+const sig = '<svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>';
+const wifi = '<svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 2.2c2.2 0 4.2.9 5.7 2.3l1.2-1.2C13.1 1.6 10.7.5 8 .5S2.9 1.6 1.1 3.3l1.2 1.2C3.8 3.1 5.8 2.2 8 2.2zm0 3.4c1.3 0 2.4.5 3.3 1.3l1.2-1.2C11.3 4.6 9.7 3.9 8 3.9s-3.3.7-4.5 1.8l1.2 1.2c.9-.8 2-1.3 3.3-1.3zM8 9l2-2c-.5-.5-1.2-.8-2-.8s-1.5.3-2 .8l2 2z"/></svg>';
+const batt = '<svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" stroke="currentColor" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="20" height="9" rx="2" fill="currentColor"/><path d="M25 4.5v4c.8-.3 1.4-1.1 1.4-2s-.6-1.7-1.4-2z" fill="currentColor" fill-opacity=".45"/></svg>';
+const sbar = (dev) => {
+  if (dev === 'se') return '<div class="sb" style="height:20px;padding:0 8px;font:600 12px Inter"><span style="display:flex;gap:4px;align-items:center">' + sig.replace('width="18" height="12"', 'width="15" height="10"') + '</span><span>9:41 AM</span><span style="display:flex">' + batt.replace('width="27" height="13"', 'width="24" height="11"') + '</span></div>';
+  if (dev === 'ipad') return '<div class="sb" style="height:24px;padding:0 24px;font:600 14px Inter"><span>9:41&nbsp;&nbsp;Tue Nov 10</span><span class="ic">' + wifi + batt + '</span></div>';
+  return '<div class="notch"></div><div class="sb" style="height:47px;padding:4px 26px 0 32px"><span style="width:54px;text-align:center">9:41</span><span class="ic">' + sig + wifi + batt + '</span></div>';
+};
+const chev = (c = 'currentColor') => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="' + c + '" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const chevR = (c = 'currentColor', s = 16) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="' + c + '" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const chevD = (c = 'currentColor', s = 14) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="' + c + '" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const ck = (c, s) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="' + c + '" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const bell = (c, s, fill) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none"><path d="M6 16V11a6 6 0 1112 0v5l1.6 2.2H4.4L6 16z" stroke="' + c + '" stroke-width="2" stroke-linejoin="round" fill="' + (fill || 'none') + '"/><path d="M10 20.5a2 2 0 004 0" stroke="' + c + '" stroke-width="2" stroke-linecap="round"/></svg>';
+const card$ = (c, s) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12.5" rx="2.5" stroke="' + c + '" stroke-width="2"/><path d="M3 10h18" stroke="' + c + '" stroke-width="2"/></svg>';
+const xI = (c, s = 13) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 14 14"><path d="M2 2l10 10M12 2L2 12" stroke="' + c + '" stroke-width="2.2" stroke-linecap="round"/></svg>';
+const dash = (c) => '<svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 7h8" stroke="' + c + '" stroke-width="2.2" stroke-linecap="round"/></svg>';
+const searchI = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="#6B6559" stroke-width="2.2"/><path d="M16 16l4 4" stroke="#6B6559" stroke-width="2.2" stroke-linecap="round"/></svg>';
+const imgI = (c, s = 20) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="4.5" width="17" height="15" rx="3" stroke="' + c + '" stroke-width="2"/><circle cx="9" cy="10" r="1.8" fill="' + c + '"/><path d="M4.5 17.5l5-4.5 3.5 3 2.5-2 4 3.5" stroke="' + c + '" stroke-width="2" stroke-linejoin="round"/></svg>';
+const lockI = (c) => '<svg width="14" height="17" viewBox="0 0 14 17" fill="none"><rect x="1" y="7" width="12" height="9" rx="2.2" fill="' + c + '"/><path d="M3.8 7V5a3.2 3.2 0 016.4 0v2" stroke="' + c + '" stroke-width="1.8"/></svg>';
+const logo = (id, s, extra = '') => '<span class="lt" style="width:' + s + 'px;height:' + s + 'px;' + extra + '"><img src="' + LG + id + '.png" alt=""></span>';
+const dicon = (s) => { const w = Math.round(s * .86); return '<div class="duckicon" style="width:' + s + 'px;height:' + s + 'px"><img src="' + DUCK + '" alt="" style="width:' + w + 'px;left:' + Math.round((s - w) / 2) + 'px;bottom:0"></div>'; };
+const lockup = (size) => '<span class="lockup" style="font-size:' + size + 'px"><span class="w">ditch</span><span class="pp">Pro</span></span>';
+const duck = (d, w, st) => '<img src="' + (d ? DUCKD : DUCK) + '" alt="Ditch the duck" style="position:absolute;display:block;width:' + w + 'px;' + st + '">';
+const peekTop = (d, w, sink = 4) => -(Math.round(w * (d ? 367 / 620 : 357 / 600)) - sink);
+const nav = (n, right = '') => '<div class="nav"><div class="back">' + chev() + '</div><div class="steps">' + [1, 2, 3, 4, 5].map((i) => '<i class="' + (i <= n ? 'on' : '') + '"></i>').join('') + '</div>' + right + '</div>';
+const NB = ' ';
+
+/* ---------- data (US, Tue Nov 10 2026) ---------- */
+// [logo, name, plan, monthly, yearly, next charge, dateSet]
+const SUBS = {
+  chatgpt: ['chatgpt-plus', 'ChatGPT Plus', 'Plus', '20.00', '240.00', 'Sat, Nov 21', 1],
+  netflix: ['netflix', 'Netflix', 'Standard', '19.99', '239.88', 'Thu, Nov 19', 1],
+  youtube: ['youtube-premium', 'YouTube Premium', 'Individual', '15.99', '191.88', 'Tue, Nov 17', 1],
+  amazon: ['amazon-prime', 'Amazon Prime', 'Monthly', '14.99', '179.88', 'Thu, Dec 3', 0],
+  spotify: ['spotify', 'Spotify', 'Individual', '12.99', '155.88', 'Mon, Dec 7', 1],
+  disney: ['disney-plus', 'Disney+', 'With Ads', '12.49', '149.88', 'Sun, Nov 29', 0],
+};
+const ORDER = ['chatgpt', 'netflix', 'youtube', 'amazon', 'spotify', 'disney']; // biggest yearly first
+// Monthly 96.45 · yearly 1,157.40 (all from exact cents)
+
+/* ---------- screens ---------- */
+const S = {};
+const pad = (c, maxContent) => { const D = DEV[c.dev]; return c.dev === 'ipad' ? Math.round((D.w - maxContent) / 2) : D.edge; };
+const scrStyle = (c, maxContent = 512, extraBottom = 16) => { const D = DEV[c.dev]; const p = pad(c, maxContent); return 'padding:' + D.top + 'px ' + p + 'px ' + (D.bot + extraBottom) + 'px'; };
+
+// 01 · Welcome
+S.welcome = (c) => {
+  const d = c.d, se = c.dev === 'se', ipad = c.dev === 'ipad';
+  const fs = se ? 60 : ipad ? 88 : 70, lh = se ? 56 : ipad ? 80 : 64;
+  const tlv = d ? '--tlc:#F6F0E3;--tlbg:#12110E;--tlm:#A9A192' : '--tlc:#16140F;--tlbg:#FFCC2E;--tlm:#4B4220';
+  const hd = d ? ' style="background:#FFCC2E;box-shadow:none"' : '';
+  return [d ? 'dark' : 'sun', `
+<div class="scr" style="${scrStyle(c, ipad ? 480 : 0)}">
+  <div style="height:28px;margin-top:16px;display:flex;align-items:center;flex:none"><span class="wm">ditch</span></div>
+  <h1 class="disp" data-orphan style="font-size:${fs}px;line-height:${lh}px;letter-spacing:-${(fs * .04).toFixed(1)}px;margin-top:${se ? 24 : ipad ? 48 : 32}px">Ditch it<br>before it<br>${d ? '<span style="color:#FFCC2E">renews.</span>' : 'renews.'}</h1>
+  <p class="lead" data-orphan style="margin-top:16px;max-width:${ipad ? 420 : 320}px${ipad ? ';font-size:20px;line-height:28px' : ''}">See everything you pay for. Get a reminder before every${NB}charge.</p>
+  <div style="flex:1;min-height:${se ? 24 : 120}px"></div>
+  <div style="position:relative;flex:none">
+    ${se ? '' : duck(d, ipad ? 160 : 140, 'right:16px;top:' + peekTop(d, ipad ? 160 : 140, 6) + 'px')}
+    <div class="note" style="position:relative;z-index:2">
+      ${dicon(38)}
+      <div style="flex:1"><div class="h">Ditch<span>Mon 9:00 AM</span></div><div class="m">Netflix renews Thursday. $19.99. Still${NB}watching?</div></div>
+    </div>
+    <div style="position:relative;z-index:1;margin:-16px 12px 0;height:28px;border-radius:0 0 20px 20px;background:${d ? '#1C1A16' : 'rgba(255,255,255,.6)'};${d ? 'box-shadow:inset 0 0 0 1px #2C2924' : ''}"></div>
+  </div>
+  <div class="tl" style="${tlv};margin:16px 0 0">
+    <div class="ln"></div>
+    <div class="st"><span class="dot f"${hd}>${bell(d ? '#12110E' : '#FFCC2E', 13)}</span><b>Mon, Nov 16</b><small>9 AM reminder</small></div>
+    <div class="st"><span class="dot f"${hd}>${bell(d ? '#12110E' : '#FFCC2E', 13)}</span><b>Wed, Nov 18</b><small>9 AM reminder</small></div>
+    <div class="st"><span class="dot">${card$(d ? '#F6F0E3' : '#16140F', 13)}</span><b>Thu, Nov 19</b><small class="num">$19.99 charge</small></div>
+  </div>
+  <div style="flex:none;height:${se ? 24 : 32}px"></div>
+  <button class="cta">See what I pay</button>
+  <p class="sub" style="margin-top:12px;text-align:center;color:var(--fg2)">Free forever for tracking.</p>
+</div>`];
+};
+
+// 02 · Quick guess
+S.guess = (c) => {
+  const chips = ['Under $25', '$25–50', '$50–100', '$100–200', 'Over $200', 'No idea'];
+  return ['cream', `
+<div class="scr" style="${scrStyle(c)}">
+  ${nav(1)}
+  <div class="eyebrow" style="margin-top:16px">Quick guess</div>
+  <h1 class="title" data-orphan style="margin-top:8px">How much do you think you spend a${NB}month?</h1>
+  <p class="lead" style="margin-top:8px">On all your subscriptions together.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px">
+    ${chips.map((t) => `<div class="gchip num${t === '$25–50' ? ' on' : ''}">${t}</div>`).join('')}
+  </div>
+  <p class="sub" style="margin-top:24px">No wrong answers. We’ll show you the real number in a${NB}minute.</p>
+  <div style="flex:1"></div>
+</div>`];
+};
+
+// 03 · What do you pay for?
+const pickRows = (c) => {
+  const rows = [
+    ['netflix', 'Netflix', 1, 'Standard · $19.99/mo', 1], ['spotify', 'Spotify', 1, 'Individual · $12.99/mo', 1],
+    ['chatgpt-plus', 'ChatGPT Plus', 1, 'Plus · $20.00/mo', 0], ['amazon-prime', 'Amazon Prime', 1, 'Monthly · $14.99/mo', 1],
+    ['youtube-premium', 'YouTube Premium', 1, 'Individual · $15.99/mo', 1], ['disney-plus', 'Disney+', 1, 'With Ads · $12.49/mo', 1],
+    ['max', 'Max', 0, 'from $10.99/mo'], ['apple-music', 'Apple Music', 0, 'from $11.99/mo'], ['hulu', 'Hulu', 0, 'from $11.99/mo'],
+  ];
+  return rows.map((r, i) => `<div class="lrow"${i ? ' ' : ''}>${i ? '<i class="hl" style="position:absolute;inset:0 0 auto 52px"></i>' : ''}${logo(r[0], 40)}<div class="n"><b>${r[1]}</b><span class="num">${r[2] ? r[3] + (r[4] ? ' · <span class="chg">Change</span>' : '') : r[3]}</span></div><span class="tickhit"><span class="tick ${r[2] ? 'on' : ''}">${r[2] ? ck('#FFCC2E', 16) : ''}</span></span></div>`).join('');
+};
+S.pick = (c, sheet) => {
+  const D = DEV[c.dev];
+  return ['cream', `
+<div class="scr" style="${scrStyle(c)};padding-bottom:0">
+  ${nav(2)}
+  <h1 class="title" data-orphan style="margin-top:16px">What do you pay${NB}for?</h1>
+  <p class="sub" style="margin-top:8px;color:var(--fg2)">Prices for 🇺🇸 US · <span class="chg">Change</span></p>
+  <div style="margin-top:16px;height:48px;border-radius:14px;background:#fff;box-shadow:inset 0 0 0 1.5px #E3DBCA;display:flex;align-items:center;gap:8px;padding:0 16px;font-size:16px;color:#6B6559;flex:none">${searchI}Search 220 services</div>
+  <div style="display:flex;gap:8px;margin-top:12px;flex:none"><span class="chip on">Popular</span><span class="chip">Streaming</span><span class="chip">Music</span><span class="chip">AI</span></div>
+  <div style="margin-top:8px;flex:1;overflow:hidden;position:relative">${pickRows(c)}</div>
+</div>
+<div style="position:absolute;left:0;right:0;bottom:0;padding:12px 24px ${D.bot + 16}px;background:#FBF7EE;border-top:1px solid #E6DFD0;z-index:4">
+  <div style="display:flex;align-items:center;justify-content:space-between;height:24px;margin-bottom:12px">
+    <span class="label">6 picked</span>
+    <span class="num"><b class="moneyS">$96.45</b><span class="label" style="margin-left:4px;font-weight:500">a month</span></span>
+  </div>
+  <button class="cta">See my total</button>
+</div>
+${sheet ? `<div class="scrim"></div>
+<div class="sheet" style="padding:0 24px ${D.bot + 16}px">
+  <div class="grab"></div>
+  <div style="display:flex;align-items:center;gap:12px;margin-top:16px;flex:none">
+    ${logo('netflix', 40)}
+    <h2 class="heading" style="flex:1">Which Netflix plan?</h2>
+    <div class="xbtn" style="margin-right:-6px"><i>${xI('#16140F', 12)}</i></div>
+  </div>
+  <div class="card" style="margin-top:24px;flex:none">
+    ${[['Standard with ads', '8.99', 0], ['Standard', '19.99', 1], ['Premium', '26.99', 0]].map((p, i) => `<div style="display:flex;align-items:center;gap:12px;height:56px;padding:0 16px;position:relative">${i ? '<i style="position:absolute;top:0;left:52px;right:0;height:1px;background:#EEE7D8"></i>' : ''}<span class="radio ${p[2] ? 'on' : ''}">${p[2] ? ck('#fff', 14) : ''}</span><span class="label" style="flex:1;font-size:16px">${p[0]}</span><span class="moneyS num">$${p[1]}<span style="font:500 14px Inter;color:#6B6559">/mo</span></span></div>`).join('')}
+  </div>
+  <p class="sub" style="margin-top:12px">Not sure? Pick Standard. You can change it${NB}later.</p>
+  <button class="txtbtn" style="margin-top:16px">Enter my own price</button>
+</div>` : ''}`];
+};
+
+// 04 · Your total
+S.total = (c) => {
+  const d = c.d, se = c.dev === 'se', ipad = c.dev === 'ipad';
+  const show = se ? 3 : ipad ? 6 : 4;
+  const D = DEV[c.dev];
+  const p = pad(c, 512);
+  const rows = ORDER.slice(0, show).map((k, i) => {
+    const s = SUBS[k];
+    return `<div style="display:flex;align-items:center;gap:12px;height:52px;position:relative">${i ? '<i style="position:absolute;top:0;left:44px;right:0;height:1px;background:var(--hair)"></i>' : ''}${logo(s[0], 32)}<span class="label" style="flex:1;font-size:16px">${s[1]}</span><span class="moneyM num">$${s[4]}</span></div>`;
+  }).join('');
+  const rest = ORDER.slice(show);
+  const more = rest.length ? `<div style="display:flex;align-items:center;gap:12px;height:52px;position:relative"><i style="position:absolute;top:0;left:44px;right:0;height:1px;background:var(--hair)"></i>
+      <span class="stack" style="width:32px">${rest.slice(0, 2).map((k) => logo(SUBS[k][0], 20, 'box-shadow:0 0 0 2px var(--sheet)')).join('')}</span>
+      <span class="label" style="flex:1;font-size:16px">${rest.length} more</span><span class="sub" style="display:flex;align-items:center;gap:4px;color:var(--fg)">Show all${chevD(d ? '#F6F0E3' : '#16140F', 14)}</span></div>` : '';
+  const heroBg = d ? '#12110E' : '#FFCC2E';
+  return [d ? 'dark' : 'sun', `
+<div class="scr" style="padding:${D.top}px ${p}px 0">
+  ${nav(3)}
+  <div class="label" style="margin-top:${se ? 8 : 16}px;font-size:17px;line-height:24px">You pay</div>
+  <div class="disp num" data-fit style="font-size:${ipad ? 128 : se ? 88 : 104}px;line-height:${ipad ? 116 : se ? 80 : 92}px;letter-spacing:-.045em;margin:0 0 0 -4px;white-space:nowrap;color:var(--money)">$1,157</div>
+  <div class="heading" style="font-size:${se ? 20 : 22}px;margin-top:0">a year.</div>
+  <p class="lead num" style="margin-top:8px;color:var(--fg)">That’s $96.45 a month.</p>
+  <div style="margin-top:${se ? 12 : 16}px;display:flex;flex:none"><span class="num" style="height:32px;border-radius:16px;padding:0 12px;display:inline-flex;align-items:center;font:600 15px/20px Inter;${d ? 'background:#2A2722;color:#F6F0E3' : 'background:#16140F;color:#FFCC2E'}">You guessed $25–50 a month.</span></div>
+  <p class="sub" data-orphan style="margin-top:8px;color:var(--fg2);max-width:330px">Most people guess low. In one study, the real total was about 2.5× the${NB}guess.</p>
+  <div style="flex:none;height:${se ? 16 : 24}px"></div>
+  <div style="flex:1;margin:0 -${p}px;background:var(--sheet);border-radius:28px 28px 0 0;padding:${se ? 16 : 24}px ${p}px ${D.bot + 16}px;display:flex;flex-direction:column;${d ? 'box-shadow:inset 0 1px 0 #2C2924' : ''}">
+    <div style="display:flex;justify-content:space-between;height:16px" class="eyebrow"><span>Per year</span><span>Before sales tax</span></div>
+    <div style="margin-top:4px;flex:none">${rows}${more}</div>
+    <div style="flex:1;min-height:16px"></div>
+    <p class="bs" data-orphan style="margin:0 0 16px">Ditch just one you don’t use: up to <span class="num">$240</span> a year you won’t${NB}pay.</p>
+    <button class="cta">Set up reminders</button>
+  </div>
+</div>`];
+};
+
+// 05 · Reminders pre-ask
+S.notify = (c) => {
+  const se = c.dev === 'se';
+  return ['cream', `
+<div class="scr" style="${scrStyle(c)}">
+  ${nav(4)}
+  <h1 class="title" data-orphan style="margin-top:16px">Get a reminder before your 6 subscriptions${NB}renew.</h1>
+  <p class="leadS" style="margin-top:8px">3 days and 1 day before, at 9:00 AM. Only about your subscriptions. Nothing${NB}else.</p>
+  <div style="margin-top:24px;flex:1;min-height:0;border-radius:32px;background:#FFCC2E;position:relative;overflow:hidden;padding:16px 12px 0;display:flex;flex-direction:column">
+    <div style="text-align:center;color:#16140F;flex:none">
+      ${lockI('#16140F').replace('<svg', '<svg style="display:block;margin:0 auto 4px"')}
+      <div style="font:600 15px/20px Inter">Monday, November 16</div>
+      <div style="font-family:Archivo;font-stretch:112%;font-weight:800;font-size:56px;line-height:60px;letter-spacing:-1.6px">9:00</div>
+    </div>
+    <div class="note" style="margin-top:12px;position:relative;z-index:2;box-shadow:0 8px 24px rgba(80,55,0,.18);color:#1C1B19">
+      ${logo('netflix', 38)}
+      <div style="flex:1"><div class="h">Netflix renews in 3 days<span>now</span></div><div class="m num">$19.99 on Thu, Nov 19. Still${NB}watching?</div></div>
+    </div>
+    <div class="note" style="margin-top:8px;position:relative;z-index:1;background:rgba(255,255,255,.8);box-shadow:none;color:#1C1B19">
+      ${logo('youtube-premium', 38)}
+      <div style="flex:1"><div class="h">YouTube Premium renews tomorrow<span></span></div><div class="m num">$15.99. Last call if you’re done with${NB}it.</div></div>
+    </div>
+    ${duck(false, 120, 'left:50%;margin-left:-60px;bottom:-4px')}
+  </div>
+  <p class="sub" style="margin-top:16px;text-align:center;color:var(--fg2)">7 in 10 people have forgotten to cancel a free trial at least${NB}once.</p>
+  <button class="cta" style="margin-top:16px">Turn on reminders</button>
+  <p class="sub" style="margin-top:8px;text-align:center">Tap “Allow” on the next screen.</p>
+  <button class="txtbtn" style="margin-top:0">Maybe later</button>
+</div>`];
+};
+
+// 06a · Charge dates: scan first
+const appleShot = () => {
+  const r = (id, name, date, i) => `<div style="display:flex;align-items:center;gap:8px;height:40px;position:relative;padding:0 12px">${i ? '<i style="position:absolute;top:0;left:44px;right:0;height:1px;background:#ECECEC"></i>' : ''}${logo(id, 24)}<div style="flex:1;min-width:0"><div style="font:600 13px/16px Inter;color:#111">${name}</div><div style="font:400 11px/14px Inter;color:#777">Renews ${date}</div></div>${chevR('#C4C4C4', 12)}</div>`;
+  return `<div style="border-radius:16px;background:#F2F2F7;padding:12px 12px 12px;flex:none" aria-hidden="true">
+    <div style="font:700 17px/20px Inter;color:#111;letter-spacing:-.3px;padding:0 4px">Subscriptions</div>
+    <div style="font:600 11px/16px Inter;color:#777;letter-spacing:.3px;margin:8px 4px 4px">ACTIVE</div>
+    <div style="border-radius:12px;background:#fff">${r('youtube-premium', 'YouTube Premium', 'November 17', 0)}${r('chatgpt-plus', 'ChatGPT Plus', 'November 21', 1)}</div>
+  </div>`;
+};
+S.datesScan = (c) => {
+  const se = c.dev === 'se';
+  const crumb = (t) => `<span style="height:28px;padding:0 8px;border-radius:8px;background:var(--tint);font:600 14px/20px Inter;display:inline-flex;align-items:center;white-space:nowrap">${t}</span>`;
+  return ['cream', `
+<div class="scr" style="${scrStyle(c)}">
+  ${nav(5)}
+  <h1 class="title" data-orphan style="margin-top:16px">When do they charge${NB}you?</h1>
+  <p class="lead" style="margin-top:8px">So your reminders land on the right${NB}day.</p>
+  <div class="card" style="margin-top:24px;padding:${se ? 16 : 24}px;flex:none">
+    ${se ? '' : appleShot()}
+    <h2 class="heading" style="margin-top:${se ? 0 : 16}px">Scan your Apple subscriptions</h2>
+    <p class="body" style="margin-top:8px;color:var(--fg2)">Paid through Apple? Take a screenshot of this page and Ditch reads the dates on your${NB}phone.</p>
+    <div style="display:flex;align-items:center;gap:4px;margin-top:12px;flex-wrap:wrap">${crumb('Settings')}${chevR('#8C8576', 12)}${crumb('Your name')}${chevR('#8C8576', 12)}${crumb('Subscriptions')}</div>
+  </div>
+  <div style="flex:1;min-height:16px"></div>
+  <button class="cta">${imgI('#fff', 20)}Choose screenshot</button>
+  <button class="sec" style="margin-top:8px">Pick the days myself</button>
+  <button class="txtbtn" style="margin-top:4px">Skip for now</button>
+</div>`];
+};
+
+// 06b · Charge dates: one service at a time
+S.datesDay = (c) => {
+  const se = c.dev === 'se', ipad = c.dev === 'ipad';
+  const cells = [];
+  for (let i = 1; i <= 31; i++) cells.push(`<div><span class="${i === 19 ? 'on' : ''}">${i}</span></div>`);
+  return ['cream', `
+<div class="scr" style="${scrStyle(c, ipad ? 420 : 512)}">
+  ${nav(5, '<span class="label num" style="color:var(--fg2);margin-right:-4px">2 of 6</span>')}
+  <div style="display:flex;align-items:center;gap:16px;margin-top:${se ? 8 : 16}px;flex:none">
+    ${logo('netflix', se ? 44 : 56)}
+    <span class="sub num" style="color:var(--fg2)">Standard · $19.99 a month</span>
+  </div>
+  <h1 class="title" data-orphan style="margin-top:16px">When does Netflix charge${NB}you?</h1>
+  <p class="leadS" style="margin-top:8px">Pick the day it usually comes out. Your bank app shows the last${NB}one.</p>
+  <div class="dgrid" style="margin-top:${se ? 16 : 24}px;flex:none${se ? ';row-gap:0' : ''}">${cells.join('')}</div>
+  <div style="display:flex;gap:8px;margin-top:12px;flex:none"><span class="dchip">Last day of the month</span><span class="dchip" style="flex:0 0 112px">Not sure</span></div>
+  <div style="margin-top:16px;border-radius:16px;background:var(--tint);padding:12px 16px;display:flex;gap:12px;align-items:flex-start;flex:none">
+    <span style="margin-top:2px;display:flex">${card$('#16140F', 20)}</span>
+    <p class="body num" style="font-weight:600">Next charge: Thu, Nov 19.<br><span style="font-weight:400;color:#5A544A">Then the 19th of every month.</span></p>
+  </div>
+  <div style="flex:1;min-height:8px"></div>
+  <button class="txtbtn">Skip the rest for now</button>
+</div>`];
+};
+// SE variant: the day cells are 44pt tall to fit without scrolling
+const seGrid = (html) => html.replace('class="dgrid"', 'class="dgrid se44"');
+
+// 07 · Paywall (layout A)
+S.paywall = (c) => {
+  const d = c.d, se = c.dev === 'se', ipad = c.dev === 'ipad';
+  const D = DEV[c.dev];
+  const rh = se ? 32 : 36;
+  const colF = 56, colP = 88;
+  const rowsT = [
+    ['Full list, totals, calendar', 'ck', 'ck'],
+    ['Subscriptions with reminders', '3', 'Unlimited'],
+    ['Pick your reminder timing', '-', 'ck'],
+    ['Scan screenshots and statements', '-', 'ck'],
+    ['Widget and iCloud backup', '-', 'ck'],
+  ];
+  const ink = d ? '#F6F0E3' : '#16140F';
+  const cell = (v, pro) => v === 'ck' ? ck(pro && d ? '#FFCC2E' : ink, 18) : v === '-' ? dash(d ? '#6E685D' : '#A39B8A') : `<span class="num">${v}</span>`;
+  const table = `<div class="ptable" style="flex:none">
+    <div class="procol" style="width:${colP}px"></div>
+    <div class="tr" style="height:${se ? 32 : 40}px"><span class="f eyebrow" style="font-weight:700;color:var(--mute)">What you get</span><span class="c eyebrow" style="width:${colF}px;color:var(--mute)">Free</span><span class="c" style="width:${colP}px">${lockup(13).replace('<span class="w">ditch</span>', '')}</span></div>
+    ${rowsT.map((r) => `<div class="tr" style="height:${rh}px"><span class="f">${r[0]}</span><span class="c" style="width:${colF}px">${cell(r[1])}</span><span class="c" style="width:${colP}px">${cell(r[2], 1)}</span></div>`).join('')}
+  </div>`;
+  const tiles = `<div style="display:flex;gap:8px;flex:none;margin-top:${se ? 16 : 24}px">
+    <div class="tile on"><span class="tab">SAVE 49%</span><span class="tn">Yearly</span><span class="tp num">$29.99</span><span class="tu">a year</span><span class="tf"><span class="tag" style="font-size:12px">7 days free</span></span></div>
+    <div class="tile"><span class="tn">Monthly</span><span class="tp num">$4.99</span><span class="tu">a month</span><span class="tf">No free trial</span></div>
+    <div class="tile"><span class="tn">Lifetime</span><span class="tp num">$49.99</span><span class="tu">one time</span><span class="tf">Pay once</span></div>
+  </div>`;
+  const strip = `<div class="trial" style="margin-top:${se ? 12 : 16}px;flex:none">
+    <div class="ln"></div>
+    <div class="s"><span class="dt f"></span><b>Today</b><small>Free</small></div>
+    <div class="s"><span class="dt y"></span><b>Sat, Nov 14</b><small>Reminder</small></div>
+    <div class="s"><span class="dt"></span><b>Tue, Nov 17</b><small class="num">$29.99</small></div>
+  </div>`;
+  const logos = `<div style="display:flex;align-items:center;gap:8px;margin-top:${se ? 8 : 12}px;flex:none">
+    <span class="stack">${ORDER.slice(0, 5).map((k) => logo(SUBS[k][0], se ? 24 : 28)).join('')}</span>
+    <span class="sub nw" style="color:var(--fg2)">ChatGPT Plus, Netflix + 4 more</span></div>`;
+  const xb = `<div class="xbtn" style="margin-right:-8px"><i>${xI(ink)}</i></div>`;
+  return [d ? 'dark' : 'cream', `
+<div class="scr" style="${scrStyle(c, 440, se ? 12 : 16)}">
+  ${se ? '' : `<div style="display:flex;justify-content:space-between;align-items:center;height:44px;flex:none">${lockup(24)}${xb}</div>`}
+  <div style="display:flex;align-items:flex-start;gap:8px;flex:none;margin-top:${se ? 8 : ipad ? 24 : 8}px">
+    <h1 class="title" data-orphan style="flex:1;${se ? 'font-size:26px;line-height:32px;letter-spacing:-.8px' : ''}">Get a reminder before all 6${NB}renewals.</h1>
+    ${se ? xb.replace('margin-right:-8px', 'margin:-6px -8px 0 0') : ''}
+  </div>
+  ${logos}
+  <div style="flex:none;height:${se ? 12 : ipad ? 32 : 16}px"></div>
+  ${table}
+  ${tiles}
+  ${strip}
+  <div style="flex:1;min-height:${se ? 12 : 16}px"></div>
+  <button class="cta">Start 7-day free trial</button>
+  <p class="sub num" style="text-align:center;margin-top:${se ? 4 : 8}px;color:var(--fg2)">Then $29.99 a year. Cancel anytime.</p>
+  <button class="sec" style="margin-top:${se ? 8 : 12}px;${se ? 'height:44px;' : ''}font-size:15px">Continue free: reminders for 3${NB}subscriptions</button>
+  <p class="links" style="margin-top:${se ? 4 : 8}px"><u>Restore</u> · <u>Terms</u> · <u>Privacy</u></p>
+</div>`];
+};
+
+// 08 · Which 3 (sheet over the paywall)
+S.which3 = (c) => {
+  const D = DEV[c.dev];
+  const slot = (k) => { const s = SUBS[k]; return `<div style="height:64px;border-radius:20px;background:#FFCC2E;display:flex;align-items:center;gap:12px;padding:0 4px 0 12px;flex:none;color:#16140F">${logo(s[0], 40)}<div style="flex:1;min-width:0"><div class="label" style="font-size:16px">${s[1]}</div><div class="num" style="font-size:14px;line-height:20px;color:#4B4220">$${s[3]}/mo · ${s[6] ? '' : 'around '}${s[5]}</div></div><div class="xbtn"><i style="background:rgba(22,20,15,.12)">${xI('#16140F', 11)}</i></div></div>`; };
+  const rest = (k, i) => { const s = SUBS[k]; return `<div class="lrow" style="min-height:56px">${i ? '<i style="position:absolute;top:0;left:52px;right:0;height:1px;background:var(--hair)"></i>' : ''}${logo(s[0], 40)}<div class="n"><b>${s[1]}</b><span class="num">$${s[3]}/mo · ${s[6] ? '' : 'around '}${s[5]}</span></div><span style="height:44px;padding:0 4px;display:flex;align-items:center;font:600 15px/20px Inter;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1.5px;margin-right:-4px">Swap in</span></div>`; };
+  const back = S.paywall({ dev: c.dev, d: false })[1];
+  return ['cream', `
+<div style="position:absolute;inset:0;background:#000"></div>
+<div style="position:absolute;left:0;right:0;top:0;height:100%;transform:translateY(${D.top - 8}px) scale(.92);transform-origin:top center;border-radius:12px;overflow:hidden;background:#FBF7EE">${back.replace(/padding:47px/, 'padding:12px')}</div>
+<div class="scrim" style="background:rgba(0,0,0,.35)"></div>
+<div class="sheet" style="top:${D.top + 10}px;padding:0 24px ${D.bot + 16}px;border-radius:12px 12px 0 0">
+  <div class="grab"></div>
+  <h1 class="title" style="margin-top:24px">Your 3 free reminders</h1>
+  <p class="leadS" style="margin-top:8px">We picked your biggest charges. Swap any of${NB}them.</p>
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:24px">${['chatgpt', 'netflix', 'youtube'].map(slot).join('')}</div>
+  <div class="eyebrow" style="margin-top:32px">On your list, no reminder</div>
+  <div style="margin-top:4px">${['amazon', 'spotify', 'disney'].map(rest).join('')}</div>
+  <p class="sub" style="margin-top:8px">These stay on your list with their totals and${NB}dates.</p>
+  <div style="flex:1;min-height:16px"></div>
+  <button class="cta">Keep these 3</button>
+</div>`];
+};
+
+// 09 · You're set
+S.set = (c, off) => {
+  const d = c.d, se = c.dev === 'se', ipad = c.dev === 'ipad';
+  const ink = d ? '#F6F0E3' : '#16140F';
+  const okI = `<span class="ic" style="background:${d ? '#FFCC2E' : '#16140F'}">${ck(d ? '#16140F' : '#FFCC2E', 14)}</span>`;
+  const todoI = `<span class="ic" style="box-shadow:inset 0 0 0 2px ${ink}"></span>`;
+  const warnI = `<span class="ic" style="background:#FF6C2C;color:#16140F;font:900 15px/1 Inter">!</span>`;
+  const items = [
+    [okI, '<span class="num">6 subscriptions on your list · $1,157 a year</span>'],
+    off ? [warnI, 'Reminders are off. Nothing can reach you yet.'] : [okI, `Reminders on ChatGPT Plus, Netflix and YouTube${NB}Premium`],
+    [todoI, '2 dates to check: Amazon Prime and Disney+'],
+  ];
+  const firsts = [['Sat, Nov 14', 'YouTube Premium renews Tue, Nov 17'], ['Mon, Nov 16', 'Netflix renews Thu, Nov 19'], ['Wed, Nov 18', 'ChatGPT Plus renews Sat, Nov 21']];
+  const noteBg = d ? '#1E1C18' : 'rgba(255,255,255,.72)';
+  return [d ? 'dark' : 'sun', `
+<div class="scr" style="${scrStyle(c, ipad ? 480 : 512)}">
+  <div style="flex:none;height:${se ? 32 : ipad ? 96 : 56}px"></div>
+  <h1 class="disp" data-fit style="font-size:${ipad ? 80 : 60}px;line-height:${ipad ? 80 : 60}px;letter-spacing:-.04em;white-space:nowrap;align-self:flex-start">You’re set.</h1>
+  <div style="margin-top:${se ? 16 : 24}px;flex:none">
+    ${items.map((it) => `<div class="chk">${it[0]}<span class="bs" style="flex:1">${it[1]}</span></div>`).join('')}
+  </div>
+  <div style="flex:1;min-height:${se ? 16 : 32}px"></div>
+  ${off
+    ? `<div style="border-radius:20px;padding:16px;background:${noteBg};flex:none${d ? ';box-shadow:inset 0 0 0 1px #2C2924' : ''}"><p class="body" style="color:var(--fg)">Your 3 reminders are ready. They need your OK to show up on your${NB}phone.</p></div>`
+    : `<div style="position:relative;flex:none">
+    ${se ? '' : duck(d, 112, 'right:16px;top:' + peekTop(d, 112, 4) + 'px')}
+    <div style="position:relative;border-radius:20px;padding:16px 16px 8px;background:${noteBg};${d ? 'box-shadow:inset 0 0 0 1px #2C2924' : ''}">
+      <div class="eyebrow" style="color:var(--fg2)">Your first reminders · 9:00 AM</div>
+      <div style="margin-top:8px">${firsts.map((f) => `<div style="display:flex;gap:12px;padding:8px 0;font-size:15px;line-height:20px" class="num"><b style="width:96px;flex:none;font-weight:600">${f[0]}</b><span style="flex:1">${f[1]}</span></div>`).join('')}</div>
+    </div>
+  </div>`}
+  <div style="flex:none;height:24px"></div>
+  ${off ? `<button class="cta">${bell(d ? '#16140F' : '#FFCC2E', 20)}Turn on reminders</button><button class="txtbtn" style="margin-top:4px">Go to my list</button>` : '<button class="cta">Go to my list</button>'}
+</div>`];
+};
+
+/* ---------- board ---------- */
+const P = (id, cap, dev, fn, d = false, extra) => ({ id, cap, dev, fn, d, extra });
+const L = [
+  P('01-welcome', '1 · Welcome', 'i12', S.welcome),
+  P('02-guess', '2 · Quick guess (tapped $25–50, moves on)', 'i12', S.guess),
+  P('03-pick', '3 · What you pay for: 6 ticked', 'i12', S.pick),
+  P('03b-plan-sheet', '3b · Change → plan sheet (Netflix)', 'i12', (c) => S.pick(c, true)),
+  P('04-total', '4 · Your total', 'i12', S.total),
+  P('05-reminders', '5 · Reminders pre-ask', 'i12', S.notify),
+  P('06a-dates-scan', '6a · Charge dates: scan first', 'i12', S.datesScan),
+  P('06b-dates-day', '6b · Charge dates: one at a time', 'i12', S.datesDay),
+  P('07-paywall', '7 · Paywall (layout A, copy pending)', 'i12', S.paywall),
+  P('08-which3', '8 · Which 3 (sheet from “Continue free”)', 'i12', S.which3),
+  P('09-set', '9 · You’re set', 'i12', S.set),
+  P('09b-set-off', '9b · You’re set, reminders skipped', 'i12', (c) => S.set(c, true)),
+];
+const SZ = [
+  P('se-01-welcome', 'SE · Welcome', 'se', S.welcome), P('se-04-total', 'SE · Your total', 'se', S.total),
+  P('se-06a-dates-scan', 'SE · Dates: scan', 'se', S.datesScan), P('se-06b-dates-day', 'SE · Dates: day', 'se', S.datesDay),
+  P('se-07-paywall', 'SE · Paywall', 'se', S.paywall),
+  P('ipad-01-welcome', 'iPad 11″ · Welcome', 'ipad', S.welcome), P('ipad-04-total', 'iPad 11″ · Your total', 'ipad', S.total),
+  P('ipad-07-paywall', 'iPad 11″ · Paywall', 'ipad', S.paywall),
+  P('ipad-06a-dates-scan', 'iPad 11″ · Dates: scan', 'ipad', S.datesScan), P('ipad-06b-dates-day', 'iPad 11″ · Dates: day', 'ipad', S.datesDay),
+];
+const DK = [
+  P('d01-welcome', '1 · Welcome', 'i12', S.welcome, true), P('d04-total', '4 · Your total', 'i12', S.total, true),
+  P('d07-paywall', '7 · Paywall', 'i12', S.paywall, true), P('d09-set', '9 · You’re set', 'i12', S.set, true),
+];
+const sections = [
+  ['onboarding', 'Onboarding v11 · iPhone 12 (390×844)', 'Welcome → Quick guess → What you pay for → Your total → Reminders → Charge dates → Paywall → Which 3 → You’re set. Example: 6 ticked, US prices, today is Tue, Nov 10, 2026.', L],
+  ['sizes', 'Fit check · iPhone SE (375×667) and iPad 11″ (834×1194)', 'Same source, same copy. SE drops the duck and the screenshot illustration before any text shrinks. iPad uses one centred column (512pt content, paywall 440pt).', SZ],
+  ['dark', 'Dark mode', 'Warm ink canvas. Sunflower only for big money, CTAs and key fills.', DK],
+];
+const phone = (p) => {
+  const D = DEV[p.dev];
+  const [theme, html] = p.fn({ dev: p.dev, d: p.d });
+  return '<div class="cell"><div class="phone ' + p.dev + ' ' + theme + '" data-name="' + p.id + '" data-top="' + D.top + '" data-bot="' + D.bot + '" style="width:' + D.w + 'px;height:' + D.h + 'px">' + sbar(p.dev) + html + (D.bot ? '<div class="hi"></div>' : '') + '</div><div class="cap">' + p.cap + '</div></div>';
+};
+document.getElementById('stage').innerHTML = sections.map((s) =>
+  '<section data-name="' + s[0] + '" class="' + (s[0] === 'dark' ? 'darksec' : '') + '"><div class="sh"><h2>' + s[1] + '</h2><p>' + s[2] + '</p></div><div class="row">' + s[3].map(phone).join('') + '</div></section>').join('');
+
+// The hero number (and "You're set.") may shrink to fit its column, nothing else.
+document.fonts.ready.then(() => {
+  document.querySelectorAll('[data-fit]').forEach((el) => {
+    const max = el.parentElement.clientWidth - parseFloat(getComputedStyle(el.parentElement).paddingLeft) - parseFloat(getComputedStyle(el.parentElement).paddingRight);
+    let f = parseFloat(getComputedStyle(el).fontSize); const ratio = parseFloat(getComputedStyle(el).lineHeight) / f;
+    while (el.getBoundingClientRect().width > max && f > 20) { f -= 1; el.style.fontSize = f + 'px'; el.style.lineHeight = (Math.round(f * ratio / 4) * 4) + 'px'; }
+  });
+  document.body.dataset.ready = '1';
+});
+</script>
+</body></html>

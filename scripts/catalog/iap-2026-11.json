@@ -2204,6 +2204,52 @@
    ],
    "url": "https://apps.apple.com/de/app/id829587759"
   },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Learn English – 3-month plan",
+     "41,99 €"
+    ],
+    [
+     "English 1 month",
+     "13,49 €"
+    ],
+    [
+     "All Languages – 12-month plan",
+     "95,99 €"
+    ],
+    [
+     "English 1 year",
+     "83,99 €"
+    ],
+    [
+     "English 3 months",
+     "41,99 €"
+    ],
+    [
+     "Learn French – 3-month plan",
+     "41,99 €"
+    ],
+    [
+     "French 1 month",
+     "13,49 €"
+    ],
+    [
+     "Learn German – 3-month plan",
+     "41,99 €"
+    ],
+    [
+     "All Languages – 12-month plan",
+     "95,99 €"
+    ],
+    [
+     "French 1 year",
+     "83,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/es/app/id829587759"
+  },
   "FR": {
    "checked": "2026-11-10",
    "items": [
@@ -2342,6 +2388,98 @@
    ],
    "url": "https://apps.apple.com/ie/app/id829587759"
   },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Learn French – 3-month plan",
+     "₹ 3,999"
+    ],
+    [
+     "Learn Spanish – 3-month plan",
+     "₹ 3,999"
+    ],
+    [
+     "Spanish 1 year",
+     "₹ 7,200"
+    ],
+    [
+     "French 1 year",
+     "₹ 7,200"
+    ],
+    [
+     "Learn German – 3-month plan",
+     "₹ 3,999"
+    ],
+    [
+     "French 1 month",
+     "₹ 1,249"
+    ],
+    [
+     "All Languages – 12-month plan",
+     "₹ 8,700"
+    ],
+    [
+     "Spanish 1 month",
+     "₹ 1,249"
+    ],
+    [
+     "French 3 months",
+     "₹ 3,999"
+    ],
+    [
+     "German 1 month",
+     "₹ 1,249"
+    ]
+   ],
+   "url": "https://apps.apple.com/in/app/id829587759"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Learn English – 3-month plan",
+     "41,99 €"
+    ],
+    [
+     "English 1 year",
+     "83,99 €"
+    ],
+    [
+     "English 1 month",
+     "16,99 €"
+    ],
+    [
+     "English 3 months",
+     "41,99 €"
+    ],
+    [
+     "All Languages – 12-month plan",
+     "95,99 €"
+    ],
+    [
+     "Learn Spanish – 3-month plan",
+     "41,99 €"
+    ],
+    [
+     "Learn English – 12-month plan",
+     "83,99 €"
+    ],
+    [
+     "Learn French – 3-month plan",
+     "41,99 €"
+    ],
+    [
+     "All Languages – 12-month plan",
+     "95,99 €"
+    ],
+    [
+     "Spanish 1 month",
+     "16,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/it/app/id829587759"
+  },
   "NL": {
    "checked": "2026-11-10",
    "items": [
@@ -2479,6 +2617,18 @@
     ]
    ],
    "url": "https://apps.apple.com/us/app/id829587759"
+  }
+ },
+ "binge": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Standard",
+     "$19.00"
+    ]
+   ],
+   "url": "https://apps.apple.com/au/app/id1486598248"
   }
  },
  "bumble": {
@@ -8925,6 +9075,400 @@
    "url": "https://apps.apple.com/us/app/id570060128"
   }
  },
+ "economist": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Premium Monthly",
+     "$64.90"
+    ],
+    [
+     "Podcasts Monthly",
+     "$13.90"
+    ],
+    [
+     "Premium Annual",
+     "$649.00"
+    ],
+    [
+     "Three month subscription",
+     "$149.00"
+    ],
+    [
+     "Podcasts Annual",
+     "$139.00"
+    ],
+    [
+     "Play Monthly",
+     "$32.90"
+    ],
+    [
+     "Play Annual",
+     "$329.00"
+    ],
+    [
+     "One year subscription",
+     "$549.00"
+    ]
+   ],
+   "url": "https://apps.apple.com/au/app/id1239397626"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Premium Monthly",
+     "$38.00"
+    ],
+    [
+     "Premium Annual",
+     "$379.00"
+    ],
+    [
+     "Podcasts Monthly",
+     "$9.90"
+    ],
+    [
+     "Three month subscription",
+     "$95.00"
+    ],
+    [
+     "Podcasts Annual",
+     "$99.00"
+    ],
+    [
+     "Play Monthly",
+     "$19.90"
+    ],
+    [
+     "One year subscription",
+     "$319.00"
+    ],
+    [
+     "Play Annual",
+     "$199.00"
+    ]
+   ],
+   "url": "https://apps.apple.com/ca/app/id1239397626"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Premium Monthly",
+     "38,90 €"
+    ],
+    [
+     "Premium Annual",
+     "389,00 €"
+    ],
+    [
+     "Podcasts Monthly",
+     "6,90 €"
+    ],
+    [
+     "Three month subscription",
+     "107,99 €"
+    ],
+    [
+     "Podcasts Annual",
+     "69,00 €"
+    ],
+    [
+     "Play Monthly",
+     "19,90 €"
+    ],
+    [
+     "One year subscription",
+     "349,00 €"
+    ],
+    [
+     "Play Annual",
+     "199,00 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/de/app/id1239397626"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Premium Monthly",
+     "38,90 €"
+    ],
+    [
+     "Premium Annual",
+     "389,00 €"
+    ],
+    [
+     "Podcasts Monthly",
+     "6,90 €"
+    ],
+    [
+     "Three month subscription",
+     "107,99 €"
+    ],
+    [
+     "Podcasts Annual",
+     "69,00 €"
+    ],
+    [
+     "One year subscription",
+     "349,00 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/es/app/id1239397626"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Premium Monthly",
+     "38,90 €"
+    ],
+    [
+     "Premium Annual",
+     "389,00 €"
+    ],
+    [
+     "Podcasts Monthly",
+     "6,90 €"
+    ],
+    [
+     "Three month subscription",
+     "107,99 €"
+    ],
+    [
+     "Podcasts Annual",
+     "69,00 €"
+    ],
+    [
+     "One year subscription",
+     "349,00 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/fr/app/id1239397626"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Premium Monthly",
+     "£27.90"
+    ],
+    [
+     "Premium Annual",
+     "£279.00"
+    ],
+    [
+     "Podcasts Monthly",
+     "£6.90"
+    ],
+    [
+     "Three month subscription",
+     "£74.00"
+    ],
+    [
+     "Podcasts Annual",
+     "£69.00"
+    ],
+    [
+     "One year subscription",
+     "£239.00"
+    ]
+   ],
+   "url": "https://apps.apple.com/gb/app/id1239397626"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Premium Monthly",
+     "€38.90"
+    ],
+    [
+     "Podcasts Monthly",
+     "€6.90"
+    ],
+    [
+     "Premium Annual",
+     "€389.00"
+    ],
+    [
+     "Three month subscription",
+     "€107.99"
+    ],
+    [
+     "Podcasts Annual",
+     "€69.00"
+    ],
+    [
+     "One year subscription",
+     "€349.00"
+    ]
+   ],
+   "url": "https://apps.apple.com/ie/app/id1239397626"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Premium Monthly",
+     "₹ 1,299"
+    ],
+    [
+     "Premium Annual",
+     "₹ 12,900"
+    ],
+    [
+     "Three month subscription",
+     "₹ 2,949"
+    ],
+    [
+     "Podcasts Monthly",
+     "₹ 315"
+    ],
+    [
+     "Podcasts Annual",
+     "₹ 3,149"
+    ],
+    [
+     "One year subscription",
+     "₹ 10,900"
+    ]
+   ],
+   "url": "https://apps.apple.com/in/app/id1239397626"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Premium Monthly",
+     "38,90 €"
+    ],
+    [
+     "Premium Annual",
+     "389,00 €"
+    ],
+    [
+     "Three month subscription",
+     "107,99 €"
+    ],
+    [
+     "Podcasts Monthly",
+     "6,90 €"
+    ],
+    [
+     "Podcasts Annual",
+     "69,00 €"
+    ],
+    [
+     "One year subscription",
+     "349,00 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/it/app/id1239397626"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Premium Monthly",
+     "€ 38,90"
+    ],
+    [
+     "Premium Annual",
+     "€ 389,00"
+    ],
+    [
+     "Podcasts Monthly",
+     "€ 6,90"
+    ],
+    [
+     "Three month subscription",
+     "€ 107,99"
+    ],
+    [
+     "Podcasts Annual",
+     "€ 69,00"
+    ],
+    [
+     "One year subscription",
+     "€ 349,00"
+    ]
+   ],
+   "url": "https://apps.apple.com/nl/app/id1239397626"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Premium Monthly",
+     "$77.90"
+    ],
+    [
+     "Podcasts Monthly",
+     "$14.90"
+    ],
+    [
+     "Premium Annual",
+     "$779.00"
+    ],
+    [
+     "Podcasts Annual",
+     "$149.00"
+    ],
+    [
+     "Three month subscription",
+     "$179.00"
+    ],
+    [
+     "One year subscription",
+     "$649.00"
+    ],
+    [
+     "Play Annual",
+     "$399.00"
+    ],
+    [
+     "Play Monthly",
+     "$39.90"
+    ]
+   ],
+   "url": "https://apps.apple.com/nz/app/id1239397626"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Premium Monthly",
+     "$29.00"
+    ],
+    [
+     "Premium Annual",
+     "$289.00"
+    ],
+    [
+     "Three month subscription",
+     "$74.00"
+    ],
+    [
+     "Podcasts Monthly",
+     "$6.90"
+    ],
+    [
+     "Podcasts Annual",
+     "$69.00"
+    ],
+    [
+     "One year subscription",
+     "$249.00"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id1239397626"
+  }
+ },
  "espn": {
   "US": {
    "checked": "2026-11-10",
@@ -11465,6 +12009,1110 @@
     ]
    ],
    "url": "https://apps.apple.com/us/app/id1451784328"
+  }
+ },
+ "grammarly": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Monthly Plan",
+     "$44.99"
+    ],
+    [
+     "Annual Plan",
+     "$219.99"
+    ],
+    [
+     "Annual Plan",
+     "$219.99"
+    ],
+    [
+     "Monthly Plan",
+     "$44.99"
+    ],
+    [
+     "Quarterly Plan",
+     "$92.99"
+    ],
+    [
+     "Monthly Plan",
+     "$42.99"
+    ],
+    [
+     "Quarterly Plan",
+     "$92.99"
+    ],
+    [
+     "Annual Plan",
+     "$199.99"
+    ],
+    [
+     "Monthly Plan Mobile Only",
+     "$26.99"
+    ],
+    [
+     "Monthly Plan Mobile Only",
+     "$26.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/au/app/id1158877342"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Monthly Plan",
+     "$39.99"
+    ],
+    [
+     "Annual Plan",
+     "$184.99"
+    ],
+    [
+     "Annual Plan",
+     "$184.99"
+    ],
+    [
+     "Monthly Plan",
+     "$39.99"
+    ],
+    [
+     "Quarterly Plan",
+     "$79.99"
+    ],
+    [
+     "Monthly Plan",
+     "$36.99"
+    ],
+    [
+     "Quarterly Plan",
+     "$79.99"
+    ],
+    [
+     "Annual Plan",
+     "$174.99"
+    ],
+    [
+     "Annual Plan Mobile Only",
+     "$110.99"
+    ],
+    [
+     "Monthly Plan Mobile Only",
+     "$23.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ca/app/id1158877342"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Annual Plan",
+     "149,99 €"
+    ],
+    [
+     "Monthly Plan",
+     "31,99 €"
+    ],
+    [
+     "Monthly Plan",
+     "31,99 €"
+    ],
+    [
+     "Annual Plan",
+     "149,99 €"
+    ],
+    [
+     "Quarterly Plan",
+     "62,99 €"
+    ],
+    [
+     "Monthly Plan",
+     "29,99 €"
+    ],
+    [
+     "Quarterly Plan",
+     "62,99 €"
+    ],
+    [
+     "Annual Plan Mobile Only",
+     "89,99 €"
+    ],
+    [
+     "Annual Plan",
+     "139,99 €"
+    ],
+    [
+     "Annual Plan Mobile Only",
+     "128,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/de/app/id1158877342"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Annual Plan",
+     "149,99 €"
+    ],
+    [
+     "Monthly Plan",
+     "31,99 €"
+    ],
+    [
+     "Monthly Plan",
+     "31,99 €"
+    ],
+    [
+     "Annual Plan",
+     "149,99 €"
+    ],
+    [
+     "Quarterly Plan",
+     "62,99 €"
+    ],
+    [
+     "Monthly Plan",
+     "29,99 €"
+    ],
+    [
+     "Quarterly Plan",
+     "62,99 €"
+    ],
+    [
+     "Annual Plan Mobile Only",
+     "89,99 €"
+    ],
+    [
+     "Monthly Plan Mobile Only",
+     "18,99 €"
+    ],
+    [
+     "Monthly Plan Mobile Only",
+     "18,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/es/app/id1158877342"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Annual Plan",
+     "149,99 €"
+    ],
+    [
+     "Monthly Plan",
+     "31,99 €"
+    ],
+    [
+     "Monthly Plan",
+     "31,99 €"
+    ],
+    [
+     "Annual Plan",
+     "149,99 €"
+    ],
+    [
+     "Quarterly Plan",
+     "62,99 €"
+    ],
+    [
+     "Quarterly Plan",
+     "62,99 €"
+    ],
+    [
+     "Monthly Plan",
+     "29,99 €"
+    ],
+    [
+     "Annual Plan",
+     "139,99 €"
+    ],
+    [
+     "Annual Plan",
+     "149,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/fr/app/id1158877342"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Monthly Plan",
+     "£27.99"
+    ],
+    [
+     "Annual Plan",
+     "£124.99"
+    ],
+    [
+     "Monthly Plan",
+     "£27.99"
+    ],
+    [
+     "Annual Plan",
+     "£124.99"
+    ],
+    [
+     "Quarterly Plan",
+     "£54.99"
+    ],
+    [
+     "Monthly Plan",
+     "£25.99"
+    ],
+    [
+     "Quarterly Plan",
+     "£54.99"
+    ],
+    [
+     "Annual Plan Mobile Only",
+     "£74.99"
+    ],
+    [
+     "Monthly Plan Mobile Only",
+     "£16.90"
+    ],
+    [
+     "Annual Plan",
+     "£121.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/gb/app/id1158877342"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Annual Plan",
+     "€149.99"
+    ],
+    [
+     "Monthly Plan",
+     "€31.99"
+    ],
+    [
+     "Monthly Plan",
+     "€31.99"
+    ],
+    [
+     "Annual Plan",
+     "€149.99"
+    ],
+    [
+     "Quarterly Plan",
+     "€62.99"
+    ],
+    [
+     "Quarterly Plan",
+     "€62.99"
+    ],
+    [
+     "Monthly Plan",
+     "€29.99"
+    ],
+    [
+     "Annual Plan",
+     "€139.99"
+    ],
+    [
+     "Monthly Plan Mobile Only",
+     "€18.99"
+    ],
+    [
+     "Annual Plan Mobile Only",
+     "€89.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ie/app/id1158877342"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Annual Plan",
+     "₹ 4,699"
+    ],
+    [
+     "Monthly Plan",
+     "₹ 999"
+    ],
+    [
+     "Monthly Plan",
+     "₹ 999"
+    ],
+    [
+     "Annual Plan",
+     "₹ 4,699"
+    ],
+    [
+     "Quarterly Plan",
+     "₹ 1,999"
+    ],
+    [
+     "Quarterly Plan",
+     "₹ 1,999"
+    ],
+    [
+     "Monthly Plan",
+     "₹ 999"
+    ],
+    [
+     "Annual Plan",
+     "₹ 4,699"
+    ],
+    [
+     "Annual Plan",
+     "₹ 4,699"
+    ],
+    [
+     "Annual Plan",
+     "₹ 4,699"
+    ]
+   ],
+   "url": "https://apps.apple.com/in/app/id1158877342"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Annual Plan",
+     "149,99 €"
+    ],
+    [
+     "Monthly Plan",
+     "31,99 €"
+    ],
+    [
+     "Annual Plan",
+     "149,99 €"
+    ],
+    [
+     "Monthly Plan",
+     "31,99 €"
+    ],
+    [
+     "Quarterly Plan",
+     "62,99 €"
+    ],
+    [
+     "Monthly Plan",
+     "29,99 €"
+    ],
+    [
+     "Quarterly Plan",
+     "62,99 €"
+    ],
+    [
+     "Annual Plan",
+     "139,99 €"
+    ],
+    [
+     "Annual Plan Mobile Only",
+     "89,99 €"
+    ],
+    [
+     "Annual Plan Mobile Only",
+     "128,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/it/app/id1158877342"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Monthly Plan",
+     "€ 31,99"
+    ],
+    [
+     "Annual Plan",
+     "€ 149,99"
+    ],
+    [
+     "Annual Plan",
+     "€ 139,99"
+    ],
+    [
+     "Monthly Plan",
+     "€ 29,99"
+    ],
+    [
+     "Annual Plan",
+     "€ 149,99"
+    ],
+    [
+     "Annual Plan",
+     "€ 149,99"
+    ],
+    [
+     "Annual Plan",
+     "€ 149,99"
+    ],
+    [
+     "Quarterly Plan",
+     "€ 62,99"
+    ],
+    [
+     "Monthly Plan",
+     "€ 31,99"
+    ],
+    [
+     "Quarterly Plan",
+     "€ 62,99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nl/app/id1158877342"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Monthly Plan",
+     "$49.99"
+    ],
+    [
+     "Annual Plan",
+     "$239.99"
+    ],
+    [
+     "Annual Plan",
+     "$239.99"
+    ],
+    [
+     "Monthly Plan",
+     "$49.99"
+    ],
+    [
+     "Quarterly Plan",
+     "$101.99"
+    ],
+    [
+     "Monthly Plan",
+     "$47.99"
+    ],
+    [
+     "Quarterly Plan",
+     "$101.99"
+    ],
+    [
+     "Annual Plan",
+     "$219.99"
+    ],
+    [
+     "Annual Plan Mobile Only",
+     "$144.99"
+    ],
+    [
+     "Monthly Plan Mobile Only",
+     "$29.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nz/app/id1158877342"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Monthly Plan",
+     "$29.99"
+    ],
+    [
+     "Annual Plan",
+     "$139.99"
+    ],
+    [
+     "Annual Plan",
+     "$139.99"
+    ],
+    [
+     "Monthly Plan",
+     "$29.99"
+    ],
+    [
+     "Quarterly Plan",
+     "$59.99"
+    ],
+    [
+     "Monthly Plan",
+     "$29.99"
+    ],
+    [
+     "Quarterly Plan",
+     "$59.99"
+    ],
+    [
+     "Monthly Plan Mobile Only",
+     "$17.99"
+    ],
+    [
+     "Annual Plan Mobile Only",
+     "$83.99"
+    ],
+    [
+     "Annual Plan",
+     "$139.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id1158877342"
+  }
+ },
+ "grindr": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "XTRA",
+     "$32.99"
+    ],
+    [
+     "XTRA",
+     "$21.99"
+    ],
+    [
+     "Unlimited",
+     "$59.99"
+    ],
+    [
+     "Unlimited",
+     "$36.99"
+    ],
+    [
+     "XTRA",
+     "$21.99"
+    ],
+    [
+     "1 MONTH",
+     "$17.49"
+    ],
+    [
+     "Boost",
+     "$19.99"
+    ],
+    [
+     "Right Now",
+     "$6.99"
+    ],
+    [
+     "1 MONTH",
+     "$33.99"
+    ],
+    [
+     "Unlimited",
+     "$36.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/au/app/id319881193"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "XTRA",
+     "$24.99"
+    ],
+    [
+     "XTRA",
+     "$14.99"
+    ],
+    [
+     "XTRA",
+     "$16.99"
+    ],
+    [
+     "Unlimited",
+     "$49.99"
+    ],
+    [
+     "Boost",
+     "$14.99"
+    ],
+    [
+     "Right Now",
+     "$2.99"
+    ],
+    [
+     "Unlimited",
+     "$33.99"
+    ],
+    [
+     "Unlimited",
+     "$29.99"
+    ],
+    [
+     "1 MONTH",
+     "$22.99"
+    ],
+    [
+     "1 MONTH",
+     "$16.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ca/app/id319881193"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "XTRA",
+     "14,49 €"
+    ],
+    [
+     "Right Now",
+     "1,99 €"
+    ],
+    [
+     "XTRA",
+     "9,99 €"
+    ],
+    [
+     "Unlimited",
+     "39,99 €"
+    ],
+    [
+     "XTRA",
+     "11,99 €"
+    ],
+    [
+     "Boost",
+     "12,99 €"
+    ],
+    [
+     "XTRA",
+     "17,49 €"
+    ],
+    [
+     "Unlimited",
+     "27,99 €"
+    ],
+    [
+     "Unlimited",
+     "23,99 €"
+    ],
+    [
+     "XTRA",
+     "0,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/de/app/id319881193"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "XTRA",
+     "7,99 €"
+    ],
+    [
+     "XTRA",
+     "12,99 €"
+    ],
+    [
+     "Right Now",
+     "1,99 €"
+    ],
+    [
+     "Boost",
+     "12,99 €"
+    ],
+    [
+     "Unlimited",
+     "39,99 €"
+    ],
+    [
+     "Unlimited",
+     "23,99 €"
+    ],
+    [
+     "XTRA",
+     "26,49 €"
+    ],
+    [
+     "1 MONTH",
+     "16,99 €"
+    ],
+    [
+     "1 MONTH",
+     "11,49 €"
+    ],
+    [
+     "1 Month + Free Trial",
+     "20,49 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/es/app/id319881193"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "XTRA",
+     "17,99 €"
+    ],
+    [
+     "XTRA",
+     "11,99 €"
+    ],
+    [
+     "XTRA",
+     "11,99 €"
+    ],
+    [
+     "Boost",
+     "12,99 €"
+    ],
+    [
+     "Right Now",
+     "1,99 €"
+    ],
+    [
+     "Unlimited",
+     "44,99 €"
+    ],
+    [
+     "XTRA",
+     "17,99 €"
+    ],
+    [
+     "Unlimited",
+     "27,99 €"
+    ],
+    [
+     "1 MONTH",
+     "21,99 €"
+    ],
+    [
+     "1 MONTH",
+     "11,49 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/fr/app/id319881193"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "XTRA",
+     "£14.99"
+    ],
+    [
+     "XTRA",
+     "£9.99"
+    ],
+    [
+     "Boost",
+     "£11.99"
+    ],
+    [
+     "XTRA",
+     "£10.99"
+    ],
+    [
+     "Right Now",
+     "£1.99"
+    ],
+    [
+     "Unlimited",
+     "£39.99"
+    ],
+    [
+     "1 MONTH",
+     "£8.49"
+    ],
+    [
+     "XTRA",
+     "£15.99"
+    ],
+    [
+     "1 MONTH",
+     "£21.99"
+    ],
+    [
+     "Unlimited",
+     "£24.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/gb/app/id319881193"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "XTRA",
+     "€12.99"
+    ],
+    [
+     "XTRA",
+     "€19.99"
+    ],
+    [
+     "Right Now",
+     "€1.99"
+    ],
+    [
+     "Unlimited",
+     "€39.99"
+    ],
+    [
+     "Unlimited",
+     "€23.99"
+    ],
+    [
+     "Boost",
+     "€12.99"
+    ],
+    [
+     "1 MONTH",
+     "€11.99"
+    ],
+    [
+     "Unlimited Day Pass",
+     "€9.99"
+    ],
+    [
+     "1 MONTH",
+     "€16.99"
+    ],
+    [
+     "XTRA",
+     "€39.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ie/app/id319881193"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "XTRA",
+     "₹ 299"
+    ],
+    [
+     "XTRA",
+     "₹ 305"
+    ],
+    [
+     "XTRA",
+     "₹ 449"
+    ],
+    [
+     "XTRA",
+     "₹ 469"
+    ],
+    [
+     "Unlimited",
+     "₹ 559"
+    ],
+    [
+     "Unlimited",
+     "₹ 939"
+    ],
+    [
+     "Boost",
+     "₹ 1,199"
+    ],
+    [
+     "Right Now",
+     "₹ 199"
+    ],
+    [
+     "XTRA",
+     "₹ 949"
+    ],
+    [
+     "XTRA",
+     "₹ 999"
+    ]
+   ],
+   "url": "https://apps.apple.com/in/app/id319881193"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "XTRA",
+     "12,99 €"
+    ],
+    [
+     "Right Now",
+     "1,99 €"
+    ],
+    [
+     "XTRA",
+     "8,99 €"
+    ],
+    [
+     "Boost",
+     "12,99 €"
+    ],
+    [
+     "Unlimited",
+     "39,99 €"
+    ],
+    [
+     "XTRA",
+     "10,99 €"
+    ],
+    [
+     "XTRA",
+     "15,99 €"
+    ],
+    [
+     "XTRA",
+     "26,49 €"
+    ],
+    [
+     "Unlimited",
+     "27,99 €"
+    ],
+    [
+     "1 MONTH",
+     "15,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/it/app/id319881193"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Right Now",
+     "€ 1,99"
+    ],
+    [
+     "XTRA",
+     "€ 12,99"
+    ],
+    [
+     "XTRA",
+     "€ 19,99"
+    ],
+    [
+     "Unlimited",
+     "€ 39,99"
+    ],
+    [
+     "Unlimited",
+     "€ 23,99"
+    ],
+    [
+     "Boost",
+     "€ 12,99"
+    ],
+    [
+     "XTRA",
+     "€ 39,99"
+    ],
+    [
+     "Unlimited Day Pass",
+     "€ 9,99"
+    ],
+    [
+     "1 MONTH",
+     "€ 18,99"
+    ],
+    [
+     "1 MONTH",
+     "€ 11,99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nl/app/id319881193"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "XTRA",
+     "$19.99"
+    ],
+    [
+     "XTRA",
+     "$32.99"
+    ],
+    [
+     "Unlimited",
+     "$38.49"
+    ],
+    [
+     "Unlimited",
+     "$63.99"
+    ],
+    [
+     "Right Now",
+     "$3.99"
+    ],
+    [
+     "1 MONTH",
+     "$17.99"
+    ],
+    [
+     "1 MONTH",
+     "$29.99"
+    ],
+    [
+     "1 Month + Free Trial",
+     "$32.99"
+    ],
+    [
+     "XTRA",
+     "$59.99"
+    ],
+    [
+     "3 Months",
+     "$35.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nz/app/id319881193"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "XTRA",
+     "$22.99"
+    ],
+    [
+     "XTRA",
+     "$14.99"
+    ],
+    [
+     "Unlimited",
+     "$44.99"
+    ],
+    [
+     "XTRA",
+     "$14.99"
+    ],
+    [
+     "Boost",
+     "$11.99"
+    ],
+    [
+     "Unlimited",
+     "$27.99"
+    ],
+    [
+     "1 MONTH",
+     "$24.99"
+    ],
+    [
+     "1 MONTH",
+     "$27.99"
+    ],
+    [
+     "Unlimited Day Pass",
+     "$9.99"
+    ],
+    [
+     "Unlimited",
+     "$27.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id319881193"
   }
  },
  "grok": {
@@ -14504,6 +16152,66 @@
    ],
    "url": "https://apps.apple.com/de/app/id1273867416"
   },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Duo (Free Upgrade)",
+     "199,99 €"
+    ],
+    [
+     "MasterClass Individual",
+     "129,99 €"
+    ],
+    [
+     "MasterClass Duo",
+     "199,99 €"
+    ],
+    [
+     "MasterClass Family",
+     "249,99 €"
+    ],
+    [
+     "Family (Free Upgrade)",
+     "244,99 €"
+    ],
+    [
+     "All-Access Pass upgrade",
+     "199,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/es/app/id1273867416"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Duo (Free Upgrade)",
+     "199,99 €"
+    ],
+    [
+     "MasterClass Individual",
+     "129,99 €"
+    ],
+    [
+     "MasterClass Duo",
+     "199,99 €"
+    ],
+    [
+     "MasterClass Family",
+     "249,99 €"
+    ],
+    [
+     "All-Access Pass upgrade",
+     "199,99 €"
+    ],
+    [
+     "Family (Free Upgrade)",
+     "244,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/fr/app/id1273867416"
+  },
   "GB": {
    "checked": "2026-11-10",
    "items": [
@@ -14563,6 +16271,66 @@
     ]
    ],
    "url": "https://apps.apple.com/ie/app/id1273867416"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Duo (Free Upgrade)",
+     "₹ 13,900"
+    ],
+    [
+     "MasterClass Individual",
+     "₹ 11,900"
+    ],
+    [
+     "All-Access Pass upgrade",
+     "₹ 13,900"
+    ],
+    [
+     "MasterClass Family",
+     "₹ 24,900"
+    ],
+    [
+     "Family (Free Upgrade)",
+     "₹ 21,500"
+    ],
+    [
+     "MasterClass Duo",
+     "₹ 19,900"
+    ]
+   ],
+   "url": "https://apps.apple.com/in/app/id1273867416"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Duo (Free Upgrade)",
+     "199,99 €"
+    ],
+    [
+     "MasterClass Individual",
+     "129,99 €"
+    ],
+    [
+     "MasterClass Duo",
+     "199,99 €"
+    ],
+    [
+     "MasterClass Family",
+     "249,99 €"
+    ],
+    [
+     "All-Access Pass upgrade",
+     "199,99 €"
+    ],
+    [
+     "Family (Free Upgrade)",
+     "244,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/it/app/id1273867416"
   },
   "NL": {
    "checked": "2026-11-10",
@@ -14653,6 +16421,202 @@
     ]
    ],
    "url": "https://apps.apple.com/us/app/id1273867416"
+  }
+ },
+ "match": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Match",
+     "$54.99"
+    ],
+    [
+     "Match",
+     "$169.99"
+    ],
+    [
+     "Match",
+     "$109.99"
+    ],
+    [
+     "1 Top Spot",
+     "$4.99"
+    ],
+    [
+     "Top Spot 10-Pack",
+     "$29.99"
+    ],
+    [
+     "Top Spot 5-Pack",
+     "$19.99"
+    ],
+    [
+     "Match",
+     "$67.99"
+    ],
+    [
+     "Match",
+     "$12.99"
+    ],
+    [
+     "Match",
+     "$26.99"
+    ],
+    [
+     "Match",
+     "$27.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/au/app/id305939712"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Match Subscription",
+     "$49.99"
+    ],
+    [
+     "Match Subscription",
+     "$95.99"
+    ],
+    [
+     "Match Subscription",
+     "$49.99"
+    ],
+    [
+     "Subscription plans for Match",
+     "$59.99"
+    ],
+    [
+     "Match Subscription",
+     "$149.99"
+    ],
+    [
+     "Subscription plans for Match",
+     "$104.99"
+    ],
+    [
+     "1 Top Spot",
+     "$3.99"
+    ],
+    [
+     "Subscription plans for Match",
+     "$179.99"
+    ],
+    [
+     "Top Spot 10-Pack",
+     "$24.99"
+    ],
+    [
+     "Boost",
+     "$4.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ca/app/id305939712"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/gb/app/id305939712"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/ie/app/id305939712"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Match",
+     "$42.99"
+    ],
+    [
+     "Match",
+     "$139.99"
+    ],
+    [
+     "Match",
+     "$89.99"
+    ],
+    [
+     "1 Top Spot",
+     "$4.99"
+    ],
+    [
+     "Match",
+     "$51.99"
+    ],
+    [
+     "Top Spot 5-Pack",
+     "$19.99"
+    ],
+    [
+     "Top Spot 10-Pack",
+     "$39.99"
+    ],
+    [
+     "Match",
+     "$63.99"
+    ],
+    [
+     "Match",
+     "$11.99"
+    ],
+    [
+     "Match",
+     "$26.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nz/app/id305939712"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Match",
+     "$42.99"
+    ],
+    [
+     "Match",
+     "$74.99"
+    ],
+    [
+     "1 Top Spot",
+     "$2.99"
+    ],
+    [
+     "Match",
+     "$129.99"
+    ],
+    [
+     "1 Month Standard",
+     "$44.99"
+    ],
+    [
+     "Match",
+     "$19.99"
+    ],
+    [
+     "Top Spot 10-Pack",
+     "$19.99"
+    ],
+    [
+     "1 Month Basic",
+     "$44.99"
+    ],
+    [
+     "Boost 1-Pack",
+     "$5.99"
+    ],
+    [
+     "6 Month Bundle",
+     "$129.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id305939712"
   }
  },
  "max": {
@@ -15494,6 +17458,560 @@
     ]
    ],
    "url": "https://apps.apple.com/us/app/id341232718"
+  }
+ },
+ "netflix": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "$20.99"
+    ],
+    [
+     "Netflix Standard",
+     "$20.99"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "$20.99"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "$28.99"
+    ],
+    [
+     "Netflix Premium",
+     "$28.99"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "$28.99"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "$20.99"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "$28.99"
+    ],
+    [
+     "Netflix 2S Streaming",
+     "$20.99"
+    ],
+    [
+     "Netflix 2 Screens",
+     "$12.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/au/app/id363590051"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Netflix",
+     "$18.99"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "$18.99"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "$18.99"
+    ],
+    [
+     "Netflix Standard",
+     "$18.99"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "$18.99"
+    ],
+    [
+     "Netflix Premium",
+     "$23.99"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "$23.99"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "$23.99"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "$18.99"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "$23.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ca/app/id363590051"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Netflix Standard",
+     "13,99 €"
+    ],
+    [
+     "Netflix Premium",
+     "19,99 €"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "13,99 €"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "13,99 €"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "13,99 €"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "19,99 €"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "13,99 €"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "19,99 €"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "19,99 €"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "19,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/de/app/id363590051"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "14,99 €"
+    ],
+    [
+     "Netflix Standard",
+     "14,99 €"
+    ],
+    [
+     "Netflix Premium",
+     "21,99 €"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "14,99 €"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "21,99 €"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "21,99 €"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "14,99 €"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "21,99 €"
+    ],
+    [
+     "Netflix 2S Streaming",
+     "14,99 €"
+    ],
+    [
+     "Netflix 2 Screens",
+     "9,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/es/app/id363590051"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Netflix Standard",
+     "14,99 €"
+    ],
+    [
+     "Netflix Premium",
+     "21,99 €"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "14,99 €"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "14,99 €"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "14,99 €"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "21,99 €"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "14,99 €"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "21,99 €"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "21,99 €"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "21,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/fr/app/id363590051"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Netflix",
+     "£12.99"
+    ],
+    [
+     "Netflix 2S Plan",
+     "£12.99"
+    ],
+    [
+     "Netflix Standard",
+     "£12.99"
+    ],
+    [
+     "Netflix Premium",
+     "£18.99"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "£12.99"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "£18.99"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "£12.99"
+    ],
+    [
+     "Netflix 4S Plan",
+     "£18.99"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "£12.99"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "£18.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/gb/app/id363590051"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Netflix Basic",
+     "€10.99"
+    ],
+    [
+     "Netflix",
+     "€16.99"
+    ],
+    [
+     "Netflix 1 Screen - Unlimited Streaming",
+     "€10.99"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "€16.99"
+    ],
+    [
+     "Netflix Standard",
+     "€16.99"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "€16.99"
+    ],
+    [
+     "Netflix 1 Screen - Unlimited Streaming",
+     "€10.99"
+    ],
+    [
+     "Netflix Premium",
+     "€23.99"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "€16.99"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "€16.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ie/app/id363590051"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Netflix Premium",
+     "₹ 649"
+    ],
+    [
+     "Netflix Standard",
+     "₹ 499"
+    ],
+    [
+     "Netflix Basic",
+     "₹ 199"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "₹ 499"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "₹ 499"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "₹ 649"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "₹ 649"
+    ],
+    [
+     "Netflix 1 Screen - Unlimited Streaming",
+     "₹ 199"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "₹ 499"
+    ],
+    [
+     "Netflix 1 Screen - Unlimited Streaming",
+     "₹ 199"
+    ]
+   ],
+   "url": "https://apps.apple.com/in/app/id363590051"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "13,99 €"
+    ],
+    [
+     "Netflix Standard",
+     "13,99 €"
+    ],
+    [
+     "Netflix Premium",
+     "19,99 €"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "13,99 €"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "19,99 €"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "19,99 €"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "13,99 €"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "19,99 €"
+    ],
+    [
+     "Netflix 2S Streaming",
+     "13,99 €"
+    ],
+    [
+     "Netflix 2 Screens",
+     "9,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/it/app/id363590051"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Netflix",
+     "€ 15,99"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "€ 15,99"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "€ 15,99"
+    ],
+    [
+     "Netflix 1 Screen - Unlimited Streaming",
+     "€ 9,99"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "€ 15,99"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "€ 20,99"
+    ],
+    [
+     "Netflix Standard",
+     "€ 15,99"
+    ],
+    [
+     "Netflix Basic",
+     "€ 9,99"
+    ],
+    [
+     "Netflix Premium",
+     "€ 20,99"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "€ 20,99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nl/app/id363590051"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "$25.99"
+    ],
+    [
+     "Netflix 1 Screen - Unlimited Streaming",
+     "$17.99"
+    ],
+    [
+     "Netflix Standard",
+     "$25.99"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "$33.99"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "$25.99"
+    ],
+    [
+     "Netflix Basic",
+     "$17.99"
+    ],
+    [
+     "Netflix Premium",
+     "$33.99"
+    ],
+    [
+     "Netflix 1 Screen - Unlimited Streaming",
+     "$17.99"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "$33.99"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "$25.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nz/app/id363590051"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "$19.99"
+    ],
+    [
+     "Netflix",
+     "$19.99"
+    ],
+    [
+     "Netflix Standard",
+     "$19.99"
+    ],
+    [
+     "Netflix Premium",
+     "$26.99"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "$19.99"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "$19.99"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "$26.99"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "$26.99"
+    ],
+    [
+     "Netflix 2 Screens - Unlimited Streaming",
+     "$19.99"
+    ],
+    [
+     "Netflix 4 Screens - Unlimited Streaming",
+     "$26.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id363590051"
   }
  },
  "nintendo-online": {
@@ -17046,58 +19564,245 @@
  "paramount-plus": {
   "AU": {
    "checked": "2026-11-10",
-   "items": null,
-   "url": "https://apps.apple.com/au/app/id530168168"
+   "items": [
+    [
+     "Standard Monthly",
+     "$12.99"
+    ],
+    [
+     "Basic (with ads) Monthly",
+     "$7.99"
+    ],
+    [
+     "Premium Monthly",
+     "$17.99"
+    ],
+    [
+     "Standard Annual",
+     "$115.99"
+    ],
+    [
+     "Premium Annual",
+     "$159.99"
+    ],
+    [
+     "Paramount+ annual",
+     "$115.99"
+    ],
+    [
+     "Basic (with ads) Annual",
+     "$70.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/au/app/id1340650234"
   },
   "CA": {
    "checked": "2026-11-10",
-   "items": null,
-   "url": "https://apps.apple.com/ca/app/id530168168"
+   "items": [
+    [
+     "Standard Monthly",
+     "$11.99"
+    ],
+    [
+     "Basic (with ads) Monthly",
+     "$7.99"
+    ],
+    [
+     "Premium Monthly",
+     "$15.99"
+    ],
+    [
+     "Monthly Subscription",
+     "$10.99"
+    ],
+    [
+     "Paramount+ monthly",
+     "$11.99"
+    ],
+    [
+     "Standard Annual",
+     "$106.99"
+    ],
+    [
+     "Paramount+ monthly",
+     "$11.99"
+    ],
+    [
+     "Premium Annual",
+     "$142.99"
+    ],
+    [
+     "Basic (with ads) Annual",
+     "$70.99"
+    ],
+    [
+     "Paramount+ annual",
+     "$99.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ca/app/id1340650234"
   },
   "DE": {
    "checked": "2026-11-10",
-   "items": null,
-   "url": "https://apps.apple.com/de/app/id530168168"
+   "items": [
+    [
+     "Standard Monthly",
+     "9,99 €"
+    ],
+    [
+     "Basic (with ads) Monthly",
+     "5,99 €"
+    ],
+    [
+     "Premium Monthly",
+     "12,99 €"
+    ],
+    [
+     "Paramount+ annual",
+     "79,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/de/app/id1340650234"
   },
   "ES": {
    "checked": "2026-11-10",
    "items": null,
-   "url": "https://apps.apple.com/es/app/id530168168"
+   "url": "https://apps.apple.com/es/app/id1340650234"
   },
   "FR": {
    "checked": "2026-11-10",
-   "items": null,
-   "url": "https://apps.apple.com/fr/app/id530168168"
+   "items": [
+    [
+     "Standard Monthly",
+     "7,99 €"
+    ],
+    [
+     "Premium Monthly",
+     "10,99 €"
+    ],
+    [
+     "Standard Annual",
+     "79,99 €"
+    ],
+    [
+     "Premium Annual",
+     "97,99 €"
+    ],
+    [
+     "Paramount+ annual",
+     "79,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/fr/app/id1340650234"
   },
   "GB": {
    "checked": "2026-11-10",
-   "items": null,
-   "url": "https://apps.apple.com/gb/app/id530168168"
+   "items": [
+    [
+     "Standard Monthly",
+     "£9.99"
+    ],
+    [
+     "Basic (with ads) Monthly",
+     "£5.99"
+    ],
+    [
+     "Premium Monthly",
+     "£12.99"
+    ],
+    [
+     "Standard Annual",
+     "£88.99"
+    ],
+    [
+     "Basic (with ads) Annual",
+     "£52.99"
+    ],
+    [
+     "Premium Annual",
+     "£115.99"
+    ],
+    [
+     "Paramount+ annual",
+     "£69.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/gb/app/id1340650234"
   },
   "IE": {
    "checked": "2026-11-10",
-   "items": null,
-   "url": "https://apps.apple.com/ie/app/id530168168"
+   "items": [
+    [
+     "Standard Monthly",
+     "€9.99"
+    ],
+    [
+     "Basic (with ads) Monthly",
+     "€5.99"
+    ],
+    [
+     "Premium Monthly",
+     "€12.99"
+    ],
+    [
+     "Standard Annual",
+     "€88.99"
+    ],
+    [
+     "Premium Annual",
+     "€115.99"
+    ],
+    [
+     "Basic (with ads) Annual",
+     "€52.99"
+    ],
+    [
+     "Paramount+ annual",
+     "€79.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ie/app/id1340650234"
   },
   "IN": {
    "checked": "2026-11-10",
    "items": null,
-   "url": "https://apps.apple.com/in/app/id530168168"
+   "url": "https://apps.apple.com/in/app/id1340650234"
   },
   "IT": {
    "checked": "2026-11-10",
-   "items": null,
-   "url": "https://apps.apple.com/it/app/id530168168"
+   "items": [
+    [
+     "Standard Monthly",
+     "7,99 €"
+    ],
+    [
+     "Premium Monthly",
+     "12,99 €"
+    ],
+    [
+     "Standard Annual",
+     "79,99 €"
+    ],
+    [
+     "Premium Annual",
+     "115,99 €"
+    ],
+    [
+     "Paramount+ annual",
+     "79,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/it/app/id1340650234"
   },
   "NL": {
    "checked": "2026-11-10",
    "items": null,
-   "url": "https://apps.apple.com/nl/app/id530168168"
+   "url": "https://apps.apple.com/nl/app/id1340650234"
   },
   "NZ": {
    "checked": "2026-11-10",
    "items": null,
-   "url": "https://apps.apple.com/nz/app/id530168168"
+   "url": "https://apps.apple.com/nz/app/id1340650234"
   },
   "US": {
    "checked": "2026-11-10",
@@ -18076,6 +20781,368 @@
    "url": "https://apps.apple.com/us/app/id545519333"
   }
  },
+ "proton": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Drive Plus 1 month",
+     "$8.19"
+    ],
+    [
+     "Drive Plus 1 TB (1 month)",
+     "$16.99"
+    ],
+    [
+     "Proton Unlimited 1 month",
+     "$24.49"
+    ],
+    [
+     "Drive Plus 1 year",
+     "$77.90"
+    ],
+    [
+     "Proton Unlimited 1 year",
+     "$194.99"
+    ],
+    [
+     "Drive Plus 1 TB (1 year)",
+     "$154.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/au/app/id1509667851"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Drive Plus 1 month",
+     "$6.29"
+    ],
+    [
+     "Drive Plus 1 TB (1 month)",
+     "$12.99"
+    ],
+    [
+     "Proton Unlimited 1 month",
+     "$18.99"
+    ],
+    [
+     "Drive Plus 1 year",
+     "$59.90"
+    ],
+    [
+     "Proton Unlimited 1 year",
+     "$149.99"
+    ],
+    [
+     "Drive Plus 1 TB (1 year)",
+     "$119.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ca/app/id1509667851"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Drive Plus 1 month",
+     "4,99 €"
+    ],
+    [
+     "Drive Plus 1 TB (1 month)",
+     "9,99 €"
+    ],
+    [
+     "Proton Unlimited 1 month",
+     "14,99 €"
+    ],
+    [
+     "Drive Plus 1 year",
+     "47,90 €"
+    ],
+    [
+     "Proton Unlimited 1 year",
+     "119,00 €"
+    ],
+    [
+     "Drive Plus 1 TB (1 year)",
+     "95,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/de/app/id1509667851"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Drive Plus 1 month",
+     "4,99 €"
+    ],
+    [
+     "Drive Plus 1 TB (1 month)",
+     "9,99 €"
+    ],
+    [
+     "Proton Unlimited 1 month",
+     "14,99 €"
+    ],
+    [
+     "Drive Plus 1 year",
+     "47,90 €"
+    ],
+    [
+     "Drive Plus 1 TB (1 year)",
+     "95,99 €"
+    ],
+    [
+     "Proton Unlimited 1 year",
+     "119,00 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/es/app/id1509667851"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Drive Plus 1 month",
+     "4,99 €"
+    ],
+    [
+     "Drive Plus 1 TB (1 month)",
+     "9,99 €"
+    ],
+    [
+     "Proton Unlimited 1 month",
+     "14,99 €"
+    ],
+    [
+     "Drive Plus 1 year",
+     "47,90 €"
+    ],
+    [
+     "Proton Unlimited 1 year",
+     "119,00 €"
+    ],
+    [
+     "Drive Plus 1 TB (1 year)",
+     "95,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/fr/app/id1509667851"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Drive Plus 1 month",
+     "£4.09"
+    ],
+    [
+     "Drive Plus 1 TB (1 month)",
+     "£7.99"
+    ],
+    [
+     "Proton Unlimited 1 month",
+     "£12.49"
+    ],
+    [
+     "Drive Plus 1 year",
+     "£39.49"
+    ],
+    [
+     "Proton Unlimited 1 year",
+     "£99.99"
+    ],
+    [
+     "Drive Plus 1 TB (1 year)",
+     "£79.00"
+    ]
+   ],
+   "url": "https://apps.apple.com/gb/app/id1509667851"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Drive Plus 1 month",
+     "€4.99"
+    ],
+    [
+     "Drive Plus 1 TB (1 month)",
+     "€9.99"
+    ],
+    [
+     "Drive Plus 1 year",
+     "€47.90"
+    ],
+    [
+     "Proton Unlimited 1 month",
+     "€14.99"
+    ],
+    [
+     "Drive Plus 1 TB (1 year)",
+     "€95.99"
+    ],
+    [
+     "Proton Unlimited 1 year",
+     "€119.00"
+    ]
+   ],
+   "url": "https://apps.apple.com/ie/app/id1509667851"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Drive Plus 1 month",
+     "₹ 280"
+    ],
+    [
+     "Proton Unlimited 1 month",
+     "₹ 719"
+    ],
+    [
+     "Drive Plus 1 TB (1 month)",
+     "₹ 599"
+    ],
+    [
+     "Drive Plus 1 year",
+     "₹ 2,700"
+    ],
+    [
+     "Proton Unlimited 1 year",
+     "₹ 6,599"
+    ],
+    [
+     "Drive Plus 1 TB (1 year)",
+     "₹ 5,299"
+    ]
+   ],
+   "url": "https://apps.apple.com/in/app/id1509667851"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Drive Plus 1 month",
+     "4,99 €"
+    ],
+    [
+     "Proton Unlimited 1 month",
+     "14,99 €"
+    ],
+    [
+     "Drive Plus 1 TB (1 month)",
+     "9,99 €"
+    ],
+    [
+     "Proton Unlimited 1 year",
+     "119,00 €"
+    ],
+    [
+     "Drive Plus 1 year",
+     "47,90 €"
+    ],
+    [
+     "Drive Plus 1 TB (1 year)",
+     "95,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/it/app/id1509667851"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Drive Plus 1 month",
+     "€ 4,99"
+    ],
+    [
+     "Drive Plus 1 TB (1 month)",
+     "€ 9,99"
+    ],
+    [
+     "Proton Unlimited 1 month",
+     "€ 14,99"
+    ],
+    [
+     "Drive Plus 1 year",
+     "€ 47,90"
+    ],
+    [
+     "Proton Unlimited 1 year",
+     "€ 119,00"
+    ],
+    [
+     "Drive Plus 1 TB (1 year)",
+     "€ 95,99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nl/app/id1509667851"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Drive Plus 1 month",
+     "$8.19"
+    ],
+    [
+     "Proton Unlimited 1 month",
+     "$24.49"
+    ],
+    [
+     "Drive Plus 1 TB (1 month)",
+     "$14.99"
+    ],
+    [
+     "Proton Unlimited 1 year",
+     "$194.99"
+    ],
+    [
+     "Drive Plus 1 year",
+     "$77.90"
+    ],
+    [
+     "Drive Plus 1 TB (1 year)",
+     "$154.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nz/app/id1509667851"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Drive Plus 1 month",
+     "$4.99"
+    ],
+    [
+     "Drive Plus 1 TB (1 month)",
+     "$9.99"
+    ],
+    [
+     "Proton Unlimited 1 month",
+     "$14.99"
+    ],
+    [
+     "Drive Plus 1 year",
+     "$47.90"
+    ],
+    [
+     "Proton Unlimited 1 year",
+     "$119.00"
+    ],
+    [
+     "Drive Plus 1 TB (1 year)",
+     "$95.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id1509667851"
+  }
+ },
  "ps-plus": {
   "AU": {
    "checked": "2026-11-10",
@@ -18402,6 +21469,54 @@
     ]
    ],
    "url": "https://apps.apple.com/us/app/id431946152"
+  }
+ },
+ "rtl-plus": {
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "TVNOW Premium",
+     "9,99 €"
+    ],
+    [
+     "RTL+ Premium",
+     "9,99 €"
+    ],
+    [
+     "TVNOW Premium",
+     "9,99 €"
+    ],
+    [
+     "RTL+ Premium",
+     "9,99 €"
+    ],
+    [
+     "RTL+ Max",
+     "14,99 €"
+    ],
+    [
+     "TVNOW Premium Duo",
+     "10,99 €"
+    ],
+    [
+     "RTL+ Basic",
+     "5,99 €"
+    ],
+    [
+     "TVNOW Premium Duo",
+     "10,99 €"
+    ],
+    [
+     "RTL+ Basic",
+     "5,99 €"
+    ],
+    [
+     "RTL+ Max",
+     "14,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/de/app/id1057991212"
   }
  },
  "siriusxm": {
@@ -19073,6 +22188,30 @@
    "url": "https://apps.apple.com/us/app/id447188370"
   }
  },
+ "sonyliv": {
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "LIV Premium",
+     "₹ 399"
+    ],
+    [
+     "LIV Premium",
+     "₹ 1,499"
+    ],
+    [
+     "Mobile Only (India only)",
+     "₹ 699"
+    ],
+    [
+     "Crunchyroll Fan 1 Month",
+     "₹ 99"
+    ]
+   ],
+   "url": "https://apps.apple.com/in/app/id587794258"
+  }
+ },
  "spotify": {
   "AU": {
    "checked": "2026-11-10",
@@ -19723,6 +22862,560 @@
     ]
    ],
    "url": "https://apps.apple.com/us/app/id426826309"
+  }
+ },
+ "surfshark": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "12 Months of Unlimited VPN!",
+     "$79.99"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "$69.99"
+    ],
+    [
+     "1 Month",
+     "$16.99"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "$72.99"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "$19.99"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "$19.99"
+    ],
+    [
+     "1 Months of Unlimited VPN!",
+     "$19.99"
+    ],
+    [
+     "Surfshark One Subscription",
+     "$98.99"
+    ],
+    [
+     "Surfshark One Subscription",
+     "$27.49"
+    ],
+    [
+     "6 Months of Unlimited VPN!",
+     "$44.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/au/app/id1391782046"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "12 Months of Unlimited VPN!",
+     "$59.99"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "$69.99"
+    ],
+    [
+     "1 Month",
+     "$14.99"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "$66.99"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "$17.99"
+    ],
+    [
+     "1 Months of Unlimited VPN!",
+     "$19.99"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "$19.99"
+    ],
+    [
+     "6 Months of Unlimited VPN!",
+     "$36.99"
+    ],
+    [
+     "Surfshark One Subscription",
+     "$89.99"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "$60.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ca/app/id1391782046"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "12 Months of Unlimited VPN!",
+     "47,99 €"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "49,99 €"
+    ],
+    [
+     "1 Month",
+     "10,99 €"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "46,99 €"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "12,99 €"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "13,99 €"
+    ],
+    [
+     "1 Months of Unlimited VPN!",
+     "13,99 €"
+    ],
+    [
+     " Surfshark One Subscription",
+     "64,99 €"
+    ],
+    [
+     "6 Months of Unlimited VPN!",
+     "28,99 €"
+    ],
+    [
+     "6 Months of Unlimited VPN!",
+     "29,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/de/app/id1391782046"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "12 Months of Unlimited VPN!",
+     "47,99 €"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "49,99 €"
+    ],
+    [
+     "1 Month",
+     "10,99 €"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "46,99 €"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "12,99 €"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "13,99 €"
+    ],
+    [
+     "1 Months of Unlimited VPN!",
+     "13,99 €"
+    ],
+    [
+     "6 Months of Unlimited VPN!",
+     "28,99 €"
+    ],
+    [
+     "6 Months of Unlimited VPN!",
+     "29,99 €"
+    ],
+    [
+     "Surfshark One Subscription",
+     "17,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/es/app/id1391782046"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "12 Months of Unlimited VPN!",
+     "47,99 €"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "49,99 €"
+    ],
+    [
+     "1 Month",
+     "10,99 €"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "46,99 €"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "12,99 €"
+    ],
+    [
+     "1 Months of Unlimited VPN!",
+     "13,99 €"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "13,99 €"
+    ],
+    [
+     "6 Months of Unlimited VPN!",
+     "28,99 €"
+    ],
+    [
+     " Surfshark One Subscription",
+     "64,99 €"
+    ],
+    [
+     "6 Months of Unlimited VPN!",
+     "29,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/fr/app/id1391782046"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "1 Month",
+     "£9.99"
+    ],
+    [
+     "6 Months of Unlimited VPN!",
+     "£39.99"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "£44.99"
+    ],
+    [
+     "Annual VPN Subscription",
+     "£73.99"
+    ],
+    [
+     "Annual VPN Subscription",
+     "£42.99"
+    ],
+    [
+     "Surfshark One Subscription",
+     "£49.99"
+    ],
+    [
+     "Surfshark One Subscription",
+     "£99.99"
+    ],
+    [
+     "VPN Subscription",
+     "£81.99"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "£42.99"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "£12.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/gb/app/id1391782046"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "12 Months of Unlimited VPN!",
+     "€47.99"
+    ],
+    [
+     "1 Month",
+     "€10.99"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "€49.99"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "€12.99"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "€46.99"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "€13.99"
+    ],
+    [
+     "1 Months of Unlimited VPN!",
+     "€13.99"
+    ],
+    [
+     "6 Months of Unlimited VPN!",
+     "€28.99"
+    ],
+    [
+     "6 Months of Unlimited VPN!",
+     "€29.99"
+    ],
+    [
+     "1 Months of Unlimited VPN!",
+     "€13.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ie/app/id1391782046"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "12 Months of Unlimited VPN!",
+     "₹ 4,999"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "₹ 3,349"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "₹ 2,999"
+    ],
+    [
+     "1 Month",
+     "₹ 999"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "₹ 1,089"
+    ],
+    [
+     "1 Months of Unlimited VPN!",
+     "₹ 929"
+    ],
+    [
+     "Surfshark One Subscription",
+     "₹ 4,000"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "₹ 929"
+    ],
+    [
+     "6 Months of Unlimited VPN!",
+     "₹ 1,849"
+    ],
+    [
+     "6 Months of Unlimited VPN!",
+     "₹ 2,649"
+    ]
+   ],
+   "url": "https://apps.apple.com/in/app/id1391782046"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "12 Months of Unlimited VPN!",
+     "47,99 €"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "49,99 €"
+    ],
+    [
+     "1 Month",
+     "10,99 €"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "46,99 €"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "12,99 €"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "13,99 €"
+    ],
+    [
+     "1 Months of Unlimited VPN!",
+     "13,99 €"
+    ],
+    [
+     "6 Months of Unlimited VPN!",
+     "29,99 €"
+    ],
+    [
+     "6 Months of Unlimited VPN!",
+     "28,99 €"
+    ],
+    [
+     " Surfshark One Subscription",
+     "64,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/it/app/id1391782046"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "12 Months of Unlimited VPN!",
+     "€ 47,99"
+    ],
+    [
+     "1 Month",
+     "€ 10,99"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "€ 49,99"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "€ 12,99"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "€ 46,99"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "€ 13,99"
+    ],
+    [
+     "1 Months of Unlimited VPN!",
+     "€ 13,99"
+    ],
+    [
+     "Surfshark One Subscription",
+     "€ 17,99"
+    ],
+    [
+     "6 Months of Unlimited VPN!",
+     "€ 29,99"
+    ],
+    [
+     "6 Months of Unlimited VPN!",
+     "€ 28,99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nl/app/id1391782046"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "12 Months of Unlimited VPN!",
+     "$89.99"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "$85.99"
+    ],
+    [
+     "1 Month",
+     "$19.99"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "$82.99"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "$22.99"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "$23.99"
+    ],
+    [
+     "1 Months of Unlimited VPN!",
+     "$23.99"
+    ],
+    [
+     " Surfshark One Subscription",
+     "$29.99"
+    ],
+    [
+     "6 Months of Unlimited VPN!",
+     "$50.99"
+    ],
+    [
+     " 6 Months of Unlimited VPN!",
+     "$49.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nz/app/id1391782046"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "12 Months of Unlimited VPN!",
+     "$47.99"
+    ],
+    [
+     "1 Month",
+     "$10.99"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "$12.99"
+    ],
+    [
+     "1 Month of Unlimited VPN!",
+     "$13.99"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "$49.99"
+    ],
+    [
+     "Surfshark One Subscription",
+     "$17.99"
+    ],
+    [
+     "12 Months of Unlimited VPN!",
+     "$47.99"
+    ],
+    [
+     " 6 Months of Unlimited VPN!",
+     "$29.99"
+    ],
+    [
+     "Surfshark One Subscription",
+     "$64.99"
+    ],
+    [
+     "1 Months of Unlimited VPN!",
+     "$13.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id1391782046"
   }
  },
  "the-athletic": {
@@ -21398,6 +25091,13 @@
    "url": "https://apps.apple.com/us/app/id368677368"
   }
  },
+ "videoland": {
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/nl/app/id1570409180"
+  }
+ },
  "walmart-plus": {
   "US": {
    "checked": "2026-11-10",
@@ -22019,6 +25719,68 @@
    "checked": "2026-11-10",
    "items": [],
    "url": "https://apps.apple.com/us/app/id933944389"
+  }
+ },
+ "wsj": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/au/app/id1509844788"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/ca/app/id1509844788"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/de/app/id1509844788"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/es/app/id1509844788"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/fr/app/id1509844788"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/gb/app/id1509844788"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/ie/app/id1509844788"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/in/app/id1509844788"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/it/app/id1509844788"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/nl/app/id1509844788"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/nz/app/id1509844788"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/us/app/id1509844788"
   }
  },
  "x-premium": {
@@ -23706,6 +27468,54 @@
    "checked": "2026-11-10",
    "items": [],
    "url": "https://apps.apple.com/us/app/id1193350206"
+  }
+ },
+ "zee5": {
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "1 Month All Access Pack",
+     "₹ 999"
+    ],
+    [
+     "Premium 4K 1 Month Plan",
+     "₹ 299"
+    ],
+    [
+     "ZEE5 Hindi 1 Month Plan",
+     "₹ 199"
+    ],
+    [
+     "FIFA World Cup 2026 + All Access",
+     "₹ 399"
+    ],
+    [
+     "Premium Month - 1 Year",
+     "₹ 4,999"
+    ],
+    [
+     "Premium HD 12 Months Plan",
+     "₹ 9,999"
+    ],
+    [
+     "ZEE5 Tamil 1 Month Plan",
+     "₹ 129"
+    ],
+    [
+     "FIFA World Cup 2026 + All Access",
+     "₹ 799"
+    ],
+    [
+     "ZEE5 Telugu 1 Month Plan",
+     "₹ 129"
+    ],
+    [
+     "Premium Pack - Special Offer",
+     "₹ 59,900"
+    ]
+   ],
+   "url": "https://apps.apple.com/in/app/id743691886"
   }
  }
 }

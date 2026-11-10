@@ -72,7 +72,7 @@ describe('totals across currencies', () => {
       newPick(svc('netflix'), 'GB', TODAY), // £13.99
       newPick(svc('spotify'), 'GB', TODAY), // £12.99
       setOwnPrice(newPick(svc('amazon-prime'), 'GB', TODAY), 2000, 'USD', 'monthly'),
-      newPick(svc('chatgpt-plus'), 'GB', TODAY), // no price: left out
+      newPick(svc('duolingo'), 'GB', TODAY), // no price: left out
     ].filter(isPriced);
     const totals = spendTotals(picks);
     expect(totals.map((t) => [t.currency, t.yearlyMinor])).toEqual([

@@ -1,6 +1,6 @@
 """Read the App Store "In-App Purchases" list for apps, per storefront.
 
-Usage: python3 -I scripts/catalog/fetch-iap.py [--top] [--force] [id ...]
+Usage: python3 -I scripts/catalog/fetch-iap.py [--top] [--force] [--shard=k/n | --merge] [id ...]
 
 For each pinned app (apps.json) it opens https://apps.apple.com/{cc}/app/id{ID}
 in every country the service is sold in (English page where the store has
@@ -89,7 +89,9 @@ def main():
         for cc in rows[sid]['countries'] or COUNTRIES:
             if not force and (cc in out.get(sid, {}) or cc in done.get(sid, {})):
                 continue
-            url = f'https://apps.apple.com/{cc.lower()}/app/id{pin["trackId"]}'
+            # "otherStores": the app id outside the pin's own storefront (e.g. Paramount+ International)
+            tid = pin.get('otherStores', pin['trackId']) if cc.lower() != pin['cc'] else pin['trackId']
+            url = f'https://apps.apple.com/{cc.lower()}/app/id{tid}'
             html = page(url + (f'?l={LANG[cc]}' if cc in LANG else ''))
             time.sleep(2.5)
             items = iap_list(html) if html else None

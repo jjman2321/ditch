@@ -39,6 +39,19 @@ describe('price data (prices.data.ts, generated)', () => {
     expect(stale).toEqual([]);
   });
 
+  it('App Store prices are marked as Apple billing', () => {
+    const apple = PRICE_ROWS.filter((r) => r.source.startsWith('https://apps.apple.com/'));
+    expect(apple.length).toBeGreaterThan(100);
+    for (const r of apple) expect(r.note).toMatch(/^Apple billing/);
+  });
+
+  it('every row is for a country where the service is sold', () => {
+    for (const r of PRICE_ROWS) {
+      const where = SERVICE_BY_ID[r.serviceId].availableIn;
+      if (where) expect(where).toContain(r.country);
+    }
+  });
+
   it('12 countries, each with a currency Intl knows', () => {
     expect(COUNTRIES.map((c) => c.code)).toEqual(['US', 'GB', 'CA', 'AU', 'IE', 'NZ', 'DE', 'NL', 'FR', 'IT', 'ES', 'IN']);
     for (const c of COUNTRIES) expect(currencyDigits(c.currency)).toBe(2);
@@ -73,6 +86,12 @@ describe('price lookup by country', () => {
     expect(catalogPrice('max', 'GB')).toBeNull(); // US-only row
     expect(catalogPrice('netflix', null)).toBeNull(); // region we don't cover
     expect(priceRow('netflix', 'JP')).toBeNull();
+  });
+
+  it('reads App Store prices per storefront, in that country’s currency', () => {
+    expect(catalogPrice('chatgpt-plus', 'GB')).toMatchObject({ planId: 'plus', amountMinor: 1999, currency: 'GBP', cycle: 'monthly' });
+    expect(catalogPrice('chatgpt-plus', 'IN')).toMatchObject({ amountMinor: 199900, currency: 'INR' });
+    expect(catalogPrice('strava', 'US')).toMatchObject({ planId: 'yearly', amountMinor: 7999, cycle: 'yearly' });
   });
 
   it('picks a named plan, falling back to the default', () => {

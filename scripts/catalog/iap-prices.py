@@ -17,7 +17,8 @@ kept only when the list gives one clear price for it:
 
 A plan can list several (regex, pick) options; the first that gives a price
 wins, so one rule covers storefronts that name products differently.
-A row is written only when its default plan is found. Without --write it
+A row is written only when its default plan is found (a list of defaults
+means the first one this storefront sells). Without --write it
 prints what it would add. With --write it merges the rows into
 docs/research/prices-2026-11.json, never replacing a verified row that came
 from somewhere else.
@@ -90,10 +91,18 @@ def build():
             for plan in plans:
                 amount, how = plan_price(plan, page['items'], cur)
                 if amount:
-                    found.append({'id': plan['id'], 'name': plan['name'], 'amountMinor': amount, 'cycle': plan['cycle'], **({'default': True} if plan['id'] == default else {})})
+                    found.append({'id': plan['id'], 'name': plan['name'], 'amountMinor': amount, 'cycle': plan['cycle'], **({'default': True} if isinstance(default, str) and plan['id'] == default else {})})
                     hows.add(how)
-            if not any(p.get('default') for p in found):
+            if not found:
                 continue
+            if not any(p.get('default') for p in found):
+                # `default` may be a list: the first plan this storefront has
+                pick = next((d for d in (default if isinstance(default, list) else [default]) if any(p['id'] == d for p in found)), None)
+                if not pick:
+                    continue
+                for p in found:
+                    if p['id'] == pick:
+                        p['default'] = True
             rows.append(
                 {
                     'serviceId': sid,
@@ -184,6 +193,44 @@ rule('deezer', 'premium', P('premium', 'Premium', M, (r'Deezer Premium', 'implie
 rule('tidal', 'individual', P('individual', 'Individual', M, (r'TIDAL Individual', 'implied')), P('family', 'Family', M, (r'TIDAL Family', 'implied')))
 rule('nyt', 'all-access', P('all-access', 'All Access (monthly)', M, r'All Access - Monthly'), P('all-access-yearly', 'All Access (yearly)', Y, r'All Access - Annual'), P('news', 'News (monthly)', M, r'News - Monthly'), P('games', 'Games (monthly)', M, r'Games - Monthly'))
 rule('roblox', 'premium-450', P('premium-450', 'Premium 450', M, r'Roblox Premium 450 One Month'), P('premium-1000', 'Premium 1000', M, r'Roblox Premium 1000 One Month'), P('premium-2200', 'Premium 2200', M, r'Roblox Premium 2200 One Month'))
+rule('canal-plus', 'canal', P('canal', 'CANAL+ (1 stream)', M, (r'CANAL\+ \(1 stream\)', 'implied')), P('canal-2', 'CANAL+ (2 streams)', M, (r'CANAL\+ \(2 streams\)', 'implied')), P('series', 'CANAL+ SÉRIES', M, (r'CANAL\+ ?SÉRIES \(1 stream\)', 'implied')))
+rule('crave', 'premium', P('ads', 'Standard with Ads', M, (r'Crave Standard With Ads', 'implied')), P('premium', 'Premium', M, (r'Crave Premium', 'low'), (r'Crave Premium', 'implied')), P('premium-yearly', 'Premium (yearly)', Y, (r'Crave Premium', 'high')), P('premium-starz', 'Premium + STARZ', M, (r'Crave Premium \+ STARZ', 'implied')))
+rule('joyn', 'monthly', P('monthly', 'Joyn+ (monthly)', M, r'Joyn\+ Monthly'), P('yearly', 'Joyn+ (yearly)', Y, r'Joyn\+ Jahresabo'))
+rule('stan', 'standard', P('basic', 'Basic with ads', M, (r'Stan Basic with ads', 'implied')), P('standard', 'Standard', M, (r'Stan Standard', 'implied')), P('premium', 'Premium', M, (r'Stan Premium', 'implied')))
+rule('jiohotstar', 'super', P('mobile', 'Mobile (monthly)', M, r'Mobile Monthly Plan'), P('super', 'Super (monthly)', M, r'Super Monthly Plan'), P('premium', 'Premium (monthly)', M, r'Premium Monthly Plan'), P('super-yearly', 'Super (yearly)', Y, r'Super Annual Plan'), P('premium-yearly', 'Premium (yearly)', Y, r'Premium Annual Plan'))
+# DAZN names its plans differently in each country; only plans whose names say the period.
+rule(
+    'dazn',
+    ['monthly', 'standard', 'unlimited', 'flex'],
+    P('monthly', 'DAZN (monthly)', M, r'DAZN - Monthly Subscription'),
+    P('yearly', 'DAZN (yearly)', Y, r'DAZN - Annual Subscription'),
+    P('start', 'Start (monthly)', M, r'DAZN Start Mensile'),
+    P('standard', 'Standard (monthly)', M, r'DAZN Standard Mensile'),
+    P('standard-yearly', 'Standard (yearly)', Y, r'DAZN Standard Annuale'),
+    P('plus', 'Plus (monthly)', M, r'DAZN Plus Mensile'),
+    P('unlimited', 'Unlimited (monthly)', M, r'DAZN UNLIMITED \(Monatlich\)'),
+    P('unlimited-yearly', 'Unlimited (yearly)', Y, r'DAZN UNLIMITED \(Jährlich\)'),
+    P('super-sport', 'Super Sport (monthly)', M, r'DAZN SUPER SPORT \(Monatlich\)'),
+    P('flex', 'Flexible Pass (monthly)', M, (r'DAZN - Flexible pass', 'implied')),
+)
+rule('babbel', 'all-yearly', P('all-yearly', 'All Languages (12 months)', Y, r'All Languages – 12-month plan'))
+# MasterClass sells yearly memberships only.
+rule('masterclass', 'individual', P('individual', 'Individual (yearly)', Y, (r'MasterClass Individual', 'implied')), P('duo', 'Duo (yearly)', Y, (r'MasterClass Duo', 'implied')), P('family', 'Family (yearly)', Y, (r'MasterClass Family', 'implied')))
+rule(
+    'paramount-plus',
+    'standard',
+    P('basic-ads', 'Basic (with ads)', M, r'Basic \(with ads\) Monthly'),
+    P('standard', 'Standard', M, r'Standard Monthly'),
+    P('premium', 'Premium', M, r'Premium Monthly'),
+    P('basic-ads-yearly', 'Basic with ads (yearly)', Y, r'Basic \(with ads\) Annual'),
+    P('standard-yearly', 'Standard (yearly)', Y, r'Standard Annual'),
+    P('premium-yearly', 'Premium (yearly)', Y, r'Premium Annual'),
+)
+rule('peloton', 'app-one', P('app-one', 'App One (monthly)', M, r'Peloton App One Monthly'), P('app-plus', 'App+ (monthly)', M, r'Peloton App\+ Monthly'), P('app-one-yearly', 'App One (yearly)', Y, r'Peloton App One Annual'), P('app-plus-yearly', 'App+ (yearly)', Y, r'Peloton App\+ Annual'))
+rule('proton', 'unlimited', P('unlimited', 'Proton Unlimited (monthly)', M, r'Proton Unlimited 1 month'), P('unlimited-yearly', 'Proton Unlimited (yearly)', Y, r'Proton Unlimited 1 year'))
+rule('economist', 'annual', P('monthly', 'Premium (monthly)', M, r'Premium Monthly'), P('annual', 'Premium (yearly)', Y, r'Premium Annual'))
+rule('grammarly', ['monthly', 'yearly'], P('monthly', 'Pro (monthly)', M, r'Monthly Plan'), P('quarterly', 'Pro (quarterly)', 'quarterly', r'Quarterly Plan'), P('yearly', 'Pro (yearly)', Y, r'Annual Plan'))
+rule('binge', 'standard', P('standard', 'Standard', M, (r'Standard', 'implied')))
 
 if __name__ == '__main__':
     main()

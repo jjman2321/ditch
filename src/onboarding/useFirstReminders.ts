@@ -4,7 +4,7 @@
 
 import { useMemo } from 'react';
 
-import { addDays, type DateOnly } from '@/domain/dates';
+import { addDays, weekdayName, type DateOnly } from '@/domain/dates';
 import { formatMoney } from '@/domain/money';
 import { headsUpBody } from '@/domain/reminders';
 import { now as clockNow } from '@/services/clock';
@@ -38,6 +38,11 @@ export function useFirstReminders(max: number) {
     const money = (a: number, c: string) => formatMoney(a, c, { home });
     const reminders: FirstReminder[] = rows.map((r) => {
       const pick = list.find((x) => x.id === r.id);
+      // Ditch's own trial: worded like its real reminder (src/domain/reminders.ts).
+      if (r.trial) {
+        const plan = planById('yearly');
+        return { ...r, body: `Your Ditch Pro trial ends ${weekdayName(r.charge)}. Then it’s ${plan.priceString} a year. Keep it or ditch it.` };
+      }
       if (!pick) return { ...r, body: '' };
       const sub = subFromPick(pick, { freePick: true, nowIso: '', id: pick.id });
       return { ...r, pick, body: headsUpBody(sub, r.charge, r.reminder, money) };

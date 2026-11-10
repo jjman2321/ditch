@@ -145,6 +145,11 @@ Pull first: `git pull`, `npm install`, then `npx expo start --tunnel ngrok --cle
 - [ ] Type "Gym": "Add 'Gym' as your own" opens the full form with the name filled in. The date field says **Add date** and "No date, no reminder…". Remind me says "Starts once it has a date".
 - [ ] No import buttons anywhere yet (they appear once import works in the development build).
 
+**You're set, Calendar, Remind me (DECISIONS #36)**
+- [ ] You're set: the checklist items fade in one by one, then a soft buzz. Below: "First reminder · <date>" and the real notification card with the duck peeking. Free with 4+ subs: "See all 3 reminders" opens the pick-3 sheet.
+- [ ] Calendar: tap a charge day. Each row says "Reminders Wed 18, Fri 20" (or "No reminder · free covers 3"), no yellow pills, nothing cut off.
+- [ ] Edit a sub that has reminders: "Remind me" shows the two real dates and a preview of the exact notification underneath. Turn it off: the preview goes away.
+
 **Paywall (DECISIONS #35)**
 - [ ] Under the Yearly button: "$0 today · $29.99/yr from <date 7 days out> · Cancel anytime". No reminder text.
 - [ ] The table's last row says "Import anytime". The duck's bill points at the PRO column and never covers the title.

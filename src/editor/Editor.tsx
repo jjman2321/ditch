@@ -9,7 +9,9 @@ import { AccessibilityInfo, Pressable, ScrollView, TextInput, View } from 'react
 
 import { catalogPrice, planChoices } from '@/catalog/prices';
 import { SERVICES, SERVICE_BY_ID, availableIn, popularIn, searchServices, type CatalogService } from '@/catalog/services';
-import { type DateOnly } from '@/domain/dates';
+import { headsUpDates } from '@/domain/charges';
+import { weekdayDate, weekdayShort, type DateOnly } from '@/domain/dates';
+import { headsUpBody, trialBody } from '@/domain/reminders';
 import { CYCLE_WORDS, currencyDigits, formatMoney, parseAmountInput, type Cycle } from '@/domain/money';
 import { leadsLabel, shortTimeLabel, effectiveLeads } from '@/domain/settings';
 import { FREE_REMINDERS, chargeOfSub, isActive, isProTrial, makeSub, remindedIds, type Sub } from '@/domain/subs';
@@ -20,7 +22,7 @@ import { Picker } from './Picker';
 import { useApp, useAppMoney } from '@/state/app';
 import { chooseCycle, choosePlan, newPick, type Picked } from '@/state/picks';
 import { ask } from '@/ui/alert';
-import { Button, Card, ChevronRight, Chip, F, KEYBOARD_DONE, KeyboardDone, LogoTile, Search, Segmented, Sheet, SunSwitch, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
+import { Button, Card, ChevronRight, Chip, F, KEYBOARD_DONE, KeyboardDone, LogoTile, NotificationPreview, Search, Segmented, Sheet, SunSwitch, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
 
 /** add: the picker first; `custom` is a name typed there (the full form); `catalogId` opens one service's form. */
 type Open = { mode: 'add'; catalogId?: string; custom?: string } | { mode: 'edit'; id: string };
@@ -265,6 +267,17 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
   }
 
   const charge = chargeOfSub(draft, today);
+  // When the reminders land, and a preview of the first one, worded like the real notification.
+  const leadsNow = trialEntry ? [3, 1] : effectiveLeads(settings, pro);
+  const heads = charge ? headsUpDates(charge, today, { leads: leadsNow, nowHour: new Date().getHours() }) : [];
+  const previewName = (draft.name || query).trim();
+  const preview =
+    remindOn && charge && heads[0] && previewName && !trialEntry
+      ? {
+          time: `${weekdayShort(heads[0])} ${shortTimeLabel(settings.reminderTime)}`,
+          body: (draft.isTrial ? trialBody : headsUpBody)({ ...draft, name: previewName }, charge, heads[0], (a, c) => formatMoney(a, c, { home: settings.currency })),
+        }
+      : null;
   const canSave = !!(draft.name || query).trim() && (!amount || typed !== null);
   const catalogLine =
     draft.priceSource === 'catalog' && draft.amountMinor && draft.currency ? `Typical ${draft.planName ? `${draft.planName} ` : ''}price. Change it if yours is different.` : null;
@@ -451,16 +464,30 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
               <View style={{ minHeight: 60, flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 8 }}>
                 <View style={{ flex: 1 }}>
                   <Txt v="label">Remind me</Txt>
-                  <Txt v="sub" tone="mute">
+                  <Txt v="sub" tone="mute" num>
                     {atLimit
                       ? `Free covers ${FREE_REMINDERS}. Turn one off in Settings, or try Pro.`
                       : !charge && !trialEntry
                         ? 'Starts once it has a date'
-                        : `${leadsLabel(trialEntry ? [3, 1] : effectiveLeads(settings, pro))}, at ${shortTimeLabel(settings.reminderTime)}`}
+                        : remindOn && heads.length
+                          ? `${heads.map(weekdayDate).join(' and ')} at ${shortTimeLabel(settings.reminderTime)}`
+                          : `${leadsLabel(leadsNow)}, at ${shortTimeLabel(settings.reminderTime)}`}
                   </Txt>
                 </View>
                 <SunSwitch label="Remind me" hint={atLimit ? 'Free covers 3 reminders' : undefined} value={remindOn} disabled={trialEntry} onValueChange={toggleRemind} />
               </View>
+              {/* The exact notification they'll get (design/v14 option A). */}
+              {preview ? (
+                <View
+                  accessible
+                  accessibilityLabel={`Preview: ${preview.body}`}
+                  style={{ marginBottom: 12, borderRadius: 18, padding: 10, backgroundColor: p.dark ? '#2A2721' : '#FFF1BC' }}
+                >
+                  <View importantForAccessibility="no-hide-descendants">
+                    <NotificationPreview time={preview.time} message={preview.body} />
+                  </View>
+                </View>
+              ) : null}
               {atLimit ? (
                 <Button
                   kind="text"

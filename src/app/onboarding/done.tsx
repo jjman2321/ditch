@@ -9,6 +9,7 @@ import { getLocales } from 'expo-localization';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { AppState, Linking, Text, View } from 'react-native';
+import Animated, { FadeIn, useReducedMotion } from 'react-native-reanimated';
 
 import { namesLine } from '@/domain/copy';
 import { headsUpDates } from '@/domain/charges';
@@ -20,7 +21,10 @@ import { now as clockNow } from '@/services/clock';
 import { getNotifStatus, requestNotifPermission } from '@/services/notifications';
 import { useApp } from '@/state/app';
 import { onboardingToday, totalsFor, useCountry, useMoney, useOnboarding, usePickedList, useRemindedIds } from '@/state/onboarding';
-import { Bell, Button, Check, Duck, DuckIcon, F, LogoTile, Txt, brand, useFitSize, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
+import { Bell, Button, Check, Duck, F, NotificationPreview, Txt, brand, haptic, useFitSize, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
+
+/** Keep the last two words together, so a line never ends on one word. */
+const noOrphan = (s: string) => s.replace(/ (\S+)$/, '\u00A0$1');
 
 type Mark = 'ok' | 'todo' | 'warn';
 
@@ -61,6 +65,13 @@ export default function Done() {
   const on = notifications === 'granted';
   const { reminders, undated, trialCharge } = useFirstReminders(pro || (f.small && notifications !== 'granted') ? 2 : 3);
   const [saving, setSaving] = useState(false);
+  const reduce = useReducedMotion();
+  const first = reminders[0];
+  // A soft success buzz once the checklist has landed.
+  useEffect(() => {
+    const t = setTimeout(() => haptic.success(), reduce ? 0 : 150 + 3 * 160 + 260);
+    return () => clearTimeout(t);
+  }, [reduce]);
   const [picking, setPicking] = useState(false);
   const sub2 = dark ? '#BFB7A7' : '#4B4220';
 
@@ -115,11 +126,9 @@ export default function Done() {
         : { mark: 'ok', title: 'Every date is set', sub: 'Reminders land on the right day.' },
     );
 
-  const header = !on ? 'Waiting for your OK' : !pro && many ? 'Reminders on your 3 biggest' : 'Your first reminders';
   const title = on ? 'You’re set.' : 'Almost set.';
   const titleBase = f.tablet ? 80 : 60;
   const [titleSize, onTitle] = useFitSize(titleBase, f.content);
-  const cardBg = dark ? '#1E1C18' : 'rgba(255,255,255,0.72)';
 
   return (
     <OnbRoot surface="sun">
@@ -136,8 +145,9 @@ export default function Done() {
 
         <View style={{ marginTop: f.small ? 8 : 24 }}>
           {items.map((it, i) => (
-            // No dividers on the yellow: spacing separates the items (lines on colour read as muddy grey).
-            <View key={it.title} accessible accessibilityLabel={`${it.mark === 'ok' ? 'Done' : it.mark === 'warn' ? 'Needs you' : 'To do'}: ${it.title}. ${it.sub}`} style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 12, paddingVertical: f.small ? 8 : 10, marginTop: i ? 4 : 0 }}>
+            // No dividers on the yellow: spacing separates the items. They fade in one by one (no motion near a price).
+            <Animated.View key={it.title} entering={reduce ? undefined : FadeIn.delay(150 + i * 160).duration(260)}>
+            <View accessible accessibilityLabel={`${it.mark === 'ok' ? 'Done' : it.mark === 'warn' ? 'Needs you' : 'To do'}: ${it.title}. ${it.sub}`} style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 12, paddingVertical: f.small ? 8 : 10, marginTop: i ? 4 : 0 }}>
               <MarkIcon kind={it.mark} />
               <View style={{ flex: 1 }}>
                 <Txt v="strong">{it.title}</Txt>
@@ -146,49 +156,34 @@ export default function Done() {
                 </Txt>
               </View>
             </View>
+            </Animated.View>
           ))}
         </View>
 
         <View style={{ flex: 1, minHeight: f.small ? 16 : 32 }} />
 
-        {reminders.length ? (
-          <View>
-            {f.small || !on ? null : <Duck width={104} right={16} sink={4} />}
-            <View style={{ borderRadius: 20, paddingVertical: 4, paddingHorizontal: 16, backgroundColor: cardBg, borderWidth: dark ? 1 : 0, borderColor: '#2C2924' }}>
-              <View style={{ minHeight: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-                <Txt v="label" accessibilityRole="header" style={{ flex: 1 }}>
-                  {header}
-                </Txt>
-                {on && !pro && many ? <TextLink label="Change" a11y="Change which 3 get reminders" onPress={() => setPicking(true)} style={{ fontSize: 15 }} /> : null}
+        {/* What happens next (design/v14 option A): the first real reminder, in the lock-screen look
+            from step 4, with Ditch peeking over it. "See all" opens the pick-3 sheet. */}
+        {first ? (
+          <View accessible accessibilityLabel={`${on ? 'Your first reminder' : 'Your first reminder, paused'}: ${weekdayDate(first.reminder)} at 9 AM. ${first.body}`}>
+            <Txt v="eyebrow" num color={sub2} style={{ marginHorizontal: 4, marginBottom: 8 }} importantForAccessibility="no">
+              {on ? `First reminder · ${weekdayDate(first.reminder)}` : `Paused · ${weekdayDate(first.reminder)}`}
+            </Txt>
+            <View importantForAccessibility="no-hide-descendants">
+              {f.small ? null : <Duck width={84} right={10} sink={4} delay={reduce ? 0 : 700} />}
+              <View style={{ zIndex: 2 }}>
+                <NotificationPreview faded={!on} time="9:00 AM" message={noOrphan(first.body)} />
               </View>
-              {reminders.map((r, i) => (
-                <View
-                  key={r.id}
-                  accessible
-                  accessibilityLabel={`${r.name}, renews ${weekdayDate(r.charge)}. ${on ? 'Reminder' : 'Paused reminder'} ${weekdayDate(r.reminder)}.`}
-                  style={{ minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 12 }}
-                >
-                  <View style={{ position: 'absolute', top: 0, left: i ? 44 : 0, right: 0, height: 1, backgroundColor: dark ? '#2B2823' : 'rgba(22,20,15,0.1)' }} />
-                  {r.trial ? <DuckIcon size={32} /> : <LogoTile id={r.id} size={32} />}
-                  <View style={{ flex: 1, minWidth: 0, paddingVertical: 8 }}>
-                    <Txt v="label" numberOfLines={1}>
-                      {r.name}
-                    </Txt>
-                    <Txt v="sub" num color={sub2} numberOfLines={1}>
-                      {`renews ${weekdayDate(r.charge)}`}
-                    </Txt>
-                  </View>
-                  <View style={{ alignItems: 'flex-end' }}>
-                    <Txt v="label" num>
-                      {weekdayDate(r.reminder)}
-                    </Txt>
-                    <Txt v="sub" color={sub2}>
-                      {on ? 'reminder' : 'paused'}
-                    </Txt>
-                  </View>
-                </View>
-              ))}
             </View>
+            {!pro && many ? (
+              <View style={{ alignItems: 'center', marginTop: 8 }}>
+                <TextLink label={`See all ${Math.min(3, remindedIds.length)} reminders`} a11y="See and change which 3 get reminders" onPress={() => setPicking(true)} style={{ fontSize: 15 }} />
+              </View>
+            ) : reminders.length > 1 ? (
+              <Txt v="sub" num color={sub2} center style={{ marginTop: 10 }}>
+                {`Then ${reminders.length - 1} more, each 3 days and 1 day before.`}
+              </Txt>
+            ) : null}
           </View>
         ) : null}
 

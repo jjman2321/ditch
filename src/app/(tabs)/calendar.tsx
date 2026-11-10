@@ -6,14 +6,14 @@ import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 
-import { MONTH_LONG, WEEKDAY_LONG, addDays, parseDate, shiftMonth, weekdayDate, weekdayOf, type DateOnly } from '@/domain/dates';
+import { MONTH_LONG, WEEKDAY_LONG, addDays, parseDate, shiftMonth, weekdayDate, weekdayOf, weekdayShort, type DateOnly } from '@/domain/dates';
 import { HEADS_UP_LEADS } from '@/domain/charges';
 import { effectiveLeads, timeLabel } from '@/domain/settings';
 import { calendarMonth, isPending, isPricedSub, isProTrial, monthDue, remindedIds, undatedSubs, yearlyOfSub, type CalendarCharge, type CalendarDay } from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
 import { SubLogo } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
-import { Bell, BellOff, Card, ChevronLeft, ChevronRight, EDGE, F, IconButton, SectionHeader, Txt, brand, haptic, useInsets, usePalette } from '@/ui/sunflower';
+import { Card, ChevronLeft, ChevronRight, EDGE, F, IconButton, SectionHeader, Txt, brand, haptic, useInsets, usePalette } from '@/ui/sunflower';
 
 const WEEK = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 const GAP = 4;
@@ -124,6 +124,7 @@ export default function Calendar() {
               <ChargeRow
                 key={c.sub.id}
                 c={c}
+                pro={pro}
                 first={i === 0}
                 today={today}
                 leads={isProTrial(c.sub) ? [...HEADS_UP_LEADS] : leads}
@@ -248,6 +249,7 @@ function Legend() {
 
 function ChargeRow({
   c,
+  pro,
   first,
   today,
   leads,
@@ -256,6 +258,7 @@ function ChargeRow({
   onPress,
 }: {
   c: CalendarCharge;
+  pro: boolean;
   first: boolean;
   today: DateOnly;
   leads: number[];
@@ -268,11 +271,25 @@ function ChargeRow({
   const s = c.sub;
   const on = (c.reminded || isProTrial(s)) && !c.pending;
   const heads = on ? leads.map((l) => addDays(c.date, -l)).filter((d) => d >= today) : [];
-  const line = c.pending ? 'Ditched. Cancel before it charges.' : !on ? 'No reminder' : blocked ? 'Reminders are off' : `Reminders at ${timeLabel(time)}`;
+  // One line that says when the reminders land: "Reminders Mon 16, Wed 18" (no pills; the time is in Settings and VoiceOver).
+  const short = (d: DateOnly) => `${weekdayShort(d)} ${parseDate(d).d}`;
+  const line = c.pending
+    ? 'Ditched. Cancel before it charges.'
+    : !on
+      ? pro
+        ? 'Reminders off for this one'
+        : 'No reminder · free covers 3'
+      : blocked
+        ? 'Reminders are off'
+        : c.date < today
+          ? 'Charged'
+          : heads.length
+            ? `${heads.length === 1 ? 'Reminder' : 'Reminders'} ${heads.map(short).join(', ')}`
+            : 'Too close for a reminder this time';
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={`${s.name}, ${isPricedSub(s) ? money(s.amountMinor, s.currency) : 'no price'}, ${line}${heads.length ? `, ${heads.map(weekdayDate).join(' and ')}` : ''}`}
+      accessibilityLabel={`${s.name}, ${isPricedSub(s) ? money(s.amountMinor, s.currency) : 'no price'}, ${line}${heads.length && on && !blocked ? `, at ${timeLabel(time)}` : ''}`}
       onPress={onPress}
       style={({ pressed }) => ({ paddingHorizontal: 14, paddingVertical: 10, borderTopWidth: first ? 0 : 1, borderTopColor: p.hair, opacity: pressed ? 0.75 : 1 })}
     >
@@ -286,23 +303,10 @@ function ChargeRow({
             {line}
           </Txt>
         </View>
-        {on && !blocked ? <Bell color={p.dark ? brand.sunflower : brand.ink} fill={brand.sunflower} size={19} /> : <BellOff color={p.disabledFg} size={19} />}
         <Txt v="moneyM" num color={p.cardFg} style={{ fontSize: 17.5, minWidth: 62, textAlign: 'right' }}>
           {isPricedSub(s) ? money(s.amountMinor, s.currency) : '–'}
         </Txt>
       </View>
-      {heads.length && !blocked ? (
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 10, marginLeft: 48 }}>
-          {heads.map((h) => (
-            <View key={h} style={{ flexDirection: 'row', alignItems: 'center', gap: 6, height: 32, borderRadius: 16, paddingHorizontal: 12, backgroundColor: p.dark ? '#2E2B25' : '#FFF0C2' }}>
-              <Bell color={p.dark ? brand.sunflower : brand.ink} fill={brand.sunflower} size={14} />
-              <Txt v="label" num color={p.cardFg} style={{ fontSize: 15 }}>
-                {weekdayDate(h)}
-              </Txt>
-            </View>
-          ))}
-        </View>
-      ) : null}
     </Pressable>
   );
 }

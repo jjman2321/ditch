@@ -193,9 +193,9 @@ describe('settings', () => {
     expect(leadsLabel([7, 3, 1])).toBe('1 week, 3 days and 1 day before');
     expect(leadsLabel([3, 0])).toBe('3 days before and on the day');
     expect(leadsLabel([0])).toBe('On the day');
-    expect(timeLabel('09:00')).toBe('9:00 AM');
-    expect(timeLabel('00:05')).toBe('12:05 AM');
-    expect(timeLabel('18:30')).toBe('6:30 PM');
+    expect(timeLabel('09:00')).toBe('9:00\u00A0AM');
+    expect(timeLabel('00:05')).toBe('12:05\u00A0AM');
+    expect(timeLabel('18:30')).toBe('6:30\u00A0PM');
     expect(cleanLeads([])).toEqual([3, 1]);
   });
 });

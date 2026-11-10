@@ -49,7 +49,8 @@ export function formatTime(h: number, m: number): string {
 export function timeLabel(t: string): string {
   const { h, m } = parseTime(t);
   const h12 = h % 12 === 0 ? 12 : h % 12;
-  return `${h12}:${String(m).padStart(2, '0')} ${h < 12 ? 'AM' : 'PM'}`;
+  // Non-breaking space, so "9 AM" never splits across two lines.
+  return `${h12}:${String(m).padStart(2, '0')}\u00A0${h < 12 ? 'AM' : 'PM'}`;
 }
 
 /** "9 AM" when on the hour, else "9:30 AM". */

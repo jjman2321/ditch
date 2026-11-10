@@ -75,6 +75,8 @@ type Actions = {
   refreshNotif: () => Promise<NotifStatus>;
   askNotif: () => Promise<NotifStatus>;
   sendTest: () => Promise<boolean>;
+  /** Health check: read the permission again and make the phone match the plan. */
+  recheck: () => Promise<NotifStatus>;
 };
 
 export type AppValue = Data & Actions & { pro: boolean };
@@ -255,6 +257,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
         return notif;
       },
       sendTest: () => sendTestReminder(),
+      recheck: async () => {
+        const notif = await refreshNotif();
+        reschedule();
+        return notif;
+      },
     }),
     [commit, updateSettings, refreshNotif, reschedule, set],
   );

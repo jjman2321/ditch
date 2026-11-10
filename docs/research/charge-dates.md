@@ -38,3 +38,20 @@ The owner picked **option B** (ask the day of the month, no guesses) after recor
   2. **Top of Add** (screen 5): "From a screenshot" and "From a bank statement" (Pro), then the onboarding-style picker.
   Both end in the check list (screen 6). Not on the dates step or the Home "No date yet" card, which keep one job each.
 - Import needs the EAS development build (on-phone text reading). Until it ships, the Pro rows open the paywall in Expo Go.
+
+## Should the first import be free? (owner asked to research, Nov 10)
+**What we found**
+- **We already decided "free once" before.** DECISIONS #16 made the onboarding screenshot scan free once ("Import anytime" is the Pro row); #29 later took import out of onboarding to keep it short. The owner now wants it back on the pick step, so #16's "free once" applies again.
+- **Showing value before the paywall lifts trial starts.** RevenueCat case study (ASL Bloom): value shown before asking for a commitment gave **+15% trial conversion, +12% ARPU** ([RevenueCat](https://www.revenuecat.com/blog/growth/asl-bloom-applica-case-study.md)). Adapty 2026: the onboarding paywall converts best (1.35% vs 0.89% in-app with a trial), and what happens in the screens before it largely decides conversion ([Adapty](https://adapty.io/blog/high-performing-paywall-2026/)). Both are vendor data, so treat the size as directional.
+- **Competitors:** Orbit sells "Magic Import" (screenshots, CSV, PDF, bank statements) as its headline ([App Store](https://apps.apple.com/us/app/manage-subscriptions-orbit/id6692620188), [TechRadar](https://www.techradar.com/computing/websites-apps/orbit)). Its iCloud-style import lists what it found and then asks "Upgrade to Add (9)" (`niche-teardown.md`), and its import gets "flagship features don't work" reviews (`paywall-v11.md`).
+- **Our own aha math** (`freemium-v2.md`): the money moment is "That's $X a year", and the Pro hook is reminders on every sub. Every extra sub on the list makes the gap between "3 reminders" and "all of them" bigger.
+
+**Options**
+| Option | Score | Why |
+|---|---|---|
+| A. Import is Pro; the buttons open the paywall | 6/10 | Paywall before value; our most impressive feature hidden behind it |
+| B. First **screenshot** import free in onboarding; statements Pro | 8/10 | Exact list, prices and dates before the paywall; costs us $0 (all on the phone) |
+| C. Free scan, but pay to add the results (Orbit's "Upgrade to Add (9)") | 4/10 | Converts some, but reads as bait-and-switch to an anxious user; against our honesty rules |
+| **D. First import free in onboarding, screenshot or statement; every import after that is Pro** | **9/10** | Same as B, plus a statement finds the forgotten ones, so the total is bigger and truer. More subs on the list = a bigger "reminders on all 9" reason to upgrade. One clear rule: "Your first import is free." |
+
+**Pick D**, with two guards: (1) statement reading must hit our accuracy bar on the test set before it ships free (a miss in onboarding is the worst first impression; see the brutal "found zero subscriptions" reviews in `autosync.md`); if it isn't ready, launch with B. (2) The paywall row stays literal: "Import anytime" · — · ✓.

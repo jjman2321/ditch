@@ -16,11 +16,55 @@ export function plural(n: number, one: string, many = `${one}s`): string {
   return `${n} ${n === 1 ? one : many}`;
 }
 
-/** Main button on the charge-dates screen. */
-export function datesCtaLabel(confirmed: number, guesses: number): string {
-  if (confirmed === 0) return 'Use the guesses for now';
-  if (guesses === 0) return confirmed === 1 ? 'Save my date' : 'Save my dates';
-  return `Save ${plural(confirmed, 'date')}, keep ${plural(guesses, 'guess', 'guesses')}`;
+/**
+ * A plan name without the service's own name, for "Standard · $19.99/mo":
+ * "Disney+ (With Ads)" → "With Ads", "Prime (monthly)" for Amazon Prime → "Monthly".
+ */
+export function shortPlanName(planName: string, serviceName: string, siblings: string[] = []): string {
+  let rest = planName.trim();
+  const words = serviceName.split(' ');
+  // The full name, or just its last word ("Prime" in "Amazon Prime").
+  for (const prefix of [serviceName, words[words.length - 1]]) {
+    if (prefix && rest.toLowerCase().startsWith(prefix.toLowerCase() + ' ')) {
+      rest = rest.slice(prefix.length).trim();
+      break;
+    }
+  }
+  // A first word every plan shares says nothing ("Premium Individual", "Premium Duo" → "Individual").
+  const first = rest.split(' ')[0];
+  if (siblings.length > 1 && rest.includes(' ') && siblings.every((x) => x.trim().split(' ')[0] === first)) rest = rest.slice(first.length).trim();
+  const paren = /^\((.+)\)$/.exec(rest);
+  if (paren) rest = paren[1];
+  return rest ? rest.charAt(0).toUpperCase() + rest.slice(1) : planName;
+}
+
+/** "Amazon Prime and Disney+", "Netflix, Hulu and 3 more". */
+export function namesLine(names: string[], max = 2): string {
+  if (names.length <= max + 1) return joinNames(names);
+  return `${names.slice(0, max).join(', ')} and ${names.length - max} more`;
+}
+
+/**
+ * Split a label into two balanced lines at a space: the split with the
+ * shortest longer line (by characters); on a tie, the longer first line.
+ * A line never ends on a little word ("if", "&"). Non-breaking spaces
+ * ("Lock Screen") never split.
+ */
+export function balanceLines(label: string): string {
+  const words = label.split(' ');
+  let best = label;
+  let longest = Infinity;
+  for (let i = 1; i < words.length; i++) {
+    if (words[i - 1].length <= 2 && words.length > 2) continue;
+    const a = words.slice(0, i).join(' ');
+    const b = words.slice(i).join(' ');
+    const m = Math.max(a.length, b.length);
+    if (m <= longest) {
+      longest = m;
+      best = `${a}\n${b}`;
+    }
+  }
+  return best;
 }
 
 /** The dry nudge at the end of a reminder, by kind of service. */

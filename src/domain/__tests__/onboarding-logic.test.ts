@@ -4,10 +4,13 @@ import {
   guessNextCharge,
   headsUpDates,
   nextFromLastCharge,
+  ordinal,
   previousCharge,
+  roughDate,
+  roughRange,
 } from '../charges';
-import { datesCtaLabel, joinNames, possessive, stillUsingIt } from '../copy';
-import { daysBetween, longDate, monthGrid, monthTitle, shiftMonth, weekdayDate, weekdayName } from '../dates';
+import { balanceLines, joinNames, namesLine, possessive, shortPlanName, stillUsingIt } from '../copy';
+import { anchorForDayOfMonth, daysBetween, longDate, nextChargeDate, monthGrid, monthTitle, shiftMonth, weekdayDate, weekdayName } from '../dates';
 import { formatMoney, formatWholeMoney, spendTotals, type Cycle } from '../money';
 import { perMonthFromYearly, yearlyBadge, yearlySavingsPercent } from '../pricing';
 
@@ -184,11 +187,29 @@ describe('onboarding copy', () => {
     expect(possessive('Disney+')).toBe('Disney+’s');
   });
 
-  it('dates button', () => {
-    expect(datesCtaLabel(2, 4)).toBe('Save 2 dates, keep 4 guesses');
-    expect(datesCtaLabel(1, 1)).toBe('Save 1 date, keep 1 guess');
-    expect(datesCtaLabel(6, 0)).toBe('Save my dates');
-    expect(datesCtaLabel(0, 6)).toBe('Use the guesses for now');
+  it('plan names without the service name', () => {
+    expect(shortPlanName('Disney+ (With Ads)', 'Disney+')).toBe('With Ads');
+    expect(shortPlanName('Prime (monthly)', 'Amazon Prime')).toBe('Monthly');
+    expect(shortPlanName('Standard', 'Netflix')).toBe('Standard');
+    expect(shortPlanName('Disney+ Premium (No Ads)', 'Disney+')).toBe('Premium (No Ads)');
+    expect(shortPlanName('Premium Individual', 'Spotify')).toBe('Premium Individual');
+    const spotify = ['Premium Individual', 'Premium Duo', 'Premium Family'];
+    expect(shortPlanName('Premium Individual', 'Spotify', spotify)).toBe('Individual');
+    expect(shortPlanName('Premium', 'Netflix', ['Standard with ads', 'Standard', 'Premium'])).toBe('Premium');
+  });
+
+  it('balanced two-line labels (paywall table)', () => {
+    expect(balanceLines('Subscriptions with reminders')).toBe('Subscriptions\nwith reminders');
+    expect(balanceLines('Choose your reminder times')).toBe('Choose your\nreminder times');
+    expect(balanceLines('Second nudge if you miss one')).toBe('Second nudge\nif you miss one');
+    expect(balanceLines('Home & Lock\u00A0Screen widget')).toBe('Home & Lock\u00A0Screen\nwidget');
+    expect(balanceLines('Import screenshots anytime')).toBe('Import screenshots\nanytime');
+  });
+
+  it('names line for "dates to check"', () => {
+    expect(namesLine(['Amazon Prime', 'Disney+'])).toBe('Amazon Prime and Disney+');
+    expect(namesLine(['A', 'B', 'C'])).toBe('A, B and C');
+    expect(namesLine(['A', 'B', 'C', 'D', 'E'])).toBe('A, B and 3 more');
   });
 
   it('nudges', () => {
@@ -205,5 +226,64 @@ describe('onboarding copy', () => {
     expect(oct.length).toBe(4 + 31);
     expect(shiftMonth(2026, 1, -1)).toEqual({ y: 2025, m: 12 });
     expect(shiftMonth(2026, 12, 1)).toEqual({ y: 2027, m: 1 });
+  });
+});
+
+describe('charge dates: quick picks (v12, DECISIONS #29)', () => {
+  const TUE = '2026-11-10'; // the v12 example day
+
+  it('lands in the middle of each range, matching design/v12/NOTES.md', () => {
+    expect(roughDate('this', 'monthly', TUE)).toBe('2026-11-13'); // Fri
+    expect(roughDate('next', 'monthly', TUE)).toBe('2026-11-19'); // Thu
+    expect(roughDate('later', 'monthly', TUE)).toBe('2026-12-01'); // Tue
+    expect(weekdayDate(roughDate('later', 'monthly', TUE))).toBe('Tue, Dec 1');
+  });
+
+  it('"Later" covers Nov 23 to Dec 9 for a monthly sub on Nov 10', () => {
+    expect(roughRange('this', 'monthly', TUE)).toEqual(['2026-11-11', '2026-11-15']);
+    expect(roughRange('next', 'monthly', TUE)).toEqual(['2026-11-16', '2026-11-22']);
+    expect(roughRange('later', 'monthly', TUE)).toEqual(['2026-11-23', '2026-12-09']);
+  });
+
+  it('a yearly sub\'s "Later" reaches up to a year out', () => {
+    expect(roughRange('later', 'yearly', TUE)).toEqual(['2026-11-23', '2027-11-09']);
+  });
+
+  it('on a Sunday, "This week" is the coming week; on a Saturday it is Sunday', () => {
+    expect(roughRange('this', 'monthly', '2026-11-15')).toEqual(['2026-11-16', '2026-11-22']);
+    expect(roughRange('this', 'monthly', '2026-11-14')).toEqual(['2026-11-15', '2026-11-15']);
+    expect(roughDate('this', 'monthly', '2026-11-14')).toBe('2026-11-15');
+  });
+
+  it('never lands on today or in the past, for every weekday', () => {
+    for (let i = 0; i < 7; i++) {
+      const day = `2026-11-${String(9 + i).padStart(2, '0')}`;
+      for (const w of ['this', 'next', 'later'] as const) {
+        expect(daysBetween(day, roughDate(w, 'monthly', day))).toBeGreaterThan(0);
+      }
+      expect(roughDate('this', 'monthly', day) < roughDate('next', 'monthly', day)).toBe(true);
+      expect(roughDate('next', 'monthly', day) < roughDate('later', 'monthly', day)).toBe(true);
+    }
+  });
+
+  it('a rough date rolls forward each month like any anchor', () => {
+    const later = roughDate('later', 'monthly', TUE); // Dec 1
+    expect(nextChargeDate(later, 'monthly', '2026-12-02')).toBe('2027-01-01');
+  });
+
+  it('"Pick a day": the 19th → Thu, Nov 19; the 31st clamps to Nov 30, keeps the 31st', () => {
+    expect(nextChargeDate(anchorForDayOfMonth(19, TUE), 'monthly', TUE)).toBe('2026-11-19');
+    expect(nextChargeDate(anchorForDayOfMonth(5, TUE), 'monthly', TUE)).toBe('2026-12-05');
+    const a31 = anchorForDayOfMonth(31, TUE);
+    expect(nextChargeDate(a31, 'monthly', TUE)).toBe('2026-11-30');
+    expect(nextChargeDate(a31, 'monthly', '2026-12-01')).toBe('2026-12-31');
+    // Today's day stays today.
+    expect(nextChargeDate(anchorForDayOfMonth(10, TUE), 'monthly', TUE)).toBe(TUE);
+  });
+
+  it('ordinals', () => {
+    expect([1, 2, 3, 4, 11, 12, 13, 19, 21, 22, 23, 31].map(ordinal)).toEqual([
+      '1st', '2nd', '3rd', '4th', '11th', '12th', '13th', '19th', '21st', '22nd', '23rd', '31st',
+    ]);
   });
 });

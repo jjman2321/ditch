@@ -6,8 +6,11 @@ import { createContext, useCallback, useContext, useMemo, useState, type ReactNo
 
 import { COUNTRY_BY_CODE, supportedCountry, type Country } from '@/catalog/prices';
 import { type CatalogService } from '@/catalog/services';
-import { chargeFrom, guessNextCharge, type DateSource } from '@/domain/charges';
-import { toDateOnly, type DateOnly } from '@/domain/dates';
+import { SERVICE_BY_ID } from '@/catalog/services';
+import { chargeFrom, guessNextCharge, roughDate, type DateSource, type RoughWhen } from '@/domain/charges';
+import { addDays, anchorForDayOfMonth, type DateOnly } from '@/domain/dates';
+import { webParam } from '@/dev/webParams';
+import { today as clockToday } from '@/services/clock';
 import { CYCLE_SHORT, CYCLE_WORDS, formatMoney, formatWholeMoney, spendTotals, type Cycle, type SpendTotal } from '@/domain/money';
 import type { PlanId } from '@/services/purchases';
 
@@ -38,6 +41,10 @@ type Actions = {
   setPlan: (id: string, planId: string) => void;
   setPrice: (id: string, amountMinor: number, currency: string, cycle: Cycle) => void;
   setDate: (id: string, anchor: DateOnly, source: Exclude<DateSource, 'guess'>) => void;
+  /** "This week" / "Next week" / "Later": stored as the middle of the range, still "around". */
+  setRough: (id: string, when: RoughWhen) => void;
+  /** Back to not answered (the row shows its quick picks again). */
+  clearDate: (id: string) => void;
   revertToGuess: (id: string) => void;
   setCycle: (id: string, cycle: Cycle) => void;
   setReminderPicks: (ids: string[]) => void;
@@ -57,16 +64,53 @@ export function regionCountry(): string | null {
   }
 }
 
+/** Today for onboarding (the web preview can pin it with ?today=). */
+const todayNow = () => clockToday();
+
+function emptyState(): OnboardingState {
+  return { picked: {}, order: [], country: regionCountry(), reminderPicks: null, notifications: 'unasked', pro: null, totalShown: false };
+}
+
+/**
+ * Web preview only: ?ob=v12 (or v12dates) loads the six picks from
+ * design/v12 so screenshots can open any step. Never on the phone.
+ */
+function seededState(): OnboardingState {
+  const seed = webParam('ob');
+  const base = emptyState();
+  if (seed !== 'v12' && seed !== 'v12dates') return base;
+  const today = todayNow();
+  const country = 'US';
+  const ids = ['netflix', 'spotify', 'chatgpt-plus', 'amazon-prime', 'youtube-premium', 'disney-plus'];
+  const picked: Record<string, Picked> = {};
+  for (const id of ids) picked[id] = newPick(SERVICE_BY_ID[id], country, today);
+  // YouTube Premium has no checked US price yet (DECISIONS #28): typed in, like a user would.
+  picked['youtube-premium'] = setOwnPrice(picked['youtube-premium'], 1599, 'USD', 'monthly');
+  const day = (id: string, d: number) => (picked[id] = { ...picked[id], anchor: anchorForDayOfMonth(d, today), dateSource: 'next', when: 'day' });
+  const rough = (id: string, w: RoughWhen) => (picked[id] = { ...picked[id], anchor: roughDate(w, picked[id].cycle, today), dateSource: 'guess', when: w });
+  day('chatgpt-plus', 21);
+  if (seed !== 'v12dates') {
+    day('netflix', 19);
+    day('youtube-premium', 17);
+    day('spotify', 7);
+    rough('amazon-prime', 'later');
+    rough('disney-plus', 'next');
+  }
+  const notif = webParam('obnotif');
+  const pro = webParam('obpro');
+  return {
+    ...base,
+    country,
+    picked,
+    order: ids,
+    totalShown: true,
+    notifications: notif === 'later' || notif === 'denied' ? notif : seed === 'v12' ? 'granted' : 'unasked',
+    pro: pro === 'yearly' || pro === 'monthly' || pro === 'lifetime' ? pro : null,
+  };
+}
+
 export function OnboardingProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<OnboardingState>(() => ({
-    picked: {},
-    order: [],
-    country: regionCountry(),
-    reminderPicks: null,
-    notifications: 'unasked',
-    pro: null,
-    totalShown: false,
-  }));
+  const [state, setState] = useState<OnboardingState>(seededState);
 
   const toggleService = useCallback((service: CatalogService) => {
     setState((s) => {
@@ -79,7 +123,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
           reminderPicks: s.reminderPicks?.filter((x) => x !== service.id) ?? null,
         };
       }
-      const p = newPick(service, s.country, toDateOnly());
+      const p = newPick(service, s.country, todayNow());
       return { ...s, picked: { ...s.picked, [service.id]: p }, order: [...s.order, service.id] };
     });
   }, []);
@@ -98,9 +142,13 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
 
   const setPlan = useCallback((id: string, planId: string) => change(id, (p) => choosePlan(p, planId)), [change]);
   const setPrice = useCallback<Actions['setPrice']>((id, amount, currency, cycle) => change(id, (p) => setOwnPrice(p, amount, currency, cycle)), [change]);
-  const setDate = useCallback<Actions['setDate']>((id, anchor, source) => change(id, (p) => ({ ...p, anchor, dateSource: source })), [change]);
+  const setDate = useCallback<Actions['setDate']>((id, anchor, source) => change(id, (p) => ({ ...p, anchor, dateSource: source, when: 'day' })), [change]);
+  const setRough = useCallback(
+    (id: string, when: RoughWhen) => change(id, (p) => ({ ...p, anchor: roughDate(when, p.cycle, todayNow()), dateSource: 'guess', when })),
+    [change],
+  );
   const revertToGuess = useCallback(
-    (id: string) => change(id, (p) => ({ ...p, anchor: guessNextCharge(p.id, p.cycle, toDateOnly()), dateSource: 'guess' })),
+    (id: string) => change(id, (p) => ({ ...p, anchor: guessNextCharge(p.id, p.cycle, todayNow()), dateSource: 'guess', when: null })),
     [change],
   );
   const setCycle = useCallback((id: string, cycle: Cycle) => change(id, (p) => chooseCycle(p, cycle)), [change]);
@@ -117,6 +165,8 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       setPlan,
       setPrice,
       setDate,
+      setRough,
+      clearDate: revertToGuess,
       revertToGuess,
       setCycle,
       setReminderPicks,
@@ -124,7 +174,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       setPro,
       markTotalShown,
     }),
-    [state, toggleService, setCountry, setPlan, setPrice, setDate, revertToGuess, setCycle, setReminderPicks, setNotifications, setPro, markTotalShown],
+    [state, toggleService, setCountry, setPlan, setPrice, setDate, setRough, revertToGuess, setCycle, setReminderPicks, setNotifications, setPro, markTotalShown],
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
@@ -153,9 +203,16 @@ export function byYearlyDesc(a: Picked, b: Picked) {
 }
 
 /** The next charge for a pick, on or after today. */
-export function chargeOf(p: Picked, today: DateOnly = toDateOnly()): DateOnly {
+export function chargeOf(p: Picked, today: DateOnly = todayNow()): DateOnly {
   return chargeFrom(p.anchor, p.dateSource, p.cycle, today);
 }
+
+/** The charge after the next one. */
+export function followingChargeOf(p: Picked, today: DateOnly = todayNow()): DateOnly {
+  return chargeFrom(p.anchor, p.dateSource, p.cycle, addDays(chargeOf(p, today), 1));
+}
+
+export { todayNow as onboardingToday };
 
 /** Free tier default: the 3 biggest yearly charges (DECISIONS #11). */
 export function defaultReminderPicks(list: Picked[]): string[] {

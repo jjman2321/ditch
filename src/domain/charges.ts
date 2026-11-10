@@ -2,7 +2,7 @@
 // and the 9 AM heads-ups (3 days and 1 day before a charge).
 // All dates are calendar dates ("YYYY-MM-DD"), never timestamps.
 
-import { addDays, daysBetween, nextChargeDate, occurrence, type DateOnly } from './dates';
+import { addDays, daysBetween, nextChargeDate, occurrence, weekdayOf, type DateOnly } from './dates';
 import type { Cycle } from './money';
 
 /** How the user gave us a date. A guess stays labelled until they fix it. */
@@ -79,4 +79,46 @@ export function firstHeadsUp(charge: DateOnly, today: DateOnly, nowHour = 0): Da
 /** Days from today to a date (negative if past). */
 export function daysUntil(date: DateOnly, today: DateOnly): number {
   return daysBetween(today, date);
+}
+
+/**
+ * Quick picks on the charge-dates screen (DECISIONS #29): "This week",
+ * "Next week", "Later". Weeks run Monday to Sunday.
+ * - This week: tomorrow to Sunday (on a Sunday: the whole coming week).
+ * - Next week: the Monday to Sunday after that.
+ * - Later: from the Monday after next week up to one billing cycle away.
+ */
+export type RoughWhen = 'this' | 'next' | 'later';
+
+/** The Sunday that ends this week, always after today (1–7 days away). */
+function endOfWeek(today: DateOnly): DateOnly {
+  const dow = weekdayOf(today); // 0 = Sunday
+  return addDays(today, (7 - dow) % 7 || 7);
+}
+
+/** First and last day a quick pick covers, both inclusive. */
+export function roughRange(when: RoughWhen, cycle: Cycle, today: DateOnly): [DateOnly, DateOnly] {
+  const sunday = endOfWeek(today);
+  if (when === 'this') return [addDays(today, 1), sunday];
+  if (when === 'next') return [addDays(sunday, 1), addDays(sunday, 7)];
+  const start = addDays(sunday, 8);
+  const end = addDays(occurrence(today, cycle, 1), -1);
+  return [start, end > start ? end : start];
+}
+
+/**
+ * The date a quick pick is stored as: the middle of its range (rounded
+ * down). It stays a guess ("around …") until the user picks a real day.
+ * Tue, Nov 10: This week → Fri, Nov 13 · Next week → Thu, Nov 19 · Later → Tue, Dec 1.
+ */
+export function roughDate(when: RoughWhen, cycle: Cycle, today: DateOnly): DateOnly {
+  const [a, b] = roughRange(when, cycle, today);
+  return addDays(a, Math.floor(daysBetween(a, b) / 2));
+}
+
+/** "1st", "2nd", "3rd", "19th", "22nd". */
+export function ordinal(n: number): string {
+  const t = n % 100;
+  if (t >= 11 && t <= 13) return `${n}th`;
+  return `${n}${['th', 'st', 'nd', 'rd'][n % 10] ?? 'th'}`;
 }

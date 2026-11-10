@@ -3,7 +3,7 @@
 
 import { catalogPrice, priceRow } from '@/catalog/prices';
 import type { CatalogService } from '@/catalog/services';
-import { guessNextCharge, type DateSource } from '@/domain/charges';
+import { guessNextCharge, type DateSource, type RoughWhen } from '@/domain/charges';
 import type { DateOnly } from '@/domain/dates';
 import { yearlyMinor, type Cycle } from '@/domain/money';
 
@@ -35,6 +35,8 @@ export type Picked = {
   anchor: DateOnly;
   /** "guess" until the user confirms a next charge or a last receipt. */
   dateSource: DateSource;
+  /** The answer on the charge-dates screen: a quick pick, a real day, or not answered yet. */
+  when?: RoughWhen | 'day' | null;
 };
 
 export type PricedPick = Picked & { amountMinor: number; currency: string };

@@ -1,60 +1,56 @@
-import { buildSetSummary, type SummarySub } from '../summary';
+import { datesToCheck, firstReminderRows, type SetSub } from '../summary';
 
-const TODAY = '2026-11-09';
-const SUBS: SummarySub[] = [
-  { id: 'chatgpt-plus', name: 'ChatGPT Plus', charge: '2026-11-21', guess: false },
-  { id: 'netflix', name: 'Netflix', charge: '2026-11-14', guess: false },
-  { id: 'amazon-prime', name: 'Amazon Prime', charge: '2026-12-03', guess: true },
-  { id: 'youtube-premium', name: 'YouTube Premium', charge: '2026-11-27', guess: true },
-  { id: 'spotify', name: 'Spotify', charge: '2026-11-16', guess: true },
-  { id: 'disney-plus', name: 'Disney+', charge: '2026-11-18', guess: true },
+// The v12 example (design/v12/NOTES.md): US, today Tue, Nov 10 2026.
+const TODAY = '2026-11-10';
+const SUBS: SetSub[] = [
+  { id: 'chatgpt-plus', name: 'ChatGPT Plus', charge: '2026-11-21', following: '2026-12-21', guess: false },
+  { id: 'netflix', name: 'Netflix', charge: '2026-11-19', following: '2026-12-19', guess: false },
+  { id: 'youtube-premium', name: 'YouTube Premium', charge: '2026-11-17', following: '2026-12-17', guess: false },
+  { id: 'amazon-prime', name: 'Amazon Prime', charge: '2026-12-01', following: '2027-01-01', guess: true },
+  { id: 'spotify', name: 'Spotify', charge: '2026-12-07', following: '2027-01-07', guess: false },
+  { id: 'disney-plus', name: 'Disney+', charge: '2026-11-19', following: '2026-12-19', guess: true },
 ];
+const BIGGEST = ['chatgpt-plus', 'netflix', 'youtube-premium'];
 
-describe("You're set summary", () => {
-  it('free: the 3 picks, soonest first, matching v10 screen 8', () => {
-    const s = buildSetSummary({ subs: SUBS, remindedIds: ['chatgpt-plus', 'netflix', 'amazon-prime'], today: TODAY, notificationsOn: true });
-    expect(s.rows.map((r) => [r.name, r.date, r.guess])).toEqual([
-      ['Netflix', '2026-11-11', false],
-      ['ChatGPT Plus', '2026-11-18', false],
-      ['Amazon Prime', '2026-11-30', true],
+describe("first reminders (pre-ask and You're set)", () => {
+  it('free: the 3 biggest, soonest reminder first, matching render 07', () => {
+    const rows = firstReminderRows({ subs: SUBS, remindedIds: BIGGEST, today: TODAY });
+    expect(rows.map((r) => [r.name, r.reminder, r.charge])).toEqual([
+      ['YouTube Premium', '2026-11-14', '2026-11-17'],
+      ['Netflix', '2026-11-16', '2026-11-19'],
+      ['ChatGPT Plus', '2026-11-18', '2026-11-21'],
     ]);
-    expect(s.note).toBe(
-      'YouTube Premium, Spotify and Disney+ have no heads-up. Amazon Prime’s date is a guess, so its heads-up says “renews around Thu, Dec 3.”',
-    );
-    expect([s.tracked, s.withHeadsUps, s.datesToCheck]).toEqual([6, '3', 4]);
   });
 
-  it('pro trial: everything plus the trial, 4 rows, matching v10 screen 8b', () => {
-    const s = buildSetSummary({
-      subs: SUBS,
-      remindedIds: SUBS.map((x) => x.id),
-      trialCharge: '2026-11-16',
-      today: TODAY,
-      notificationsOn: true,
-    });
-    expect(s.rows.map((r) => [r.name, r.date])).toEqual([
-      ['Netflix', '2026-11-11'],
-      ['Ditch Pro trial', '2026-11-13'],
-      ['Spotify', '2026-11-13'],
-      ['Disney+', '2026-11-15'],
+  it('the pre-ask shows the first two', () => {
+    const rows = firstReminderRows({ subs: SUBS, remindedIds: BIGGEST, today: TODAY, max: 2 });
+    expect(rows.map((r) => r.name)).toEqual(['YouTube Premium', 'Netflix']);
+  });
+
+  it('Pro trial: reminders on everything, the trial first on its day', () => {
+    const rows = firstReminderRows({ subs: SUBS, remindedIds: SUBS.map((s) => s.id), trialCharge: '2026-11-17', today: TODAY, max: 4 });
+    expect(rows.map((r) => [r.name, r.reminder])).toEqual([
+      ['Ditch Pro trial', '2026-11-14'],
+      ['YouTube Premium', '2026-11-14'],
+      ['Netflix', '2026-11-16'],
+      ['Disney+', '2026-11-16'],
     ]);
-    expect(s.withHeadsUps).toBe('6 + trial');
-    expect(s.note).toContain('4 dates are still guesses, like Spotify’s and Disney+’s');
+    expect(rows[0].trial).toBe(true);
   });
 
-  it('says so when notifications are off', () => {
-    const s = buildSetSummary({ subs: SUBS, remindedIds: ['netflix'], today: TODAY, notificationsOn: false });
-    expect(s.note).toMatch(/Notifications are off/);
+  it('a charge today (too close for a reminder) shows the next cycle instead', () => {
+    const soon: SetSub[] = [{ id: 'hulu', name: 'Hulu', charge: '2026-11-10', following: '2026-12-10', guess: false }];
+    const rows = firstReminderRows({ subs: soon, remindedIds: ['hulu'], today: TODAY });
+    expect(rows).toEqual([{ id: 'hulu', name: 'Hulu', charge: '2026-12-10', reminder: '2026-12-07', guess: false }]);
   });
 
-  it('skips charges too close for a heads-up', () => {
-    const s = buildSetSummary({
-      subs: [{ id: 'a', name: 'A', charge: TODAY, guess: false }],
-      remindedIds: ['a'],
-      today: TODAY,
-      notificationsOn: true,
-    });
-    expect(s.rows).toEqual([]);
-    expect(s.note).toBe('Every heads-up comes at 9:00 AM, 3 days and 1 day before.');
+  it('never a reminder in the past: 9:00 today has gone by 10 AM', () => {
+    const s: SetSub[] = [{ id: 'max', name: 'Max', charge: '2026-11-13', following: '2026-12-13', guess: false }];
+    expect(firstReminderRows({ subs: s, remindedIds: ['max'], today: TODAY, nowHour: 8 })[0].reminder).toBe('2026-11-10');
+    expect(firstReminderRows({ subs: s, remindedIds: ['max'], today: TODAY, nowHour: 10 })[0].reminder).toBe('2026-11-12');
+  });
+
+  it('dates to check: rough and unanswered ones, in list order', () => {
+    expect(datesToCheck(SUBS)).toEqual(['Amazon Prime', 'Disney+']);
   });
 });

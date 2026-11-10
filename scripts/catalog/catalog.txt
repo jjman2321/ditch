@@ -1,0 +1,260 @@
+# Ditch service catalog: the hand-edited source of truth.
+# Run `npm run catalog` after editing (writes src/catalog/services.data.ts and logos.ts).
+# Columns (pipe-separated):
+#   id | name | category | colour | monogram | cycle | countries | aliases | App Store search term | storefront | seller regex
+# category: ST Streaming, MU Music & audio, AI AI, PR Productivity, CS Cloud & security,
+#   SH Shopping & food, HF Health & fitness, DA Dating, SO Social, NE News & reading,
+#   GA Gaming, LE Learning
+# cycle: m monthly, y yearly. countries: - = all 12, else comma list (US,GB,CA,AU,IE,NZ,DE,NL,FR,IT,ES,IN).
+# aliases: comma list of extra search words. term '-' = no app (monogram tile).
+# Order inside a category = most popular first. Flags after the seller column: apple (billed by Apple).
+
+## Streaming
+netflix|Netflix|ST|#E50914|N|m|-|||netflix|us|^Netflix
+disney-plus|Disney+|ST|#0B1F5C|D+|m|US,GB,CA,AU,IE,NZ,DE,NL,FR,IT,ES|disney plus,disney|disney+|us|^Disney
+youtube-premium|YouTube Premium|ST|#FF0033|YT|m|-|yt,youtube,yt premium|youtube|us|^Google
+max|HBO Max|ST|#002BE7|M|m|-|hbo,max,hbo max|hbo max|us|^(WarnerMedia|Warner Bros|Home Box Office)
+prime-video|Prime Video|ST|#00A8E1|pv|m|-|amazon prime video,amazon video|prime video|us|^AMZN
+hulu|Hulu|ST|#1CE783|h|m|US||hulu|us|^Hulu
+apple-tv|Apple TV|ST|#111111|tv|m|-|apple tv+,apple tv plus,tv+|apple tv|us|^Apple|apple
+peacock|Peacock|ST|#1A1A1A|P|m|US|nbc|peacock tv|us|^Peacock
+paramount-plus|Paramount+|ST|#0064FF|P+|m|-|paramount plus,paramount,cbs|paramount+|us|^(CBS|Paramount)
+crunchyroll|Crunchyroll|ST|#F47521|C|m|-|anime|crunchyroll|us|^Crunchyroll
+youtube-tv|YouTube TV|ST|#FF0033|TV|m|US|yttv,yt tv|youtube tv|us|^Google
+espn|ESPN|ST|#D00000|E|m|US|espn+,espn plus,espn unlimited|espn|us|^(ESPN|Disney)
+sling-tv|Sling TV|ST|#0072EF|S|m|US|sling|sling tv|us|^(Sling|DISH)
+fubo|Fubo|ST|#FA4616|f|m|US,CA|fubotv,fubo tv|fubo|us|^(fuboTV|Fubo)
+philo|Philo|ST|#1E1A5A|Ph|m|US||philo|us|^Philo
+starz|STARZ|ST|#000000|S|m|US||starz|us|^Starz
+discovery-plus|discovery+|ST|#0036E7|d+|m|US,GB,IE,CA|discovery plus|discovery+|us|^(Discovery|Warner)
+britbox|BritBox|ST|#00263A|BB|m|US,CA|brit box|britbox|us|^(BritBox|BBC)
+mubi|MUBI|ST|#001489|M|m|-||mubi|us|^MUBI
+shudder|Shudder|ST|#000000|Sh|m|US,CA,GB,IE,AU,NZ|horror|shudder|us|^(AMC|RLJ|Shudder)
+dazn|DAZN|ST|#0C161C|DZ|m|US,CA,GB,IE,DE,IT,ES|nfl game pass|dazn|gb|^DAZN
+nba-league-pass|NBA League Pass|ST|#1D428A|NBA|y|-|nba|nba|us|^NBA
+mlb-tv|MLB.TV|ST|#041E42|MLB|y|-|mlb,baseball|mlb|us|^(MLB|Major League)
+f1-tv|F1 TV|ST|#E10600|F1|y|-|formula 1,f1|f1 tv|gb|^(Formula One|Formula 1|FOM)
+now|NOW|ST|#00142C|NOW|m|GB,IE|now tv,nowtv|now: watch tv|gb|^Sky
+sky|Sky|ST|#0072C9|Sky|m|GB,IE,DE,IT|sky go,sky tv,sky q|sky go|gb|^Sky
+itvx|ITVX Premium|ST|#0B0B0B|ITV|m|GB|itv,itvx|itvx|gb|^ITV
+wow|WOW|ST|#0B0B0B|W|m|DE|sky wow|wow tv|de|^Sky
+joyn|Joyn PLUS+|ST|#000000|J|m|DE|joyn plus|joyn|de|^Joyn
+rtl-plus|RTL+|ST|#FF0000|RTL|m|DE|rtl plus,rtl|rtl+|de|^RTL
+canal-plus|CANAL+|ST|#000000|C+|m|FR|canal plus,canal|canal+|fr|^(CANAL|Groupe Canal)
+videoland|Videoland|ST|#E3007A|V|m|NL||videoland|nl|^(RTL|Videoland)
+npo-plus|NPO Plus|ST|#FF6D00|NPO|m|NL|npo start,npo|npo start|nl|^(NPO|Nederlandse Publieke)
+skyshowtime|SkyShowtime|ST|#14002E|SS|m|NL,ES|sky showtime|skyshowtime|nl|^SkyShowtime
+movistar-plus|Movistar Plus+|ST|#019DF4|M+|m|ES|movistar+,movistar plus|movistar plus+|es|^(Telef|DTS|Movistar)
+mediaset-infinity|Mediaset Infinity|ST|#0D1F4F|MI|m|IT|infinity+,mediaset|mediaset infinity|it|^(R\.T\.I|RTI|Mediaset)
+timvision|TIMVISION|ST|#00217A|TIM|m|IT|tim vision|timvision|it|^(TIM|Telecom Italia)
+stan|Stan|ST|#0072FF|S|m|AU||stan.|au|^Stan
+binge|Binge|ST|#000000|B|m|AU||binge|au|^(Streamotion|Foxtel|Binge)
+kayo|Kayo Sports|ST|#00E2A7|K|m|AU|kayo|kayo sports|au|^(Streamotion|Foxtel|Kayo)
+neon|Neon|ST|#E7008A|N|m|NZ|neon tv|neon nz|nz|^Sky
+crave|Crave|ST|#0A1E3F|C|m|CA||crave|ca|^Bell
+jiohotstar|JioHotstar|ST|#0F1014|JH|m|IN|hotstar,jiocinema,disney+ hotstar|jiohotstar|in|^(Star India|Jio|STAR)
+zee5|ZEE5|ST|#8230C6|Z5|m|IN|zee|zee5|in|^(Z5X|Zee)
+sonyliv|Sony LIV|ST|#000000|SL|m|IN|sonyliv,sony|sony liv|in|^(Culver|Sony)
+
+## Music & audio
+spotify|Spotify|MU|#1DB954|S|m|-||spotify|us|^Spotify
+apple-music|Apple Music|MU|#FA2D48|♪|m|-|itunes|apple music|us|^Apple|apple
+youtube-music|YouTube Music|MU|#FF0033|YM|m|-|yt music|youtube music|us|^Google
+amazon-music|Amazon Music Unlimited|MU|#25D1DA|am|m|-|amazon music|amazon music|us|^AMZN
+audible|Audible|MU|#F8991C|A|m|-|audiobooks|audible|us|^Audible
+siriusxm|SiriusXM|MU|#0000EB|SX|m|US,CA|sirius,xm|siriusxm|us|^Sirius
+tidal|TIDAL|MU|#000000|T|m|US,GB,CA,AU,IE,NZ,DE,NL,FR,IT,ES||tidal music|us|^(TIDAL|Aspiro)
+deezer|Deezer|MU|#A238FF|dz|m|-||deezer|us|^Deezer
+soundcloud|SoundCloud Go+|MU|#FF5500|SC|m|-|soundcloud|soundcloud|us|^SoundCloud
+pandora|Pandora|MU|#3668FF|P|m|US||pandora|us|^Pandora
+qobuz|Qobuz|MU|#000000|Q|m|US,GB,CA,AU,IE,NZ,DE,NL,FR,IT,ES||qobuz|us|^(Xandrie|Qobuz)
+jiosaavn|JioSaavn|MU|#2BC5B4|JS|m|IN|saavn|jiosaavn|in|^(Saavn|Jio)
+gaana|Gaana|MU|#E72C30|G|m|IN||gaana|in|^Gaana
+everand|Everand|MU|#1E7B85|E|m|-|scribd|everand|us|^Scribd
+storytel|Storytel|MU|#FF5C28|St|m|NL,ES,IN|audiobooks|storytel|nl|^Storytel
+pocket-fm|Pocket FM|MU|#E91E4B|PF|m|US,IN||pocket fm|us|^Pocket
+pocket-casts|Pocket Casts Plus|MU|#F43E37|PC|y|-|podcasts,pocket casts|pocket casts|us|^Automattic
+
+## AI
+chatgpt-plus|ChatGPT Plus|AI|#10A37F|G|m|-|chatgpt,openai,gpt,chat gpt|chatgpt|us|^OpenAI
+claude-pro|Claude Pro|AI|#D97757|C|m|-|claude,anthropic|claude by anthropic|us|^Anthropic
+google-ai-pro|Google AI Pro|AI|#4285F4|G|m|-|gemini,gemini advanced,google one ai premium,ai premium|google gemini|us|^Google
+perplexity|Perplexity Pro|AI|#20808D|P|m|-|perplexity|perplexity|us|^Perplexity
+copilot-pro|Copilot Pro|AI|#0078D4|Co|m|-|copilot,microsoft copilot,bing|microsoft copilot|us|^Microsoft
+grok|SuperGrok|AI|#000000|X|m|-|grok,xai|grok|us|^(X\.AI|xAI|X Corp)
+midjourney|Midjourney|AI|#0B0B0B|MJ|m|-|mj|-|us|-
+github-copilot|GitHub Copilot|AI|#24292F|GH|m|-|github,copilot|github|us|^GitHub
+cursor|Cursor Pro|AI|#000000|Cu|m|-|cursor|-|us|-
+elevenlabs|ElevenLabs|AI|#000000|11|m|-|eleven labs|elevenlabs|us|^Eleven
+suno|Suno|AI|#000000|S|m|-||suno|us|^Suno
+character-ai|Character.AI|AI|#18181B|c.ai|m|-|c.ai,character ai|character ai|us|^Character
+le-chat|Le Chat Pro|AI|#FA500F|M|m|-|mistral,le chat|le chat mistral|fr|^Mistral
+remini|Remini|AI|#2F3AFF|R|m|-||remini|us|^(Bending|Remini)
+
+## Productivity
+microsoft-365|Microsoft 365|PR|#0078D4|365|y|-|office,word,excel,ms 365,office 365,outlook,onedrive|microsoft 365 copilot|us|^Microsoft
+adobe-cc|Adobe Creative Cloud|PR|#DA1F26|Ac|m|-|adobe,photoshop,creative cloud,illustrator,premiere|adobe creative cloud|us|^Adobe
+canva-pro|Canva Pro|PR|#7D2AE8|C|y|-|canva|canva|us|^Canva
+notion|Notion Plus|PR|#191919|N|m|-|notion|notion|us|^Notion
+google-workspace|Google Workspace|PR|#4285F4|GW|m|-|gsuite,g suite,workspace|-|us|-
+grammarly|Grammarly Pro|PR|#15C39A|G|m|-|grammarly|grammarly|us|^Grammarly
+adobe-acrobat|Adobe Acrobat Pro|PR|#EC1C24|Ac|m|-|acrobat,pdf|adobe acrobat reader|us|^Adobe
+adobe-lightroom|Adobe Lightroom|PR|#31A8FF|Lr|m|-|lightroom|lightroom|us|^Adobe
+capcut|CapCut Pro|PR|#000000|CC|m|-|capcut|capcut|us|^(Bytedance|ByteDance)
+figma|Figma|PR|#0ACF83|F|m|-||figma|us|^Figma
+linkedin-premium|LinkedIn Premium|PR|#0A66C2|in|m|-|linkedin|linkedin|us|^LinkedIn
+zoom|Zoom Pro|PR|#0B5CFF|Z|m|-|zoom|zoom workplace|us|^Zoom
+slack|Slack Pro|PR|#4A154B|S|m|-|slack|slack|us|^Slack
+evernote|Evernote|PR|#00A82D|E|m|-||evernote|us|^Evernote
+todoist|Todoist Pro|PR|#E44332|T|m|-|todoist|todoist|us|^Doist
+goodnotes|Goodnotes|PR|#2F80ED|G|y|-|good notes|goodnotes|us|^(Goodnotes|Time Base)
+vsco|VSCO|PR|#000000|V|y|-||vsco|us|^(VSCO|Visual Supply)
+
+## Cloud & security
+icloud|iCloud+|CS|#3693F3|☁|m|-|icloud,icloud plus,apple storage|-|us|-|apple
+apple-one|Apple One|CS|#1D1D1F|1|m|-|apple bundle|-|us|-|apple
+applecare|AppleCare+|CS|#1D1D1F|AC|m|-|applecare,apple care,phone insurance|-|us|-|apple
+google-one|Google One|CS|#4285F4|G1|m|-|google drive,google storage,google photos|google one|us|^Google
+dropbox|Dropbox Plus|CS|#0061FE|Db|m|-|dropbox|dropbox|us|^Dropbox
+onedrive|OneDrive|CS|#0078D4|OD|m|-|microsoft 365 basic|microsoft onedrive|us|^Microsoft
+proton|Proton Unlimited|CS|#6D4AFF|P|m|-|proton mail,protonmail,proton drive|proton mail|us|^Proton
+1password|1Password|CS|#0094F5|1P|y|-|one password|1password|us|^(AgileBits|1Password)
+bitwarden|Bitwarden|CS|#175DDC|B|y|-||bitwarden|us|^(Bitwarden|8bit)
+dashlane|Dashlane|CS|#0E353D|D|y|-||dashlane|us|^Dashlane
+lastpass|LastPass|CS|#D32D27|LP|y|-|last pass|lastpass|us|^(LastPass|LogMeIn|GoTo)
+nordvpn|NordVPN|CS|#4687FF|N|y|-|nord,vpn,nordpass|nordvpn|us|^(Nord|nordvpn|Tefincom)
+expressvpn|ExpressVPN|CS|#DA3940|E|y|-|vpn,express|expressvpn|us|^Express
+surfshark|Surfshark|CS|#1EBFBF|S|y|-|vpn|surfshark|us|^Surfshark
+proton-vpn|Proton VPN|CS|#6D4AFF|PV|m|-|vpn,protonvpn|proton vpn|us|^Proton
+norton|Norton 360|CS|#FFE01A|N|y|-|norton,antivirus|norton 360|us|^(Gen Digital|NortonLifeLock|Symantec|Norton)
+mcafee|McAfee+|CS|#C01818|M|y|-|mcafee,antivirus|mcafee|us|^McAfee
+aura|Aura|CS|#2E2A72|A|y|US|identity theft|aura: security & protection|us|^Aura
+life360|Life360|CS|#8B5CF6|L|m|-|tile|life360|us|^Life360
+
+## Shopping & food
+amazon-prime|Amazon Prime|SH|#FF9900|a|m|US,GB,CA,AU,IE,DE,NL,FR,IT,ES,IN|prime,amazon|amazon shopping|us|^AMZN
+walmart-plus|Walmart+|SH|#0071CE|W+|m|US|walmart,walmart plus|walmart|us|^Walmart
+costco|Costco|SH|#E31837|Co|y|US,GB,CA,AU,NZ,ES|costco membership|costco|us|^Costco
+uber-one|Uber One|SH|#000000|U1|m|US,GB,CA,AU,IE,NZ,DE,NL,FR,IT,ES|uber,uber eats|uber|us|^Uber
+doordash|DashPass|SH|#FF3008|DD|m|US,CA,AU,NZ,DE|doordash|doordash|us|^DoorDash
+instacart|Instacart+|SH|#0AAD0A|i+|m|US,CA|instacart|instacart|us|^(Maplebear|Instacart)
+sams-club|Sam's Club|SH|#0067A0|SC|y|US|sams,sam's club plus|sam's club|us|^(Sam|Walmart)
+target-circle|Target Circle 360|SH|#CC0000|T|y|US|target|target|us|^Target
+grubhub|Grubhub+|SH|#FF8000|GH|m|US|grubhub|grubhub|us|^(Grubhub|GrubHub)
+lyft-pink|Lyft Pink|SH|#FF00BF|L|m|US,CA|lyft|lyft|us|^Lyft
+deliveroo-plus|Deliveroo Plus|SH|#00CCBC|D|m|GB,IE,FR,IT|deliveroo|deliveroo|gb|^(Deliveroo|Roofoods)
+just-eat|Just Eat+|SH|#FF8000|JE|m|GB,IE|just eat,lieferando,thuisbezorgd|just eat|gb|^(Just Eat|Takeaway)
+tesco-clubcard|Tesco Clubcard Plus|SH|#00539F|T|m|GB,IE|tesco,clubcard|tesco|gb|^Tesco
+wolt-plus|Wolt+|SH|#009DE0|W+|m|DE|wolt|wolt|de|^Wolt
+glovo-prime|Glovo Prime|SH|#FFC244|G|m|ES,IT|glovo|glovo|es|^Glovo
+zalando-plus|Zalando Plus|SH|#FF6900|Z|y|DE,NL,FR,IT,ES,IE|zalando|zalando|de|^Zalando
+swiggy-one|Swiggy One|SH|#FC8019|S1|m|IN|swiggy|swiggy|in|^(Bundl|Swiggy)
+zomato-gold|Zomato Gold|SH|#E23744|ZG|m|IN|zomato|zomato|in|^(Zomato|Eternal)
+hellofresh|HelloFresh|SH|#91C11E|HF|m|US,GB,CA,AU,IE,NZ,DE,NL,FR,IT,ES|hello fresh|hellofresh|us|^HelloFresh
+
+## Health & fitness
+apple-fitness|Apple Fitness+|HF|#A6FF00|F+|m|-|fitness+,fitness plus|-|us|-|apple
+strava|Strava|HF|#FC4C02|S|y|-||strava|us|^Strava
+peloton|Peloton App|HF|#000000|P|m|US,GB,CA,AU,DE|peloton|peloton|us|^Peloton
+myfitnesspal|MyFitnessPal|HF|#0066EE|MF|y|-|mfp,calorie counter|myfitnesspal|us|^MyFitnessPal
+planet-fitness|Planet Fitness|HF|#5C2D91|PF|m|US,CA,AU,ES|gym|planet fitness|us|^Planet Fitness
+calm|Calm|HF|#2E7BD6|C|y|-|meditation,sleep|calm|us|^Calm
+headspace|Headspace|HF|#F47D31|H|m|-|meditation|headspace|us|^Headspace
+whoop|WHOOP|HF|#000000|W|y|-|whoop|whoop|us|^Whoop
+fitbit-premium|Fitbit Premium|HF|#00B0B9|Fb|m|-|fitbit,google health|fitbit|us|^(Google|Fitbit)
+oura|Oura Membership|HF|#000000|O|m|-|oura ring|oura|us|^Oura
+flo|Flo Premium|HF|#FF5C8A|Flo|y|-|period tracker,flo health|flo|us|^Flo
+ww|WeightWatchers|HF|#4A3AFF|WW|m|US,GB,CA,AU,NZ,DE,NL,FR,ES|weight watchers,ww|weightwatchers|us|^(WW|Weight)
+noom|Noom|HF|#FB513B|N|m|-||noom|us|^Noom
+alltrails|AllTrails+|HF|#142800|AT|y|-|alltrails|alltrails|us|^AllTrails
+garmin-connect|Garmin Connect+|HF|#000000|G|m|-|garmin|garmin connect|us|^Garmin
+runna|Runna|HF|#0E0E0E|R|m|-|running plan|runna|us|^(Strava|Runna)
+zwift|Zwift|HF|#FC6719|Z|m|-|cycling|zwift|us|^Zwift
+classpass|ClassPass|HF|#0055FF|CP|m|US,GB,CA,AU,IE,NZ,DE,NL,FR,IT,ES|class pass|classpass|us|^(ClassPass|Mindbody)
+yazio|YAZIO|HF|#FF8A00|Y|y|-|calorie counter|yazio|de|^YAZIO
+betterhelp|BetterHelp|HF|#397A4A|BH|m|-|therapy|betterhelp|us|^BetterHelp
+puregym|PureGym|HF|#00A3A1|PG|m|GB|gym|puregym|gb|^Pure
+cult-fit|cult.fit|HF|#000000|cf|m|IN|cultfit,cure.fit|cult.fit|in|^(Curefit|Cult)
+
+## Dating
+tinder|Tinder|DA|#FD5068|T|m|-|tinder gold,tinder plus|tinder|us|^Tinder
+hinge|Hinge|DA|#000000|H|m|-|hinge+|hinge|us|^Hinge
+bumble|Bumble|DA|#FFC629|B|m|-|bumble premium|bumble|us|^Bumble
+match|Match|DA|#000000|M|m|US,GB,CA,AU,IE,NZ|match.com|match dating|us|^Match
+grindr|Grindr|DA|#FFCC00|G|m|-|grindr xtra,grindr unlimited|grindr|us|^Grindr
+okcupid|OkCupid|DA|#0046D5|OK|m|-|ok cupid|okcupid|us|^(Humor|OkCupid)
+plenty-of-fish|Plenty of Fish|DA|#00A1E4|POF|m|US,GB,CA,AU,IE,NZ|pof|plenty of fish|us|^(PlentyofFish|Plentyoffish|POF)
+eharmony|eharmony|DA|#EE5A3B|eH|m|US,GB,CA,AU|e harmony|eharmony|us|^eHarmony
+feeld|Feeld|DA|#000000|F|m|-||feeld|us|^Feeld
+badoo|Badoo|DA|#783BF9|B|m|-||badoo|gb|^(Badoo|Bumble|Magiclab)
+happn|happn|DA|#FF4A68|h|m|-||happn|fr|^happn
+lovoo|LOVOO|DA|#E5004D|L|m|DE|lovoo|lovoo|de|^LOVOO
+parship|Parship|DA|#C8102E|P|m|DE,NL,IT,ES,FR|parship|parship|de|^(Parship|PE Digital)
+meetic|Meetic|DA|#E5004D|M|m|FR,IT,ES,NL|meetic|meetic|fr|^(Meetic|Match)
+shaadi|Shaadi.com|DA|#FF5A60|S|m|IN|shaadi|shaadi.com|in|^(People|Shaadi)
+
+## Social
+snapchat-plus|Snapchat+|SO|#FFFC00|S+|m|-|snapchat,snap+,snapchat plus|snapchat|us|^Snap
+x-premium|X Premium|SO|#000000|X|m|-|twitter,twitter blue,x|x|us|^X Corp
+discord-nitro|Discord Nitro|SO|#5865F2|D|m|-|discord,nitro|discord|us|^Discord
+telegram-premium|Telegram Premium|SO|#26A5E4|T|m|-|telegram|telegram|us|^Telegram
+meta-verified|Meta Verified|SO|#0866FF|M|m|-|instagram,facebook,meta|instagram|us|^Instagram
+patreon|Patreon|SO|#000000|P|m|-||patreon|us|^Patreon
+truecaller|Truecaller Premium|SO|#0087FF|TC|m|-|truecaller|truecaller|in|^Truecaller
+
+## News & reading
+nyt|New York Times|NE|#121212|T|m|-|nytimes,nyt,new york times,ny times,wordle,games|nytimes|us|^The New York Times
+wsj|Wall Street Journal|NE|#0274B6|W|m|-|wsj,wall street journal|wall street journal|us|^Dow Jones
+substack|Substack|NE|#FF6719|S|m|-||substack|us|^Substack
+kindle-unlimited|Kindle Unlimited|NE|#FF9900|KU|m|US,GB,CA,AU,DE,NL,FR,IT,ES,IN|kindle,books|kindle|us|^AMZN
+apple-news|Apple News+|NE|#FA3D50|N+|m|US,GB,CA,AU|apple news,news+|-|us|-|apple
+the-athletic|The Athletic|NE|#000000|A|y|-|athletic|the athletic|us|^(The New York Times|The Athletic)
+washington-post|Washington Post|NE|#000000|WP|m|-|wapo,washington post|the washington post|us|^(The Washington Post|WP Company)
+economist|The Economist|NE|#E3120B|E|y|-|economist|the economist|gb|^The Economist
+ft|Financial Times|NE|#FCD0B1|FT|m|-|financial times|ft: financial times|gb|^(The Financial Times|Financial Times)
+bloomberg|Bloomberg|NE|#000000|B|m|-||bloomberg|us|^Bloomberg
+the-atlantic|The Atlantic|NE|#E7131A|A|y|-|atlantic|the atlantic|us|^The Atlantic
+guardian|The Guardian|NE|#052962|G|m|-|guardian|the guardian|gb|^(Guardian|The Guardian)
+the-times|The Times|NE|#000000|T|m|GB,IE|times,sunday times|the times|gb|^(Times Media|News UK)
+telegraph|The Telegraph|NE|#000000|T|m|GB|telegraph|the telegraph|gb|^Telegraph
+irish-times|The Irish Times|NE|#000000|IT|m|IE|irish times|the irish times|ie|^Irish Times
+globe-and-mail|The Globe and Mail|NE|#C8102E|G|m|CA|globe|the globe and mail|ca|^(The Globe|Globe)
+smh|Sydney Morning Herald|NE|#096DD2|SMH|m|AU|smh,sydney morning herald|the sydney morning herald|au|^(Nine|Fairfax)
+nz-herald|NZ Herald|NE|#000000|NZH|m|NZ|herald premium|nz herald|nz|^NZME
+le-monde|Le Monde|NE|#000000|M|m|FR|monde|le monde|fr|^(Le Monde|Societe Editrice|Société)
+spiegel|Der Spiegel|NE|#E64415|S|m|DE|spiegel plus,der spiegel|der spiegel|de|^(SPIEGEL|Spiegel|DER SPIEGEL)
+nrc|NRC|NE|#D4002A|NRC|m|NL||nrc|nl|^(NRC|Mediahuis)
+corriere|Corriere della Sera|NE|#000000|C|m|IT|corriere|corriere della sera|it|^(RCS|Corriere)
+el-pais|El País|NE|#000000|P|m|ES|el pais|el país|es|^(Ediciones El Pa|PRISA|Prisa|Diario El Pa)
+times-of-india|Times of India|NE|#E21B22|TOI|y|IN|toi,toi+,times of india|times of india|in|^(Times Internet|Bennett)
+blinkist|Blinkist|NE|#2CE080|B|y|-||blinkist|de|^Blinkist
+
+## Gaming
+xbox-game-pass|Xbox Game Pass|GA|#107C10|X|m|-|xbox,game pass,gamepass|xbox|us|^Microsoft
+ps-plus|PlayStation Plus|GA|#0070D1|PS|y|-|playstation,psn,ps plus,ps+|playstation app|us|^(Sony|PlayStation)
+nintendo-online|Nintendo Switch Online|GA|#E60012|NS|y|-|nintendo,switch online|nintendo switch app|us|^Nintendo
+apple-arcade|Apple Arcade|GA|#FF2D55|AA|m|-|arcade|-|us|-|apple
+roblox|Roblox Premium|GA|#000000|R|m|-|roblox|roblox|us|^Roblox
+fortnite-crew|Fortnite Crew|GA|#3D8BFF|F|m|-|fortnite,epic games|-|us|-
+minecraft|Minecraft Realms|GA|#62B47A|M|m|-|minecraft|minecraft: dream it, build it|us|^(Mojang|Microsoft)
+ea-play|EA Play|GA|#FF4747|EA|m|-|ea,electronic arts|-|us|-
+ubisoft-plus|Ubisoft+|GA|#0070FF|U+|m|-|ubisoft|ubisoft connect|us|^Ubisoft
+geforce-now|GeForce NOW|GA|#76B900|GF|m|US,GB,CA,AU,IE,NZ,DE,NL,FR,IT,ES,IN|nvidia,geforce|-|us|-
+chess-com|Chess.com|GA|#81B64C|C|y|-|chess|chess - play & learn|us|^Chess
+
+## Learning
+duolingo|Duolingo Super|LE|#58CC02|D|y|-|duolingo,duo,super duolingo,duolingo max|duolingo|us|^Duolingo
+babbel|Babbel|LE|#FF7300|B|m|-||babbel|us|^(Babbel|Lesson Nine)
+masterclass|MasterClass|LE|#000000|MC|y|US,GB,CA,AU,IE,NZ,DE,NL,FR,IT,ES,IN|master class|masterclass|us|^(MasterClass|Yanka)
+coursera|Coursera Plus|LE|#0056D2|C|m|-|coursera|coursera|us|^Coursera
+skillshare|Skillshare|LE|#00FF84|S|y|-||skillshare|us|^Skillshare
+brilliant|Brilliant|LE|#000000|B|y|-||brilliant|us|^Brilliant
+busuu|Busuu|LE|#2A69F2|B|y|-||busuu|gb|^Busuu
+rosetta-stone|Rosetta Stone|LE|#0098DB|RS|y|-||rosetta stone|us|^Rosetta
+memrise|Memrise|LE|#FFC200|M|y|-||memrise|gb|^Memrise
+speak|Speak|LE|#000000|S|y|-|english|speak|us|^Speak
+udemy|Udemy Personal Plan|LE|#A435F0|U|m|-|udemy|udemy|us|^Udemy
+quizlet|Quizlet Plus|LE|#4255FF|Q|y|-|quizlet|quizlet|us|^Quizlet
+chegg|Chegg Study|LE|#EB7100|C|m|US,CA|chegg|chegg study|us|^Chegg
+photomath|Photomath Plus|LE|#E9263D|PM|y|-|photomath|photomath|us|^(Google|Photomath)
+simply-piano|Simply Piano|LE|#FF7A00|SP|y|-|piano|simply piano|us|^(Simply|JoyTunes)

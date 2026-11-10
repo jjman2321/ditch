@@ -47,7 +47,8 @@ const ROWS: Row[] = [
   { label: 'Pick reminder times', free: 'no', pro: 'yes' },
   { label: 'Nudge if you miss one', free: 'no', pro: 'yes' },
   { label: `Lock${NB}Screen widget`, free: 'no', pro: 'yes' },
-  { label: 'Screenshot import', free: 'no', pro: 'yes' },
+  // The first import (onboarding) is free, so "anytime" keeps this row true (DECISIONS #34).
+  { label: 'Import anytime', free: 'no', pro: 'yes' },
 ];
 
 const CELL_TEXT = { fontFamily: F.semi, fontSize: 14, lineHeight: 20 } as const;

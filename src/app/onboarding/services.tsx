@@ -19,7 +19,7 @@ import { LinkButton, OnbRoot, TextLink } from '@/onboarding/Parts';
 import { PlanSheet } from '@/onboarding/PlanSheet';
 import { PriceSheet } from '@/onboarding/PriceSheet';
 import { isPriced, totalsFor, useCountry, useMoney, useOnboarding, usePickedList, type Picked } from '@/state/onboarding';
-import { Button, F, LogoTile, Search, StepHeader, Tick, Txt, brand, haptic, radius, useFrame, usePalette } from '@/ui/sunflower';
+import { Button, Camera, ChevronRight, F, LogoTile, Search, StepHeader, Tick, Txt, haptic, radius, useFrame, usePalette } from '@/ui/sunflower';
 
 const NB = ' ';
 
@@ -105,49 +105,51 @@ function Row({
 }
 
 /**
- * "Add them all at once" (design/v13-dates screen 0, DECISIONS #34): the
- * first import is free. Hidden until import works (src/config/features.ts).
+ * "Add them all at once" (design/v13-dates screen 0, DECISIONS #34). It just
+ * works here: the first import is free, so it needs no label. Hidden until
+ * import works (src/config/features.ts).
  */
-function ImportButton({ label }: { label: string }) {
+/**
+ * "Add them all at once" (design/v13-dates screen 0, DECISIONS #34): one
+ * button. Tapping it will ask Photo library (screenshots) or Files
+ * (statements), like Mercury's "Match receipts". The first import is free,
+ * so it needs no label. Hidden until import works (src/config/features.ts).
+ */
+function ImportCard() {
   const p = usePalette();
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={`Add them from a ${label.toLowerCase()}`}
+      accessibilityLabel="Add them all at once. Snap a screenshot or upload a bank statement. We fill in the prices and dates."
       onPress={() => router.push('/paywall?from=import')}
-      style={({ pressed }) => ({ height: 44, justifyContent: 'center', opacity: pressed ? 0.7 : 1 })}
+      style={({ pressed }) => ({
+        marginTop: 14,
+        minHeight: 64,
+        borderRadius: 16,
+        backgroundColor: p.card,
+        borderWidth: 1.5,
+        borderColor: p.chipBorder,
+        paddingHorizontal: 14,
+        paddingVertical: 12,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 12,
+        opacity: pressed ? 0.75 : 1,
+      })}
     >
-      <View style={{ height: 36, paddingHorizontal: 14, borderRadius: 18, borderWidth: 1.5, borderColor: p.fg, flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-        <Txt v="label" style={{ fontSize: 14 }}>
-          {label}
-        </Txt>
+      <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: p.dark ? '#2A2721' : '#FFF1BC', alignItems: 'center', justifyContent: 'center' }}>
+        <Camera color={p.fg} />
       </View>
-    </Pressable>
-  );
-}
-
-function ImportCard() {
-  const p = usePalette();
-  return (
-    <View style={{ marginTop: 14, borderRadius: 16, backgroundColor: p.card, borderWidth: 1.5, borderColor: p.chipBorder, paddingHorizontal: 14, paddingTop: 12, paddingBottom: 4 }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-        <Txt v="label" color={p.cardFg} style={{ flexShrink: 1 }}>
+      <View style={{ flex: 1, minWidth: 0 }}>
+        <Txt v="label" color={p.cardFg}>
           Add them all at once
         </Txt>
-        <View style={{ height: 22, paddingHorizontal: 8, borderRadius: 11, backgroundColor: brand.sunflower, justifyContent: 'center' }}>
-          <Txt v="fine" color={brand.ink} style={{ fontFamily: F.bold, fontSize: 12 }} maxFontSizeMultiplier={1.2}>
-            First one free
-          </Txt>
-        </View>
+        <Txt v="sub" tone="mute" style={{ marginTop: 2 }}>
+          Snap a screenshot or upload a bank statement. We fill in the prices and dates.
+        </Txt>
       </View>
-      <Txt v="sub" tone="mute" style={{ marginTop: 4 }}>
-        Snap a screenshot or upload a bank statement. We fill in the prices and dates.
-      </Txt>
-      <View style={{ flexDirection: 'row', gap: 8, marginTop: 4 }}>
-        <ImportButton label="Screenshot" />
-        <ImportButton label="Bank statement" />
-      </View>
-    </View>
+      <ChevronRight color={p.mute} />
+    </Pressable>
   );
 }
 

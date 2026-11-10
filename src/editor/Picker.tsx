@@ -8,7 +8,6 @@
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { FlatList, Keyboard, Pressable, ScrollView, TextInput, View } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
 
 import { CHIP, FILTERS, type Filter } from '@/catalog/filters';
 import { defaultPlan, planChoices, priceRow } from '@/catalog/prices';
@@ -22,17 +21,7 @@ import { useApp, useAppMoney } from '@/state/app';
 import { newPick } from '@/state/picks';
 import { Button, Camera, F, LogoTile, Search, Tick, Txt, haptic, radius, usePalette } from '@/ui/sunflower';
 
-/** A page with lines: a bank statement. */
-function DocIcon({ color }: { color: string }) {
-  return (
-    <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
-      <Path d="M6 3.5h8l4 4v13H6z" stroke={color} strokeWidth={1.9} strokeLinejoin="round" />
-      <Path d="M14 3.5v4h4M9 12h6M9 16h6" stroke={color} strokeWidth={1.9} strokeLinecap="round" />
-    </Svg>
-  );
-}
-
-function ImportRow({ title, sub, doc, onPress }: { title: string; sub: string; doc?: boolean; onPress: () => void }) {
+function ImportRow({ title, sub, onPress }: { title: string; sub: string; onPress: () => void }) {
   const p = usePalette();
   return (
     <Pressable
@@ -54,7 +43,7 @@ function ImportRow({ title, sub, doc, onPress }: { title: string; sub: string; d
       })}
     >
       <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: p.dark ? '#2A2721' : '#FFF1BC', alignItems: 'center', justifyContent: 'center' }}>
-        {doc ? <DocIcon color={p.fg} /> : <Camera color={p.fg} />}
+        <Camera color={p.fg} />
       </View>
       <View style={{ flex: 1, minWidth: 0 }}>
         <Txt v="label" color={p.cardFg}>
@@ -86,9 +75,10 @@ export function Picker({ onCustom, onClose }: { onCustom: (name: string) => void
 
   const here = useMemo(() => SERVICES.filter((s) => availableIn(s, country)), [country]);
   const data = useMemo(() => {
-    if (query.trim()) return searchServices(query, here).slice(0, 30);
-    return filter === 'Popular' ? popularIn(country) : here.filter((s) => s.category === filter);
-  }, [filter, query, country, here]);
+    const list = query.trim() ? searchServices(query, here).slice(0, 30) : filter === 'Popular' ? popularIn(country) : here.filter((s) => s.category === filter);
+    // Ones already on the list go last, so the top shows what you can still add.
+    return [...list.filter((s) => !onList.has(s.id)), ...list.filter((s) => onList.has(s.id))];
+  }, [filter, query, country, here, onList]);
 
   /** "Standard · $19.99/mo", "$14.99/mo" or "Add your price". */
   const lineOf = (s: CatalogService) => {
@@ -126,9 +116,9 @@ export function Picker({ onCustom, onClose }: { onCustom: (name: string) => void
         Add a subscription
       </Txt>
       {showImport() ? (
-        <View style={{ gap: 8, marginTop: 14 }}>
-          <ImportRow title="From a screenshot" sub="Apple subscriptions, receipts, renewals" onPress={() => (onClose(), router.push('/paywall?from=import'))} />
-          <ImportRow title="From a bank statement" sub="PDF or CSV, read on your phone" doc onPress={() => (onClose(), router.push('/paywall?from=import'))} />
+        <View style={{ marginTop: 14 }}>
+          {/* One button: it asks Photo library (screenshots) or Files (statements). */}
+          <ImportRow title="From a screenshot or statement" sub="We fill in the prices and dates" onPress={() => (onClose(), router.push('/paywall?from=import'))} />
         </View>
       ) : null}
       <View

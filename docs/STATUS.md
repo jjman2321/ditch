@@ -48,7 +48,8 @@ _Update this at the end of every session._
   - **App froze after "Enter my own price":** two iOS pop-ups were opening and closing at the same moment, which leaves an invisible layer that blocks every tap. Sheets now take turns (`src/ui/sunflower/modalSlot.ts`, tested). The price sheet sizes to its content and slides above the keyboard (`avoidKeyboard` on `Sheet`).
   - **Typing onto a pre-filled price** gave "12.9911.99" = $129,911.99. The box now starts empty with the plan price as a hint, and the number reader refuses garbled input instead of guessing.
   - Wording: "heads-up" → "reminder" on every screen; the hold hint no longer says "Saves".
-  - 187 Jest tests pass.
+  - **Rough combined total for mixed currencies (DECISIONS #32, owner picked option B):** "≈ £69 a month in all · Nov 10 rates" under the real totals on Home and Your total, only for lists with 2+ currencies. Rates from open.er-api.com (free, no key; credited on Sources), downloaded at most daily and only for mixed lists; snapshot in `src/catalog/fx.data.ts` (`npm run fx`, re-run before each release); hidden if rates are 45+ days old or a currency is missing. Maths in `src/domain/fx.ts` (12 tests), refresh in `src/services/fx.ts`. Web preview: `?seed=mixed`.
+  - 199 Jest tests pass.
 - 🗄️ Retired: raccoon poses and Seedance loops in `design/premium-white/anim/` (kept for reference, not used).
 
 ## Next
@@ -57,7 +58,7 @@ _Update this at the end of every session._
 2. Then §2–§4 and §6–§9 (saving, Home, add/edit, hold to ditch, Ditched, Calendar, Settings), light and dark.
 3. **Only you can do this (5 min):** on your iPhone or Mac in the US, open youtube.com/premium and chatgpt.com/pricing and tell me the prices you see (Individual / Family / Student; Plus). I'll mark them verified, then `npm run prices`.
 4. M2: RevenueCat, real purchases and restore, Pro lapse handling, then an EAS development build.
-5. Owner decision: currency conversion when you change country (options sent Nov 10; touches DECISIONS #17).
+5. Before each App Store build: `npm run fx` to refresh the built-in exchange rates.
 6. Owner decision: should "Check your guessed dates" show on Free too (built that way), or only on Pro like render 9b?
 
 ## How to run the app

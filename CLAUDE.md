@@ -38,12 +38,13 @@ It's the owner's first app. The goal is to learn the whole Apple pipeline and st
 - Goal was "Data Not Collected". **RevenueCat makes that impossible:** its docs say every app using it must declare **Purchases** (purchase history), for App Functionality and Analytics.
 - With RevenueCat's anonymous user IDs (we never set a custom ID or send email), we answer **Not linked to you** and **Not used for tracking**.
 - Expected label: **"Data Not Linked to You: Purchases"**. Everything else: not collected.
+- The daily exchange-rate download (DECISIONS #32) is the same public file for everyone and sends nothing about the user, so it doesn't change the label.
 - Re-check this before each App Store submission, and again if any SDK is added.
 
 ## Rules
 ### 1. Money
 - Store amounts as **whole minor units** (integer cents; respect the currency's real decimals, e.g. JPY has 0). Never floats in storage.
-- **Never add up different currencies.** Show one total per currency.
+- **Never add up different currencies.** Show one total per currency. The one exception is the clearly marked rough line "≈ £69 a month in all · Nov 10 rates" for mixed lists (DECISIONS #32); stored amounts and reminders are never converted.
 - Monthly equivalent: weekly × 52 / 12, monthly × 1, quarterly ÷ 3, yearly ÷ 12.
 - Do the math on exact values and round only for display. Yearly totals come from unrounded values.
 - Unit tests for every acceptance check, e.g. Netflix $15.49/mo → $185.88/yr; $99/yr → $8.25/mo.

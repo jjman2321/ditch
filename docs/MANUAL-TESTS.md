@@ -106,6 +106,16 @@ Pull first: `git pull`, `npm install`, then `npx expo start --tunnel ngrok --cle
 - [ ] Type something broken like 12.99.5: the button says "Check the price" and can't be tapped.
 - [ ] Repeat with **Add your price** on YouTube Premium, and with the country sheet (Change → pick a country): every sheet opens and closes cleanly, one at a time.
 
+**Mixed currencies: the "≈ in all" line (DECISIONS #32)**
+- [ ] On "What do you pay for?" (Region United States), tick YouTube Premium and type your own price, e.g. 15.99 Monthly.
+- [ ] Tap **Change** next to the country and pick 🇬🇧 UK. Tap **See my total**.
+- [ ] Under "+ US$… a year" there's a small grey line "≈ £… a year in all · Nov 10 rates" (today's date or close). It doesn't move or animate.
+- [ ] Only one currency on the list (stay on United States, no own price in another currency): **no** ≈ line anywhere.
+- [ ] After "Go to my list": Home's yellow card shows the ≈ line in "a month" under the US$ line. VoiceOver on the card reads "About £… a month in all, at Nov 10 exchange rates."
+- [ ] The list rows, notifications and Ditched tab still show the real amounts (US$ stays US$).
+- [ ] Airplane mode, open the app: the ≈ line still shows (rates saved on the phone or built in).
+- [ ] Settings → About Ditch → Sources lists "Exchange rates: Exchange Rate API".
+
 **Wording**
 - [ ] Hold a subscription on Home: the hint says "$X a year you won't pay once you cancel" (no "Saves").
 - [ ] Empty Home says "Ditch reminds you before each charge." Calendar says "Reminder", never "heads-up".

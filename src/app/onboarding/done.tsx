@@ -136,8 +136,8 @@ export default function Done() {
 
         <View style={{ marginTop: f.small ? 8 : 24 }}>
           {items.map((it, i) => (
-            <View key={it.title} accessible accessibilityLabel={`${it.mark === 'ok' ? 'Done' : it.mark === 'warn' ? 'Needs you' : 'To do'}: ${it.title}. ${it.sub}`} style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 12, paddingVertical: 12 }}>
-              {i ? <View style={{ position: 'absolute', top: 0, left: 36, right: 0, height: 1, backgroundColor: p.rule }} /> : null}
+            // No dividers on the yellow: spacing separates the items (lines on colour read as muddy grey).
+            <View key={it.title} accessible accessibilityLabel={`${it.mark === 'ok' ? 'Done' : it.mark === 'warn' ? 'Needs you' : 'To do'}: ${it.title}. ${it.sub}`} style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 12, paddingVertical: f.small ? 8 : 10, marginTop: i ? 4 : 0 }}>
               <MarkIcon kind={it.mark} />
               <View style={{ flex: 1 }}>
                 <Txt v="strong">{it.title}</Txt>

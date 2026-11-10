@@ -9,7 +9,9 @@ import { useMemo, useState } from 'react';
 import { FlatList, Pressable, ScrollView, TextInput, View } from 'react-native';
 
 import { catalogPrice, defaultPlan, planChoices, priceRow } from '@/catalog/prices';
-import { CATEGORIES, SERVICES, availableIn, popularIn, searchServices, type CatalogService, type Category } from '@/catalog/services';
+import { CHIP, FILTERS, type Filter } from '@/catalog/filters';
+import { showImport } from '@/config/features';
+import { SERVICES, availableIn, popularIn, searchServices, type CatalogService } from '@/catalog/services';
 import { shortPlanName } from '@/domain/copy';
 import { CYCLE_SHORT } from '@/domain/money';
 import { CountrySheet } from '@/onboarding/CountrySheet';
@@ -19,16 +21,6 @@ import { PriceSheet } from '@/onboarding/PriceSheet';
 import { isPriced, totalsFor, useCountry, useMoney, useOnboarding, usePickedList, type Picked } from '@/state/onboarding';
 import { Button, F, LogoTile, Search, StepHeader, Tick, Txt, haptic, radius, useFrame, usePalette } from '@/ui/sunflower';
 
-type Filter = 'Popular' | Category;
-const FILTERS: Filter[] = ['Popular', ...CATEGORIES];
-/** Short chip names, so the first four fit on an iPhone 12 (design/v12 render 02). */
-const CHIP: Partial<Record<Filter, string>> = {
-  'Music & audio': 'Music',
-  'News & reading': 'News',
-  'Shopping & food': 'Shopping',
-  'Cloud & security': 'Cloud',
-  'Health & fitness': 'Fitness',
-};
 const NB = ' ';
 
 /** The second line of a row. Returns the text and whether "Change" / "Add your price" shows. */
@@ -112,6 +104,46 @@ function Row({
   );
 }
 
+/**
+ * "Add them all at once" (design/v13-dates screen 0, DECISIONS #34): the
+ * first import is free. Hidden until import works (src/config/features.ts).
+ */
+function ImportButton({ label }: { label: string }) {
+  const p = usePalette();
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`Add them from a ${label.toLowerCase()}`}
+      onPress={() => router.push('/paywall?from=import')}
+      style={({ pressed }) => ({ height: 44, justifyContent: 'center', opacity: pressed ? 0.7 : 1 })}
+    >
+      <View style={{ height: 36, paddingHorizontal: 14, borderRadius: 18, borderWidth: 1.5, borderColor: p.fg, flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+        <Txt v="label" style={{ fontSize: 14 }}>
+          {label}
+        </Txt>
+      </View>
+    </Pressable>
+  );
+}
+
+function ImportCard() {
+  const p = usePalette();
+  return (
+    <View style={{ marginTop: 14, borderRadius: 16, backgroundColor: p.card, borderWidth: 1.5, borderColor: p.chipBorder, paddingHorizontal: 14, paddingTop: 12, paddingBottom: 4 }}>
+      <Txt v="label" color={p.cardFg}>
+        Add them all at once
+      </Txt>
+      <Txt v="sub" tone="mute" style={{ marginTop: 2 }}>
+        From a screenshot or bank statement. Read on your phone. Your first one is free.
+      </Txt>
+      <View style={{ flexDirection: 'row', gap: 8, marginTop: 4 }}>
+        <ImportButton label="Screenshot" />
+        <ImportButton label="Bank statement" />
+      </View>
+    </View>
+  );
+}
+
 /** "Tick each one. Prices for 🇺🇸 US · Change" */
 function CountryLine({ onChange }: { onChange: () => void }) {
   const country = useCountry();
@@ -183,6 +215,7 @@ export default function Services() {
           {`What do you pay${NB}for?`}
         </Txt>
         <CountryLine onChange={() => setCountryOpen(true)} />
+        {showImport() ? <ImportCard /> : null}
         <View
           style={{
             marginTop: 16,

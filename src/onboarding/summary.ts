@@ -8,12 +8,10 @@ import type { DateOnly } from '@/domain/dates';
 export type SetSub = {
   id: string;
   name: string;
-  /** The next charge, on or after today. */
-  charge: DateOnly;
+  /** The next charge, on or after today. Null: no date yet. */
+  charge: DateOnly | null;
   /** The charge after that (used when the next one is too close for a reminder). */
-  following: DateOnly;
-  /** True while the date is rough or unanswered ("around …"). */
-  guess: boolean;
+  following: DateOnly | null;
 };
 
 export type ReminderRow = {
@@ -23,7 +21,6 @@ export type ReminderRow = {
   charge: DateOnly;
   /** The day of the first reminder (9:00 AM). */
   reminder: DateOnly;
-  guess: boolean;
   trial?: boolean;
 };
 
@@ -51,18 +48,18 @@ export function firstReminderRows({
 }): ReminderRow[] {
   const rows: ReminderRow[] = [];
   for (const s of subs) {
-    if (!remindedIds.includes(s.id)) continue;
-    let charge = s.charge;
+    if (!remindedIds.includes(s.id) || !s.charge) continue; // no date, no reminder
+    let charge: DateOnly = s.charge;
     let reminder = firstHeadsUp(charge, today, nowHour);
-    if (!reminder) {
+    if (!reminder && s.following) {
       charge = s.following;
       reminder = firstHeadsUp(charge, today, nowHour);
     }
-    if (reminder) rows.push({ id: s.id, name: s.name, charge, reminder, guess: s.guess });
+    if (reminder) rows.push({ id: s.id, name: s.name, charge, reminder });
   }
   if (trialCharge) {
     const reminder = firstHeadsUp(trialCharge, today, nowHour);
-    if (reminder) rows.push({ id: PRO_TRIAL_ROW_ID, name: 'Ditch Pro trial', charge: trialCharge, reminder, guess: false, trial: true });
+    if (reminder) rows.push({ id: PRO_TRIAL_ROW_ID, name: 'Ditch Pro trial', charge: trialCharge, reminder, trial: true });
   }
   // Soonest first; on the same day the trial goes first (it's the one we charge), then the earlier charge.
   rows.sort((a, b) =>
@@ -75,7 +72,7 @@ export function firstReminderRows({
   return rows.slice(0, max);
 }
 
-/** Subscriptions whose date is still rough or unanswered, in list order. */
-export function datesToCheck(subs: SetSub[]): string[] {
-  return subs.filter((s) => s.guess).map((s) => s.name);
+/** Subscriptions with no date yet (no reminders until they get one), in list order. */
+export function undatedNames(subs: SetSub[]): string[] {
+  return subs.filter((s) => !s.charge).map((s) => s.name);
 }

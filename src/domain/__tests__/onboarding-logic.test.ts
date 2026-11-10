@@ -1,16 +1,13 @@
 import {
   chargeFrom,
   firstHeadsUp,
-  guessNextCharge,
   headsUpDates,
   nextFromLastCharge,
   ordinal,
   previousCharge,
-  roughDate,
-  roughRange,
 } from '../charges';
 import { balanceLines, joinNames, namesLine, possessive, shortPlanName, stillUsingIt } from '../copy';
-import { anchorForDayOfMonth, daysBetween, longDate, nextChargeDate, monthGrid, monthTitle, shiftMonth, weekdayDate, weekdayName } from '../dates';
+import { anchorForDayOfMonth, longDate, nextChargeDate, monthGrid, monthTitle, shiftMonth, weekdayDate, weekdayName } from '../dates';
 import { formatMoney, formatWholeMoney, spendTotals, type Cycle } from '../money';
 import { perMonthFromYearly, yearlyBadge, yearlySavingsPercent } from '../pricing';
 
@@ -59,33 +56,6 @@ describe('onboarding: the yearly total from picks', () => {
   });
 });
 
-describe('onboarding: guessed dates', () => {
-  it('is stable for the same service and day', () => {
-    expect(guessNextCharge('netflix', 'monthly', TODAY)).toBe(guessNextCharge('netflix', 'monthly', TODAY));
-  });
-
-  it('lands inside one billing cycle and never today', () => {
-    const ids = ['netflix', 'spotify', 'chatgpt-plus', 'amazon-prime', 'youtube-premium', 'disney-plus', 'max', 'hulu'];
-    for (const id of ids) {
-      const m = daysBetween(TODAY, guessNextCharge(id, 'monthly', TODAY));
-      expect(m).toBeGreaterThanOrEqual(2);
-      expect(m).toBeLessThanOrEqual(29);
-      const w = daysBetween(TODAY, guessNextCharge(id, 'weekly', TODAY));
-      expect(w).toBeGreaterThanOrEqual(1);
-      expect(w).toBeLessThanOrEqual(7);
-      const y = daysBetween(TODAY, guessNextCharge(id, 'yearly', TODAY));
-      expect(y).toBeGreaterThanOrEqual(2);
-      expect(y).toBeLessThanOrEqual(365);
-    }
-  });
-
-  it('spreads different services over different days', () => {
-    const ids = ['netflix', 'spotify', 'chatgpt-plus', 'amazon-prime', 'youtube-premium', 'disney-plus'];
-    const days = new Set(ids.map((id) => guessNextCharge(id, 'monthly', TODAY)));
-    expect(days.size).toBeGreaterThan(3);
-  });
-});
-
 describe('onboarding: from my last receipt', () => {
   it('Oct 14 receipt → next is Sat, Nov 14 (the v10 example)', () => {
     const next = nextFromLastCharge('2026-10-14', 'monthly', TODAY);
@@ -127,7 +97,8 @@ describe('onboarding: from my last receipt', () => {
   it('chargeFrom handles each kind of date', () => {
     expect(chargeFrom('2026-10-14', 'receipt', 'monthly', TODAY)).toBe('2026-11-14');
     expect(chargeFrom('2026-11-21', 'next', 'monthly', TODAY)).toBe('2026-11-21');
-    expect(chargeFrom('2026-11-03', 'guess', 'monthly', TODAY)).toBe('2026-12-03');
+    // No date yet (DECISIONS #33): there's no charge to work out.
+    expect(chargeFrom('2026-11-03', 'none', 'monthly', TODAY)).toBeNull();
   });
 });
 
@@ -229,49 +200,10 @@ describe('onboarding copy', () => {
   });
 });
 
-describe('charge dates: quick picks (v12, DECISIONS #29)', () => {
+describe('charge dates: pick the day (DECISIONS #33)', () => {
   const TUE = '2026-11-10'; // the v12 example day
 
-  it('lands in the middle of each range, matching design/v12/NOTES.md', () => {
-    expect(roughDate('this', 'monthly', TUE)).toBe('2026-11-13'); // Fri
-    expect(roughDate('next', 'monthly', TUE)).toBe('2026-11-19'); // Thu
-    expect(roughDate('later', 'monthly', TUE)).toBe('2026-12-01'); // Tue
-    expect(weekdayDate(roughDate('later', 'monthly', TUE))).toBe('Tue, Dec 1');
-  });
-
-  it('"Later" covers Nov 23 to Dec 9 for a monthly sub on Nov 10', () => {
-    expect(roughRange('this', 'monthly', TUE)).toEqual(['2026-11-11', '2026-11-15']);
-    expect(roughRange('next', 'monthly', TUE)).toEqual(['2026-11-16', '2026-11-22']);
-    expect(roughRange('later', 'monthly', TUE)).toEqual(['2026-11-23', '2026-12-09']);
-  });
-
-  it('a yearly sub\'s "Later" reaches up to a year out', () => {
-    expect(roughRange('later', 'yearly', TUE)).toEqual(['2026-11-23', '2027-11-09']);
-  });
-
-  it('on a Sunday, "This week" is the coming week; on a Saturday it is Sunday', () => {
-    expect(roughRange('this', 'monthly', '2026-11-15')).toEqual(['2026-11-16', '2026-11-22']);
-    expect(roughRange('this', 'monthly', '2026-11-14')).toEqual(['2026-11-15', '2026-11-15']);
-    expect(roughDate('this', 'monthly', '2026-11-14')).toBe('2026-11-15');
-  });
-
-  it('never lands on today or in the past, for every weekday', () => {
-    for (let i = 0; i < 7; i++) {
-      const day = `2026-11-${String(9 + i).padStart(2, '0')}`;
-      for (const w of ['this', 'next', 'later'] as const) {
-        expect(daysBetween(day, roughDate(w, 'monthly', day))).toBeGreaterThan(0);
-      }
-      expect(roughDate('this', 'monthly', day) < roughDate('next', 'monthly', day)).toBe(true);
-      expect(roughDate('next', 'monthly', day) < roughDate('later', 'monthly', day)).toBe(true);
-    }
-  });
-
-  it('a rough date rolls forward each month like any anchor', () => {
-    const later = roughDate('later', 'monthly', TUE); // Dec 1
-    expect(nextChargeDate(later, 'monthly', '2026-12-02')).toBe('2027-01-01');
-  });
-
-  it('"Pick a day": the 19th → Thu, Nov 19; the 31st clamps to Nov 30, keeps the 31st', () => {
+  it('the 19th → Thu, Nov 19; the 31st clamps to Nov 30, keeps the 31st', () => {
     expect(nextChargeDate(anchorForDayOfMonth(19, TUE), 'monthly', TUE)).toBe('2026-11-19');
     expect(nextChargeDate(anchorForDayOfMonth(5, TUE), 'monthly', TUE)).toBe('2026-12-05');
     const a31 = anchorForDayOfMonth(31, TUE);

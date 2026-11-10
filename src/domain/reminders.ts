@@ -13,7 +13,7 @@ import { stillUsingIt } from './copy';
 import { addDays, daysBetween, parseDate, toDateOnly, weekdayDate, weekdayName, type DateOnly } from './dates';
 import { CYCLE_WORDS, formatMoney } from './money';
 import { effectiveLeads, parseTime, type Settings } from './settings';
-import { chargeOfSub, chargesBetween, isActive, isGuess, isPending, isPricedSub, isProTrial, remindedIds, type Sub } from './subs';
+import { chargeOfSub, chargesBetween, isActive, isPending, isPricedSub, isProTrial, remindedIds, type Sub } from './subs';
 
 /** iOS keeps at most 64 pending local notifications per app. */
 export const MAX_PENDING = 64;
@@ -47,9 +47,8 @@ export function atTime(day: DateOnly, time: string): Date {
   return new Date(y, m - 1, d, h, min, 0, 0);
 }
 
-/** "today", "tomorrow", "Saturday" (2–6 days), "on Sat, Nov 21" (a week or more). Guesses: "around Sat, Nov 14". */
-export function whenWords(charge: DateOnly, fireDay: DateOnly, guess: boolean): string {
-  if (guess) return `around ${weekdayDate(charge)}`;
+/** "today", "tomorrow", "Saturday" (2–6 days), "on Sat, Nov 21" (a week or more). */
+export function whenWords(charge: DateOnly, fireDay: DateOnly): string {
   const diff = daysBetween(fireDay, charge);
   if (diff <= 0) return 'today';
   if (diff === 1) return 'tomorrow';
@@ -66,7 +65,7 @@ function priceOf(s: Sub, money: Money): string | null {
 /** The dry, kind voice. Never shames, never says "saved". */
 export function headsUpBody(s: Sub, charge: DateOnly, fireDay: DateOnly, money: Money): string {
   const lead = daysBetween(fireDay, charge);
-  const when = whenWords(charge, fireDay, isGuess(s));
+  const when = whenWords(charge, fireDay);
   const price = priceOf(s, money);
   const tail = lead <= 1 ? 'Last call if you’re done with it.' : stillUsingIt(s.category ?? undefined);
   return `${s.name} renews ${when}.${price ? ` ${price}.` : ''} ${tail}`;
@@ -74,7 +73,7 @@ export function headsUpBody(s: Sub, charge: DateOnly, fireDay: DateOnly, money: 
 
 /** A free trial the user is tracking (counts toward the free 3). */
 export function trialBody(s: Sub, charge: DateOnly, fireDay: DateOnly, money: Money): string {
-  const when = whenWords(charge, fireDay, isGuess(s));
+  const when = whenWords(charge, fireDay);
   const price = priceOf(s, money);
   if (daysBetween(fireDay, charge) <= 1) return `Your ${s.name} trial ends ${when}.${price ? ` It’ll charge ${price}.` : ''}`;
   return `Your ${s.name} trial ends ${when}.${price ? ` Then it’s ${price} ${CYCLE_WORDS[s.cycle]}.` : ''}`;
@@ -82,7 +81,7 @@ export function trialBody(s: Sub, charge: DateOnly, fireDay: DateOnly, money: Mo
 
 /** Ditch's own trial (DECISIONS #15): same timing, plain about the price. */
 export function proTrialBody(s: Sub, charge: DateOnly, fireDay: DateOnly, money: Money): string {
-  const when = whenWords(charge, fireDay, false);
+  const when = whenWords(charge, fireDay);
   const price = priceOf(s, money);
   if (daysBetween(fireDay, charge) <= 1)
     return `Your Ditch Pro trial ends ${when}.${price ? ` ${price} ${CYCLE_WORDS[s.cycle]} after that.` : ''} Cancel in iPhone Settings if you’re done.`;
@@ -126,6 +125,7 @@ export function planReminders(
     if (isPending(s)) {
       // Exactly one: the day before the charge it has to be cancelled by.
       const charge = s.cancelBy && s.cancelBy >= today ? s.cancelBy : chargeOfSub(s, today);
+      if (!charge) continue; // no date yet: nothing to check against
       add({ id: `last:${s.id}:${charge}`, subId: s.id, kind: 'last-check', chargeDate: charge, lead: 1, fireDay: addDays(charge, -1), body: lastCheckBody(s) });
       continue;
     }
@@ -134,7 +134,7 @@ export function planReminders(
     if (isProTrial(s)) {
       // Only the trial's own charge, with the standard 3 and 1 days.
       const charge = chargeOfSub(s, today);
-      if (charge !== s.anchor) continue; // the trial is over
+      if (!charge || charge !== s.anchor) continue; // the trial is over
       for (const lead of HEADS_UP_LEADS) {
         const fireDay = addDays(charge, -lead);
         add({ id: `pro:${s.id}:${charge}:${lead}`, subId: s.id, kind: 'pro-trial', chargeDate: charge, lead, fireDay, body: proTrialBody(s, charge, fireDay, money) });
@@ -144,7 +144,9 @@ export function planReminders(
 
     if (!reminded.has(s.id)) continue;
     // Every charge in the next year, so reminders keep coming even if the app isn't opened.
-    const charges = chargesBetween(s, chargeOfSub(s, today), until);
+    const first = chargeOfSub(s, today);
+    if (!first) continue; // remindedIds already skips these; belt and braces
+    const charges = chargesBetween(s, first, until);
     for (const charge of charges) {
       const trial = s.isTrial && charge === s.anchor;
       for (const lead of leads) {

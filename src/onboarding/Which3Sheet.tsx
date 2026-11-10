@@ -6,8 +6,8 @@
 import { useMemo, useState } from 'react';
 import { AccessibilityInfo, ScrollView, View } from 'react-native';
 
-import { shortDate, weekdayDate } from '@/domain/dates';
-import { byYearlyDesc, chargeOf, usePickPrice, type Picked } from '@/state/onboarding';
+import { weekdayDate } from '@/domain/dates';
+import { byYearlyDesc, chargeOf, pickHasDate, usePickPrice, type Picked } from '@/state/onboarding';
 import { Button, Close, IconButton, LogoTile, Sheet, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
 
 import { TextLink } from './Parts';
@@ -18,12 +18,16 @@ const NB = ' ';
 function Body({ list, initial, onKeep }: { list: Picked[]; initial: string[]; onKeep: (ids: string[]) => void }) {
   const p = usePalette();
   const priceOf = usePickPrice();
-  const sorted = useMemo(() => [...list].sort(byYearlyDesc), [list]);
+  // Only subs with a date can have reminders (DECISIONS #33).
+  const sorted = useMemo(() => list.filter(pickHasDate).sort(byYearlyDesc), [list]);
   const [on, setOn] = useState<string[]>(initial.slice(0, FREE));
   const slots = sorted.filter((x) => on.includes(x.id));
   const rest = sorted.filter((x) => !on.includes(x.id));
   // Breaks only at the " · ", so a date never splits.
-  const line = (x: Picked) => `${priceOf(x, 'short') ?? 'No price yet'} · ${(x.dateSource === 'guess' ? `around ${shortDate(chargeOf(x))}` : weekdayDate(chargeOf(x))).replace(/ /g, NB)}`;
+  const line = (x: Picked) => {
+    const next = chargeOf(x);
+    return `${priceOf(x, 'short') ?? 'No price yet'}${next ? ` · ${weekdayDate(next).replace(/ /g, NB)}` : ''}`;
+  };
 
   const remove = (x: Picked) => {
     haptic.select();

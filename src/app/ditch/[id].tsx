@@ -108,7 +108,9 @@ export default function Ditched() {
           title: `One last check: ${weekdayDate(toDateOnly(lastCheck.fireAt))} · ${shortTimeLabel(app.settings.reminderTime)}`,
           line: `“${lastCheck.body}”`,
         }
-      : { title: `It charges ${weekdayDate(charge)}`, line: 'Too close for a last check. Cancel now to be safe.' };
+      : charge
+        ? { title: `It charges ${weekdayDate(charge)}`, line: 'Too close for a last check. Cancel now to be safe.' }
+        : { title: 'No date on this one', line: 'So there’s no last check. Cancel it before it renews.' };
 
   return (
     <SurfaceContext.Provider value="sun">
@@ -135,7 +137,7 @@ export default function Ditched() {
                   </Txt>
                 )}
                 <Txt v="body" tone="mute" num style={{ fontSize: compact ? 13.5 : 14, marginTop: 2 }} numberOfLines={2}>
-                  {trial ? 'Charges' : 'Cancel by'} {weekdayDate(charge)}
+                  {charge ? `${trial ? 'Charges' : 'Cancel by'} ${weekdayDate(charge)}` : 'Cancel before it renews'}
                   {priceLine ? ` · ${priceLine}` : ''}
                 </Txt>
               </View>

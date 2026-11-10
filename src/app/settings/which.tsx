@@ -9,6 +9,7 @@ import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withSeque
 import { weekdayDate } from '@/domain/dates';
 import { CYCLE_WORDS } from '@/domain/money';
 import { FREE_REMINDERS, chargeOfSub, isPricedSub, listedUserSubs, remindedIds, yearlyOfSub } from '@/domain/subs';
+import { useEditor } from '@/editor/Editor';
 import { SubLogo } from '@/home/SubRow';
 import { Group, Row, SettingsPage } from '@/settings/Parts';
 import { useApp, useAppMoney } from '@/state/app';
@@ -18,6 +19,7 @@ export default function Which() {
   const p = usePalette();
   const app = useApp();
   const money = useAppMoney();
+  const editor = useEditor();
   const reduce = useReducedMotion();
   const { subs, pro, today } = app;
   const list = [...listedUserSubs(subs)].sort((a, b) => yearlyOfSub(b) - yearlyOfSub(a));
@@ -58,7 +60,8 @@ export default function Which() {
         >
           {list.map((s) => {
             const isOn = on.has(s.id);
-            const line = `${isPricedSub(s) ? `${money(s.amountMinor, s.currency)} ${CYCLE_WORDS[s.cycle]} · ` : ''}${weekdayDate(chargeOfSub(s, today))}`;
+            const next = chargeOfSub(s, today);
+            const line = `${isPricedSub(s) ? `${money(s.amountMinor, s.currency)} ${CYCLE_WORDS[s.cycle]} · ` : ''}${next ? weekdayDate(next) : 'No date yet'}`;
             const body = (
               <>
                 <SubLogo sub={s} />
@@ -72,6 +75,22 @@ export default function Which() {
                 </View>
               </>
             );
+            // No date, nothing to remind about: offer the date instead (DECISIONS #33).
+            if (!next)
+              return (
+                <Pressable
+                  key={s.id}
+                  accessibilityRole="button"
+                  accessibilityLabel={`${s.name}, no date yet. Add date to get reminders`}
+                  onPress={() => editor.openEdit(s.id)}
+                  style={({ pressed }) => ({ minHeight: 62, flexDirection: 'row', alignItems: 'center', gap: 12, opacity: pressed ? 0.75 : 1 })}
+                >
+                  {body}
+                  <Txt v="label" color={p.cardFg} style={{ textDecorationLine: 'underline' }}>
+                    Add date
+                  </Txt>
+                </Pressable>
+              );
             return pro ? (
               <View key={s.id} style={{ minHeight: 60, flexDirection: 'row', alignItems: 'center', gap: 12 }}>
                 {body}

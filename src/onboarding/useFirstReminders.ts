@@ -12,7 +12,7 @@ import { planById } from '@/services/purchases';
 import { subFromPick } from '@/state/fromOnboarding';
 import { byYearlyDesc, chargeOf, followingChargeOf, onboardingToday, useCountry, useOnboarding, usePickedList, useRemindedIds, type Picked } from '@/state/onboarding';
 
-import { datesToCheck, firstReminderRows, type ReminderRow, type SetSub } from './summary';
+import { firstReminderRows, undatedNames, type ReminderRow, type SetSub } from './summary';
 
 export type FirstReminder = ReminderRow & { body: string; pick?: Picked };
 
@@ -22,7 +22,6 @@ export function toSetSubs(list: Picked[], today: DateOnly): SetSub[] {
     name: x.name,
     charge: chargeOf(x, today),
     following: followingChargeOf(x, today),
-    guess: x.dateSource === 'guess',
   }));
 }
 
@@ -43,6 +42,6 @@ export function useFirstReminders(max: number) {
       const sub = subFromPick(pick, { freePick: true, nowIso: '', id: pick.id });
       return { ...r, pick, body: headsUpBody(sub, r.charge, r.reminder, money) };
     });
-    return { reminders, toCheck: datesToCheck(subs), subs, trialCharge };
+    return { reminders, undated: undatedNames(subs), subs, trialCharge };
   }, [list, remindedIds, pro, home, today, max]);
 }

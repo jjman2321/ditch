@@ -57,6 +57,8 @@ export type OnboardingResult = {
 
 type Actions = {
   addSub: (s: Sub) => Promise<void>;
+  /** Several at once (the Add picker), in one save and one reschedule. */
+  addSubs: (s: Sub[]) => Promise<void>;
   saveSub: (s: Sub) => Promise<void>;
   removeSub: (id: string) => Promise<void>;
   /** Returns the sub as it was, for Undo. */
@@ -186,6 +188,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const actions: Actions = useMemo(
     () => ({
       addSub: (s) => commit([s]),
+      addSubs: (list) => commit(list),
       saveSub: (s) => commit([{ ...s, updatedAt: stamp() }]),
       removeSub: async (id) => {
         const s = find(id);

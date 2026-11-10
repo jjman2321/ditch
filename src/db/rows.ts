@@ -88,7 +88,7 @@ export function rowToSub(r: SubRow): Sub {
     priceSource: oneOf<PriceSource>(r.price_source, ['catalog', 'user', 'none'], 'none'),
     priceCountry: r.price_country,
     anchor: r.anchor_date,
-    dateSource: oneOf<DateSource>(r.date_source, ['guess', 'next', 'receipt'], 'guess'),
+    dateSource: oneOf<DateSource>(r.date_source, ['none', 'next', 'receipt'], 'none'),
     isTrial: !!r.is_trial,
     freePick: !!r.free_pick,
     muted: !!r.reminders_muted,

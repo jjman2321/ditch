@@ -17,7 +17,7 @@ describe('picking a service', () => {
       'catalog',
       true,
     ]);
-    expect(p.dateSource).toBe('guess');
+    expect(p.dateSource).toBe('none'); // no guess: the dates step asks (DECISIONS #33)
   });
 
   it('has no price (Add your price) when we have none for the country', () => {

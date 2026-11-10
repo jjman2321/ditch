@@ -50,14 +50,15 @@ export function demoData(name: DemoName, today: DateOnly): { subs: Sub[]; settin
   const settings: Partial<Settings> = { onboardingDone: true, country: 'US', currency: 'USD', holdHintDone: name !== 'pro' };
   if (name === 'empty') return { subs: [], settings };
   const d = (n: number) => addDays(today, n);
-  const guess = { dateSource: 'guess' as const };
+  // Two without a date, like a user who skipped them (DECISIONS #33).
+  const none = { dateSource: 'none' as const };
   const list: Sub[] = [
     sub('netflix', 'Netflix', 'netflix', 'Streaming', 1799, d(5), { freePick: true }),
-    sub('spotify', 'Spotify', 'spotify', 'Music', 1199, d(7), guess),
-    sub('disney', 'Disney+', 'disney-plus', 'Streaming', 1199, d(9), guess),
+    sub('spotify', 'Spotify', 'spotify', 'Music', 1199, d(7)),
+    sub('disney', 'Disney+', 'disney-plus', 'Streaming', 1199, today, none),
     sub('chatgpt', 'ChatGPT', 'chatgpt-plus', 'AI & apps', 2000, d(12), { freePick: true }),
-    sub('youtube', 'YouTube Premium', 'youtube-premium', 'Streaming', 1399, d(18), guess),
-    sub('amazon', 'Amazon Prime', 'amazon-prime', 'Shopping', 1499, d(24), { ...guess, freePick: true }),
+    sub('youtube', 'YouTube Premium', 'youtube-premium', 'Streaming', 1399, d(18)),
+    sub('amazon', 'Amazon Prime', 'amazon-prime', 'Shopping', 1499, today, { ...none, freePick: true }),
     cancelled('applemusic', 'Apple Music', 'apple-music', 1099, '2026-09-17'),
     cancelled('audible', 'Audible Premium Plus', 'audible', 1495, '2026-08-22'),
     cancelled('hulu', 'Hulu', 'hulu', 999, '2026-06-14'),

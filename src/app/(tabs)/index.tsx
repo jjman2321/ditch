@@ -6,9 +6,9 @@ import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
-import { homeGroups, homeTotals, isActive, isGuess, isPending, isPricedSub, isProTrial, listedUserSubs, remindedIds } from '@/domain/subs';
+import { homeGroups, homeTotals, isPending, isPricedSub, isProTrial, listedUserSubs, remindedIds, undatedSubs, yearlyOfSub } from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
-import { EmptyHome, GuessesRow, OffBanner, TotalCard, openPhoneSettings } from '@/home/HomeParts';
+import { EmptyHome, NoDateRow, OffBanner, TotalCard, openPhoneSettings } from '@/home/HomeParts';
 import { PriceColumnMeasure, SubRow, type BellState } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
 import { Card, EDGE, Gear, IconButton, Plus, RowDivider, SectionHeader, SurfaceContext, Wordmark, brand, useInsets, usePalette } from '@/ui/sunflower';
@@ -26,7 +26,8 @@ export default function Home() {
   const reminded = useMemo(() => remindedIds(subs, pro), [subs, pro]);
   const listed = listedUserSubs(subs);
   const blocked = notif === 'denied' || notif === 'undetermined';
-  const guesses = subs.filter((s) => isActive(s) && !isProTrial(s) && isGuess(s));
+  // No date yet: no reminders until they add one (DECISIONS #33). Biggest first.
+  const undated = undatedSubs(subs).sort((a, b) => yearlyOfSub(b) - yearlyOfSub(a));
   const empty = groups.length === 0;
   const money = useAppMoney();
   const prices = useMemo(() => groups.flatMap((g) => g.rows.map((r) => (isPricedSub(r.sub) ? money(r.sub.amountMinor, r.sub.currency) : null))), [groups, money]);
@@ -84,9 +85,9 @@ export default function Home() {
               <View style={{ marginTop: 14 }}>
                 <TotalCard totals={totals} on={[...reminded].filter((id) => listed.some((s) => s.id === id)).length} of={listed.length} all={pro && listed.every((s) => reminded.has(s.id))} blocked={blocked} />
               </View>
-              {guesses.length && !blocked ? (
+              {undated.length && !blocked ? (
                 <View style={{ marginTop: 10 }}>
-                  <GuessesRow count={guesses.length} onPress={() => editor.openEdit(guesses.sort((a, b) => (a.anchor < b.anchor ? -1 : 1))[0].id)} />
+                  <NoDateRow count={undated.length} onPress={() => editor.openEdit(undated[0].id)} />
                 </View>
               ) : null}
 

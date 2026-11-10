@@ -37,14 +37,14 @@ function B({ children }: { children: string }) {
   return <Txt v="body" style={{ fontFamily: F.bold, fontSize: 14 }}>{children}</Txt>;
 }
 
-export function DateBody({ sub, onSave, onGuess }: { sub: Picked; onSave: (anchor: DateOnly, source: Mode, cycle: Cycle) => void; onGuess: () => void }) {
+export function DateBody({ sub, onSave, onNotSure }: { sub: Picked; onSave: (anchor: DateOnly, source: Mode, cycle: Cycle) => void; onNotSure: () => void }) {
   const p = usePalette();
   const priceOf = usePickPrice();
   const today = toDateOnly();
-  const confirmed = sub.dateSource !== 'guess';
+  const confirmed = sub.dateSource !== 'none';
   const [mode, setMode] = useState<Mode>(sub.dateSource === 'next' ? 'next' : 'receipt');
   const [cycle, setCycle] = useState<Cycle>(sub.cycle);
-  // A guess is never pre-selected: the user has to tap the real day.
+  // Nothing is pre-selected without a real date: the user taps the real day.
   const [selected, setSelected] = useState<DateOnly | null>(confirmed ? sub.anchor : null);
   const start = (m: Mode, sel: DateOnly | null) => {
     const base = sel ?? (m === 'receipt' && parseDate(today).d <= 15 ? addDays(today, -parseDate(today).d) : today);
@@ -246,7 +246,7 @@ export function DateBody({ sub, onSave, onGuess }: { sub: Picked; onSave: (ancho
         disabled={!selected}
         onPress={() => selected && onSave(selected, mode, cycle)}
       />
-      <Button kind="text" label="Not sure: use a guess" onPress={onGuess} style={{ marginTop: 4 }} />
+      <Button kind="text" label="I’m not sure" onPress={onNotSure} style={{ marginTop: 4 }} />
     </View>
   );
 }

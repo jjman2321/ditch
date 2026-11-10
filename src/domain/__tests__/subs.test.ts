@@ -22,6 +22,10 @@ import {
   savingsSteps,
   toCsv,
   type Sub,
+  chargeOfSub,
+  hasDate,
+  inTrial,
+  undatedSubs,
 } from '../subs';
 
 const TODAY = '2026-11-09'; // a Monday, like the renders
@@ -62,12 +66,13 @@ describe('Home totals (per currency, ditched and trials left out)', () => {
 });
 
 describe('Home groups', () => {
-  it('This week runs to Saturday, Next week is the following Sun–Sat, the rest is Later', () => {
+  it('This week runs to Saturday, Next week is the following Sun–Sat, then Later, then No date yet (biggest first)', () => {
     const groups = homeGroups(demo(), TODAY);
-    expect(groups.map((g) => [g.title, g.rows.map((r) => `${r.sub.name} ${r.charge}`)])).toEqual([
+    expect(groups.map((g) => [g.title, g.rows.map((r) => `${r.sub.name} ${r.charge ?? 'no date'}`)])).toEqual([
       ['This week', ['Netflix 2026-11-14']],
-      ['Next week', ['Spotify 2026-11-16', 'Disney+ 2026-11-18', 'ChatGPT 2026-11-21']],
-      ['Later', ['YouTube Premium 2026-11-27', 'Amazon Prime 2026-12-03']],
+      ['Next week', ['Spotify 2026-11-16', 'ChatGPT 2026-11-21']],
+      ['Later', ['YouTube Premium 2026-11-27']],
+      ['No date yet', ['Amazon Prime no date', 'Disney+ no date']],
     ]);
   });
 
@@ -85,9 +90,10 @@ describe('Home groups', () => {
 });
 
 describe('who gets reminders', () => {
-  it('free: only the picked ones, at most 3', () => {
+  it('free: only the picked ones with a date, at most 3', () => {
     const subs = demo();
-    expect([...remindedIds(subs, false)].sort()).toEqual(['amazon', 'chatgpt', 'netflix']);
+    // Amazon Prime is picked but has no date yet, so it gets nothing (DECISIONS #33).
+    expect([...remindedIds(subs, false)].sort()).toEqual(['chatgpt', 'netflix']);
     const four = subs.map((s) => (s.name === 'Spotify' ? { ...s, freePick: true } : s));
     expect(remindedIds(four, false).size).toBe(3);
   });
@@ -95,12 +101,13 @@ describe('who gets reminders', () => {
   it('pro: every active one that is not muted; Ditch’s own trial never counts', () => {
     const subs = demoData('pro', TODAY).subs.map((s) => (s.name === 'Disney+' ? { ...s, muted: true } : s));
     const ids = remindedIds(subs, true);
-    expect(ids.size).toBe(5);
+    // Netflix, Spotify, ChatGPT, YouTube. Disney+ is muted; Amazon Prime has no date.
+    expect(ids.size).toBe(4);
     expect(ids.has('trial')).toBe(false);
   });
 
-  it('the free default is the 3 biggest yearly charges', () => {
-    expect(defaultFreePicks(demo()).sort()).toEqual(['amazon', 'chatgpt', 'netflix']);
+  it('the free default is the 3 biggest yearly charges that have a date', () => {
+    expect(defaultFreePicks(demo()).sort()).toEqual(['chatgpt', 'netflix', 'youtube']);
   });
 });
 
@@ -146,20 +153,19 @@ describe('calendar', () => {
   const days = calendarMonth(demo(), 2026, 11, TODAY, reminded, [3, 1]);
   const day = (n: number) => days.find((d) => d?.date === `2026-11-${String(n).padStart(2, '0')}`)!;
 
-  it('November: 5 charges, $75.96 due (like 12-calendar)', () => {
+  it('November: 4 dated charges, $63.97 due (Disney+ has no date, so it isn’t on a day)', () => {
     const due = monthDue(days, 'USD');
-    expect(due.count).toBe(5);
-    expect(due.totals).toEqual([{ currency: 'USD', amountMinor: 7596 }]);
+    expect(due.count).toBe(4);
+    expect(due.totals).toEqual([{ currency: 'USD', amountMinor: 6397 }]);
   });
 
-  it('heads-up dots land 3 and 1 days before reminded charges, including early next month', () => {
+  it('reminder dots land 3 and 1 days before reminded charges (Netflix 14th, ChatGPT 21st)', () => {
     const dots = days.filter((d) => d?.headsUp).map((d) => d!.date.slice(8));
-    expect(dots).toEqual(['11', '13', '18', '20', '30']);
+    expect(dots).toEqual(['11', '13', '18', '20']);
   });
 
-  it('guessed dates are marked, today and past days are flagged, Sunday-first blanks', () => {
-    expect(day(16).charges[0].guess).toBe(true);
-    expect(day(14).charges[0].guess).toBe(false);
+  it('subs with no date never appear; today and past days are flagged, Sunday-first blanks', () => {
+    expect(days.flatMap((d) => d?.charges ?? []).some((c) => c.sub.name === 'Disney+' || c.sub.name === 'Amazon Prime')).toBe(false);
     expect(day(9).today).toBe(true);
     expect(day(8).past).toBe(true);
     expect(days[0]).not.toBeNull(); // Nov 1 2026 is a Sunday
@@ -177,7 +183,7 @@ describe('calendar', () => {
     const d = calendarMonth(subs, 2026, 11, TODAY, remindedIds(subs, false), [3, 1]);
     const nov14 = d.find((x) => x?.date === '2026-11-14')!;
     expect(nov14.charges[0].pending).toBe(true);
-    expect(monthDue(d, 'USD').totals[0].amountMinor).toBe(7596 - 1799);
+    expect(monthDue(d, 'USD').totals[0].amountMinor).toBe(6397 - 1799);
   });
 });
 
@@ -206,7 +212,7 @@ describe('onboarding is saved', () => {
     const subs = subsFromOnboarding({ picks, reminderIds: ['netflix', 'spotify', 'chatgpt-plus', 'amazon-prime'], pro: null, today: TODAY, nowIso: 'x' });
     expect(subs).toHaveLength(4);
     expect(subs.filter((s) => s.freePick)).toHaveLength(3);
-    expect(subs[0]).toMatchObject({ catalogId: 'netflix', name: 'Netflix', currency: 'USD', dateSource: 'guess', source: 'onboarding', status: 'active' });
+    expect(subs[0]).toMatchObject({ catalogId: 'netflix', name: 'Netflix', currency: 'USD', dateSource: 'none', source: 'onboarding', status: 'active' }); // not picked on the dates step yet
     const pro = subsFromOnboarding({ picks, reminderIds: [], pro: 'yearly', today: TODAY, nowIso: 'x' });
     const trial = pro.find((s) => s.kind === 'ditch_pro_trial')!;
     expect([trial.anchor, trial.amountMinor, trial.isTrial]).toEqual(['2026-11-16', 2999, true]);
@@ -215,10 +221,35 @@ describe('onboarding is saved', () => {
 
 describe('CSV export', () => {
   it('writes plain decimals in each sub’s own currency and quotes commas', () => {
-    const subs = [makeSub({ name: 'Gym, downtown', amountMinor: 4500, currency: 'USD', cycle: 'monthly', anchor: '2026-11-20' }), makeSub({ name: 'Netflix JP', amountMinor: 980, currency: 'JPY', cycle: 'monthly', anchor: '2026-11-12', dateSource: 'guess' })];
+    const subs = [makeSub({ name: 'Gym, downtown', amountMinor: 4500, currency: 'USD', cycle: 'monthly', anchor: '2026-11-20' }), makeSub({ name: 'Netflix JP', amountMinor: 980, currency: 'JPY', cycle: 'monthly', anchor: '2026-11-12', dateSource: 'none' })];
     const csv = toCsv(subs, TODAY, currencyDigits).split('\n');
-    expect(csv[0]).toBe('Name,Amount,Currency,Billed,Next charge,Date is a guess,Status,Ditched on,Cancelled on');
-    expect(csv[1]).toBe('"Gym, downtown",45.00,USD,monthly,2026-11-20,no,Active,,');
-    expect(csv[2]).toBe('Netflix JP,980,JPY,monthly,2026-11-12,yes,Active,,');
+    expect(csv[0]).toBe('Name,Amount,Currency,Billed,Next charge,Status,Ditched on,Cancelled on');
+    expect(csv[1]).toBe('"Gym, downtown",45.00,USD,monthly,2026-11-20,Active,,');
+    expect(csv[2]).toBe('Netflix JP,980,JPY,monthly,,Active,,'); // no date yet: blank
+  });
+});
+
+describe('no date yet (DECISIONS #33)', () => {
+  const none = makeSub({ name: 'Gym', amountMinor: 4500, currency: 'USD', cycle: 'monthly', anchor: TODAY, dateSource: 'none' });
+
+  it('has no next charge, but still counts in the totals', () => {
+    expect(hasDate(none)).toBe(false);
+    expect(chargeOfSub(none, TODAY)).toBeNull();
+    expect(homeTotals([none], TODAY)[0].monthlyMinor).toBe(4500);
+  });
+
+  it('is listed as undated; Ditch’s own trial and ditched ones are not', () => {
+    expect(undatedSubs(demo()).map((s) => s.name).sort()).toEqual(['Amazon Prime', 'Disney+']);
+    expect(undatedSubs([ditchSub(none, TODAY)])).toEqual([]);
+  });
+
+  it('a free trial with no end date yet counts as still in its trial (not paying)', () => {
+    expect(inTrial({ ...none, isTrial: true }, TODAY)).toBe(true);
+    expect(homeTotals([{ ...none, isTrial: true }], TODAY)).toEqual([]);
+  });
+
+  it('can never hold a reminder, even when picked', () => {
+    expect(remindedIds([{ ...none, freePick: true }], false).size).toBe(0);
+    expect(remindedIds([none], true).size).toBe(0);
   });
 });

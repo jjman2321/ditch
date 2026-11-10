@@ -41,18 +41,6 @@ export function SectionHeader({ title, right, style }: { title: string; right?: 
   );
 }
 
-/** Grey "GUESS" tag for dates the user hasn't confirmed. */
-export function GuessTag() {
-  const p = usePalette();
-  return (
-    <View style={{ backgroundColor: p.gtagBg, borderRadius: 5, paddingHorizontal: 5, paddingVertical: 2 }}>
-      <Txt v="eyebrow" color={p.gtagFg} style={{ fontSize: 10.5, lineHeight: 13, letterSpacing: 0.6 }}>
-        Guess
-      </Txt>
-    </View>
-  );
-}
-
 /** Sunflower tag, e.g. "7 days free". */
 export function Tag({ label, style }: { label: string; style?: StyleProp<ViewStyle> }) {
   return (

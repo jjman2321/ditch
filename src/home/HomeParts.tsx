@@ -9,7 +9,7 @@ import type { NotifStatus } from '@/services/notifications';
 import { approxLine } from '@/domain/copy';
 import { useCombinedTotal } from '@/services/fx';
 import { useApp, useAppMoney } from '@/state/app';
-import { Bang, Bell, BellOff, Button, Card, ChevronRight, Duck, F, GuessTag, LogoTile, Plus, Txt, brand, usePalette } from '@/ui/sunflower';
+import { Bang, Bell, BellOff, Button, Card, ChevronRight, Duck, F, LogoTile, Plus, Txt, brand, usePalette } from '@/ui/sunflower';
 
 export function TotalCard({ totals, on, of, all, blocked }: { totals: SpendTotal[]; on: number; of: number; all: boolean; blocked: boolean }) {
   const p = usePalette();
@@ -119,22 +119,21 @@ export function openPhoneSettings() {
   Linking.openSettings().catch(() => {});
 }
 
-/** "4 dates are guesses · Check them ›" (9b). */
-export function GuessesRow({ count, onPress }: { count: number; onPress: () => void }) {
+/** "4 have no date yet, so no reminders. Add dates ›" (design/v13-dates screen 3). */
+export function NoDateRow({ count, onPress }: { count: number; onPress: () => void }) {
   const p = usePalette();
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={`${count} ${count === 1 ? 'date is a guess' : 'dates are guesses'}. Check them.`} onPress={onPress}>
+    <Pressable accessibilityRole="button" accessibilityLabel={`${count} ${count === 1 ? 'has' : 'have'} no date yet, so no reminders. Add ${count === 1 ? 'it' : 'dates'}.`} onPress={onPress}>
       {({ pressed }) => (
-        <Card style={{ minHeight: 44, borderRadius: 16, flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 14, paddingVertical: 6, opacity: pressed ? 0.75 : 1 }}>
-          <GuessTag />
+        <Card style={{ minHeight: 48, borderRadius: 16, flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 14, paddingVertical: 8, opacity: pressed ? 0.75 : 1 }}>
           <Txt v="body" color={p.cardFg} style={{ flex: 1, fontSize: 15 }}>
             <Txt v="body" color={p.cardFg} style={{ fontFamily: F.bold, fontSize: 15 }}>
-              {count} {count === 1 ? 'date' : 'dates'}
-            </Txt>{' '}
-            {count === 1 ? 'is a guess' : 'are guesses'}
+              {`${count} ${count === 1 ? 'has' : 'have'} no date yet,`}
+            </Txt>
+            {' so no reminders.'}
           </Txt>
           <Txt v="label" color={p.cardFg} style={{ fontSize: 15 }}>
-            Check {count === 1 ? 'it' : 'them'}
+            {count === 1 ? 'Add date' : 'Add dates'}
           </Txt>
           <ChevronRight color={p.cardFg} size={16} />
         </Card>

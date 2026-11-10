@@ -1,6 +1,6 @@
-// 12 · Calendar. A month of charges: logos on charge days (dashed when the
-// date is a guess), heads-up dots, today, the month's total per currency,
-// and the selected day's charges with their reminder days.
+// 12 · Calendar. A month of charges: logos on charge days, reminder dots,
+// today, the month's total per currency, the selected day's charges with
+// their reminder days, and the subs with no date yet (DECISIONS #33).
 
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
@@ -9,7 +9,7 @@ import { Pressable, ScrollView, View } from 'react-native';
 import { MONTH_LONG, WEEKDAY_LONG, addDays, parseDate, shiftMonth, weekdayDate, weekdayOf, type DateOnly } from '@/domain/dates';
 import { HEADS_UP_LEADS } from '@/domain/charges';
 import { effectiveLeads, timeLabel } from '@/domain/settings';
-import { calendarMonth, isPending, isPricedSub, isProTrial, monthDue, remindedIds, type CalendarCharge, type CalendarDay } from '@/domain/subs';
+import { calendarMonth, isPending, isPricedSub, isProTrial, monthDue, remindedIds, undatedSubs, yearlyOfSub, type CalendarCharge, type CalendarDay } from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
 import { SubLogo } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
@@ -31,6 +31,7 @@ export default function Calendar() {
   const leads = useMemo(() => effectiveLeads(settings, pro), [settings, pro]);
   const days = useMemo(() => calendarMonth(subs, view.y, view.m, today, reminded, leads), [subs, view, today, reminded, leads]);
   const due = monthDue(days, settings.currency);
+  const undated = useMemo(() => undatedSubs(subs).sort((a, b) => yearlyOfSub(b) - yearlyOfSub(a)), [subs]);
   const [picked, setPicked] = useState<DateOnly | null>(null);
   const [gridW, setGridW] = useState(345);
 
@@ -139,6 +140,31 @@ export default function Calendar() {
             </Txt>
           </Card>
         )}
+
+        {undated.length ? (
+          <>
+            <SectionHeader title="No date yet" right="No reminders" style={{ marginTop: 20, marginBottom: 8 }} />
+            <Card style={{ paddingVertical: 4 }}>
+              {undated.map((u, i) => (
+                <Pressable
+                  key={u.id}
+                  accessibilityRole="button"
+                  accessibilityLabel={`${u.name}, no date yet. Add date`}
+                  onPress={() => editor.openEdit(u.id)}
+                  style={({ pressed }) => ({ minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, borderTopWidth: i ? 1 : 0, borderTopColor: p.hair, opacity: pressed ? 0.75 : 1 })}
+                >
+                  <SubLogo sub={u} size={32} />
+                  <Txt v="label" color={p.cardFg} numberOfLines={1} style={{ flex: 1, fontSize: 16 }}>
+                    {u.name}
+                  </Txt>
+                  <Txt v="label" color={p.cardFg} style={{ textDecorationLine: 'underline' }}>
+                    Add date
+                  </Txt>
+                </Pressable>
+              ))}
+            </Card>
+          </>
+        ) : null}
       </ScrollView>
     </View>
   );
@@ -150,7 +176,7 @@ function DayCell({ day, w, selected, onPress }: { day: CalendarDay; w: number; s
   const first = day.charges[0];
   const more = day.charges.length - 1;
   const label = `${WEEKDAY_LONG[weekdayOf(day.date)]}, ${MONTH_LONG[parseDate(day.date).m - 1]} ${d}${day.today ? ', today' : ''}${
-    day.charges.length ? `, ${day.charges.map((c) => `${c.sub.name}${c.guess ? ', guessed date' : ''}`).join(', ')}` : ''
+    day.charges.length ? `, ${day.charges.map((c) => c.sub.name).join(', ')}` : ''
   }${day.headsUp ? ', reminder day' : ''}`;
   const numColor = selected ? brand.ink : day.past ? p.mute : p.cardFg;
   return (
@@ -188,9 +214,7 @@ function DayCell({ day, w, selected, onPress }: { day: CalendarDay; w: number; s
       </View>
       {first ? (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', opacity: first.pending ? 0.4 : 1 }}>
-          <View style={first.guess ? { padding: 2.5, borderRadius: 9, borderWidth: 1.2, borderStyle: 'dashed', borderColor: p.dark ? 'rgba(246,240,227,0.7)' : 'rgba(22,20,15,0.65)' } : null}>
-            <SubLogo sub={first.sub} size={first.guess ? 22 : 24} />
-          </View>
+          <SubLogo sub={first.sub} size={24} />
           {more > 0 ? (
             <Txt v="sub" num color={selected ? brand.ink : p.mute} style={{ position: 'absolute', right: -2, bottom: -2, fontFamily: F.bold, fontSize: 11 }} maxFontSizeMultiplier={1}>
               +{more}
@@ -205,17 +229,11 @@ function DayCell({ day, w, selected, onPress }: { day: CalendarDay; w: number; s
 function Legend() {
   const p = usePalette();
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 16, marginTop: 14, flexWrap: 'wrap' }} accessible accessibilityLabel="Key: dot means a reminder, dashed outline means a guessed date, filled circle means today">
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 16, marginTop: 14, flexWrap: 'wrap' }} accessible accessibilityLabel="Key: dot means a reminder, filled circle means today">
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
         <View style={{ width: 11, height: 11, borderRadius: 6, backgroundColor: brand.sunflower, borderWidth: p.dark ? 0 : 1.5, borderColor: brand.ink }} />
         <Txt v="body" tone="fg2" style={{ fontSize: 14.5 }}>
           Reminder
-        </Txt>
-      </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-        <View style={{ width: 16, height: 16, borderRadius: 4, borderWidth: 1.2, borderStyle: 'dashed', borderColor: p.mute }} />
-        <Txt v="body" tone="fg2" style={{ fontSize: 14.5 }}>
-          Guessed date
         </Txt>
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
@@ -250,7 +268,7 @@ function ChargeRow({
   const s = c.sub;
   const on = (c.reminded || isProTrial(s)) && !c.pending;
   const heads = on ? leads.map((l) => addDays(c.date, -l)).filter((d) => d >= today) : [];
-  const line = c.pending ? 'Ditched. Cancel before it charges.' : !on ? 'No reminder' : blocked ? 'Reminders are off' : `${c.guess ? 'Around this day. ' : ''}Reminders at ${timeLabel(time)}`;
+  const line = c.pending ? 'Ditched. Cancel before it charges.' : !on ? 'No reminder' : blocked ? 'Reminders are off' : `Reminders at ${timeLabel(time)}`;
   return (
     <Pressable
       accessibilityRole="button"

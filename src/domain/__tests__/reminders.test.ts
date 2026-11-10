@@ -57,15 +57,16 @@ describe('defaults: 3 days and 1 day before, at 9:00 local', () => {
 });
 
 describe('who gets them', () => {
-  it('free: only the 3 picked subs', () => {
+  it('free: only the picked subs that have a date (Amazon Prime is picked but has no date)', () => {
     const plan = planReminders(demo(), FREE, NOW);
-    expect([...new Set(plan.map((r) => r.subId))].sort()).toEqual(['amazon', 'chatgpt', 'netflix']);
+    expect([...new Set(plan.map((r) => r.subId))].sort()).toEqual(['chatgpt', 'netflix']);
   });
 
   it('pro: all active ones, minus muted, with custom lead times', () => {
     const subs = demo().map((s) => (s.id === 'disney' ? { ...s, muted: true } : s));
     const plan = planReminders(subs, { ...PRO, leadDays: [7, 1] }, NOW);
-    expect([...new Set(plan.map((r) => r.subId))].sort()).toEqual(['amazon', 'chatgpt', 'netflix', 'spotify', 'youtube']);
+    // Disney+ is muted; Amazon Prime has no date yet.
+    expect([...new Set(plan.map((r) => r.subId))].sort()).toEqual(['chatgpt', 'netflix', 'spotify', 'youtube']);
     expect(forSub(plan, 'chatgpt').slice(0, 2).map((r) => r.lead)).toEqual([7, 1]);
   });
 
@@ -80,11 +81,21 @@ describe('who gets them', () => {
   });
 });
 
-describe('guessed dates say "around"', () => {
-  it('Spotify (a guess) renews around Mon, Nov 16', () => {
-    const plan = forSub(planReminders(demo(), PRO, NOW), 'spotify');
-    expect(plan[0].body).toBe('Spotify renews around Mon, Nov 16. $11.99. Still listening?');
-    expect(plan[1].body).toBe('Spotify renews around Mon, Nov 16. $11.99. Last call if you’re done with it.');
+describe('no date, no reminder (DECISIONS #33)', () => {
+  it('a sub with no date gets nothing, even with Pro; once it has one, it gets the usual two', () => {
+    const plain = sub({ id: 'x', name: 'Spotify', amountMinor: 1199, dateSource: 'none' });
+    expect(planReminders([plain], PRO, NOW)).toEqual([]);
+    const dated = { ...plain, anchor: '2026-11-16', dateSource: 'next' as const };
+    expect(planReminders([dated], PRO, NOW).slice(0, 2).map((r) => r.body)).toEqual([
+      'Spotify renews Monday. $11.99. Still watching?', // the test helper's category is Streaming
+      'Spotify renews tomorrow. $11.99. Last call if you’re done with it.',
+    ]);
+  });
+
+  it('a ditched sub with no date gets no last check (there is no day to check against)', () => {
+    const d = ditchSub(sub({ id: 'y', name: 'Max', dateSource: 'none' }), TODAY);
+    expect(d.cancelBy).toBeNull();
+    expect(planReminders([d], PRO, NOW)).toEqual([]);
   });
 });
 
@@ -102,7 +113,7 @@ describe('the Ditch Pro trial (DECISIONS #15)', () => {
   it('always 3 and 1 days, even with custom Pro timing, and never counts toward the free 3', () => {
     const plan = planReminders([...demo(), trial], { ...FREE, leadDays: [7] }, NOW);
     expect(forSub(plan, 'trial').map((r) => r.lead)).toEqual([3, 1]);
-    expect([...new Set(plan.map((r) => r.subId))].sort()).toEqual(['amazon', 'chatgpt', 'netflix', 'trial']);
+    expect([...new Set(plan.map((r) => r.subId))].sort()).toEqual(['chatgpt', 'netflix', 'trial']);
   });
 
   it('stops once the trial charge has passed', () => {

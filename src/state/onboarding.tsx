@@ -7,7 +7,7 @@ import { createContext, useCallback, useContext, useMemo, useState, type ReactNo
 import { COUNTRY_BY_CODE, supportedCountry, type Country } from '@/catalog/prices';
 import { type CatalogService } from '@/catalog/services';
 import { SERVICE_BY_ID } from '@/catalog/services';
-import { chargeFrom, guessNextCharge, roughDate, type DateSource, type RoughWhen } from '@/domain/charges';
+import { chargeFrom, type DateSource } from '@/domain/charges';
 import { addDays, anchorForDayOfMonth, type DateOnly } from '@/domain/dates';
 import { webParam } from '@/dev/webParams';
 import { today as clockToday } from '@/services/clock';
@@ -40,12 +40,9 @@ type Actions = {
   setCountry: (code: string) => void;
   setPlan: (id: string, planId: string) => void;
   setPrice: (id: string, amountMinor: number, currency: string, cycle: Cycle) => void;
-  setDate: (id: string, anchor: DateOnly, source: Exclude<DateSource, 'guess'>) => void;
-  /** "This week" / "Next week" / "Later": stored as the middle of the range, still "around". */
-  setRough: (id: string, when: RoughWhen) => void;
-  /** Back to not answered (the row shows its quick picks again). */
+  setDate: (id: string, anchor: DateOnly, source: Exclude<DateSource, 'none'>) => void;
+  /** "I'm not sure": back to no date (no reminders until they add one). */
   clearDate: (id: string) => void;
-  revertToGuess: (id: string) => void;
   setCycle: (id: string, cycle: Cycle) => void;
   setReminderPicks: (ids: string[]) => void;
   setNotifications: (choice: NotificationChoice) => void;
@@ -86,15 +83,15 @@ function seededState(): OnboardingState {
   for (const id of ids) picked[id] = newPick(SERVICE_BY_ID[id], country, today);
   // YouTube Premium has no checked US price yet (DECISIONS #28): typed in, like a user would.
   picked['youtube-premium'] = setOwnPrice(picked['youtube-premium'], 1599, 'USD', 'monthly');
-  const day = (id: string, d: number) => (picked[id] = { ...picked[id], anchor: anchorForDayOfMonth(d, today), dateSource: 'next', when: 'day' });
-  const rough = (id: string, w: RoughWhen) => (picked[id] = { ...picked[id], anchor: roughDate(w, picked[id].cycle, today), dateSource: 'guess', when: w });
+  const day = (id: string, d: number) => (picked[id] = { ...picked[id], anchor: anchorForDayOfMonth(d, today), dateSource: 'next' });
   day('chatgpt-plus', 21);
+  // A yearly one too, so the dates step shows "Pick date".
+  if (seed === 'v12dates') picked['amazon-prime'] = chooseCycle(picked['amazon-prime'], 'yearly');
   if (seed !== 'v12dates') {
     day('netflix', 19);
     day('youtube-premium', 17);
     day('spotify', 7);
-    rough('amazon-prime', 'later');
-    rough('disney-plus', 'next');
+    // Amazon Prime and Disney+ stay "No date yet", like a user who skipped them.
   }
   const notif = webParam('obnotif');
   const pro = webParam('obpro');
@@ -142,15 +139,8 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
 
   const setPlan = useCallback((id: string, planId: string) => change(id, (p) => choosePlan(p, planId)), [change]);
   const setPrice = useCallback<Actions['setPrice']>((id, amount, currency, cycle) => change(id, (p) => setOwnPrice(p, amount, currency, cycle)), [change]);
-  const setDate = useCallback<Actions['setDate']>((id, anchor, source) => change(id, (p) => ({ ...p, anchor, dateSource: source, when: 'day' })), [change]);
-  const setRough = useCallback(
-    (id: string, when: RoughWhen) => change(id, (p) => ({ ...p, anchor: roughDate(when, p.cycle, todayNow()), dateSource: 'guess', when })),
-    [change],
-  );
-  const revertToGuess = useCallback(
-    (id: string) => change(id, (p) => ({ ...p, anchor: guessNextCharge(p.id, p.cycle, todayNow()), dateSource: 'guess', when: null })),
-    [change],
-  );
+  const setDate = useCallback<Actions['setDate']>((id, anchor, source) => change(id, (p) => ({ ...p, anchor, dateSource: source })), [change]);
+  const clearDate = useCallback((id: string) => change(id, (p) => ({ ...p, anchor: todayNow(), dateSource: 'none' })), [change]);
   const setCycle = useCallback((id: string, cycle: Cycle) => change(id, (p) => chooseCycle(p, cycle)), [change]);
   const setReminderPicks = useCallback((ids: string[]) => setState((s) => ({ ...s, reminderPicks: ids.slice(0, 3) })), []);
   const setNotifications = useCallback((notifications: NotificationChoice) => setState((s) => ({ ...s, notifications })), []);
@@ -165,16 +155,14 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       setPlan,
       setPrice,
       setDate,
-      setRough,
-      clearDate: revertToGuess,
-      revertToGuess,
+      clearDate,
       setCycle,
       setReminderPicks,
       setNotifications,
       setPro,
       markTotalShown,
     }),
-    [state, toggleService, setCountry, setPlan, setPrice, setDate, setRough, revertToGuess, setCycle, setReminderPicks, setNotifications, setPro, markTotalShown],
+    [state, toggleService, setCountry, setPlan, setPrice, setDate, clearDate, setCycle, setReminderPicks, setNotifications, setPro, markTotalShown],
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
@@ -202,29 +190,34 @@ export function byYearlyDesc(a: Picked, b: Picked) {
   return yearlyOf(b) - yearlyOf(a);
 }
 
-/** The next charge for a pick, on or after today. */
-export function chargeOf(p: Picked, today: DateOnly = todayNow()): DateOnly {
+/** The next charge for a pick, on or after today. Null: no date yet. */
+export function chargeOf(p: Picked, today: DateOnly = todayNow()): DateOnly | null {
   return chargeFrom(p.anchor, p.dateSource, p.cycle, today);
 }
 
-/** The charge after the next one. */
-export function followingChargeOf(p: Picked, today: DateOnly = todayNow()): DateOnly {
-  return chargeFrom(p.anchor, p.dateSource, p.cycle, addDays(chargeOf(p, today), 1));
+/** The charge after the next one. Null: no date yet. */
+export function followingChargeOf(p: Picked, today: DateOnly = todayNow()): DateOnly | null {
+  const next = chargeOf(p, today);
+  return next ? chargeFrom(p.anchor, p.dateSource, p.cycle, addDays(next, 1)) : null;
 }
+
+/** Has a real date (DECISIONS #33). */
+export const pickHasDate = (p: Picked) => p.dateSource !== 'none';
 
 export { todayNow as onboardingToday };
 
-/** Free tier default: the 3 biggest yearly charges (DECISIONS #11). */
+/** Free tier default: the 3 biggest yearly charges that have a date (DECISIONS #11, #33). */
 export function defaultReminderPicks(list: Picked[]): string[] {
-  return [...list].sort(byYearlyDesc).slice(0, 3).map((p) => p.id);
+  return [...list].filter(pickHasDate).sort(byYearlyDesc).slice(0, 3).map((p) => p.id);
 }
 
-/** Which subs get heads-ups: all of them with Pro, otherwise the chosen 3. */
+/** Which subs get reminders: all dated ones with Pro, otherwise the chosen 3 (dated only). */
 export function useRemindedIds(): string[] {
   const { pro, reminderPicks } = useOnboarding();
   const list = usePickedList();
-  if (pro) return list.map((p) => p.id);
-  return reminderPicks ?? defaultReminderPicks(list);
+  const dated = new Set(list.filter(pickHasDate).map((p) => p.id));
+  if (pro) return list.filter((p) => dated.has(p.id)).map((p) => p.id);
+  return (reminderPicks ?? defaultReminderPicks(list)).filter((id) => dated.has(id));
 }
 
 /**

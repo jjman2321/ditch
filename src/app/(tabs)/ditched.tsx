@@ -150,7 +150,7 @@ export default function DitchedTab() {
                               <DitchedTag />
                             </View>
                             <Txt v="body" tone="mute" num style={{ fontSize: 14.5, marginTop: 2 }}>
-                              Cancel by {weekdayDate(charge)}
+                              {charge ? `Cancel by ${weekdayDate(charge)}` : 'Cancel before it renews'}
                               {price}
                             </Txt>
                             <View style={{ flexDirection: 'row', gap: 6, rowGap: 10, marginTop: 10, flexWrap: 'wrap' }}>

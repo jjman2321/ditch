@@ -63,10 +63,10 @@ describe('migrations', () => {
     await migrate(db);
     const extra: Migration[] = [
       ...MIGRATIONS,
-      { version: 3, name: 'c', up: ['ALTER TABLE settings ADD COLUMN c TEXT'] },
-      { version: 2, name: 'b', up: ['ALTER TABLE settings ADD COLUMN b TEXT'] },
+      { version: 4, name: 'c', up: ['ALTER TABLE settings ADD COLUMN c TEXT'] },
+      { version: 3, name: 'b', up: ['ALTER TABLE settings ADD COLUMN b TEXT'] },
     ];
-    expect(await migrate(db, extra)).toBe(3);
+    expect(await migrate(db, extra)).toBe(4);
     const cols = await db.getAllAsync<{ name: string }>('PRAGMA table_info(settings)');
     expect(cols.map((c) => c.name)).toEqual(['key', 'value', 'b', 'c']);
     db.close();
@@ -75,11 +75,24 @@ describe('migrations', () => {
   it('a failing migration rolls back and leaves the version where it was', async () => {
     const db = nodeSqlite();
     await migrate(db);
-    const broken: Migration[] = [...MIGRATIONS, { version: 2, name: 'broken', up: ['ALTER TABLE settings ADD COLUMN ok TEXT', 'THIS IS NOT SQL'] }];
+    const broken: Migration[] = [...MIGRATIONS, { version: 3, name: 'broken', up: ['ALTER TABLE settings ADD COLUMN ok TEXT', 'THIS IS NOT SQL'] }];
     await expect(migrate(db, broken)).rejects.toThrow();
-    expect(await schemaVersion(db)).toBe(1);
+    expect(await schemaVersion(db)).toBe(2);
     const cols = await db.getAllAsync<{ name: string }>('PRAGMA table_info(settings)');
     expect(cols.map((c) => c.name)).toEqual(['key', 'value']);
+    db.close();
+  });
+
+  it('migration 2 turns old guessed dates into "No date yet" (DECISIONS #33)', async () => {
+    const db = nodeSqlite();
+    const repo = await sqlRepo(db);
+    await repo.saveSubs([netflix()]);
+    // Pretend it's a phone from before: a guessed date, schema version 1.
+    await db.runAsync("UPDATE subscriptions SET date_source = 'guess'");
+    await db.execAsync('PRAGMA user_version = 1');
+    await migrate(db);
+    const rows = await db.getAllAsync<{ date_source: string }>('SELECT date_source FROM subscriptions');
+    expect(rows.map((r) => r.date_source)).toEqual(['none']);
     db.close();
   });
 
@@ -106,7 +119,7 @@ describe('rows', () => {
   it('broken values fall back safely', () => {
     const r = { ...subToRow(netflix()), status: 'weird', date_source: 'x', kind: '?' };
     const s = rowToSub(r);
-    expect([s.status, s.dateSource, s.kind]).toEqual(['active', 'guess', 'user']);
+    expect([s.status, s.dateSource, s.kind]).toEqual(['active', 'none', 'user']);
   });
 });
 

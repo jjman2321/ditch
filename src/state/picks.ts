@@ -3,7 +3,7 @@
 
 import { catalogPrice, priceRow } from '@/catalog/prices';
 import type { CatalogService } from '@/catalog/services';
-import { guessNextCharge, type DateSource, type RoughWhen } from '@/domain/charges';
+import { type DateSource } from '@/domain/charges';
 import type { DateOnly } from '@/domain/dates';
 import { yearlyMinor, type Cycle } from '@/domain/money';
 
@@ -31,12 +31,10 @@ export type Picked = {
   source?: string;
   /** True while the price is a catalog typical price ("about $19.99"). */
   amountIsEstimate: boolean;
-  /** The date the user gave (or our guess). Keeps the billing day. */
+  /** The date the user gave. Keeps the billing day. Meaningless while dateSource is 'none'. */
   anchor: DateOnly;
-  /** "guess" until the user confirms a next charge or a last receipt. */
+  /** 'none' until the user picks a day ("No date yet", DECISIONS #33). */
   dateSource: DateSource;
-  /** The answer on the charge-dates screen: a quick pick, a real day, or not answered yet. */
-  when?: RoughWhen | 'day' | null;
 };
 
 export type PricedPick = Picked & { amountMinor: number; currency: string };
@@ -76,7 +74,7 @@ function catalogFields(serviceId: string, fallbackCycle: Cycle, country: string 
   };
 }
 
-/** A new pick: the local default plan's price, and a labelled guess for the date. */
+/** A new pick: the local default plan's price, and no date yet (the dates step asks). */
 export function newPick(service: CatalogService, country: string | null, today: DateOnly): Picked {
   const price = catalogFields(service.id, service.cycle, country);
   return {
@@ -87,8 +85,8 @@ export function newPick(service: CatalogService, country: string | null, today: 
     ink: service.ink,
     mono: service.mono,
     ...price,
-    anchor: guessNextCharge(service.id, price.cycle, today),
-    dateSource: 'guess',
+    anchor: today,
+    dateSource: 'none',
   };
 }
 

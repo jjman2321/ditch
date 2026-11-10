@@ -12,7 +12,7 @@ import { AppState, Linking, Text, View } from 'react-native';
 
 import { namesLine } from '@/domain/copy';
 import { headsUpDates } from '@/domain/charges';
-import { shortDate, weekdayDate } from '@/domain/dates';
+import { weekdayDate } from '@/domain/dates';
 import { FitScroll, OnbRoot, TextLink } from '@/onboarding/Parts';
 import { useFirstReminders } from '@/onboarding/useFirstReminders';
 import { Which3Sheet } from '@/onboarding/Which3Sheet';
@@ -59,7 +59,7 @@ export default function Done() {
   const n = list.length;
   const many = n > 3;
   const on = notifications === 'granted';
-  const { reminders, toCheck, trialCharge } = useFirstReminders(f.small && (pro || notifications !== 'granted') ? 2 : 3);
+  const { reminders, undated, trialCharge } = useFirstReminders(f.small && (pro || notifications !== 'granted') ? 2 : 3);
   const [saving, setSaving] = useState(false);
   const [picking, setPicking] = useState(false);
   const sub2 = dark ? '#BFB7A7' : '#4B4220';
@@ -107,7 +107,13 @@ export default function Done() {
       : { mark: 'warn', title: 'Reminders are off', sub: 'Nothing can reach you until you turn them\u00A0on.' },
   ];
   if (trialDays.length) items.push({ mark: 'ok', title: 'Ditch Pro trial on your list', sub: `Reminders ${trialDays.map(weekdayDate).join(' and ')}` });
-  if (n) items.push(toCheck.length ? { mark: 'todo', title: `${toCheck.length} ${toCheck.length === 1 ? 'date' : 'dates'} to check`, sub: namesLine(toCheck) } : { mark: 'ok', title: 'Every date is set', sub: 'Reminders say the exact day.' });
+  // No guesses (DECISIONS #33): say plainly which ones have no reminder yet.
+  if (n)
+    items.push(
+      undated.length
+        ? { mark: 'todo', title: `${undated.length} with no date yet`, sub: `${namesLine(undated)} · add ${undated.length === 1 ? 'it' : 'them'} from your list` }
+        : { mark: 'ok', title: 'Every date is set', sub: 'Reminders land on the right day.' },
+    );
 
   const header = !on ? 'Waiting for your OK' : !pro && many ? 'Reminders on your 3 biggest' : 'Your first reminders';
   const title = on ? 'You’re set.' : 'Almost set.';
@@ -159,7 +165,7 @@ export default function Done() {
                 <View
                   key={r.id}
                   accessible
-                  accessibilityLabel={`${r.name}, renews ${r.guess ? 'around ' : ''}${weekdayDate(r.charge)}. ${on ? 'Reminder' : 'Paused reminder'} ${weekdayDate(r.reminder)}.`}
+                  accessibilityLabel={`${r.name}, renews ${weekdayDate(r.charge)}. ${on ? 'Reminder' : 'Paused reminder'} ${weekdayDate(r.reminder)}.`}
                   style={{ minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 12 }}
                 >
                   <View style={{ position: 'absolute', top: 0, left: i ? 44 : 0, right: 0, height: 1, backgroundColor: dark ? '#2B2823' : 'rgba(22,20,15,0.1)' }} />
@@ -169,8 +175,7 @@ export default function Done() {
                       {r.name}
                     </Txt>
                     <Txt v="sub" num color={sub2} numberOfLines={1}>
-                      {/* Rough dates drop the weekday, so the line never gets cut off. */}
-                      {r.guess ? `renews around ${shortDate(r.charge)}` : `renews ${weekdayDate(r.charge)}`}
+                      {`renews ${weekdayDate(r.charge)}`}
                     </Txt>
                   </View>
                   <View style={{ alignItems: 'flex-end' }}>

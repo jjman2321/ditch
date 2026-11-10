@@ -57,6 +57,12 @@ export const MIGRATIONS: Migration[] = [
       `CREATE TABLE settings (key TEXT PRIMARY KEY NOT NULL, value TEXT NOT NULL)`,
     ],
   },
+  {
+    version: 2,
+    name: 'no guessed dates (DECISIONS #33)',
+    // Guessed dates were never the user's: they become "No date yet".
+    up: [`UPDATE subscriptions SET date_source = 'none' WHERE date_source = 'guess'`],
+  },
 ];
 
 export async function schemaVersion(db: SqlDb): Promise<number> {

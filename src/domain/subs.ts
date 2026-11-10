@@ -30,9 +30,9 @@ export type Sub = {
   priceSource: PriceSource;
   /** Country the catalog price is for. */
   priceCountry: string | null;
-  /** The date we know. Keeps the billing day; the next charge is worked out from it. */
+  /** The date we know. Keeps the billing day; the next charge is worked out from it. Meaningless while dateSource is 'none'. */
   anchor: DateOnly;
-  /** 'guess' until the user confirms a next charge or a last receipt. */
+  /** 'none' until the user gives a next charge or a last receipt ("No date yet"). */
   dateSource: DateSource;
   /** When true, `anchor` is the trial end (the first charge). */
   isTrial: boolean;
@@ -99,20 +99,21 @@ export function makeSub(fields: Partial<Sub> & Pick<Sub, 'name' | 'cycle' | 'anc
   };
 }
 
-/** The next charge on or after today. A charge due today stays today. */
-export function chargeOfSub(s: Sub, today: DateOnly): DateOnly {
+/** The next charge on or after today (a charge due today stays today). Null: no date yet. */
+export function chargeOfSub(s: Sub, today: DateOnly): DateOnly | null {
   return chargeFrom(s.anchor, s.dateSource, s.cycle, today);
 }
 
-export const isGuess = (s: Sub) => s.dateSource === 'guess';
+/** Has a real date (DECISIONS #33). Without one it shows "Add date" and gets no reminders. */
+export const hasDate = (s: Sub) => s.dateSource !== 'none';
 export const isActive = (s: Sub) => s.status === 'active';
 export const isPending = (s: Sub) => s.status === 'ditched-pending';
 export const isConfirmed = (s: Sub) => s.status === 'ditched-confirmed';
 export const isProTrial = (s: Sub) => s.kind === 'ditch_pro_trial';
 
-/** Still in a free trial: the trial end hasn't come yet. */
+/** Still in a free trial: the trial end hasn't come yet (or we don't know it yet). */
 export function inTrial(s: Sub, today: DateOnly): boolean {
-  return s.isTrial && s.anchor >= today;
+  return s.isTrial && (!hasDate(s) || s.anchor >= today);
 }
 
 /** Yearly cost in minor units (0 when there's no price). */
@@ -141,21 +142,22 @@ export function listedUserSubs(subs: Sub[]): Sub[] {
 }
 
 /**
- * Which subs get heads-ups. Pro: every active one that isn't muted.
+ * Which subs get reminders. Pro: every active one that isn't muted.
  * Free: the picked ones, at most 3 (biggest yearly first if more slipped in).
+ * Only subs with a date: there's nothing to remind about without one.
  * Ditch's own trial entry never counts toward the 3.
  */
 export const FREE_REMINDERS = 3;
 export function remindedIds(subs: Sub[], pro: boolean): Set<string> {
-  const live = listedUserSubs(subs);
+  const live = listedUserSubs(subs).filter(hasDate);
   if (pro) return new Set(live.filter((s) => !s.muted).map((s) => s.id));
   const picked = live.filter((s) => s.freePick).sort((a, b) => yearlyOfSub(b) - yearlyOfSub(a));
   return new Set(picked.slice(0, FREE_REMINDERS).map((s) => s.id));
 }
 
-/** The 3 biggest yearly charges: the free default (DECISIONS #11). */
+/** The 3 biggest yearly charges with a date: the free default (DECISIONS #11, #33). */
 export function defaultFreePicks(subs: Sub[]): string[] {
-  return [...listedUserSubs(subs)]
+  return [...listedUserSubs(subs).filter(hasDate)]
     .sort((a, b) => yearlyOfSub(b) - yearlyOfSub(a))
     .slice(0, FREE_REMINDERS)
     .map((s) => s.id);
@@ -163,8 +165,9 @@ export function defaultFreePicks(subs: Sub[]): string[] {
 
 // ---------- Home groups ----------
 
-export type HomeGroup = 'This week' | 'Next week' | 'Later';
-export type HomeRow = { sub: Sub; charge: DateOnly };
+export type HomeGroup = 'This week' | 'Next week' | 'Later' | 'No date yet';
+/** `charge` is null only in "No date yet". */
+export type HomeRow = { sub: Sub; charge: DateOnly | null };
 
 /** Sunday that starts the week of a date (weeks run Sun–Sat, like the calendar). */
 export function weekStart(d: DateOnly): DateOnly {
@@ -173,21 +176,31 @@ export function weekStart(d: DateOnly): DateOnly {
 
 /**
  * Home's list: active and waiting-to-cancel subs, soonest first, grouped
- * into This week (to Saturday), Next week and Later. Empty groups are left out.
+ * into This week (to Saturday), Next week and Later, then "No date yet"
+ * (biggest first). Empty groups are left out.
  */
 export function homeGroups(subs: Sub[], today: DateOnly): { title: HomeGroup; rows: HomeRow[] }[] {
   const nextWeek = addDays(weekStart(today), 7);
   const later = addDays(nextWeek, 7);
-  const rows = subs
+  const all = subs
     .filter((s) => isActive(s) || isPending(s))
-    .map((sub) => ({ sub, charge: isPending(sub) && sub.cancelBy && sub.cancelBy >= today ? sub.cancelBy : chargeOfSub(sub, today) }))
+    .map((sub) => ({ sub, charge: isPending(sub) && sub.cancelBy && sub.cancelBy >= today ? sub.cancelBy : chargeOfSub(sub, today) }));
+  const dated = all
+    .filter((r): r is { sub: Sub; charge: DateOnly } => r.charge !== null)
     .sort((a, b) => (a.charge === b.charge ? a.sub.name.localeCompare(b.sub.name) : a.charge < b.charge ? -1 : 1));
+  const undated = all.filter((r) => r.charge === null).sort((a, b) => yearlyOfSub(b.sub) - yearlyOfSub(a.sub) || a.sub.name.localeCompare(b.sub.name));
   const groups: { title: HomeGroup; rows: HomeRow[] }[] = [
-    { title: 'This week', rows: rows.filter((r) => r.charge < nextWeek) },
-    { title: 'Next week', rows: rows.filter((r) => r.charge >= nextWeek && r.charge < later) },
-    { title: 'Later', rows: rows.filter((r) => r.charge >= later) },
+    { title: 'This week', rows: dated.filter((r) => r.charge < nextWeek) },
+    { title: 'Next week', rows: dated.filter((r) => r.charge >= nextWeek && r.charge < later) },
+    { title: 'Later', rows: dated.filter((r) => r.charge >= later) },
+    { title: 'No date yet', rows: undated },
   ];
   return groups.filter((g) => g.rows.length > 0);
+}
+
+/** Active subs of the user's that have no date yet ("Add date"). */
+export function undatedSubs(subs: Sub[]): Sub[] {
+  return listedUserSubs(subs).filter((s) => !hasDate(s));
 }
 
 // ---------- Ditching ----------
@@ -278,7 +291,7 @@ export function savingsSteps(subs: Sub[], currency: string): { date: DateOnly; a
 
 // ---------- Calendar ----------
 
-export type CalendarCharge = { sub: Sub; date: DateOnly; guess: boolean; pending: boolean; reminded: boolean };
+export type CalendarCharge = { sub: Sub; date: DateOnly; pending: boolean; reminded: boolean };
 export type CalendarDay = { date: DateOnly; charges: CalendarCharge[]; headsUp: boolean; past: boolean; today: boolean };
 
 /**
@@ -287,6 +300,7 @@ export type CalendarDay = { date: DateOnly; charges: CalendarCharge[]; headsUp: 
  * receipt), so nothing is invented before it.
  */
 export function chargesBetween(s: Sub, from: DateOnly, to: DateOnly): DateOnly[] {
+  if (!hasDate(s)) return [];
   // Jump close to `from`, counting from the anchor so month-end clamps never stick.
   const span = daysBetween(s.anchor, from);
   const per = s.cycle === 'weekly' ? 7 : s.cycle === 'monthly' ? 28 : s.cycle === 'quarterly' ? 89 : 365;
@@ -327,7 +341,7 @@ export function calendarMonth(
     for (const d of chargesBetween(s, from, addDays(to, maxLead))) {
       if (d >= from && d <= to) {
         const list = byDay.get(d) ?? [];
-        list.push({ sub: s, date: d, guess: isGuess(s), pending, reminded: reminded.has(s.id) });
+        list.push({ sub: s, date: d, pending, reminded: reminded.has(s.id) });
         byDay.set(d, list);
       }
       if (reminded.has(s.id) && !pending) {
@@ -375,14 +389,14 @@ function csvCell(v: string | number | null): string {
 
 /** A spreadsheet of the list. Amounts are plain decimals in each sub's own currency. */
 export function toCsv(subs: Sub[], today: DateOnly, digitsOf: (currency: string) => number): string {
-  const head = ['Name', 'Amount', 'Currency', 'Billed', 'Next charge', 'Date is a guess', 'Status', 'Ditched on', 'Cancelled on'];
+  const head = ['Name', 'Amount', 'Currency', 'Billed', 'Next charge', 'Status', 'Ditched on', 'Cancelled on'];
   const rows = subs
     .filter((s) => s.status !== 'deleted')
     .map((s) => {
       const digits = s.currency ? digitsOf(s.currency) : 2;
       const amount = s.amountMinor === null ? '' : (s.amountMinor / 10 ** digits).toFixed(digits);
       const status = s.status === 'active' ? 'Active' : s.status === 'ditched-pending' ? 'Ditched, not cancelled yet' : 'Cancelled';
-      return [s.name, amount, s.currency ?? '', s.cycle, s.status === 'active' ? chargeOfSub(s, today) : (s.cancelBy ?? ''), isGuess(s) ? 'yes' : 'no', status, s.ditchedOn, s.confirmedOn];
+      return [s.name, amount, s.currency ?? '', s.cycle, s.status === 'active' ? (chargeOfSub(s, today) ?? '') : (s.cancelBy ?? ''), status, s.ditchedOn, s.confirmedOn];
     });
   return [head, ...rows].map((r) => r.map(csvCell).join(',')).join('\n') + '\n';
 }

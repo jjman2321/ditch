@@ -9,19 +9,21 @@ import { AccessibilityInfo, Pressable, ScrollView, TextInput, View } from 'react
 
 import { catalogPrice, planChoices } from '@/catalog/prices';
 import { SERVICES, SERVICE_BY_ID, availableIn, popularIn, searchServices, type CatalogService } from '@/catalog/services';
-import { guessNextCharge } from '@/domain/charges';
-import { addDays, type DateOnly } from '@/domain/dates';
+import { type DateOnly } from '@/domain/dates';
 import { CYCLE_WORDS, currencyDigits, formatMoney, parseAmountInput, type Cycle } from '@/domain/money';
 import { leadsLabel, shortTimeLabel, effectiveLeads } from '@/domain/settings';
 import { FREE_REMINDERS, chargeOfSub, isActive, isProTrial, makeSub, remindedIds, type Sub } from '@/domain/subs';
 import { rowLine, SubLogo } from '@/home/SubRow';
 import { DateBody } from '@/onboarding/DateSheet';
+
+import { Picker } from './Picker';
 import { useApp, useAppMoney } from '@/state/app';
 import { chooseCycle, choosePlan, newPick, type Picked } from '@/state/picks';
 import { ask } from '@/ui/alert';
-import { Button, Card, ChevronRight, Chip, F, GuessTag, KEYBOARD_DONE, KeyboardDone, LogoTile, Search, Segmented, Sheet, SunSwitch, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
+import { Button, Card, ChevronRight, Chip, F, KEYBOARD_DONE, KeyboardDone, LogoTile, Search, Segmented, Sheet, SunSwitch, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
 
-type Open = { mode: 'add'; catalogId?: string } | { mode: 'edit'; id: string };
+/** add: the picker first; `custom` is a name typed there (the full form); `catalogId` opens one service's form. */
+type Open = { mode: 'add'; catalogId?: string; custom?: string } | { mode: 'edit'; id: string };
 
 const Ctx = createContext<{ openAdd: (catalogId?: string) => void; openEdit: (id: string) => void } | null>(null);
 
@@ -47,7 +49,11 @@ export function EditorProvider({ children }: { children: ReactNode }) {
     <Ctx.Provider value={value}>
       {children}
       <Sheet visible={visible} onClose={() => setVisible(false)} maxHeight={780} label={open?.mode === 'edit' ? 'Edit subscription' : 'Add a subscription'}>
-        {open ? <EditorBody key={JSON.stringify(open)} open={open} close={() => setVisible(false)} /> : null}
+        {open?.mode === 'add' && !open.catalogId && open.custom === undefined ? (
+          <Picker onCustom={(name) => setOpen({ mode: 'add', custom: name })} onClose={() => setVisible(false)} />
+        ) : open ? (
+          <EditorBody key={JSON.stringify(open)} open={open} close={() => setVisible(false)} />
+        ) : null}
       </Sheet>
     </Ctx.Provider>
   );
@@ -126,7 +132,8 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
   const existing = open.mode === 'edit' ? app.subs.find((s) => s.id === open.id) ?? null : null;
   const [draft, setDraft] = useState<Sub>(() => {
     if (existing) return existing;
-    const base = makeSub({ name: '', cycle: 'monthly', anchor: today, dateSource: 'guess', currency: settings.currency, source: 'manual' });
+    const custom = open.mode === 'add' ? open.custom?.trim() : undefined;
+    const base = makeSub({ name: custom ?? '', cycle: 'monthly', anchor: today, dateSource: 'none', currency: settings.currency, source: 'manual' });
     const svc = open.mode === 'add' && open.catalogId ? SERVICE_BY_ID[open.catalogId] : undefined;
     const picked = svc ? withService(base, svc, country, today) : base;
     // New ones get a reminder when there's room in the free 3.
@@ -134,7 +141,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
     return { ...picked, freePick: !pro && room, currency: picked.currency ?? settings.currency };
   });
   const [query, setQuery] = useState(existing?.name ?? draft.name);
-  const [searching, setSearching] = useState(open.mode === 'add' && !draft.catalogId);
+  const [searching, setSearching] = useState(open.mode === 'add' && !draft.catalogId && !draft.name);
   const [amount, setAmount] = useState(amountText(draft));
   const [step, setStep] = useState<'form' | 'date'>('form');
 
@@ -162,7 +169,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
   const keepCustom = () => {
     const name = query.trim();
     if (!name) return;
-    setDraft({ ...draft, name, catalogId: null, category: null, anchor: guessNextCharge(name, draft.cycle, today), dateSource: 'guess' });
+    setDraft({ ...draft, name, catalogId: null, category: null });
     setSearching(false);
   };
 
@@ -248,8 +255,8 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
             setAmount(amountText(moved));
             setStep('form');
           }}
-          onGuess={() => {
-            setDraft({ ...draft, anchor: guessNextCharge(draft.catalogId ?? draft.name, draft.cycle, today), dateSource: 'guess' });
+          onNotSure={() => {
+            setDraft({ ...draft, anchor: today, dateSource: 'none' });
             setStep('form');
           }}
         />
@@ -285,7 +292,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                   if (isNew) setSearching(true);
                   else setDraft({ ...draft, name: t });
                 }}
-                autoFocus={isNew && !draft.catalogId}
+                autoFocus={isNew && !draft.catalogId && !draft.name}
                 placeholder="Netflix, gym, phone plan…"
                 placeholderTextColor={p.mute}
                 accessibilityLabel="Name"
@@ -396,9 +403,10 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
             <Segmented label="How often it charges" value={draft.cycle} onChange={setCycle} options={CYCLES} fontSize={13.5} />
 
             <FieldLabel>{draft.isTrial ? 'Trial ends' : 'Next charge'}</FieldLabel>
+            {/* No guesses (DECISIONS #33): a real date, or "Add date" and no reminder yet. */}
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel={`${draft.isTrial ? 'Trial ends' : 'Next charge'}, ${draft.dateSource === 'guess' ? 'guess: around ' : ''}${rowLine({ ...draft, status: 'active' }, charge, today)}`}
+              accessibilityLabel={`${draft.isTrial ? 'Trial ends' : 'Next charge'}, ${charge ? rowLine({ ...draft, status: 'active' }, charge, today) : 'no date yet. Add date'}`}
               accessibilityHint="Opens a calendar"
               disabled={trialEntry}
               onPress={() => setStep('date')}
@@ -407,8 +415,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                 borderRadius: 14,
                 backgroundColor: p.chipBg,
                 borderWidth: 1.5,
-                borderColor: draft.dateSource === 'guess' ? p.guessBorder : p.chipBorder,
-                borderStyle: draft.dateSource === 'guess' ? 'dashed' : 'solid',
+                borderColor: charge ? p.chipBorder : p.fg,
                 flexDirection: 'row',
                 alignItems: 'center',
                 paddingHorizontal: 14,
@@ -416,16 +423,15 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                 opacity: pressed ? 0.7 : 1,
               })}
             >
-              <Txt v="label" num style={{ fontSize: 16 }}>
-                {rowLine({ ...draft, status: 'active', isTrial: false, kind: 'user', dateSource: 'next' }, charge, today)}
+              <Txt v="label" num style={[{ fontSize: 16 }, charge ? null : { fontFamily: F.semi }]}>
+                {charge ? rowLine({ ...draft, status: 'active', isTrial: false, kind: 'user', dateSource: 'next' }, charge, today) : 'Add date'}
               </Txt>
-              {draft.dateSource === 'guess' ? <GuessTag /> : null}
               <View style={{ flex: 1 }} />
               {trialEntry ? null : <ChevronRight color={p.mute} />}
             </Pressable>
-            {draft.dateSource === 'guess' && !trialEntry ? (
+            {!charge && !trialEntry ? (
               <Txt v="sub" tone="mute" style={{ marginTop: 6, marginHorizontal: 2 }}>
-                A guess for now. Tap it to set the real day, so reminders are exact.
+                No date, no reminder. It’s on your bank app or the receipt email.
               </Txt>
             ) : null}
 
@@ -438,14 +444,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                   <SunSwitch
                     label="It’s a free trial"
                     value={draft.isTrial}
-                    onValueChange={(v) =>
-                      // A guessed date stays a guess, but a sensible one: most trials last about a week.
-                      setDraft(
-                        draft.dateSource === 'guess'
-                          ? { ...draft, isTrial: v, anchor: v ? addDays(today, 7) : guessNextCharge(draft.catalogId ?? draft.name, draft.cycle, today) }
-                          : { ...draft, isTrial: v },
-                      )
-                    }
+                    onValueChange={(v) => setDraft({ ...draft, isTrial: v })}
                   />
                 </View>
               )}
@@ -455,7 +454,9 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                   <Txt v="sub" tone="mute">
                     {atLimit
                       ? `Free covers ${FREE_REMINDERS}. Turn one off in Settings, or try Pro.`
-                      : `${leadsLabel(trialEntry ? [3, 1] : effectiveLeads(settings, pro))}, at ${shortTimeLabel(settings.reminderTime)}`}
+                      : !charge && !trialEntry
+                        ? 'Starts once it has a date'
+                        : `${leadsLabel(trialEntry ? [3, 1] : effectiveLeads(settings, pro))}, at ${shortTimeLabel(settings.reminderTime)}`}
                   </Txt>
                 </View>
                 <SunSwitch label="Remind me" hint={atLimit ? 'Free covers 3 reminders' : undefined} value={remindOn} disabled={trialEntry} onValueChange={toggleRemind} />

@@ -23,9 +23,9 @@ import { scheduleOnRN } from 'react-native-worklets';
 
 import { daysBetween, weekdayDate, type DateOnly } from '@/domain/dates';
 import { yearlyMinor } from '@/domain/money';
-import { inTrial, isGuess, isPending, isPricedSub, isProTrial, type Sub } from '@/domain/subs';
+import { inTrial, isPending, isPricedSub, isProTrial, type Sub } from '@/domain/subs';
 import { useAppMoney } from '@/state/app';
-import { Bell, BellOff, DitchedTag, DuckIcon, F, GuessTag, LogoTile, ProLockup, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
+import { Bell, BellOff, DitchedTag, DuckIcon, F, LogoTile, ProLockup, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
 
 const HOLD_MS = 1200;
 const LIFT_AFTER = 150;
@@ -43,12 +43,12 @@ function relative(charge: DateOnly, today: DateOnly): string {
   return n <= 0 ? 'today' : n === 1 ? 'tomorrow' : `in ${n} days`;
 }
 
-/** The grey line under the name. */
-export function rowLine(sub: Sub, charge: DateOnly, today: DateOnly): string {
+/** The grey line under the name. No date yet: "Add date" (DECISIONS #33). */
+export function rowLine(sub: Sub, charge: DateOnly | null, today: DateOnly): string {
+  if (!charge) return isPending(sub) ? 'Cancel before it renews' : 'Add date';
   if (isPending(sub)) return `Cancel by ${weekdayDate(charge)}`;
   if (isProTrial(sub)) return `${weekdayDate(charge)} · trial ends`;
   if (inTrial(sub, today)) return `Trial ends ${weekdayDate(charge)}`;
-  if (isGuess(sub)) return weekdayDate(charge);
   return `${weekdayDate(charge)} · ${relative(charge, today)}`;
 }
 
@@ -88,7 +88,8 @@ export function SubRow({
   /** Same for every row on Home, so the bells and prices line up. */
   priceWidth?: number;
   sub: Sub;
-  charge: DateOnly;
+  /** Null: no date yet. */
+  charge: DateOnly | null;
   today: DateOnly;
   bell: BellState;
   holding: boolean;
@@ -186,7 +187,7 @@ export function SubRow({
   const on = holding && !p.dark;
   const fg = on ? brand.ink : p.cardFg;
   const sub2 = on ? '#4B4220' : p.mute;
-  const label = `${isProTrial(sub) ? 'Ditch Pro trial' : sub.name}, ${price ?? 'no price yet'}, ${line}${isGuess(sub) && !pending ? ', date is a guess' : ''}${pending ? ', ditched, not cancelled yet' : ''}, reminders ${bell === 'on' ? 'on' : 'off'}`;
+  const label = `${isProTrial(sub) ? 'Ditch Pro trial' : sub.name}, ${price ?? 'no price yet'}, ${charge ? line : 'no date yet, add date'}${pending ? ', ditched, not cancelled yet' : ''}, reminders ${bell === 'on' ? 'on' : 'off'}`;
 
   return (
     <GestureDetector gesture={gesture}>
@@ -237,10 +238,15 @@ export function SubRow({
               {pending ? <DitchedTag /> : null}
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 1 }}>
-              <Txt v="body" color={sub2} num numberOfLines={1} style={{ fontSize: 14.5, lineHeight: 19, flexShrink: 1 }}>
+              <Txt
+                v="body"
+                color={charge || pending ? sub2 : fg}
+                num
+                numberOfLines={1}
+                style={[{ fontSize: 14.5, lineHeight: 19, flexShrink: 1 }, !charge && !pending ? { fontFamily: F.semi, textDecorationLine: 'underline' } : null]}
+              >
                 {line}
               </Txt>
-              {isGuess(sub) && !pending ? <GuessTag /> : null}
             </View>
           </View>
           <View style={{ width: 20, alignItems: 'center' }} importantForAccessibility="no-hide-descendants">

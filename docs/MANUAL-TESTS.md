@@ -86,6 +86,30 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
+## 1a. Fixes from your second recording (Nov 10)
+Pull first: `git pull`, `npm install`, then `npx expo start --tunnel ngrok --clear`.
+
+**Duck on Welcome**
+- [ ] Open the app fresh (delete Ditch from Expo Go's recent list if it resumes). The duck rises a little and fades in, then stops. No bounce, no wobble.
+- [ ] The **top of his head is round**, never sliced flat. Check it mid-rise and at rest.
+- [ ] Dark mode: same, with a thin cream outline that is crisp, not blurry.
+- [ ] Also check the duck on the paywall, "You're set", the empty Home and the Ditched screen: full head everywhere.
+- [ ] The small duck app icon (in the Welcome notification and on the Pro trial row) still looks centred.
+
+**Spotify → Enter my own price (the freeze)**
+- [ ] On "What do you pay for?", tick Spotify, tap **Change**, then **Enter my own price**.
+- [ ] The plan sheet slides away, then the price sheet comes up. The app never freezes.
+- [ ] The number keyboard opens and the **Save button sits above it**, not under it.
+- [ ] The price box is **empty**, with the plan price as a grey hint. The line under Spotify says "Paying something different? Type it here."
+- [ ] Type 11.99. The button says "Save $11.99 a month". Tap it: the row says "Your price · $11.99/mo" and the total updates.
+- [ ] Tap other rows right after: they tick and untick normally.
+- [ ] Type something broken like 12.99.5: the button says "Check the price" and can't be tapped.
+- [ ] Repeat with **Add your price** on YouTube Premium, and with the country sheet (Change → pick a country): every sheet opens and closes cleanly, one at a time.
+
+**Wording**
+- [ ] Hold a subscription on Home: the hint says "$X a year you won't pay once you cancel" (no "Saves").
+- [ ] Empty Home says "Ditch reminds you before each charge." Calendar says "Reminder", never "heads-up".
+
 ## 1b. Prices by country (built Nov 9)
 Prices come from the iPhone's Region (Settings → General → Language & Region → Region), not the language.
 - [ ] Region **United States**. On "What do you pay for?" the line under the title says "Tick each one. Prices for 🇺🇸 US · Change". Unticked Netflix shows "from $8.99/mo".

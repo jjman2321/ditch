@@ -43,15 +43,22 @@ _Update this at the end of every session._
 - ✅ **Prices by country (DECISIONS #17):** 102 verified rows for 12 countries, generated into `src/catalog/prices.data.ts` by `npm run prices`. Country from the iPhone Region with "Prices for 🇺🇸 US · Change", one-tap plan pills, "Add your price" where we have no checked price, one total per currency (US$ vs A$ kept apart). 81 Jest tests pass.
 - ✅ **Price research, round 2 (Nov 9, headless browser):** 148 verified rows. New: Amazon Prime (10 countries), Disney+ US/CA/AU/ES/NL, PS Plus and Xbox Game Pass (all 12), Hulu, Peacock, Paramount+, Canva Pro (US), Spotify ES, Dropbox and Notion US (monthly vs yearly now split). US total for the 6 popular picks: $396 → $726 a year.
 - ⚠️ **Still "Add your price":** YouTube Premium (youtube.com says "not available in your country" to our cloud browser) and ChatGPT Plus (chatgpt.com loads amounts from a request we never get; openai.com blocks bots). Both US rows stay unverified at $15.99 / $20. Amazon NL unverified (blocked). Google One, Adobe CC, Crunchyroll not checked; see `notChecked` in the research file.
+- ✅ **Fixes from the owner's second recording (Nov 10):**
+  - **Duck clipped on Welcome:** the duck image itself was cropped flat at the top. Re-cut both versions from the original art with room around the head (`scripts/brand/cut-duck.py` → `assets/brand/duck*.png`, sizes in `src/ui/sunflower/duckAsset.ts`). The springy bounce + tilt is now a calm 12pt rise and fade with no overshoot, so nothing can be cut off.
+  - **App froze after "Enter my own price":** two iOS pop-ups were opening and closing at the same moment, which leaves an invisible layer that blocks every tap. Sheets now take turns (`src/ui/sunflower/modalSlot.ts`, tested). The price sheet sizes to its content and slides above the keyboard (`avoidKeyboard` on `Sheet`).
+  - **Typing onto a pre-filled price** gave "12.9911.99" = $129,911.99. The box now starts empty with the plan price as a hint, and the number reader refuses garbled input instead of guessing.
+  - Wording: "heads-up" → "reminder" on every screen; the hold hint no longer says "Saves".
+  - 187 Jest tests pass.
 - 🗄️ Retired: raccoon poses and Seedance loops in `design/premium-white/anim/` (kept for reference, not used).
 
 ## Next
-0. **Only you can do this (10 min):** run `docs/MANUAL-TESTS.md` §1 (the new v12 onboarding) on your iPhone in Expo Go, light and dark. Tell me any step that looks or behaves wrong.
+0. **Only you can do this (10 min):** run `docs/MANUAL-TESTS.md` §1a (the fixes from your second recording), then §1 (the new v12 onboarding) on your iPhone in Expo Go, light and dark. Tell me any step that looks or behaves wrong.
 1. **Only you can do this (20 min):** on your iPhone with Expo Go, run `docs/MANUAL-TESTS.md` §5 "Reminders really arrive". This is the product: a test reminder, a real heads-up at a time 2 minutes away, one after a restart, and the "Reminders are off" state. Tell me any step that fails.
 2. Then §2–§4 and §6–§9 (saving, Home, add/edit, hold to ditch, Ditched, Calendar, Settings), light and dark.
 3. **Only you can do this (5 min):** on your iPhone or Mac in the US, open youtube.com/premium and chatgpt.com/pricing and tell me the prices you see (Individual / Family / Student; Plus). I'll mark them verified, then `npm run prices`.
 4. M2: RevenueCat, real purchases and restore, Pro lapse handling, then an EAS development build.
-5. Owner decision: should "Check your guessed dates" show on Free too (built that way), or only on Pro like render 9b?
+5. Owner decision: currency conversion when you change country (options sent Nov 10; touches DECISIONS #17).
+6. Owner decision: should "Check your guessed dates" show on Free too (built that way), or only on Pro like render 9b?
 
 ## How to run the app
 1. Install **Expo Go** from the App Store on your iPhone.

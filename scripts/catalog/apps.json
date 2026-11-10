@@ -639,7 +639,9 @@
   "trackId": 541164041,
   "trackName": "Microsoft Copilot",
   "seller": "Microsoft Corporation",
-  "cc": "us"
+  "cc": "us",
+  "manual": true,
+  "why": "The Microsoft 365 (Office) app, renamed Microsoft Copilot; the search finds the Admin app first."
  },
  "minecraft": {
   "trackId": 479516143,
@@ -855,7 +857,9 @@
   "trackId": 979659905,
   "trackName": "Encrypted Email - Proton Mail",
   "seller": "Proton AG",
-  "cc": "us"
+  "cc": "us",
+  "manual": true,
+  "why": "Proton Mail is the flagship app of Proton Unlimited."
  },
  "proton-vpn": {
   "trackId": 1437005085,
@@ -1200,10 +1204,12 @@
   "cc": "de"
  },
  "wsj": {
-  "trackId": 1509844788,
-  "trackName": "WSJ Print Edition",
+  "trackId": 364387007,
+  "trackName": "The Wall Street Journal News",
   "seller": "Dow Jones & Company, Inc., publisher of The Wall Street Journal.",
-  "cc": "us"
+  "cc": "us",
+  "manual": true,
+  "why": "The main WSJ app, not the Print Edition app."
  },
  "ww": {
   "trackId": 331308914,

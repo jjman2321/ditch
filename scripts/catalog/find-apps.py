@@ -8,8 +8,8 @@ lookup call for the top results; the iTunes Search API throttles hard
 with 403s), keeps only results whose seller
 matches the row's seller regex, and pins the best one (trackId, name,
 seller, storefront). Review the printed matches: a wrong pin means a wrong
-logo. To fix one, edit apps.json by hand (set "trackId") or delete its
-entry and re-run with a better search term.
+logo. To fix one, edit apps.json by hand (set "trackId" and "manual": true)
+or delete its entry and re-run with a better search term.
 """
 
 import functools
@@ -78,8 +78,8 @@ def main():
     for row in read_catalog():
         if not row['term'] or (only and row['id'] not in only):
             continue
-        if row['id'] in apps and not only:
-            continue
+        if row['id'] in apps and (not only or apps[row['id']].get('manual')):
+            continue  # pinned already ("manual": true pins are never searched again)
         q = urllib.parse.urlencode({'term': row['term']})
         html = get_text(f'https://apps.apple.com/{row["cc"]}/iphone/search?{q}')
         found = list(dict.fromkeys(re.findall(r'"adamId":"(\d+)"', html)))[:15]
@@ -90,7 +90,7 @@ def main():
         time.sleep(2)
         seller = re.compile(row['seller'], re.I)
         ok = [r for r in data.get('results', []) if seller.search(r.get('sellerName', '')) or seller.search(r.get('artistName', ''))]
-        ok.sort(key=lambda r: -score(row, r))  # stable: keeps Apple's relevance order on ties
+        ok.sort(key=lambda r: (-score(row, r), -r.get('userRatingCount', 0)))  # ties: the most-rated app (the main one)
         if not ok or score(row, ok[0]) == 0:
             top = [(r['trackName'], r.get('sellerName')) for r in data.get('results', [])[:5]]
             print(f'NO MATCH  {row["id"]:22} term={row["term"]!r}: {top}')

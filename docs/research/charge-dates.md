@@ -33,10 +33,8 @@ The owner picked **option B** (ask the day of the month, no guesses) after recor
 
 ## Reminder bells and import (owner follow-up, Nov 10)
 - **Bells:** Orbit and Rocket Money show only "Renews in 4 days · 28 Nov" on each row, with no per-row reminder status. Ditch keeps its own drawn bell (sunflower fill = reminder on, grey outline = off) because the free 3 make reminder status matter on every row. Emoji are never used for icons.
-- **Where import goes** (Orbit puts "Import from photos" and "Import a file" at the top of Add, locked for Pro: [Mobbin](https://mobbin.com/screens/5702f396-80eb-4f99-845a-7f64a28d4962); Brink ends a screenshot import with "We found 13. Uncheck any that aren't right": [Mobbin](https://mobbin.com/screens/d26c1251-848d-4740-8b39-ac056cd08eda); Rocket Money's add menu has "Track a free trial": [Mobbin](https://mobbin.com/screens/acd7fd86-d95d-44c0-80d2-1011c75a602f)):
-  1. **Top of Add** (screen 5): "From a screenshot" and "From a bank statement", both Pro.
-  2. **Onboarding "What do you pay for?"** (screen 0): "Find them for me" with **Screenshot** and **Bank statement** (Pro). A statement (PDF or CSV) finds the subs people forgot, which is the strongest "see everything you pay for" moment; it ends in the same check list. Ticking by hand stays the main path.
-  2b. **Onboarding dates step** (screen 1): "Fill from a screenshot or statement" (Pro), shown before the paywall so it sells Pro.
-  3. **Home "No date yet" card** (screen 3): "Add dates" or "Use a screenshot" (Pro).
-  4. **The result** (screen 6): "We found 4." Exact prices and dates filled in; nothing is added until the user confirms; already-listed subs just get their date.
+- **Where import goes** (owner, Nov 10: "0 is enough", "5 is enough"). Orbit puts "Import from photos" and "Import a file" at the top of Add, locked for Pro ([Mobbin](https://mobbin.com/screens/5702f396-80eb-4f99-845a-7f64a28d4962)); Brink ends a screenshot import with "We found 13. Uncheck any that aren't right" ([Mobbin](https://mobbin.com/screens/d26c1251-848d-4740-8b39-ac056cd08eda)). Ditch shows import in **two places only**:
+  1. **Onboarding "What do you pay for?"** (screen 0): "Find them for me" with **Screenshot** and **Bank statement** (Pro). A statement finds forgotten subs; ticking by hand stays the main path.
+  2. **Top of Add** (screen 5): "From a screenshot" and "From a bank statement" (Pro), then the onboarding-style picker.
+  Both end in the check list (screen 6). Not on the dates step or the Home "No date yet" card, which keep one job each.
 - Import needs the EAS development build (on-phone text reading). Until it ships, the Pro rows open the paywall in Expo Go.

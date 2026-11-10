@@ -2,7 +2,7 @@
 
 _Update this at the end of every session._
 
-**Last updated:** Nov 10, 2026 · **Milestone:** M1, Phase 2 done (the core app: saving, reminders, Home, Ditched, Calendar, Settings)
+**Last updated:** Nov 10, 2026 · **Milestone:** M1, Phase 2 done, onboarding rebuilt to design v12 (DECISIONS #29)
 
 ## Where we are
 - ✅ Docs, decisions, spec. Expo SDK 58 app with money/date logic and 23 passing tests.
@@ -32,13 +32,21 @@ _Update this at the end of every session._
 - ⚠️ Differences from the v10 renders, on purpose: Home shows "N dates are guesses · Check them" on Free too (not only Pro), because exact dates make reminders exact; Settings follows Layout A, not render 14; deleting a sub asks first instead of offering Undo.
 - ⚠️ The DITCHED stamp is still drawn in code (wobbly border, ink specks). It needs real hand-lettering before launch.
 - ⚠️ Reminder delivery can only be proven on a real iPhone: run `docs/MANUAL-TESTS.md` §5.
-- ⚠️ "Import from a screenshot" (DECISIONS #16) is a placeholder screen.
+- ✅ **Onboarding rebuilt to design v12 (Nov 10, DECISIONS #29, #30).** Screenshots, the fit audit and design-vs-build boards in `design/build-v12/` (`node scripts/shoot-v12.mjs` with the web preview running; 112 shots at 390×844, 375×667, 430×932 and iPad 834×1194, light and dark, all passing).
+  - Flow: Welcome → What you pay for (tick = local default plan, "Change" opens the plan sheet) → Your total → Charge dates (This week · Next week · Later · Pick a day, one screen, rows fold once answered; quick picks stored as the middle of the range and shown as "around …") → Reminders pre-ask (your own first 2 reminders, the real iOS prompt) → Paywall (v10 band + duck, Free vs Pro card with 5 rows incl. the Home & Lock Screen widget, no "Continue free" button: the × is the free path) → You're set ("Reminders on your 3 biggest · Change" → pick-3 sheet; "Almost set" when reminders are off; Pro preview says reminders on all).
+  - No screenshot import anywhere in onboarding (the old placeholder screen is gone). The add sheet never had an import entry, so none was added.
+  - iPad: `supportsTablet` is on (all iPad orientations); every onboarding screen is a centred column.
+  - Settings → About → **Sources** lists the studies behind "2.5× the guess" and "7 in 10" (DECISIONS #19).
+  - New domain rules with tests: quick-pick dates (`roughDate`), first-reminder rows, plan names, balanced labels. 183 Jest tests pass.
+  - The type scale moved to v12 (line heights on the 4pt grid) for the whole app; Home, Calendar, Settings and the add sheet were re-checked.
+- ⚠️ Differences from the v12 renders, on purpose: no Apple screenshot card on the dates screen and no "Continue free" button (owner, Nov 10); "Later" has a small "in 2+ weeks" under it; the paywall's labels wrap to 2 lines because the Free/Pro columns got fixed widths (Free 56pt, Pro fits "Unlimited" with 12pt each side) and the widget row was added; the yellow band, the trial-line slot and the gaps are a little tighter to keep the no-scroll fit; rough dates drop the weekday in reminder rows ("renews around Dec 1") so nothing is cut off; the pick-3 sheet uses a plain dim instead of the shrunk background card; real catalog prices (ChatGPT Plus is $19.99, so the example total is $96.44 a month).
 - ✅ **Prices by country (DECISIONS #17):** 102 verified rows for 12 countries, generated into `src/catalog/prices.data.ts` by `npm run prices`. Country from the iPhone Region with "Prices for 🇺🇸 US · Change", one-tap plan pills, "Add your price" where we have no checked price, one total per currency (US$ vs A$ kept apart). 81 Jest tests pass.
 - ✅ **Price research, round 2 (Nov 9, headless browser):** 148 verified rows. New: Amazon Prime (10 countries), Disney+ US/CA/AU/ES/NL, PS Plus and Xbox Game Pass (all 12), Hulu, Peacock, Paramount+, Canva Pro (US), Spotify ES, Dropbox and Notion US (monthly vs yearly now split). US total for the 6 popular picks: $396 → $726 a year.
 - ⚠️ **Still "Add your price":** YouTube Premium (youtube.com says "not available in your country" to our cloud browser) and ChatGPT Plus (chatgpt.com loads amounts from a request we never get; openai.com blocks bots). Both US rows stay unverified at $15.99 / $20. Amazon NL unverified (blocked). Google One, Adobe CC, Crunchyroll not checked; see `notChecked` in the research file.
 - 🗄️ Retired: raccoon poses and Seedance loops in `design/premium-white/anim/` (kept for reference, not used).
 
 ## Next
+0. **Only you can do this (10 min):** run `docs/MANUAL-TESTS.md` §1 (the new v12 onboarding) on your iPhone in Expo Go, light and dark. Tell me any step that looks or behaves wrong.
 1. **Only you can do this (20 min):** on your iPhone with Expo Go, run `docs/MANUAL-TESTS.md` §5 "Reminders really arrive". This is the product: a test reminder, a real heads-up at a time 2 minutes away, one after a restart, and the "Reminders are off" state. Tell me any step that fails.
 2. Then §2–§4 and §6–§9 (saving, Home, add/edit, hold to ditch, Ditched, Calendar, Settings), light and dark.
 3. **Only you can do this (5 min):** on your iPhone or Mac in the US, open youtube.com/premium and chatgpt.com/pricing and tell me the prices you see (Individual / Family / Student; Plus). I'll mark them verified, then `npm run prices`.

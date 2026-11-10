@@ -12,76 +12,90 @@ Sections get added as each feature is built. ⏳ = not built yet.
 - [ ] Check the free tier in SPEC §7: unlimited tracking, reminders on 3.
 - [ ] Reply "OK" or list what to change.
 
-## 1. Onboarding (built Nov 9, Phase 1: Sunflower look)
-Start the app fresh (close it fully in the app switcher, then open it). Phone in **light mode** first.
+## 1. Onboarding (rebuilt Nov 10 to design v12)
+Delete Ditch's data first so the onboarding shows again: Settings → Your data → Delete all data (or delete and reinstall Expo Go's copy). Phone in **light mode**, Region **United States**, normal text size. 7 steps: Welcome → What you pay for → Your total → Charge dates → Reminders → Paywall → You're set. The bar at the top has 4 dashes (pick, total, dates, reminders).
 
-**Welcome**
-- [ ] Yellow screen, big "Ditch it before it renews.", a duck peeking over a Ditch notification about Netflix.
-- [ ] The three dates under it are real: 2 days from today, 4 days from today, 5 days from today.
-- [ ] Tap **See what I pay**.
+**1 · Welcome**
+- [ ] Yellow screen: "ditch", the big "Ditch it before it renews." on 3 lines, the duck peeking over a Ditch notification ("Netflix renews Thursday. $19.99. Still watching?").
+- [ ] The three dates under it are real: the first is 6 days from today, then 8 days, then the charge 9 days from today ("$19.99 charge").
+- [ ] Under the button: "Free forever for tracking." Tap **See what I pay**.
 
-**What do you pay for?**
-- [ ] Real logos. Tick Netflix, Spotify, ChatGPT Plus, Amazon Prime, YouTube Premium and Disney+. Each tick gives a tiny tap.
-- [ ] A yellow bar appears: "6 picked · $90.95 a month" (with today's catalog prices).
-- [ ] Try the search box and a category chip. Untick one: the bar updates.
-- [ ] Scroll to the bottom: "Import from a screenshot" opens a "not in this build yet" screen. Tap **Pick them by hand** to come back.
-- [ ] Tap **See my total**.
+**2 · What do you pay for?**
+- [ ] Title on 2 lines ("What do you / pay for?"), then "Tick each one. Prices for 🇺🇸 US · Change".
+- [ ] Chips read Popular · Streaming · Music · AI… and scroll sideways.
+- [ ] Tick Netflix, Spotify, ChatGPT Plus, Amazon Prime, YouTube Premium and Disney+. Each tick gives a tiny tap. A ticked row says the plan and price, e.g. "Standard · $19.99/mo · Change". Spotify says "Individual", Disney+ "With Ads".
+- [ ] YouTube Premium says **Add your price** (no checked US price yet). Tap it, type 15.99, Monthly, Save: it says "Your price · $15.99/mo · Change".
+- [ ] Tap **Change** on Netflix. A sheet: "Which Netflix plan?" with 3 plans and prices, "Not sure? Standard is the most common…", "Enter my own price". Tap Premium: the tick moves, the sheet closes, the row and the bottom total change. Put it back to Standard.
+- [ ] The bar above the button reads "6 picked · $96.44 a month". **There is no "Import from a screenshot" link anywhere.**
+- [ ] Untick everything: the button greys out and a "Skip for now" link appears. Tick them again. Tap **See my total**.
 
-**Your total**
-- [ ] The big number rolls up digit by digit, then you feel one light tap. It should be the yearly total of what you ticked (6 picks above: **$1,091**). Check it with a calculator: monthly price × 12, added up.
-- [ ] "$90.95 a month" and "$2.99 a day" show under it, and the bars grow in.
-- [ ] Go back and forward again: the number does **not** roll a second time.
+**3 · Your total**
+- [ ] "You pay", then the yearly total rolls up digit by digit and you feel one light tap: **$1,157**, then "a year." No letters touch.
+- [ ] "That's $96.44 a month." and one line: "Most people guess way lower. In one study, the real total was about 2.5× the guess."
+- [ ] The cream card lists the 3 biggest per year, then "3 more · Show all". Tap Show all: all 6 show.
+- [ ] "Ditch just one you don't use: up to $240 a year you won't pay." Go back and forward: the number does **not** roll again.
+- [ ] Tap **Set up reminders**.
 
-**When do they charge you?**
-- [ ] Every date starts grey with a GUESS tag. "0 of 6 confirmed".
-- [ ] Tap Netflix's date. A sheet slides up. Pick **From my last receipt**, then a day last month (e.g. Oct 14). The card says "Last charged Oct 14, so next is Sat, Nov 14" and lists 2 heads-ups.
-- [ ] Tap **Set next charge…**. Netflix's chip turns solid black, the GUESS tag goes away, "1 of 6 confirmed".
-- [ ] Open another one, choose **Next charge**, pick a future day, set it. Past days can't be picked in this mode; future days can't be picked in receipt mode.
-- [ ] Open one more and tap **Not sure: use a guess**: it stays a guess.
-- [ ] The button reads "Save 2 dates, keep 4 guesses". Tap it.
+**4 · When do they charge you?**
+- [ ] "Rough is fine. Skip any you don't know." and "PICK ROUGHLY · 0 OF 6 SET". No "Paid through Apple?" card.
+- [ ] Each row has 4 choices: This week · Next week · Later (with "in 2+ weeks" under it) · Pick a day.
+- [ ] Tap **Next week** on Netflix: "around Thu, Nov 19" (on Tue, Nov 10; on another day, the Thursday of next week) shows at once, then a moment later the row folds to one line: "around … · Rough · Change". The counter says 1 of 6.
+- [ ] Tap **Later** on Amazon Prime: "around" a date 2–3 weeks out (Tue, Dec 1 on Nov 10).
+- [ ] Tap **Pick a day** on ChatGPT Plus: a sheet with days 1–31 and "Last day of the month". Tap 21: "Next charge: Sat, Nov 21. Then the 21st of every month." Tap **Done**: the row folds to "✓ Sat, Nov 21 · Change".
+- [ ] Try **Last day of the month**: it says the next charge is Nov 30 and "Then the last day of every month".
+- [ ] Tap a folded row: it opens again with your choice still selected.
+- [ ] Leave one or two rows untouched (that's allowed). Tap **Continue**.
 
-**A heads-up before every charge**
-- [ ] A yellow lock screen shows your soonest real date. Two notifications drop in one after the other, then the duck rises.
-- [ ] Tap **Turn on reminders**: the real iPhone permission prompt appears. Allow it.
+**5 · Get a reminder before each charge.**
+- [ ] "3 days and 1 day before, at 9:00 AM. / Only about your subscriptions."
+- [ ] The yellow panel "Your first reminders" shows your own 2 soonest reminders with their dates and prices, worded like real ones ("… renews Tuesday. $15.99. Still watching?"). Rough dates say "around".
+- [ ] "7 in 10 people have forgotten to cancel a free trial." Tap **Turn on reminders**: the real iPhone prompt appears. Allow it.
 - [ ] (Second run) Tap **Maybe later** instead: no prompt.
 
-**Paywall**
-- [ ] The × is visible straight away, and the plans, the black button and "Continue free" all fit without scrolling.
-- [ ] Headline says "before all 6 renewals". The timeline shows Today $0, two 9 AM heads-ups (3 days and 1 day before), then the charge 7 days from today.
-- [ ] Yearly is pre-selected with a **Save 49%** tab, "$29.99/yr" and "$2.50 a month". Monthly says "No free trial" (no yearly price). Lifetime says "Pay once".
-- [ ] Tap Monthly and Lifetime: a light tap, the card text and the button change, nothing jumps. Lifetime says bank sync would be a separate plan.
-- [ ] Tap **Start 7-day free trial**: a box says purchases aren't switched on yet and nothing was charged.
-- [ ] **Restore** says there's nothing to restore. **Terms** and **Privacy** open the website.
-- [ ] Tap **Continue free: reminders for 3** (or ×).
+**6 · Paywall**
+- [ ] Yellow band: "ditch Pro", the × top right, "Get a reminder / before all / 6 renewals." with the duck beside the last line. The × is there from the very first frame.
+- [ ] Free vs Pro card, 5 rows: Subscriptions with reminders (3 · Unlimited), Choose your reminder times, Second nudge if you miss one, Home & Lock Screen widget, Import screenshots anytime. "FREE" and "PRO" sit centred over their columns; "Unlimited" has room on both sides and is the same size as the row text.
+- [ ] Yearly is picked: "SAVE 49%" on its top edge, "7 days free", "$29.99/yr", "$2.50 a month". Monthly says "No free trial", Lifetime "Pay once".
+- [ ] The line under the button reads "$0 today · reminder [7 days from today minus 3] · $29.99 [7 days from today]".
+- [ ] Tap Monthly, then Lifetime: a light tap, the button text changes ("Subscribe for $4.99 a month", "Pay $49.99 once"), the line under it changes, and **nothing moves**.
+- [ ] **No "Continue free" button.** Everything fits without scrolling. Restore says there's nothing to restore; Terms and Privacy open the website.
+- [ ] Tap **Start 7-day free trial**: a box says purchases aren't switched on and nothing was charged. Tap OK. Then tap the **×**.
 
-**Which 3 get reminders?**
-- [ ] Your 3 biggest yearly charges have yellow bells. Tap a 4th bell: the "Reminders 3 of 3" badge wiggles and you feel a warning buzz. Nothing changes.
-- [ ] Turn one off, turn another on. Tap **Save my 3**.
+**7 · You're set (free)**
+- [ ] "You're set." with 3 lines: "6 subscriptions on your list · $1,157 a year", "Reminders are on · 3 days and 1 day before, at 9:00 AM", and "○ N dates to check" naming the rough or skipped ones.
+- [ ] The card "Reminders on your 3 biggest · Change" lists 3 subs, soonest reminder first: each shows its renewal date and its first reminder day.
+- [ ] Tap **Change**: a sheet "Your 3 free reminders" with the 3 in yellow and the rest under "On your list, no reminder". Tap × on one: a free slot appears. Tap **Swap in** on another: it fills the slot. With 3 full, Swap in replaces the smallest. Tap **Keep these 3**: the card updates.
+- [ ] Tap **Go to my list**: Home opens with all 6 subs, and the 3 you chose have bells. Close and reopen the app: it opens on Home, nothing lost.
 
-**You're set**
-- [ ] "First heads-ups" lists your 3, soonest first. Guessed ones say "around".
-- [ ] The line under it names the subs with no heads-up and quotes a guessed one's wording.
-- [ ] Counts: 6 tracked · 3 with heads-ups · 4 dates to check.
-- [ ] If you said **Maybe later** to notifications, the line says notifications are off instead.
-- [ ] **Go to my list** opens Home (a simple list for now).
+**7 · Almost set (reminders skipped)**
+- [ ] Run again and tap **Maybe later** on step 5. After the × on the paywall: "Almost set.", "! Reminders are off · Nothing can reach you until you turn them on.", and a card "Waiting for your OK" with each reminder marked "paused".
+- [ ] Tap **Turn on reminders**: the real iPhone prompt. Allow: the screen turns into "You're set.".
+- [ ] If you had tapped "Don't Allow" before, the button opens iPhone Settings instead. Turn notifications on there and come back: it says "You're set.".
 
-**Dark mode, text size, VoiceOver, motion**
-- [ ] Switch the iPhone to Dark mode and run through again. Everything is readable; the lock-screen picture stays yellow.
-- [ ] Settings → Accessibility → Display & Text Size → Larger Text, near the largest. Body text grows, big headlines stay put, the paywall timeline turns into a list.
-- [ ] Turn on VoiceOver: every button, tick, bell, plan and calendar day reads out what it is.
-- [ ] Turn on Reduce Motion: the total fades in instead of rolling, the duck doesn't rise.
+**7 · You're set (Pro preview, test builds only)**
+- [ ] On the paywall tap Start 7-day free trial, then **Preview Pro**. You're set says "Reminders on all 6" and "Ditch Pro trial on your list · Reminders [two days]". There's no Change link, and the card is "Your first reminders".
+
+**Sizes, dark mode, text size, VoiceOver, motion**
+- [ ] Dark mode: run through again. Everything is readable; the reminders panel stays yellow; the big total and buttons are sunflower.
+- [ ] iPhone SE size (if you have one, or ask a friend): the paywall fits with 4 rows (no "Import screenshots anytime"), nothing is cut off.
+- [ ] iPad (if you have one): every screen is a centred column; it also works sideways.
+- [ ] Larger Text near the largest: body text grows, big headlines stay put, long screens scroll instead of cutting off.
+- [ ] VoiceOver: every tick, quick pick, day, plan, link and × reads out what it is. The paywall table reads each row ("Subscriptions with reminders: Free, 3. Pro, Unlimited.").
+- [ ] Reduce Motion: the total fades in instead of rolling, the duck doesn't rise, rows fold without sliding.
+
+**Settings → About → Sources**
+- [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
 ## 1b. Prices by country (built Nov 9)
 Prices come from the iPhone's Region (Settings → General → Language & Region → Region), not the language.
-- [ ] Region **United States**. On "What do you pay for?" the line under the title says "Prices for 🇺🇸 US · Change". Netflix shows "about $19.99 a month", Spotify "about $12.99".
-- [ ] Tick Netflix. A row of plan pills appears under it (Standard with ads · Standard · Premium). Tap Premium: one tap, the price and the yellow total change.
+- [ ] Region **United States**. On "What do you pay for?" the line under the title says "Tick each one. Prices for 🇺🇸 US · Change". Unticked Netflix shows "from $8.99/mo".
+- [ ] Tick Netflix. Its row says "Standard · $19.99/mo · Change". Tap Change and pick Premium: the price and the total at the bottom change.
 - [ ] Tick Amazon Prime. It says **Add your price** (we haven't checked Amazon's price yet). Tap it, type 14.99, pick Monthly, Save. The row now shows $14.99 (no "about").
 - [ ] Tap **Change**, pick 🇬🇧 UK. Netflix becomes £ prices, HBO Max and Hulu disappear from the list (US-only or no UK price), and Amazon keeps the $14.99 you typed.
 - [ ] Tap **See my total**. The big number is in £, with a separate line "+ US$… a year" for Amazon. They are never added together.
-- [ ] Anything still without a price is listed under **No price yet** with an Add your price link.
+- [ ] Anything still without a price shows **Add your price** in the Your total list.
 - [ ] Region **Australia**, then **India**: prices switch to A$/₹ local plans (India's Netflix has Mobile and Basic plans).
 - [ ] Region **Japan** (not supported yet): the line says "No local prices for your region · Choose" and every row says Add your price.
-- [ ] In the US the total screen says "US prices are before sales tax."
 
 ## 2. Your list is saved (built Nov 10, Phase 2)
 - [ ] Finish onboarding with 4 or more subs. Tap **Go to my list**.
@@ -181,9 +195,9 @@ Compare with `docs/research/settings.md` (Layout A), not render 14.
 - [ ] VoiceOver through Home, Calendar (each day reads its charges), Ditched and Settings: every control says what it does.
 
 ## 11. Paywall ⏳ (M2: real purchases)
-- [ ] The × close button is visible immediately. Tap it and you're back to a working free app.
-- [ ] Yearly is pre-selected, and the timeline shows real dates (today, day 5, day 7).
-- [ ] "Continue free" works. Restore purchases works, and with nothing to restore it says so.
+- [ ] The × close button is visible immediately. Tap it and you're back to a working free app (it's the only free option; there's no "Continue free" button).
+- [ ] Yearly is pre-selected, and the line under the button shows real dates ($0 today, the reminder day, the charge day 7 days out).
+- [ ] Restore purchases works, and with nothing to restore it says so.
 - [ ] Start the trial (sandbox account). A "Ditch Pro trial" entry appears in your list, with a reminder 2 days before the charge.
 - [ ] No weekly plan, no countdown timer, no fake strike-through price.
 

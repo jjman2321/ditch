@@ -6079,6 +6079,367 @@
    ],
    "source": "https://www.nintendo.com/en-ca/switch/online/",
    "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "oura",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://ouraring.com/membership",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "oura",
+   "country": "CA",
+   "currency": "CAD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 799,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 8999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://ouraring.com/membership",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "oura",
+   "country": "AU",
+   "currency": "AUD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 10999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://ouraring.com/membership",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "oura",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://ouraring.com/membership",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "oura",
+   "country": "IE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://ouraring.com/membership",
+   "checked": "2026-11-10",
+   "note": "Read from the price list on the membership page (EU row)."
+  },
+  {
+   "serviceId": "oura",
+   "country": "DE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://ouraring.com/membership",
+   "checked": "2026-11-10",
+   "note": "Read from the price list on the membership page (EU row)."
+  },
+  {
+   "serviceId": "oura",
+   "country": "NL",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://ouraring.com/membership",
+   "checked": "2026-11-10",
+   "note": "Read from the price list on the membership page (EU row)."
+  },
+  {
+   "serviceId": "oura",
+   "country": "FR",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://ouraring.com/membership",
+   "checked": "2026-11-10",
+   "note": "Read from the price list on the membership page (EU row)."
+  },
+  {
+   "serviceId": "oura",
+   "country": "IT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://ouraring.com/membership",
+   "checked": "2026-11-10",
+   "note": "Read from the price list on the membership page (EU row)."
+  },
+  {
+   "serviceId": "oura",
+   "country": "ES",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://ouraring.com/membership",
+   "checked": "2026-11-10",
+   "note": "Read from the price list on the membership page (EU row)."
+  },
+  {
+   "serviceId": "siriusxm",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "app",
+     "name": "All Access (app only)",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "music",
+     "name": "All Music",
+     "amountMinor": 1199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "all-access",
+     "name": "All Access",
+     "amountMinor": 2599,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.siriusxm.com/plans",
+   "checked": "2026-11-10",
+   "note": "Regular prices after the $1-for-3-months offer."
+  },
+  {
+   "serviceId": "audible",
+   "country": "CA",
+   "currency": "CAD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1495,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly, 12 credits)",
+     "amountMinor": 16295,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.audible.ca/ep/memberbenefits",
+   "checked": "2026-11-10",
+   "note": "Plus applicable tax."
+  },
+  {
+   "serviceId": "audible",
+   "country": "AU",
+   "currency": "AUD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1645,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly, 12 credits)",
+     "amountMinor": 16450,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.audible.com.au/ep/memberbenefits",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "audible",
+   "country": "ES",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.audible.es/ep/memberbenefits",
+   "checked": "2026-11-10",
+   "note": "Regular price after the intro offer."
+  },
+  {
+   "serviceId": "audible",
+   "country": "IT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.audible.it/ep/memberbenefits",
+   "checked": "2026-11-10",
+   "note": "Regular price after the intro offer."
   }
  ],
  "notChecked": {

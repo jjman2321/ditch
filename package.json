@@ -55,7 +55,8 @@
     "test": "jest",
     "check": "npm run lint && npm run typecheck && npm test",
     "prices": "node scripts/build-prices.mjs",
-    "catalog": "node scripts/build-catalog.mjs"
+    "catalog": "node scripts/build-catalog.mjs",
+    "fx": "node scripts/build-fx.mjs"
   },
   "private": true,
   "jest": {

@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
-<title>Ditch v11 · Onboarding</title>
+<title>Ditch v11 Onboarding</title>
 <style>
 @font-face{font-family:Archivo;src:url(fonts/archivo-wdth.woff2) format('woff2');font-weight:100 900;font-stretch:62% 125%}
 @font-face{font-family:Inter;src:url(fonts/Inter_400Regular.ttf);font-weight:400}
@@ -130,6 +130,7 @@ section.darksec .sh h2,section.darksec .sh p,section.darksec .cap{color:#EDE6D6}
 /* day grid */
 .dgrid{display:grid;grid-template-columns:repeat(7,1fr)}
 .dgrid div{height:48px;display:flex;align-items:center;justify-content:center}
+.dgrid.se44 div{height:44px}
 .dgrid span{width:40px;height:40px;border-radius:20px;display:flex;align-items:center;justify-content:center;font:600 16px/20px Inter;font-variant-numeric:tabular-nums}
 .dgrid span.on{background:var(--ink);color:var(--cream)}
 .dchip{height:44px;border-radius:22px;background:var(--chip);box-shadow:inset 0 0 0 1.5px var(--chipb);display:flex;align-items:center;justify-content:center;font:600 15px/20px Inter;flex:1}
@@ -149,6 +150,7 @@ section.darksec .sh h2,section.darksec .sh p,section.darksec .cap{color:#EDE6D6}
 .tile .tp{font-family:Archivo;font-stretch:106%;font-weight:800;font-size:20px;line-height:24px;letter-spacing:-.4px;margin-top:4px}
 .tile .tu{font-size:13px;line-height:16px;color:var(--mute)}
 .tile .tf{margin-top:4px;font:600 12px/16px Inter;color:var(--mute);height:20px;display:flex;align-items:center}
+.tiles-se .tile{padding-top:12px;padding-bottom:4px}.tiles-se .tile .tf{margin-top:2px}
 .tile .tab{position:absolute;top:-10px;left:50%;transform:translateX(-50%);height:20px;padding:0 8px;border-radius:10px;background:var(--fg);color:var(--bg);font:700 11px/20px Inter;letter-spacing:.3px;white-space:nowrap}
 .dark .tile .tab{background:#FFCC2E;color:#16140F}
 .trial{display:flex;justify-content:space-between;position:relative}
@@ -159,6 +161,7 @@ section.darksec .sh h2,section.darksec .sh p,section.darksec .cap{color:#EDE6D6}
 .trial .dt.f{background:var(--fg)}
 .trial .dt.y{background:#FFCC2E;box-shadow:inset 0 0 0 2px #16140F}
 .trial b{font:600 14px/20px Inter;margin-top:4px;white-space:nowrap}
+.trial.se b{margin-top:2px;line-height:18px}
 .trial small{font-size:13px;line-height:16px;color:var(--mute);white-space:nowrap}
 .links{font-size:14px;line-height:20px;text-align:center;color:var(--fg2);margin:0}
 .links u{text-underline-offset:2px}
@@ -230,7 +233,10 @@ const ORDER = ['chatgpt', 'netflix', 'youtube', 'amazon', 'spotify', 'disney']; 
 /* ---------- screens ---------- */
 const S = {};
 const pad = (c, maxContent) => { const D = DEV[c.dev]; return c.dev === 'ipad' ? Math.round((D.w - maxContent) / 2) : D.edge; };
-const scrStyle = (c, maxContent = 512, extraBottom = 16) => { const D = DEV[c.dev]; const p = pad(c, maxContent); return 'padding:' + D.top + 'px ' + p + 'px ' + (D.bot + extraBottom) + 'px'; };
+// iPad: one centred column, max 512pt of content (paywall 440), capped at 880pt tall and centred vertically.
+const COLH = 880;
+const vpad = (c, extraBottom = 16, colH = COLH) => { const D = DEV[c.dev]; let t = D.top, b = D.bot + extraBottom; if (c.dev === 'ipad') { const v = Math.round((D.h - colH) / 2); t = Math.max(t, v); b = Math.max(b, v); } return [t, b]; };
+const scrStyle = (c, maxContent = 512, extraBottom = 16, colH) => { const p = pad(c, maxContent); const [t, b] = vpad(c, extraBottom, colH); return 'padding:' + t + 'px ' + p + 'px ' + b + 'px'; };
 
 // 01 · Welcome
 S.welcome = (c) => {
@@ -241,7 +247,7 @@ S.welcome = (c) => {
   return [d ? 'dark' : 'sun', `
 <div class="scr" style="${scrStyle(c, ipad ? 480 : 0)}">
   <div style="height:28px;margin-top:16px;display:flex;align-items:center;flex:none"><span class="wm">ditch</span></div>
-  <h1 class="disp" style="font-size:${fs}px;line-height:${lh}px;letter-spacing:-${(fs * .04).toFixed(1)}px;margin-top:${se ? 24 : ipad ? 48 : 32}px">Ditch it<br>before it<br>${d ? '<span style="color:#FFCC2E">renews.</span>' : 'renews.'}</h1>
+  <h1 class="disp" style="font-size:${fs}px;line-height:${lh}px;letter-spacing:-${(fs * .04).toFixed(1)}px;margin-top:${se ? 24 : 32}px">Ditch it<br>before it<br>${d ? '<span style="color:#FFCC2E">renews.</span>' : 'renews.'}</h1>
   <p class="lead" data-orphan style="margin-top:16px;max-width:${ipad ? 420 : 320}px${ipad ? ';font-size:20px;line-height:28px' : ''}">See everything you pay for. Get a reminder before every${NB}charge.</p>
   <div style="flex:1;min-height:${se ? 24 : 120}px"></div>
   <div style="position:relative;flex:none">
@@ -328,7 +334,7 @@ ${sheet ? `<div class="scrim"></div>
 // 04 · Your total
 S.total = (c) => {
   const d = c.d, se = c.dev === 'se', ipad = c.dev === 'ipad';
-  const show = se ? 3 : ipad ? 6 : 4;
+  const show = se ? 2 : ipad ? 6 : 4;
   const D = DEV[c.dev];
   const p = pad(c, 512);
   const rows = ORDER.slice(0, show).map((k, i) => {
@@ -341,20 +347,21 @@ S.total = (c) => {
       <span class="label" style="flex:1;font-size:16px">${rest.length} more</span><span class="sub" style="display:flex;align-items:center;gap:4px;color:var(--fg)">Show all${chevD(d ? '#F6F0E3' : '#16140F', 14)}</span></div>` : '';
   const heroBg = d ? '#12110E' : '#FFCC2E';
   return [d ? 'dark' : 'sun', `
-<div class="scr" style="padding:${D.top}px ${p}px 0">
+<div class="scr" style="padding:${ipad ? vpad(c)[0] + 'px ' + p + 'px ' + vpad(c)[1] + 'px' : D.top + 'px ' + p + 'px 0'}">
   ${nav(3)}
   <div class="label" style="margin-top:8px;font-size:17px;line-height:24px">You pay</div>
-  <div class="disp num" data-fit style="font-size:${ipad ? 128 : se ? 88 : 104}px;line-height:${ipad ? 116 : se ? 80 : 88}px;letter-spacing:-.045em;margin:0 0 0 -4px;white-space:nowrap;color:var(--money)">$1,157</div>
-  <div class="heading" style="font-size:${se ? 20 : 22}px;margin-top:0">a year.</div>
+  ${se ? `<div style="display:flex;align-items:baseline;gap:8px;flex:none"><div class="disp num" style="font-size:64px;line-height:72px;letter-spacing:-.045em;margin-left:-3px;white-space:nowrap;color:var(--money)">$1,157</div><div class="heading nw" style="flex:none">a year.</div></div>`
+  : `<div class="disp num" data-fit style="font-size:${ipad ? 128 : 104}px;line-height:${ipad ? 116 : 88}px;letter-spacing:-.045em;margin:0 0 0 -4px;white-space:nowrap;color:var(--money)">$1,157</div>
+  <div class="heading" style="font-size:22px;margin-top:0">a year.</div>`}
   <p class="lead num" style="margin-top:8px;color:var(--fg)">That’s $96.45 a month.</p>
   <div style="margin-top:${se ? 12 : 16}px;display:flex;flex:none"><span class="num" style="height:32px;border-radius:16px;padding:0 12px;display:inline-flex;align-items:center;font:600 15px/20px Inter;${d ? 'background:#2A2722;color:#F6F0E3' : 'background:#16140F;color:#FFCC2E'}">You guessed $25–50 a month.</span></div>
   <p class="sub" data-orphan style="margin-top:8px;color:var(--fg2);max-width:330px">Most people guess low. In one study, the real total was about 2.5× the${NB}guess.</p>
   <div style="flex:none;height:${se ? 16 : ipad ? 32 : 16}px"></div>
-  <div style="flex:1;margin:0 -${p}px;background:var(--sheet);border-radius:28px 28px 0 0;padding:${se ? 16 : 24}px ${p}px ${D.bot + 16}px;display:flex;flex-direction:column;${d ? 'box-shadow:inset 0 1px 0 #2C2924' : ''}">
+  <div style="flex:1;${ipad ? 'border-radius:28px;padding:24px' : 'margin:0 -' + p + 'px;border-radius:28px 28px 0 0;padding:' + (se ? 16 : 24) + 'px ' + p + 'px ' + (D.bot + 16) + 'px'};background:var(--sheet);display:flex;flex-direction:column;${d ? 'box-shadow:inset 0 1px 0 #2C2924' : ''}">
     <div style="display:flex;justify-content:space-between;height:16px" class="eyebrow"><span>Per year</span><span>Before sales tax</span></div>
     <div style="margin-top:4px;flex:none">${rows}${more}</div>
     <div style="flex:1;min-height:16px"></div>
-    <p class="bs" data-orphan style="margin:0 0 16px">Ditch just one you don’t use: up to <span class="num">$240</span> a year you won’t${NB}pay.</p>
+    <p class="bs" data-orphan style="margin:0 0 16px">Ditch just one you don’t use: up to <span class="num">$240 a${NB}year</span> you won’t${NB}pay.</p>
     <button class="cta">Set up reminders</button>
   </div>
 </div>`];
@@ -391,25 +398,24 @@ S.notify = (c) => {
 };
 
 // 06a · Charge dates: scan first
-const appleShot = () => {
+const appleShot = (compact) => {
   const r = (id, name, date, i) => `<div style="display:flex;align-items:center;gap:8px;height:40px;position:relative;padding:0 12px">${i ? '<i style="position:absolute;top:0;left:44px;right:0;height:1px;background:#ECECEC"></i>' : ''}${logo(id, 24)}<div style="flex:1;min-width:0"><div style="font:600 13px/16px Inter;color:#111">${name}</div><div style="font:400 11px/14px Inter;color:#777">Renews ${date}</div></div>${chevR('#C4C4C4', 12)}</div>`;
   return `<div style="border-radius:16px;background:#F2F2F7;padding:12px 12px 12px;flex:none" aria-hidden="true">
-    <div style="font:700 17px/20px Inter;color:#111;letter-spacing:-.3px;padding:0 4px">Subscriptions</div>
-    <div style="font:600 11px/16px Inter;color:#777;letter-spacing:.3px;margin:8px 4px 4px">ACTIVE</div>
-    <div style="border-radius:12px;background:#fff">${r('youtube-premium', 'YouTube Premium', 'November 17', 0)}${r('chatgpt-plus', 'ChatGPT Plus', 'November 21', 1)}</div>
+    ${compact ? '' : '<div style="font:700 17px/20px Inter;color:#111;letter-spacing:-.3px;padding:0 4px">Subscriptions</div><div style="font:600 11px/16px Inter;color:#777;letter-spacing:.3px;margin:8px 4px 4px">ACTIVE</div>'}
+    <div style="border-radius:12px;background:#fff">${r('youtube-premium', 'YouTube Premium', 'November 17', 0)}${compact ? '' : r('chatgpt-plus', 'ChatGPT Plus', 'November 21', 1)}</div>
   </div>`;
 };
 S.datesScan = (c) => {
   const se = c.dev === 'se';
   const crumb = (t) => `<span style="height:28px;padding:0 8px;border-radius:8px;background:var(--tint);font:600 14px/20px Inter;display:inline-flex;align-items:center;white-space:nowrap">${t}</span>`;
   return ['cream', `
-<div class="scr" style="${scrStyle(c)}">
+<div class="scr" style="${scrStyle(c, 512, 16, 720)}">
   ${nav(5)}
   <h1 class="title" data-orphan style="margin-top:16px">When do they charge${NB}you?</h1>
   <p class="lead" style="margin-top:8px">So your reminders land on the right${NB}day.</p>
   <div class="card" style="margin-top:24px;padding:${se ? 16 : 24}px;flex:none">
-    ${se ? '' : appleShot()}
-    <h2 class="heading" style="margin-top:${se ? 0 : 16}px">Paid through Apple?</h2>
+    ${appleShot(se)}
+    <h2 class="heading" style="margin-top:${se ? 12 : 16}px">Paid through Apple?</h2>
     <p class="body" style="margin-top:8px;color:var(--fg2)">Take a screenshot of your Apple subscriptions page. Ditch reads the dates on your${NB}phone.</p>
     <div style="margin-top:12px;height:36px;border-radius:12px;background:var(--tint);display:flex;align-items:center;gap:4px;padding:0 12px;font:600 14px/20px Inter;white-space:nowrap;color:#16140F">Settings${chevR('#6B6559', 12)}Your name${chevR('#6B6559', 12)}Subscriptions</div>
   </div>
@@ -426,17 +432,17 @@ S.datesDay = (c) => {
   const cells = [];
   for (let i = 1; i <= 31; i++) cells.push(`<div><span class="${i === 19 ? 'on' : ''}">${i}</span></div>`);
   return ['cream', `
-<div class="scr" style="${scrStyle(c, ipad ? 420 : 512)}">
-  ${nav(5, '<span class="label num" style="color:var(--fg2);margin-right:-4px">2 of 6</span>')}
+<div class="scr" style="${scrStyle(c, ipad ? 420 : 512, se ? 8 : 16, 760)}">
+  ${nav(5, '<span class="label num" style="color:var(--fg2)">2 of 6</span>')}
   <div style="display:flex;align-items:center;gap:16px;margin-top:${se ? 8 : 16}px;flex:none">
-    ${logo('netflix', se ? 44 : 56)}
+    ${logo('netflix', se ? 32 : 56)}
     <span class="sub num" style="color:var(--fg2)">Standard · $19.99 a month</span>
   </div>
-  <h1 class="title" data-orphan style="margin-top:16px">When does Netflix charge${NB}you?</h1>
+  <h1 class="title" data-orphan style="margin-top:${se ? 12 : 16}px">When does Netflix charge${NB}you?</h1>
   <p class="leadS" style="margin-top:8px">Pick the day it usually comes out. Your bank app shows the last${NB}one.</p>
-  <div class="dgrid" style="margin-top:${se ? 16 : 24}px;flex:none${se ? ';row-gap:0' : ''}">${cells.join('')}</div>
+  <div class="dgrid${se ? ' se44' : ''}" style="margin-top:${se ? 16 : 24}px;flex:none">${cells.join('')}</div>
   <div style="display:flex;gap:8px;margin-top:12px;flex:none"><span class="dchip">Last day of the month</span><span class="dchip" style="flex:0 0 112px">Not sure</span></div>
-  <div style="margin-top:16px;border-radius:16px;background:var(--tint);padding:12px 16px;display:flex;gap:12px;align-items:flex-start;flex:none">
+  <div style="margin-top:${se ? 12 : 16}px;border-radius:16px;background:var(--tint);padding:12px 16px;display:flex;gap:12px;align-items:flex-start;flex:none">
     <span style="margin-top:2px;display:flex">${card$('#16140F', 20)}</span>
     <p class="body num" style="font-weight:600">Next charge: Thu, Nov 19.<br><span style="font-weight:400;color:#5A544A">Then the 19th of every month.</span></p>
   </div>
@@ -461,7 +467,7 @@ S.paywall = (c, plan = 'yearly') => {
     ['Import screenshots anytime', '-', 'ck'],
   ];
   const ink = d ? '#F6F0E3' : '#16140F';
-  const cell = (v, pro) => v === 'ck' ? ck(pro && d ? '#FFCC2E' : ink, 18) : v === '-' ? dash(d ? '#8E877A' : '#8C8576') : `<span class="num"${pro && d ? ' style="color:#FFCC2E"' : ''}>${v}</span>`;
+  const cell = (v, pro) => v === 'ck' ? ck(pro && d ? '#FFCC2E' : ink, 18) : v === '-' ? dash(d ? '#8E877A' : '#8C8576') : `<span class="num" style="${pro && d ? 'color:#FFCC2E;' : ''}${se ? 'font-size:13px' : ''}">${v}</span>`;
   const table = `<div class="ptable" style="flex:none">
     <div class="procol" style="width:${colP}px"></div>
     <div class="tr" style="height:${se ? 24 : 32}px"><span class="f" style="padding-left:${lp}px"></span><span class="c eyebrow" style="width:${colF}px;color:var(--mute)">Free</span><span class="c eyebrow" style="width:${colP}px;color:${d ? '#FFCC2E' : '#16140F'}">Pro</span></div>
@@ -469,14 +475,14 @@ S.paywall = (c, plan = 'yearly') => {
     <div style="height:4px"></div>
   </div>`;
   const on = (p) => (plan === p ? ' on' : '');
-  const tiles = `<div style="display:flex;gap:8px;flex:none;margin-top:16px">
+  const tiles = `<div style="display:flex;gap:8px;flex:none;margin-top:${se ? 12 : 16}px"${se ? ' class="tiles-se"' : ''}>
     <div class="tile${on('yearly')}"><span class="tab">SAVE 49%</span><span class="tn">Yearly</span><span class="tp num">$29.99</span><span class="tu num">$2.50 a month</span><span class="tf"><span class="tag">7 days free</span></span></div>
     <div class="tile${on('monthly')}"><span class="tn">Monthly</span><span class="tp num">$4.99</span><span class="tu">No free trial</span></div>
     <div class="tile${on('lifetime')}"><span class="tn">Lifetime</span><span class="tp num">$49.99</span><span class="tu">Pay once</span></div>
   </div>`;
-  const stripH = se ? 56 : 60;
+  const stripH = se ? 52 : 60;
   const strip = plan === 'yearly'
-    ? `<div class="trial" style="height:${stripH}px">
+    ? `<div class="trial${se ? ' se' : ''}" style="height:${stripH}px">
     <div class="ln"></div>
     <div class="s"><span class="dt f"></span><b>Today</b><small class="num">$0</small></div>
     <div class="s"><span class="dt y"></span><b>Sat, Nov 14</b><small>Reminder</small></div>
@@ -490,13 +496,13 @@ S.paywall = (c, plan = 'yearly') => {
     <span class="stack">${order.map((k) => logo(SUBS[k][0], se ? 24 : 28)).join('')}</span>
     <span class="sub nw" style="color:var(--fg2)">Netflix, Spotify and 4 more</span></div>`;
   return [d ? 'dark' : 'cream', `
-<div class="scr" style="${scrStyle(c, 440, se ? 8 : 16)}">
-  <div style="display:flex;align-items:flex-start;gap:8px;flex:none;margin-top:${se ? 4 : ipad ? 48 : 12}px">
+<div class="scr" style="${scrStyle(c, 440, se ? 8 : 16, 760)}">
+  <div style="display:flex;align-items:flex-start;gap:8px;flex:none;margin-top:${se ? 4 : 12}px">
     <h1 class="title" data-orphan style="flex:1;${se ? 'font-size:26px;line-height:32px;letter-spacing:-.8px' : ''}">Get a reminder before all 6${NB}renewals.</h1>
     <div class="xbtn" style="margin:-6px -10px 0 0" aria-label="Close, continue free"><i>${xI(ink)}</i></div>
   </div>
   ${logos}
-  <div style="flex:none;height:${se ? 12 : ipad ? 32 : 12}px"></div>
+  <div style="flex:none;height:${se ? 8 : ipad ? 32 : 12}px"></div>
   ${table}
   ${tiles}
   <div style="margin-top:${se ? 12 : 16}px;flex:none">${strip}</div>
@@ -520,7 +526,7 @@ S.which3 = (c) => {
 <div class="scrim" style="background:rgba(0,0,0,.35)"></div>
 <div class="sheet" style="top:${D.top + 10}px;padding:0 24px ${D.bot + 16}px;border-radius:12px 12px 0 0">
   <div class="grab"></div>
-  <h1 class="title" data-orphan style="margin-top:24px">Your 3 free${NB}reminders</h1>
+  <h1 class="title" data-orphan style="margin-top:24px">3 free reminders</h1>
   <p class="leadS" data-orphan style="margin-top:8px">We picked your biggest charges. Swap any of${NB}them.</p>
   <div style="display:flex;flex-direction:column;gap:8px;margin-top:24px">${['chatgpt', 'netflix', 'youtube'].map(slot).join('')}</div>
   <div class="eyebrow" style="margin-top:32px">On your list, no reminder</div>
@@ -552,7 +558,7 @@ S.set = (c, off) => {
     </div>`;
   return [d ? 'dark' : 'sun', `
 <div class="scr" style="${scrStyle(c, ipad ? 480 : 512)}">
-  <div style="flex:none;height:${se ? 24 : ipad ? 96 : 48}px"></div>
+  <div style="flex:none;height:${se ? 24 : 48}px"></div>
   <h1 class="disp" data-fit style="font-size:${ipad ? 80 : 60}px;line-height:${ipad ? 80 : 60}px;letter-spacing:-.04em;white-space:nowrap;align-self:flex-start">${off ? 'Almost set.' : 'You’re set.'}</h1>
   <div style="margin-top:${se ? 12 : 24}px;flex:none">
     ${items.map((it) => `<div class="chk">${it[0]}<div style="flex:1"><div class="bs">${it[1]}</div><div style="font-size:14px;line-height:20px;color:${sub2}">${it[2]}</div></div></div>`).join('')}
@@ -598,7 +604,7 @@ const DK = [
 ];
 const sections = [
   ['onboarding', 'Onboarding v11 · iPhone 12 (390×844)', 'Welcome → Quick guess → What you pay for → Your total → Reminders → Charge dates → Paywall → Which 3 → You’re set. Example: 6 ticked, US prices, today is Tue, Nov 10, 2026.', L],
-  ['sizes', 'Fit check · iPhone SE (375×667) and iPad 11″ (834×1194)', 'Same source, same copy. SE drops the duck and the screenshot illustration before any text shrinks. iPad uses one centred column (512pt content, paywall 440pt).', SZ],
+  ['sizes', 'Fit check · iPhone SE (375×667) and iPad 11″ (834×1194)', 'Same source, same copy. SE drops the duck and trims the screenshot sample to one row before any text shrinks; the hero number sits beside “a year.”. iPad uses one centred column (512pt content, paywall 440pt).', SZ],
   ['dark', 'Dark mode', 'Warm ink canvas. Sunflower only for big money, CTAs and key fills.', DK],
 ];
 const phone = (p) => {

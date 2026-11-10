@@ -100,6 +100,12 @@ describe('"Add your price" input', () => {
     expect(parseAmountInput('£1,299.00', 'GBP')).toBe(129900);
     expect(parseAmountInput('1,299', 'USD')).toBe(129900);
     expect(parseAmountInput('12.5', 'USD')).toBe(1250);
+    // Typed onto a pre-filled price: refuse, don't save $129,911.99.
+    expect(parseAmountInput('12.9911.99', 'USD')).toBeNull();
+    expect(parseAmountInput('12.99.5', 'USD')).toBeNull();
+    expect(parseAmountInput('1,2345', 'USD')).toBeNull();
+    expect(parseAmountInput('1.299,50', 'EUR')).toBe(129950);
+    expect(parseAmountInput('1,490', 'JPY')).toBe(1490);
     expect(parseAmountInput('649', 'INR')).toBe(64900);
     expect(parseAmountInput('1,500', 'JPY')).toBe(1500);
   });

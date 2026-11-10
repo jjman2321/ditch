@@ -5,6 +5,7 @@ import { getLocales } from 'expo-localization';
 import { useState } from 'react';
 import { TextInput, View } from 'react-native';
 
+import { priceRow } from '@/catalog/prices';
 import { CYCLE_WORDS, currencyDigits, formatMoney, parseAmountInput, type Cycle } from '@/domain/money';
 import { useCountry, type Picked } from '@/state/onboarding';
 import { Button, F, LogoTile, Segmented, Sheet, Txt, usePalette } from '@/ui/sunflower';
@@ -14,13 +15,19 @@ function Body({ sub, onSave }: { sub: Picked; onSave: (amountMinor: number, curr
   const country = useCountry();
   // Their price country's currency, else the iPhone's own currency.
   const currency = sub.currency ?? country?.currency ?? getLocales()[0]?.currencyCode ?? 'USD';
-  const [text, setText] = useState(sub.amountMinor ? String(sub.amountMinor / 10 ** currencyDigits(currency)) : '');
+  // Start empty unless they typed a price before: typing onto a pre-filled
+  // plan price is how "12.99" became "12.9911.99". The plan price shows as
+  // the grey hint instead.
+  const digits = currencyDigits(currency);
+  const own = sub.priceSource === 'user' && sub.amountMinor;
+  const [text, setText] = useState(own ? (sub.amountMinor! / 10 ** digits).toFixed(digits) : '');
+  const hint = sub.amountMinor ? (sub.amountMinor / 10 ** digits).toFixed(digits) : digits ? '0.00' : '0';
   const [cycle, setCycle] = useState<Cycle>(sub.cycle === 'yearly' ? 'yearly' : 'monthly');
   const amount = parseAmountInput(text, currency);
   const symbol = formatMoney(0, currency).replace(/[\d.,\s]/g, '');
 
   return (
-    <View style={{ flex: 1 }}>
+    <View>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
         <LogoTile id={sub.id} size={40} />
         <View style={{ flex: 1 }}>
@@ -28,7 +35,11 @@ function Body({ sub, onSave }: { sub: Picked; onSave: (amountMinor: number, curr
             {sub.name}
           </Txt>
           <Txt v="body" tone="mute" style={{ fontSize: 14 }}>
-            {country ? `We don’t have ${country.name} prices for this one yet.` : 'We don’t have prices for your country yet.'}
+            {priceRow(sub.id, sub.priceCountry)
+              ? 'Paying something different? Type it here.'
+              : country
+                ? `We don’t have ${country.name} prices for this one yet.`
+                : 'We don’t have prices for your country yet.'}
           </Txt>
         </View>
       </View>
@@ -58,7 +69,7 @@ function Body({ sub, onSave }: { sub: Picked; onSave: (amountMinor: number, curr
           onChangeText={setText}
           autoFocus
           keyboardType="decimal-pad"
-          placeholder="0.00"
+          placeholder={hint}
           placeholderTextColor={p.mute}
           accessibilityLabel={`Price in ${currency}`}
           style={{ flex: 1, minWidth: 0, height: 52, fontFamily: F.wideHeavy, fontSize: 22, color: p.fg, outlineStyle: 'none' } as object}
@@ -80,9 +91,9 @@ function Body({ sub, onSave }: { sub: Picked; onSave: (amountMinor: number, curr
       <Txt v="sub" tone="mute" style={{ marginTop: 10 }}>
         Your bank app or the receipt email has the exact amount.
       </Txt>
-      <View style={{ flex: 1, minHeight: 16 }} />
       <Button
-        label={amount ? `Save ${formatMoney(amount, currency)} ${CYCLE_WORDS[cycle]}` : 'Type what you pay'}
+        style={{ marginTop: 20 }}
+        label={amount ? `Save ${formatMoney(amount, currency)} ${CYCLE_WORDS[cycle]}` : text.trim() ? 'Check the price' : 'Type what you pay'}
         disabled={!amount}
         onPress={() => amount && onSave(amount, currency, cycle)}
       />
@@ -102,7 +113,7 @@ export function PriceSheet({
   onSave: (amountMinor: number, currency: string, cycle: Cycle) => void;
 }) {
   return (
-    <Sheet visible={visible && !!sub} onClose={onClose} maxHeight={430} label={sub ? `${sub.name} price` : 'Price'}>
+    <Sheet visible={visible && !!sub} onClose={onClose} fit avoidKeyboard label={sub ? `${sub.name} price` : 'Price'}>
       {sub ? <Body key={sub.id} sub={sub} onSave={onSave} /> : null}
     </Sheet>
   );

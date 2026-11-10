@@ -192,7 +192,12 @@ export function parseAmountInput(text: string, currency: string): number | null 
     whole = t.slice(0, sep);
     frac = t.slice(sep + 1);
   }
-  whole = whole.replace(/[.,]/g, '');
+  // Anything left of the decimal point may only use separators as thousands
+  // groups ("1,299" or "1.299"). "12.9911" is a typo, not a price: refuse it
+  // instead of guessing $129,911.
+  const groups = whole.split(/[.,]/);
+  if (groups.length > 1 && (groups[0].length < 1 || groups[0].length > 3 || groups.slice(1).some((g) => g.length !== 3))) return null;
+  whole = groups.join('');
   t = whole || '0';
   const minor = Number(t) * 10 ** digits + Number((frac + '00').slice(0, digits) || 0);
   return Number.isSafeInteger(minor) && minor > 0 ? minor : null;

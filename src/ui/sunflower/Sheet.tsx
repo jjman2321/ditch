@@ -1,13 +1,19 @@
 // Bottom sheet: dims the screen, slides up, closes on a tap outside, the
 // back gesture or the VoiceOver escape (two-finger scrub).
 // Reduce Motion: a quick fade instead of the slide.
+//
+// Only one sheet is ever on screen. iOS can't open a new pop-up while the
+// last one is still closing: try it and an invisible layer is left over
+// the app that swallows every tap. So a sheet asked to open while another
+// is closing waits its turn (see modalSlot.ts).
 
-import { useEffect, useState, type ReactNode } from 'react';
-import { Modal, Pressable, useColorScheme, useWindowDimensions, View } from 'react-native';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { Keyboard, Modal, Platform, Pressable, useColorScheme, useWindowDimensions, View } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { scheduleOnRN } from 'react-native-worklets';
 
+import { releaseSlot, requestSlot } from './modalSlot';
 import { useInsets } from './Screen';
 import { EDGE, SurfaceContext, paletteFor, radius } from './tokens';
 
@@ -21,7 +27,10 @@ export function Sheet({
   gap = 12,
   maxContent = 512,
   topGap = 16,
+  avoidKeyboard,
 }: {
+  /** Slide up so the keyboard never covers the sheet (sheets with a text box). */
+  avoidKeyboard?: boolean;
   /** Space left above a full-height sheet. */
   topGap?: number;
   visible: boolean;
@@ -45,27 +54,77 @@ export function Sheet({
   const height = Math.min(maxHeight, winH - insets.top - topGap);
   const tablet = Math.min(winW, winH) >= 600;
   const side = tablet ? Math.max(EDGE, Math.round((winW - maxContent) / 2)) : EDGE;
-  const [mounted, setMounted] = useState(visible);
+  const [mounted, setMounted] = useState(false);
   const t = useSharedValue(0);
-  // Mount as soon as it opens; unmount only after the close animation.
-  if (visible && !mounted) setMounted(true);
+  const kb = useSharedValue(0);
+  const sheetH = useSharedValue(0);
+  const shown = visible && mounted;
+
+  const holding = useRef(false);
+  const letGo = useCallback(() => {
+    if (!holding.current) return;
+    holding.current = false;
+    releaseSlot();
+  }, []);
+
+  // Mount once it's this sheet's turn on screen.
+  useEffect(() => {
+    if (!visible || mounted) return;
+    return requestSlot(() => {
+      holding.current = true;
+      setMounted(true);
+    });
+  }, [visible, mounted]);
+
+  // Hand the screen to the next sheet only after this one is fully gone
+  // (or if the whole screen goes away with it open).
+  const closed = useCallback(() => {
+    setMounted(false);
+    letGo();
+  }, [letGo]);
+  useEffect(() => letGo, [letGo]);
 
   useEffect(() => {
-    if (visible) {
+    if (!mounted) return;
+    if (shown) {
       t.set(withTiming(1, { duration: reduce ? 150 : 320, easing: Easing.out(Easing.cubic) }));
     } else {
+      Keyboard.dismiss();
       t.set(
         withTiming(0, { duration: reduce ? 120 : 220, easing: Easing.in(Easing.cubic) }, (done) => {
-          if (done) scheduleOnRN(setMounted, false);
+          if (done) scheduleOnRN(closed);
         }),
       );
     }
-  }, [visible, reduce, t]);
+  }, [shown, mounted, reduce, t, closed]);
 
+  useEffect(() => {
+    if (!avoidKeyboard || !mounted) return;
+    const ios = Platform.OS === 'ios';
+    const up = Keyboard.addListener(ios ? 'keyboardWillShow' : 'keyboardDidShow', (e) => {
+      kb.set(withTiming(e.endCoordinates.height, { duration: e.duration || 250, easing: Easing.out(Easing.cubic) }));
+    });
+    const down = Keyboard.addListener(ios ? 'keyboardWillHide' : 'keyboardDidHide', (e) => {
+      kb.set(withTiming(0, { duration: e.duration || 250, easing: Easing.out(Easing.cubic) }));
+    });
+    return () => {
+      up.remove();
+      down.remove();
+      kb.set(0);
+    };
+  }, [avoidKeyboard, mounted, kb]);
+
+  const topRoom = insets.top + 8;
+  const bottomInset = insets.bottom;
   const scrim = useAnimatedStyle(() => ({ opacity: t.get() }));
-  const sheet = useAnimatedStyle(() =>
-    reduce ? { opacity: t.get() } : { transform: [{ translateY: (1 - t.get()) * (winH + 40) }] },
-  );
+  const sheet = useAnimatedStyle(() => {
+    // Lift above the keyboard, but never past the top of the screen.
+    const room = Math.max(0, winH - topRoom - sheetH.get());
+    const lift = Math.min(Math.max(0, kb.get() - bottomInset), room);
+    return reduce
+      ? { opacity: t.get(), transform: [{ translateY: -lift }] }
+      : { transform: [{ translateY: (1 - t.get()) * (winH + 40) - lift }] };
+  });
 
   if (!mounted) return null;
   return (
@@ -79,6 +138,7 @@ export function Sheet({
             accessibilityViewIsModal
             accessibilityLabel={label}
             onAccessibilityEscape={onClose}
+            onLayout={(e) => sheetH.set(e.nativeEvent.layout.height)}
             style={[
               {
                 ...(fit ? { maxHeight: winH - insets.top - 16 } : { height }),

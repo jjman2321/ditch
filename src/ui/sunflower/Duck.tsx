@@ -1,25 +1,26 @@
-// Ditch the duck, peeking over a card's top edge (design/v10/MOTION.md §4).
-// One image, so it only moves as a whole: it rises 14pt into place with a
-// 3° tilt that settles to 0. No blink, no idle loop. Reduce Motion: shown at rest.
+// Ditch the duck, peeking over a card's top edge.
+// One image, so it only moves as a whole: it rises 12pt from behind the card
+// and fades in, easing to a stop. No spring, no overshoot, no tilt, no loop:
+// it never travels past its resting spot, so it can't get clipped.
+// Reduce Motion: shown at rest.
 
 import { Image } from 'expo-image';
 import { useEffect } from 'react';
 import { type StyleProp, type ViewStyle } from 'react-native';
-import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withSpring } from 'react-native-reanimated';
+import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 
+import { DUCK_DARK, DUCK_H, DUCK_INK, DUCK_LIGHT, DUCK_PAD, DUCK_W } from './duckAsset';
 import { useIsDark } from './tokens';
 
-const LIGHT = require('../../../assets/brand/duck.png'); // 600×357
-const DARK = require('../../../assets/brand/duck-dark.png'); // 620×367
-
-/** How tall the peeking duck is for a given width. */
-export function duckHeight(width: number, dark: boolean) {
-  return Math.round(width * (dark ? 367 / 620 : 357 / 600));
-}
+const RISE = 12;
+const EASE = { duration: 420, easing: Easing.out(Easing.cubic) };
 
 /**
- * Place it inside a `position: relative` wrapper that holds the card.
- * `sink` is how far its bottom tucks behind the card.
+ * `width` is how wide the duck itself looks. The image box is a little
+ * bigger (the file has air around the head) and is offset so the duck
+ * lands exactly where `right`/`left` say.
+ * Place it inside a wrapper that holds the card; `sink` is how far its
+ * bottom tucks behind the card.
  */
 export function Duck({
   width,
@@ -41,30 +42,46 @@ export function Duck({
 }) {
   const dark = useIsDark();
   const reduce = useReducedMotion();
-  const h = duckHeight(width, dark);
-  const rise = useSharedValue(reduce ? 0 : 14);
-  const tilt = useSharedValue(reduce ? 0 : 3);
+  const boxW = width / DUCK_INK;
+  const boxH = (boxW * DUCK_H) / DUCK_W;
+  const air = (boxW * DUCK_PAD) / DUCK_W;
+  const rise = useSharedValue(reduce ? 0 : RISE);
+  const fade = useSharedValue(reduce ? 1 : 0);
 
   useEffect(() => {
     if (reduce) return;
-    rise.set(withDelay(delay, withSpring(0, { damping: 16, stiffness: 180 })));
-    tilt.set(withDelay(delay, withSpring(0, { damping: 16, stiffness: 180 })));
-  }, [reduce, delay, rise, tilt]);
+    rise.set(withDelay(delay, withTiming(0, EASE)));
+    fade.set(withDelay(delay, withTiming(1, EASE)));
+  }, [reduce, delay, rise, fade]);
 
   const anim = useAnimatedStyle(() => ({
-    transform: [{ translateY: rise.get() }, { rotate: `${tilt.get()}deg` }],
+    opacity: fade.get(),
+    transform: [{ translateY: rise.get() }],
   }));
 
-  const pos: ViewStyle = bottom !== undefined ? { bottom } : { top: -(h - sink) };
+  const pos: ViewStyle = bottom !== undefined ? { bottom } : { top: -(boxH - sink) };
   return (
     <Animated.View
       accessible={false}
       importantForAccessibility="no-hide-descendants"
       pointerEvents="none"
-      style={[{ position: 'absolute', width, height: h, right, left, overflow: 'hidden' }, pos, style]}
+      style={[
+        {
+          position: 'absolute',
+          width: boxW,
+          height: boxH,
+          right: right === undefined ? undefined : right - air,
+          left: left === undefined ? undefined : left - air,
+          // Clips only the bottom while he rises from behind the card;
+          // the art has air on the other three sides.
+          overflow: 'hidden',
+        },
+        pos,
+        style,
+      ]}
     >
-      <Animated.View style={[{ width, height: h, transformOrigin: 'bottom' }, anim]}>
-        <Image source={dark ? DARK : LIGHT} style={{ width, height: h }} contentFit="contain" transition={0} />
+      <Animated.View style={[{ width: boxW, height: boxH }, anim]}>
+        <Image source={dark ? DUCK_DARK : DUCK_LIGHT} style={{ width: boxW, height: boxH }} contentFit="contain" transition={0} />
       </Animated.View>
     </Animated.View>
   );

@@ -11,8 +11,7 @@ import { SERVICE_BY_ID } from '@/catalog/services';
 import { brand, tileRadius, usePalette } from './tokens';
 import { F } from './type';
 
-const DUCK = require('../../../assets/brand/duck.png');
-const DUCK_RATIO = 357 / 600; // duck.png is 600×357
+import { DUCK_H, DUCK_INK, DUCK_LIGHT, DUCK_W } from './duckAsset';
 
 const continuous = Platform.OS === 'ios' ? ({ borderCurve: 'continuous' } as const) : null;
 
@@ -69,7 +68,8 @@ export function LogoTile({
 
 /** The Ditch app icon: sunflower tile, the duck centred and resting on the bottom edge. */
 export function DuckIcon({ size = 38, style }: { size?: number; style?: StyleProp<ViewStyle> }) {
-  const w = Math.round(size * 0.86);
+  // The file has air around the head; size it so the duck fills ~86% of the tile.
+  const w = Math.round((size * 0.86) / DUCK_INK);
   return (
     <View
       accessible={false}
@@ -77,8 +77,8 @@ export function DuckIcon({ size = 38, style }: { size?: number; style?: StylePro
       style={[{ width: size, height: size, borderRadius: tileRadius(size), overflow: 'hidden', backgroundColor: brand.sunflower }, continuous, style]}
     >
       <Image
-        source={DUCK}
-        style={{ position: 'absolute', width: w, height: w * DUCK_RATIO, left: Math.round((size - w) / 2), bottom: 0 }}
+        source={DUCK_LIGHT}
+        style={{ position: 'absolute', width: w, height: (w * DUCK_H) / DUCK_W, left: Math.round((size - w) / 2), bottom: 0 }}
         contentFit="contain"
         transition={0}
       />

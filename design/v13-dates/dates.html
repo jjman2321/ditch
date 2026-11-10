@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Ditch v13 Charge Dates</title>
+<style>
+@font-face{font-family:Archivo;src:url(../v12/fonts/archivo-wdth.woff2) format('woff2');font-weight:100 900;font-stretch:62% 125%}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_400Regular.ttf);font-weight:400}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_500Medium.ttf);font-weight:500}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_600SemiBold.ttf);font-weight:600}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_700Bold.ttf);font-weight:700}
+:root{--sun:#FFCC2E;--ink:#16140F;--cream:#FBF7EE;--fg2:#5A544A;--mute:#6B6559;--hair:#EEE7D8;--rule:#E6DFD0;--chipb:#E3DBCA;--tint:#FFF1BC}
+*{box-sizing:border-box}
+body{margin:0;background:#E7E2D6;font-family:Inter,system-ui,sans-serif;color:var(--ink);letter-spacing:-.2px;-webkit-font-smoothing:antialiased}
+.stage{width:1960px;padding:48px 56px}
+h1{font-family:Archivo;font-stretch:125%;font-weight:900;font-size:40px;letter-spacing:-1.2px;margin:0 0 8px}
+.intro{font-size:18px;line-height:26px;color:#4A463E;margin:0 0 40px;max-width:1500px}
+.row{display:flex;gap:56px;align-items:flex-start}
+.cell{display:flex;flex-direction:column;align-items:center}
+.cap{font:600 16px/22px Inter;color:#4A463E;margin-top:24px;text-align:center;max-width:390px}
+.phone{position:relative;width:390px;height:844px;border-radius:47px;overflow:hidden;background:var(--cream);box-shadow:0 0 0 11px #121110,0 34px 70px rgba(40,30,0,.22);flex:none}
+.sb{position:absolute;top:0;left:0;right:0;height:47px;display:flex;align-items:center;justify-content:space-between;padding:0 32px 0 40px;font:600 17px Inter;z-index:5}
+.notch{position:absolute;left:50%;top:0;width:210px;height:30px;margin-left:-105px;background:#000;border-radius:0 0 20px 20px;z-index:6}
+.hi{position:absolute;bottom:8px;left:50%;width:134px;height:5px;margin-left:-67px;border-radius:3px;background:var(--ink);z-index:6}
+.scr{position:absolute;inset:47px 0 0;display:flex;flex-direction:column;padding:0 20px 34px}
+.nav{height:44px;display:flex;align-items:center;gap:12px}
+.steps{flex:1;display:flex;gap:4px}.steps i{flex:1;height:4px;border-radius:2px;background:#E6DFD0}.steps i.on{background:var(--ink)}
+.title{font-family:Archivo;font-stretch:115%;font-weight:900;font-size:30px;line-height:36px;letter-spacing:-1px;margin:16px 0 0}
+.leadS{font-size:16px;line-height:24px;color:var(--fg2);margin:8px 0 0}
+.card{background:#fff;border-radius:20px;padding:0 16px}
+.r{display:flex;align-items:center;gap:12px;min-height:64px;border-top:1px solid var(--hair)}
+.r:first-child{border-top:0}
+.lt{width:40px;height:40px;border-radius:9px;overflow:hidden;flex:none;box-shadow:inset 0 0 0 .5px rgba(22,20,15,.18)}
+.lt img{width:100%;height:100%;display:block}
+.nm{font-weight:600;font-size:16px;line-height:22px}
+.sub{font-size:14px;line-height:20px;color:var(--mute)}
+.num{font-variant-numeric:tabular-nums}
+.pick{height:36px;padding:0 14px;border-radius:18px;box-shadow:inset 0 0 0 1.5px var(--ink);font:600 15px Inter;display:flex;align-items:center;white-space:nowrap}
+.day{height:36px;min-width:56px;padding:0 12px;border-radius:18px;background:var(--sun);font:800 16px Archivo;font-stretch:108%;display:flex;align-items:center;justify-content:center}
+.skip{font:500 14px Inter;color:var(--mute);white-space:nowrap}
+.cta{height:56px;border-radius:28px;background:var(--ink);color:#fff;font:600 17px Inter;display:flex;align-items:center;justify-content:center}
+.cta.off{background:#D9D0BD;color:#fff}
+.txt{height:44px;font:600 16px Inter;display:flex;align-items:center;justify-content:center}
+.foot{margin-top:auto}
+.bar{display:flex;justify-content:space-between;font:600 15px Inter;margin:0 2px 12px}
+.dim{position:absolute;inset:0;background:rgba(22,20,15,.38);z-index:3}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--cream);border-radius:28px 28px 0 0;padding:8px 20px 34px;z-index:4}
+.grab{width:36px;height:5px;border-radius:3px;background:#D9D0BD;margin:0 auto 16px}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:16px}
+.grid b{height:42px;border-radius:21px;display:flex;align-items:center;justify-content:center;font:500 17px Inter;font-variant-numeric:tabular-nums}
+.grid b.on{background:var(--ink);color:var(--sun);font-weight:700}
+.last{margin-top:10px;height:44px;border-radius:22px;box-shadow:inset 0 0 0 1.5px var(--chipb);display:flex;align-items:center;justify-content:center;font:600 15px Inter;background:#fff}
+.live{margin-top:14px;background:var(--tint);border-radius:16px;padding:12px 14px;font-size:15px;line-height:21px}
+.seg{display:flex;background:#EFE8D8;border-radius:12px;padding:3px;margin-top:14px}
+.seg span{flex:1;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font:600 14px Inter;color:var(--mute)}
+.seg span.on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.wm{font-family:Archivo;font-stretch:125%;font-weight:900;font-size:24px;letter-spacing:-.8px}
+.total{background:var(--sun);border-radius:22px;padding:14px 18px 12px;margin-top:10px}
+.money{font-family:Archivo;font-stretch:108%;font-weight:900;font-size:42px;line-height:44px;letter-spacing:-1.6px}
+.eyebrow{font:700 12px/16px Inter;letter-spacing:1.2px;text-transform:uppercase;color:var(--mute);margin:18px 4px 8px}
+.price{font-family:Archivo;font-stretch:108%;font-weight:800;font-size:17.5px;width:74px;text-align:right}
+.add{font:600 14px Inter;text-decoration:underline;text-underline-offset:3px}
+.nudge{margin-top:10px;background:#fff;border-radius:16px;padding:12px 14px;display:flex;align-items:center;gap:10px;font-size:15px;line-height:20px}
+.bell{width:20px;text-align:center;font-size:15px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);row-gap:6px;margin-top:10px}
+.cal span{height:46px;font:500 15px Inter;display:flex;flex-direction:column;align-items:center;gap:3px}
+.cal i{width:6px;height:6px;border-radius:3px;background:var(--sun);box-shadow:0 0 0 1px rgba(22,20,15,.35)}
+.cal .t b{width:28px;height:28px;border-radius:14px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+.cal .c b{width:28px;height:28px;border-radius:8px;background:var(--sun);display:flex;align-items:center;justify-content:center;font-weight:700}
+</style></head><body><div class="stage">
+<h1>Charge dates without guesses (option B)</h1>
+<p class="intro">Every tracker we checked asks for a real date; none guess. Apple Wallet's "Payment Date" picks the day of the month from a 1–31 grid and says the result in a sentence. Ditch does the same: one tap per subscription, skip what you don't know, and a skipped one shows "Add date" and gets no reminder until it has one. No GUESS tags anywhere.</p>
+<div class="row">
+
+<!-- 1 · onboarding dates step -->
+<div class="cell"><div class="phone"><div class="notch"></div><div class="sb"><span>9:41</span><span>􀙇</span></div>
+<div class="scr">
+  <div class="nav"><span style="font-size:22px">‹</span><div class="steps"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+  <h2 class="title">Which day does each one charge?</h2>
+  <p class="leadS">It's on your bank app or the receipt email. Skip any you're not sure of.</p>
+  <div class="card" style="margin-top:20px">
+    <div class="r"><div class="lt"><img src="../../assets/logos/netflix.png"></div><div style="flex:1"><div class="nm">Netflix</div><div class="sub num">Every 19th · next Thu, Nov 19</div></div><div class="day">19th</div></div>
+    <div class="r"><div class="lt"><img src="../../assets/logos/chatgpt-plus.png"></div><div style="flex:1"><div class="nm">ChatGPT</div><div class="sub num">Every 21st · next Sat, Nov 21</div></div><div class="day">21st</div></div>
+    <div class="r"><div class="lt"><img src="../../assets/logos/spotify.png"></div><div style="flex:1"><div class="nm">Spotify</div><div class="sub">Monthly</div></div><div class="pick">Pick day</div></div>
+    <div class="r"><div class="lt"><img src="../../assets/logos/disney-plus.png"></div><div style="flex:1"><div class="nm">Disney+</div><div class="sub">Monthly</div></div><div class="pick">Pick day</div></div>
+    <div class="r"><div class="lt"><img src="../../assets/logos/amazon-prime.png"></div><div style="flex:1"><div class="nm">Amazon Prime</div><div class="sub">Yearly</div></div><div class="pick">Pick date</div></div>
+    <div class="r"><div class="lt"><img src="../../assets/logos/youtube-premium.png"></div><div style="flex:1"><div class="nm">YouTube Premium</div><div class="sub">Monthly</div></div><div class="pick">Pick day</div></div>
+  </div>
+  <div class="foot">
+    <div class="bar num"><span>2 of 6 set</span><span class="skip">Skip the rest for now</span></div>
+    <div class="cta">Continue</div>
+  </div>
+</div><div class="hi"></div></div>
+<div class="cap">1 · Onboarding. One row per sub. Monthly ones ask for a day, yearly ones a date. Set rows turn sunflower and say the next charge.</div></div>
+
+<!-- 2 · day sheet -->
+<div class="cell"><div class="phone"><div class="notch"></div><div class="sb"><span>9:41</span><span></span></div>
+<div class="scr" style="opacity:.5">
+  <div class="nav"><span style="font-size:22px">‹</span><div class="steps"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+  <h2 class="title">Which day does each one charge?</h2>
+</div>
+<div class="dim"></div>
+<div class="sheet">
+  <div class="grab"></div>
+  <div style="display:flex;align-items:center;gap:12px"><div class="lt"><img src="../../assets/logos/spotify.png"></div><div style="flex:1"><div class="nm" style="font-size:18px">Which day does Spotify charge?</div><div class="sub">Every month</div></div></div>
+  <div class="grid num">
+    <b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b>
+    <b>8</b><b>9</b><b>10</b><b>11</b><b>12</b><b>13</b><b>14</b>
+    <b>15</b><b class="on">16</b><b>17</b><b>18</b><b>19</b><b>20</b><b>21</b>
+    <b>22</b><b>23</b><b>24</b><b>25</b><b>26</b><b>27</b><b>28</b>
+    <b>29</b><b>30</b><b>31</b>
+  </div>
+  <div class="last">Last day of the month</div>
+  <div class="live num"><b>Charges on the 16th of every month.</b><br>Next: Mon, Nov 16. Reminders Fri, Nov 13 and Sun, Nov 15 at 9 AM.</div>
+  <div class="cta" style="margin-top:16px">Save</div>
+  <div class="txt">I'm not sure</div>
+</div><div class="hi"></div></div>
+<div class="cap">2 · The day sheet, like Apple Wallet's. The yellow line says exactly what will happen. "I'm not sure" leaves it blank, with no fake date.</div></div>
+
+<!-- 3 · home -->
+<div class="cell"><div class="phone"><div class="notch"></div><div class="sb"><span>9:41</span><span></span></div>
+<div class="scr">
+  <div style="display:flex;align-items:center;justify-content:space-between;height:52px;margin-top:6px"><span class="wm">ditch</span><span style="display:flex;gap:10px"><span style="width:44px;height:44px;border-radius:22px;background:#EFE8D8"></span><span style="width:44px;height:44px;border-radius:22px;background:var(--ink)"></span></span></div>
+  <div class="total"><div><span class="money num">$90.95</span> <b style="font:600 17px Inter">a month</b></div><div style="height:1px;background:rgba(22,20,15,.18);margin:8px 0 9px"></div><div class="num" style="font-size:15.5px"><b>$1,091</b> a year · 🔔 Reminders on <b>2 of 6</b></div></div>
+  <div class="nudge"><span style="flex:1"><b>4 have no date yet,</b> so no reminders.</span><b>Add dates ›</b></div>
+  <div class="eyebrow">This week</div>
+  <div class="card"><div class="r"><div class="lt"><img src="../../assets/logos/netflix.png"></div><div style="flex:1"><div class="nm">Netflix</div><div class="sub num" style="white-space:nowrap">Thu, Nov 19 · in 9 days</div></div><span class="bell">🔔</span><span class="price num">$19.99</span></div></div>
+  <div class="eyebrow">Later</div>
+  <div class="card"><div class="r"><div class="lt"><img src="../../assets/logos/chatgpt-plus.png"></div><div style="flex:1"><div class="nm">ChatGPT</div><div class="sub num" style="white-space:nowrap">Sat, Nov 21 · in 11 days</div></div><span class="bell">🔔</span><span class="price num">$20.00</span></div></div>
+  <div class="eyebrow">No date yet</div>
+  <div class="card">
+    <div class="r"><div class="lt"><img src="../../assets/logos/spotify.png"></div><div style="flex:1"><div class="nm">Spotify</div><div class="add">Add date</div></div><span class="bell" style="opacity:.35">🔕</span><span class="price num">$12.99</span></div>
+    <div class="r"><div class="lt"><img src="../../assets/logos/disney-plus.png"></div><div style="flex:1"><div class="nm">Disney+</div><div class="add">Add date</div></div><span class="bell" style="opacity:.35">🔕</span><span class="price num">$12.49</span></div>
+  </div>
+</div><div class="hi"></div></div>
+<div class="cap">3 · Home. Dated subs as today. Undated ones sit in "No date yet" with an Add date link and a quiet bell. One card at the top says why they get no reminder.</div></div>
+
+<!-- 4 · yearly date sheet -->
+<div class="cell"><div class="phone"><div class="notch"></div><div class="sb"><span>9:41</span><span></span></div>
+<div class="scr" style="opacity:.5"><div class="nav"></div><h2 class="title">Which day does each one charge?</h2></div>
+<div class="dim"></div>
+<div class="sheet">
+  <div class="grab"></div>
+  <div style="display:flex;align-items:center;gap:12px"><div class="lt"><img src="../../assets/logos/amazon-prime.png"></div><div style="flex:1"><div class="nm" style="font-size:18px">When does Amazon Prime renew?</div><div class="sub">Every year</div></div></div>
+  <div class="seg"><span>Jan</span><span>Feb</span><span>Mar</span><span class="on">Apr</span><span>May</span><span>Jun</span></div>
+  <div class="seg" style="margin-top:6px"><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span></div>
+  <div class="grid num" style="margin-top:12px">
+    <b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b>
+    <b>8</b><b>9</b><b>10</b><b>11</b><b>12</b><b>13</b><b>14</b>
+    <b>15</b><b>16</b><b>17</b><b>18</b><b>19</b><b>20</b><b>21</b>
+    <b>22</b><b>23</b><b>24</b><b>25</b><b>26</b><b>27</b><b class="on">28</b>
+    <b>29</b><b>30</b>
+  </div>
+  <div class="live num"><b>Renews every year on Apr 28.</b><br>Next: Wed, Apr 28, 2027.</div>
+  <div class="cta" style="margin-top:16px">Save</div>
+  <div class="txt">I'm not sure</div>
+</div><div class="hi"></div></div>
+<div class="cap">4 · Yearly subs pick a month, then a day. Same sentence, same "I'm not sure".</div></div>
+
+</div></div></body></html>

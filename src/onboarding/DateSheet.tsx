@@ -1,4 +1,4 @@
-// 04b · The date sheet: a month calendar with two ways to answer.
+// The editor's date picker: a month calendar with two ways to answer.
 // "Next charge": tap the day it charges next (today or later).
 // "From my last receipt": tap the day you were last charged (today or
 // earlier) and we roll it forward with the date rules in src/domain/dates.
@@ -9,7 +9,7 @@ import { Pressable, View } from 'react-native';
 import { headsUpDates, nextFromLastCharge, previousCharge } from '@/domain/charges';
 import { addDays, longDate, monthGrid, monthTitle, parseDate, shiftMonth, shortDate, toDateOnly, weekdayDate, type DateOnly } from '@/domain/dates';
 import { type Cycle } from '@/domain/money';
-import { chargeOf, usePickPrice, type Picked } from '@/state/onboarding';
+import { usePickPrice, type Picked } from '@/state/onboarding';
 import { chooseCycle, cycleChoices } from '@/state/picks';
 import {
   Bell,
@@ -22,7 +22,6 @@ import {
   IconButton,
   LogoTile,
   Segmented,
-  Sheet,
   Txt,
   brand,
   haptic,
@@ -249,25 +248,5 @@ export function DateBody({ sub, onSave, onGuess }: { sub: Picked; onSave: (ancho
       />
       <Button kind="text" label="Not sure: use a guess" onPress={onGuess} style={{ marginTop: 4 }} />
     </View>
-  );
-}
-
-export function DateSheet({
-  sub,
-  visible,
-  onClose,
-  onSave,
-  onGuess,
-}: {
-  sub: Picked | null;
-  visible: boolean;
-  onClose: () => void;
-  onSave: (anchor: DateOnly, source: Mode, cycle: Cycle) => void;
-  onGuess: () => void;
-}) {
-  return (
-    <Sheet visible={visible && !!sub} onClose={onClose} label={sub ? `${sub.name} charge date` : 'Charge date'}>
-      {sub ? <DateBody key={sub.id + chargeOf(sub)} sub={sub} onSave={onSave} onGuess={onGuess} /> : null}
-    </Sheet>
   );
 }

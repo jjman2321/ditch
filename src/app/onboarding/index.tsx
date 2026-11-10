@@ -1,94 +1,96 @@
-// 01 · Welcome. Shows the product in one picture: a real-looking heads-up
-// for a charge 5 days from today, and the timeline that leads to it.
+// 1 · Welcome (design/v12 render 01). The product in one picture: a real
+// reminder for a Netflix charge next week and the days that lead to it.
 
 import { router } from 'expo-router';
-import { useColorScheme, useWindowDimensions, View } from 'react-native';
+import { View } from 'react-native';
 
+import { catalogPrice } from '@/catalog/prices';
 import { SERVICE_BY_ID } from '@/catalog/services';
 import { headsUpDates } from '@/domain/charges';
-import { addDays, toDateOnly, weekdayDate, weekdayName, weekdayShort } from '@/domain/dates';
-import { catalogPrice } from '@/catalog/prices';
-import { useMoney, useOnboarding } from '@/state/onboarding';
 import { stillUsingIt } from '@/domain/copy';
-import { Button, Duck, HeadsUpTimeline, NotificationPreview, Screen, Txt, Wordmark, brand, paletteFor } from '@/ui/sunflower';
+import { addDays, weekdayDate, weekdayName, weekdayShort } from '@/domain/dates';
+import { FitScroll, OnbRoot } from '@/onboarding/Parts';
+import { onboardingToday, useMoney, useOnboarding } from '@/state/onboarding';
+import { Button, Duck, HeadsUpTimeline, NotificationPreview, Txt, Wordmark, brand, paletteFor, useFrame, useIsDark } from '@/ui/sunflower';
 
 export default function Welcome() {
-  const dark = useColorScheme() === 'dark';
+  const dark = useIsDark();
   const p = paletteFor('sun', dark);
-  const today = toDateOnly();
-  const netflix = SERVICE_BY_ID['netflix'];
-  const charge = addDays(today, 5);
+  const f = useFrame({ maxContent: 480, colH: 840 });
+  const today = onboardingToday();
+  // A charge next week, so the first reminder ("renews Thursday") is 3 days before it.
+  const charge = addDays(today, 9);
   const [early, late] = headsUpDates(charge, today);
-  // The local Netflix price for the iPhone's Region (none: leave it out).
   const money = useMoney();
   const { country } = useOnboarding();
   const local = catalogPrice('netflix', country);
   const price = local ? money(local.amountMinor, local.currency) : null;
-  // The 70pt headline is drawn for a 393pt-wide phone; scale it down on
-  // narrower ones so "renews." never wraps.
-  const { width } = useWindowDimensions();
-  const k = Math.min(1, (width - 48) / 345);
-  const head = { fontSize: Math.floor(70 * k), lineHeight: Math.floor(63 * k), letterSpacing: -2.8 * k };
+
+  // 70/64 on phones (60/56 on SE, 88/80 on iPad), never wider than the column:
+  // "before it" is the longest line, 342pt wide at 70pt.
+  const base = f.tablet ? 88 : f.small ? 60 : 70;
+  const fs = Math.min(base, Math.floor((70 * f.content) / 342));
+  const head = { fontSize: fs, lineHeight: Math.round((fs * 64) / 70 / 4) * 4, letterSpacing: -0.04 * fs };
 
   return (
-    <Screen
-      surface="sun"
-      scroll
-      footer={
-        <>
-          <Button label="See what I pay" onPress={() => router.push('/onboarding/services')} />
-          <Txt v="fine" tone="fg2" center style={{ marginTop: 10 }}>
-            Free forever for tracking · Your list stays on your phone
+    <OnbRoot surface="sun">
+      <FitScroll style={{ paddingTop: f.top, paddingHorizontal: f.edge, paddingBottom: f.bottom }}>
+        <View style={{ height: 28, marginTop: 16, justifyContent: 'center' }}>
+          <Wordmark size={24} />
+        </View>
+        <Txt v="displayXL" accessibilityRole="header" accessibilityLabel="Ditch it before it renews." style={[{ marginTop: f.small ? 24 : 32 }, head]}>
+          {'Ditch it\nbefore it\n'}
+          <Txt v="displayXL" color={dark ? brand.sunflower : p.fg} style={head}>
+            renews.
           </Txt>
-        </>
-      }
-    >
-      <View style={{ height: 44, justifyContent: 'center', marginTop: 4 }}>
-        <Wordmark />
-      </View>
-      <Txt v="displayXL" accessibilityRole="header" style={[{ marginTop: 26 }, head]}>
-        {'Ditch it\nbefore it\n'}
-        <Txt v="displayXL" color={dark ? brand.sunflower : p.fg} style={head}>
-          renews.
         </Txt>
-      </Txt>
-      <Txt v="lead" tone="fg2" style={{ marginTop: 16, maxWidth: 330 }}>
-        See everything you pay for. Get a heads&#8209;up before every charge.
-      </Txt>
+        <Txt v="lead" tone="fg2" style={[{ marginTop: 16, maxWidth: f.tablet ? 420 : 320 }, f.tablet && { fontSize: 20, lineHeight: 28 }]}>
+          {'See everything you pay for. Get a reminder before every charge.'}
+        </Txt>
 
-      <View style={{ flex: 1, minHeight: 96 }} />
+        <View style={{ flex: 1, minHeight: f.small ? 24 : 96 }} />
 
-      <View style={{ marginBottom: 12 }}>
-        <Duck width={140} right={16} sink={6} />
-        {/* The notification stacked underneath, like the lock screen. */}
-        <View
-          style={{
-            position: 'absolute',
-            left: 12,
-            right: 12,
-            bottom: -12,
-            height: 40,
-            borderBottomLeftRadius: 20,
-            borderBottomRightRadius: 20,
-            backgroundColor: dark ? '#1C1A16' : 'rgba(255,255,255,0.6)',
-            borderWidth: dark ? 1 : 0,
-            borderColor: '#2C2924',
-          }}
-        />
-        <NotificationPreview time={`${weekdayShort(early)} 9:00 AM`} message={`Netflix renews ${weekdayName(charge)}.${price ? ` ${price}.` : ''} ${stillUsingIt(netflix.category)}`} />
-      </View>
+        <View>
+          {f.small ? null : <Duck width={f.tablet ? 160 : 136} right={16} sink={6} />}
+          <View style={{ zIndex: 2 }}>
+            <NotificationPreview
+              time={`${weekdayShort(early)} 9:00 AM`}
+              message={`Netflix renews ${weekdayName(charge)}.${price ? ` ${price}.` : ''} ${stillUsingIt(SERVICE_BY_ID['netflix'].category).replace(' ', ' ')}`}
+            />
+          </View>
+          {/* The one stacked underneath, like the lock screen. */}
+          <View
+            style={{
+              marginTop: -16,
+              marginHorizontal: 12,
+              height: 28,
+              borderBottomLeftRadius: 20,
+              borderBottomRightRadius: 20,
+              backgroundColor: dark ? '#1C1A16' : 'rgba(255,255,255,0.6)',
+              borderWidth: dark ? 1 : 0,
+              borderTopWidth: 0,
+              borderColor: '#2C2924',
+            }}
+          />
+        </View>
 
-      <View style={{ marginTop: 18, marginHorizontal: 2 }}>
-        <HeadsUpTimeline
-          behind={p.bg}
-          stops={[
-            { kind: 'bell', title: weekdayDate(early), sub: '9 AM heads-up' },
-            { kind: 'bell', title: weekdayDate(late), sub: '9 AM heads-up' },
-            { kind: 'charge', title: weekdayDate(charge), sub: price ? `${price} charge` : 'charge day' },
-          ]}
-        />
-      </View>
-      <View style={{ height: 24 }} />
-    </Screen>
+        <View style={{ marginTop: 16 }}>
+          <HeadsUpTimeline
+            behind={p.bg}
+            stops={[
+              { kind: 'bell', title: weekdayDate(early), sub: '9 AM reminder' },
+              { kind: 'bell', title: weekdayDate(late), sub: '9 AM reminder' },
+              { kind: 'charge', title: weekdayDate(charge), sub: price ? `${price} charge` : 'charge day' },
+            ]}
+          />
+        </View>
+
+        <View style={{ height: f.small ? 24 : 32 }} />
+        <Button label="See what I pay" onPress={() => router.push('/onboarding/services')} />
+        <Txt v="sub" tone="fg2" center style={{ marginTop: 12 }}>
+          Free forever for tracking.
+        </Txt>
+      </FitScroll>
+    </OnbRoot>
   );
 }

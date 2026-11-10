@@ -1,18 +1,36 @@
-// 03 · Your total. The one number that rolls (MOTION.md §1): the yearly
-// total from the user's own picks, then the month/day split and where it goes.
+// 3 · Your total (design/v12 render 03). The one number that rolls
+// (MOTION.md §1): the yearly total of the user's own picks, then the month,
+// one fact, the biggest charges first, and what ditching one is worth.
+// One total per currency, never added together, never converted.
 
 import { router } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
-import { Pressable, Text, useWindowDimensions, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import Animated, { Easing, FadeIn, useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 
 import { yearlyMinor } from '@/domain/money';
+import { FitScroll, OnbRoot, TextLink } from '@/onboarding/Parts';
 import { PriceSheet } from '@/onboarding/PriceSheet';
-import { byYearlyDesc, isPriced, totalsFor, useCountry, useMoney, useOnboarding, usePickedList, type Picked, type PricedPick } from '@/state/onboarding';
-import { Button, Card, EDGE, F, LogoTile, RollingNumber, Screen, StepHeader, Txt, haptic, rollDuration, tabular, usePalette, useFitSize } from '@/ui/sunflower';
+import { byYearlyDesc, isPriced, totalsFor, useCountry, useMoney, useOnboarding, usePickedList } from '@/state/onboarding';
+import {
+  Button,
+  ChevronDown,
+  F,
+  LogoTile,
+  RollingNumber,
+  StepHeader,
+  Txt,
+  haptic,
+  paletteFor,
+  rollDuration,
+  tabular,
+  useFitSize,
+  useFrame,
+  useIsDark,
+  usePalette,
+} from '@/ui/sunflower';
 
-const HERO = 118;
-const HERO_LH = 108;
+const NB = ' ';
 
 /** Fades content up 6pt, `delay` ms after mount (instant when not playing). */
 function useReveal(play: boolean, delay: number, duration = 200) {
@@ -23,220 +41,186 @@ function useReveal(play: boolean, delay: number, duration = 200) {
   return useAnimatedStyle(() => ({ opacity: t.get(), transform: [{ translateY: (1 - t.get()) * 6 }] }));
 }
 
-function Bar({ pct, play, delay }: { pct: number; play: boolean; delay: number }) {
-  const p = usePalette();
-  const w = useSharedValue(play ? 0 : pct);
-  useEffect(() => {
-    if (play) w.set(withDelay(delay, withTiming(pct, { duration: 500, easing: Easing.out(Easing.cubic) })));
-    else w.set(pct);
-  }, [play, delay, pct, w]);
-  const anim = useAnimatedStyle(() => ({ width: `${w.get() * 100}%` }));
-  return (
-    <View style={{ height: 5, borderRadius: 3, backgroundColor: p.barTrack, marginTop: 6, width: '100%', maxWidth: 150 }}>
-      <Animated.View style={[{ height: 5, borderRadius: 3, backgroundColor: p.barFill }, anim]} />
-    </View>
-  );
-}
-
-function WhereItGoes({ items, play, delay }: { items: PricedPick[]; play: boolean; delay: number }) {
-  const p = usePalette();
-  const money = useMoney();
-  // Bars compare within a currency only.
-  const max = (c: string) => Math.max(...items.filter((x) => x.currency === c).map((x) => yearlyMinor(x.amountMinor, x.cycle)), 1);
-  return (
-    <Card style={{ marginTop: 18, paddingHorizontal: 16, paddingVertical: 4 }}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10, paddingBottom: 4 }}>
-        <Txt v="eyebrow" tone="mute">
-          Where it goes
-        </Txt>
-        <Txt v="eyebrow" tone="mute">
-          Per year
-        </Txt>
-      </View>
-      {items.map((x, i) => {
-        const y = yearlyMinor(x.amountMinor, x.cycle);
-        const amount = money(y, x.currency);
-        return (
-          <View
-            key={x.id}
-            accessible
-            accessibilityLabel={`${x.name}, ${amount} a year`}
-            style={{ flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 51, paddingVertical: 6, borderTopWidth: i ? 1 : 0, borderTopColor: p.hair }}
-          >
-            <LogoTile id={x.id} size={30} />
-            <View style={{ flex: 1, minWidth: 0 }}>
-              <Txt v="label" color={p.cardFg} numberOfLines={1}>
-                {x.name}
-              </Txt>
-              <Bar pct={y / max(x.currency)} play={play} delay={delay + i * 40} />
-            </View>
-            <Txt v="moneyS" num color={p.cardFg}>
-              {amount}
-            </Txt>
-          </View>
-        );
-      })}
-    </Card>
-  );
-}
-
-/** Picks we have no local price for: ask for them here, in a short list. */
-function NoPriceYet({ items }: { items: Picked[] }) {
-  const p = usePalette();
-  const { setPrice } = useOnboarding();
-  const [editing, setEditing] = useState<string | null>(null);
-  const [open, setOpen] = useState(false);
-  const sub = items.find((x) => x.id === editing) ?? null;
-  return (
-    <Card style={{ marginTop: 12, paddingHorizontal: 16, paddingVertical: 4 }}>
-      <View style={{ paddingTop: 10, paddingBottom: 4 }}>
-        <Txt v="eyebrow" tone="mute">
-          No price yet
-        </Txt>
-      </View>
-      {items.map((x, i) => (
-        <Pressable
-          key={x.id}
-          accessibilityRole="button"
-          accessibilityLabel={`Add your price for ${x.name}`}
-          onPress={() => {
-            setEditing(x.id);
-            setOpen(true);
-          }}
-          style={({ pressed }) => ({ flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 48, borderTopWidth: i ? 1 : 0, borderTopColor: p.hair, opacity: pressed ? 0.6 : 1 })}
-        >
-          <LogoTile id={x.id} size={30} />
-          <Txt v="label" color={p.cardFg} style={{ flex: 1 }} numberOfLines={1}>
-            {x.name}
-          </Txt>
-          <Txt v="label" color={p.cardFg} style={{ textDecorationLine: 'underline', fontSize: 14 }}>
-            Add your price
-          </Txt>
-        </Pressable>
-      ))}
-      <PriceSheet
-        sub={sub}
-        visible={open}
-        onClose={() => setOpen(false)}
-        onSave={(amount, currency, cycle) => {
-          if (sub) setPrice(sub.id, amount, currency, cycle);
-          setOpen(false);
-        }}
-      />
-    </Card>
-  );
-}
-
 export default function Total() {
   const p = usePalette();
+  const dark = useIsDark();
+  const cream = paletteFor('cream', dark);
   const reduce = useReducedMotion();
-  const { totalShown, markTotalShown } = useOnboarding();
+  const f = useFrame({ colH: 880 });
+  const { totalShown, markTotalShown, setPrice } = useOnboarding();
   const list = usePickedList();
   const country = useCountry();
   const money = useMoney();
   const sorted = useMemo(() => [...list].sort(byYearlyDesc), [list]);
-  const priced = sorted.filter(isPriced);
-  const unpriced = sorted.filter((x) => !isPriced(x));
   const totals = totalsFor(list, country?.currency);
   const main = totals[0];
   const others = totals.slice(1);
-  const n = priced.length;
+  const [showAll, setShowAll] = useState(false);
+  const [priceFor, setPriceFor] = useState<string | null>(null);
 
   // Play once per session; Reduce Motion gets a short fade instead.
   const [play] = useState(() => !totalShown && !reduce);
   const hero = main ? money(main.yearlyMinor, main.currency, { whole: true }) : '';
   const landed = play ? rollDuration(hero) : 0;
-
   useEffect(() => {
     markTotalShown();
     if (!play) return;
     const t = setTimeout(() => haptic.light(), landed);
     return () => clearTimeout(t);
   }, [play, landed, markTotalShown]);
-
   const yearStyle = useReveal(play, landed);
   const restStyle = useReveal(play, landed + 120, 220);
 
-  const { width } = useWindowDimensions();
-  const [size, onMeasure] = useFitSize(HERO, width - EDGE * 2 + 4);
-  const lh = Math.round((HERO_LH * size) / HERO);
-  const heroStyle = { fontFamily: F.display, fontSize: size, letterSpacing: (-5 * size) / HERO, color: p.money };
+  // 104pt (80 on SE, 128 on iPad), shrunk only if a big total won't fit.
+  const base = f.tablet ? 128 : f.small ? 80 : 104;
+  const [size, onMeasure] = useFitSize(base, f.content + 4);
+  const lh = Math.round((size * 0.8) / 4) * 4;
+  const heroStyle = { fontFamily: F.display, fontSize: size, letterSpacing: -0.045 * size, color: p.money };
+
+  // How many rows fit before "N more · Show all": 3 on phones (4 on Pro Max), 2 on SE, all on iPad.
+  const shown = showAll || f.tablet ? sorted.length : f.small ? 2 : f.height >= 900 ? 4 : 3;
+  const rows = sorted.slice(0, shown);
+  const rest = sorted.slice(shown);
+  const rest1 = rest.length === 1 ? rest : [];
+  const restMany = rest.length > 1 ? rest : [];
+  const visible = [...rows, ...rest1];
+  const biggest = sorted.find(isPriced);
+  const priceSub = priceFor ? (list.find((x) => x.id === priceFor) ?? null) : null;
+
+  const sheetPad = f.tablet ? { borderRadius: 28, padding: 24 } : { marginHorizontal: -f.edge, borderTopLeftRadius: 28, borderTopRightRadius: 28, paddingTop: f.small ? 16 : 24, paddingHorizontal: f.edge, paddingBottom: f.insets.bottom + 16 };
 
   return (
-    <Screen
-      surface="sun"
-      scroll
-      footer={<Button label="Set my charge dates" onPress={() => router.push('/onboarding/dates')} />}
-    >
-      <StepHeader step={2} />
-      <Txt v="label" style={{ fontSize: 17, marginTop: 16 }}>
-        {!main
-          ? 'Add your prices to see your total'
-          : unpriced.length
-            ? `${n} of your ${list.length} subscriptions cost`
-            : `Your ${n} ${n === 1 ? 'subscription costs' : 'subscriptions cost'}`}
-      </Txt>
-
-      {/* Measures the total once at full size so it can shrink to fit. */}
-      <View pointerEvents="none" style={{ position: 'absolute', opacity: 0, width: 2000, alignItems: 'flex-start' }}>
-        <Text allowFontScaling={false} onLayout={(e) => onMeasure(e.nativeEvent.layout.width)} style={[{ fontFamily: F.display, fontSize: HERO, letterSpacing: -5 }, tabular]}>
-          {hero}
-        </Text>
-      </View>
-
-      {main ? (
-        <>
-          <Animated.View entering={reduce ? FadeIn.duration(150) : undefined} style={{ marginTop: 2, marginLeft: -4 }}>
-            <RollingNumber text={hero} style={heroStyle} lineHeight={lh} play={play} accessibilityLabel={`${hero} a year`} />
-          </Animated.View>
-          <Animated.View style={yearStyle}>
-            <Txt v="displayS" style={{ marginTop: 2 }} importantForAccessibility="no">
-              a year.
-            </Txt>
-            {/* Other currencies get their own line. Never added, never converted. */}
-            {others.map((t) => (
-              <Txt key={t.currency} v="label" tone="fg2" num style={{ marginTop: 4 }}>
-                + {money(t.yearlyMinor, t.currency, { whole: true })} a year
-              </Txt>
-            ))}
-            {country?.code === 'US' ? (
-              <Txt v="sub" tone="fg2" style={{ marginTop: 4 }}>
-                US prices are before sales tax.
-              </Txt>
-            ) : null}
-          </Animated.View>
-        </>
-      ) : null}
-
-      <Animated.View style={restStyle}>
-        {main ? (
-          <View style={{ flexDirection: 'row', marginTop: 16, borderTopWidth: 2, borderTopColor: p.dark ? p.rule : p.fg }}>
-            {[
-              [money(main.monthlyMinor, main.currency), 'a month'],
-              [money(main.dailyMinor, main.currency), 'a day'],
-            ].map(([v, l], i) => (
-              <View
-                key={l}
-                accessible
-                accessibilityLabel={`${v} ${l}`}
-                style={{ flex: 1, paddingTop: 10, paddingLeft: i ? 16 : 0, borderLeftWidth: i ? 1 : 0, borderLeftColor: p.rule }}
-              >
-                <Txt v="moneyL" tone="money" num>
-                  {v}
-                </Txt>
-                <Txt v="body" tone="fg2" style={{ fontSize: 14 }}>
-                  {l}
-                </Txt>
-              </View>
-            ))}
-          </View>
-        ) : null}
-        {priced.length ? <WhereItGoes items={priced} play={play} delay={landed + 120} /> : null}
-        {unpriced.length ? <NoPriceYet items={unpriced} /> : null}
-        <Txt v="leadS" tone="fg2" style={{ marginTop: 18 }}>
-          Bigger than you guessed? It usually is. Let’s make sure none of it surprises you.
+    <OnbRoot surface="sun">
+      <FitScroll style={{ paddingTop: f.top, paddingHorizontal: f.edge, paddingBottom: f.tablet ? f.bottom : 0 }}>
+        <StepHeader step={2} />
+        <Txt v="label" style={{ marginTop: f.small ? 8 : 24, fontSize: 17, lineHeight: 24 }}>
+          {main ? 'You pay' : 'Add your prices to see your total'}
         </Txt>
-      </Animated.View>
-    </Screen>
+
+        {/* Measures the total once at full size so it can shrink to fit. */}
+        <View pointerEvents="none" style={{ position: 'absolute', opacity: 0, width: 2000, alignItems: 'flex-start' }}>
+          <Text allowFontScaling={false} onLayout={(e) => onMeasure(e.nativeEvent.layout.width)} style={[{ fontFamily: F.display, fontSize: base, letterSpacing: -0.045 * base }, tabular]}>
+            {hero}
+          </Text>
+        </View>
+
+        {main ? (
+          <>
+            <Animated.View entering={reduce ? FadeIn.duration(150) : undefined} style={{ marginTop: 8, marginLeft: -4 }}>
+              <RollingNumber text={hero} style={heroStyle} lineHeight={lh} play={play} accessibilityLabel={`${hero} a year`} />
+            </Animated.View>
+            <Animated.View style={yearStyle}>
+              <Txt v="heading" importantForAccessibility="no" style={{ fontSize: 22, marginTop: f.tablet ? 16 : 12 }}>
+                a year.
+              </Txt>
+              {others.map((t) => (
+                <Txt key={t.currency} v="label" tone="fg2" num style={{ marginTop: 4 }}>
+                  {`+ ${money(t.yearlyMinor, t.currency, { whole: true })} a year`}
+                </Txt>
+              ))}
+            </Animated.View>
+          </>
+        ) : null}
+
+        <Animated.View style={restStyle}>
+          {main ? (
+            <Txt v="lead" num style={{ marginTop: 16 }}>
+              {'That’s '}
+              <Txt v="lead" num style={{ fontFamily: F.semi }}>
+                {money(main.monthlyMinor, main.currency)}
+              </Txt>
+              {' a month.'}
+            </Txt>
+          ) : null}
+          <Txt v="body" tone="fg2" style={{ marginTop: 8, maxWidth: 340 }}>
+            {`Most people guess way lower. In one study, the real total was about 2.5× the${NB}guess.`}
+          </Txt>
+        </Animated.View>
+
+        <View style={{ height: f.small ? 16 : 24 }} />
+
+        <View style={[{ flex: 1, backgroundColor: cream.sheet }, sheetPad, dark && { borderTopWidth: 1, borderColor: '#2C2924' }]}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 16 }}>
+            <Txt v="eyebrow" color={cream.mute}>
+              Biggest first
+            </Txt>
+            <Txt v="eyebrow" color={cream.mute}>
+              Per year
+            </Txt>
+          </View>
+          <View style={{ marginTop: 4 }}>
+            {visible.map((x, i) => {
+              const amount = isPriced(x) ? money(yearlyMinor(x.amountMinor, x.cycle), x.currency) : null;
+              return (
+                <View
+                  key={x.id}
+                  accessible={!!amount}
+                  accessibilityLabel={amount ? `${x.name}, ${amount} a year` : undefined}
+                  style={{ flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 52 }}
+                >
+                  {i ? <View style={{ position: 'absolute', top: 0, left: 44, right: 0, height: 1, backgroundColor: cream.hair }} /> : null}
+                  <LogoTile id={x.id} size={32} />
+                  <Txt v="label" color={cream.fg} numberOfLines={1} style={{ flex: 1, fontSize: 16 }}>
+                    {x.name}
+                  </Txt>
+                  {amount ? (
+                    <Txt v="moneyM" num color={cream.money}>
+                      {amount}
+                    </Txt>
+                  ) : (
+                    <TextLink label="Add your price" a11y={`Add your price for ${x.name}`} onPress={() => setPriceFor(x.id)} color={cream.fg} />
+                  )}
+                </View>
+              );
+            })}
+            {restMany.length ? (
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={`${restMany.length} more. Show all`}
+                onPress={() => {
+                  haptic.select();
+                  setShowAll(true);
+                }}
+                style={({ pressed }) => ({ flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 52, opacity: pressed ? 0.6 : 1 })}
+              >
+                <View style={{ position: 'absolute', top: 0, left: 44, right: 0, height: 1, backgroundColor: cream.hair }} />
+                <View style={{ width: 32, flexDirection: 'row' }}>
+                  {restMany.slice(0, 2).map((x, i) => (
+                    <View key={x.id} style={{ marginLeft: i ? -8 : 0, borderRadius: 6, borderWidth: 2, borderColor: cream.sheet, margin: -2 }}>
+                      <LogoTile id={x.id} size={20} />
+                    </View>
+                  ))}
+                </View>
+                <Txt v="label" color={cream.fg} style={{ flex: 1, fontSize: 16 }}>
+                  {`${restMany.length} more`}
+                </Txt>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                  <Txt v="label" color={cream.fg}>
+                    Show all
+                  </Txt>
+                  <ChevronDown color={cream.fg} size={14} />
+                </View>
+              </Pressable>
+            ) : null}
+          </View>
+          {biggest && isPriced(biggest) ? (
+            <Txt v="strong" num color={cream.fg} style={{ marginTop: f.small ? 12 : 16 }}>
+              {`Ditch just one you don’t use: up to ${money(yearlyMinor(biggest.amountMinor, biggest.cycle), biggest.currency, { whole: true })} a${NB}year you won’t${NB}pay.`}
+            </Txt>
+          ) : null}
+          <View style={{ flex: 1, minHeight: f.small ? 8 : 16 }} />
+          <Button label="Set up reminders" onPress={() => router.push('/onboarding/dates')} />
+        </View>
+      </FitScroll>
+      <PriceSheet
+        sub={priceSub}
+        visible={!!priceSub}
+        onClose={() => setPriceFor(null)}
+        onSave={(amount, currency, cycle) => {
+          if (priceFor) setPrice(priceFor, amount, currency, cycle);
+          setPriceFor(null);
+        }}
+      />
+    </OnbRoot>
   );
 }

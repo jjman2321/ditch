@@ -1,183 +1,169 @@
-// 02 · What do you pay for? Tick everything; the running monthly total
-// sits right above the button. Prices are the local ones for the iPhone's
-// Region ("Prices for 🇬🇧 UK · Change"). Ticked rows get an inline plan
-// chip; services with no checked local price say "Add your price".
+// 2 · What do you pay for? (design/v12 render 02). Tick each one; a tick
+// takes the local default plan ("Standard · $19.99/mo · Change"), and
+// "Change" opens the plan sheet. The running monthly total sits above the
+// button. Prices are the local ones for the iPhone's Region (DECISIONS #17);
+// no checked local price means "Add your price", never a converted one.
 
-import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { FlatList, Pressable, ScrollView, TextInput, View } from 'react-native';
 
 import { catalogPrice, planChoices } from '@/catalog/prices';
 import { CATEGORIES, SERVICES, availableIn, popularIn, searchServices, type CatalogService, type Category } from '@/catalog/services';
-import { CYCLE_WORDS } from '@/domain/money';
+import { shortPlanName } from '@/domain/copy';
+import { CYCLE_SHORT, yearlyMinor } from '@/domain/money';
 import { CountrySheet } from '@/onboarding/CountrySheet';
+import { LinkButton, OnbRoot, TextLink } from '@/onboarding/Parts';
+import { PlanSheet } from '@/onboarding/PlanSheet';
 import { PriceSheet } from '@/onboarding/PriceSheet';
 import { isPriced, totalsFor, useCountry, useMoney, useOnboarding, usePickedList, type Picked } from '@/state/onboarding';
-import { Button, Chip, ChevronRight, EDGE, F, LogoTile, RowDivider, Screen, Search, StepHeader, Tick, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
+import { Button, F, LogoTile, Search, StepHeader, Tick, Txt, haptic, radius, useFrame, usePalette } from '@/ui/sunflower';
 
 type Filter = 'Popular' | Category;
 const FILTERS: Filter[] = ['Popular', ...CATEGORIES];
+/** Short chip names, so the first four fit on an iPhone 12 (design/v12 render 02). */
+const CHIP: Partial<Record<Filter, string>> = {
+  'Music & audio': 'Music',
+  'News & reading': 'News',
+  'Shopping & food': 'Shopping',
+  'Cloud & security': 'Cloud',
+  'Health & fitness': 'Fitness',
+};
+const NB = ' ';
 
-/** Plan pills under a ticked row: one tap switches plan. */
-function PlanPills({ pick }: { pick: Picked }) {
-  const p = usePalette();
+/** The second line of a row. Returns the text and whether "Change" / "Add your price" shows. */
+function useRowLine() {
   const money = useMoney();
-  const { setPlan } = useOnboarding();
-  const plans = planChoices(pick.id, pick.priceCountry);
-  if (pick.priceSource !== 'catalog' || plans.length < 2) return null;
+  const { country } = useOnboarding();
+  return (s: CatalogService, pick: Picked | undefined): { text: string; link: 'plan' | 'price' | null } => {
+    if (pick) {
+      if (!isPriced(pick)) return { text: '', link: 'price' };
+      const amount = `${money(pick.amountMinor, pick.currency)}${CYCLE_SHORT[pick.cycle]}`;
+      if (pick.priceSource === 'user') return { text: `Your price · ${amount}`, link: 'price' };
+      const plans = planChoices(s.id, pick.priceCountry);
+      const name = pick.planName ? shortPlanName(pick.planName, s.name, plans.map((x) => x.name)) : null;
+      return { text: name ? `${name} · ${amount}` : amount, link: plans.length > 1 ? 'plan' : null };
+    }
+    const plans = planChoices(s.id, country);
+    if (plans.length > 1) {
+      const c = catalogPrice(s.id, country)!;
+      // The cheapest plan billed the same way as the default one.
+      const same = plans.filter((x) => x.cycle === c.cycle);
+      const low = same.reduce((a, b) => (yearlyMinor(b.amountMinor, b.cycle) < yearlyMinor(a.amountMinor, a.cycle) ? b : a), same[0]);
+      return { text: `from ${money(low.amountMinor, c.currency)}${CYCLE_SHORT[low.cycle]}`, link: null };
+    }
+    const c = catalogPrice(s.id, country);
+    return { text: c ? `${money(c.amountMinor, c.currency)}${CYCLE_SHORT[c.cycle]}` : 'Add your price', link: null };
+  };
+}
+
+function Row({
+  s,
+  pick,
+  first,
+  onToggle,
+  onChange,
+}: {
+  s: CatalogService;
+  pick: Picked | undefined;
+  first: boolean;
+  onToggle: () => void;
+  onChange: (kind: 'plan' | 'price') => void;
+}) {
+  const p = usePalette();
+  const line = useRowLine()(s, pick);
+  const on = !!pick;
+  const spoken = line.text || 'no local price yet';
   return (
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      style={{ marginLeft: 52, marginRight: -EDGE, marginTop: -4, marginBottom: 10, flexGrow: 0 }}
-      contentContainerStyle={{ gap: 6, paddingRight: EDGE }}
-      accessibilityRole="radiogroup"
-      accessibilityLabel={`${pick.name} plan`}
+    <Pressable
+      accessibilityRole="checkbox"
+      accessibilityLabel={`${s.name}, ${spoken}`}
+      accessibilityState={{ checked: on }}
+      onPress={onToggle}
+      style={({ pressed }) => ({ minHeight: 64, flexDirection: 'row', alignItems: 'center', gap: 12, opacity: pressed ? 0.7 : 1 })}
     >
-      {plans.map((plan) => {
-        const on = plan.id === pick.planId;
-        const price = `${money(plan.amountMinor, pick.currency!)}${plan.cycle === 'yearly' ? '/yr' : plan.cycle === 'monthly' ? '/mo' : ''}`;
-        return (
-          <Pressable
-            key={plan.id}
-            accessibilityRole="radio"
-            accessibilityLabel={`${plan.name}, ${price}`}
-            accessibilityState={{ selected: on }}
-            hitSlop={{ top: 6, bottom: 6 }}
-            onPress={() => {
-              if (on) return;
-              haptic.select();
-              setPlan(pick.id, plan.id);
-            }}
-            style={({ pressed }) => ({
-              height: 32,
-              borderRadius: 16,
-              paddingHorizontal: 12,
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: 6,
-              backgroundColor: on ? p.chipOnBg : p.chipBg,
-              borderWidth: on ? 0 : 1.5,
-              borderColor: p.chipBorder,
-              opacity: pressed ? 0.75 : 1,
-            })}
-          >
-            <Txt v="label" color={on ? p.chipOnFg : p.fg} style={{ fontSize: 13.5 }} maxFontSizeMultiplier={1.3}>
-              {plan.name}
+      {first ? null : <View style={{ position: 'absolute', top: 0, left: 52, right: 0, height: 1, backgroundColor: p.hair }} />}
+      <LogoTile id={s.id} size={40} />
+      <View style={{ flex: 1, minWidth: 0, paddingVertical: 12 }}>
+        <Txt v="bodyStrong" numberOfLines={1}>
+          {s.name}
+        </Txt>
+        <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', columnGap: 4 }}>
+          {line.text ? (
+            <Txt v="sub" tone="mute" num>
+              {line.text}
+              {line.link ? ' ·' : ''}
             </Txt>
-            <Txt v="sub" num color={on ? p.chipOnFg : p.mute} style={{ fontSize: 13 }} maxFontSizeMultiplier={1.3}>
-              {price}
-            </Txt>
-          </Pressable>
-        );
-      })}
-    </ScrollView>
+          ) : null}
+          {line.link ? (
+            <TextLink
+              label={line.text ? 'Change' : 'Add your price'}
+              a11y={line.link === 'plan' ? `Change ${s.name} plan` : `${line.text ? 'Change' : 'Add'} your price for ${s.name}`}
+              onPress={() => onChange(line.link!)}
+            />
+          ) : null}
+        </View>
+      </View>
+      <View style={{ width: 44, height: 44, marginRight: -8, alignItems: 'center', justifyContent: 'center' }}>
+        <Tick on={on} />
+      </View>
+    </Pressable>
   );
 }
 
-function Row({ s, pick, onToggle, onAddPrice }: { s: CatalogService; pick: Picked | undefined; onToggle: () => void; onAddPrice: () => void }) {
-  const p = usePalette();
-  const money = useMoney();
-  const { country } = useOnboarding();
-  const on = !!pick;
-  // Ticked: its chosen plan or own price. Not ticked: the local default plan.
-  const shown = pick
-    ? isPriced(pick)
-      ? { amount: pick.amountMinor, currency: pick.currency, cycle: pick.cycle, own: pick.priceSource === 'user' }
-      : null
-    : (() => {
-        const c = catalogPrice(s.id, country);
-        return c ? { amount: c.amountMinor, currency: c.currency, cycle: c.cycle, own: false } : null;
-      })();
-  const priceText = shown ? `${shown.own ? '' : 'about '}${money(shown.amount, shown.currency)} ${CYCLE_WORDS[shown.cycle]}` : 'Add your price';
+/** "Tick each one. Prices for 🇺🇸 US · Change" */
+function CountryLine({ onChange }: { onChange: () => void }) {
+  const country = useCountry();
   return (
-    <View>
-      <Pressable
-        accessibilityRole="checkbox"
-        accessibilityLabel={`${s.name}, ${shown ? priceText : 'no local price yet'}`}
-        accessibilityState={{ checked: on }}
-        onPress={onToggle}
-        style={({ pressed }) => ({ minHeight: 58, flexDirection: 'row', alignItems: 'center', gap: 12, opacity: pressed ? 0.7 : 1 })}
-      >
-        <LogoTile id={s.id} size={40} />
-        <View style={{ flex: 1, paddingVertical: 8 }}>
-          <Txt v="bodyStrong" numberOfLines={1}>
-            {s.name}
-          </Txt>
-          {shown || !on ? (
-            <Txt v="sub" tone="mute" style={{ marginTop: 1 }}>
-              {priceText}
-            </Txt>
-          ) : null}
-        </View>
-        <Tick on={on} />
-      </Pressable>
-      {on && !shown ? (
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={`Add your price for ${s.name}`}
-          onPress={onAddPrice}
-          style={({ pressed }) => ({ marginLeft: 52, marginTop: -14, marginBottom: 6, minHeight: 32, flexDirection: 'row', alignItems: 'center', gap: 4, opacity: pressed ? 0.6 : 1 })}
-        >
-          <Txt v="label" color={p.fg} style={{ fontSize: 13.5, textDecorationLine: 'underline' }}>
-            Add your price
-          </Txt>
-          <ChevronRight color={p.fg} size={12} />
-        </Pressable>
-      ) : null}
-      {pick ? <PlanPills pick={pick} /> : null}
+    <View style={{ marginTop: 8, flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
+      <Txt v="sub" tone="fg2">
+        {country ? `Tick each one. Prices for ${country.flag} ${country.code === 'GB' ? 'UK' : country.code} · ` : 'Tick each one. No local prices here · '}
+      </Txt>
+      <TextLink label={country ? 'Change' : 'Choose'} a11y={country ? `Prices for ${country.name}. Change country` : 'Choose a country for prices'} onPress={onChange} />
     </View>
   );
 }
 
-/** Hook for the free screenshot import (DECISIONS #16). Routes to a placeholder for now. */
-function ImportLink() {
-  const p = usePalette();
+/** The bar above the button: "6 picked · $96.45 a month". */
+function PickBar({ list, onSkip }: { list: Picked[]; onSkip: () => void }) {
+  const money = useMoney();
+  const home = useCountry()?.currency;
+  const n = list.length;
+  const unpriced = list.filter((x) => !isPriced(x)).length;
+  const totals = totalsFor(list, home);
+  const spoken = `${n} picked${totals.length ? `, ${totals.map((t) => money(t.monthlyMinor, t.currency)).join(' plus ')} a month` : ''}${unpriced ? `, ${unpriced} without a price yet` : ''}`;
   return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel="Import from a screenshot"
-      onPress={() => router.push('/onboarding/import')}
-      style={({ pressed }) => ({ minHeight: 52, flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 4, opacity: pressed ? 0.6 : 1 })}
-    >
-      <Txt v="label" tone="fg">
-        Import from a screenshot
+    <View accessible accessibilityLabel={spoken} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', minHeight: 24, marginBottom: 12, gap: 12 }}>
+      <Txt v="label">
+        {n === 0 ? 'Tick what you pay for' : `${n} picked`}
+        {unpriced ? <Txt v="sub" tone="mute">{` · ${unpriced} need${unpriced === 1 ? 's' : ''} a price`}</Txt> : null}
       </Txt>
-      <ChevronRight color={p.fg} size={14} />
-    </Pressable>
-  );
-}
-
-/** "Prices for 🇬🇧 UK · Change" */
-function CountryLine({ onChange }: { onChange: () => void }) {
-  const country = useCountry();
-  return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={country ? `Prices for ${country.name}. Change` : 'No local prices for your region. Choose a country'}
-      onPress={onChange}
-      hitSlop={{ top: 8, bottom: 8 }}
-      style={({ pressed }) => ({ marginTop: 6, minHeight: 28, flexDirection: 'row', alignItems: 'center', opacity: pressed ? 0.6 : 1 })}
-    >
-      <Txt v="body" tone="fg2" style={{ fontSize: 14 }}>
-        {country ? `Prices for ${country.flag} ${country.name} · ` : 'No local prices for your region · '}
-        <Txt v="body" style={{ fontSize: 14, fontFamily: F.semi, textDecorationLine: 'underline' }}>
-          {country ? 'Change' : 'Choose'}
+      {totals.length ? (
+        <Txt v="label" num numberOfLines={1} style={{ flexShrink: 1, fontFamily: F.medium }}>
+          <Txt v="moneyS" num>
+            {money(totals[0].monthlyMinor, totals[0].currency)}
+          </Txt>
+          {totals.length > 1 ? ` + ${totals.slice(1).map((t) => money(t.monthlyMinor, t.currency)).join(' + ')}` : ''}
+          {' a month'}
         </Txt>
-      </Txt>
-    </Pressable>
+      ) : n === 0 ? (
+        <LinkButton label="Skip for now" onPress={onSkip} />
+      ) : null}
+    </View>
   );
 }
 
-function List() {
+export default function Services() {
   const p = usePalette();
-  const { picked, toggleService, country, setCountry, setPrice } = useOnboarding();
+  const f = useFrame();
+  const list = usePickedList();
+  const { picked, toggleService, country, setCountry, setPrice, setPlan } = useOnboarding();
   const [filter, setFilter] = useState<Filter>('Popular');
   const [query, setQuery] = useState('');
   const [countryOpen, setCountryOpen] = useState(false);
-  const [priceFor, setPriceFor] = useState<string | null>(null);
-  const [priceOpen, setPriceOpen] = useState(false);
+  const [editing, setEditing] = useState<string | null>(null);
+  const [sheet, setSheet] = useState<'plan' | 'price' | null>(null);
+  const [footerH, setFooterH] = useState(140);
 
   const data = useMemo(() => {
     const here = SERVICES.filter((s) => availableIn(s, country));
@@ -185,82 +171,133 @@ function List() {
     return filter === 'Popular' ? popularIn(country) : here.filter((s) => s.category === filter);
   }, [filter, query, country]);
   const total = SERVICES.filter((s) => availableIn(s, country)).length;
+  const editPick = editing ? (picked[editing] ?? null) : null;
+  const n = list.length;
 
   return (
-    <>
-      <StepHeader step={1} />
-      <Txt v="title" accessibilityRole="header" style={{ marginTop: 12 }}>
-        What do you pay for?
-      </Txt>
-      <CountryLine onChange={() => setCountryOpen(true)} />
-      <View
-        style={{
-          marginTop: 10,
-          height: 46,
-          borderRadius: 14,
-          backgroundColor: p.chipBg,
-          borderWidth: 1.5,
-          borderColor: p.chipBorder,
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: 10,
-          paddingHorizontal: 14,
-        }}
-      >
-        <Search color={p.mute} />
-        <TextInput
-          value={query}
-          onChangeText={setQuery}
-          placeholder={`Search ${total} services`}
-          placeholderTextColor={p.mute}
-          accessibilityLabel={`Search ${total} services`}
-          returnKeyType="search"
-          autoCorrect={false}
-          style={{ flex: 1, minWidth: 0, height: 44, fontFamily: F.regular, fontSize: 16.5, color: p.fg, outlineStyle: 'none' } as object}
-        />
-      </View>
-      {query.trim() ? null : (
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={{ marginTop: 12, marginRight: -EDGE, flexGrow: 0 }}
-          contentContainerStyle={{ gap: 8, paddingRight: EDGE, paddingVertical: 4 }}
+    <OnbRoot surface="cream">
+      <View style={{ flex: 1, paddingTop: f.top, paddingHorizontal: f.edge }}>
+        <StepHeader step={1} />
+        <Txt v="title" accessibilityRole="header" style={{ marginTop: 16 }}>
+          {`What do you pay${NB}for?`}
+        </Txt>
+        <CountryLine onChange={() => setCountryOpen(true)} />
+        <View
+          style={{
+            marginTop: 16,
+            height: 48,
+            borderRadius: 14,
+            backgroundColor: p.chipBg,
+            borderWidth: 1.5,
+            borderColor: p.chipBorder,
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 8,
+            paddingLeft: 16,
+          }}
         >
-          {FILTERS.map((f) => (
-            <Chip key={f} label={f} selected={filter === f} onPress={() => setFilter(f)} />
-          ))}
-        </ScrollView>
-      )}
-      <View style={{ flex: 1, marginTop: 4 }}>
+          <Search color={p.mute} />
+          <TextInput
+            value={query}
+            onChangeText={setQuery}
+            placeholder={`Search ${total} services`}
+            placeholderTextColor={p.mute}
+            accessibilityLabel={`Search ${total} services`}
+            returnKeyType="search"
+            autoCorrect={false}
+            clearButtonMode="while-editing"
+            style={{ flex: 1, minWidth: 0, height: 44, paddingRight: 12, fontFamily: F.regular, fontSize: 16, color: p.fg, outlineStyle: 'none' } as object}
+          />
+        </View>
+        {query.trim() ? null : (
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={{ marginTop: 8, marginHorizontal: -f.edge, flexGrow: 0 }}
+            contentContainerStyle={{ gap: 8, paddingHorizontal: f.edge }}
+          >
+            {FILTERS.map((x) => {
+              const on = filter === x;
+              return (
+                <Pressable
+                  key={x}
+                  accessibilityRole="button"
+                  accessibilityLabel={CHIP[x] ?? x}
+                  accessibilityState={{ selected: on }}
+                  onPress={() => {
+                    if (!on) haptic.select();
+                    setFilter(x);
+                  }}
+                  style={({ pressed }) => ({ height: 44, justifyContent: 'center', opacity: pressed ? 0.75 : 1 })}
+                >
+                  <View
+                    style={{
+                      height: 36,
+                      paddingHorizontal: 16,
+                      borderRadius: radius.chip,
+                      justifyContent: 'center',
+                      backgroundColor: on ? p.chipOnBg : p.chipBg,
+                      borderWidth: on ? 0 : 1.5,
+                      borderColor: p.chipBorder,
+                    }}
+                  >
+                    <Txt v="label" color={on ? p.chipOnFg : p.fg} maxFontSizeMultiplier={1.3}>
+                      {CHIP[x] ?? x}
+                    </Txt>
+                  </View>
+                </Pressable>
+              );
+            })}
+          </ScrollView>
+        )}
         <FlatList
+          style={{ flex: 1, marginTop: 4 }}
           data={data}
           keyExtractor={(s) => s.id}
           keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}
-          ItemSeparatorComponent={() => <RowDivider inset={52} />}
-          contentContainerStyle={{ paddingBottom: 20 }}
-          renderItem={({ item }) => (
+          contentContainerStyle={{ paddingBottom: footerH + 8 }}
+          renderItem={({ item, index }) => (
             <Row
               s={item}
+              first={index === 0}
               pick={picked[item.id]}
               onToggle={() => {
                 haptic.select();
                 toggleService(item);
               }}
-              onAddPrice={() => {
-                setPriceFor(item.id);
-                setPriceOpen(true);
+              onChange={(kind) => {
+                setEditing(item.id);
+                setSheet(kind);
               }}
             />
           )}
           ListEmptyComponent={
             <Txt v="leadS" tone="fg2" style={{ marginTop: 16 }}>
-              No match for “{query.trim()}”. You can add anything by hand from Home later.
+              {`No match for “${query.trim()}”. You can add anything by hand from your list later.`}
             </Txt>
           }
-          ListFooterComponent={<ImportLink />}
         />
-        <LinearGradient pointerEvents="none" colors={[p.bg + '00', p.bg]} style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 26 }} />
+      </View>
+
+      <View
+        onLayout={(e) => setFooterH(e.nativeEvent.layout.height)}
+        style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          paddingTop: 12,
+          paddingHorizontal: f.edge,
+          paddingBottom: f.bottom,
+          backgroundColor: p.bg,
+          borderTopWidth: 1,
+          borderTopColor: p.rule,
+        }}
+      >
+        <PickBar list={list} onSkip={() => router.push('/onboarding/reminders')} />
+        <Button label="See my total" disabled={n === 0} onPress={() => router.push('/onboarding/total')} />
       </View>
 
       <CountrySheet
@@ -272,81 +309,22 @@ function List() {
           setCountryOpen(false);
         }}
       />
+      <PlanSheet
+        pick={editPick}
+        visible={sheet === 'plan'}
+        onClose={() => setSheet(null)}
+        onPick={(planId) => editing && setPlan(editing, planId)}
+        onOwnPrice={() => setSheet('price')}
+      />
       <PriceSheet
-        sub={priceFor ? (picked[priceFor] ?? null) : null}
-        visible={priceOpen}
-        onClose={() => setPriceOpen(false)}
+        sub={editPick}
+        visible={sheet === 'price'}
+        onClose={() => setSheet(null)}
         onSave={(amount, currency, cycle) => {
-          if (priceFor) setPrice(priceFor, amount, currency, cycle);
-          setPriceOpen(false);
+          if (editing) setPrice(editing, amount, currency, cycle);
+          setSheet(null);
         }}
       />
-    </>
-  );
-}
-
-export default function Services() {
-  const list = usePickedList();
-  const money = useMoney();
-  const home = useCountry()?.currency;
-  const n = list.length;
-  const unpriced = list.filter((x) => !isPriced(x)).length;
-  const monthly = totalsFor(list, home).map((t) => money(t.monthlyMinor, t.currency));
-
-  return (
-    <Screen
-      footer={
-        <>
-          {n > 0 ? (
-            <View
-              accessible
-              accessibilityLabel={`${n} picked${monthly.length ? `, ${monthly.join(' plus ')} a month` : ''}${unpriced ? `, ${unpriced} without a price yet` : ''}`}
-              style={{
-                backgroundColor: brand.sunflower,
-                borderRadius: 18,
-                minHeight: 56,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                paddingHorizontal: 18,
-                paddingVertical: 6,
-                marginBottom: 6,
-                gap: 12,
-              }}
-            >
-              <View>
-                <Txt v="label" color={brand.ink}>
-                  {n} picked
-                </Txt>
-                {unpriced ? (
-                  <Txt v="sub" color={brand.ink} style={{ fontSize: 12.5 }}>
-                    {unpriced} need{unpriced === 1 ? 's' : ''} a price
-                  </Txt>
-                ) : null}
-              </View>
-              {monthly.length ? (
-                <View style={{ alignItems: 'flex-end', flexShrink: 1 }}>
-                  <Txt v="label" color={brand.ink} num numberOfLines={1}>
-                    <Txt v="moneyL" color={brand.ink} num>
-                      {monthly[0]}
-                    </Txt>
-                    {'  a month'}
-                  </Txt>
-                  {monthly.length > 1 ? (
-                    <Txt v="sub" color={brand.ink} num numberOfLines={1}>
-                      + {monthly.slice(1).join(' + ')} a month
-                    </Txt>
-                  ) : null}
-                </View>
-              ) : null}
-            </View>
-          ) : null}
-          <Button label="See my total" disabled={n === 0} onPress={() => router.push('/onboarding/total')} />
-          {n === 0 ? <Button kind="text" label="Skip for now" onPress={() => router.push('/onboarding/reminders')} /> : null}
-        </>
-      }
-    >
-      <List />
-    </Screen>
+    </OnbRoot>
   );
 }

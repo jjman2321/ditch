@@ -1,141 +1,114 @@
-// 05 · Reminders pre-ask. A lock screen with the user's own next heads-ups
-// dropping in one by one, then the real iOS permission prompt.
+// 5 · Reminders pre-ask (design/v12 render 05). After the dates, so it can
+// show the user's own first reminders, worded like the real ones. "Turn on
+// reminders" shows the real iOS prompt; "Maybe later" doesn't ask.
 
-import * as Notifications from 'expo-notifications';
 import { router } from 'expo-router';
-import { useMemo } from 'react';
-import { Platform, View } from 'react-native';
-import Animated, { FadeInDown } from 'react-native-reanimated';
+import { View } from 'react-native';
 
-import { SERVICE_BY_ID } from '@/catalog/services';
-import { stillUsingIt } from '@/domain/copy';
-import { addDays, longDate, toDateOnly, weekdayName, weekdayShort } from '@/domain/dates';
 import { catalogPrice } from '@/catalog/prices';
-import { chargeOf, useMoney, useOnboarding, usePickedList, usePickPrice, type Picked } from '@/state/onboarding';
-import { Button, Camera, Duck, F, Flashlight, ForceLightContext, Lock, NotificationPreview, Screen, StepHeader, Txt, brand } from '@/ui/sunflower';
+import { addDays, weekdayDate, weekdayName } from '@/domain/dates';
+import { FitScroll, OnbRoot } from '@/onboarding/Parts';
+import { useFirstReminders } from '@/onboarding/useFirstReminders';
+import { requestNotifPermission } from '@/services/notifications';
+import { onboardingToday, useMoney, useOnboarding, usePickedList } from '@/state/onboarding';
+import { Bell, Button, ForceLightContext, NotificationPreview, StepHeader, Txt, brand, useFrame, usePalette } from '@/ui/sunflower';
 
-/** The example: the soonest real date (2+ days out), else the soonest guess. */
-function useExample() {
-  const list = usePickedList();
-  const today = toDateOnly();
-  const priceOf = usePickPrice();
-  const money = useMoney();
-  const { country } = useOnboarding();
-  return useMemo(() => {
-    const ok = list.filter((x) => chargeOf(x, today) >= addDays(today, 2));
-    const soonest = (a: Picked, b: Picked) => (chargeOf(a, today) < chargeOf(b, today) ? -1 : 1);
-    const pick = ok.filter((x) => x.dateSource !== 'guess').sort(soonest)[0] ?? [...ok].sort(soonest)[0];
-    if (pick) {
-      return {
-        name: pick.name,
-        price: priceOf(pick, 'amount'),
-        charge: chargeOf(pick, today),
-        guess: pick.dateSource === 'guess',
-        nudge: stillUsingIt(pick.category),
-      };
-    }
-    const n = SERVICE_BY_ID['netflix'];
-    const local = catalogPrice('netflix', country);
-    return { name: n.name, price: local ? money(local.amountMinor, local.currency) : null, charge: addDays(today, 5), guess: false, nudge: stillUsingIt(n.category) };
-  }, [list, today, priceOf, money, country]);
-}
+const NB = ' ';
+
+/** Keep the last two words together, so a line never ends on one word. */
+const noOrphan = (s: string) => s.replace(/ (\S+)$/, `${NB}$1`);
 
 export default function Reminders() {
-  const { setNotifications } = useOnboarding();
+  const p = usePalette();
+  const f = useFrame({ colH: 800 });
+  const { setNotifications, country } = useOnboarding();
   const n = usePickedList().length;
-  const ex = useExample();
-  const dayBefore = addDays(ex.charge, -1);
-  const threeBefore = addDays(ex.charge, -3);
-  const around = ex.guess ? 'around ' : '';
+  const money = useMoney();
+  const { reminders } = useFirstReminders(f.small ? 1 : 2);
+  const today = onboardingToday();
+
+  // Nothing picked yet: the Welcome example instead.
+  const shown = reminders.length
+    ? reminders.map((r) => ({ key: r.id, date: weekdayDate(r.reminder), body: r.body }))
+    : (() => {
+        const local = catalogPrice('netflix', country);
+        const charge = addDays(today, 9);
+        const price = local ? ` ${money(local.amountMinor, local.currency)}.` : '';
+        return [{ key: 'example', date: weekdayDate(addDays(charge, -3)), body: `Netflix renews ${weekdayName(charge)}.${price} Still watching?` }];
+      })();
 
   const go = () => router.push(n > 0 ? '/paywall' : '/onboarding/done');
   const turnOn = async () => {
-    // The web preview can't show the iOS prompt; it carries on as if allowed.
-    if (Platform.OS === 'web') {
-      setNotifications('granted');
-      return go();
-    }
-    try {
-      const r = await Notifications.requestPermissionsAsync({ ios: { allowAlert: true, allowSound: true, allowBadge: false } });
-      setNotifications(r.granted ? 'granted' : 'denied');
-    } catch {
-      setNotifications('denied');
-    }
+    const status = await requestNotifPermission();
+    setNotifications(status === 'granted' || status === 'quiet' ? 'granted' : 'denied');
     go();
   };
 
   return (
-    <Screen
-      scroll
-      footer={
-        <>
-          <Button label="Turn on reminders" hint="Shows the iPhone permission prompt" onPress={turnOn} />
-          <Button
-            kind="text"
-            label="Maybe later"
-            onPress={() => {
-              setNotifications('later');
-              go();
-            }}
-          />
-        </>
-      }
-    >
-      <StepHeader step={4} />
-      <Txt v="title" accessibilityRole="header" style={{ marginTop: 12 }}>
-        A heads-up before every charge.
-      </Txt>
-      <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
-        3 days and 1 day before, at 9:00 AM. That’s all we’ll ever send.
-      </Txt>
+    <OnbRoot surface="cream">
+      <FitScroll style={{ paddingTop: f.top, paddingHorizontal: f.edge, paddingBottom: f.bottom }}>
+        <StepHeader step={4} />
+        <Txt v="title" accessibilityRole="header" style={{ marginTop: 16 }}>
+          {`Get a reminder before each${NB}charge.`}
+        </Txt>
+        <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
+          {'3 days and 1 day before, at 9:00 AM.\nOnly about your subscriptions.'}
+        </Txt>
 
-      {/* An illustration of the lock screen, always in the sunflower look. */}
-      <ForceLightContext.Provider value>
-      <View
-        accessible
-        accessibilityLabel={`Example: on ${longDate(dayBefore)} at 9 AM, Ditch says ${ex.name} renews ${around}tomorrow.`}
-        style={{
-          marginTop: 20,
-          marginBottom: 12,
-          flex: 1,
-          minHeight: 360,
-          borderRadius: 34,
-          backgroundColor: brand.sunflower,
-          overflow: 'hidden',
-          paddingTop: 20,
-          paddingHorizontal: 14,
-          borderWidth: 1,
-          borderColor: 'rgba(0,0,0,0.05)',
-        }}
-      >
-        <View style={{ alignItems: 'center' }} importantForAccessibility="no-hide-descendants">
-          <Lock color={brand.ink} />
-          <Txt v="label" color={brand.ink} style={{ marginTop: 6 }} maxFontSizeMultiplier={1.2}>
-            {longDate(dayBefore)}
-          </Txt>
-          <Txt v="label" color={brand.ink} num style={{ fontFamily: F.wideHeavy, fontSize: 72, lineHeight: 76, letterSpacing: -2 }} maxFontSizeMultiplier={1}>
-            9:00
-          </Txt>
-        </View>
-        <View importantForAccessibility="no-hide-descendants" style={{ zIndex: 2 }}>
-          <Animated.View entering={FadeInDown.delay(900).springify().damping(18)} style={{ marginTop: 14 }}>
-            <NotificationPreview time="now" message={`${ex.name} renews ${around}tomorrow.${ex.price ? ` ${ex.price}.` : ''} Last call if you’re done with it.`} />
-          </Animated.View>
-          <Animated.View entering={FadeInDown.delay(350).springify().damping(18)} style={{ marginTop: 8 }}>
-            <NotificationPreview faded time={`${weekdayShort(threeBefore)} 9:00 AM`} message={`${ex.name} renews ${around}${weekdayName(ex.charge)}.${ex.price ? ` ${ex.price}.` : ''} ${ex.nudge}`} />
-          </Animated.View>
-        </View>
-        <View pointerEvents="none" style={{ position: 'absolute', left: 0, right: 0, bottom: -4, alignItems: 'center' }}>
-          <Duck width={150} bottom={0} delay={1300} style={{ position: 'relative' }} />
-        </View>
-        <View style={{ position: 'absolute', left: 16, bottom: 16, width: 44, height: 44, borderRadius: 22, backgroundColor: 'rgba(22,20,15,0.14)', alignItems: 'center', justifyContent: 'center' }}>
-          <Flashlight color={brand.ink} />
-        </View>
-        <View style={{ position: 'absolute', right: 16, bottom: 16, width: 44, height: 44, borderRadius: 22, backgroundColor: 'rgba(22,20,15,0.14)', alignItems: 'center', justifyContent: 'center' }}>
-          <Camera color={brand.ink} />
-        </View>
-      </View>
-      </ForceLightContext.Provider>
-    </Screen>
+        {/* Always the sunflower panel, in dark mode too: it's a picture of the lock screen. */}
+        <ForceLightContext.Provider value>
+          <View
+            accessible
+            accessibilityLabel={`Your first reminders: ${shown.map((s) => `${s.date}, 9 AM: ${s.body}`).join('. ')}`}
+            style={{
+              marginTop: 24,
+              flex: 1,
+              minHeight: f.small ? 200 : 320,
+              borderRadius: 28,
+              backgroundColor: brand.sunflower,
+              paddingVertical: f.small ? 16 : 24,
+              paddingHorizontal: 12,
+              justifyContent: 'center',
+              gap: f.small ? 12 : 16,
+            }}
+          >
+            <Txt v="label" color={brand.ink} style={{ marginLeft: 4 }} importantForAccessibility="no">
+              Your first reminders
+            </Txt>
+            {shown.map((s) => (
+              <View key={s.key} importantForAccessibility="no-hide-descendants">
+                <Txt v="eyebrow" num color="#4B4220" style={{ marginLeft: 4, marginBottom: 8 }}>
+                  {s.date}
+                </Txt>
+                <NotificationPreview time="9:00 AM" message={noOrphan(s.body)} />
+              </View>
+            ))}
+          </View>
+        </ForceLightContext.Provider>
+
+        <Txt v="sub" tone="fg2" center style={{ marginTop: 16 }}>
+          7 in 10 people have forgotten to cancel a free trial.
+        </Txt>
+        <Button
+          label="Turn on reminders"
+          hint="Shows the iPhone permission prompt"
+          left={<Bell color={p.ctaFg} size={20} />}
+          onPress={turnOn}
+          style={{ marginTop: 16 }}
+        />
+        <Txt v="sub" tone="mute" center style={{ marginTop: 8 }}>
+          Tap “Allow” on the next screen.
+        </Txt>
+        <Button
+          kind="text"
+          label="Maybe later"
+          onPress={() => {
+            setNotifications('later');
+            go();
+          }}
+          style={{ marginTop: 4 }}
+        />
+      </FitScroll>
+    </OnbRoot>
   );
 }

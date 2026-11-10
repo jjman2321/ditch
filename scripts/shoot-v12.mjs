@@ -178,8 +178,8 @@ for (const [devName, dev] of Object.entries(DEVICES)) {
       await page.evaluate((p) => window.__ditchNavigate?.(p), s.path);
       await page.waitForTimeout(1500);
       for (const step of s.steps ?? []) await step(page);
-      const file = `${dev === DEVICES.i12 ? '' : `${devName}-`}${dark ? 'd' : ''}${s.name}.png`;
-      await page.screenshot({ path: join(out, file) });
+      const file = `${dev === DEVICES.i12 ? '' : `${devName}-`}${dark ? 'd' : ''}${s.name}.jpg`;
+      await page.screenshot({ path: join(out, file), type: 'jpeg', quality: 84 });
       const a = await audit(page, dev);
       const scrolls = s.noScroll && a.overflow.some((o) => o > 0);
       const line = `${file}: ${a.issues.length ? a.issues.join(' | ') : 'ok'}${scrolls ? ` | SCROLLS by ${Math.max(...a.overflow)}pt` : ''}`;

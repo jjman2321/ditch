@@ -120,6 +120,21 @@ Pull first: `git pull`, `npm install`, then `npx expo start --tunnel ngrok --cle
 - [ ] Hold a subscription on Home: the hint says "$X a year you won't pay once you cancel" (no "Saves").
 - [ ] Empty Home says "Ditch reminds you before each charge." Calendar says "Reminder", never "heads-up".
 
+## 1c. Fixes from your third recording (Nov 10)
+The blue round gear on the right edge is Expo Go's own button. Ignore it; it isn't in the real app.
+- [ ] What do you pay for: an unticked Netflix says "Standard · $19.99/mo". Tick it: only the tick and "Change" appear.
+- [ ] It says **ChatGPT** (not ChatGPT Plus); Change shows Go, Plus, Pro.
+- [ ] Your total: the big yearly number never touches the right edge, during the roll or after. Try with ChatGPT Pro ($200) ticked.
+- [ ] Tap **Show all**: the list grows and **Set up reminders** stays on screen.
+- [ ] The line under the total says "Most people think it's way less…". The line above the button says "Not using one? Ditch it before it renews."
+- [ ] Reminders screen: your two reminders slide in one after the other. The fact says "7 in 10 people have paid for a forgotten free trial."
+- [ ] Paywall: no empty gap under Lifetime; the title sits a bit lower.
+- [ ] Home: all bells sit in one straight column and all prices line up, including a $200.00 one.
+- [ ] Ditch something with no price, tap "I already cancelled", open the Ditched tab: it says "1 cancelled. Nice." (not "Nothing cancelled yet").
+- [ ] Settings: the Ditch Pro row shows the "ditch Pro" logo.
+- [ ] + Add a subscription → type a price: a **Done** bar sits above the number keyboard and hides it. Dragging the form down also hides it.
+- [ ] Turn on "It's a free trial" on a new sub with a guessed date: it says the trial ends about a week from today (not months away).
+
 ## 1b. Prices by country (built Nov 9)
 Prices come from the iPhone's Region (Settings → General → Language & Region → Region), not the language.
 - [ ] Region **United States**. On "What do you pay for?" the line under the title says "Tick each one. Prices for 🇺🇸 US · Change". Unticked Netflix shows "from $8.99/mo".

@@ -83,8 +83,8 @@ export default function Total() {
   const lh = Math.round((size * 0.8) / 4) * 4;
   const heroStyle = { fontFamily: F.display, fontSize: size, letterSpacing: -0.045 * size, color: p.money };
 
-  // How many rows fit before "N more · Show all": 3 on phones (4 on Pro Max), 2 on SE, all on iPad.
-  const shown = showAll || f.tablet ? sorted.length : f.small ? 2 : f.height >= 900 ? 4 : 3;
+  // How many rows fit before "N more · Show all": 4 on iPhone 12 and up, 3 on smaller, 2 on SE, all on iPad.
+  const shown = showAll || f.tablet ? sorted.length : f.small ? 2 : f.height >= 800 ? 4 : 3;
   const rows = sorted.slice(0, shown);
   const rest = sorted.slice(shown);
   const rest1 = rest.length === 1 ? rest : [];

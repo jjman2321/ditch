@@ -8,6 +8,7 @@ import { ScrollView, View } from 'react-native';
 
 import { homeGroups, homeTotals, isPending, isPricedSub, isProTrial, listedUserSubs, remindedIds, undatedSubs, yearlyOfSub } from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
+import { AddDatesSheet } from '@/home/AddDatesSheet';
 import { EmptyHome, NoDateRow, OffBanner, TotalCard, openPhoneSettings } from '@/home/HomeParts';
 import { PriceColumnMeasure, SubRow, type BellState } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
@@ -20,6 +21,7 @@ export default function Home() {
   const editor = useEditor();
   const { subs, today, pro, notif, settings } = app;
   const [holding, setHolding] = useState<string | null>(null);
+  const [datesOpen, setDatesOpen] = useState(false);
 
   const groups = useMemo(() => homeGroups(subs, today), [subs, today]);
   const totals = useMemo(() => homeTotals(subs, today, settings.currency), [subs, today, settings.currency]);
@@ -87,7 +89,7 @@ export default function Home() {
               </View>
               {undated.length && !blocked ? (
                 <View style={{ marginTop: 10 }}>
-                  <NoDateRow count={undated.length} onPress={() => editor.openEdit(undated[0].id)} />
+                  <NoDateRow count={undated.length} onPress={() => setDatesOpen(true)} />
                 </View>
               ) : null}
 
@@ -120,6 +122,7 @@ export default function Home() {
           )}
         </ScrollView>
       </View>
+      <AddDatesSheet visible={datesOpen} onClose={() => setDatesOpen(false)} />
     </SurfaceContext.Provider>
   );
 }

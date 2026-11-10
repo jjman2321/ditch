@@ -137,6 +137,9 @@ Pull first: `git pull`, `npm install`, then `npx expo start --tunnel ngrok --cle
 - [ ] Settings → Which subscriptions: an undated sub shows "No date yet" and "Add date" instead of a bell.
 - [ ] Ditch an undated sub: it says "Cancel before it renews" and there's no last-check reminder.
 
+- [ ] Tap **Add dates ›** on Home: one sheet lists every sub with no date. Pick a day for one: it's saved, the list shrinks, and it moves up into This week / Next week / Later. When the last one is done the sheet closes.
+- [ ] With room in the free 3, a newly dated sub gets a yellow bell. When the 3 are full, it stays grey.
+
 **Add a subscription (+)**
 - [ ] The picker opens: search, category chips, ticks, "Already on your list" ones greyed out. Tick two → **Add 2**. They land in No date yet.
 - [ ] Type "Gym": "Add 'Gym' as your own" opens the full form with the name filled in. The date field says **Add date** and "No date, no reminder…". Remind me says "Starts once it has a date".

@@ -103,7 +103,8 @@ function DayGrid({ days, value, onPick }: { days: number; value: number | null; 
   );
 }
 
-function Body({
+/** The sheet's content on its own, so other sheets can show it as a step. */
+export function DayBody({
   pick,
   onDone,
   onNotSure,
@@ -295,7 +296,7 @@ export function DaySheet({
 }) {
   return (
     <Sheet visible={visible && !!pick} onClose={onClose} fit gap={0} maxContent={420} label={pick ? `${pick.name} charge day` : 'Charge day'}>
-      {pick ? <Body key={pick.id} pick={pick} onDone={onDone} onNotSure={onNotSure} onClose={onClose} leads={leads} time={time} /> : null}
+      {pick ? <DayBody key={pick.id} pick={pick} onDone={onDone} onNotSure={onNotSure} onClose={onClose} leads={leads} time={time} /> : null}
     </Sheet>
   );
 }

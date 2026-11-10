@@ -60,7 +60,7 @@ export function EditorProvider({ children }: { children: ReactNode }) {
 }
 
 /** The date sheet works on onboarding's Picked shape; a sub maps onto it 1:1. */
-function asPick(s: Sub): Picked {
+export function asPick(s: Sub): Picked {
   const svc = s.catalogId ? SERVICE_BY_ID[s.catalogId] : undefined;
   return {
     id: s.catalogId ?? s.id,

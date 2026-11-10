@@ -214,8 +214,9 @@ export default function Paywall() {
           <Txt v="title" color={ink} accessibilityRole="header" accessibilityLabel={spokenHead} style={f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null}>
             {head}
           </Txt>
-          {/* Nudged left so his bill points at the Pro column, never over the title. */}
-          <Duck width={duckW} right={f.edge + (f.small ? 20 : f.tablet ? 48 : 36)} bottom={overlap - 12} />
+          {/* Nudged left so his bill points at the Pro column, never over the title. Only the base of
+              his neck tucks behind the table, so the whole bill shows on every size. */}
+          <Duck width={duckW} right={f.edge + (f.small ? 20 : f.tablet ? 48 : 36)} bottom={overlap - 4} />
         </View>
 
         <Compare rows={rows} width={f.content} overlap={overlap} />

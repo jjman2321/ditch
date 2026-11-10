@@ -77,7 +77,8 @@ const SHOTS = [
       },
     ],
   },
-  { name: '05-reminders', q: 'ob=v12', path: '/onboarding/reminders', noScroll: true },
+  // Wait for both reminders to arrive and the duck to rise.
+  { name: '05-reminders', q: 'ob=v12', path: '/onboarding/reminders', noScroll: true, steps: [async (page) => page.waitForTimeout(3200)] },
   { name: '06-paywall', q: 'ob=v12', path: '/paywall', noScroll: true },
   { name: '06b-paywall-lifetime', q: 'ob=v12', path: '/paywall', steps: [click('Lifetime, $49.99, pay once')], noScroll: true },
   { name: '06c-paywall-monthly', q: 'ob=v12', path: '/paywall', steps: [click('Monthly, $4.99 a month, no free trial')], noScroll: true },

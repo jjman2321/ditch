@@ -149,7 +149,7 @@ export function EmptyHome({ country, onAdd }: { country: string | null; onAdd: (
             Nothing to watch yet.
           </Txt>
           <Txt v="leadS" center color={p.dark ? p.fg2 : '#4B4220'} style={{ marginTop: 10 }}>
-            Add what you pay for. Ditch gives you a heads-up before each charge.
+            Add what you pay for. Ditch reminds you before each charge.
           </Txt>
           <Button
             label="Add a subscription"

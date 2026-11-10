@@ -216,14 +216,14 @@ export function DateBody({ sub, onSave, onGuess }: { sub: Picked; onSave: (ancho
               <Txt v="body" style={{ flex: 1, fontSize: 14 }}>
                 {heads.length === 2 ? (
                   <>
-                    Heads-ups <B>{weekdayDate(heads[0])}</B> and <B>{weekdayDate(heads[1])}</B>
+                    Reminders <B>{weekdayDate(heads[0])}</B> and <B>{weekdayDate(heads[1])}</B>
                   </>
                 ) : heads.length === 1 ? (
                   <>
-                    Heads-up <B>{weekdayDate(heads[0])}</B>
+                    Reminder <B>{weekdayDate(heads[0])}</B>
                   </>
                 ) : (
-                  'Too close for a heads-up this time. The next one gets two.'
+                  'Too close for a reminder this time. The next one gets two.'
                 )}
               </Txt>
             </View>

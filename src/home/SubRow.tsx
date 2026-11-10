@@ -244,11 +244,11 @@ export function SubRow({
               Let go to keep it.
               {yearly ? (
                 <>
-                  {'\n'}Saves{' '}
+                  {'\n'}
                   <Txt v="body" color={p.dark ? p.fg : brand.ink} num style={{ fontFamily: F.bold, fontSize: 15 }}>
                     {yearly} a year
                   </Txt>{' '}
-                  once you cancel.
+                  you won’t pay once you cancel.
                 </>
               ) : null}
             </Txt>

@@ -191,7 +191,7 @@ function DevTools() {
   const inOneMinute = () => {
     const d = new Date(Date.now() + 60_000);
     app.updateSettings({ reminderTime: formatTime(d.getHours(), d.getMinutes()) });
-    tell('Reminder time moved', `Reminders now land at ${shortTimeLabel(formatTime(d.getHours(), d.getMinutes()))}. Any heads-up due today will fire then. Set it back to 9:00 AM when you’re done.`);
+    tell('Reminder time moved', `Reminders now land at ${shortTimeLabel(formatTime(d.getHours(), d.getMinutes()))}. Any reminder due today will go off then. Set it back to 9:00 AM when you’re done.`);
   };
   return (
     <Group header="Test build only" note={`Planned: ${plan.length} · waiting on this iPhone: ${pending ?? '…'}`}>

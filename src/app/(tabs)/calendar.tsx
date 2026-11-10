@@ -135,7 +135,7 @@ export default function Calendar() {
         ) : (
           <Card style={{ paddingHorizontal: 16, paddingVertical: 16 }}>
             <Txt v="body" tone="mute">
-              {sel?.headsUp ? `A heads-up lands at ${timeLabel(settings.reminderTime)} today. Nothing charges.` : 'Nothing charges this day.'}
+              {sel?.headsUp ? `A reminder goes off at ${timeLabel(settings.reminderTime)} today. Nothing charges.` : 'Nothing charges this day.'}
             </Txt>
           </Card>
         )}
@@ -151,7 +151,7 @@ function DayCell({ day, w, selected, onPress }: { day: CalendarDay; w: number; s
   const more = day.charges.length - 1;
   const label = `${WEEKDAY_LONG[weekdayOf(day.date)]}, ${MONTH_LONG[parseDate(day.date).m - 1]} ${d}${day.today ? ', today' : ''}${
     day.charges.length ? `, ${day.charges.map((c) => `${c.sub.name}${c.guess ? ', guessed date' : ''}`).join(', ')}` : ''
-  }${day.headsUp ? ', heads-up day' : ''}`;
+  }${day.headsUp ? ', reminder day' : ''}`;
   const numColor = selected ? brand.ink : day.past ? p.mute : p.cardFg;
   return (
     <Pressable
@@ -205,11 +205,11 @@ function DayCell({ day, w, selected, onPress }: { day: CalendarDay; w: number; s
 function Legend() {
   const p = usePalette();
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 16, marginTop: 14, flexWrap: 'wrap' }} accessible accessibilityLabel="Key: dot means a heads-up, dashed outline means a guessed date, filled circle means today">
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 16, marginTop: 14, flexWrap: 'wrap' }} accessible accessibilityLabel="Key: dot means a reminder, dashed outline means a guessed date, filled circle means today">
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
         <View style={{ width: 11, height: 11, borderRadius: 6, backgroundColor: brand.sunflower, borderWidth: p.dark ? 0 : 1.5, borderColor: brand.ink }} />
         <Txt v="body" tone="fg2" style={{ fontSize: 14.5 }}>
-          Heads-up
+          Reminder
         </Txt>
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
@@ -250,7 +250,7 @@ function ChargeRow({
   const s = c.sub;
   const on = (c.reminded || isProTrial(s)) && !c.pending;
   const heads = on ? leads.map((l) => addDays(c.date, -l)).filter((d) => d >= today) : [];
-  const line = c.pending ? 'Ditched. Cancel before it charges.' : !on ? 'No reminder' : blocked ? 'Reminders are off' : `${c.guess ? 'Around this day. ' : ''}Heads-ups at ${timeLabel(time)}`;
+  const line = c.pending ? 'Ditched. Cancel before it charges.' : !on ? 'No reminder' : blocked ? 'Reminders are off' : `${c.guess ? 'Around this day. ' : ''}Reminders at ${timeLabel(time)}`;
   return (
     <Pressable
       accessibilityRole="button"

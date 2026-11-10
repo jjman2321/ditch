@@ -8,7 +8,7 @@ import { TextInput, View } from 'react-native';
 import { priceRow } from '@/catalog/prices';
 import { CYCLE_WORDS, currencyDigits, formatMoney, parseAmountInput, type Cycle } from '@/domain/money';
 import { useCountry, type Picked } from '@/state/onboarding';
-import { Button, F, LogoTile, Segmented, Sheet, Txt, usePalette } from '@/ui/sunflower';
+import { Button, F, KEYBOARD_DONE, KeyboardDone, LogoTile, Segmented, Sheet, Txt, usePalette } from '@/ui/sunflower';
 
 function Body({ sub, onSave }: { sub: Picked; onSave: (amountMinor: number, currency: string, cycle: Cycle) => void }) {
   const p = usePalette();
@@ -69,6 +69,7 @@ function Body({ sub, onSave }: { sub: Picked; onSave: (amountMinor: number, curr
           onChangeText={setText}
           autoFocus
           keyboardType="decimal-pad"
+          inputAccessoryViewID={KEYBOARD_DONE}
           placeholder={hint}
           placeholderTextColor={p.mute}
           accessibilityLabel={`Price in ${currency}`}
@@ -97,6 +98,7 @@ function Body({ sub, onSave }: { sub: Picked; onSave: (amountMinor: number, curr
         disabled={!amount}
         onPress={() => amount && onSave(amount, currency, cycle)}
       />
+      <KeyboardDone />
     </View>
   );
 }

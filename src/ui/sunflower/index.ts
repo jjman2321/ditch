@@ -19,3 +19,4 @@ export * from './Sheet';
 export * from './tokens';
 export * from './type';
 export * from './Wordmark';
+export * from './KeyboardDone';

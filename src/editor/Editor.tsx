@@ -10,7 +10,7 @@ import { AccessibilityInfo, Pressable, ScrollView, TextInput, View } from 'react
 import { catalogPrice, planChoices } from '@/catalog/prices';
 import { SERVICES, SERVICE_BY_ID, availableIn, popularIn, searchServices, type CatalogService } from '@/catalog/services';
 import { guessNextCharge } from '@/domain/charges';
-import { type DateOnly } from '@/domain/dates';
+import { addDays, type DateOnly } from '@/domain/dates';
 import { CYCLE_WORDS, currencyDigits, formatMoney, parseAmountInput, type Cycle } from '@/domain/money';
 import { leadsLabel, shortTimeLabel, effectiveLeads } from '@/domain/settings';
 import { FREE_REMINDERS, chargeOfSub, isActive, isProTrial, makeSub, remindedIds, type Sub } from '@/domain/subs';
@@ -19,7 +19,7 @@ import { DateBody } from '@/onboarding/DateSheet';
 import { useApp, useAppMoney } from '@/state/app';
 import { chooseCycle, choosePlan, newPick, type Picked } from '@/state/picks';
 import { ask } from '@/ui/alert';
-import { Button, Card, ChevronRight, Chip, F, GuessTag, LogoTile, Search, Segmented, Sheet, SunSwitch, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
+import { Button, Card, ChevronRight, Chip, F, GuessTag, KEYBOARD_DONE, KeyboardDone, LogoTile, Search, Segmented, Sheet, SunSwitch, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
 
 type Open = { mode: 'add'; catalogId?: string } | { mode: 'edit'; id: string };
 
@@ -264,7 +264,8 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
 
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView style={{ flex: 1 }} keyboardShouldPersistTaps="handled" automaticallyAdjustKeyboardInsets showsVerticalScrollIndicator={false}>
+      {/* Drag the form down, or tap Done, to put the keyboard away. */}
+      <ScrollView style={{ flex: 1 }} keyboardShouldPersistTaps="handled" keyboardDismissMode="interactive" automaticallyAdjustKeyboardInsets showsVerticalScrollIndicator={false}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
           {draft.catalogId || draft.name || trialEntry ? <SubLogo sub={{ ...draft, name: draft.name || query || '?' }} size={44} /> : <LogoTile id="?" size={44} mono="+" color={brand.sunflower} ink={brand.ink} />}
           <Txt v="heading" accessibilityRole="header" style={{ flex: 1 }} numberOfLines={2}>
@@ -368,6 +369,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                 onChangeText={setAmountText}
                 editable={!trialEntry}
                 keyboardType="decimal-pad"
+                inputAccessoryViewID={KEYBOARD_DONE}
                 placeholder={currencyDigits(currency) ? '0.00' : '0'}
                 placeholderTextColor={p.mute}
                 accessibilityLabel={`Price in ${currency}`}
@@ -433,7 +435,18 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                   <Txt v="label" style={{ flex: 1 }}>
                     It’s a free trial
                   </Txt>
-                  <SunSwitch label="It’s a free trial" value={draft.isTrial} onValueChange={(v) => setDraft({ ...draft, isTrial: v })} />
+                  <SunSwitch
+                    label="It’s a free trial"
+                    value={draft.isTrial}
+                    onValueChange={(v) =>
+                      // A guessed date stays a guess, but a sensible one: most trials last about a week.
+                      setDraft(
+                        draft.dateSource === 'guess'
+                          ? { ...draft, isTrial: v, anchor: v ? addDays(today, 7) : guessNextCharge(draft.catalogId ?? draft.name, draft.cycle, today) }
+                          : { ...draft, isTrial: v },
+                      )
+                    }
+                  />
                 </View>
               )}
               <View style={{ minHeight: 60, flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 8 }}>
@@ -472,6 +485,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
           </>
         )}
       </ScrollView>
+      <KeyboardDone />
       {searching ? null : (
         <View style={{ paddingTop: 10 }}>
           <Button label={isNew ? `Add ${draft.name || query.trim() || 'it'}` : 'Save'} disabled={!canSave} onPress={save} />

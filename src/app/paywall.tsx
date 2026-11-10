@@ -44,10 +44,10 @@ type Row = { label: string; free: Cell; pro: Cell };
 // DECISIONS #26, #27, #30. Only Pro features that work at launch.
 const ROWS: Row[] = [
   { label: 'Subscriptions with reminders', free: '3', pro: 'Unlimited' },
-  { label: 'Choose your reminder times', free: 'no', pro: 'yes' },
-  { label: 'Second nudge if you miss one', free: 'no', pro: 'yes' },
-  { label: `Home & Lock${NB}Screen widget`, free: 'no', pro: 'yes' },
-  { label: 'Import screenshots anytime', free: 'no', pro: 'yes' },
+  { label: 'Pick reminder times', free: 'no', pro: 'yes' },
+  { label: 'Nudge if you miss one', free: 'no', pro: 'yes' },
+  { label: `Lock${NB}Screen widget`, free: 'no', pro: 'yes' },
+  { label: 'Screenshot import', free: 'no', pro: 'yes' },
 ];
 
 const CELL_TEXT = { fontFamily: F.semi, fontSize: 14, lineHeight: 20 } as const;

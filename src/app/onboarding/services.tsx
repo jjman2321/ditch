@@ -19,7 +19,7 @@ import { LinkButton, OnbRoot, TextLink } from '@/onboarding/Parts';
 import { PlanSheet } from '@/onboarding/PlanSheet';
 import { PriceSheet } from '@/onboarding/PriceSheet';
 import { isPriced, totalsFor, useCountry, useMoney, useOnboarding, usePickedList, type Picked } from '@/state/onboarding';
-import { Button, F, LogoTile, Search, StepHeader, Tick, Txt, haptic, radius, useFrame, usePalette } from '@/ui/sunflower';
+import { Button, F, LogoTile, Search, StepHeader, Tick, Txt, brand, haptic, radius, useFrame, usePalette } from '@/ui/sunflower';
 
 const NB = ' ';
 
@@ -130,11 +130,18 @@ function ImportCard() {
   const p = usePalette();
   return (
     <View style={{ marginTop: 14, borderRadius: 16, backgroundColor: p.card, borderWidth: 1.5, borderColor: p.chipBorder, paddingHorizontal: 14, paddingTop: 12, paddingBottom: 4 }}>
-      <Txt v="label" color={p.cardFg}>
-        Add them all at once
-      </Txt>
-      <Txt v="sub" tone="mute" style={{ marginTop: 2 }}>
-        From a screenshot or bank statement. Read on your phone. Your first one is free.
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        <Txt v="label" color={p.cardFg} style={{ flexShrink: 1 }}>
+          Add them all at once
+        </Txt>
+        <View style={{ height: 22, paddingHorizontal: 8, borderRadius: 11, backgroundColor: brand.sunflower, justifyContent: 'center' }}>
+          <Txt v="fine" color={brand.ink} style={{ fontFamily: F.bold, fontSize: 12 }} maxFontSizeMultiplier={1.2}>
+            First one free
+          </Txt>
+        </View>
+      </View>
+      <Txt v="sub" tone="mute" style={{ marginTop: 4 }}>
+        Snap a screenshot or upload a bank statement. We fill in the prices and dates.
       </Txt>
       <View style={{ flexDirection: 'row', gap: 8, marginTop: 4 }}>
         <ImportButton label="Screenshot" />

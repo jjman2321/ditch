@@ -12,3 +12,5 @@ Source: owner's iPhone screen recording with voiceover (transcribed). Ran an old
 | Paywall | Likes it but cluttered. The trial timeline (14 November etc.) feels messy. Drop "We'll remind you before we charge you, too" (irrelevant: they pay us to help). Must clearly say what Pro gives vs Free. Research what makes paywalls convert. |
 | Which 3 / You're set | Tables feel weird and don't make sense. |
 | Overall | Deep research everywhere. Users must feel the app will actually help them. Add studies/facts about how much they could save per month and per year during onboarding. Research → plan → owner approval → build. |
+
+**Owner, Nov 10:** "Your list stays on your phone" comes off Welcome, and stays in Settings and the App Store description.

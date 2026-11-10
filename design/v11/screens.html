@@ -138,7 +138,7 @@ section.darksec .sh h2,section.darksec .sh p,section.darksec .cap{color:#EDE6D6}
 .ptable{border-radius:20px;background:var(--card);color:var(--cardfg);position:relative;overflow:hidden}
 .ptable .tr{display:flex;align-items:center;position:relative}
 .ptable .tr+.tr:before{content:"";position:absolute;top:0;left:16px;right:0;height:1px;background:var(--hair)}
-.ptable .f{flex:1;min-width:0;padding-left:16px;font-size:14px;line-height:20px;font-weight:500;white-space:nowrap}
+.ptable .f{flex:1;min-width:0;padding-left:16px;padding-right:4px;font-size:14px;line-height:20px;font-weight:500;white-space:nowrap}
 .ptable .c{text-align:center;display:flex;align-items:center;justify-content:center;flex:none;font:700 15px/20px Inter}
 .ptable .procol{position:absolute;top:0;bottom:0;right:0;background:#FFE58F}
 .dark .ptable .procol{background:#3A3115}
@@ -447,52 +447,64 @@ S.datesDay = (c) => {
 // SE variant: the day cells are 44pt tall to fit without scrolling
 const seGrid = (html) => html.replace('class="dgrid"', 'class="dgrid se44"');
 
-// 07 · Paywall (layout A). Copy pending the wording-research job.
-S.paywall = (c) => {
+// 07 · Paywall (layout A). Final copy from docs/research/paywall-wording.md (owner approval pending).
+S.paywall = (c, plan = 'yearly') => {
   const d = c.d, se = c.dev === 'se', ipad = c.dev === 'ipad';
   const rh = se ? 28 : 32;
-  const colF = se ? 40 : 44, colP = se ? 72 : 76;
-  const rowsT = se
-    ? [['List, totals, calendar', 'ck', 'ck'], ['Subscriptions with reminders', '3', 'Unlimited'], ['Timing, import, widget, backup', '-', 'ck']]
-    : [['List, totals, calendar', 'ck', 'ck'], ['Subscriptions with reminders', '3', 'Unlimited'], ['Pick your reminder timing', '-', 'ck'], ['Scan screenshots and PDFs', '-', 'ck'], ['Widget and iCloud backup', '-', 'ck']];
+  const colF = se ? 40 : 44, colP = se ? 68 : 76;
+  const lp = se ? 12 : 16;
+  const rowsT = [
+    ['Track every subscription', 'ck', 'ck'],
+    ['Subscriptions with reminders', '3', 'Unlimited'],
+    ['Choose your reminder times', '-', 'ck', se ? '' : 'Up to 3 per subscription'],
+    ['Second nudge if you miss one', '-', 'ck'],
+    ['Import screenshots anytime', '-', 'ck'],
+  ];
   const ink = d ? '#F6F0E3' : '#16140F';
   const cell = (v, pro) => v === 'ck' ? ck(pro && d ? '#FFCC2E' : ink, 18) : v === '-' ? dash(d ? '#8E877A' : '#8C8576') : `<span class="num"${pro && d ? ' style="color:#FFCC2E"' : ''}>${v}</span>`;
   const table = `<div class="ptable" style="flex:none">
     <div class="procol" style="width:${colP}px"></div>
-    <div class="tr" style="height:${se ? 28 : 36}px"><span class="f eyebrow" style="font-weight:700;color:var(--mute);padding-left:${se ? 12 : 16}px">What you get</span><span class="c eyebrow" style="width:${colF}px;color:var(--mute)">Free</span><span class="c eyebrow" style="width:${colP}px;color:${d ? '#FFCC2E' : '#16140F'}">Pro</span></div>
-    ${rowsT.map((r) => `<div class="tr" style="height:${rh}px"><span class="f" style="padding-left:${se ? 12 : 16}px">${r[0]}</span><span class="c" style="width:${colF}px">${cell(r[1])}</span><span class="c" style="width:${colP}px">${cell(r[2], 1)}</span></div>`).join('')}
+    <div class="tr" style="height:${se ? 24 : 32}px"><span class="f" style="padding-left:${lp}px"></span><span class="c eyebrow" style="width:${colF}px;color:var(--mute)">Free</span><span class="c eyebrow" style="width:${colP}px;color:${d ? '#FFCC2E' : '#16140F'}">Pro</span></div>
+    ${rowsT.map((r) => `<div class="tr" style="height:${r[3] ? 40 : rh}px"><span class="f" style="padding-left:${lp}px">${r[0]}${r[3] ? `<span style="display:block;font:400 12px/16px Inter;color:var(--mute)">${r[3]}</span>` : ''}</span><span class="c" style="width:${colF}px">${cell(r[1])}</span><span class="c" style="width:${colP}px">${cell(r[2], 1)}</span></div>`).join('')}
     <div style="height:4px"></div>
   </div>`;
-  const tiles = `<div style="display:flex;gap:8px;flex:none;margin-top:${se ? 16 : 24}px">
-    <div class="tile on"><span class="tab">SAVE 49%</span><span class="tn">Yearly</span><span class="tp num">$29.99</span><span class="tu">a year</span><span class="tf"><span class="tag">7 days free</span></span></div>
-    <div class="tile"><span class="tn">Monthly</span><span class="tp num">$4.99</span><span class="tu">a month</span><span class="tf">No free trial</span></div>
-    <div class="tile"><span class="tn">Lifetime</span><span class="tp num">$49.99</span><span class="tu">one time</span><span class="tf">Pay once</span></div>
+  const on = (p) => (plan === p ? ' on' : '');
+  const tiles = `<div style="display:flex;gap:8px;flex:none;margin-top:16px">
+    <div class="tile${on('yearly')}"><span class="tab">SAVE 49%</span><span class="tn">Yearly</span><span class="tp num">$29.99</span><span class="tu num">$2.50 a month</span><span class="tf"><span class="tag">7 days free</span></span></div>
+    <div class="tile${on('monthly')}"><span class="tn">Monthly</span><span class="tp num">$4.99</span><span class="tu">No free trial</span></div>
+    <div class="tile${on('lifetime')}"><span class="tn">Lifetime</span><span class="tp num">$49.99</span><span class="tu">Pay once</span></div>
   </div>`;
-  const strip = `<div class="trial" style="margin-top:${se ? 12 : 16}px;flex:none">
+  const stripH = se ? 56 : 60;
+  const strip = plan === 'yearly'
+    ? `<div class="trial" style="height:${stripH}px">
     <div class="ln"></div>
-    <div class="s"><span class="dt f"></span><b>Today</b><small>Free</small></div>
+    <div class="s"><span class="dt f"></span><b>Today</b><small class="num">$0</small></div>
     <div class="s"><span class="dt y"></span><b>Sat, Nov 14</b><small>Reminder</small></div>
     <div class="s"><span class="dt"></span><b>Tue, Nov 17</b><small class="num">$29.99</small></div>
-  </div>`;
+  </div>`
+    : `<p class="sub" data-orphan style="height:${stripH}px;color:var(--fg2);${se ? 'font-size:13px;line-height:18px' : ''}">${plan === 'lifetime' ? 'Everything in Pro, forever. Bank sync, if we add it, is a separate plan because it costs us money every' + NB + 'month.' : 'No free trial. You pay $4.99 today, then every' + NB + 'month.'}</p>`;
+  const ctaT = { yearly: 'Start 7-day free trial', monthly: 'Subscribe for $4.99 a month', lifetime: 'Pay $49.99 once' }[plan];
+  const fineT = { yearly: 'Then $29.99 a year. Cancel anytime.', monthly: 'Renews every month. Cancel anytime.', lifetime: 'One payment. No renewals.' }[plan];
+  const order = ['netflix', 'spotify', 'chatgpt', 'youtube', 'amazon'];
   const logos = `<div style="display:flex;align-items:center;gap:8px;margin-top:${se ? 8 : 12}px;flex:none">
-    <span class="stack">${ORDER.slice(0, 5).map((k) => logo(SUBS[k][0], se ? 24 : 28)).join('')}</span>
-    <span class="sub nw" style="color:var(--fg2)">ChatGPT Plus, Netflix + 4 more</span></div>`;
+    <span class="stack">${order.map((k) => logo(SUBS[k][0], se ? 24 : 28)).join('')}</span>
+    <span class="sub nw" style="color:var(--fg2)">Netflix, Spotify and 4 more</span></div>`;
   return [d ? 'dark' : 'cream', `
 <div class="scr" style="${scrStyle(c, 440, se ? 8 : 16)}">
-  <div style="display:flex;align-items:flex-start;gap:8px;flex:none;margin-top:${se ? 8 : ipad ? 48 : 12}px">
+  <div style="display:flex;align-items:flex-start;gap:8px;flex:none;margin-top:${se ? 4 : ipad ? 48 : 12}px">
     <h1 class="title" data-orphan style="flex:1;${se ? 'font-size:26px;line-height:32px;letter-spacing:-.8px' : ''}">Get a reminder before all 6${NB}renewals.</h1>
     <div class="xbtn" style="margin:-6px -10px 0 0" aria-label="Close, continue free"><i>${xI(ink)}</i></div>
   </div>
   ${logos}
-  <div style="flex:none;height:${se ? 12 : ipad ? 32 : 16}px"></div>
+  <div style="flex:none;height:${se ? 12 : ipad ? 32 : 12}px"></div>
   ${table}
   ${tiles}
-  ${strip}
-  <div style="flex:1;min-height:${se ? 8 : 12}px"></div>
-  <button class="cta"${se ? ' style="height:52px"' : ''}>Start 7-day free trial</button>
-  <p class="sub num" style="text-align:center;margin-top:4px;color:var(--fg2)">Then $29.99 a year. Cancel anytime.</p>
-  <button class="sec" style="margin-top:${se ? 4 : 8}px;${se ? 'height:44px;font-size:14px' : 'font-size:15px'}">Continue free: reminders for 3${NB}subscriptions</button>
-  <p class="links" style="margin-top:${se ? 0 : 4}px;line-height:${se ? 20 : 24}px"><u>Restore</u> · <u>Terms</u> · <u>Privacy</u></p>
+  <div style="margin-top:${se ? 12 : 16}px;flex:none">${strip}</div>
+  <div style="flex:1;min-height:${se ? 4 : 8}px"></div>
+  <button class="cta"${se ? ' style="height:52px"' : ''}>${ctaT}</button>
+  <p class="sub num" style="text-align:center;margin-top:4px;color:var(--fg2)">${fineT}</p>
+  <button class="sec" style="margin-top:8px;height:${se ? 44 : 48}px;flex-direction:column;gap:0">Continue free<span style="font:400 13px/16px Inter;color:var(--fg2)">Reminders for 3 subscriptions</span></button>
+  <p class="links" style="margin-top:4px"><u>Restore</u> · <u>Terms</u> · <u>Privacy</u></p>
 </div>`];
 };
 
@@ -519,7 +531,7 @@ S.which3 = (c) => {
 </div>`];
 };
 
-// 09 · You're set
+// 09 · You're set. "Almost set." when reminders were skipped.
 S.set = (c, off) => {
   const d = c.d, se = c.dev === 'se', ipad = c.dev === 'ipad';
   const ink = d ? '#F6F0E3' : '#16140F';
@@ -527,29 +539,29 @@ S.set = (c, off) => {
   const todoI = `<span class="ic" style="box-shadow:inset 0 0 0 2px ${ink}"></span>`;
   const warnI = `<span class="ic" style="background:#FF6C2C;color:#16140F;font:900 15px/1 Inter">!</span>`;
   const items = [
-    [okI, '<span class="num">6 subscriptions on your list · $1,157 a year</span>'],
-    off ? [warnI, 'Reminders are off. Nothing can reach you yet.'] : [okI, `Reminders on ChatGPT Plus, Netflix and YouTube${NB}Premium`],
-    [todoI, '2 dates to check: Amazon Prime and Disney+'],
+    [okI, '6 subscriptions on your list', '<span class="num">$1,157 a year</span>'],
+    off ? [warnI, 'Reminders are off', 'Nothing can reach you until you turn them on.'] : [okI, 'Reminders on 3', 'ChatGPT Plus, Netflix and YouTube Premium'],
+    [todoI, '2 dates to check', 'Amazon Prime and Disney+'],
   ];
-  const firsts = [['Sat, Nov 14', 'YouTube Premium renews Tue, Nov 17'], ['Mon, Nov 16', 'Netflix renews Thu, Nov 19'], ['Wed, Nov 18', 'ChatGPT Plus renews Sat, Nov 21']];
-  const noteBg = d ? '#1E1C18' : 'rgba(255,255,255,.72)';
+  const firsts = [['youtube-premium', 'YouTube Premium', 'Tue, Nov 17', 'Sat, Nov 14'], ['netflix', 'Netflix', 'Thu, Nov 19', 'Mon, Nov 16'], ['chatgpt-plus', 'ChatGPT Plus', 'Sat, Nov 21', 'Wed, Nov 18']];
+  const cardBg = d ? '#1E1C18' : 'rgba(255,255,255,.72)';
+  const sub2 = d ? '#BFB7A7' : '#4B4220';
+  const firstCard = `<div style="position:relative;border-radius:20px;padding:16px 16px 4px;background:${cardBg};${d ? 'box-shadow:inset 0 0 0 1px #2C2924' : ''}">
+      <div class="eyebrow" style="display:flex;justify-content:space-between;color:${sub2}"><span>${off ? 'Waiting for your OK' : 'Your first reminders'}</span><span>At 9:00 AM</span></div>
+      <div style="margin-top:4px">${firsts.map((f, i) => `<div style="display:flex;align-items:center;gap:12px;min-height:56px;position:relative">${i ? `<i style="position:absolute;top:0;left:44px;right:0;height:1px;background:${d ? '#2B2823' : 'rgba(22,20,15,.1)'}"></i>` : ''}${logo(f[0], 32)}<div style="flex:1;min-width:0"><div class="label">${f[1]}</div><div class="num" style="font-size:14px;line-height:20px;color:${sub2}">renews ${f[2]}</div></div><b class="num" style="font:600 15px/20px Inter;white-space:nowrap">${f[3]}</b></div>`).join('')}</div>
+    </div>`;
   return [d ? 'dark' : 'sun', `
 <div class="scr" style="${scrStyle(c, ipad ? 480 : 512)}">
-  <div style="flex:none;height:${se ? 32 : ipad ? 96 : 56}px"></div>
-  <h1 class="disp" data-fit style="font-size:${ipad ? 80 : 60}px;line-height:${ipad ? 80 : 60}px;letter-spacing:-.04em;white-space:nowrap;align-self:flex-start">You’re set.</h1>
-  <div style="margin-top:${se ? 16 : 24}px;flex:none">
-    ${items.map((it) => `<div class="chk">${it[0]}<span class="bs" style="flex:1">${it[1]}</span></div>`).join('')}
+  <div style="flex:none;height:${se ? 24 : ipad ? 96 : 48}px"></div>
+  <h1 class="disp" data-fit style="font-size:${ipad ? 80 : 60}px;line-height:${ipad ? 80 : 60}px;letter-spacing:-.04em;white-space:nowrap;align-self:flex-start">${off ? 'Almost set.' : 'You’re set.'}</h1>
+  <div style="margin-top:${se ? 12 : 24}px;flex:none">
+    ${items.map((it) => `<div class="chk">${it[0]}<div style="flex:1"><div class="bs">${it[1]}</div><div style="font-size:14px;line-height:20px;color:${sub2}">${it[2]}</div></div></div>`).join('')}
   </div>
   <div style="flex:1;min-height:${se ? 16 : 32}px"></div>
-  ${off
-    ? `<div style="border-radius:20px;padding:16px;background:${noteBg};flex:none${d ? ';box-shadow:inset 0 0 0 1px #2C2924' : ''}"><p class="body" style="color:var(--fg)">Your 3 reminders are ready. They need your OK to show up on your${NB}phone.</p></div>`
-    : `<div style="position:relative;flex:none">
-    ${se ? '' : duck(d, 112, 'right:16px;top:' + peekTop(d, 112, 4) + 'px')}
-    <div style="position:relative;border-radius:20px;padding:16px 16px 8px;background:${noteBg};${d ? 'box-shadow:inset 0 0 0 1px #2C2924' : ''}">
-      <div class="eyebrow" style="color:var(--fg2)">Your first reminders · 9:00 AM</div>
-      <div style="margin-top:8px">${firsts.map((f) => `<div style="display:flex;gap:12px;padding:8px 0;font-size:15px;line-height:20px" class="num"><b style="width:96px;flex:none;font-weight:600">${f[0]}</b><span style="flex:1">${f[1]}</span></div>`).join('')}</div>
-    </div>
-  </div>`}
+  <div style="position:relative;flex:none">
+    ${se || off ? '' : duck(d, 112, 'right:16px;top:' + peekTop(d, 112, 4) + 'px')}
+    ${firstCard}
+  </div>
   <div style="flex:none;height:24px"></div>
   ${off ? `<button class="cta">${bell(d ? '#16140F' : '#FFCC2E', 20)}Turn on reminders</button><button class="txtbtn" style="margin-top:4px">Go to my list</button>` : '<button class="cta">Go to my list</button>'}
 </div>`];
@@ -566,15 +578,16 @@ const L = [
   P('05-reminders', '5 · Reminders pre-ask', 'i12', S.notify),
   P('06a-dates-scan', '6a · Charge dates: scan first', 'i12', S.datesScan),
   P('06b-dates-day', '6b · Charge dates: one at a time', 'i12', S.datesDay),
-  P('07-paywall', '7 · Paywall (layout A, copy pending)', 'i12', S.paywall),
+  P('07-paywall', '7 · Paywall (layout A, Yearly picked)', 'i12', S.paywall),
+  P('07b-paywall-lifetime', '7b · Paywall, Lifetime picked', 'i12', (c) => S.paywall(c, 'lifetime')),
   P('08-which3', '8 · Which 3 (sheet from “Continue free”)', 'i12', S.which3),
   P('09-set', '9 · You’re set', 'i12', S.set),
-  P('09b-set-off', '9b · You’re set, reminders skipped', 'i12', (c) => S.set(c, true)),
+  P('09b-set-off', '9b · Almost set: reminders skipped', 'i12', (c) => S.set(c, true)),
 ];
 const SZ = [
   P('se-01-welcome', 'SE · Welcome', 'se', S.welcome), P('se-04-total', 'SE · Your total', 'se', S.total),
   P('se-06a-dates-scan', 'SE · Dates: scan', 'se', S.datesScan), P('se-06b-dates-day', 'SE · Dates: day', 'se', S.datesDay),
-  P('se-07-paywall', 'SE · Paywall', 'se', S.paywall),
+  P('se-07-paywall', 'SE · Paywall', 'se', S.paywall), P('se-07b-paywall-lifetime', 'SE · Paywall, Lifetime', 'se', (c) => S.paywall(c, 'lifetime')),
   P('ipad-01-welcome', 'iPad 11″ · Welcome', 'ipad', S.welcome), P('ipad-04-total', 'iPad 11″ · Your total', 'ipad', S.total),
   P('ipad-07-paywall', 'iPad 11″ · Paywall', 'ipad', S.paywall),
   P('ipad-06a-dates-scan', 'iPad 11″ · Dates: scan', 'ipad', S.datesScan), P('ipad-06b-dates-day', 'iPad 11″ · Dates: day', 'ipad', S.datesDay),

@@ -54,10 +54,17 @@ const fs = require('fs');
         if (!inBackdrop) {
           if (r.left < R.left - .5 || r.right > R.right + .5) res.push(name + ' | OUTSIDE X | ' + el.textContent.trim().slice(0, 40));
           if (r.top < top - .5 && r.bottom > R.top) res.push(name + ' | UNDER STATUS BAR | ' + el.textContent.trim().slice(0, 40));
-          if (r.bottom > bot + .5 && r.top < R.bottom) res.push(name + ' | UNDER HOME INDICATOR / CUT | ' + el.textContent.trim().slice(0, 40));
+          if (r.bottom > bot + .5 && r.top < R.bottom && !el.closest('[data-scroll]')) res.push(name + ' | UNDER HOME INDICATOR / CUT | ' + el.textContent.trim().slice(0, 40));
           if (el.scrollWidth > el.clientWidth + 1 && cs.overflow !== 'visible') res.push(name + ' | TRUNCATED | ' + el.textContent.trim().slice(0, 40));
+          if (cs.display !== 'inline' && !el.hasAttribute('data-fit') && el.clientWidth > 0 && el.scrollWidth > el.clientWidth + 1) res.push(name + ' | OVERFLOWS ITS BOX | ' + el.textContent.trim().slice(0, 40));
+          // text must stay inside the screen's side edge (24pt, or the iPad column)
+          const scr = el.closest('.scr');
+          if (scr && !el.closest('.sheet') && !el.closest('[data-bleed]')) {
+            const sr = scr.getBoundingClientRect(), pl = parseFloat(getComputedStyle(scr).paddingLeft), pr = parseFloat(getComputedStyle(scr).paddingRight);
+            if (r.right > sr.right - pr + 1.5 || r.left < sr.left + pl - 4.5) res.push(name + ' | PAST SIDE EDGE | ' + el.textContent.trim().slice(0, 40));
+          }
           // clipped by an overflow:hidden ancestor
-          for (let a = el.parentElement; a && a !== ph; a = a.parentElement) {
+          if (!el.closest('[data-scroll]')) for (let a = el.parentElement; a && a !== ph; a = a.parentElement) {
             const acs = getComputedStyle(a);
             if (acs.overflow === 'hidden' && !a.classList.contains('lt')) {
               const ar = a.getBoundingClientRect();

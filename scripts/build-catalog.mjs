@@ -70,6 +70,7 @@ const services = lines(CATALOG).map((line) => {
   if (p.length !== 11 && p.length !== 12) throw new Error(`bad catalog line (${p.length} columns): ${line}`);
   const [id, name, cat, color, mono, cycle, countries, aliases] = p;
   const flags = p[11] ? p[11].split(',') : [];
+  if (flags.some((f) => f !== 'apple')) throw new Error(`${id}: unknown flags ${flags} (too many columns?)`);
   if (!CATEGORIES[cat]) throw new Error(`${id}: unknown category ${cat}`);
   const availableIn = countries === '-' ? undefined : countries.split(',');
   for (const c of availableIn ?? []) if (!COUNTRIES.includes(c)) throw new Error(`${id}: unknown country ${c}`);

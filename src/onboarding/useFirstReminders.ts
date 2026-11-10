@@ -34,7 +34,8 @@ export function useFirstReminders(max: number) {
   return useMemo(() => {
     const subs = toSetSubs(list, today);
     const trialCharge = pro === 'yearly' ? addDays(today, planById('yearly').trialDays) : null;
-    const rows = firstReminderRows({ subs, remindedIds, trialCharge, today, nowHour: clockNow().getHours(), max });
+    // Ditch's own trial isn't one of their subscriptions, so it never shows here (owner, Nov 10).
+    const rows = firstReminderRows({ subs, remindedIds, today, nowHour: clockNow().getHours(), max });
     const money = (a: number, c: string) => formatMoney(a, c, { home });
     const reminders: FirstReminder[] = rows.map((r) => {
       const pick = list.find((x) => x.id === r.id);

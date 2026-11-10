@@ -150,6 +150,10 @@ Pull first: `git pull`, `npm install`, then `npx expo start --tunnel ngrok --cle
 - [ ] Calendar: tap a charge day. Each row says "Reminders Wed 18, Fri 20" (or "No reminder · free covers 3"), no yellow pills, nothing cut off.
 - [ ] Edit a sub that has reminders: "Remind me" shows the two real dates and a preview of the exact notification underneath. Turn it off: the preview goes away.
 
+**Ditch's own trial (DECISIONS #37)**
+- [ ] Start the Pro trial (test build: Preview Pro). Ditch Pro never appears on Home, the Calendar or in the export. You're set says "We'll remind you before your trial ends" with two dates.
+- [ ] The trial reminders still arrive (Settings → test build → Reminder time 1 minute from now).
+
 **Paywall (DECISIONS #35)**
 - [ ] Under the Yearly button: "$0 today · $29.99/yr from <date 7 days out> · Cancel anytime". No reminder text.
 - [ ] The table's last row says "Import anytime". The duck's bill points at the PRO column and never covers the title.

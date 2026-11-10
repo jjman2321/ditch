@@ -182,8 +182,10 @@ export function weekStart(d: DateOnly): DateOnly {
 export function homeGroups(subs: Sub[], today: DateOnly): { title: HomeGroup; rows: HomeRow[] }[] {
   const nextWeek = addDays(weekStart(today), 7);
   const later = addDays(nextWeek, 7);
+  // Ditch's own Pro trial is never shown as one of your subscriptions (owner, Nov 10);
+  // its two reminders still go out (src/domain/reminders.ts).
   const all = subs
-    .filter((s) => isActive(s) || isPending(s))
+    .filter((s) => (isActive(s) || isPending(s)) && !isProTrial(s))
     .map((sub) => ({ sub, charge: isPending(sub) && sub.cancelBy && sub.cancelBy >= today ? sub.cancelBy : chargeOfSub(sub, today) }));
   const dated = all
     .filter((r): r is { sub: Sub; charge: DateOnly } => r.charge !== null)
@@ -334,7 +336,7 @@ export function calendarMonth(
   const byDay = new Map<DateOnly, CalendarCharge[]>();
   const heads = new Set<DateOnly>();
   for (const s of subs) {
-    if (!isActive(s) && !isPending(s)) continue;
+    if ((!isActive(s) && !isPending(s)) || isProTrial(s)) continue;
     const pending = isPending(s);
     // Look a little past the month too, so heads-ups for early next-month charges show.
     const maxLead = Math.max(0, ...leads);
@@ -391,7 +393,7 @@ function csvCell(v: string | number | null): string {
 export function toCsv(subs: Sub[], today: DateOnly, digitsOf: (currency: string) => number): string {
   const head = ['Name', 'Amount', 'Currency', 'Billed', 'Next charge', 'Status', 'Ditched on', 'Cancelled on'];
   const rows = subs
-    .filter((s) => s.status !== 'deleted')
+    .filter((s) => s.status !== 'deleted' && !isProTrial(s))
     .map((s) => {
       const digits = s.currency ? digitsOf(s.currency) : 2;
       const amount = s.amountMinor === null ? '' : (s.amountMinor / 10 ** digits).toFixed(digits);

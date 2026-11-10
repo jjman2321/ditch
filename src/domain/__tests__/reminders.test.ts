@@ -253,3 +253,10 @@ it('nextReminder names the soonest one', () => {
   expect(nextReminder([], [])).toBeNull();
   expect(DEFAULT_SETTINGS.reminderTime).toBe('09:00');
 });
+
+describe('the Pro trial stays off your list but still reminds you', () => {
+  it('plans its two reminders from the saved list', () => {
+    const trial = { ...proTrialSub(TODAY, 'x'), id: 'trial' };
+    expect(planReminders([trial], PRO, NOW).map((r) => r.kind)).toEqual(['pro-trial', 'pro-trial']);
+  });
+});

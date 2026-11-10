@@ -117,7 +117,7 @@ export default function Done() {
       ? { mark: 'ok', title: pro ? (undated.length ? `Reminders on all ${n - undated.length} with a date` : `Reminders on all ${n}`) : 'Reminders are on', sub: '3 days and 1 day before, at 9:00 AM' }
       : { mark: 'warn', title: 'Reminders are off', sub: 'Nothing can reach you until you turn them\u00A0on.' },
   ];
-  if (trialDays.length) items.push({ mark: 'ok', title: 'Ditch Pro trial on your list', sub: `Reminders ${trialDays.map(weekdayDate).join(' and ')}` });
+  if (trialDays.length) items.push({ mark: 'ok', title: 'We’ll remind you before your trial ends', sub: trialDays.map(weekdayDate).join(' and ') });
   // No guesses (DECISIONS #33): say plainly which ones have no reminder yet.
   if (n)
     items.push(

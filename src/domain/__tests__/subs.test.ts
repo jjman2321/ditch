@@ -253,3 +253,15 @@ describe('no date yet (DECISIONS #33)', () => {
     expect(remindedIds([none], true).size).toBe(0);
   });
 });
+
+describe('Ditch’s own Pro trial is not one of your subscriptions (owner, Nov 10)', () => {
+  const pro = () => demoData('pro', TODAY).subs;
+
+  it('never shows on Home, in the calendar or in the export', () => {
+    const names = homeGroups(pro(), TODAY).flatMap((g) => g.rows.map((r) => r.sub.kind));
+    expect(names).not.toContain('ditch_pro_trial');
+    const days = calendarMonth(pro(), 2026, 11, TODAY, remindedIds(pro(), true), [3, 1]);
+    expect(days.flatMap((d) => d?.charges ?? []).some((c) => c.sub.kind === 'ditch_pro_trial')).toBe(false);
+    expect(toCsv(pro(), TODAY, currencyDigits)).not.toContain('Ditch Pro');
+  });
+});

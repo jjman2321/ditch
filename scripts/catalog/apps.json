@@ -1,4 +1,10 @@
 {
+ "1password": {
+  "trackId": 1511601750,
+  "trackName": "1Password: Password Manager",
+  "seller": "AgileBits Inc.",
+  "cc": "us"
+ },
  "adobe-acrobat": {
   "trackId": 469337564,
   "trackName": "Acrobat Reader: PDF Editor",
@@ -17,9 +23,21 @@
   "seller": "Adobe Inc.",
   "cc": "us"
  },
+ "alltrails": {
+  "trackId": 405075943,
+  "trackName": "AllTrails: Hike, Bike & Run",
+  "seller": "AllTrails, Inc.",
+  "cc": "us"
+ },
  "amazon-music": {
   "trackId": 510855668,
   "trackName": "Amazon Music: Songs & Podcasts",
+  "seller": "AMZN Mobile LLC",
+  "cc": "us"
+ },
+ "amazon-prime": {
+  "trackId": 297606951,
+  "trackName": "Amazon Shopping",
   "seller": "AMZN Mobile LLC",
   "cc": "us"
  },
@@ -41,11 +59,65 @@
   "seller": "Audible, Inc.",
   "cc": "us"
  },
+ "aura": {
+  "trackId": 1547735089,
+  "trackName": "Aura: Security & Protection",
+  "seller": "AURA GET INC",
+  "cc": "us"
+ },
+ "babbel": {
+  "trackId": 829587759,
+  "trackName": "Babbel - Language Learning",
+  "seller": "Babbel GmbH",
+  "cc": "us"
+ },
+ "badoo": {
+  "trackId": 351331194,
+  "trackName": "Badoo: Dating app & Friends",
+  "seller": "Badoo Software Ltd",
+  "cc": "gb"
+ },
+ "betterhelp": {
+  "trackId": 995252384,
+  "trackName": "BetterHelp - Therapy",
+  "seller": "Compile, Inc.",
+  "cc": "us"
+ },
+ "bitwarden": {
+  "trackId": 1137397744,
+  "trackName": "Bitwarden Password Manager",
+  "seller": "Bitwarden Inc",
+  "cc": "us"
+ },
+ "bloomberg": {
+  "trackId": 281941097,
+  "trackName": "Bloomberg: Business News Daily",
+  "seller": "Bloomberg Finance LP",
+  "cc": "us"
+ },
+ "brilliant": {
+  "trackId": 913335252,
+  "trackName": "Brilliant: Learn Math & Coding",
+  "seller": "Brilliant Worldwide, Inc",
+  "cc": "us"
+ },
  "britbox": {
   "trackId": 1206838907,
   "trackName": "BritBox: The Best British TV",
   "seller": "BritBox, LLC",
   "cc": "us"
+ },
+ "bumble": {
+  "trackId": 930441707,
+  "trackName": "Bumble Dating App: Meet & Date",
+  "seller": "Bumble Holding Limited",
+  "cc": "us"
+ },
+ "busuu": {
+  "trackId": 379968583,
+  "trackName": "Busuu: Language Learning",
+  "seller": "Busuu Limited",
+  "cc": "gb"
  },
  "calm": {
   "trackId": 571800810,
@@ -83,6 +155,18 @@
   "seller": "OpenAI OpCo, LLC",
   "cc": "us"
  },
+ "chess-com": {
+  "trackId": 329218549,
+  "trackName": "Chess.com - Play and Learn",
+  "seller": "Chess.com, LLC",
+  "cc": "us"
+ },
+ "classpass": {
+  "trackId": 912947244,
+  "trackName": "ClassPass: Fitness, Spa, Salon",
+  "seller": "ClassPass, LLC",
+  "cc": "us"
+ },
  "claude-pro": {
   "trackId": 6473753684,
   "trackName": "Claude by Anthropic",
@@ -93,6 +177,24 @@
   "trackId": 541164041,
   "trackName": "Microsoft Copilot",
   "seller": "Microsoft Corporation",
+  "cc": "us"
+ },
+ "corriere": {
+  "trackId": 326634016,
+  "trackName": "Corriere della Sera - Online",
+  "seller": "RCS MediaGroup S.p.A.",
+  "cc": "it"
+ },
+ "costco": {
+  "trackId": 535509415,
+  "trackName": "Costco",
+  "seller": "Costco Wholesale Corporation",
+  "cc": "us"
+ },
+ "coursera": {
+  "trackId": 736535961,
+  "trackName": "Coursera: Grow your career",
+  "seller": "Coursera, Inc.",
   "cc": "us"
  },
  "crave": {
@@ -107,6 +209,18 @@
   "seller": "Crunchyroll, LLC",
   "cc": "us"
  },
+ "cult-fit": {
+  "trackId": 1217794588,
+  "trackName": "cult.fit Gym Workout & Fitness",
+  "seller": "CureFit Healthcare Private Limited",
+  "cc": "in"
+ },
+ "dashlane": {
+  "trackId": 517914548,
+  "trackName": "Dashlane Password Manager",
+  "seller": "Dashlane",
+  "cc": "us"
+ },
  "dazn": {
   "trackId": 1129523589,
   "trackName": "DAZN: Stream Live Sports",
@@ -117,6 +231,18 @@
   "trackId": 292738169,
   "trackName": "Deezer: Music Player, Podcast",
   "seller": "DEEZER SA",
+  "cc": "us"
+ },
+ "deliveroo-plus": {
+  "trackId": 1001501844,
+  "trackName": "Deliveroo: Food & Shopping",
+  "seller": "ROOFOODS LTD",
+  "cc": "gb"
+ },
+ "discord-nitro": {
+  "trackId": 985746746,
+  "trackName": "Discord - Talk, Play, Hang Out",
+  "seller": "Discord Inc.",
   "cc": "us"
  },
  "discovery-plus": {
@@ -130,6 +256,42 @@
   "trackName": "Disney+",
   "seller": "Disney Electronic Content, Inc.",
   "cc": "us"
+ },
+ "doordash": {
+  "trackId": 719972451,
+  "trackName": "DoorDash: Food, Grocery, More",
+  "seller": "DoorDash, Inc.",
+  "cc": "us"
+ },
+ "dropbox": {
+  "trackId": 327630330,
+  "trackName": "Dropbox: Cloud Storage Backup",
+  "seller": "Dropbox, Inc.",
+  "cc": "us"
+ },
+ "duolingo": {
+  "trackId": 570060128,
+  "trackName": "Duolingo: Learn Languages",
+  "seller": "Duolingo, Inc",
+  "cc": "us"
+ },
+ "economist": {
+  "trackId": 1239397626,
+  "trackName": "The Economist: News & Analysis",
+  "seller": "The Economist Newspaper Group Inc.",
+  "cc": "gb"
+ },
+ "eharmony": {
+  "trackId": 458272450,
+  "trackName": "eharmony: dating & real love",
+  "seller": "eHarmony.com",
+  "cc": "us"
+ },
+ "el-pais": {
+  "trackId": 301049096,
+  "trackName": "EL PAÍS",
+  "seller": "Ediciones El Pais SL",
+  "cc": "es"
  },
  "elevenlabs": {
   "trackId": 6743162587,
@@ -155,11 +317,23 @@
   "seller": "Evernote Corporation",
   "cc": "us"
  },
+ "expressvpn": {
+  "trackId": 886492891,
+  "trackName": "ExpressVPN · Secure & Fast VPN",
+  "seller": "Expressco Services, LLC",
+  "cc": "us"
+ },
  "f1-tv": {
   "trackId": 1315007279,
   "trackName": "F1 TV",
   "seller": "Formula One Digital Media Limited",
   "cc": "gb"
+ },
+ "feeld": {
+  "trackId": 887914690,
+  "trackName": "Feeld: Open & Curious Dating",
+  "seller": "Feeld Ltd",
+  "cc": "us"
  },
  "figma": {
   "trackId": 1152747299,
@@ -167,10 +341,34 @@
   "seller": "Figma, Inc.",
   "cc": "us"
  },
+ "fitbit-premium": {
+  "trackId": 462638897,
+  "trackName": "Google Health (Fitbit)",
+  "seller": "Google LLC",
+  "cc": "us"
+ },
+ "flo": {
+  "trackId": 1038369065,
+  "trackName": "Flo Cycle & Period Tracker",
+  "seller": "FLO HEALTH UK LIMITED",
+  "cc": "us"
+ },
+ "ft": {
+  "trackId": 1200842933,
+  "trackName": "Financial Times: Business News",
+  "seller": "Financial Times Ltd.",
+  "cc": "gb"
+ },
  "fubo": {
   "trackId": 905401434,
   "trackName": "Fubo: Watch Live TV & Sports",
   "seller": "fuboTV Inc.",
+  "cc": "us"
+ },
+ "garmin-connect": {
+  "trackId": 583446403,
+  "trackName": "Garmin Connect™",
+  "seller": "Garmin International",
   "cc": "us"
  },
  "github-copilot": {
@@ -179,10 +377,40 @@
   "seller": "GitHub",
   "cc": "us"
  },
+ "globe-and-mail": {
+  "trackId": 429228415,
+  "trackName": "The Globe and Mail",
+  "seller": "The Globe and Mail",
+  "cc": "ca"
+ },
+ "glovo-prime": {
+  "trackId": 951812684,
+  "trackName": "Glovo: Comida a domicilio",
+  "seller": "Glovoapp 23 SL",
+  "cc": "es"
+ },
+ "goodnotes": {
+  "trackId": 1444383602,
+  "trackName": "Goodnotes: AI Notes, Docs, PDF",
+  "seller": "Goodnotes Limited",
+  "cc": "us"
+ },
  "google-ai-pro": {
   "trackId": 6477489729,
   "trackName": "Google Gemini",
   "seller": "Google LLC",
+  "cc": "us"
+ },
+ "google-one": {
+  "trackId": 1451784328,
+  "trackName": "Google One",
+  "seller": "Google LLC",
+  "cc": "us"
+ },
+ "grindr": {
+  "trackId": 319881193,
+  "trackName": "Grindr - Gay Dating & Chat",
+  "seller": "Grindr LLC",
   "cc": "us"
  },
  "grok": {
@@ -191,10 +419,52 @@
   "seller": "X Corp.",
   "cc": "us"
  },
+ "grubhub": {
+  "trackId": 302920553,
+  "trackName": "Grubhub: Food Delivery",
+  "seller": "GrubHub Inc",
+  "cc": "us"
+ },
+ "guardian": {
+  "trackId": 409128287,
+  "trackName": "The Guardian - UK & World News",
+  "seller": "Guardian News & Media Ltd",
+  "cc": "gb"
+ },
+ "happn": {
+  "trackId": 489185828,
+  "trackName": "happn : appli de rencontre",
+  "seller": "HAPPN SAS",
+  "cc": "fr"
+ },
+ "headspace": {
+  "trackId": 493145008,
+  "trackName": "Headspace: Sleep & Meditation",
+  "seller": "Headspace Inc.",
+  "cc": "us"
+ },
+ "hellofresh": {
+  "trackId": 970107419,
+  "trackName": "HelloFresh: Meal Kit & Recipes",
+  "seller": "Hellofresh GmbH",
+  "cc": "us"
+ },
+ "hinge": {
+  "trackId": 595287172,
+  "trackName": "Hinge Dating App: Match & Date",
+  "seller": "Hinge, Inc.",
+  "cc": "us"
+ },
  "hulu": {
   "trackId": 376510438,
   "trackName": "Hulu: Stream TV shows & movies",
   "seller": "Hulu, LLC",
+  "cc": "us"
+ },
+ "instacart": {
+  "trackId": 545599256,
+  "trackName": "Instacart: Groceries & Food",
+  "seller": "Maplebear Inc",
   "cc": "us"
  },
  "itvx": {
@@ -221,16 +491,58 @@
   "seller": "Joyn GmbH",
   "cc": "de"
  },
+ "kindle-unlimited": {
+  "trackId": 302584613,
+  "trackName": "Amazon Kindle: Reading App",
+  "seller": "AMZN Mobile LLC",
+  "cc": "us"
+ },
+ "lastpass": {
+  "trackId": 324613447,
+  "trackName": "LastPass Password Manager",
+  "seller": "LastPass US LP",
+  "cc": "us"
+ },
  "le-chat": {
   "trackId": 6740410176,
   "trackName": "Vibe by Mistral (ex-Le Chat)",
   "seller": "MISTRAL AI",
   "cc": "fr"
  },
+ "le-monde": {
+  "trackId": 294047850,
+  "trackName": "Le Monde, Actualités en direct",
+  "seller": "Societe Editrice du Monde",
+  "cc": "fr"
+ },
+ "life360": {
+  "trackId": 384830320,
+  "trackName": "Life360: Family Safety & GPS",
+  "seller": "Life360",
+  "cc": "us"
+ },
  "linkedin-premium": {
   "trackId": 288429040,
   "trackName": "LinkedIn: Community & Network",
   "seller": "LinkedIn Corporation",
+  "cc": "us"
+ },
+ "lyft-pink": {
+  "trackId": 529379082,
+  "trackName": "Lyft",
+  "seller": "Lyft, Inc.",
+  "cc": "us"
+ },
+ "masterclass": {
+  "trackId": 1273867416,
+  "trackName": "MasterClass: Online Classes",
+  "seller": "Yanka Industries, Inc.",
+  "cc": "us"
+ },
+ "match": {
+  "trackId": 305939712,
+  "trackName": "Match Dating App: Chat & Meet",
+  "seller": "Match Group Americas, LLC",
   "cc": "us"
  },
  "max": {
@@ -239,16 +551,46 @@
   "seller": "WarnerMedia Global Digital Services, LLC",
   "cc": "us"
  },
+ "mcafee": {
+  "trackId": 724596345,
+  "trackName": "McAfee: Stay Secure & Private",
+  "seller": "McAfee, LLC.",
+  "cc": "us"
+ },
  "mediaset-infinity": {
   "trackId": 412625083,
   "trackName": "Mediaset Infinity Italia",
   "seller": "RTI spa",
   "cc": "it"
  },
+ "meetic": {
+  "trackId": 416973595,
+  "trackName": "Meetic - Appli de rencontre",
+  "seller": "Meetic SAS",
+  "cc": "fr"
+ },
+ "memrise": {
+  "trackId": 635966718,
+  "trackName": "Memrise: Language Learning App",
+  "seller": "Memrise Limited",
+  "cc": "gb"
+ },
+ "meta-verified": {
+  "trackId": 389801252,
+  "trackName": "Instagram",
+  "seller": "Instagram, Inc.",
+  "cc": "us"
+ },
  "microsoft-365": {
   "trackId": 761397963,
   "trackName": "Microsoft 365 Admin",
   "seller": "Microsoft Corporation",
+  "cc": "us"
+ },
+ "minecraft": {
+  "trackId": 479516143,
+  "trackName": "Minecraft: Play with Friends!",
+  "seller": "Mojang AB",
   "cc": "us"
  },
  "mlb-tv": {
@@ -269,10 +611,40 @@
   "seller": "MUBI, Inc.",
   "cc": "us"
  },
+ "myfitnesspal": {
+  "trackId": 341232718,
+  "trackName": "MyFitnessPal: Calorie Counter",
+  "seller": "MyFitnessPal, Inc.",
+  "cc": "us"
+ },
  "nba-league-pass": {
   "trackId": 484672289,
   "trackName": "NBA: Live Games & Scores",
   "seller": "NBA MEDIA VENTURES, LLC",
+  "cc": "us"
+ },
+ "nintendo-online": {
+  "trackId": 1234806557,
+  "trackName": "Nintendo Switch App",
+  "seller": "Nintendo Co., Ltd.",
+  "cc": "us"
+ },
+ "noom": {
+  "trackId": 634598719,
+  "trackName": "Noom Weight Loss, Food Tracker",
+  "seller": "Noom, Inc.",
+  "cc": "us"
+ },
+ "nordvpn": {
+  "trackId": 905953485,
+  "trackName": "NordVPN: VPN Fast & Secure",
+  "seller": "Nordvpn S.A.",
+  "cc": "us"
+ },
+ "norton": {
+  "trackId": 1278474169,
+  "trackName": "Norton 360 Mobile Security VPN",
+  "seller": "Gen Digital Inc.",
   "cc": "us"
  },
  "notion": {
@@ -287,6 +659,36 @@
   "seller": "Sky UK Limited",
   "cc": "gb"
  },
+ "nrc": {
+  "trackId": 457869501,
+  "trackName": "NRC - Nieuws en achtergronden",
+  "seller": "NRC Media",
+  "cc": "nl"
+ },
+ "nyt": {
+  "trackId": 284862083,
+  "trackName": "NYTimes: US and World News",
+  "seller": "The New York Times Company",
+  "cc": "us"
+ },
+ "nz-herald": {
+  "trackId": 431193959,
+  "trackName": "NZ Herald News",
+  "seller": "NZME Holdings Ltd",
+  "cc": "nz"
+ },
+ "onedrive": {
+  "trackId": 477537958,
+  "trackName": "Microsoft OneDrive",
+  "seller": "Microsoft Corporation",
+  "cc": "us"
+ },
+ "oura": {
+  "trackId": 1043837948,
+  "trackName": "Oura",
+  "seller": "Oura Health Oy",
+  "cc": "us"
+ },
  "pandora": {
   "trackId": 284035177,
   "trackName": "Pandora: Personalized Music",
@@ -299,10 +701,28 @@
   "seller": "CBS Mobile",
   "cc": "us"
  },
+ "parship": {
+  "trackId": 377700730,
+  "trackName": "Parship: die Dating App",
+  "seller": "PE Digital GmbH",
+  "cc": "de"
+ },
+ "patreon": {
+  "trackId": 1044456188,
+  "trackName": "Patreon",
+  "seller": "Patreon, Inc",
+  "cc": "us"
+ },
  "peacock": {
   "trackId": 1508186374,
   "trackName": "Peacock TV: Stream TV & Movies",
   "seller": "Peacock TV LLC",
+  "cc": "us"
+ },
+ "peloton": {
+  "trackId": 792750948,
+  "trackName": "Peloton: Fitness & Workouts",
+  "seller": "Peloton Interactive, Inc.",
   "cc": "us"
  },
  "perplexity": {
@@ -315,6 +735,18 @@
   "trackId": 1248646044,
   "trackName": "Philo: Shows, Movies & Live TV",
   "seller": "Philo, Inc.",
+  "cc": "us"
+ },
+ "planet-fitness": {
+  "trackId": 399857015,
+  "trackName": "Planet Fitness",
+  "seller": "Planet Fitness Holdings, LLC",
+  "cc": "us"
+ },
+ "plenty-of-fish": {
+  "trackId": 389638243,
+  "trackName": "Plenty of Fish : Dating App",
+  "seller": "Plentyoffish Media Inc.",
   "cc": "us"
  },
  "pocket-casts": {
@@ -335,6 +767,30 @@
   "seller": "AMZN Mobile LLC",
   "cc": "us"
  },
+ "proton": {
+  "trackId": 1509667851,
+  "trackName": "Proton Drive: Cloud Storage",
+  "seller": "Proton AG",
+  "cc": "us"
+ },
+ "proton-vpn": {
+  "trackId": 1437005085,
+  "trackName": "Proton VPN: Fast & Secure",
+  "seller": "Proton AG",
+  "cc": "us"
+ },
+ "ps-plus": {
+  "trackId": 410896080,
+  "trackName": "PlayStation App",
+  "seller": "PlayStation Mobile Inc.",
+  "cc": "us"
+ },
+ "puregym": {
+  "trackId": 588860938,
+  "trackName": "PureGym",
+  "seller": "Pure Gym Limited",
+  "cc": "gb"
+ },
  "qobuz": {
   "trackId": 946429340,
   "trackName": "Qobuz: Music & Editorial",
@@ -347,11 +803,41 @@
   "seller": "BENDING SPOONS OPERATIONS SPA",
   "cc": "us"
  },
+ "roblox": {
+  "trackId": 431946152,
+  "trackName": "Roblox",
+  "seller": "Roblox Corporation",
+  "cc": "us"
+ },
+ "rosetta-stone": {
+  "trackId": 435588892,
+  "trackName": "Rosetta Stone Classic (2024)",
+  "seller": "Rosetta Stone Ltd.",
+  "cc": "us"
+ },
  "rtl-plus": {
   "trackId": 1057991212,
   "trackName": "RTL+",
   "seller": "RTL interactive",
   "cc": "de"
+ },
+ "runna": {
+  "trackId": 1594204443,
+  "trackName": "Runna: Running Plans & Coach",
+  "seller": "Strava Inc.",
+  "cc": "us"
+ },
+ "sams-club": {
+  "trackId": 382497397,
+  "trackName": "Sam's Club Shopping & Delivery",
+  "seller": "Walmart Stores Inc.",
+  "cc": "us"
+ },
+ "shaadi": {
+  "trackId": 480093204,
+  "trackName": "Shaadi.com Matrimony App",
+  "seller": "People Interactive (I) Pvt. Ltd.",
+  "cc": "in"
  },
  "shudder": {
   "trackId": 919790315,
@@ -363,6 +849,12 @@
   "trackId": 317951436,
   "trackName": "SiriusXM: Music, Sports & News",
   "seller": "Sirius XM Radio, LLC",
+  "cc": "us"
+ },
+ "skillshare": {
+  "trackId": 916819843,
+  "trackName": "Skillshare: Creativity Classes",
+  "seller": "Skillshare, Inc.",
   "cc": "us"
  },
  "sky": {
@@ -389,6 +881,18 @@
   "seller": "Sling TV LLC",
   "cc": "us"
  },
+ "smh": {
+  "trackId": 1411569831,
+  "trackName": "The Sydney Morning Herald",
+  "seller": "Fairfax Media Management Pty Ltd.",
+  "cc": "au"
+ },
+ "snapchat-plus": {
+  "trackId": 447188370,
+  "trackName": "Snapchat",
+  "seller": "Snap, Inc.",
+  "cc": "us"
+ },
  "sonyliv": {
   "trackId": 587794258,
   "trackName": "Sony LIV",
@@ -400,6 +904,18 @@
   "trackName": "SoundCloud: Discover New Music",
   "seller": "SoundCloud Global Limited & Co KG",
   "cc": "us"
+ },
+ "speak": {
+  "trackId": 1286609883,
+  "trackName": "Speak: Language Learning",
+  "seller": "Speakeasy Labs, Inc",
+  "cc": "us"
+ },
+ "spiegel": {
+  "trackId": 424881832,
+  "trackName": "DER SPIEGEL - Nachrichten",
+  "seller": "DER SPIEGEL GmbH und Co. KG",
+  "cc": "de"
  },
  "spotify": {
   "trackId": 324684580,
@@ -431,11 +947,71 @@
   "seller": "Strava Inc.",
   "cc": "us"
  },
+ "substack": {
+  "trackId": 1581650857,
+  "trackName": "Substack",
+  "seller": "Substack Inc.",
+  "cc": "us"
+ },
  "suno": {
   "trackId": 6480136315,
   "trackName": "Suno - AI Songs, Music, Lyrics",
   "seller": "Suno Inc.",
   "cc": "us"
+ },
+ "surfshark": {
+  "trackId": 1391782046,
+  "trackName": "Surfshark VPN: Fast & Private",
+  "seller": "SURFSHARK LTD",
+  "cc": "us"
+ },
+ "swiggy-one": {
+  "trackId": 989540920,
+  "trackName": "Swiggy: Food Instamart Dineout",
+  "seller": "BUNDL TECHNOLOGIES PRIVATE LIMITED",
+  "cc": "in"
+ },
+ "target-circle": {
+  "trackId": 297430070,
+  "trackName": "Target: Shop. Style. Save.",
+  "seller": "Target",
+  "cc": "us"
+ },
+ "telegram-premium": {
+  "trackId": 686449807,
+  "trackName": "Telegram Messenger",
+  "seller": "Telegram FZ-LLC",
+  "cc": "us"
+ },
+ "telegraph": {
+  "trackId": 388947468,
+  "trackName": "The Telegraph: UK & World News",
+  "seller": "TELEGRAPH MEDIA GROUP HOLDINGS LIMITED",
+  "cc": "gb"
+ },
+ "tesco-clubcard": {
+  "trackId": 389581236,
+  "trackName": "Tesco Grocery & Clubcard",
+  "seller": "Tesco Plc",
+  "cc": "gb"
+ },
+ "the-athletic": {
+  "trackId": 1135216317,
+  "trackName": "The Athletic: All Sports News",
+  "seller": "The New York Times Company",
+  "cc": "us"
+ },
+ "the-atlantic": {
+  "trackId": 397599894,
+  "trackName": "The Atlantic Magazine",
+  "seller": "The Atlantic Monthly Group LLC",
+  "cc": "us"
+ },
+ "the-times": {
+  "trackId": 436792321,
+  "trackName": "The Times: UK & World News",
+  "seller": "Times Media Limited (Apps)",
+  "cc": "gb"
  },
  "tidal": {
   "trackId": 913943275,
@@ -443,11 +1019,29 @@
   "seller": "TIDAL Music AS",
   "cc": "us"
  },
+ "times-of-india": {
+  "trackId": 427589329,
+  "trackName": "TOI Breaking News App & ePaper",
+  "seller": "Times Internet Limited",
+  "cc": "in"
+ },
  "timvision": {
   "trackId": 408382666,
   "trackName": "TIMVISION",
   "seller": "Telecom Italia spa",
   "cc": "it"
+ },
+ "tinder": {
+  "trackId": 547702041,
+  "trackName": "Tinder Dating App: Date & Chat",
+  "seller": "Tinder LLC",
+  "cc": "us"
+ },
+ "uber-one": {
+  "trackId": 368677368,
+  "trackName": "Uber - Rides, Eats, Hotels",
+  "seller": "Uber Technologies, Inc.",
+  "cc": "us"
  },
  "videoland": {
   "trackId": 1570409180,
@@ -455,10 +1049,70 @@
   "seller": "RTL Nederland B.V.",
   "cc": "nl"
  },
+ "vsco": {
+  "trackId": 588013838,
+  "trackName": "VSCO: Photo & Video Editor",
+  "seller": "Visual Supply Company",
+  "cc": "us"
+ },
+ "walmart-plus": {
+  "trackId": 338137227,
+  "trackName": "Walmart: Shopping & Savings",
+  "seller": "Walmart",
+  "cc": "us"
+ },
+ "washington-post": {
+  "trackId": 352509417,
+  "trackName": "Washington Post: Breaking News",
+  "seller": "The Washington Post Company",
+  "cc": "us"
+ },
+ "whoop": {
+  "trackId": 933944389,
+  "trackName": "WHOOP",
+  "seller": "Whoop Incorporated",
+  "cc": "us"
+ },
+ "wolt-plus": {
+  "trackId": 943905271,
+  "trackName": "Wolt - Essen Bestellen & mehr",
+  "seller": "Wolt Oy",
+  "cc": "de"
+ },
  "wow": {
   "trackId": 929190059,
   "trackName": "WOW",
   "seller": "Sky Deutschland Fernsehen GmbH & Co. KG",
+  "cc": "de"
+ },
+ "wsj": {
+  "trackId": 1509844788,
+  "trackName": "WSJ Print Edition",
+  "seller": "Dow Jones & Company, Inc., publisher of The Wall Street Journal.",
+  "cc": "us"
+ },
+ "ww": {
+  "trackId": 331308914,
+  "trackName": "WeightWatchers Program",
+  "seller": "WW International, Inc.",
+  "cc": "us"
+ },
+ "x-premium": {
+  "trackId": 333903271,
+  "trackName": "X",
+  "seller": "X Corp.",
+  "cc": "us"
+ },
+ "xbox-game-pass": {
+  "trackId": 736179781,
+  "trackName": "XBOX",
+  "seller": "Microsoft Corporation",
+  "cc": "us"
+ },
+ "yazio": {
+  "trackId": 946099227,
+  "trackName": "Yazio: Kalorien Zähler & Diät",
+  "seller": "YAZIO GmbH",
   "cc": "de"
  },
  "youtube-music": {
@@ -479,16 +1133,34 @@
   "seller": "Google LLC",
   "cc": "us"
  },
+ "zalando-plus": {
+  "trackId": 585629514,
+  "trackName": "Zalando Mode & Fashion online",
+  "seller": "Zalando SE",
+  "cc": "de"
+ },
  "zee5": {
   "trackId": 743691886,
   "trackName": "Zee 5",
   "seller": "Z5X Global FZ-LLC",
   "cc": "in"
  },
+ "zomato-gold": {
+  "trackId": 434613896,
+  "trackName": "Zomato: Food Delivery & Dining",
+  "seller": "Zomato Media Pvt. Ltd.",
+  "cc": "in"
+ },
  "zoom": {
   "trackId": 546505307,
   "trackName": "Zoom Workplace",
   "seller": "Zoom Communications, Inc.",
+  "cc": "us"
+ },
+ "zwift": {
+  "trackId": 1134655040,
+  "trackName": "Zwift: Indoor Cycling Fitness",
+  "seller": "Zwift, Inc",
   "cc": "us"
  }
 }

@@ -6440,6 +6440,386 @@
    "source": "https://www.audible.it/ep/memberbenefits",
    "checked": "2026-11-10",
    "note": "Regular price after the intro offer."
+  },
+  {
+   "serviceId": "youtube-tv",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "main",
+     "name": "YouTube TV",
+     "amountMinor": 8299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "sports-news",
+     "name": "Sports + News Plan",
+     "amountMinor": 7199,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://tv.youtube.com/welcome/",
+   "checked": "2026-11-10",
+   "note": "Regular prices after the intro offers."
+  },
+  {
+   "serviceId": "sling-tv",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "orange",
+     "name": "Orange",
+     "amountMinor": 4599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "blue",
+     "name": "Blue",
+     "amountMinor": 5499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "orange-blue",
+     "name": "Orange & Blue",
+     "amountMinor": 6999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essentials",
+     "name": "Essentials",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "select",
+     "name": "Select",
+     "amountMinor": 2999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.sling.com/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "fubo",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "core",
+     "name": "Core",
+     "amountMinor": 8899,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "ultra",
+     "name": "Ultra",
+     "amountMinor": 9899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "latino",
+     "name": "Latino",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.fubo.tv/welcome",
+   "checked": "2026-11-10",
+   "note": "Regular prices after the first month."
+  },
+  {
+   "serviceId": "philo",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Essential",
+     "amountMinor": 2500,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.philo.com/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "espn",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "unlimited",
+     "name": "ESPN Unlimited",
+     "amountMinor": 3199,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://plus.espn.com/",
+   "checked": "2026-11-10",
+   "note": "Read from the page's terms ('ESPN auto-renews at $31.99/month')."
+  },
+  {
+   "serviceId": "now",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "entertainment",
+     "name": "Entertainment",
+     "amountMinor": 799,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.nowtv.com/gb/",
+   "checked": "2026-11-10",
+   "note": "Price after the 6-month minimum term."
+  },
+  {
+   "serviceId": "now",
+   "country": "IE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "entertainment",
+     "name": "Entertainment",
+     "amountMinor": 899,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "cinema",
+     "name": "Cinema",
+     "amountMinor": 1199,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.nowtv.com/ie/",
+   "checked": "2026-11-10",
+   "note": "Regular prices after the offer and trial."
+  },
+  {
+   "serviceId": "rtl-plus",
+   "country": "DE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic",
+     "name": "Basic",
+     "amountMinor": 599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-no-ads",
+     "name": "Premium Werbefrei",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://plus.rtl.de/abo",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "videoland",
+   "country": "NL",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basis",
+     "name": "Basis (met reclame)",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus",
+     "name": "Plus",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1499,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.videoland.com/nl/",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "economist",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "annual",
+     "name": "Digital (yearly)",
+     "amountMinor": 28900,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://www.economist.com/subscribe",
+   "checked": "2026-11-10",
+   "note": "Regular yearly price after the first-year discount. The 4-weekly plan ($29) is not shown because Ditch has no 4-week cycle."
+  },
+  {
+   "serviceId": "guardian",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "digital-plus",
+     "name": "Digital Plus",
+     "amountMinor": 1800,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "digital-plus-yearly",
+     "name": "Digital Plus (yearly)",
+     "amountMinor": 18000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://support.theguardian.com/uk/subscribe",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "amazon-music",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Unlimited Individual",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "individual-prime",
+     "name": "Unlimited Individual (Prime members)",
+     "amountMinor": 1199,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.amazon.com/music/unlimited",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "amazon-music",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Unlimited Individual",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "individual-prime",
+     "name": "Unlimited Individual (Prime members)",
+     "amountMinor": 1199,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.amazon.co.uk/music/unlimited",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "amazon-music",
+   "country": "DE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Unlimited Individual",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "individual-prime",
+     "name": "Unlimited Individual (Prime members)",
+     "amountMinor": 1199,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.amazon.de/music/unlimited",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "amazon-music",
+   "country": "IN",
+   "currency": "INR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Unlimited Individual",
+     "amountMinor": 11900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "individual-prime",
+     "name": "Unlimited Individual (Prime members)",
+     "amountMinor": 9900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.amazon.in/music/unlimited",
+   "checked": "2026-11-10"
+  },
+  {
+   "serviceId": "amazon-music",
+   "country": "ES",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Unlimited Individual",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.amazon.es/music/unlimited",
+   "checked": "2026-11-10"
   }
  ],
  "notChecked": {

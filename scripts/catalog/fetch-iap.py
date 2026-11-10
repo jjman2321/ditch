@@ -62,15 +62,32 @@ def main():
     if '--top' in sys.argv:
         args += [l.strip() for l in TOP.read_text().splitlines() if l.strip() and not l.startswith('#')]
     force = '--force' in sys.argv
+    # --shard=k/n: only every n-th service, saved to its own part file (run n at once, then --merge)
+    shard = next((a.split('=', 1)[1] for a in sys.argv if a.startswith('--shard=')), None)
+    if '--merge' in sys.argv:
+        out = json.loads(OUT.read_text()) if OUT.exists() else {}
+        for part in sorted(OUT.parent.glob(OUT.name + '.part*')):
+            for sid, by_cc in json.loads(part.read_text()).items():
+                out.setdefault(sid, {}).update(by_cc)
+            part.unlink()
+        OUT.write_text(json.dumps(out, indent=1, ensure_ascii=False, sort_keys=True) + '\n')
+        print('merged into', OUT.name)
+        return
     apps = json.loads(APPS.read_text())
     rows = {r['id']: r for r in read_catalog()}
-    out = json.loads(OUT.read_text()) if OUT.exists() else {}
-    for sid in dict.fromkeys(args):
+    done = json.loads(OUT.read_text()) if OUT.exists() else {}
+    dest = OUT if not shard else OUT.parent / f'{OUT.name}.part{shard.split("/")[0]}'
+    out = json.loads(dest.read_text()) if dest.exists() else {}
+    ids = list(dict.fromkeys(args))
+    if shard:
+        k, n = map(int, shard.split('/'))
+        ids = ids[k::n]
+    for sid in ids:
         pin = apps.get(sid)
         if not pin or sid not in rows:
             continue
         for cc in rows[sid]['countries'] or COUNTRIES:
-            if not force and cc in out.get(sid, {}):
+            if not force and (cc in out.get(sid, {}) or cc in done.get(sid, {})):
                 continue
             url = f'https://apps.apple.com/{cc.lower()}/app/id{pin["trackId"]}'
             html = page(url + (f'?l={LANG[cc]}' if cc in LANG else ''))
@@ -78,7 +95,7 @@ def main():
             items = iap_list(html) if html else None
             out.setdefault(sid, {})[cc] = {'url': url, 'checked': time.strftime('%Y-%m-%d'), 'items': items}
             print(f'{sid:20} {cc} {"not in this store" if items is None else len(items)}')
-            OUT.write_text(json.dumps(out, indent=1, ensure_ascii=False, sort_keys=True) + '\n')
+            dest.write_text(json.dumps(out, indent=1, ensure_ascii=False, sort_keys=True) + '\n')
 
 
 if __name__ == '__main__':

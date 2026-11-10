@@ -69,7 +69,7 @@ soundcloud|SoundCloud Go+|MU|#FF5500|SC|m|-|soundcloud|soundcloud|us|^SoundCloud
 pandora|Pandora|MU|#3668FF|P|m|US||pandora|us|^Pandora
 qobuz|Qobuz|MU|#000000|Q|m|US,GB,CA,AU,IE,NZ,DE,NL,FR,IT,ES||qobuz|us|^(Xandrie|Qobuz)
 jiosaavn|JioSaavn|MU|#2BC5B4|JS|m|IN|saavn|jiosaavn|in|^(Saavn|Jio)
-gaana|Gaana|MU|#E72C30|G|m|IN||gaana|in|^Gaana
+gaana|Gaana|MU|#E72C30|G|m|IN||gaana|in|(Gaana)
 everand|Everand|MU|#1E7B85|E|m|-|scribd|everand|us|^Scribd
 storytel|Storytel|MU|#FF5C28|St|m|NL,ES,IN|audiobooks|storytel|nl|^Storytel
 pocket-fm|Pocket FM|MU|#E91E4B|PF|m|US,IN||pocket fm|us|^Pocket
@@ -97,7 +97,7 @@ adobe-cc|Adobe Creative Cloud|PR|#DA1F26|Ac|m|-|adobe,photoshop,creative cloud,i
 canva-pro|Canva Pro|PR|#7D2AE8|C|y|-|canva|canva|us|^Canva
 notion|Notion Plus|PR|#191919|N|m|-|notion|notion|us|^Notion
 google-workspace|Google Workspace|PR|#4285F4|GW|m|-|gsuite,g suite,workspace|-|us|-
-grammarly|Grammarly Pro|PR|#15C39A|G|m|-|grammarly|grammarly|us|^Grammarly
+grammarly|Grammarly Pro|PR|#15C39A|G|m|-|grammarly|grammarly|us|^(Grammarly|Superhuman)
 adobe-acrobat|Adobe Acrobat Pro|PR|#EC1C24|Ac|m|-|acrobat,pdf|adobe acrobat reader|us|^Adobe
 adobe-lightroom|Adobe Lightroom|PR|#31A8FF|Lr|m|-|lightroom|lightroom|us|^Adobe
 capcut|CapCut Pro|PR|#000000|CC|m|-|capcut|capcut|us|^(Bytedance|ByteDance)
@@ -106,7 +106,7 @@ linkedin-premium|LinkedIn Premium|PR|#0A66C2|in|m|-|linkedin|linkedin|us|^Linked
 zoom|Zoom Pro|PR|#0B5CFF|Z|m|-|zoom|zoom workplace|us|^Zoom
 slack|Slack Pro|PR|#4A154B|S|m|-|slack|slack|us|^Slack
 evernote|Evernote|PR|#00A82D|E|m|-||evernote|us|^Evernote
-todoist|Todoist Pro|PR|#E44332|T|m|-|todoist|todoist|us|^Doist
+todoist|Todoist Pro|PR|#E44332|T|m|-|todoist|todoist|us|^(Doist|Todoist)
 goodnotes|Goodnotes|PR|#2F80ED|G|y|-|good notes|goodnotes|us|^(Goodnotes|Time Base)
 vsco|VSCO|PR|#000000|V|y|-||vsco|us|^(VSCO|Visual Supply)
 
@@ -143,7 +143,7 @@ target-circle|Target Circle 360|SH|#CC0000|T|y|US|target|target|us|^Target
 grubhub|Grubhub+|SH|#FF8000|GH|m|US|grubhub|grubhub|us|^(Grubhub|GrubHub)
 lyft-pink|Lyft Pink|SH|#FF00BF|L|m|US,CA|lyft|lyft|us|^Lyft
 deliveroo-plus|Deliveroo Plus|SH|#00CCBC|D|m|GB,IE,FR,IT|deliveroo|deliveroo|gb|^(Deliveroo|Roofoods)
-just-eat|Just Eat+|SH|#FF8000|JE|m|GB,IE|just eat,lieferando,thuisbezorgd|just eat|gb|^(Just Eat|Takeaway)
+just-eat|Just Eat+|SH|#FF8000|JE|m|GB,IE|just eat,lieferando,thuisbezorgd|just eat|gb|^(Just.Eat|Takeaway)
 tesco-clubcard|Tesco Clubcard Plus|SH|#00539F|T|m|GB,IE|tesco,clubcard|tesco|gb|^Tesco
 wolt-plus|Wolt+|SH|#009DE0|W+|m|DE|wolt|wolt|de|^Wolt
 glovo-prime|Glovo Prime|SH|#FFC244|G|m|ES,IT|glovo|glovo|es|^Glovo
@@ -182,13 +182,13 @@ hinge|Hinge|DA|#000000|H|m|-|hinge+|hinge|us|^Hinge
 bumble|Bumble|DA|#FFC629|B|m|-|bumble premium|bumble|us|^Bumble
 match|Match|DA|#000000|M|m|US,GB,CA,AU,IE,NZ|match.com|match dating|us|^Match
 grindr|Grindr|DA|#FFCC00|G|m|-|grindr xtra,grindr unlimited|grindr|us|^Grindr
-okcupid|OkCupid|DA|#0046D5|OK|m|-|ok cupid|okcupid|us|^(Humor|OkCupid)
+okcupid|OkCupid|DA|#0046D5|OK|m|-|ok cupid|okcupid|us|^(Humor|OkCupid|Match Group)
 plenty-of-fish|Plenty of Fish|DA|#00A1E4|POF|m|US,GB,CA,AU,IE,NZ|pof|plenty of fish|us|^(PlentyofFish|Plentyoffish|POF)
 eharmony|eharmony|DA|#EE5A3B|eH|m|US,GB,CA,AU|e harmony|eharmony|us|^eHarmony
 feeld|Feeld|DA|#000000|F|m|-||feeld|us|^Feeld
 badoo|Badoo|DA|#783BF9|B|m|-||badoo|gb|^(Badoo|Bumble|Magiclab)
 happn|happn|DA|#FF4A68|h|m|-||happn|fr|^happn
-lovoo|LOVOO|DA|#E5004D|L|m|DE|lovoo|lovoo|de|^LOVOO
+lovoo|LOVOO|DA|#E5004D|L|m|DE|lovoo|lovoo|de|^(LOVOO|PE Digital)
 parship|Parship|DA|#C8102E|P|m|DE,NL,IT,ES,FR|parship|parship|de|^(Parship|PE Digital)
 meetic|Meetic|DA|#E5004D|M|m|FR,IT,ES,NL|meetic|meetic|fr|^(Meetic|Match)
 shaadi|Shaadi.com|DA|#FF5A60|S|m|IN|shaadi|shaadi.com|in|^(People|Shaadi)
@@ -200,7 +200,7 @@ discord-nitro|Discord Nitro|SO|#5865F2|D|m|-|discord,nitro|discord|us|^Discord
 telegram-premium|Telegram Premium|SO|#26A5E4|T|m|-|telegram|telegram|us|^Telegram
 meta-verified|Meta Verified|SO|#0866FF|M|m|-|instagram,facebook,meta|instagram|us|^Instagram
 patreon|Patreon|SO|#000000|P|m|-||patreon|us|^Patreon
-truecaller|Truecaller Premium|SO|#0087FF|TC|m|-|truecaller|truecaller|in|^Truecaller
+truecaller|Truecaller Premium|SO|#0087FF|TC|m|-|truecaller|truecaller|in|^(Truecaller|True Software)
 
 ## News & reading
 nyt|New York Times|NE|#121212|T|m|-|nytimes,nyt,new york times,ny times,wordle,games|nytimes|us|^The New York Times
@@ -217,7 +217,7 @@ the-atlantic|The Atlantic|NE|#E7131A|A|y|-|atlantic|the atlantic|us|^The Atlanti
 guardian|The Guardian|NE|#052962|G|m|-|guardian|the guardian|gb|^(Guardian|The Guardian)
 the-times|The Times|NE|#000000|T|m|GB,IE|times,sunday times|the times|gb|^(Times Media|News UK)
 telegraph|The Telegraph|NE|#000000|T|m|GB|telegraph|the telegraph|gb|^Telegraph
-irish-times|The Irish Times|NE|#000000|IT|m|IE|irish times|the irish times|ie|^Irish Times
+irish-times|The Irish Times|NE|#000000|IT|m|IE|irish times|the irish times|ie|(Irish Times)
 globe-and-mail|The Globe and Mail|NE|#C8102E|G|m|CA|globe|the globe and mail|ca|^(The Globe|Globe)
 smh|Sydney Morning Herald|NE|#096DD2|SMH|m|AU|smh,sydney morning herald|the sydney morning herald|au|^(Nine|Fairfax)
 nz-herald|NZ Herald|NE|#000000|NZH|m|NZ|herald premium|nz herald|nz|^NZME

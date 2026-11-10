@@ -1,4 +1,294 @@
 {
+ "amazon-music": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Individual",
+     "$17.99"
+    ],
+    [
+     "Individual",
+     "$17.99"
+    ],
+    [
+     "Individual",
+     "$17.99"
+    ],
+    [
+     "Individual",
+     "$17.99"
+    ],
+    [
+     "Family",
+     "$30.99"
+    ],
+    [
+     "Family",
+     "$30.99"
+    ],
+    [
+     "Family",
+     "$30.99"
+    ],
+    [
+     "Family",
+     "$30.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/au/app/id510855668"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Individual",
+     "$13.99"
+    ],
+    [
+     "Individual",
+     "$13.99"
+    ],
+    [
+     "Individual",
+     "$13.99"
+    ],
+    [
+     "Family",
+     "$24.99"
+    ],
+    [
+     "Family",
+     "$24.99"
+    ],
+    [
+     "Family",
+     "$24.99"
+    ],
+    [
+     "Individual",
+     "$13.99"
+    ],
+    [
+     "Family",
+     "$24.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ca/app/id510855668"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Individual",
+     "£13.99"
+    ],
+    [
+     "Individual",
+     "£13.99"
+    ],
+    [
+     "Individual",
+     "£13.99"
+    ],
+    [
+     "Family",
+     "£24.99"
+    ],
+    [
+     "Family",
+     "£24.99"
+    ],
+    [
+     "Family",
+     "£24.99"
+    ],
+    [
+     "Individual",
+     "£13.99"
+    ],
+    [
+     "Family",
+     "£24.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/gb/app/id510855668"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Individual",
+     "$13.99"
+    ],
+    [
+     "Individual",
+     "$13.99"
+    ],
+    [
+     "Individual",
+     "$13.99"
+    ],
+    [
+     "Family",
+     "$24.99"
+    ],
+    [
+     "Family",
+     "$24.99"
+    ],
+    [
+     "Family",
+     "$24.99"
+    ],
+    [
+     "Family",
+     "$24.99"
+    ],
+    [
+     "Individual",
+     "$13.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id510855668"
+  }
+ },
+ "amazon-prime": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/au/app/id297606951"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/ca/app/id297606951"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/de/app/id297606951"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/es/app/id297606951"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/fr/app/id297606951"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/gb/app/id297606951"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/ie/app/id297606951"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/in/app/id297606951"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/it/app/id297606951"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/nl/app/id297606951"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Audible Premium Monthly",
+     "$15.99"
+    ],
+    [
+     "1 Audible Credit",
+     "$15.99"
+    ],
+    [
+     "Audible Standard Monthly",
+     "$9.99"
+    ],
+    [
+     "Amazon Music Unlimited Individual",
+     "$13.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id297606951"
+  }
+ },
+ "apple-music": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/au/app/id1108187390"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/ca/app/id1108187390"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/de/app/id1108187390"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/es/app/id1108187390"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/fr/app/id1108187390"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/gb/app/id1108187390"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/ie/app/id1108187390"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/in/app/id1108187390"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/it/app/id1108187390"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/nl/app/id1108187390"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/nz/app/id1108187390"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/us/app/id1108187390"
+  }
+ },
  "apple-tv": {
   "AU": {
    "checked": "2026-11-10",
@@ -15,6 +305,11 @@
    "items": [],
    "url": "https://apps.apple.com/de/app/id1174078549"
   },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/es/app/id1174078549"
+  },
   "FR": {
    "checked": "2026-11-10",
    "items": [],
@@ -30,6 +325,16 @@
    "items": [],
    "url": "https://apps.apple.com/ie/app/id1174078549"
   },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/in/app/id1174078549"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/it/app/id1174078549"
+  },
   "NL": {
    "checked": "2026-11-10",
    "items": [],
@@ -44,6 +349,1684 @@
    "checked": "2026-11-10",
    "items": [],
    "url": "https://apps.apple.com/us/app/id1174078549"
+  }
+ },
+ "audible": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "AU Premium Monthly",
+     "$17.49"
+    ],
+    [
+     "AU Premium Monthly",
+     "$17.49"
+    ],
+    [
+     "AU - Audible iOS Standard Plan",
+     "$9.99"
+    ],
+    [
+     "AU - Audible iOS Standard Plan",
+     "$9.99"
+    ],
+    [
+     "AU - 3 Credit Bundle",
+     "$37.99"
+    ],
+    [
+     "AU - 1 Extra Credit",
+     "$16.99"
+    ],
+    [
+     "US Premium Monthly",
+     "$26.49"
+    ],
+    [
+     "UK Premium Monthly",
+     "$16.49"
+    ],
+    [
+     "AU – 5 Credit Bundle",
+     "$62.99"
+    ],
+    [
+     "AU - Audible iOS Annual",
+     "$174.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/au/app/id379693831"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "CA Premium Monthly",
+     "$15.99"
+    ],
+    [
+     "CA Premium Monthly",
+     "$15.99"
+    ],
+    [
+     "CA - Audible iOS Standard Plan",
+     "$9.99"
+    ],
+    [
+     "CA - 1 Extra Credit",
+     "$14.99"
+    ],
+    [
+     "CA - 3 Credit Bundle",
+     "$41.99"
+    ],
+    [
+     "US Premium Monthly",
+     "$21.49"
+    ],
+    [
+     "CA – 5 Credit Bundle",
+     "$59.99"
+    ],
+    [
+     "US Premium Monthly",
+     "$20.99"
+    ],
+    [
+     "CA - Audible iOS Annual",
+     "$173.99"
+    ],
+    [
+     "Audible iOS Standard Plan",
+     "$12.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ca/app/id379693831"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "DE - Audible iOS Monthly",
+     "10,99 €"
+    ],
+    [
+     "DE - Audible iOS Monthly",
+     "10,99 €"
+    ],
+    [
+     "DE - Audible iOS Standard Plan",
+     "7,99 €"
+    ],
+    [
+     "DE - 1 Extra Credit",
+     "10,99 €"
+    ],
+    [
+     "DE - 3 Credit Bundle",
+     "29,99 €"
+    ],
+    [
+     "DE - 5 Credit Bundle",
+     "44,99 €"
+    ],
+    [
+     "US Premium Monthly",
+     "17,49 €"
+    ],
+    [
+     "UK Premium Monthly",
+     "11,49 €"
+    ],
+    [
+     "US Premium Monthly",
+     "16,99 €"
+    ],
+    [
+     "UK Premium Monthly",
+     "10,49 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/de/app/id379693831"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Audible monthly membership",
+     "10,99 €"
+    ],
+    [
+     "US Premium Monthly",
+     "17,49 €"
+    ],
+    [
+     "UK Premium Monthly",
+     "11,49 €"
+    ],
+    [
+     "UK Premium Monthly",
+     "9,99 €"
+    ],
+    [
+     "US Premium Monthly",
+     "16,49 €"
+    ],
+    [
+     "Audible iOS Standard Plan",
+     "9,99 €"
+    ],
+    [
+     "DE - Audible iOS Monthly",
+     "10,99 €"
+    ],
+    [
+     "US Plus Monthly",
+     "8,99 €"
+    ],
+    [
+     "UK - Audible iOS Standard Plan",
+     "8,99 €"
+    ],
+    [
+     "FR - Audible iOS Monthly",
+     "10,49 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/es/app/id379693831"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "FR - Audible iOS Monthly",
+     "10,99 €"
+    ],
+    [
+     "FR - Audible iOS Monthly",
+     "10,99 €"
+    ],
+    [
+     "FR - Audible iOS Standard Plan",
+     "6,99 €"
+    ],
+    [
+     "FR - 1 Extra Credit",
+     "10,99 €"
+    ],
+    [
+     "FR - 3 Credit Bundle",
+     "29,99 €"
+    ],
+    [
+     "US Premium Monthly",
+     "17,49 €"
+    ],
+    [
+     "UK Premium Monthly",
+     "11,49 €"
+    ],
+    [
+     "US Premium Monthly",
+     "16,99 €"
+    ],
+    [
+     "UK Premium Monthly",
+     "10,49 €"
+    ],
+    [
+     "Audible Annual (12 credits)",
+     "109,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/fr/app/id379693831"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "UK Premium Monthly",
+     "£9.99"
+    ],
+    [
+     "UK Premium Monthly",
+     "£9.99"
+    ],
+    [
+     "UK - Audible iOS Standard Plan",
+     "£5.99"
+    ],
+    [
+     "UK - 1 Extra Credit",
+     "£9.99"
+    ],
+    [
+     "UK - 3 Credit Bundle",
+     "£23.99"
+    ],
+    [
+     "UK Premium Monthly",
+     "£9.99"
+    ],
+    [
+     "US Premium Monthly",
+     "£15.49"
+    ],
+    [
+     "UK - 5 Credit Bundle",
+     "£32.99"
+    ],
+    [
+     "U.K. - Audible iOS Annual",
+     "£86.99"
+    ],
+    [
+     "US Premium Monthly",
+     "£16.49"
+    ]
+   ],
+   "url": "https://apps.apple.com/gb/app/id379693831"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "UK Premium Monthly",
+     "€11.49"
+    ],
+    [
+     "UK Premium Monthly",
+     "€10.49"
+    ],
+    [
+     "UK - Audible iOS Standard Plan",
+     "€8.99"
+    ],
+    [
+     "UK - 1 Extra Credit",
+     "€11.99"
+    ],
+    [
+     "FR - Audible iOS Standard Plan",
+     "€6.99"
+    ],
+    [
+     "UK - 3 Credit Bundle",
+     "€28.99"
+    ],
+    [
+     "US Premium Monthly",
+     "€17.49"
+    ],
+    [
+     "UK Premium Monthly",
+     "€9.99"
+    ],
+    [
+     "US Premium Monthly",
+     "€17.49"
+    ],
+    [
+     "UK - 5 Credit Bundle",
+     "€39.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ie/app/id379693831"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "US Premium Monthly",
+     "₹ 1,349"
+    ],
+    [
+     "US Premium Monthly",
+     "₹ 1,549"
+    ],
+    [
+     "Audible iOS Standard Plan",
+     "₹ 999"
+    ],
+    [
+     "UK Premium Monthly",
+     "₹ 849"
+    ],
+    [
+     "US Plus Monthly",
+     "₹ 669"
+    ],
+    [
+     "UK Premium Monthly",
+     "₹ 1,049"
+    ],
+    [
+     "UK - Audible iOS Standard Plan",
+     "₹ 799"
+    ],
+    [
+     "AU - Audible iOS Standard Plan",
+     "₹ 599"
+    ],
+    [
+     "AU Premium Monthly",
+     "₹ 899"
+    ],
+    [
+     "US Premium Plus Monthly",
+     "₹ 1,399"
+    ]
+   ],
+   "url": "https://apps.apple.com/in/app/id379693831"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Monthly Audible subscription",
+     "10,99 €"
+    ],
+    [
+     "UK Premium Monthly",
+     "11,49 €"
+    ],
+    [
+     "US Premium Monthly",
+     "17,49 €"
+    ],
+    [
+     "DE - Audible iOS Monthly",
+     "10,99 €"
+    ],
+    [
+     "UK Premium Monthly",
+     "11,99 €"
+    ],
+    [
+     "US Premium Monthly",
+     "19,99 €"
+    ],
+    [
+     "Audible iOS Standard Plan",
+     "7,99 €"
+    ],
+    [
+     "Audible iOS Standard Plan",
+     "9,99 €"
+    ],
+    [
+     "DE - Audible iOS Monthly",
+     "10,99 €"
+    ],
+    [
+     "UK - Audible iOS Standard Plan",
+     "8,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/it/app/id379693831"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "UK Premium Monthly",
+     "€ 11,49"
+    ],
+    [
+     "UK Premium Monthly",
+     "€ 10,49"
+    ],
+    [
+     "US Premium Monthly",
+     "€ 17,49"
+    ],
+    [
+     "UK - Audible iOS Standard Plan",
+     "€ 8,99"
+    ],
+    [
+     "US Premium Monthly",
+     "€ 17,49"
+    ],
+    [
+     "DE - Audible iOS Standard Plan",
+     "€ 7,99"
+    ],
+    [
+     "DE - Audible iOS Monthly",
+     "€ 10,99"
+    ],
+    [
+     "DE - Audible iOS Monthly",
+     "€ 10,99"
+    ],
+    [
+     "Audible iOS Standard Plan",
+     "€ 9,99"
+    ],
+    [
+     "UK - 1 Extra Credit",
+     "€ 11,99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nl/app/id379693831"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "AU Premium Monthly",
+     "$19.49"
+    ],
+    [
+     "AU Premium Monthly",
+     "$19.99"
+    ],
+    [
+     "AU - Audible iOS Standard Plan",
+     "$9.99"
+    ],
+    [
+     "AU - Audible iOS Standard Plan",
+     "$9.99"
+    ],
+    [
+     "AU - 3 Credit Bundle",
+     "$41.99"
+    ],
+    [
+     "US Premium Monthly",
+     "$29.49"
+    ],
+    [
+     "AU - 1 Extra Credit",
+     "$18.99"
+    ],
+    [
+     "UK Premium Monthly",
+     "$18.49"
+    ],
+    [
+     "US Premium Monthly",
+     "$29.99"
+    ],
+    [
+     "UK Premium Monthly",
+     "$18.49"
+    ]
+   ],
+   "url": "https://apps.apple.com/nz/app/id379693831"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "US Premium Monthly",
+     "$15.99"
+    ],
+    [
+     "US Premium Monthly",
+     "$15.99"
+    ],
+    [
+     "U.S. - 3 Credit Bundle",
+     "$39.99"
+    ],
+    [
+     "US Premium Plus Monthly",
+     "$15.99"
+    ],
+    [
+     "US Plus Monthly",
+     "$7.99"
+    ],
+    [
+     "U.S. - 1 Extra Credit",
+     "$15.99"
+    ],
+    [
+     "U.S. - 5 Credit Bundle",
+     "$59.99"
+    ],
+    [
+     "Audible iOS Standard Plan",
+     "$9.99"
+    ],
+    [
+     "US Plus Monthly",
+     "$7.99"
+    ],
+    [
+     "US Audible iOS Annual",
+     "$159.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id379693831"
+  }
+ },
+ "canva-pro": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Canva Pro - Monthly",
+     "$19.99"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "$20.00"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "$20.00"
+    ],
+    [
+     "Canva Business - Monthly",
+     "$28.00"
+    ],
+    [
+     "Canva Credit",
+     "$2.99"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "$164.99"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "$164.99"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "$164.99"
+    ],
+    [
+     "Canva Credit 2 Pack",
+     "$4.99"
+    ],
+    [
+     "Canva Credit 5 Pack",
+     "$9.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/au/app/id897446215"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Canva Pro - Monthly",
+     "$18.99"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "$18.00"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "$18.00"
+    ],
+    [
+     "Canva Business - Monthly",
+     "$26.00"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "$149.99"
+    ],
+    [
+     "Canva Credit",
+     "$2.99"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "$141.99"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "$141.99"
+    ],
+    [
+     "Canva Credit 2 Pack",
+     "$3.99"
+    ],
+    [
+     "Canva Teams - Monthly",
+     "$39.00"
+    ]
+   ],
+   "url": "https://apps.apple.com/ca/app/id897446215"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Canva Pro - Monthly",
+     "12,00 €"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "11,99 €"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "12,00 €"
+    ],
+    [
+     "Canva Business - Monthly",
+     "17,00 €"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "109,99 €"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "109,99 €"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "109,99 €"
+    ],
+    [
+     "Canva Credit",
+     "1,99 €"
+    ],
+    [
+     "Canva Business - Yearly",
+     "169,99 €"
+    ],
+    [
+     "Canva Credit 2 Pack",
+     "2,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/de/app/id897446215"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Canva Pro - Monthly",
+     "12,00 €"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "11,99 €"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "12,00 €"
+    ],
+    [
+     "Canva Business - Monthly",
+     "17,00 €"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "109,99 €"
+    ],
+    [
+     "Canva Credit",
+     "1,99 €"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "109,99 €"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "109,99 €"
+    ],
+    [
+     "Canva Business - Yearly",
+     "169,99 €"
+    ],
+    [
+     "Canva Credit 2 Pack",
+     "2,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/es/app/id897446215"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Canva Pro - Monthly",
+     "12,00 €"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "11,99 €"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "12,00 €"
+    ],
+    [
+     "Canva Business - Monthly",
+     "17,00 €"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "109,99 €"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "109,99 €"
+    ],
+    [
+     "Canva Credit",
+     "1,99 €"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "109,99 €"
+    ],
+    [
+     "Canva Business - Yearly",
+     "169,99 €"
+    ],
+    [
+     "Canva Teams - Monthly",
+     "27,00 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/fr/app/id897446215"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Canva Pro - Monthly",
+     "£12.99"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "£13.00"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "£13.00"
+    ],
+    [
+     "Canva Business - Monthly",
+     "£18.00"
+    ],
+    [
+     "Canva Credit",
+     "£1.99"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "£99.99"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "£100.00"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "£100.00"
+    ],
+    [
+     "Canva Credit 2 Pack",
+     "£2.99"
+    ],
+    [
+     "Canva Business - Yearly",
+     "£179.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/gb/app/id897446215"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Canva Pro - Monthly",
+     "€11.99"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "€12.00"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "€12.00"
+    ],
+    [
+     "Canva Business - Monthly",
+     "€17.00"
+    ],
+    [
+     "Canva Credit",
+     "€1.99"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "€119.99"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "€109.99"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "€109.99"
+    ],
+    [
+     "Canva Credit 2 Pack",
+     "€2.99"
+    ],
+    [
+     "Canva Business - Yearly",
+     "€169.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ie/app/id897446215"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Canva Pro - Monthly",
+     "₹ 500"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "₹ 499"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "₹ 500"
+    ],
+    [
+     "Canva Business - Monthly",
+     "₹ 679"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "₹ 4,000"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "₹ 3,999"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "₹ 4,000"
+    ],
+    [
+     "Canva Credit",
+     "₹ 199"
+    ],
+    [
+     "Canva Business - Yearly",
+     "₹ 6,800"
+    ],
+    [
+     "Canva Business - Monthly",
+     "₹ 650"
+    ]
+   ],
+   "url": "https://apps.apple.com/in/app/id897446215"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Canva Pro - Monthly",
+     "12,00 €"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "11,99 €"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "12,00 €"
+    ],
+    [
+     "Canva Business - Monthly",
+     "17,00 €"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "109,99 €"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "109,99 €"
+    ],
+    [
+     "Canva Credit",
+     "1,99 €"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "109,99 €"
+    ],
+    [
+     "Canva Business - Yearly",
+     "169,99 €"
+    ],
+    [
+     "Canva Credit 2 Pack",
+     "2,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/it/app/id897446215"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Canva Pro - Monthly",
+     "€ 12,00"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "€ 11,99"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "€ 12,00"
+    ],
+    [
+     "Canva Business - Monthly",
+     "€ 17,00"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "€ 109,99"
+    ],
+    [
+     "Canva Credit",
+     "€ 1,99"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "€ 109,99"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "€ 109,99"
+    ],
+    [
+     "Canva Credit 2 Pack",
+     "€ 2,99"
+    ],
+    [
+     "Canva Teams - Monthly",
+     "€ 27,00"
+    ]
+   ],
+   "url": "https://apps.apple.com/nl/app/id897446215"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Canva Pro - Monthly",
+     "$19.99"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "$20.00"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "$20.00"
+    ],
+    [
+     "Canva Business - Monthly",
+     "$28.00"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "$179.99"
+    ],
+    [
+     "Canva Credit",
+     "$3.99"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "$179.99"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "$179.99"
+    ],
+    [
+     "Canva Business - Yearly",
+     "$279.99"
+    ],
+    [
+     "Canva Credit 2 Pack",
+     "$4.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nz/app/id897446215"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Canva Pro - Monthly",
+     "$14.99"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "$15.00"
+    ],
+    [
+     "Canva Pro - Monthly",
+     "$18.00"
+    ],
+    [
+     "Canva Business - Monthly",
+     "$25.00"
+    ],
+    [
+     "Canva Credit",
+     "$1.99"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "$119.99"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "$119.99"
+    ],
+    [
+     "Canva Credit 2 Pack",
+     "$2.99"
+    ],
+    [
+     "Canva Teams - Monthly",
+     "$30.00"
+    ],
+    [
+     "Canva Pro - Yearly",
+     "$143.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id897446215"
+  }
+ },
+ "chatgpt-plus": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "ChatGPT Plus",
+     "$29.99"
+    ],
+    [
+     "ChatGPT Go",
+     "$13.00"
+    ],
+    [
+     "ChatGPT Pro 100",
+     "$154.99"
+    ],
+    [
+     "ChatGPT Pro 200",
+     "$300.00"
+    ],
+    [
+     "ChatGPT Plus",
+     "$300.00"
+    ],
+    [
+     "ChatGPT Pro 500",
+     "$769.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/au/app/id6448311069"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "ChatGPT Plus",
+     "$24.99"
+    ],
+    [
+     "ChatGPT Go",
+     "$12.99"
+    ],
+    [
+     "ChatGPT Pro 100",
+     "$152.99"
+    ],
+    [
+     "ChatGPT Pro 200",
+     "$249.00"
+    ],
+    [
+     "ChatGPT Plus",
+     "$249.00"
+    ],
+    [
+     "ChatGPT Pro 500",
+     "$759.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ca/app/id6448311069"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "ChatGPT Plus",
+     "22,99 €"
+    ],
+    [
+     "ChatGPT Go",
+     "7,99 €"
+    ],
+    [
+     "ChatGPT Pro 100",
+     "102,99 €"
+    ],
+    [
+     "ChatGPT Pro 200",
+     "229,00 €"
+    ],
+    [
+     "ChatGPT Plus",
+     "229,00 €"
+    ],
+    [
+     "ChatGPT Pro 500",
+     "509,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/de/app/id6448311069"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "ChatGPT Plus",
+     "22,99 €"
+    ],
+    [
+     "ChatGPT Go",
+     "7,99 €"
+    ],
+    [
+     "ChatGPT Pro 100",
+     "102,99 €"
+    ],
+    [
+     "ChatGPT Pro 200",
+     "229,00 €"
+    ],
+    [
+     "100 Credits",
+     "4,19 €"
+    ],
+    [
+     "ChatGPT Plus",
+     "229,00 €"
+    ],
+    [
+     "ChatGPT Pro 500",
+     "509,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/es/app/id6448311069"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "ChatGPT Plus",
+     "22,99 €"
+    ],
+    [
+     "ChatGPT Go",
+     "7,99 €"
+    ],
+    [
+     "ChatGPT Pro 100",
+     "102,99 €"
+    ],
+    [
+     "ChatGPT Pro 200",
+     "229,00 €"
+    ],
+    [
+     "ChatGPT Plus",
+     "229,00 €"
+    ],
+    [
+     "ChatGPT Pro 500",
+     "509,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/fr/app/id6448311069"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "ChatGPT Plus",
+     "£19.99"
+    ],
+    [
+     "ChatGPT Go",
+     "£6.99"
+    ],
+    [
+     "ChatGPT Pro 100",
+     "£88.90"
+    ],
+    [
+     "ChatGPT Pro 200",
+     "£200.00"
+    ],
+    [
+     "ChatGPT Plus",
+     "£200.00"
+    ],
+    [
+     "ChatGPT Pro 500",
+     "£444.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/gb/app/id6448311069"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "ChatGPT Plus",
+     "€22.99"
+    ],
+    [
+     "ChatGPT Go",
+     "€7.99"
+    ],
+    [
+     "ChatGPT Pro 100",
+     "€102.99"
+    ],
+    [
+     "ChatGPT Pro 200",
+     "€229.00"
+    ],
+    [
+     "ChatGPT Plus",
+     "€229.00"
+    ],
+    [
+     "ChatGPT Pro 500",
+     "€509.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ie/app/id6448311069"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "ChatGPT Go",
+     "₹ 399"
+    ],
+    [
+     "ChatGPT Plus",
+     "₹ 1,999"
+    ],
+    [
+     "ChatGPT Pro 100",
+     "₹ 10,699"
+    ],
+    [
+     "ChatGPT Pro 200",
+     "₹ 19,900"
+    ],
+    [
+     "ChatGPT Plus",
+     "₹ 19,900"
+    ],
+    [
+     "ChatGPT Pro 500",
+     "₹ 52,900"
+    ]
+   ],
+   "url": "https://apps.apple.com/in/app/id6448311069"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "ChatGPT Plus",
+     "22,99 €"
+    ],
+    [
+     "ChatGPT Go",
+     "7,99 €"
+    ],
+    [
+     "ChatGPT Pro 100",
+     "102,99 €"
+    ],
+    [
+     "ChatGPT Pro 200",
+     "229,00 €"
+    ],
+    [
+     "ChatGPT Plus",
+     "229,00 €"
+    ],
+    [
+     "ChatGPT Pro 500",
+     "509,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/it/app/id6448311069"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "ChatGPT Plus",
+     "€ 22,99"
+    ],
+    [
+     "ChatGPT Go",
+     "€ 7,99"
+    ],
+    [
+     "ChatGPT Pro 100",
+     "€ 102,99"
+    ],
+    [
+     "ChatGPT Pro 200",
+     "€ 229,00"
+    ],
+    [
+     "ChatGPT Plus",
+     "€ 229,00"
+    ],
+    [
+     "ChatGPT Pro 500",
+     "€ 509,99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nl/app/id6448311069"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "ChatGPT Plus",
+     "$39.99"
+    ],
+    [
+     "ChatGPT Go",
+     "$13.99"
+    ],
+    [
+     "ChatGPT Pro 100",
+     "$190.00"
+    ],
+    [
+     "ChatGPT Pro 200",
+     "$400.00"
+    ],
+    [
+     "ChatGPT Plus",
+     "$400.00"
+    ],
+    [
+     "ChatGPT Pro 500",
+     "$949.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nz/app/id6448311069"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "ChatGPT Plus",
+     "$19.99"
+    ],
+    [
+     "ChatGPT Go",
+     "$8.00"
+    ],
+    [
+     "ChatGPT Pro 100",
+     "$100.00"
+    ],
+    [
+     "100 Credits",
+     "$4.00"
+    ],
+    [
+     "ChatGPT Pro 200",
+     "$200.00"
+    ],
+    [
+     "ChatGPT Plus",
+     "$200.00"
+    ],
+    [
+     "ChatGPT Pro 500",
+     "$500.00"
+    ],
+    [
+     "500 Credits",
+     "$20.00"
+    ],
+    [
+     "1000 Credits",
+     "$40.00"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id6448311069"
+  }
+ },
+ "claude-pro": {
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Claude Pro - Monthly",
+     "$20.00"
+    ],
+    [
+     "Claude Max - Monthly",
+     "$124.99"
+    ],
+    [
+     "Claude Ultra - Monthly",
+     "$249.99"
+    ],
+    [
+     "Usage Credits (20)",
+     "$20.00"
+    ],
+    [
+     "Claude Pro - Annual",
+     "$214.99"
+    ],
+    [
+     "Usage Credits (50)",
+     "$45.00"
+    ],
+    [
+     "Usage Credits (250)",
+     "$200.00"
+    ],
+    [
+     "Usage Credits (100)",
+     "$90.00"
+    ],
+    [
+     "Usage Credits (500)",
+     "$350.00"
+    ],
+    [
+     "Usage Credits (1000)",
+     "$700.00"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id6473753684"
+  }
+ },
+ "costco": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/au/app/id535509415"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/ca/app/id535509415"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/es/app/id535509415"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/gb/app/id535509415"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/nz/app/id535509415"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/us/app/id535509415"
+  }
+ },
+ "crunchyroll": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Fan",
+     "$11.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/au/app/id329913454"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Fan",
+     "$10.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ca/app/id329913454"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Fan",
+     "8,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/de/app/id329913454"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Fan",
+     "5,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/es/app/id329913454"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Fan",
+     "6,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/fr/app/id329913454"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/gb/app/id329913454"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Fan",
+     "€5.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ie/app/id329913454"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/in/app/id329913454"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Fan",
+     "5,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/it/app/id329913454"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Fan",
+     "€ 7,99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nl/app/id329913454"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Fan",
+     "$9.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nz/app/id329913454"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Fan",
+     "$9.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id329913454"
   }
  },
  "disney-plus": {
@@ -554,6 +2537,1070 @@
    "url": "https://apps.apple.com/us/app/id1446075923"
   }
  },
+ "google-ai-pro": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Google AI Pro (5 TB)",
+     "$32.99"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "$7.99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "$32.99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "$32.99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "$32.99"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "$7.99"
+    ],
+    [
+     "100 GB",
+     "$2.99"
+    ],
+    [
+     "Google AI Ultra (30 TB)",
+     "$329.99"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "$79.99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "$32.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/au/app/id6477489729"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Google AI Pro (5 TB)",
+     "$26.99"
+    ],
+    [
+     "Google AI Plus (200GB)",
+     "$6.99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "$26.99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "$26.99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "$26.99"
+    ],
+    [
+     "Google AI Plus (200GB)",
+     "$6.99"
+    ],
+    [
+     "100 GB",
+     "$2.79"
+    ],
+    [
+     "Google AI Ultra (30 TB)",
+     "$279.99"
+    ],
+    [
+     "Google AI Plus (200GB)",
+     "$6.99"
+    ],
+    [
+     "Google AI Plus (200GB)",
+     "$69.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ca/app/id6477489729"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Google AI Pro (5 TB)",
+     "21,99 €"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "4,99 €"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "4,99 €"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "4,99 €"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "21,99 €"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "21,99 €"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "21,99 €"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "9,99 €"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "4,99 €"
+    ],
+    [
+     "Google AI Ultra (30 TB)",
+     "219,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/de/app/id6477489729"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Google AI Pro (5 TB)",
+     "21,99 €"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "4,99 €"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "4,99 €"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "4,99 €"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "21,99 €"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "21,99 €"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "21,99 €"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "9,99 €"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "21,99 €"
+    ],
+    [
+     "100 GB",
+     "1,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/fr/app/id6477489729"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Google AI Pro (5 TB)",
+     "£18.99"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "£4.49"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "£18.99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "£18.99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "£18.99"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "£4.49"
+    ],
+    [
+     "100 GB",
+     "£1.79"
+    ],
+    [
+     "Google AI Ultra (30 TB)",
+     "£189.99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "£18.99"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "£4.49"
+    ]
+   ],
+   "url": "https://apps.apple.com/gb/app/id6477489729"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Google AI Pro (5 TB)",
+     "€21.99"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "€4.99"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "€4.99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "€21.99"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "€4.99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "€21.99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "€21.99"
+    ],
+    [
+     "100 GB",
+     "€1.99"
+    ],
+    [
+     "100 GB",
+     "€1.99"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "€4.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ie/app/id6477489729"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Google AI Pro (5 TB)",
+     "21,99 €"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "4,99 €"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "4,99 €"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "4,99 €"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "21,99 €"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "21,99 €"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "21,99 €"
+    ],
+    [
+     "100 GB",
+     "1,99 €"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "49,99 €"
+    ],
+    [
+     "200 GB",
+     "2,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/it/app/id6477489729"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Google AI Pro (5 TB)",
+     "€ 21,99"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "€ 4,99"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "€ 4,99"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "€ 4,99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "€ 21,99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "€ 21,99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "€ 21,99"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "€ 9,99"
+    ],
+    [
+     "100 GB",
+     "€ 1,99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "€ 21,99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nl/app/id6477489729"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Google AI Pro (5 TB)",
+     "$36.99"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "$8.99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "$36.99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "$36.99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "$36.99"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "$8.99"
+    ],
+    [
+     "100 GB",
+     "$3.49"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "$89.99"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "$8.99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "$36.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nz/app/id6477489729"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Google AI Pro (5 TB)",
+     "$19.99"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "$4.99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "$19.99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "$19.99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "$19.99"
+    ],
+    [
+     "Google AI Plus (400 GB)",
+     "$4.99"
+    ],
+    [
+     "Google AI Ultra (30 TB)",
+     "$199.99"
+    ],
+    [
+     "100 GB",
+     "$1.99"
+    ],
+    [
+     "Google AI Pro (5 TB)",
+     "$19.99"
+    ],
+    [
+     "Google AI Ultra (30 TB)",
+     "$199.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id6477489729"
+  }
+ },
+ "google-one": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "100 GB Month",
+     "$2.99"
+    ],
+    [
+     "200 GB Month",
+     "$4.49"
+    ],
+    [
+     "100 GB Month",
+     "$2.99"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "$14.99"
+    ],
+    [
+     "100 GB Annual",
+     "$29.99"
+    ],
+    [
+     "100 GB Month",
+     "$2.99"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "$14.99"
+    ],
+    [
+     "200 GB Month",
+     "$4.49"
+    ],
+    [
+     "100 GB Annual",
+     "$29.99"
+    ],
+    [
+     "200 GB Annual",
+     "$44.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/au/app/id1451784328"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "100 GB Month",
+     "$2.79"
+    ],
+    [
+     "100 GB Month",
+     "$2.79"
+    ],
+    [
+     "200 GB Month",
+     "$3.99"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "$13.99"
+    ],
+    [
+     "100 GB Annual",
+     "$27.99"
+    ],
+    [
+     "200 GB Month",
+     "$3.99"
+    ],
+    [
+     "100 GB Month",
+     "$2.79"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "$13.99"
+    ],
+    [
+     "100 GB Annual",
+     "$27.99"
+    ],
+    [
+     "100 GB Month",
+     "$2.79"
+    ]
+   ],
+   "url": "https://apps.apple.com/ca/app/id1451784328"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "100 GB Month",
+     "1,99 €"
+    ],
+    [
+     "100 GB Month",
+     "1,99 €"
+    ],
+    [
+     "200 GB Month",
+     "2,99 €"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "9,99 €"
+    ],
+    [
+     "100 GB Annual",
+     "19,99 €"
+    ],
+    [
+     "200 GB Month",
+     "2,99 €"
+    ],
+    [
+     "100 GB Month",
+     "1,99 €"
+    ],
+    [
+     "100 GB Annual",
+     "19,99 €"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "9,99 €"
+    ],
+    [
+     "200 GB Annual",
+     "29,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/de/app/id1451784328"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "100 GB Month",
+     "1,99 €"
+    ],
+    [
+     "100 GB Month",
+     "1,99 €"
+    ],
+    [
+     "200 GB Month",
+     "2,99 €"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "9,99 €"
+    ],
+    [
+     "100 GB Annual",
+     "19,99 €"
+    ],
+    [
+     "100 GB Month",
+     "1,99 €"
+    ],
+    [
+     "200 GB Month",
+     "2,99 €"
+    ],
+    [
+     "100 GB Annual",
+     "19,99 €"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "9,99 €"
+    ],
+    [
+     "200 GB Month",
+     "2,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/es/app/id1451784328"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "100 GB Month",
+     "1,99 €"
+    ],
+    [
+     "100 GB Month",
+     "1,99 €"
+    ],
+    [
+     "200 GB Month",
+     "2,99 €"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "9,99 €"
+    ],
+    [
+     "200 GB Month",
+     "2,99 €"
+    ],
+    [
+     "100 GB Month",
+     "1,99 €"
+    ],
+    [
+     "100 GB Annual",
+     "19,99 €"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "9,99 €"
+    ],
+    [
+     "100 GB Annual",
+     "19,99 €"
+    ],
+    [
+     "100 GB Month",
+     "1,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/fr/app/id1451784328"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "100 GB Month",
+     "£1.79"
+    ],
+    [
+     "100 GB Month",
+     "£1.79"
+    ],
+    [
+     "200 GB Month",
+     "£2.99"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "£7.99"
+    ],
+    [
+     "100 GB Month",
+     "£1.79"
+    ],
+    [
+     "100 GB Annual",
+     "£15.99"
+    ],
+    [
+     "200 GB Month",
+     "£2.99"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "£7.99"
+    ],
+    [
+     "100 GB Annual",
+     "£15.99"
+    ],
+    [
+     "100 GB Month",
+     "£1.79"
+    ]
+   ],
+   "url": "https://apps.apple.com/gb/app/id1451784328"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "100 GB Month",
+     "€1.99"
+    ],
+    [
+     "100 GB Month",
+     "€1.99"
+    ],
+    [
+     "200 GB Month",
+     "€2.99"
+    ],
+    [
+     "100 GB Month",
+     "€1.99"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "€10.99"
+    ],
+    [
+     "100 GB Annual",
+     "€19.99"
+    ],
+    [
+     "200 GB Month",
+     "€2.99"
+    ],
+    [
+     "100 GB Month",
+     "€1.99"
+    ],
+    [
+     "100 GB Annual",
+     "€19.99"
+    ],
+    [
+     "200 GB Month",
+     "€2.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ie/app/id1451784328"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "100 GB Month",
+     "₹ 149"
+    ],
+    [
+     "100 GB Month",
+     "₹ 149"
+    ],
+    [
+     "200 GB Month",
+     "₹ 219"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "₹ 749"
+    ],
+    [
+     "100 GB Annual",
+     "₹ 1,499"
+    ],
+    [
+     "100 GB Annual",
+     "₹ 1,499"
+    ],
+    [
+     "100 GB Month",
+     "₹ 149"
+    ],
+    [
+     "200 GB Month",
+     "₹ 219"
+    ],
+    [
+     "100 GB Month",
+     "₹ 149"
+    ],
+    [
+     "200 GB Annual",
+     "₹ 2,199"
+    ]
+   ],
+   "url": "https://apps.apple.com/in/app/id1451784328"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "100 GB Month",
+     "1,99 €"
+    ],
+    [
+     "100 GB Month",
+     "1,99 €"
+    ],
+    [
+     "200 GB Month",
+     "2,99 €"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "9,99 €"
+    ],
+    [
+     "100 GB Annual",
+     "19,99 €"
+    ],
+    [
+     "100 GB Month",
+     "1,99 €"
+    ],
+    [
+     "200 GB Month",
+     "2,99 €"
+    ],
+    [
+     "100 GB Annual",
+     "19,99 €"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "9,99 €"
+    ],
+    [
+     "100 GB Month",
+     "1,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/it/app/id1451784328"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "100 GB Month",
+     "€ 1,99"
+    ],
+    [
+     "100 GB Month",
+     "€ 1,99"
+    ],
+    [
+     "200 GB Month",
+     "€ 3,49"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "€ 9,99"
+    ],
+    [
+     "100 GB Annual",
+     "€ 19,99"
+    ],
+    [
+     "100 GB Month",
+     "€ 1,99"
+    ],
+    [
+     "100 GB Annual",
+     "€ 19,99"
+    ],
+    [
+     "200 GB Month",
+     "€ 3,49"
+    ],
+    [
+     "100 GB Month",
+     "€ 1,99"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "€ 9,99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nl/app/id1451784328"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "100 GB Month",
+     "$3.49"
+    ],
+    [
+     "100 GB Month",
+     "$3.49"
+    ],
+    [
+     "200 GB Month",
+     "$4.99"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "$16.99"
+    ],
+    [
+     "100 GB Annual",
+     "$34.99"
+    ],
+    [
+     "200 GB Month",
+     "$4.99"
+    ],
+    [
+     "100 GB Month",
+     "$3.49"
+    ],
+    [
+     "100 GB Annual",
+     "$34.99"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "$16.99"
+    ],
+    [
+     "200 GB Annual",
+     "$49.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nz/app/id1451784328"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "100 GB",
+     "$1.99"
+    ],
+    [
+     "200 GB",
+     "$2.99"
+    ],
+    [
+     "100 GB",
+     "$1.99"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "$9.99"
+    ],
+    [
+     "100 GB",
+     "$19.99"
+    ],
+    [
+     "200 GB",
+     "$2.99"
+    ],
+    [
+     "Google AI Plus (2 TB)",
+     "$9.99"
+    ],
+    [
+     "100 GB",
+     "$1.99"
+    ],
+    [
+     "200 GB",
+     "$29.99"
+    ],
+    [
+     "100 GB",
+     "$19.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id1451784328"
+  }
+ },
+ "hulu": {
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Hulu",
+     "$12.49"
+    ],
+    [
+     "Hulu (No Ads)",
+     "$21.49"
+    ],
+    [
+     "Hulu",
+     "$12.49"
+    ],
+    [
+     "Hulu (No Ads)",
+     "$21.49"
+    ],
+    [
+     "Hulu",
+     "$12.49"
+    ],
+    [
+     "Hulu (No Ads)",
+     "$21.49"
+    ],
+    [
+     "Hulu (No Ads)",
+     "$21.49"
+    ],
+    [
+     "Hulu (No Ads)",
+     "$21.49"
+    ],
+    [
+     "Hulu",
+     "$12.49"
+    ],
+    [
+     "Hulu",
+     "$12.49"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id376510438"
+  }
+ },
  "max": {
   "AU": {
    "checked": "2026-11-10",
@@ -779,6 +3826,211 @@
    "url": "https://apps.apple.com/us/app/id1666653815"
   }
  },
+ "microsoft-365": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/au/app/id761397963"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/ca/app/id761397963"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/de/app/id761397963"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/es/app/id761397963"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/fr/app/id761397963"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/gb/app/id761397963"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/ie/app/id761397963"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/in/app/id761397963"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/it/app/id761397963"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/nl/app/id761397963"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/nz/app/id761397963"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/us/app/id761397963"
+  }
+ },
+ "paramount-plus": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/au/app/id530168168"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/ca/app/id530168168"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/de/app/id530168168"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/es/app/id530168168"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/fr/app/id530168168"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/gb/app/id530168168"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/ie/app/id530168168"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/in/app/id530168168"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/it/app/id530168168"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/nl/app/id530168168"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": null,
+   "url": "https://apps.apple.com/nz/app/id530168168"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Paramount+ Premium",
+     "$13.99"
+    ],
+    [
+     "Paramount+ Premium",
+     "$13.99"
+    ],
+    [
+     "Paramount+ Essential",
+     "$8.99"
+    ],
+    [
+     "Paramount+ Limited Commercials",
+     "$9.99"
+    ],
+    [
+     "Paramount+ Essential",
+     "$8.99"
+    ],
+    [
+     "Paramount+ Limited Commercials",
+     "$9.99"
+    ],
+    [
+     "Paramount+ Essential: Monthly",
+     "$8.99"
+    ],
+    [
+     "Paramount+ Premium",
+     "$13.99"
+    ],
+    [
+     "Paramount+ Essential: Monthly",
+     "$8.99"
+    ],
+    [
+     "Paramount+ Premium",
+     "$13.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id530168168"
+  }
+ },
+ "peacock": {
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Peacock Premium",
+     "$12.99"
+    ],
+    [
+     "Peacock Premium Plus",
+     "$19.99"
+    ],
+    [
+     "Peacock Select Monthly",
+     "$8.99"
+    ],
+    [
+     "Peacock Premium Annual",
+     "$129.99"
+    ],
+    [
+     "Peacock Premium Plus Annual",
+     "$199.99"
+    ],
+    [
+     "Peacock Select Annual",
+     "$89.99"
+    ],
+    [
+     "Apple TV and Peacock Premium",
+     "$17.99"
+    ],
+    [
+     "Apple TV and Peacock Premium Plus",
+     "$22.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id1508186374"
+  }
+ },
  "prime-video": {
   "AU": {
    "checked": "2026-11-10",
@@ -859,6 +4111,1240 @@
     ]
    ],
    "url": "https://apps.apple.com/us/app/id545519333"
+  }
+ },
+ "spotify": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/au/app/id324684580"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/ca/app/id324684580"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/de/app/id324684580"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/es/app/id324684580"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/fr/app/id324684580"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/gb/app/id324684580"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/ie/app/id324684580"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/in/app/id324684580"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/it/app/id324684580"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/nl/app/id324684580"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/nz/app/id324684580"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/us/app/id324684580"
+  }
+ },
+ "tinder": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "1 Boost",
+     "$9.99"
+    ],
+    [
+     "Tinder Gold",
+     "$29.99"
+    ],
+    [
+     "Tinder Gold",
+     "$43.99"
+    ],
+    [
+     "Tinder Gold",
+     "$29.99"
+    ],
+    [
+     "Tinder Gold",
+     "$21.99"
+    ],
+    [
+     "5 Super Likes",
+     "$12.99"
+    ],
+    [
+     "Tinder Plus",
+     "$14.99"
+    ],
+    [
+     "Tinder Gold",
+     "$21.99"
+    ],
+    [
+     "1 Boost",
+     "$5.99"
+    ],
+    [
+     "Tinder Gold",
+     "$43.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/au/app/id547702041"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "1 Boost",
+     "$5.49"
+    ],
+    [
+     "Tinder Gold",
+     "$14.99"
+    ],
+    [
+     "Tinder Gold",
+     "$20.49"
+    ],
+    [
+     "Tinder Gold",
+     "$14.99"
+    ],
+    [
+     "Tinder Gold",
+     "$19.99"
+    ],
+    [
+     "Tinder Gold",
+     "$19.99"
+    ],
+    [
+     "Tinder Gold",
+     "$39.99"
+    ],
+    [
+     "Tinder Plus",
+     "$13.99"
+    ],
+    [
+     "Tinder Plus",
+     "$13.49"
+    ],
+    [
+     "3 Super Likes",
+     "$13.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ca/app/id547702041"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Tinder Gold",
+     "13,99 €"
+    ],
+    [
+     "Tinder Gold",
+     "27,49 €"
+    ],
+    [
+     "Tinder Gold",
+     "13,99 €"
+    ],
+    [
+     "1 Boost",
+     "9,99 €"
+    ],
+    [
+     "1 Boost",
+     "7,99 €"
+    ],
+    [
+     "Tinder Platinum",
+     "32,99 €"
+    ],
+    [
+     "3 Super Likes",
+     "11,99 €"
+    ],
+    [
+     "5 Super Likes",
+     "5,99 €"
+    ],
+    [
+     "Tinder Gold",
+     "16,49 €"
+    ],
+    [
+     "5 Super Likes",
+     "9,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/de/app/id547702041"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Tinder Gold",
+     "13,99 €"
+    ],
+    [
+     "Tinder Gold",
+     "13,99 €"
+    ],
+    [
+     "Tinder Gold",
+     "27,49 €"
+    ],
+    [
+     "1 Boost",
+     "9,99 €"
+    ],
+    [
+     "Tinder Platinum",
+     "32,99 €"
+    ],
+    [
+     "1 Boost",
+     "7,99 €"
+    ],
+    [
+     "1 Boost",
+     "9,99 €"
+    ],
+    [
+     "Tinder Platinum",
+     "16,99 €"
+    ],
+    [
+     "Tinder Plus",
+     "8,99 €"
+    ],
+    [
+     "Tinder Gold",
+     "16,49 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/es/app/id547702041"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Tinder Gold",
+     "13,99 €"
+    ],
+    [
+     "Tinder Gold",
+     "27,49 €"
+    ],
+    [
+     "Tinder Gold",
+     "13,99 €"
+    ],
+    [
+     "1 Boost",
+     "9,99 €"
+    ],
+    [
+     "1 Boost",
+     "7,99 €"
+    ],
+    [
+     "Tinder Gold",
+     "16,49 €"
+    ],
+    [
+     "Tinder Platinum",
+     "32,99 €"
+    ],
+    [
+     "Tinder Platinum",
+     "16,99 €"
+    ],
+    [
+     "Tinder Plus",
+     "8,99 €"
+    ],
+    [
+     "Tinder Gold",
+     "16,49 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/fr/app/id547702041"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Tinder Gold",
+     "£7.49"
+    ],
+    [
+     "Tinder Gold",
+     "£14.99"
+    ],
+    [
+     "Tinder Gold",
+     "£14.99"
+    ],
+    [
+     "1 Boost",
+     "£7.99"
+    ],
+    [
+     "1 Boost",
+     "£3.99"
+    ],
+    [
+     "3 Boosts",
+     "£9.99"
+    ],
+    [
+     "Tinder Gold",
+     "£11.99"
+    ],
+    [
+     "5 Super Likes",
+     "£4.99"
+    ],
+    [
+     "Tinder Plus",
+     "£3.99"
+    ],
+    [
+     "Tinder Gold",
+     "£13.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/gb/app/id547702041"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Tinder Gold",
+     "€13.99"
+    ],
+    [
+     "Tinder Gold",
+     "€13.99"
+    ],
+    [
+     "1 Boost",
+     "€7.99"
+    ],
+    [
+     "Tinder Gold",
+     "€27.49"
+    ],
+    [
+     "Tinder Gold",
+     "€16.49"
+    ],
+    [
+     "600 coins",
+     "€6.99"
+    ],
+    [
+     "1 Boost",
+     "€9.99"
+    ],
+    [
+     "Tinder Gold",
+     "€16.49"
+    ],
+    [
+     "Tinder Plus",
+     "€8.99"
+    ],
+    [
+     "1 Boost",
+     "€9.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ie/app/id547702041"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Tinder Gold",
+     "₹ 159"
+    ],
+    [
+     "Tinder Gold",
+     "₹ 589"
+    ],
+    [
+     "Tinder Gold",
+     "₹ 159"
+    ],
+    [
+     "Tinder Gold",
+     "₹ 159"
+    ],
+    [
+     "Tinder Plus",
+     "₹ 369"
+    ],
+    [
+     "Tinder Gold",
+     "₹ 319"
+    ],
+    [
+     "Tinder Gold",
+     "₹ 319"
+    ],
+    [
+     "Tinder Plus",
+     "₹ 99"
+    ],
+    [
+     "Tinder Plus",
+     "₹ 99"
+    ],
+    [
+     "Tinder Gold",
+     "₹ 1,099"
+    ]
+   ],
+   "url": "https://apps.apple.com/in/app/id547702041"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Tinder Gold",
+     "13,99 €"
+    ],
+    [
+     "Tinder Gold",
+     "27,49 €"
+    ],
+    [
+     "Tinder Gold",
+     "13,99 €"
+    ],
+    [
+     "1 Boost",
+     "9,99 €"
+    ],
+    [
+     "Tinder Platinum",
+     "32,99 €"
+    ],
+    [
+     "Tinder Platinum",
+     "16,99 €"
+    ],
+    [
+     "1 Boost",
+     "9,99 €"
+    ],
+    [
+     "1 Boost",
+     "7,99 €"
+    ],
+    [
+     "3 Super Likes",
+     "11,99 €"
+    ],
+    [
+     "Tinder Plus",
+     "8,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/it/app/id547702041"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Tinder Gold",
+     "€ 13,99"
+    ],
+    [
+     "1 Boost",
+     "€ 7,99"
+    ],
+    [
+     "Tinder Gold",
+     "€ 13,99"
+    ],
+    [
+     "Tinder Gold",
+     "€ 27,49"
+    ],
+    [
+     "1 Boost",
+     "€ 9,99"
+    ],
+    [
+     "Tinder Gold",
+     "€ 16,49"
+    ],
+    [
+     "5 Super Likes",
+     "€ 5,99"
+    ],
+    [
+     "1 Boost",
+     "€ 9,99"
+    ],
+    [
+     "1 Boost",
+     "€ 4,99"
+    ],
+    [
+     "Tinder Gold",
+     "€ 32,99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nl/app/id547702041"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Tinder Gold",
+     "$25.00"
+    ],
+    [
+     "Tinder Gold",
+     "$25.00"
+    ],
+    [
+     "1 Boost",
+     "$9.99"
+    ],
+    [
+     "Tinder Gold",
+     "$24.99"
+    ],
+    [
+     "Tinder Gold",
+     "$54.99"
+    ],
+    [
+     "Tinder Plus",
+     "$14.99"
+    ],
+    [
+     "Tinder Gold",
+     "$27.49"
+    ],
+    [
+     "Tinder Gold",
+     "$24.99"
+    ],
+    [
+     "Tinder Plus",
+     "$18.49"
+    ],
+    [
+     "5 Super Likes",
+     "$8.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nz/app/id547702041"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Tinder Gold",
+     "$14.99"
+    ],
+    [
+     "Tinder Gold",
+     "$18.99"
+    ],
+    [
+     "1 Boost",
+     "$7.99"
+    ],
+    [
+     "Tinder Gold",
+     "$13.99"
+    ],
+    [
+     "1 Boost",
+     "$6.99"
+    ],
+    [
+     "Tinder Gold",
+     "$24.99"
+    ],
+    [
+     "Tinder Plus",
+     "$9.99"
+    ],
+    [
+     "3 Super Likes",
+     "$9.99"
+    ],
+    [
+     "1 Boost",
+     "$3.99"
+    ],
+    [
+     "5 Super Likes",
+     "$4.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id547702041"
+  }
+ },
+ "uber-one": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/au/app/id368677368"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/ca/app/id368677368"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/de/app/id368677368"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/es/app/id368677368"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/fr/app/id368677368"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/gb/app/id368677368"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/ie/app/id368677368"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/it/app/id368677368"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/nl/app/id368677368"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/nz/app/id368677368"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/us/app/id368677368"
+  }
+ },
+ "walmart-plus": {
+  "US": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/us/app/id338137227"
+  }
+ },
+ "youtube-music": {
+  "AU": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "YouTube Music",
+     "$16.99"
+    ],
+    [
+     "YouTube Music",
+     "$16.99"
+    ],
+    [
+     "YouTube Premium",
+     "$22.99"
+    ],
+    [
+     "YouTube Red",
+     "$22.99"
+    ],
+    [
+     "YouTube Premium",
+     "$22.99"
+    ],
+    [
+     "YouTube Music",
+     "$16.99"
+    ],
+    [
+     "YouTube Music Family",
+     "$29.99"
+    ],
+    [
+     "YouTube Music Family",
+     "$29.99"
+    ],
+    [
+     "YouTube Premium Family",
+     "$51.99"
+    ],
+    [
+     "YouTube Red",
+     "$22.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/au/app/id1017492454"
+  },
+  "CA": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "YouTube Music",
+     "$14.99"
+    ],
+    [
+     "YouTube Music",
+     "$14.99"
+    ],
+    [
+     "YouTube Premium",
+     "$16.99"
+    ],
+    [
+     "YouTube Premium",
+     "$16.99"
+    ],
+    [
+     "YouTube Music",
+     "$14.99"
+    ],
+    [
+     "YouTube Music Family",
+     "$22.99"
+    ],
+    [
+     "YouTube Music Family",
+     "$22.99"
+    ],
+    [
+     "YouTube Premium Family",
+     "$29.99"
+    ],
+    [
+     "YouTube Premium Family",
+     "$29.99"
+    ],
+    [
+     "YouTube Premium",
+     "$16.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ca/app/id1017492454"
+  },
+  "DE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "YouTube Music",
+     "15,99 €"
+    ],
+    [
+     "YouTube Music",
+     "15,99 €"
+    ],
+    [
+     "YouTube Premium",
+     "19,99 €"
+    ],
+    [
+     "YouTube Premium",
+     "19,99 €"
+    ],
+    [
+     "YouTube Music",
+     "15,99 €"
+    ],
+    [
+     "YouTube Music Family",
+     "24,99 €"
+    ],
+    [
+     "YouTube Music Family",
+     "24,99 €"
+    ],
+    [
+     "YouTube Premium Family",
+     "36,99 €"
+    ],
+    [
+     "YouTube Premium Family",
+     "36,99 €"
+    ],
+    [
+     "YouTube Premium",
+     "19,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/de/app/id1017492454"
+  },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "YouTube Music",
+     "15,99 €"
+    ],
+    [
+     "YouTube Music",
+     "15,99 €"
+    ],
+    [
+     "YouTube Premium",
+     "20,99 €"
+    ],
+    [
+     "YouTube Music",
+     "15,99 €"
+    ],
+    [
+     "YouTube Premium",
+     "20,99 €"
+    ],
+    [
+     "YouTube Music Family",
+     "25,99 €"
+    ],
+    [
+     "YouTube Music Family",
+     "25,99 €"
+    ],
+    [
+     "YouTube Premium Family",
+     "38,99 €"
+    ],
+    [
+     "YouTube Premium Family",
+     "38,99 €"
+    ],
+    [
+     "YouTube Premium",
+     "20,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/es/app/id1017492454"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "YouTube Music",
+     "14,99 €"
+    ],
+    [
+     "YouTube Music",
+     "14,99 €"
+    ],
+    [
+     "YouTube Premium",
+     "16,99 €"
+    ],
+    [
+     "YouTube Music",
+     "14,99 €"
+    ],
+    [
+     "YouTube Premium",
+     "16,99 €"
+    ],
+    [
+     "YouTube Music Family",
+     "22,99 €"
+    ],
+    [
+     "YouTube Music Family",
+     "22,99 €"
+    ],
+    [
+     "YouTube Premium Family",
+     "38,99 €"
+    ],
+    [
+     "YouTube Premium",
+     "16,99 €"
+    ],
+    [
+     "YouTube Music Two-person",
+     "19,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/fr/app/id1017492454"
+  },
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "YouTube Music",
+     "£14.99"
+    ],
+    [
+     "YouTube Music",
+     "£14.99"
+    ],
+    [
+     "YouTube Premium",
+     "£16.99"
+    ],
+    [
+     "YouTube Music",
+     "£14.99"
+    ],
+    [
+     "YouTube Premium",
+     "£16.99"
+    ],
+    [
+     "YouTube Music Family",
+     "£22.99"
+    ],
+    [
+     "YouTube Music Family",
+     "£22.99"
+    ],
+    [
+     "YouTube Premium Family",
+     "£25.99"
+    ],
+    [
+     "YouTube Premium",
+     "£16.99"
+    ],
+    [
+     "YouTube Premium Family",
+     "£25.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/gb/app/id1017492454"
+  },
+  "IE": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "YouTube Music",
+     "€15.99"
+    ],
+    [
+     "YouTube Music",
+     "€15.99"
+    ],
+    [
+     "YouTube Premium",
+     "€20.99"
+    ],
+    [
+     "YouTube Premium",
+     "€20.99"
+    ],
+    [
+     "YouTube Music",
+     "€15.99"
+    ],
+    [
+     "YouTube Music Family",
+     "€25.99"
+    ],
+    [
+     "YouTube Music Family",
+     "€25.99"
+    ],
+    [
+     "YouTube Premium Family",
+     "€38.99"
+    ],
+    [
+     "YouTube Premium Family",
+     "€38.99"
+    ],
+    [
+     "YouTube Premium",
+     "€20.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/ie/app/id1017492454"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "YouTube Music",
+     "₹ 155"
+    ],
+    [
+     "YouTube Music",
+     "₹ 155"
+    ],
+    [
+     "YouTube Premium",
+     "₹ 195"
+    ],
+    [
+     "YouTube Premium",
+     "₹ 195"
+    ],
+    [
+     "YouTube Premium Family",
+     "₹ 389"
+    ],
+    [
+     "YouTube Music Family",
+     "₹ 235"
+    ],
+    [
+     "YouTube Music Family",
+     "₹ 235"
+    ],
+    [
+     "YouTube Music",
+     "₹ 155"
+    ],
+    [
+     "YouTube Premium Family",
+     "₹ 389"
+    ],
+    [
+     "YouTube Music Two-person",
+     "₹ 199"
+    ]
+   ],
+   "url": "https://apps.apple.com/in/app/id1017492454"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "YouTube Music",
+     "15,99 €"
+    ],
+    [
+     "YouTube Music",
+     "15,99 €"
+    ],
+    [
+     "YouTube Music",
+     "15,99 €"
+    ],
+    [
+     "YouTube Premium",
+     "20,99 €"
+    ],
+    [
+     "YouTube Premium",
+     "20,99 €"
+    ],
+    [
+     "YouTube Music Family",
+     "25,99 €"
+    ],
+    [
+     "YouTube Music Family",
+     "25,99 €"
+    ],
+    [
+     "YouTube Premium Family",
+     "38,99 €"
+    ],
+    [
+     "YouTube Premium",
+     "20,99 €"
+    ],
+    [
+     "YouTube Premium Family",
+     "38,99 €"
+    ]
+   ],
+   "url": "https://apps.apple.com/it/app/id1017492454"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "YouTube Music",
+     "€ 15,99"
+    ],
+    [
+     "YouTube Music",
+     "€ 15,99"
+    ],
+    [
+     "YouTube Premium",
+     "€ 20,99"
+    ],
+    [
+     "YouTube Premium",
+     "€ 20,99"
+    ],
+    [
+     "YouTube Music",
+     "€ 15,99"
+    ],
+    [
+     "YouTube Music Family",
+     "€ 25,99"
+    ],
+    [
+     "YouTube Music Family",
+     "€ 25,99"
+    ],
+    [
+     "YouTube Premium Family",
+     "€ 38,99"
+    ],
+    [
+     "YouTube Premium Family",
+     "€ 38,99"
+    ],
+    [
+     "YouTube Premium",
+     "€ 20,99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nl/app/id1017492454"
+  },
+  "NZ": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "YouTube Music",
+     "$23.99"
+    ],
+    [
+     "YouTube Music",
+     "$23.99"
+    ],
+    [
+     "YouTube Premium",
+     "$29.99"
+    ],
+    [
+     "YouTube Red",
+     "$29.99"
+    ],
+    [
+     "YouTube Premium",
+     "$29.99"
+    ],
+    [
+     "YouTube Music Family",
+     "$36.99"
+    ],
+    [
+     "YouTube Music Family",
+     "$36.99"
+    ],
+    [
+     "YouTube Music",
+     "$23.99"
+    ],
+    [
+     "YouTube Premium Family",
+     "$51.99"
+    ],
+    [
+     "YouTube Red",
+     "$29.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/nz/app/id1017492454"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "YouTube Music",
+     "$15.99"
+    ],
+    [
+     "YouTube Music",
+     "$15.99"
+    ],
+    [
+     "YouTube Premium",
+     "$20.99"
+    ],
+    [
+     "YouTube Premium",
+     "$20.99"
+    ],
+    [
+     "YouTube Music",
+     "$15.99"
+    ],
+    [
+     "YouTube Music Family",
+     "$24.99"
+    ],
+    [
+     "YouTube Premium",
+     "$20.99"
+    ],
+    [
+     "YouTube Music Family",
+     "$24.99"
+    ],
+    [
+     "YouTube Premium Family",
+     "$34.99"
+    ],
+    [
+     "YouTube Red",
+     "$20.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id1017492454"
   }
  },
  "youtube-premium": {

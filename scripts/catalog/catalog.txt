@@ -76,7 +76,7 @@ pocket-fm|Pocket FM|MU|#E91E4B|PF|m|US,IN||pocket fm|us|^Pocket
 pocket-casts|Pocket Casts Plus|MU|#F43E37|PC|y|-|podcasts,pocket casts|pocket casts|us|^Automattic
 
 ## AI
-chatgpt-plus|ChatGPT Plus|AI|#10A37F|G|m|-|chatgpt,openai,gpt,chat gpt|chatgpt|us|^OpenAI
+chatgpt-plus|ChatGPT|AI|#10A37F|G|m|-|chatgpt plus,chatgpt,openai,gpt,chat gpt|chatgpt|us|^OpenAI
 claude-pro|Claude Pro|AI|#D97757|C|m|-|claude,anthropic|claude by anthropic|us|^Anthropic
 google-ai-pro|Google AI Pro|AI|#4285F4|G|m|-|gemini,gemini advanced,google one ai premium,ai premium|google gemini|us|^Google
 perplexity|Perplexity Pro|AI|#20808D|P|m|-|perplexity|perplexity|us|^Perplexity

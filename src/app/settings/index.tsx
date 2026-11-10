@@ -17,7 +17,7 @@ import { APP_VERSION, SHORT_VERSION } from '@/settings/version';
 import { TimeField } from '@/settings/TimeField';
 import { useApp } from '@/state/app';
 import { tell } from '@/ui/alert';
-import { Bang, Bell, Button, Card, Check, F, SunSwitch, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
+import { Bang, Bell, Button, Card, Check, F, ProLockup, SunSwitch, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
 
 
 export default function Settings() {
@@ -29,6 +29,7 @@ export default function Settings() {
 
   // Health check every time Settings opens.
   const { recheck } = app;
+  const cardFg = usePalette().cardFg;
   useFocusEffect(
     useCallback(() => {
       recheck();
@@ -58,6 +59,7 @@ export default function Settings() {
       <Group>
         <Row
           label="Ditch Pro"
+          labelNode={<ProLockup size={19} color={cardFg} />}
           onPress={() => (pro ? router.push('/settings/pro') : router.push('/paywall?from=app'))}
           a11yValue={pro ? `, ${proValue}` : ', try free'}
           right={

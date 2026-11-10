@@ -55,7 +55,7 @@ export function demoData(name: DemoName, today: DateOnly): { subs: Sub[]; settin
     sub('netflix', 'Netflix', 'netflix', 'Streaming', 1799, d(5), { freePick: true }),
     sub('spotify', 'Spotify', 'spotify', 'Music', 1199, d(7), guess),
     sub('disney', 'Disney+', 'disney-plus', 'Streaming', 1199, d(9), guess),
-    sub('chatgpt', 'ChatGPT Plus', 'chatgpt-plus', 'AI & apps', 2000, d(12), { freePick: true }),
+    sub('chatgpt', 'ChatGPT', 'chatgpt-plus', 'AI & apps', 2000, d(12), { freePick: true }),
     sub('youtube', 'YouTube Premium', 'youtube-premium', 'Streaming', 1399, d(18), guess),
     sub('amazon', 'Amazon Prime', 'amazon-prime', 'Shopping', 1499, d(24), { ...guess, freePick: true }),
     cancelled('applemusic', 'Apple Music', 'apple-music', 1099, '2026-09-17'),

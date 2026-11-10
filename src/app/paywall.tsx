@@ -202,13 +202,15 @@ export default function Paywall() {
   return (
     <OnbRoot surface="cream">
       <FitScroll style={{ paddingHorizontal: f.edge, paddingBottom: f.bottom }}>
-        <View style={{ marginHorizontal: -f.edge, paddingTop: f.top, paddingHorizontal: f.edge, paddingBottom: f.tablet ? 80 : f.small ? 52 : 48, backgroundColor: dark ? '#2A2516' : brand.sunflower }}>
+        <View style={{ flexGrow: 1, marginHorizontal: -f.edge, paddingTop: f.top, paddingHorizontal: f.edge, paddingBottom: f.tablet ? 80 : f.small ? 52 : 48, backgroundColor: dark ? '#2A2516' : brand.sunflower }}>
           <View style={{ height: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <ProLockup size={f.small ? 20 : 22} color={ink} />
             <IconButton label="Close, continue free" onPress={leaveFree} size={32} bg={dark ? '#3A3424' : 'rgba(22,20,15,0.12)'} style={{ marginRight: -6 }}>
               <Close color={ink} />
             </IconButton>
           </View>
+          {/* Spare height goes here, so the title sits lower instead of a gap under the plans. */}
+          <View style={{ flexGrow: 1 }} />
           <Txt v="title" color={ink} accessibilityRole="header" accessibilityLabel={spokenHead} style={f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null}>
             {head}
           </Txt>
@@ -249,7 +251,7 @@ export default function Paywall() {
           />
         </View>
 
-        <View style={{ flex: 1, minHeight: 8 }} />
+        <View style={{ height: f.small ? 12 : 20 }} />
         <Button label={cta} onPress={buy} height={f.small ? 48 : 56} />
         {/* A fixed slot, so the button never moves when the plan changes. */}
         <View style={{ height: 48, alignItems: 'center', justifyContent: 'center', paddingHorizontal: planId === 'yearly' ? 0 : 4 }}>

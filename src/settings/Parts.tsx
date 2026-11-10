@@ -75,7 +75,10 @@ export function Row({
   danger,
   hint,
   a11yValue,
+  labelNode,
 }: {
+  /** Drawn instead of the plain label (VoiceOver still reads `label`). */
+  labelNode?: ReactNode;
   label: string;
   value?: string;
   onPress?: () => void;
@@ -88,9 +91,11 @@ export function Row({
   const p = usePalette();
   const body = (pressed: boolean) => (
     <View style={{ minHeight: 52, flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 8, opacity: pressed ? 0.6 : 1 }}>
-      <Txt v="leadS" color={danger ? p.danger : p.cardFg} style={{ flexShrink: 0, fontFamily: danger ? F.semi : F.regular, fontSize: 16.5 }}>
-        {label}
-      </Txt>
+      {labelNode ?? (
+        <Txt v="leadS" color={danger ? p.danger : p.cardFg} style={{ flexShrink: 0, fontFamily: danger ? F.semi : F.regular, fontSize: 16.5 }}>
+          {label}
+        </Txt>
+      )}
       <View style={{ flex: 1, alignItems: 'flex-end' }}>
         {right ?? (value ? (
           <Txt v="leadS" tone="mute" num numberOfLines={1} style={{ fontSize: 16 }}>

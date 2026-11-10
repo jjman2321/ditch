@@ -66,7 +66,7 @@ describe('Home groups', () => {
     const groups = homeGroups(demo(), TODAY);
     expect(groups.map((g) => [g.title, g.rows.map((r) => `${r.sub.name} ${r.charge}`)])).toEqual([
       ['This week', ['Netflix 2026-11-14']],
-      ['Next week', ['Spotify 2026-11-16', 'Disney+ 2026-11-18', 'ChatGPT Plus 2026-11-21']],
+      ['Next week', ['Spotify 2026-11-16', 'Disney+ 2026-11-18', 'ChatGPT 2026-11-21']],
       ['Later', ['YouTube Premium 2026-11-27', 'Amazon Prime 2026-12-03']],
     ]);
   });

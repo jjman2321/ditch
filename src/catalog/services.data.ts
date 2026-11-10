@@ -904,12 +904,13 @@ export const SERVICE_ROWS: CatalogService[] = [
   },
   {
     "id": "chatgpt-plus",
-    "name": "ChatGPT Plus",
+    "name": "ChatGPT",
     "category": "AI",
     "color": "#10A37F",
     "mono": "G",
     "cycle": "monthly",
     "aliases": [
+      "chatgpt plus",
       "chatgpt",
       "openai",
       "gpt",

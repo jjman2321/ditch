@@ -8,10 +8,10 @@ import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { FlatList, Pressable, ScrollView, TextInput, View } from 'react-native';
 
-import { catalogPrice, planChoices } from '@/catalog/prices';
+import { catalogPrice, defaultPlan, planChoices, priceRow } from '@/catalog/prices';
 import { CATEGORIES, SERVICES, availableIn, popularIn, searchServices, type CatalogService, type Category } from '@/catalog/services';
 import { shortPlanName } from '@/domain/copy';
-import { CYCLE_SHORT, yearlyMinor } from '@/domain/money';
+import { CYCLE_SHORT } from '@/domain/money';
 import { CountrySheet } from '@/onboarding/CountrySheet';
 import { LinkButton, OnbRoot, TextLink } from '@/onboarding/Parts';
 import { PlanSheet } from '@/onboarding/PlanSheet';
@@ -44,13 +44,14 @@ function useRowLine() {
       const name = pick.planName ? shortPlanName(pick.planName, s.name, plans.map((x) => x.name)) : null;
       return { text: name ? `${name} · ${amount}` : amount, link: plans.length > 1 ? 'plan' : null };
     }
+    // Not ticked yet: show the plan and price a tick will give, so ticking
+    // only adds the tick and "Change" instead of changing the whole line.
     const plans = planChoices(s.id, country);
-    if (plans.length > 1) {
-      const c = catalogPrice(s.id, country)!;
-      // The cheapest plan billed the same way as the default one.
-      const same = plans.filter((x) => x.cycle === c.cycle);
-      const low = same.reduce((a, b) => (yearlyMinor(b.amountMinor, b.cycle) < yearlyMinor(a.amountMinor, a.cycle) ? b : a), same[0]);
-      return { text: `from ${money(low.amountMinor, c.currency)}${CYCLE_SHORT[low.cycle]}`, link: null };
+    const row = plans.length > 1 ? priceRow(s.id, country) : null;
+    if (row) {
+      const d = defaultPlan(row);
+      const name = shortPlanName(d.name, s.name, plans.map((x) => x.name));
+      return { text: `${name} · ${money(d.amountMinor, row.currency)}${CYCLE_SHORT[d.cycle]}`, link: null };
     }
     const c = catalogPrice(s.id, country);
     return { text: c ? `${money(c.amountMinor, c.currency)}${CYCLE_SHORT[c.cycle]}` : 'Add your price', link: null };

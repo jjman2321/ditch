@@ -64,8 +64,7 @@ This is the #1 complaint about Bobby, so it's the product.
 - Test the scheduling logic in Jest **and** delivery on a real iPhone.
 
 ### 4. Honest paywall
-- Close button visible from the first frame.
-- "Continue free" option.
+- Close button (×) visible from the first frame, 44pt, and it always leads to the free app. It is the only "continue free" control (owner decision Nov 10, DECISIONS #29); the Free | Pro table shows what Free includes.
 - Restore purchases.
 - Trial timeline with real dates (Today → reminder day → charge day).
 - No weekly plan, no countdown timers, no fake discounts, no free-trial toggle.

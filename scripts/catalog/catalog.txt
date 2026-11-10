@@ -10,7 +10,7 @@
 # Order inside a category = most popular first. Flags after the seller column: apple (billed by Apple).
 
 ## Streaming
-netflix|Netflix|ST|#E50914|N|m|-|||netflix|us|^Netflix
+netflix|Netflix|ST|#E50914|N|m|-||netflix|us|^Netflix
 disney-plus|Disney+|ST|#0B1F5C|D+|m|US,GB,CA,AU,IE,NZ,DE,NL,FR,IT,ES|disney plus,disney|disney+|us|^Disney
 youtube-premium|YouTube Premium|ST|#FF0033|YT|m|-|yt,youtube,yt premium|youtube|us|^Google
 max|HBO Max|ST|#002BE7|M|m|-|hbo,max,hbo max|hbo max|us|^(WarnerMedia|Warner Bros|Home Box Office)
@@ -227,7 +227,7 @@ nrc|NRC|NE|#D4002A|NRC|m|NL||nrc|nl|^(NRC|Mediahuis)
 corriere|Corriere della Sera|NE|#000000|C|m|IT|corriere|corriere della sera|it|^(RCS|Corriere)
 el-pais|El País|NE|#000000|P|m|ES|el pais|el país|es|^(Ediciones El Pa|PRISA|Prisa|Diario El Pa)
 times-of-india|Times of India|NE|#E21B22|TOI|y|IN|toi,toi+,times of india|times of india|in|^(Times Internet|Bennett)
-blinkist|Blinkist|NE|#2CE080|B|y|-||blinkist|de|^Blinkist
+blinkist|Blinkist|NE|#2CE080|B|y|-||blinkist|de|^(Blinkist|Blinks Labs)
 
 ## Gaming
 xbox-game-pass|Xbox Game Pass|GA|#107C10|X|m|-|xbox,game pass,gamepass|xbox|us|^Microsoft
@@ -238,7 +238,7 @@ roblox|Roblox Premium|GA|#000000|R|m|-|roblox|roblox|us|^Roblox
 fortnite-crew|Fortnite Crew|GA|#3D8BFF|F|m|-|fortnite,epic games|-|us|-
 minecraft|Minecraft Realms|GA|#62B47A|M|m|-|minecraft|minecraft: dream it, build it|us|^(Mojang|Microsoft)
 ea-play|EA Play|GA|#FF4747|EA|m|-|ea,electronic arts|-|us|-
-ubisoft-plus|Ubisoft+|GA|#0070FF|U+|m|-|ubisoft|ubisoft connect|us|^Ubisoft
+ubisoft-plus|Ubisoft+|GA|#0070FF|U+|m|-|ubisoft|-|us|-
 geforce-now|GeForce NOW|GA|#76B900|GF|m|US,GB,CA,AU,IE,NZ,DE,NL,FR,IT,ES,IN|nvidia,geforce|-|us|-
 chess-com|Chess.com|GA|#81B64C|C|y|-|chess|chess - play & learn|us|^Chess
 

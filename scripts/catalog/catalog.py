@@ -50,6 +50,8 @@ def read_catalog():
             raise ValueError(f'bad catalog line ({len(p)} columns): {line}')
         sid, name, cat, color, mono, cycle, countries, aliases, term, cc, seller = p[:11]
         flags = p[11].split(',') if len(p) > 11 and p[11] else []
+        if set(flags) - {'apple'}:
+            raise ValueError(f'unknown flags {flags} (too many columns?): {line}')
         rows.append(
             {
                 'id': sid,

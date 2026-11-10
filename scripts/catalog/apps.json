@@ -83,11 +83,23 @@
   "seller": "Compile, Inc.",
   "cc": "us"
  },
+ "binge": {
+  "trackId": 1486598248,
+  "trackName": "Binge",
+  "seller": "Hubbl Pty Ltd",
+  "cc": "au"
+ },
  "bitwarden": {
   "trackId": 1137397744,
   "trackName": "Bitwarden Password Manager",
   "seller": "Bitwarden Inc",
   "cc": "us"
+ },
+ "blinkist": {
+  "trackId": 568839295,
+  "trackName": "Blinkist: Bücher in 15 Minuten",
+  "seller": "Blinks Labs GmbH",
+  "cc": "de"
  },
  "bloomberg": {
   "trackId": 281941097,
@@ -153,6 +165,12 @@
   "trackId": 6448311069,
   "trackName": "ChatGPT",
   "seller": "OpenAI OpCo, LLC",
+  "cc": "us"
+ },
+ "chegg": {
+  "trackId": 385758163,
+  "trackName": "Chegg Study - Homework Help",
+  "seller": "Chegg, Inc.",
   "cc": "us"
  },
  "chess-com": {
@@ -365,6 +383,12 @@
   "seller": "fuboTV Inc.",
   "cc": "us"
  },
+ "gaana": {
+  "trackId": 585270521,
+  "trackName": "Gaana Music - Songs & Podcasts",
+  "seller": "Gamma Gaana Ltd",
+  "cc": "in"
+ },
  "garmin-connect": {
   "trackId": 583446403,
   "trackName": "Garmin Connect™",
@@ -405,6 +429,12 @@
   "trackId": 1451784328,
   "trackName": "Google One",
   "seller": "Google LLC",
+  "cc": "us"
+ },
+ "grammarly": {
+  "trackId": 1158877342,
+  "trackName": "Grammarly: AI Keyboard & Voice",
+  "seller": "Superhuman Platform Inc",
   "cc": "us"
  },
  "grindr": {
@@ -467,6 +497,12 @@
   "seller": "Maplebear Inc",
   "cc": "us"
  },
+ "irish-times": {
+  "trackId": 365544593,
+  "trackName": "The Irish Times",
+  "seller": "The Irish Times",
+  "cc": "ie"
+ },
  "itvx": {
   "trackId": 446079916,
   "trackName": "ITVX",
@@ -490,6 +526,18 @@
   "trackName": "Joyn | deine Streaming App",
   "seller": "Joyn GmbH",
   "cc": "de"
+ },
+ "just-eat": {
+  "trackId": 566347057,
+  "trackName": "Just Eat: Food and Shops",
+  "seller": "Just-Eat Holdings Limited",
+  "cc": "gb"
+ },
+ "kayo": {
+  "trackId": 1434518367,
+  "trackName": "Kayo Sports",
+  "seller": "Hubbl Pty Ltd",
+  "cc": "au"
  },
  "kindle-unlimited": {
   "trackId": 302584613,
@@ -526,6 +574,12 @@
   "trackName": "LinkedIn: Community & Network",
   "seller": "LinkedIn Corporation",
   "cc": "us"
+ },
+ "lovoo": {
+  "trackId": 445338486,
+  "trackName": "LOVOO: Dating, Flirt & Chat",
+  "seller": "PE Digital GmbH",
+  "cc": "de"
  },
  "lyft-pink": {
   "trackId": 529379082,
@@ -582,8 +636,8 @@
   "cc": "us"
  },
  "microsoft-365": {
-  "trackId": 761397963,
-  "trackName": "Microsoft 365 Admin",
+  "trackId": 541164041,
+  "trackName": "Microsoft Copilot",
   "seller": "Microsoft Corporation",
   "cc": "us"
  },
@@ -623,6 +677,18 @@
   "seller": "NBA MEDIA VENTURES, LLC",
   "cc": "us"
  },
+ "neon": {
+  "trackId": 893849629,
+  "trackName": "Neon TV",
+  "seller": "Lightbox New Zealand Limited",
+  "cc": "nz"
+ },
+ "netflix": {
+  "trackId": 363590051,
+  "trackName": "Netflix",
+  "seller": "Netflix, Inc.",
+  "cc": "us"
+ },
  "nintendo-online": {
   "trackId": 1234806557,
   "trackName": "Nintendo Switch App",
@@ -659,6 +725,12 @@
   "seller": "Sky UK Limited",
   "cc": "gb"
  },
+ "npo-plus": {
+  "trackId": 323998316,
+  "trackName": "NPO Start",
+  "seller": "Stichting Nederlandse Publieke Omroep",
+  "cc": "nl"
+ },
  "nrc": {
   "trackId": 457869501,
   "trackName": "NRC - Nieuws en achtergronden",
@@ -676,6 +748,12 @@
   "trackName": "NZ Herald News",
   "seller": "NZME Holdings Ltd",
   "cc": "nz"
+ },
+ "okcupid": {
+  "trackId": 338701294,
+  "trackName": "OkCupid Dating: Date Singles",
+  "seller": "Match Group Americas, LLC",
+  "cc": "us"
  },
  "onedrive": {
   "trackId": 477537958,
@@ -737,6 +815,12 @@
   "seller": "Philo, Inc.",
   "cc": "us"
  },
+ "photomath": {
+  "trackId": 919087726,
+  "trackName": "Photomath",
+  "seller": "Google LLC",
+  "cc": "us"
+ },
  "planet-fitness": {
   "trackId": 399857015,
   "trackName": "Planet Fitness",
@@ -768,8 +852,8 @@
   "cc": "us"
  },
  "proton": {
-  "trackId": 1509667851,
-  "trackName": "Proton Drive: Cloud Storage",
+  "trackId": 979659905,
+  "trackName": "Encrypted Email - Proton Mail",
   "seller": "Proton AG",
   "cc": "us"
  },
@@ -795,6 +879,12 @@
   "trackId": 946429340,
   "trackName": "Qobuz: Music & Editorial",
   "seller": "qobuz",
+  "cc": "us"
+ },
+ "quizlet": {
+  "trackId": 546473125,
+  "trackName": "Quizlet: More than Flashcards",
+  "seller": "Quizlet Inc",
   "cc": "us"
  },
  "remini": {
@@ -843,6 +933,12 @@
   "trackId": 919790315,
   "trackName": "Shudder: Horror & Thrillers",
   "seller": "Digital Store LLC",
+  "cc": "us"
+ },
+ "simply-piano": {
+  "trackId": 1019442026,
+  "trackName": "Simply Piano: Learn Piano Fast",
+  "seller": "Simply Ltd",
   "cc": "us"
  },
  "siriusxm": {
@@ -1037,10 +1133,28 @@
   "seller": "Tinder LLC",
   "cc": "us"
  },
+ "todoist": {
+  "trackId": 572688855,
+  "trackName": "Todoist: To Do List & Calendar",
+  "seller": "Todoist Inc.",
+  "cc": "us"
+ },
+ "truecaller": {
+  "trackId": 448142450,
+  "trackName": "Truecaller: Premium Caller ID",
+  "seller": "True Software Scandinavia AB",
+  "cc": "in"
+ },
  "uber-one": {
   "trackId": 368677368,
   "trackName": "Uber - Rides, Eats, Hotels",
   "seller": "Uber Technologies, Inc.",
+  "cc": "us"
+ },
+ "udemy": {
+  "trackId": 562413829,
+  "trackName": "Udemy: Build Career Skills",
+  "seller": "Udemy Inc",
   "cc": "us"
  },
  "videoland": {

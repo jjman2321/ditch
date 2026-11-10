@@ -10,6 +10,7 @@ logo. To fix one, edit apps.json by hand (set "trackId") or delete its
 entry and re-run with a better search term.
 """
 
+import functools
 import json
 import re
 import sys
@@ -20,17 +21,18 @@ import urllib.request
 sys.path.insert(0, str(__import__('pathlib').Path(__file__).resolve().parent))
 from catalog import APPS, read_catalog  # noqa: E402
 
+print = functools.partial(print, flush=True)  # noqa: A001
 UA = {'User-Agent': 'ditch-catalog/1.0'}
 
 
-def get_json(url, tries=6):
+def get_json(url, tries=8):
     for i in range(tries):
         try:
             with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=30) as r:
                 return json.loads(r.read().decode('utf-8'))
         except urllib.error.HTTPError as e:
             if e.code in (403, 429, 500, 502, 503) and i < tries - 1:
-                time.sleep(10 * (i + 1))
+                time.sleep(60)  # Apple answers 403 when we go too fast
                 continue
             raise
         except (urllib.error.URLError, TimeoutError):
@@ -65,7 +67,7 @@ def main():
             continue
         q = urllib.parse.urlencode({'term': row['term'], 'entity': 'software', 'country': row['cc'], 'limit': 15})
         data = get_json(f'https://itunes.apple.com/search?{q}')
-        time.sleep(3)  # be polite: the Search API allows about 20 calls a minute
+        time.sleep(6)  # be polite: the Search API allows about 20 calls a minute
         seller = re.compile(row['seller'], re.I)
         ok = [r for r in data.get('results', []) if seller.search(r.get('sellerName', '')) or seller.search(r.get('artistName', ''))]
         ok.sort(key=lambda r: -score(row, r))  # stable: keeps Apple's relevance order on ties

@@ -9,7 +9,7 @@ import { useMemo, useState } from 'react';
 import { FlatList, Pressable, ScrollView, TextInput, View } from 'react-native';
 
 import { catalogPrice, planChoices } from '@/catalog/prices';
-import { CATEGORIES, POPULAR, SERVICES, availableIn, type CatalogService, type Category } from '@/catalog/services';
+import { CATEGORIES, SERVICES, availableIn, popularIn, searchServices, type CatalogService, type Category } from '@/catalog/services';
 import { CYCLE_WORDS } from '@/domain/money';
 import { CountrySheet } from '@/onboarding/CountrySheet';
 import { PriceSheet } from '@/onboarding/PriceSheet';
@@ -180,9 +180,9 @@ function List() {
   const [priceOpen, setPriceOpen] = useState(false);
 
   const data = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    const base = q ? SERVICES.filter((s) => s.name.toLowerCase().includes(q)) : filter === 'Popular' ? POPULAR : SERVICES.filter((s) => s.category === filter);
-    return base.filter((s) => availableIn(s, country));
+    const here = SERVICES.filter((s) => availableIn(s, country));
+    if (query.trim()) return searchServices(query, here);
+    return filter === 'Popular' ? popularIn(country) : here.filter((s) => s.category === filter);
   }, [filter, query, country]);
   const total = SERVICES.filter((s) => availableIn(s, country)).length;
 

@@ -8,7 +8,7 @@ import { createContext, useCallback, useContext, useMemo, useState, type ReactNo
 import { AccessibilityInfo, Pressable, ScrollView, TextInput, View } from 'react-native';
 
 import { catalogPrice, planChoices } from '@/catalog/prices';
-import { SERVICES, SERVICE_BY_ID, availableIn, type CatalogService } from '@/catalog/services';
+import { SERVICES, SERVICE_BY_ID, availableIn, popularIn, searchServices, type CatalogService } from '@/catalog/services';
 import { guessNextCharge } from '@/domain/charges';
 import { type DateOnly } from '@/domain/dates';
 import { CYCLE_WORDS, currencyDigits, formatMoney, parseAmountInput, type Cycle } from '@/domain/money';
@@ -144,10 +144,8 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
   const typed = parseAmountInput(amount, currency);
 
   const matches = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    const list = SERVICES.filter((s) => availableIn(s, country));
-    if (!q) return list.filter((s) => s.popular).slice(0, 6);
-    return list.filter((s) => s.name.toLowerCase().includes(q) || s.id.includes(q)).slice(0, 6);
+    if (!query.trim()) return popularIn(country, 6);
+    return searchServices(query, SERVICES.filter((s) => availableIn(s, country))).slice(0, 6);
   }, [query, country]);
 
   if (open.mode === 'edit' && !existing) return null;

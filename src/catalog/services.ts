@@ -1,4 +1,6 @@
-// Bundled catalog of services: names, logos, categories.
+// Bundled catalog of services: names, logos, categories, search.
+// The list itself is generated: edit scripts/catalog/catalog.txt and run
+// `npm run catalog` (writes services.data.ts and logos.ts).
 // Prices are NOT here: they're per country in prices.ts (DECISIONS #17).
 // `cycle` is only the usual billing cycle, used when the user adds their
 // own price.
@@ -7,15 +9,21 @@
 
 import type { Cycle } from '@/domain/money';
 
+import { SERVICE_ROWS, TOP_IDS } from './services.data';
+
 export type Category =
   | 'Streaming'
-  | 'Music'
-  | 'AI & apps'
-  | 'Cloud'
-  | 'Shopping'
-  | 'Fitness'
-  | 'News'
-  | 'Gaming';
+  | 'Music & audio'
+  | 'AI'
+  | 'Productivity'
+  | 'Cloud & security'
+  | 'Shopping & food'
+  | 'Health & fitness'
+  | 'Dating'
+  | 'Social'
+  | 'News & reading'
+  | 'Gaming'
+  | 'Learning';
 
 export type CatalogService = {
   id: string;
@@ -23,117 +31,109 @@ export type CatalogService = {
   category: Category;
   color: string; // tile background
   ink?: string; // monogram colour, defaults to white
-  mono: string; // 1–2 letters on the tile
+  mono: string; // 1–3 letters on the tile
   cycle: Cycle; // usual billing cycle
   /** Countries where it's sold. Omitted = everywhere we support. */
   availableIn?: string[];
+  /** Other words people search for ("HBO" for HBO Max, "Prime" for Amazon Prime). */
+  aliases?: string[];
   billedVia?: 'apple' | 'direct';
-  popular?: boolean; // shown first
+  /** 1–100 for the 100 most popular services (scripts/catalog/top100.txt). */
+  rank?: number;
+  popular?: boolean; // the top 20: the editor's first suggestions
 };
 
 export const CATEGORIES: Category[] = [
   'Streaming',
-  'Music',
-  'AI & apps',
-  'Cloud',
-  'Shopping',
-  'Fitness',
-  'News',
+  'Music & audio',
+  'AI',
+  'Productivity',
+  'Cloud & security',
+  'Shopping & food',
+  'Health & fitness',
+  'Dating',
+  'Social',
+  'News & reading',
   'Gaming',
+  'Learning',
 ];
 
-const s = (
-  id: string,
-  name: string,
-  category: Category,
-  color: string,
-  mono: string,
-  cycle: Cycle = 'monthly',
-  extra: Partial<CatalogService> = {},
-): CatalogService => ({ id, name, category, color, mono, cycle, ...extra });
+/** The whole catalog, most popular first within each category. */
+export const SERVICES: CatalogService[] = SERVICE_ROWS;
 
-const US_ONLY = { availableIn: ['US'] };
+export const SERVICE_BY_ID: Record<string, CatalogService> = Object.fromEntries(SERVICES.map((x) => [x.id, x]));
 
-export const SERVICES: CatalogService[] = [
-  // Streaming
-  s('netflix', 'Netflix', 'Streaming', '#E50914', 'N', 'monthly', { popular: true }),
-  s('disney-plus', 'Disney+', 'Streaming', '#0B1F5C', 'D+', 'monthly', { popular: true }),
-  s('hulu', 'Hulu', 'Streaming', '#1CE783', 'h', 'monthly', { ink: '#0B2A17', popular: true, ...US_ONLY }),
-  s('max', 'HBO Max', 'Streaming', '#002BE7', 'M', 'monthly', { popular: true }),
-  s('prime-video', 'Prime Video', 'Streaming', '#00A8E1', 'pv'),
-  s('apple-tv', 'Apple TV', 'Streaming', '#111111', 'tv', 'monthly', { billedVia: 'apple', popular: true }),
-  s('peacock', 'Peacock', 'Streaming', '#1A1A1A', 'P', 'monthly', US_ONLY),
-  s('paramount-plus', 'Paramount+', 'Streaming', '#0064FF', 'P+'),
-  s('youtube-premium', 'YouTube Premium', 'Streaming', '#FF0033', 'YT', 'monthly', { popular: true }),
-  s('crunchyroll', 'Crunchyroll', 'Streaming', '#F47521', 'C'),
-  // Music
-  s('spotify', 'Spotify', 'Music', '#1DB954', 'S', 'monthly', { ink: '#0B2A17', popular: true }),
-  s('apple-music', 'Apple Music', 'Music', '#FA2D48', '♪', 'monthly', { billedVia: 'apple' }),
-  s('youtube-music', 'YouTube Music', 'Music', '#FF0033', 'YM'),
-  s('audible', 'Audible', 'Music', '#F8991C', 'A'),
-  s('siriusxm', 'SiriusXM', 'Music', '#0000EB', 'SX', 'monthly', US_ONLY),
-  // AI & apps
-  s('chatgpt-plus', 'ChatGPT Plus', 'AI & apps', '#10A37F', 'G', 'monthly', { popular: true }),
-  s('claude-pro', 'Claude Pro', 'AI & apps', '#D97757', 'C'),
-  s('adobe-cc', 'Adobe Creative Cloud', 'AI & apps', '#DA1F26', 'Ac'),
-  s('microsoft-365', 'Microsoft 365', 'AI & apps', '#0078D4', '365', 'yearly'),
-  s('canva-pro', 'Canva Pro', 'AI & apps', '#7D2AE8', 'C', 'yearly'),
-  s('duolingo', 'Duolingo Super', 'AI & apps', '#58CC02', 'D', 'yearly', { ink: '#0F2A00' }),
-  s('notion', 'Notion Plus', 'AI & apps', '#191919', 'N'),
-  // Cloud
-  s('icloud', 'iCloud+', 'Cloud', '#3693F3', '☁', 'monthly', { billedVia: 'apple', popular: true }),
-  s('google-one', 'Google One', 'Cloud', '#4285F4', 'G1'),
-  s('dropbox', 'Dropbox Plus', 'Cloud', '#0061FE', 'Db'),
-  s('apple-one', 'Apple One', 'Cloud', '#1D1D1F', '1', 'monthly', { billedVia: 'apple' }),
-  // Shopping
-  s('amazon-prime', 'Amazon Prime', 'Shopping', '#FF9900', 'a', 'monthly', { ink: '#1A1200', popular: true }),
-  s('walmart-plus', 'Walmart+', 'Shopping', '#0071CE', 'W+', 'monthly', US_ONLY),
-  s('costco', 'Costco', 'Shopping', '#E31837', 'Co', 'yearly', US_ONLY),
-  s('doordash', 'DashPass', 'Shopping', '#FF3008', 'DD', 'monthly', US_ONLY),
-  s('uber-one', 'Uber One', 'Shopping', '#000000', 'U1'),
-  s('instacart', 'Instacart+', 'Shopping', '#0AAD0A', 'i+', 'monthly', US_ONLY),
-  // Fitness
-  s('peloton', 'Peloton App', 'Fitness', '#000000', 'P'),
-  s('strava', 'Strava', 'Fitness', '#FC4C02', 'S'),
-  s('planet-fitness', 'Planet Fitness', 'Fitness', '#5C2D91', 'PF'),
-  s('headspace', 'Headspace', 'Fitness', '#F47D31', 'H'),
-  s('calm', 'Calm', 'Fitness', '#2E7BD6', 'C', 'yearly'),
-  // News
-  s('nyt', 'NYTimes', 'News', '#121212', 'T'),
-  s('wsj', 'WSJ', 'News', '#0274B6', 'W'),
-  s('substack', 'Substack', 'News', '#FF6719', 'S'),
-  // Gaming
-  s('xbox-game-pass', 'Xbox Game Pass', 'Gaming', '#107C10', 'X'),
-  s('ps-plus', 'PlayStation Plus', 'Gaming', '#0070D1', 'PS', 'yearly'),
-  s('nintendo-online', 'Nintendo Switch Online', 'Gaming', '#E60012', 'NS', 'yearly'),
-  s('apple-arcade', 'Apple Arcade', 'Gaming', '#FF2D55', 'AA', 'monthly', { billedVia: 'apple' }),
-];
+/** What "Popular" shows, most common first (Nov 2026). */
+export const POPULAR_ORDER: string[] = TOP_IDS;
 
-export const SERVICE_BY_ID = Object.fromEntries(SERVICES.map((x) => [x.id, x]));
-
-/** What "Popular" shows, most common first (US, Nov 2026). */
-export const POPULAR_ORDER = [
-  'netflix',
-  'spotify',
-  'chatgpt-plus',
-  'amazon-prime',
-  'youtube-premium',
-  'disney-plus',
-  'max',
-  'apple-music',
-  'hulu',
-  'icloud',
-  'apple-tv',
-  'audible',
-  'claude-pro',
-  'xbox-game-pass',
-  'peacock',
-  'paramount-plus',
-];
+/** How many services the "Popular" chip lists (after the country filter). */
+export const POPULAR_SHOWN = 30;
 
 export const POPULAR: CatalogService[] = POPULAR_ORDER.map((id) => SERVICE_BY_ID[id]).filter(Boolean);
+
+/** The "Popular" list for a country: the top services sold there. */
+export function popularIn(country: string | null, n = POPULAR_SHOWN): CatalogService[] {
+  return POPULAR.filter((s) => availableIn(s, country)).slice(0, n);
+}
 
 /** Sold in this country? Unknown country shows everything. */
 export function availableIn(service: CatalogService, country: string | null): boolean {
   return !country || !service.availableIn || service.availableIn.includes(country);
+}
+
+/** Lowercase, no accents, "+" as "plus", "&" as "and", only letters, digits and single spaces. */
+export function normalizeSearch(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\+/g, ' plus ')
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+type Term = { words: string; tight: string; weight: number };
+const TERMS = new Map<string, Term[]>(
+  SERVICES.map((s) => [
+    s.id,
+    [
+      { text: s.name, weight: 10 },
+      ...(s.aliases ?? []).map((text) => ({ text, weight: 5 })),
+      { text: s.id.replace(/-/g, ' '), weight: 0 },
+    ].map(({ text, weight }) => {
+      const words = normalizeSearch(text);
+      return { words, tight: words.replace(/ /g, ''), weight };
+    }),
+  ]),
+);
+
+/** How well a service matches a query: 0 = no match. */
+function matchScore(s: CatalogService, words: string, tight: string): number {
+  let best = 0;
+  for (const t of TERMS.get(s.id) ?? []) {
+    let score = 0;
+    if (t.words === words || t.tight === tight) score = 100;
+    else if (t.words.startsWith(words) || t.tight.startsWith(tight)) score = 80;
+    else if ((' ' + t.words).includes(' ' + words)) score = 60;
+    else if (tight.length >= 3 && t.tight.includes(tight)) score = 30;
+    if (score) best = Math.max(best, score + t.weight);
+  }
+  return best;
+}
+
+/**
+ * Catalog search, best match first: exact name or alias ("HBO" finds HBO
+ * Max, "Prime" finds Amazon Prime), then starts-with, then word starts-with,
+ * then anywhere in the name. Ties go to the more popular service.
+ */
+export function searchServices(query: string, list: CatalogService[] = SERVICES): CatalogService[] {
+  const words = normalizeSearch(query);
+  if (!words) return [];
+  const tight = words.replace(/ /g, '');
+  return list
+    .map((s, i) => ({ s, i, score: matchScore(s, words, tight) }))
+    .filter((x) => x.score > 0)
+    .sort((a, b) => b.score - a.score || (a.s.rank ?? 999) - (b.s.rank ?? 999) || a.i - b.i)
+    .map((x) => x.s);
 }

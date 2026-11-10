@@ -29,8 +29,10 @@ export function stillUsingIt(category: string | undefined): string {
     case 'Streaming':
       return 'Still watching?';
     case 'Music':
+    case 'Music & audio':
       return 'Still listening?';
     case 'News':
+    case 'News & reading':
       return 'Still reading?';
     case 'Gaming':
       return 'Still playing?';

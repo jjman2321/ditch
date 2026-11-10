@@ -779,7 +779,10 @@
   "trackId": 530168168,
   "trackName": "Paramount+",
   "seller": "CBS Mobile",
-  "cc": "us"
+  "cc": "us",
+  "otherStores": 1340650234,
+  "manual": true,
+  "why": "Outside the US the app is Paramount+ International (Paramount Global Streaming International LLC)."
  },
  "parship": {
   "trackId": 377700730,

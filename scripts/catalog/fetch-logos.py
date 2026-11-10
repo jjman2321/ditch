@@ -6,7 +6,7 @@ Needs Pillow (pip install pillow). Then run `npm run catalog`.
 Reads the pins in apps.json (made by find-apps.py, checked by hand), looks
 each app up by trackId in its storefront, checks the seller still matches
 the catalog's seller regex, and saves a 120x120 PNG with a 256-colour
-palette (about 3-10 KB each). Existing files are kept unless --force.
+palette (about 2-12 KB each; fewer colours for busy icons). Existing files are kept unless --force.
 Pass --optimize to only re-shrink the PNGs already in assets/logos.
 """
 
@@ -52,8 +52,11 @@ def save_small(img, path):
         img = img.resize((SIZE, SIZE), Image.LANCZOS)
     flat = Image.new('RGB', img.size, (255, 255, 255))
     flat.paste(img, mask=img.split()[3])
-    pal = flat.quantize(colors=256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.FLOYDSTEINBERG)
-    pal.save(path, optimize=True)
+    for colors in (256, 128, 64):  # fewer colours until it's under 12 KB
+        pal = flat.quantize(colors=colors, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.FLOYDSTEINBERG)
+        pal.save(path, optimize=True)
+        if path.stat().st_size <= 12_000:
+            break
 
 
 def main():

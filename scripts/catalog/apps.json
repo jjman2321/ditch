@@ -23,6 +23,12 @@
   "seller": "Crunchyroll, LLC",
   "cc": "us"
  },
+ "dazn": {
+  "trackId": 1129523589,
+  "trackName": "DAZN: Stream Live Sports",
+  "seller": "DAZN Limited",
+  "cc": "gb"
+ },
  "discovery-plus": {
   "trackId": 1498327873,
   "trackName": "discovery+ | Stream TV Shows",
@@ -41,6 +47,12 @@
   "seller": "Disney Electronic Content, Inc.",
   "cc": "us"
  },
+ "f1-tv": {
+  "trackId": 1315007279,
+  "trackName": "F1 TV",
+  "seller": "Formula One Digital Media Limited",
+  "cc": "gb"
+ },
  "fubo": {
   "trackId": 905401434,
   "trackName": "Fubo: Watch Live TV & Sports",
@@ -53,10 +65,28 @@
   "seller": "Hulu, LLC",
   "cc": "us"
  },
+ "itvx": {
+  "trackId": 446079916,
+  "trackName": "ITVX",
+  "seller": "ITV PLC",
+  "cc": "gb"
+ },
+ "joyn": {
+  "trackId": 826510222,
+  "trackName": "Joyn | deine Streaming App",
+  "seller": "Joyn GmbH",
+  "cc": "de"
+ },
  "max": {
   "trackId": 1666653815,
   "trackName": "HBO Max: Stream Movies & TV",
   "seller": "WarnerMedia Global Digital Services, LLC",
+  "cc": "us"
+ },
+ "mlb-tv": {
+  "trackId": 493619333,
+  "trackName": "MLB",
+  "seller": "Major League Baseball Advanced Media",
   "cc": "us"
  },
  "mubi": {
@@ -64,6 +94,18 @@
   "trackName": "MUBI: Stream Great Cinema",
   "seller": "MUBI, Inc.",
   "cc": "us"
+ },
+ "nba-league-pass": {
+  "trackId": 484672289,
+  "trackName": "NBA: Live Games & Scores",
+  "seller": "NBA MEDIA VENTURES, LLC",
+  "cc": "us"
+ },
+ "now": {
+  "trackId": 512266300,
+  "trackName": "NOW: TV, Movies, Live Sport",
+  "seller": "Sky UK Limited",
+  "cc": "gb"
  },
  "paramount-plus": {
   "trackId": 530168168,
@@ -89,11 +131,23 @@
   "seller": "AMZN Mobile LLC",
   "cc": "us"
  },
+ "rtl-plus": {
+  "trackId": 1057991212,
+  "trackName": "RTL+",
+  "seller": "RTL interactive",
+  "cc": "de"
+ },
  "shudder": {
   "trackId": 919790315,
   "trackName": "Shudder: Horror & Thrillers",
   "seller": "Digital Store LLC",
   "cc": "us"
+ },
+ "sky": {
+  "trackId": 446086440,
+  "trackName": "Sky Go (Q / +)",
+  "seller": "Sky UK Limited",
+  "cc": "gb"
  },
  "sling-tv": {
   "trackId": 945077360,
@@ -112,6 +166,12 @@
   "trackName": "Strava: Run, Bike, Walk",
   "seller": "Strava Inc.",
   "cc": "us"
+ },
+ "wow": {
+  "trackId": 929190059,
+  "trackName": "WOW",
+  "seller": "Sky Deutschland Fernsehen GmbH & Co. KG",
+  "cc": "de"
  },
  "youtube-premium": {
   "trackId": 544007664,

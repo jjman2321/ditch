@@ -1,9 +1,9 @@
 # Onboarding v11: research and redesign plan
 
-Written Nov 10, 2026, after the owner's walkthrough (`docs/feedback/owner-2026-11-10-onboarding.md`). It proposes changes for the owner to approve before anything is built. It follows DECISIONS #7, #11, #15, #16, #19, #20 and #21 and reopens none of them.
+Written Nov 10, 2026, after the owner's walkthrough (`docs/feedback/owner-2026-11-10-onboarding.md`). It proposes changes for the owner to approve before anything is built. It follows DECISIONS #7, #11, #15, #16, #19, #20, #21, #22 and #23 and reopens none of them.
 
 ## Summary (read this if nothing else)
-1. **Keep the short, value-first spine.** Quiz-style apps (Opal, Cal AI, Feenko) show 17–25 screens before the paywall. Calm trackers (Orbit, Bobby) show 5–8. Our "aha" is the user's own real total. A quiz can't beat that, so we stay short: **8 steps to Home, about 60–90 seconds**.
+1. **Keep the short, value-first spine.** Quiz-style apps (Opal, Cal AI, Feenko) show 17–25 screens before the paywall. Calm trackers (Orbit, Bobby) show 5–8. Our "aha" is the user's own real total. A quiz can't beat that, so we stay short: **9 steps to Home (8 on the Pro path), about 60–90 seconds**.
 2. **Add one new screen: "Quick guess".** One tap: "What do you pay a month?" Then the total screen compares their guess with their real number. It's how the C+R study found the gap, and it makes the reveal personal instead of preachy.
 3. **Facts: two in the whole flow, all real.** On the total: "Most people guess low. In one study the real total was about 2.5× the guess" (C+R 2022). On the reminders screen: "7 in 10 people have forgotten to cancel a free trial at least once" (Self Financial 2026). No inline citations (DECISIONS #19). Never say "people like you": we have no such data.
 4. **Plans: drop the pill rows.** A tick uses the usual plan. The row shows "Standard · $19.99/mo · Change" and "Change" opens a small sheet with radio buttons (Substack, Saily). 9/10.
@@ -11,11 +11,11 @@ Written Nov 10, 2026, after the owner's walkthrough (`docs/feedback/owner-2026-1
 6. **Dates: stop saying "GUESS".** Ask "Which day does Netflix usually charge you?" one service at a time with a 1–31 day grid (Apple Wallet, App Store). One tap moves on. "Not sure" keeps our date and shows it as "**around** Nov 19" (Copilot's "Expected around"). The Apple-subscriptions screenshot scan comes first on this screen, since that list shows real renewal dates.
 7. **Ask for dates after reminders, before the paywall.** Then the paywall can name their real next charges.
 8. **Reminders pre-ask:** the headline names their own services ("Before Netflix, Spotify and 4 more renew"), and the preview uses their real price and date. Adds "Only about your subscriptions. Nothing else." and Strava's "Tap Allow on the next screen".
-9. **Paywall:** a 7-row Free vs Pro table (Fixtured style), a 3-stop timeline, and no "We'll remind you before we charge you, too".
+9. **Paywall:** "Get a reminder before all 6 renewals." A 7-row Free vs Pro table (Fixtured style) with "Reminders · 3 · Unlimited", a 3-stop timeline, and no "We'll remind you before we charge you, too".
 10. **Which 3:** three "slots" at the top with the rest listed below (Bumble's Opening Moves). It opens as a sheet from "Continue free". No bells.
 11. **You're set:** a 3-line checklist (Facebook, Nibble) plus the real "Your first reminders" line. No stats row. Separates reminder day from charge day.
 12. **Logos:** bundle the top 100 as local images so they appear instantly. The other ~120 load in the background behind a monogram tile.
-13. **Every screen gets small and large phone rules** (SE 375×667 → Pro Max 440×956, iPad centred at 560pt), listed per screen below.
+13. **Type and spacing specs for every screen** (§3.0 + a "Spec" line per screen): 24pt edge, 4/8pt grid, line heights snapped to 4, no orphan words, no truncation, checked at SE, iPhone 12, Pro Max, iPad and AX text sizes. Says "reminder", never "heads-up" (DECISIONS #22, #23).
 14. **Biggest wins for conversion, in order:** the guess + reveal, right dates (reminders that fire on the right day are the product), the pre-ask naming their services, a clearer paywall.
 15. **Only you can do this:** approve this plan; confirm the 2026 CNET number on cnet.com before we quote it (I couldn't open the page); take one real screenshot of your Apple subscriptions page for the scanner tests.
 
@@ -75,19 +75,58 @@ Every number below I opened at the source or at a named news report. All of them
 
 ## 3. Screen by screen
 
-Layout rules for every screen (DECISIONS #21):
-- The CTA is pinned above the home indicator. Content scrolls under it.
-- If the screen is shorter than 700pt (the SE), drop decorative art (the duck) before shrinking text.
-- Display sizes scale with width, e.g. hero number `clamp(64, 22% of width, 120)`.
-- Dynamic Type up to AX sizes: rows wrap to two lines and never cut off with "…".
-- iPad and unfolded foldables: one centred column, max 560pt; sheets become form sheets.
-- Tap targets ≥ 44pt.
+### 3.0 Type, spacing and sizes for every screen (DECISIONS #21, #23)
+Built from the Sunflower tokens in `src/ui/sunflower/type.tsx` and `tokens.ts` (`EDGE` 24, `space`, `TAP` 44).
+
+**Spacing (4/8pt grid; one side edge)**
+- Side edge: **24pt** on every phone. The SE's content width is 327pt (375 − 48), the iPhone 12's is 342pt and the Pro Max's is 392pt.
+- Top: nav row (back + progress) is 44pt. The title starts **16pt** below it.
+- Gaps: title → lead **8pt**; lead → content **24pt**; between sections **32pt**; rows inside a card **0pt** with a hairline inset to the text.
+- Bottom: primary CTA **56pt** tall, **16pt** above the home indicator. A secondary text button (44pt) sits **8pt** under it. A sticky bar gets **12pt** padding on top and a hairline.
+- Allowed values only: 4, 8, 12, 16, 24, 32, 48. No 10, 14 or 20 in new layouts.
+
+**Type (snap line heights to 4)**
+| Style | Now | Use | Change |
+|---|---|---|---|
+| `displayXL` | 70/63 | Welcome, You're set | → 70/**64** |
+| `title` | 30/32 | Every question headline | → 30/**36** (2–3 line headlines need air); retire `displayM` 31/33 and `displayS` 30/34, which are near-duplicates |
+| hero money (new) | — | Total screen number only | Archivo Display, size = width × 0.24 (SE 80 · 12 96 · Pro Max 104 · iPad 128), line height = size × 0.9 rounded to 4 |
+| `heading` | 20/26 | Sheet titles, "a year." | → 20/**28** |
+| `moneyM` | 18/21 | Row amounts | → 18/**24** |
+| `lead` · `leadS` | 17/24 · 16/22 | Subtitles | keep 17/24; leadS → 16/**24** |
+| `body` · `label` · `bodyStrong` | 15/20 · 15/19 · 16/20 | Rows, chips | label → 15/**20** |
+| `sub` · `fine` | 13.5/18 · 13/18 | Second lines, footers | merge into one 14/**20** style |
+| `eyebrow` | 12.5/16 | Section labels | → **12**/16 |
+
+**Headline rules**
+- No orphans: headlines use `lineBreakStrategyIOS="standard"` (iOS avoids a lone last word). Every fixed headline also joins its last two words with a non-breaking space, e.g. "What do you pay\u00A0for?". The built screen has "for?" alone on line 2.
+- Max 3 lines at default size on an SE. A headline with names in it (screen 05) falls back to a shorter version when it would go past 3 lines.
+
+**No truncation**
+- No `numberOfLines` on service names or copy at default size. Names wrap to 2 lines ("YouTube Premi…" in the built dates screen must not happen).
+- Only the hero number may shrink to fit (`adjustsFontSizeToFit`, minimum scale 0.7). Money always uses tabular figures.
+
+**Sizes to check before shipping, every screen**
+- Phones: SE 375×667 · iPhone 12 390×844 (the owner's) · Pro Max 440×956.
+- iPad: 820×1180 and half-width Split View. Unfolded Android foldables later.
+- Text sizes: Default, XXL and AX3.
+
+**General layout rules**
+- The CTA stays pinned; content scrolls under it.
+- If the screen is shorter than 700pt, drop decorative art (the duck) before shrinking any text.
+- iPad: one centred column, max **560pt**; sheets become 540pt form sheets.
+- At AX sizes, two-column grids become one column and side-by-side money moves under the name.
 
 ### 01 Welcome (keep)
 - **Wrong now:** almost nothing. The owner likes it. The footer line "Your list stays on your phone" is noise here.
 - **Change:** the footer becomes only "Free forever for tracking." Keep the headline, the sample notification and the 3-dot timeline.
 - **Copy:** "Ditch it before it renews." / "See everything you pay for. Get a reminder before every charge." (was "heads-up", DECISIONS #22) / CTA "See what I pay" / footer "Free forever for tracking."
 - **Layout:** SE: hide the duck and keep the notification card. iPad: centre the column, headline max 6 words per line.
+- **Spec:**
+  - Wordmark 16pt below the safe area.
+  - Headline `displayXL` (64pt on SE, 70 on 12, 76 on Pro Max, 88 on iPad), 3 lines; "renews." must not sit alone. Headline → lead 16pt; lead `lead` 17/24, max 2 lines.
+  - Notification card + timeline anchored 24pt above the CTA.
+  - Footer `fine` 12pt under the CTA.
 - **Why it converts:** the first frame says what you get and that it's free. That's what lifts completion.
 
 ### 02 Quick guess (new)
@@ -96,6 +135,10 @@ Layout rules for every screen (DECISIONS #21):
 - **Copy:** title "Quick guess." / "What do you pay for subscriptions each month?" / chips "Under $25" · "$25–50" · "$50–100" · "$100–200" · "Over $200" · "No idea" / small "No wrong answers. We'll show you the real number in a minute."
 - **Currency ladders:** USD, CAD, AUD and NZD use the numbers above. GBP and EUR use £/€ 15 · 30 · 60 · 120. INR uses ₹500 · 1,000 · 2,000 · 5,000. Ladders come from the iPhone Region, like prices.
 - **Layout:** chips are a 2-column grid on phones and stack to 1 column at AX text sizes.
+- **Spec:**
+  - `title` 30/36, 2 lines ("Quick guess." / question as `lead`).
+  - Chips 56pt tall, radius 18, `label` 15/20 centred, 12pt gaps, grid starts 24pt below the lead.
+  - Note `sub` 24pt below the grid.
 - **Why it converts:** a small commitment creates curiosity ("am I right?"), so the next screens feel like finding out, not data entry. One screen, about 3 seconds.
 
 ### 03 What do you pay for?
@@ -116,6 +159,11 @@ Layout rules for every screen (DECISIONS #21):
 - **Bottom bar:** one line, "6 picked · $60.46 a month", above "See my total". If any price is missing: "2 without a price". On an SE, fold the count into the button: "See my total (6)".
 - **Logos:** ship the top 100 as local images in the app (instant, offline). The other ~120 load in the background with a coloured monogram tile until they're ready. No spinner.
 - **Layout:** iPad uses a 2-column grid of rows. SE: rows 64pt, plan text on one line.
+- **Spec:**
+  - Title `title` 30/36, "What do you pay\u00A0for?" (2 lines, no orphan). "Prices for 🇺🇸 US · Change" `sub` 8pt below.
+  - Search 48pt tall, 16pt below. Chip row 36pt, 12pt below.
+  - Rows: min 64pt, logo 40 (radius 22.5%), logo → text 12pt, hairline inset 76pt (24 + 40 + 12), check circle 28pt in a 44pt target. Name `bodyStrong`; second line `sub`.
+  - Sticky bar: summary `label` + `moneyS`, 12pt above the 56pt CTA.
 - **Why it converts:** a correct total depends on the right plan (`niche-teardown.md` C.3 #4). A clean list cuts drop-off on the slowest screen.
 
 ### 04 Your total (restructure)
@@ -135,7 +183,11 @@ Layout rules for every screen (DECISIONS #21):
   6. **CTA:** "Set up reminders". US only, small under the list: "US prices are before sales tax."
 - **Copy variants:** guess "No idea" → drop the guess line and keep the fact. Real total below the guess → "Lower than you guessed. Nice." and no fact line. Prices missing → under the hero: "Plus 2 without a price yet." More than one currency → hero shows the main currency and a second line "+ US$240 a year" (never added together).
 - **Colours:** two surfaces only, yellow (hero) and cream (list). All text is ink. No grey tables, no white cards on yellow.
-- **Layout:** SE: hero number 72pt and list peeks at 3 rows. Pro Max: 112pt. iPad: hero and list side by side at 2 × 420pt.
+- **Layout:** SE: list peeks at 3 rows. iPad: hero and list side by side at 2 × 420pt.
+- **Spec:**
+  - Hero block: "You pay" `label` → 4pt → hero money (see 3.0) → 0pt → "a year." `heading` 20/28 → 8pt → month line `lead` → 16pt → guess pill (32pt tall, radius 16, `label`) → 8pt → fact `sub`, max 2 lines.
+  - Sheet: radius 28 top corners, 24pt inner padding, "Per year" `eyebrow`, rows 52pt min, logo 32, amounts `moneyM` right-aligned, tabular.
+  - Ditch line `bodyStrong` 16pt above the CTA.
 - **Money rules:** every row is monthly × 12 on exact cents. The hero rounds once, for display ($725.52 → "$726"). Tests: Netflix $19.99 → $239.88; 4 subs → $725.52 / $60.46.
 - **Why it converts:** one number plus their own guess is the "aha". The list proves it's real. Cutting from 4 numbers to 2 makes it land.
 
@@ -145,6 +197,10 @@ Layout rules for every screen (DECISIONS #21):
 - **Design:** a row of their own logos (up to 5, then "+3") above the lock-screen mock. Each notification in the mock shows the service's real name, price and date from their list.
 - **Copy:** title "Get a reminder before Netflix, Spotify and 4 more renew." / "3 days and 1 day before, at 9:00 AM. Only about your subscriptions. Nothing else." / mock 1: "**Netflix renews in 3 days.** $19.99 on Thu, Nov 19. Still watching?" / mock 2: "**Netflix renews tomorrow.** Last call if you're done with it." / fact (small): "7 in 10 people have forgotten to cancel a free trial at least once." / CTA "Turn on reminders" / hint under it "Tap Allow on the next screen." / "Maybe later".
 - **Layout:** SE: shrink the mock to 2 notifications, no duck, logos row 28pt. iPad: mock max 380pt wide.
+- **Spec:**
+  - Title `title` 30/36, max 3 lines. Name at most 2 services, then "and N more". If it would still run past 3 lines, use "Get a reminder before your 6 subscriptions renew."
+  - Logos row 32pt tiles with 8pt overlap, 16pt above the mock. Mock radius 34, notifications 12pt apart, `body`.
+  - Fact `sub` 16pt above the CTA. "Tap Allow…" `fine` 8pt under it.
 - **Why it converts:** a "Don't Allow" means the product can never work (CLAUDE.md §3). Naming their services shows the notifications are about them, not marketing.
 
 ### 06 Charge dates (replace "GUESS")
@@ -179,7 +235,14 @@ Layout rules for every screen (DECISIONS #21):
 | "GUESS" (now) | 3/10: owner didn't get it |
 
 - **Date rules:** the day grid stores an anchor day. 31 → Feb 28/29 → Mar 31 (CLAUDE.md §2). "Last day of the month" stores anchor 31. A date that's already past rolls forward. Tests for each.
-- **Layout:** the grid is 7 columns × 5 rows, 44pt cells, on every phone (7 × 44 = 308pt fits the SE's 343pt content width). iPad: grid max 420pt.
+- **Layout:**
+  - The grid is 7 columns × 5 rows. Each tap cell is content width ÷ 7 (46.7pt on SE, 48.9 on 12, 56 on Pro Max), always ≥ 44pt, with a 40pt visible circle inside and no gaps between cells.
+  - "Last day of the month" and "Not sure" sit in a 2-column chip row (44pt) 12pt under the grid.
+  - iPad: grid max 420pt.
+- **Spec:**
+  - Logo 56pt, 16pt below the nav. Title `title` 30/36: "When does Netflix charge\u00A0you?". Lead `leadS` 16/24.
+  - Grid 24pt below. Day numbers `label` tabular; the picked day is ink-filled with cream text.
+  - Live sentence `bodyStrong` 16pt under the chips. Fits an SE at default text size without scrolling; at AX sizes the screen scrolls.
 - **Why it converts:** right dates mean reminders that fire on the right day (retention, ratings). Asking before the paywall gives the paywall real next charges to name.
 
 ### 07 Paywall (tidy)
@@ -196,6 +259,10 @@ Layout rules for every screen (DECISIONS #21):
 
   Then the 3 plan rows (Yearly pre-picked), the 3-stop timeline "Today · free → Sat Nov 14 & Mon Nov 16 · reminders → Tue Nov 17 · $29.99", CTA "Start 7-day free trial", "Continue free: reminders for 3", and "Restore · Terms · Privacy".
 - **Layout:** SE: the table collapses to 4 rows ("+3 more in Pro") so the CTA stays above the fold. iPad: form sheet, 540pt.
+- **Spec:**
+  - Headline `title` 30/36 ("Get a reminder before all 6\u00A0renewals.").
+  - Table rows 40pt, `label`, Free/Pro columns 64pt wide each, checks 20pt.
+  - Plan rows 64pt, 8pt apart. Timeline `sub`, one row, 16pt above the CTA. Legal `fine`.
 - **Why it converts:** people buy what they understand. The free path stays visible (CLAUDE.md §4).
 
 ### 08 Which 3 (free path, as a sheet)
@@ -210,6 +277,10 @@ Layout rules for every screen (DECISIONS #21):
 
 - **Copy:** title "Your 3 free reminders" / "We picked your biggest charges. Swap any of them." / slots: logo · "Netflix · $19.99 · around Thu, Nov 19" · ✕ / section "On your list, no reminder" with rows ending in "Swap in" (tap, then choose which slot it replaces) / small "These stay on your list with their totals and dates." / CTA "Keep these 3".
 - **Layout:** a large sheet over the paywall (keeps context). SE: slots 56pt and the list scrolls. iPad: form sheet.
+- **Spec:**
+  - Grabber, then 24pt to the `title`.
+  - Slots 64pt, radius 20, sunflower fill, 8pt apart. Section `eyebrow` 32pt below.
+  - List rows 56pt; "Swap in" is a 44pt text button.
 - **Why it converts:** free users understand the deal and still get value (retention), and the limit is felt without nagging. It follows DECISIONS #11 (picker with the 3 biggest pre-selected).
 
 ### 09 You're set
@@ -223,10 +294,14 @@ Layout rules for every screen (DECISIONS #21):
   - "✓ Reminders on Netflix, Prime and Spotify"
   - "○ 2 dates to check" (or "✓ All dates set")
 
-  Then a short "**Your first reminders**" block: "Mon, Nov 16 · 9:00 — Netflix renews Thu, Nov 19." (one line per reminder, max 3) / CTA "Go to my list".
+  Then a short "**Your first reminders**" block: "Mon, Nov 16 at 9:00: Netflix renews Thu, Nov 19." (one line per reminder, max 3) / CTA "Go to my list".
 - **Notifications off:** the second line becomes "! Reminders are off" with a "Turn on" button that opens iPhone Settings. Never a grey paragraph.
 - **Pro path:** add "✓ Ditch Pro trial on your list · reminders Nov 14 and Nov 16" (DECISIONS #15).
 - **Layout:** SE: no duck. iPad: centred 480pt.
+- **Spec:**
+  - Title `displayXL` ("You're set." on one line from 375pt up).
+  - Checklist rows 48pt, 24pt icon, 12pt to the text, `bodyStrong`.
+  - "Your first reminders" `eyebrow` 32pt below; lines `body` tabular, 8pt apart.
 - **Why it converts:** a clear receipt builds trust ("it's working") and cuts first-week churn.
 
 ### 10 Home (first run)
@@ -269,17 +344,7 @@ Welcome ──► Quick guess ──► Tick what you pay ──► Your total (
 
 ## 5. Sources
 
-**Mobbin (iOS)**
-- Orbit: [onboarding flow][orbit-flow] · [stat][orbit-stat] · [tick list][orbit-tick] · [total][orbit-total]
-- Rocket Money: [overview][rm-overview] · [save $378][rm-378] · [bills list][rm-bills]
-- Opal: [projection][opal-proj]
-- [Cal AI flow][calai] · [Monarch flow][monarch]
-- Copilot: [expected around][copilot]
-- Cleo: [plan][cleo-plan] · [slider][cleo-slider] · [billing date][cleo-date]
-- [Revolut][revolut] · [Substack sheet][substack] · [Saily sheet][saily] · [Apple Wallet][wallet] · [App Store reload][appstore] · [Shopee][shopee]
-- [Strava][strava] · [Vocabulary][vocab] · [Zalando][zalando]
-- [Bumble][bumble] · [Cosmos][cosmos] · [Tonal][tonal]
-- [Facebook][fb-done] · [Nibble][nibble] · [Neo][neo] · [Fixtured][fixtured]
+**Mobbin (iOS):** Orbit [flow][orbit-flow] · [stat][orbit-stat] · [tick][orbit-tick] · [total][orbit-total]; Rocket Money [overview][rm-overview] · [$378][rm-378] · [bills][rm-bills]; Opal [projection][opal-proj]; [Cal AI][calai]; [Monarch][monarch]; [Copilot][copilot]; Cleo [plan][cleo-plan] · [slider][cleo-slider] · [date][cleo-date]; [Revolut][revolut]; [Substack][substack]; [Saily][saily]; [Apple Wallet][wallet]; [App Store][appstore]; [Shopee][shopee]; [Strava][strava]; [Vocabulary][vocab]; [Zalando][zalando]; [Bumble][bumble]; [Cosmos][cosmos]; [Tonal][tonal]; [Facebook][fb-done]; [Nibble][nibble]; [Neo][neo]; [Fixtured][fixtured].
 
 **AppKittie onboarding captures:** [Feenko 00–24][feenko], [Opal funnel 00–17][opal-ak]. Subtrack's (11 screens) had nothing new.
 

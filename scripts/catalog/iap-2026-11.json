@@ -507,6 +507,64 @@
    "url": "https://apps.apple.com/us/app/id1446075923"
   }
  },
+ "max": {
+  "GB": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "TNT Sports",
+     "£30.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/gb/app/id1666653815"
+  },
+  "US": {
+   "checked": "2026-11-10",
+   "items": [
+    [
+     "Standard Monthly",
+     "$18.49"
+    ],
+    [
+     "Standard Monthly",
+     "$18.49"
+    ],
+    [
+     "Basic With Ads Monthly",
+     "$10.99"
+    ],
+    [
+     "Basic With Ads Monthly",
+     "$10.99"
+    ],
+    [
+     "Premium Monthly",
+     "$22.99"
+    ],
+    [
+     "Standard Yearly",
+     "$184.99"
+    ],
+    [
+     "Standard Yearly",
+     "$184.99"
+    ],
+    [
+     "Premium Yearly",
+     "$229.99"
+    ],
+    [
+     "Basic With Ads Yearly",
+     "$109.99"
+    ],
+    [
+     "Standard Yearly",
+     "$184.99"
+    ]
+   ],
+   "url": "https://apps.apple.com/us/app/id1666653815"
+  }
+ },
  "prime-video": {
   "AU": {
    "checked": "2026-11-10",
@@ -533,6 +591,16 @@
    ],
    "url": "https://apps.apple.com/de/app/id545519333"
   },
+  "ES": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/es/app/id545519333"
+  },
+  "FR": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/fr/app/id545519333"
+  },
   "GB": {
    "checked": "2026-11-10",
    "items": [
@@ -547,6 +615,21 @@
    "checked": "2026-11-10",
    "items": [],
    "url": "https://apps.apple.com/ie/app/id545519333"
+  },
+  "IN": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/in/app/id545519333"
+  },
+  "IT": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/it/app/id545519333"
+  },
+  "NL": {
+   "checked": "2026-11-10",
+   "items": [],
+   "url": "https://apps.apple.com/nl/app/id545519333"
   },
   "NZ": {
    "checked": "2026-11-10",

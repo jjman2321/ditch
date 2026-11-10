@@ -56,8 +56,8 @@ export function GuessTag() {
 /** Sunflower tag, e.g. "7 days free". */
 export function Tag({ label, style }: { label: string; style?: StyleProp<ViewStyle> }) {
   return (
-    <View style={[{ backgroundColor: brand.sunflower, borderRadius: radius.tag, paddingHorizontal: 7, paddingVertical: 3 }, style]}>
-      <Txt v="sub" color={brand.ink} style={{ fontFamily: 'Inter_700Bold', fontSize: 11.5, lineHeight: 14 }}>
+    <View style={[{ backgroundColor: brand.sunflower, borderRadius: 8, paddingHorizontal: 8, paddingVertical: 2 }, style]}>
+      <Txt v="sub" color={brand.ink} style={{ fontFamily: 'Inter_700Bold', fontSize: 12, lineHeight: 16 }} maxFontSizeMultiplier={1.3}>
         {label}
       </Txt>
     </View>

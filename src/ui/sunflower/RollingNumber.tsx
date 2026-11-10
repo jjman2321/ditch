@@ -22,7 +22,11 @@ export function rollDuration(text: string) {
 function Digit({ value, index, style, lineHeight, play }: { value: number; index: number; style: TextStyle; lineHeight: number; play: boolean }) {
   const y = useSharedValue(play ? 0 : -value * lineHeight);
   useEffect(() => {
-    if (!play) return;
+    // Not playing (or the size changed to fit): sit on the final digit.
+    if (!play) {
+      y.set(-value * lineHeight);
+      return;
+    }
     y.set(withDelay(ROLL.start + index * ROLL.stagger, withTiming(-value * lineHeight, { duration: ROLL.digit, easing: EASE })));
   }, [play, value, index, lineHeight, y]);
   const anim = useAnimatedStyle(() => ({ transform: [{ translateY: y.get() }] }));

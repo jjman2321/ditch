@@ -4,24 +4,57 @@
 
 import { StatusBar } from 'expo-status-bar';
 import { type ReactNode } from 'react';
-import { Platform, ScrollView, useColorScheme, View, type StyleProp, type ViewStyle } from 'react-native';
+import { Platform, ScrollView, useColorScheme, useWindowDimensions, View, type StyleProp, type ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { EDGE, SurfaceContext, paletteFor, type Surface } from './tokens';
 
 // Read once at start-up, before the router rewrites the URL.
-const FAKE_PHONE = Platform.OS === 'web' && typeof window !== 'undefined' && !!window.location?.search.includes('phone');
-const FAKE_SE = FAKE_PHONE && window.location.search.includes('phone=se');
+const PHONE_PARAM =
+  Platform.OS === 'web' && typeof window !== 'undefined' && window.location?.search.includes('phone')
+    ? (new URLSearchParams(window.location.search).get('phone') ?? '')
+    : null;
+/** Safe areas of real devices, for the web preview's screenshots. */
+const FAKE_INSETS: Record<string, { top: number; bottom: number }> = {
+  '': { top: 54, bottom: 34 }, // iPhone 15
+  i12: { top: 47, bottom: 34 }, // iPhone 12/13/14, 390×844
+  max: { top: 59, bottom: 34 }, // Pro Max, 430×932
+  se: { top: 20, bottom: 0 }, // iPhone SE, 375×667
+  ipad: { top: 24, bottom: 20 }, // iPad 11", 834×1194
+};
 
 /**
  * Safe-area insets. On the web preview, `?phone` in the first URL fakes an
  * iPhone 15's insets (54 top, 34 bottom) so screenshots match the design;
- * `?phone=se` fakes an iPhone SE (20 top, no home indicator).
+ * `?phone=i12|max|se|ipad` fakes those devices.
  */
 export function useInsets() {
   const insets = useSafeAreaInsets();
-  if (FAKE_SE) return { ...insets, top: 20, bottom: 0 };
-  return FAKE_PHONE ? { ...insets, top: 54, bottom: 34 } : insets;
+  if (PHONE_PARAM === null) return insets;
+  return { ...insets, ...(FAKE_INSETS[PHONE_PARAM] ?? FAKE_INSETS['']) };
+}
+
+/**
+ * Layout for one screen, the way design/v12 lays them out:
+ * - phones: one 24pt edge, the safe areas on top and bottom;
+ * - iPad (shortest side 600+): one centred column `maxContent` wide, and a
+ *   column of at most `colH` tall centred top to bottom.
+ * `small` is the SE class (under 700pt tall), which gets tighter spacing.
+ */
+export function useFrame({ maxContent = 512, colH = 880, extraBottom = 16 }: { maxContent?: number; colH?: number; extraBottom?: number } = {}) {
+  const insets = useInsets();
+  const { width, height, fontScale } = useWindowDimensions();
+  const tablet = Math.min(width, height) >= 600;
+  const small = !tablet && height < 700;
+  const edge = tablet ? Math.max(EDGE, Math.round((width - maxContent) / 2)) : EDGE;
+  let top = insets.top;
+  let bottom = insets.bottom + extraBottom;
+  if (tablet) {
+    const v = Math.round((height - colH) / 2 / 4) * 4;
+    top = Math.max(top, v);
+    bottom = Math.max(bottom, v);
+  }
+  return { width, height, fontScale, tablet, small, edge, top, bottom, insets, content: width - edge * 2 };
 }
 
 export function Screen({

@@ -64,7 +64,7 @@ export function HeadsUpTimeline({
   const { fontScale } = useWindowDimensions();
   const line = p.fg === p.cardFg ? p.fg : p.cardFg;
   const subColor = p.dark ? p.mute : behind === brand.sunflower ? p.fg2 : p.mute;
-  const t = small ? 12.5 : 13.5;
+  const t = small ? 12.5 : 14;
   const s = small ? 11.5 : 13;
 
   if (fontScale >= 1.3) {
@@ -91,7 +91,7 @@ export function HeadsUpTimeline({
     <View accessible accessibilityLabel={spoken(stops)} style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
       <View style={{ position: 'absolute', left: 12, right: 12, top: 11, height: 2 }}>
         <Svg width="100%" height={2}>
-          <Line x1="0" y1="1" x2="100%" y2="1" stroke={line} strokeWidth={2} strokeDasharray="5 4" />
+          <Line x1="0" y1="1" x2="100%" y2="1" stroke={line} strokeWidth={2} strokeDasharray="4 4" />
         </Svg>
       </View>
       {stops.map((st, i) => {
@@ -100,10 +100,10 @@ export function HeadsUpTimeline({
         return (
           <View key={i} style={{ alignItems: align }}>
             <Dot kind={st.kind} line={line} behind={behind} />
-            <Txt v="label" color={line} numberOfLines={1} style={{ fontFamily: 'Inter_700Bold', fontSize: t, lineHeight: 17, marginTop: 7, textAlign }} maxFontSizeMultiplier={1.25}>
+            <Txt v="label" color={line} numberOfLines={1} style={{ fontFamily: 'Inter_600SemiBold', fontSize: t, lineHeight: small ? 17 : 20, marginTop: 8, textAlign }} maxFontSizeMultiplier={1.25}>
               {st.title}
             </Txt>
-            <Txt v="sub" color={subColor} numberOfLines={1} style={{ fontSize: s, lineHeight: 17, textAlign }} maxFontSizeMultiplier={1.25}>
+            <Txt v="sub" color={subColor} numberOfLines={1} style={{ fontSize: s, lineHeight: small ? 17 : 16, textAlign }} maxFontSizeMultiplier={1.25}>
               {st.sub}
             </Txt>
           </View>

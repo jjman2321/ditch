@@ -19,7 +19,10 @@ export function Button({
   right,
   left,
   danger,
+  height,
 }: {
+  /** Overrides the kind's height (the paywall's 48pt button on small phones). */
+  height?: number;
   label: string;
   /** Red text, for destructive actions (Delete). */
   danger?: boolean;
@@ -32,7 +35,7 @@ export function Button({
   left?: ReactNode;
 }) {
   const p = usePalette();
-  const h = kind === 'primary' ? 56 : kind === 'secondary' ? 52 : TAP;
+  const h = height ?? (kind === 'primary' ? 56 : kind === 'secondary' ? 52 : TAP);
   const bg = kind === 'primary' ? p.cta : 'transparent';
   const fg = kind === 'primary' ? p.ctaFg : danger ? p.danger : p.fg;
   return (

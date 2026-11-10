@@ -23,7 +23,7 @@ export function Tick({ on, size = 28 }: { on: boolean; size?: number }) {
         borderColor: p.tickBorder,
       }}
     >
-      {on ? <Check color={p.dark ? brand.ink : brand.sunflower} size={15} /> : null}
+      {on ? <Check color={p.dark ? brand.ink : brand.sunflower} size={16} /> : null}
     </View>
   );
 }
@@ -33,9 +33,9 @@ export function Radio({ on }: { on: boolean }) {
   return (
     <View
       style={{
-        width: 22,
-        height: 22,
-        borderRadius: 11,
+        width: 24,
+        height: 24,
+        borderRadius: 12,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: on ? p.accent : 'transparent',
@@ -43,7 +43,7 @@ export function Radio({ on }: { on: boolean }) {
         borderColor: p.radioBorder,
       }}
     >
-      {on ? <Check color={p.accentFg} size={13} /> : null}
+      {on ? <Check color={p.accentFg} size={14} /> : null}
     </View>
   );
 }

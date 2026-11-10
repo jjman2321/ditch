@@ -120,6 +120,31 @@ Pull first: `git pull`, `npm install`, then `npx expo start --tunnel ngrok --cle
 - [ ] Hold a subscription on Home: the hint says "$X a year you won't pay once you cancel" (no "Saves").
 - [ ] Empty Home says "Ditch reminds you before each charge." Calendar says "Reminder", never "heads-up".
 
+## 1d. Charge dates without guesses + the new Add picker (Nov 10, DECISIONS #33)
+**Onboarding**
+- [ ] Tick a few services, go to **Which day does each one charge?**. Each row says "Monthly" or "Yearly" with a **Pick day** / **Pick date** button. Biggest first.
+- [ ] Tap **Pick day** on a monthly one: a 1–31 grid and "Last day of the month". Tap 16: the yellow box says "Charges on the 16th of every month. Next: … Reminders … and … at 9 AM." Save: the row shows a yellow "16th" and "Next: …".
+- [ ] A yearly one (e.g. Amazon Prime yearly): month buttons, then the day. The box says "Renews every year on Apr 28."
+- [ ] **I'm not sure** leaves the row with no date. The footer says "1 of 6 set · You can add the rest later".
+- [ ] Nowhere says "guess", "around" or "Rough".
+- [ ] You're set: "2 with no date yet · Amazon Prime and Disney+ · add them from your list". Reminder rows only show dated ones.
+
+**Home, Calendar, Settings**
+- [ ] Home: a card "2 have no date yet, so no reminders · Add dates ›" (opens the biggest one). A **No date yet** section at the bottom with underlined **Add date** and a grey bell.
+- [ ] "Reminders on X of Y" never counts a sub without a date.
+- [ ] Add a date to one: it moves up into This week / Next week / Later and its bell can go yellow.
+- [ ] Calendar: undated subs aren't on any day; a "No date yet · No reminders" list sits below with Add date. The legend has no "Guessed date".
+- [ ] Settings → Which subscriptions: an undated sub shows "No date yet" and "Add date" instead of a bell.
+- [ ] Ditch an undated sub: it says "Cancel before it renews" and there's no last-check reminder.
+
+**Add a subscription (+)**
+- [ ] The picker opens: search, category chips, ticks, "Already on your list" ones greyed out. Tick two → **Add 2**. They land in No date yet.
+- [ ] Type "Gym": "Add 'Gym' as your own" opens the full form with the name filled in. The date field says **Add date** and "No date, no reminder…". Remind me says "Starts once it has a date".
+- [ ] No import buttons anywhere yet (they appear once import works in the development build).
+
+**Phones that had the old version**
+- [ ] After updating, subs that had a guessed date now show **Add date** (nothing is deleted).
+
 ## 1c. Fixes from your third recording (Nov 10)
 The blue round gear on the right edge is Expo Go's own button. Ignore it; it isn't in the real app.
 - [ ] What do you pay for: an unticked Netflix says "Standard · $19.99/mo". Tick it: only the tick and "Change" appear.

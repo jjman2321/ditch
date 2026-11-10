@@ -83,56 +83,117 @@ Prices come from the iPhone's Region (Settings → General → Language & Region
 - [ ] Region **Japan** (not supported yet): the line says "No local prices for your region · Choose" and every row says Add your price.
 - [ ] In the US the total screen says "US prices are before sales tax."
 
-## 2. Money math ⏳ (M1)
-- [ ] Add Netflix at $15.49 monthly. Detail shows $185.88 a year.
-- [ ] Add something at $99 yearly. It counts as $8.25/mo in the Home total.
-- [ ] Add one in CAD. Home shows **two** totals (USD and CAD), never one mixed number.
+## 2. Your list is saved (built Nov 10, Phase 2)
+- [ ] Finish onboarding with 4 or more subs. Tap **Go to my list**.
+- [ ] Close Ditch fully (swipe it away in the app switcher) and open it again. It opens straight on **Home** with the same list, not onboarding.
+- [ ] Do it again after adding, editing and ditching something. Everything is still there.
 
-## 3. Dates ⏳ (M1)
-- [ ] Add a monthly sub whose next charge is Jan 31. The upcoming list shows Feb 28 (or 29), then Mar 31.
-- [ ] Add a sub with next charge **today**. It shows as "Today", not next month.
+## 3. Home (built Nov 10)
+Compare with `design/v10/renders/09-home-hold.jpg`, `09b-home-pro.jpg`, `09c-home-off.jpg`.
+- [ ] Top: the **ditch** wordmark, a grey gear and a black **+**.
+- [ ] The yellow card shows **$X a month**, then **$Y a year · Reminders on 3 of N**. Check it with a calculator: monthly prices added up; yearly is that × 12 (a $99/yr sub adds $8.25 a month).
+- [ ] Add one sub in a second currency (e.g. CAD). The card shows a separate "+ CA$… a month" line. Two currencies are never added together.
+- [ ] Subs are grouped **This week** (until Saturday), **Next week**, **Later**, soonest first.
+- [ ] Each row: real logo, name, date ("Sat, Nov 14 · in 5 days"), a bell, the price. Guessed dates show a grey **GUESS** tag.
+- [ ] Yellow bells are the ones that get reminders (your 3 on Free). The others are grey outlines.
+- [ ] "N dates are guesses · Check them ›" opens the soonest guessed one so you can set its real date.
+- [ ] Until you ditch your first sub, the first group says "Hold a sub to ditch it" on the right.
+- [ ] A free trial you added shows "Trial ends …" and isn't in the monthly total until it ends.
+- [ ] **Empty Home** (Settings → Your data → Delete all my data, then skip through onboarding without ticking anything): the duck peeks over "Nothing to watch yet.", **Add a subscription**, and 8 quick-add logos. Tap Netflix: the add sheet opens with Netflix filled in.
 
-## 4. Reminders ⏳ (M1). The most important section.
-- [ ] Settings → Send a test reminder. It arrives within a few seconds, even with the app closed.
-- [ ] Add a sub that charges in 3 days, with reminders on. Set the reminder time to 2 minutes from now (Settings), lock the phone and wait. The notification arrives.
-- [ ] Edit that sub's date to next month. The old reminder does **not** arrive.
-- [ ] Ditch a sub that has a reminder pending. The reminder does **not** arrive.
-- [ ] Restart the phone and wait for a scheduled reminder. It still arrives.
-- [ ] Free: try to turn on a reminder for a 4th sub. It asks you to swap one of your 3 (or offers Pro), and nothing is deleted.
-- [ ] Turn notifications off in iOS Settings. Home and Settings show "Reminders are off" with a button to fix it, and the app still works.
+## 4. Add and edit (built Nov 10)
+- [ ] Tap **+**. Type "net": Netflix shows with "about $19.99". Tap it. Name, price (marked "Typical price"), plan chips, "Monthly" and a guessed date fill in.
+- [ ] Tap a different plan chip: the price changes.
+- [ ] Type your own price. "Typical price" goes away.
+- [ ] Tap the date: the calendar sheet from onboarding opens. Pick **From my last receipt** and a day last month: it rolls forward. Tap **Set next charge…**, then **Add Netflix**.
+- [ ] Add a custom one: type "Gym", tap **Add "Gym" as your own**, price 45, **Add Gym**. It appears with a GUESS date until you set one.
+- [ ] Free with 3 reminders already on: the **Remind me** switch on a new sub stays off and says "Free covers 3…" with a **Try Pro** link. Nothing gets deleted.
+- [ ] Tap an existing row: the sheet opens with its details. Change the price, **Save**: the totals update.
+- [ ] **Delete from my list** asks first and says it doesn't cancel the subscription. After deleting, it's gone from Home and Calendar.
 
-## 5. Add / edit / delete ⏳ (M1)
-- [ ] Add from the catalog: the price pre-fills and you can change it.
-- [ ] Add a custom one with every field filled in. All of them show on the detail screen.
-- [ ] Edit the price. The totals update.
-- [ ] Delete one. It's gone from Home and Subs and doesn't show in Ditched.
+## 5. Reminders really arrive (built Nov 10). The most important section.
+Do this on the iPhone, not the web preview. Reminders are local: no internet needed.
+- [ ] **Test reminder:** Settings → **Send me a test reminder**. The card says "Sent. Check the top of your screen." Within about 5 seconds a banner from Ditch says "Test from Ditch. If you can read this, you're set." Do it again with the app in the background (swipe home right after tapping): it still arrives.
+- [ ] **A real heads-up today:**
+  1. Add a sub (or edit one) so its next charge is **tomorrow**, and make sure its bell is yellow (it's one of your 3).
+  2. Settings → **Time** → set it to **2 minutes from now**. (In Expo Go there's also "Reminder time: 1 minute from now" under "Test build only".)
+  3. Lock the phone and wait. At that minute a banner says "<Name> renews tomorrow. $X. Last call if you're done with it."
+  4. Set **Time** back to 9:00 AM.
+- [ ] **3 days before:** set a sub's next charge to **3 days from today**, Time to 2 minutes from now, lock the phone. The banner says "<Name> renews <weekday>. $X. Still watching?" (or listening/using). Guessed dates say "renews around Mon, Nov 16".
+- [ ] **Moving the date cancels the old one:** repeat the step above, but before the minute comes, change that sub's date to next month. Nothing arrives.
+- [ ] **Turning the bell off cancels it:** same again, but turn its reminder off (Settings → Which subscriptions). Nothing arrives.
+- [ ] **No duplicates:** open and close Ditch a few times, then let one fire. You get it once.
+- [ ] **Survives a restart:** schedule one for a few minutes ahead, restart the iPhone, unlock it and wait. It still arrives.
+- [ ] **Ditched gets one last check:** set a sub's next charge to **tomorrow**, then hold it to ditch (don't tap "I already cancelled"). The Ditched screen says "One last check: <today> · <time>". Set Time to 2 minutes from now and lock the phone: you get "Did you cancel <Name>? It charges tomorrow." and no normal heads-up for it.
+- [ ] **Health card:** Settings top card says **All good** and "Next one: <Name>, <day> at 9 AM", which matches Calendar's yellow dots.
+- [ ] **Permission off:** iPhone Settings → Ditch → Notifications → off. Back in Ditch: Home shows the black "Reminders are off. Nothing can reach you. [Turn on]" banner and every bell has a slash. Settings' card says "Reminders are off" and **Turn on in iPhone Settings** opens the right page. Turn them back on, return to Ditch: the banner is gone and reminders are scheduled again (no restart needed).
+- [ ] **Banners off but allowed:** iPhone Settings → Ditch → Notifications → keep Allow on, but turn off Lock Screen, Notification Center and Banners. Settings in Ditch says "On, but quiet" with a button to change it.
 
-## 6. Ditch it ⏳ (M1)
-- [ ] Detail → How to cancel opens the right page (or Apple Subscriptions for Apple-billed). The sub is still active when you come back.
-- [ ] Tap Ditch it. It asks "Did you cancel it?". Confirm: the card slides off, the DITCHED stamp lands with a buzz, and "$X a year back" counts up.
-- [ ] The Ditched tab shows "$X/mo in projected savings", with X matching that sub's monthly price.
-- [ ] Reactivate it ("Oops, still paying"). Savings go back down and it's in Subs again.
-- [ ] Turn on Settings → Accessibility → Motion → Reduce Motion on the iPhone, then ditch something. You get a simple fade, no flick.
+## 6. Hold to ditch and the Ditched screen (built Nov 10)
+Compare with `09-home-hold.jpg`, `10-ditched.jpg`, `10-se.jpg`, `10b-ditched-trial.jpg`.
+- [ ] Press and hold Netflix on Home. After a moment the row turns yellow and lifts, the others fade, a ring fills around the logo, and you feel 3 small ticks. It says "Keep holding to ditch. Let go to keep it. Saves $X a year once you cancel."
+- [ ] Let go halfway: the ring drains back, nothing changes, no buzz.
+- [ ] Hold all the way (about 1.2 s): the Ditched screen opens. The Netflix card flies up, the duck peeks, the DITCHED stamp thumps down with **one firm buzz**, then "$X a year you won't pay, once you cancel." No "saved" anywhere.
+- [ ] If you've already confirmed other cancels, it says "Cancel it and you'll be saving $Y a year." (Y = confirmed savings + this one).
+- [ ] "One last check: <day before the charge> · 9 AM" with the exact words of that reminder.
+- [ ] **Cancel in Netflix ↗** opens Netflix's own cancel page. Coming back, Netflix is still "ditched", not cancelled. Spotify, Hulu and YouTube open their own pages too; Apple Music / iCloud / Apple TV open Apple's subscriptions; anything else shows a short how-to.
+- [ ] **Undo** (top left) puts it back on Home as normal, light tap.
+- [ ] Ditch it again and tap **I already cancelled**: a success buzz and the Ditched tab opens with it under **Cancelled**.
+- [ ] On Home, a ditched-but-not-cancelled sub shows the DITCHED tag, "Cancel by <date>" and a slashed bell; it's no longer in the yellow total. Tapping it reopens the Ditched screen (without the stamp animation).
+- [ ] Pro trial (Settings → Test build only → Preview Pro): hold the "ditch Pro trial" row. The screen says "Charges Mon, …", "You keep your whole list. Reminders drop back to 3.", and **Cancel in iPhone Settings ↗**.
+- [ ] iPhone SE or Display Zoom: everything on the Ditched screen fits without scrolling.
+- [ ] Reduce Motion on (Settings → Accessibility → Motion): no lift or flying card; the ring fills in 4 steps; the stamp just appears (the buzz stays).
+- [ ] VoiceOver: on a Home row, swipe up/down to the **Ditch it** action and double-tap. It ditches without holding.
 
-## 7. Accessibility and look ⏳ (M1)
-- [ ] Switch the iPhone to Dark mode. Every screen stays readable.
-- [ ] Settings → Display → Text Size at its largest. Money doesn't get cut off.
-- [ ] Turn on VoiceOver and swipe through Home. Every button says what it does.
+## 7. Ditched tab (built Nov 10)
+Compare with `13-ditched-tab.jpg`.
+- [ ] "You're saving $X a year." counts **only** the ones you confirmed with "I cancelled it". "From N subs you cancelled since <month> · $Y a month".
+- [ ] **Waiting for you to cancel** lists ditched-but-not-confirmed ones with "+$Z a year" on the right, **I cancelled it** and **How to cancel ›**.
+- [ ] **Cancelled** lists confirmed ones with the date and the yearly amount. Tap one → "Still paying for X?" → **Put it back**: it returns to Home and the savings drop.
+- [ ] **Adding up** shows a step for each cancel, oldest first, ending at the total.
+- [ ] The footnote says Ditch can't see your bank.
+- [ ] Nothing ditched yet: a faded stamp and "Nothing ditched yet." (no duck here).
 
-## 8. Paywall ⏳ (M2)
+## 8. Calendar (built Nov 10)
+Compare with `12-calendar.jpg`.
+- [ ] The month name, ‹ › to move months, and "$X due in <month> · N charges" (one total per currency; ditched ones don't count).
+- [ ] Logos sit on charge days; guessed dates have a dashed outline. Today's number is in a black circle. Yellow dots mark reminder days (3 and 1 days before your reminded subs).
+- [ ] A monthly sub set on the 31st shows on Feb 28 (29 in a leap year) and back on Mar 31.
+- [ ] Tap a day: it turns yellow and the list below shows its charges with "Heads-ups at 9:00 AM" and the two reminder days. Tap a charge to edit it.
+
+## 9. Settings (built Nov 10)
+Compare with `docs/research/settings.md` (Layout A), not render 14.
+- [ ] Back says "‹ Home". Big "Settings". The health card is first (see §5 for its states).
+- [ ] **Remind me** says "3 days and 1 day before". On Free, other days show a PRO tag and open the paywall. With Preview Pro on, you can tick 1 week, 2 days, etc.; at least one stays ticked; new reminders follow it.
+- [ ] **Time** shows the iOS time pill. Change it: the health card's "Next one" time changes too.
+- [ ] **Which subscriptions** says "3 of 3". Inside, bells biggest first; a 4th bell wiggles the "Reminders 3 of 3" badge with a warning buzz. With Pro: a switch per sub.
+- [ ] **Ditch Pro** shows a yellow **Try free** that opens the paywall (with ×). With Preview Pro on it says "Trial, ends …" and opens the Pro page (Restore, Manage).
+- [ ] **Currency**: pick EUR. New subs start in EUR; existing ones keep their own currency.
+- [ ] **Your data → Export as spreadsheet (CSV)** opens the share sheet with a .csv file. Save to Files and open it: one row per sub.
+- [ ] **Your data → Delete all my data**: an alert "Delete everything?" that says it doesn't cancel anything. **Delete** takes you to onboarding with an empty list and no reminders pending.
+- [ ] **Contact support** opens Mail to support@ditchsubs.app with the version filled in.
+- [ ] **About Ditch**: duck icon, "Ditch it before it renews.", Rate (says "not yet" until we're in the App Store), Terms, Privacy, version.
+- [ ] Footer: "Your list stays on your phone." and the version. No light/dark switch, no iCloud row.
+
+## 10. Look and accessibility (Phase 2 screens)
+- [ ] Dark mode: Home, the hold, Ditched, Calendar, Ditched tab and Settings all read well (compare the `d*` renders).
+- [ ] Larger Text near the largest: money isn't cut off, rows grow taller, big headlines stay put.
+- [ ] VoiceOver through Home, Calendar (each day reads its charges), Ditched and Settings: every control says what it does.
+
+## 11. Paywall ⏳ (M2: real purchases)
 - [ ] The × close button is visible immediately. Tap it and you're back to a working free app.
 - [ ] Yearly is pre-selected, and the timeline shows real dates (today, day 5, day 7).
 - [ ] "Continue free" works. Restore purchases works, and with nothing to restore it says so.
 - [ ] Start the trial (sandbox account). A "Ditch Pro trial" entry appears in your list, with a reminder 2 days before the charge.
 - [ ] No weekly plan, no countdown timer, no fake strike-through price.
 
-## 9. States and failures ⏳ (M1–M2)
+## 12. States and failures ⏳ (partly built)
 Why: an app feels premium when the bad moments are handled well, not only the happy path. See `docs/research/premium-states.md`.
-- [ ] Ditch a sub. A message says what you'll save, and **Undo** brings it back.
-- [ ] Delete a sub. **Undo** brings it back.
+- [x] Ditch a sub. A message says what you'll save, and **Undo** brings it back. (Built: §6.)
+- [ ] Delete a sub. **Undo** brings it back. (Not yet: delete asks first instead.)
 - [ ] Turn a reminder on. The message shows the real reminder dates.
 - [ ] Free limit: wherever it shows (Pick 3, sub detail, Settings, paywall), it reads "Reminders 3 of 3" with the same **Swap** and **See Pro** buttons.
-- [ ] iPhone Settings → Ditch → Notifications off. Open Ditch. A banner says reminders are off, and **Turn on** opens Settings.
+- [x] iPhone Settings → Ditch → Notifications off. Open Ditch. A banner says reminders are off, and **Turn on** opens Settings. (Built: §5.)
 - [ ] Airplane mode, then open the paywall. It says it can't reach the App Store, **Try again** works, and × still closes it.
 - [ ] Empty Home, empty Ditched, and a search with no match each show a friendly line and one clear button.
 - [ ] Set a charge date in the past. It moves to the next charge and says so.

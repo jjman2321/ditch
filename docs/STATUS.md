@@ -2,7 +2,7 @@
 
 _Update this at the end of every session._
 
-**Last updated:** Nov 9, 2026 (night) · **Milestone:** M1, Phase 1 done (Sunflower onboarding built)
+**Last updated:** Nov 10, 2026 · **Milestone:** M1, Phase 2 done (the core app: saving, reminders, Home, Ditched, Calendar, Settings)
 
 ## Where we are
 - ✅ Docs, decisions, spec. Expo SDK 58 app with money/date logic and 23 passing tests.
@@ -18,7 +18,20 @@ _Update this at the end of every session._
   - "Turn on reminders" asks for the real iPhone permission.
   - Jest tests pass (money, dates, guesses, receipts, heads-ups, totals, prices, You're set copy).
   - The Kiwi kit, raccoon, 3D emoji and Plus Jakarta Sans are gone.
-- ⚠️ Purchases are stubbed (RevenueCat in M2). Home, Calendar and Ditched are placeholders. Nothing is saved to SQLite yet, so onboarding answers are lost when the app closes. Reminders are not scheduled yet.
+- ✅ **Phase 2 built (Nov 10): the core app.** Screenshots in `design/build-phase2/` (`node scripts/shoot-phase2.mjs` with the web preview running).
+  - **Saving:** SQLite with numbered migrations (`src/db/`). Everything from onboarding is saved when you tap "Go to my list"; after that the app opens on Home.
+  - **Reminders that fire** (`src/domain/reminders.ts`, `src/services/notifications.ts`): 3 days and 1 day before at 9:00 AM (Pro: your own days), Free = your 3 picks, "around" for guessed dates, the Pro trial's own heads-ups, one "Did you cancel X? It charges tomorrow." for ditched-but-not-cancelled subs, never in the past, never twice, max 64 soonest first, a year ahead. Rescheduled after every change, on launch, on return to the app and at midnight. "Send me a test reminder" in Settings.
+  - **Home** (09/09b/09c/11): yellow total per currency, This week / Next week / Later, GUESS tags, bells, reminders-off banner, empty state with quick add, add/edit sheet, **hold to ditch** with the ring.
+  - **Ditched screen** (10/10b/10-se): the stamp lands with one heavy buzz, "$X a year you won't pay, once you cancel.", one last check, official cancel page (Netflix, Hulu, Spotify, YouTube; Apple's page for Apple-billed and the Pro trial; a how-to for the rest), I already cancelled, Undo.
+  - **Ditched tab** (13): "You're saving" from confirmed cancels only, waiting list, cancelled list, step chart, honest footnote.
+  - **Calendar** (12): month grid, dashed guesses, heads-up dots, day detail with the reminder days.
+  - **Settings** (Layout A from `docs/research/settings.md`): health card, Remind me, Time, Which subscriptions, Ditch Pro, Currency, Your data (CSV export, delete all), Contact support, About.
+  - 155 Jest tests pass (31 for reminders alone; migrations run real SQL in Jest through Node's built-in SQLite).
+  - New Expo Go modules: the iOS time picker, `expo-sharing`, `expo-file-system`.
+- ⚠️ Purchases are still stubbed (RevenueCat in M2). In Expo Go, Settings has a "Test build only" group with **Preview Pro** and "Reminder time: 1 minute from now". It never shows in the App Store build.
+- ⚠️ Differences from the v10 renders, on purpose: Home shows "N dates are guesses · Check them" on Free too (not only Pro), because exact dates make reminders exact; Settings follows Layout A, not render 14; deleting a sub asks first instead of offering Undo.
+- ⚠️ The DITCHED stamp is still drawn in code (wobbly border, ink specks). It needs real hand-lettering before launch.
+- ⚠️ Reminder delivery can only be proven on a real iPhone: run `docs/MANUAL-TESTS.md` §5.
 - ⚠️ "Import from a screenshot" (DECISIONS #16) is a placeholder screen.
 - ✅ **Prices by country (DECISIONS #17):** 102 verified rows for 12 countries, generated into `src/catalog/prices.data.ts` by `npm run prices`. Country from the iPhone Region with "Prices for 🇺🇸 US · Change", one-tap plan pills, "Add your price" where we have no checked price, one total per currency (US$ vs A$ kept apart). 81 Jest tests pass.
 - ✅ **Price research, round 2 (Nov 9, headless browser):** 148 verified rows. New: Amazon Prime (10 countries), Disney+ US/CA/AU/ES/NL, PS Plus and Xbox Game Pass (all 12), Hulu, Peacock, Paramount+, Canva Pro (US), Spotify ES, Dropbox and Notion US (monthly vs yearly now split). US total for the 6 popular picks: $396 → $726 a year.
@@ -26,9 +39,11 @@ _Update this at the end of every session._
 - 🗄️ Retired: raccoon poses and Seedance loops in `design/premium-white/anim/` (kept for reference, not used).
 
 ## Next
-1. **Only you can do this (5 min):** on your iPhone or Mac in the US, open youtube.com/premium and chatgpt.com/pricing and tell me the prices you see (Individual / Family / Student; Plus). I'll mark them verified, then `npm run prices`.
-2. Phase 2: Home, Calendar, Ditched (hold to ditch, the stamp), SQLite with migrations, and real reminder scheduling.
-3. Owner runs the onboarding checklist (`docs/MANUAL-TESTS.md` §1) on the iPhone with Expo Go.
+1. **Only you can do this (20 min):** on your iPhone with Expo Go, run `docs/MANUAL-TESTS.md` §5 "Reminders really arrive". This is the product: a test reminder, a real heads-up at a time 2 minutes away, one after a restart, and the "Reminders are off" state. Tell me any step that fails.
+2. Then §2–§4 and §6–§9 (saving, Home, add/edit, hold to ditch, Ditched, Calendar, Settings), light and dark.
+3. **Only you can do this (5 min):** on your iPhone or Mac in the US, open youtube.com/premium and chatgpt.com/pricing and tell me the prices you see (Individual / Family / Student; Plus). I'll mark them verified, then `npm run prices`.
+4. M2: RevenueCat, real purchases and restore, Pro lapse handling, then an EAS development build.
+5. Owner decision: should "Check your guessed dates" show on Free too (built that way), or only on Pro like render 9b?
 
 ## How to run the app
 1. Install **Expo Go** from the App Store on your iPhone.

@@ -56,6 +56,22 @@ export function SubLogo({ sub, size = TILE }: { sub: Sub; size?: number }) {
   return isProTrial(sub) ? <DuckIcon size={size} /> : <LogoTile id={sub.catalogId ?? sub.id} size={size} mono={sub.catalogId ? undefined : sub.name.slice(0, 1).toUpperCase()} color={sub.catalogId ? undefined : '#6B6559'} />;
 }
 
+/**
+ * Invisible copy of the longest price on Home, drawn exactly like a row's
+ * price, so every row can use its width and the bells line up.
+ */
+export function PriceColumnMeasure({ prices, onWidth }: { prices: (string | null)[]; onWidth: (w: number) => void }) {
+  const longest = prices.reduce<string>((a, b) => (b && b.length > a.length ? b : a), '');
+  if (!longest) return null;
+  return (
+    <View pointerEvents="none" accessible={false} importantForAccessibility="no-hide-descendants" style={{ position: 'absolute', opacity: 0, left: 0, top: 0, width: 1000, flexDirection: 'row' }}>
+      <Txt v="moneyM" num style={{ fontSize: 17.5 }} onLayout={(e) => onWidth(Math.ceil(e.nativeEvent.layout.width) + 2)}>
+        {longest}
+      </Txt>
+    </View>
+  );
+}
+
 export function SubRow({
   sub,
   charge,
@@ -67,7 +83,10 @@ export function SubRow({
   onHoldEnd,
   onDitch,
   onOpen,
+  priceWidth,
 }: {
+  /** Same for every row on Home, so the bells and prices line up. */
+  priceWidth?: number;
   sub: Sub;
   charge: DateOnly;
   today: DateOnly;
@@ -231,7 +250,7 @@ export function SubRow({
               <Bell color={bell === 'on' ? (on ? brand.ink : p.dark ? brand.sunflower : brand.ink) : p.disabledFg} size={19} fill={bell === 'on' ? (on ? brand.ink : brand.sunflower) : undefined} />
             )}
           </View>
-          <Txt v="moneyM" num color={price ? fg : p.mute} style={{ minWidth: 62, textAlign: 'right', fontSize: price ? 17.5 : 13 }}>
+          <Txt v="moneyM" num color={price ? fg : p.mute} style={[{ minWidth: 62, textAlign: 'right', fontSize: price ? 17.5 : 13 }, priceWidth ? { width: Math.max(62, priceWidth) } : null]}>
             {price ?? 'Add price'}
           </Txt>
         </View>

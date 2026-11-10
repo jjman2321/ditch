@@ -6,11 +6,11 @@ import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
-import { homeGroups, homeTotals, isActive, isGuess, isPending, isProTrial, listedUserSubs, remindedIds } from '@/domain/subs';
+import { homeGroups, homeTotals, isActive, isGuess, isPending, isPricedSub, isProTrial, listedUserSubs, remindedIds } from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
 import { EmptyHome, GuessesRow, OffBanner, TotalCard, openPhoneSettings } from '@/home/HomeParts';
-import { SubRow, type BellState } from '@/home/SubRow';
-import { useApp } from '@/state/app';
+import { PriceColumnMeasure, SubRow, type BellState } from '@/home/SubRow';
+import { useApp, useAppMoney } from '@/state/app';
 import { Card, EDGE, Gear, IconButton, Plus, RowDivider, SectionHeader, SurfaceContext, Wordmark, brand, useInsets, usePalette } from '@/ui/sunflower';
 
 export default function Home() {
@@ -28,6 +28,9 @@ export default function Home() {
   const blocked = notif === 'denied' || notif === 'undetermined';
   const guesses = subs.filter((s) => isActive(s) && !isProTrial(s) && isGuess(s));
   const empty = groups.length === 0;
+  const money = useAppMoney();
+  const prices = useMemo(() => groups.flatMap((g) => g.rows.map((r) => (isPricedSub(r.sub) ? money(r.sub.amountMinor, r.sub.currency) : null))), [groups, money]);
+  const [priceW, setPriceW] = useState<number | undefined>(undefined);
 
   const bellOf = (id: string): BellState => {
     const s = subs.find((x) => x.id === id);
@@ -50,6 +53,7 @@ export default function Home() {
   return (
     <SurfaceContext.Provider value="cream">
       <View style={{ flex: 1, backgroundColor: p.bg }}>
+        <PriceColumnMeasure prices={prices} onWidth={setPriceW} />
         <ScrollView
           contentContainerStyle={{ paddingTop: insets.top + 6, paddingHorizontal: EDGE, paddingBottom: 28 }}
           showsVerticalScrollIndicator={false}
@@ -98,6 +102,7 @@ export default function Home() {
                           charge={r.charge}
                           today={today}
                           bell={bellOf(r.sub.id)}
+                          priceWidth={priceW}
                           holding={holding === r.sub.id}
                           dimmed={!!holding && holding !== r.sub.id}
                           onHoldStart={setHolding}

@@ -78,10 +78,10 @@ export default function Calendar() {
           }
           style={{ flexDirection: 'row', alignItems: 'baseline', flexWrap: 'wrap', columnGap: 8, marginTop: 8 }}
         >
-          <Txt v="displayM" tone="money" num style={{ fontSize: 34, lineHeight: 40 }}>
+          <Txt v="displayM" tone="money" num style={{ fontSize: 31, lineHeight: 38 }}>
             {due.totals[0] ? money(due.totals[0].amountMinor, due.totals[0].currency) : money(0, settings.currency)}
           </Txt>
-          <Txt v="leadS" tone="fg2" num style={{ fontSize: 15.5 }}>
+          <Txt v="leadS" tone="fg2" num style={{ fontSize: 15, letterSpacing: -0.3 }}>
             {due.totals.slice(1).map((x) => `+ ${money(x.amountMinor, x.currency)} `)}due in {MONTH_LONG[view.m - 1]} · {due.count} {due.count === 1 ? 'charge' : 'charges'}
           </Txt>
         </View>

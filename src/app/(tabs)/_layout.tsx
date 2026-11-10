@@ -39,7 +39,7 @@ export default function TabsLayout() {
   const p = paletteFor('cream', useIsDark());
   const insets = useInsets();
   // iOS sizes the bar itself; the web preview needs the faked home-indicator space.
-  const webBar = Platform.OS === 'web' ? { height: 54 + insets.bottom, paddingBottom: insets.bottom, paddingTop: 4 } : null;
+  const webBar = Platform.OS === 'web' ? { height: 58 + insets.bottom, paddingBottom: insets.bottom + 2, paddingTop: 6 } : null;
   return (
     <Tabs
       screenOptions={{

@@ -23,35 +23,48 @@ const UPSERT = `INSERT OR REPLACE INTO subscriptions (${SUB_COLUMNS.join(', ')})
 
 export async function sqlRepo(db: SqlDb): Promise<Repo> {
   await migrate(db);
+  // One write at a time: two quick taps must never open overlapping transactions.
+  let queue: Promise<unknown> = Promise.resolve();
+  const serial = <T>(task: () => Promise<T>): Promise<T> => {
+    const run = queue.then(task, task);
+    queue = run.catch(() => {});
+    return run;
+  };
   return {
     async loadSubs() {
       const rows = await db.getAllAsync<SubRow>(`SELECT * FROM subscriptions WHERE status != 'deleted' ORDER BY created_at, id`);
       return rows.map(rowToSub);
     },
-    async saveSubs(subs) {
-      if (!subs.length) return;
-      await db.withTransactionAsync(async () => {
-        for (const s of subs) await db.runAsync(UPSERT, ...rowParams(subToRow(s)));
-      });
+    saveSubs(subs) {
+      if (!subs.length) return Promise.resolve();
+      return serial(() =>
+        db.withTransactionAsync(async () => {
+          for (const s of subs) await db.runAsync(UPSERT, ...rowParams(subToRow(s)));
+        }),
+      );
     },
     async loadSettings() {
       const rows = await db.getAllAsync<{ key: string; value: string }>('SELECT key, value FROM settings');
       return parseSettings(Object.fromEntries(rows.map((r) => [r.key, r.value])));
     },
-    async saveSettings(patch) {
+    saveSettings(patch) {
       const kv = settingsToKv(patch);
-      await db.withTransactionAsync(async () => {
-        for (const [key, value] of Object.entries(kv)) {
-          if (value === null) await db.runAsync('DELETE FROM settings WHERE key = ?', key);
-          else await db.runAsync('INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)', key, value);
-        }
-      });
+      return serial(() =>
+        db.withTransactionAsync(async () => {
+          for (const [key, value] of Object.entries(kv)) {
+            if (value === null) await db.runAsync('DELETE FROM settings WHERE key = ?', key);
+            else await db.runAsync('INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)', key, value);
+          }
+        }),
+      );
     },
-    async wipe() {
-      await db.withTransactionAsync(async () => {
-        await db.execAsync('DELETE FROM subscriptions');
-        await db.execAsync('DELETE FROM settings');
-      });
+    wipe() {
+      return serial(() =>
+        db.withTransactionAsync(async () => {
+          await db.execAsync('DELETE FROM subscriptions');
+          await db.execAsync('DELETE FROM settings');
+        }),
+      );
     },
   };
 }

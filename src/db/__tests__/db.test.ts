@@ -147,6 +147,18 @@ async function contract(name: string, make: () => Promise<Repo>) {
 }
 
 contract('SQLite', () => sqlRepo(nodeSqlite()));
+
+it('SQLite: quick writes one after another never overlap their transactions', async () => {
+  const repo = await sqlRepo(nodeSqlite());
+  await Promise.all([
+    repo.saveSubs([netflix()]),
+    repo.saveSettings({ currency: 'GBP' }),
+    repo.saveSubs([netflix({ id: 'b', name: 'B' })]),
+    repo.saveSettings({ reminderTime: '08:15' }),
+  ]);
+  expect((await repo.loadSubs()).map((s) => s.id).sort()).toEqual(['b', 'sub-netflix']);
+  expect((await repo.loadSettings()).reminderTime).toBe('08:15');
+});
 contract('memory', async () => memoryRepo());
 
 it('memory repo hands every change to persist', async () => {

@@ -48,26 +48,31 @@ const SHOTS = [
   { name: '02-pick', q: 'ob=v12', path: '/onboarding/services' },
   { name: '02b-plan-sheet', q: 'ob=v12', path: '/onboarding/services', steps: [click('Change Netflix plan')] },
   { name: '03-total', q: 'ob=v12', path: '/onboarding/total', noScroll: true },
-  {
-    name: '04-dates',
-    q: 'ob=v12dates',
-    path: '/onboarding/dates',
-    steps: [
-      async (page) => {
-        await page.getByRole('radiogroup', { name: 'When Netflix charges' }).getByLabel('Next week', { exact: true }).click();
-        await page.waitForTimeout(250);
-      },
-    ],
-  },
+  // Dates (DECISIONS #33): ChatGPT already set, the rest ask for a day.
+  { name: '04-dates', q: 'ob=v12dates', path: '/onboarding/dates' },
   {
     name: '04b-day-sheet',
     q: 'ob=v12dates',
     path: '/onboarding/dates',
     steps: [
       async (page) => {
-        await page.getByRole('radiogroup', { name: 'When Netflix charges' }).getByLabel('Pick a day', { exact: true }).click();
+        await page.getByLabel(/^Spotify, no date yet/).first().click();
         await page.waitForTimeout(700);
-        await page.getByLabel('The 19th', { exact: true }).click();
+        await page.getByLabel('The 16th', { exact: true }).click();
+        await page.waitForTimeout(300);
+      },
+    ],
+  },
+  {
+    name: '04c-year-sheet',
+    q: 'ob=v12dates',
+    path: '/onboarding/dates',
+    steps: [
+      async (page) => {
+        await page.getByLabel(/^Amazon Prime, no date yet/).first().click();
+        await page.waitForTimeout(700);
+        await page.getByLabel('Apr', { exact: true }).click();
+        await page.getByLabel('The 28th', { exact: true }).click();
         await page.waitForTimeout(300);
       },
     ],

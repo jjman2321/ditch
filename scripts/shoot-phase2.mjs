@@ -44,7 +44,7 @@ const SHOTS = [
   { name: '14b-settings-off', url: q('demo', '&notif=denied'), path: '/settings' },
   { name: '14c-settings-pro', url: q('pro'), path: '/settings' },
   { name: '15-add', url: q('demo'), add: true },
-  { name: '15b-edit', url: q('demo'), edit: 'ChatGPT Plus' },
+  { name: '15b-edit', url: q('demo'), edit: 'ChatGPT' },
   { name: 'd09-home-hold', url: q('demo'), hold: 'Netflix', dark: true },
   { name: 'd09c-home-off', url: q('off', '&notif=denied'), dark: true },
   { name: 'd10-ditched', url: q('demo'), ditch: 'netflix', dark: true },

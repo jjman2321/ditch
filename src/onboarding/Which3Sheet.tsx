@@ -6,7 +6,7 @@
 import { useMemo, useState } from 'react';
 import { AccessibilityInfo, ScrollView, View } from 'react-native';
 
-import { weekdayDate } from '@/domain/dates';
+import { shortDate, weekdayDate } from '@/domain/dates';
 import { byYearlyDesc, chargeOf, usePickPrice, type Picked } from '@/state/onboarding';
 import { Button, Close, IconButton, LogoTile, Sheet, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
 
@@ -23,7 +23,7 @@ function Body({ list, initial, onKeep }: { list: Picked[]; initial: string[]; on
   const slots = sorted.filter((x) => on.includes(x.id));
   const rest = sorted.filter((x) => !on.includes(x.id));
   // Breaks only at the " · ", so a date never splits.
-  const line = (x: Picked) => `${priceOf(x, 'short') ?? 'No price yet'} · ${`${x.dateSource === 'guess' ? 'around ' : ''}${weekdayDate(chargeOf(x))}`.replace(/ /g, NB)}`;
+  const line = (x: Picked) => `${priceOf(x, 'short') ?? 'No price yet'} · ${(x.dateSource === 'guess' ? `around ${shortDate(chargeOf(x))}` : weekdayDate(chargeOf(x))).replace(/ /g, NB)}`;
 
   const remove = (x: Picked) => {
     haptic.select();

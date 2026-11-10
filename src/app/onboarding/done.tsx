@@ -12,7 +12,7 @@ import { AppState, Linking, Text, View } from 'react-native';
 
 import { namesLine } from '@/domain/copy';
 import { headsUpDates } from '@/domain/charges';
-import { weekdayDate } from '@/domain/dates';
+import { shortDate, weekdayDate } from '@/domain/dates';
 import { FitScroll, OnbRoot, TextLink } from '@/onboarding/Parts';
 import { useFirstReminders } from '@/onboarding/useFirstReminders';
 import { Which3Sheet } from '@/onboarding/Which3Sheet';
@@ -169,7 +169,8 @@ export default function Done() {
                       {r.name}
                     </Txt>
                     <Txt v="sub" num color={sub2} numberOfLines={1}>
-                      {`renews ${r.guess ? 'around ' : ''}${weekdayDate(r.charge)}`}
+                      {/* Rough dates drop the weekday, so the line never gets cut off. */}
+                      {r.guess ? `renews around ${shortDate(r.charge)}` : `renews ${weekdayDate(r.charge)}`}
                     </Txt>
                   </View>
                   <View style={{ alignItems: 'flex-end' }}>

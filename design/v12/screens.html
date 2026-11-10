@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Ditch v12 Onboarding</title>
+<style>
+@font-face{font-family:Archivo;src:url(fonts/archivo-wdth.woff2) format('woff2');font-weight:100 900;font-stretch:62% 125%}
+@font-face{font-family:Inter;src:url(fonts/Inter_400Regular.ttf);font-weight:400}
+@font-face{font-family:Inter;src:url(fonts/Inter_500Medium.ttf);font-weight:500}
+@font-face{font-family:Inter;src:url(fonts/Inter_600SemiBold.ttf);font-weight:600}
+@font-face{font-family:Inter;src:url(fonts/Inter_700Bold.ttf);font-weight:700}
+@font-face{font-family:Inter;src:url(fonts/Inter_800ExtraBold.ttf);font-weight:800}
+:root{--sun:#FFCC2E;--ink:#16140F;--cream:#FBF7EE;--night:#12110E;--bill:#FF6C2C}
+*{box-sizing:border-box}
+body{margin:0;background:#E7E2D6;font-family:Inter,system-ui,sans-serif;color:var(--ink);letter-spacing:-.2px;-webkit-font-smoothing:antialiased}
+.stage{width:2800px;padding:48px 56px}
+section{padding:24px 28px 64px;margin:0 -28px}
+section.darksec{background:#0B0A08;margin:0 -56px;padding:56px 84px 64px}
+section.darksec .sh h2,section.darksec .sh p,section.darksec .cap,section.darksec .rowh{color:#EDE6D6}
+.sh{margin-bottom:40px}
+.sh h2{font-family:Archivo;font-stretch:125%;font-weight:900;font-size:40px;letter-spacing:-1.2px;margin:0;line-height:44px}
+.sh p{margin:8px 0 0;font-size:18px;line-height:26px;color:#4A463E;max-width:1700px}
+.rowh{font:800 22px/28px Archivo;font-stretch:115%;margin:0 0 24px;color:#16140F}
+.row{display:flex;gap:56px;flex-wrap:wrap;align-items:flex-start;row-gap:64px}
+.row+.rowh{margin-top:64px}
+.cell{display:flex;flex-direction:column;align-items:center}
+.cap{font:600 16px Inter;color:#4A463E;margin-top:24px;text-align:center;max-width:420px}
+
+/* ---------- devices + themes ---------- */
+.phone{position:relative;overflow:hidden;flex:none;background:var(--bg);color:var(--fg)}
+.phone.i12{border-radius:47px;box-shadow:0 0 0 11px #121110,0 34px 70px rgba(40,30,0,.22)}
+.phone.se{border-radius:0;box-shadow:0 0 0 12px #121110,0 -72px 0 12px #121110,0 72px 0 12px #121110,0 34px 70px rgba(40,30,0,.22);margin:72px 0}
+.phone.ipad{border-radius:18px;box-shadow:0 0 0 16px #121110,0 34px 70px rgba(40,30,0,.22)}
+.darksec .phone{box-shadow:0 0 0 11px #2A2824,0 34px 70px rgba(0,0,0,.5)}
+.phone.sun{--bg:#FFCC2E;--fg:#16140F;--fg2:#4B4220;--card:#fff;--cardfg:#16140F;--mute:#5C5230;--rule:rgba(22,20,15,.18);--hair:rgba(22,20,15,.14);--cta:#16140F;--ctafg:#FFCC2E;--money:#16140F;--note:rgba(255,255,255,.97);--notefg:#1C1B19;--notemute:#6E6A62;--track:rgba(22,20,15,.16);--sheet:#FBF7EE;--chip:#fff;--chipb:#E3DBCA;--ctl:#D9D0BD;--tint:#FFF1BC;--seg:#EFE8D8}
+.phone.cream{--bg:#FBF7EE;--fg:#16140F;--fg2:#5A544A;--card:#fff;--cardfg:#16140F;--mute:#6B6559;--rule:#E6DFD0;--hair:#EEE7D8;--cta:#16140F;--ctafg:#fff;--money:#16140F;--note:#fff;--notefg:#1C1B19;--notemute:#6E6A62;--track:#E6DFD0;--sheet:#FBF7EE;--chip:#fff;--chipb:#E3DBCA;--ctl:#D9D0BD;--tint:#FFF1BC;--seg:#EFE8D8}
+.phone.dark{--bg:#12110E;--fg:#F6F0E3;--fg2:#BFB7A7;--card:#1E1C18;--cardfg:#F6F0E3;--mute:#A9A192;--rule:#33302A;--hair:#2B2823;--cta:#FFCC2E;--ctafg:#16140F;--money:#FFCC2E;--note:#25231E;--notefg:#F6F0E3;--notemute:#A9A192;--track:#33302A;--sheet:#1A1916;--chip:#1E1C18;--chipb:#3A3630;--ctl:#3A3630;--tint:#2A2721;--seg:#26241F}
+.sb{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;z-index:40;color:var(--fg);font:600 17px Inter;letter-spacing:-.3px}
+.sb .ic{display:flex;gap:6px;align-items:center}
+.notch{position:absolute;left:50%;top:0;width:210px;height:30px;margin-left:-105px;background:#000;border-radius:0 0 20px 20px;z-index:41}
+.notch:before,.notch:after{content:"";position:absolute;top:0;width:8px;height:8px}
+.notch:before{left:-8px;background:radial-gradient(circle at 0 100%,transparent 7.5px,#000 8px)}
+.notch:after{right:-8px;background:radial-gradient(circle at 100% 100%,transparent 7.5px,#000 8px)}
+.hi{position:absolute;bottom:8px;left:50%;width:134px;height:5px;margin-left:-67px;border-radius:3px;background:var(--fg);z-index:40}
+.ipad .hi{width:200px;margin-left:-100px;bottom:7px}
+.scr{position:absolute;inset:0;display:flex;flex-direction:column}
+
+/* ---------- type (Sunflower scale, line heights on 4) ---------- */
+.disp{font-family:Archivo;font-stretch:118%;font-weight:900;margin:0}
+.title{font-family:Archivo;font-stretch:115%;font-weight:900;font-size:30px;line-height:36px;letter-spacing:-1px;margin:0}
+.heading{font-family:Archivo;font-stretch:110%;font-weight:800;font-size:20px;line-height:28px;letter-spacing:-.4px;margin:0}
+.moneyM{font-family:Archivo;font-stretch:108%;font-weight:800;font-size:18px;line-height:24px;letter-spacing:-.3px}
+.moneyS{font-family:Archivo;font-stretch:106%;font-weight:700;font-size:16px;line-height:20px;letter-spacing:-.2px}
+.lead{font-size:17px;line-height:24px;color:var(--fg2);margin:0}
+.leadS{font-size:16px;line-height:24px;color:var(--fg2);margin:0}
+.bs{font-weight:600;font-size:16px;line-height:24px;margin:0}
+.body{font-size:15px;line-height:20px;margin:0}
+.label{font-weight:600;font-size:15px;line-height:20px}
+.sub{font-size:14px;line-height:20px;color:var(--mute);margin:0;letter-spacing:-.1px}
+.eyebrow{font:700 12px/16px Inter;letter-spacing:1.2px;text-transform:uppercase;color:var(--mute)}
+.num{font-variant-numeric:tabular-nums lining-nums}
+.wm{font-family:Archivo;font-stretch:125%;font-weight:900;font-size:24px;letter-spacing:-.8px;line-height:28px}
+.nw{white-space:nowrap}
+[data-fit]{width:max-content;max-width:none}
+
+/* ---------- controls ---------- */
+.cta{height:56px;border-radius:28px;border:0;width:100%;background:var(--cta);color:var(--ctafg);font:600 17px/24px Inter;letter-spacing:-.3px;display:flex;align-items:center;justify-content:center;gap:8px;flex:none;padding:0 16px}
+.sec{height:48px;border-radius:24px;width:100%;background:transparent;border:0;box-shadow:inset 0 0 0 1.5px var(--fg);font:600 16px/20px Inter;letter-spacing:-.2px;color:var(--fg);display:flex;align-items:center;justify-content:center;gap:8px;flex:none;padding:0 12px}
+.dark .sec{box-shadow:inset 0 0 0 1.5px rgba(246,240,227,.45)}
+.txtbtn{height:44px;border:0;background:none;font:600 16px/20px Inter;letter-spacing:-.2px;color:var(--fg);width:100%;flex:none;display:flex;align-items:center;justify-content:center}
+.nav{height:44px;display:flex;align-items:center;gap:12px;flex:none}
+.back{width:44px;height:44px;margin-left:-12px;display:flex;align-items:center;justify-content:center;flex:none}
+.steps{flex:1;display:flex;gap:4px}.steps i{flex:1;height:4px;border-radius:2px;background:var(--track)}.steps i.on{background:var(--fg)}
+.lt{position:relative;display:block;flex:none;overflow:hidden;border-radius:22.5%}
+.lt img{display:block;width:100%;height:100%}
+.lt:after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 .5px rgba(22,20,15,.18);pointer-events:none}
+.dark .lt:after{box-shadow:inset 0 0 0 .5px rgba(246,240,227,.18)}
+.stack{display:flex;align-items:center}
+.stack .lt{box-shadow:0 0 0 2px var(--bg)}
+.stack .lt+.lt{margin-left:-8px}
+.lockup{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;vertical-align:middle}
+.lockup .w{font-family:Archivo;font-stretch:125%;font-weight:900;letter-spacing:-.033em;line-height:1}
+.lockup .pp{font:800 12px/1 Inter;letter-spacing:.02em;color:#16140F;background:#FFCC2E;border-radius:999px;padding:4px 8px;box-shadow:inset 0 0 0 1.5px #16140F}
+.sun .lockup .pp,.band .lockup .pp{background:#fff}
+.dark .lockup .pp{box-shadow:none;background:#FFCC2E}
+.duckicon{background:#FFCC2E;overflow:hidden;position:relative;flex:none;border-radius:22.5%}
+.duckicon:after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 .5px rgba(22,20,15,.18)}
+.duckicon img{position:absolute;display:block}
+.card{background:var(--card);color:var(--cardfg);border-radius:20px;box-shadow:0 1px 0 rgba(0,0,0,.03),0 6px 20px rgba(70,50,0,.07)}
+.dark .card{box-shadow:inset 0 0 0 1px #2C2924}
+.xbtn{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex:none}
+.xbtn i{width:32px;height:32px;border-radius:16px;background:rgba(22,20,15,.1);display:flex;align-items:center;justify-content:center}
+.dark .xbtn i{background:#2A2722}
+/* a link whose tap area is padded out to 44pt (hitSlop in React Native) */
+.lrow .n span.lnk,.lnk{display:inline;font-weight:600;color:var(--fg);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1.5px}
+
+/* notification */
+.note{background:var(--note);border-radius:22px;padding:12px 16px 12px 12px;display:flex;gap:12px;align-items:flex-start;box-shadow:0 10px 30px rgba(80,55,0,.16);color:var(--notefg);text-align:left}
+.dark .note{box-shadow:inset 0 0 0 1px #34312B}
+.note .h{display:flex;justify-content:space-between;font-size:15px;font-weight:600;line-height:20px}
+.note .h span{font-weight:400;color:var(--notemute);font-size:14px}
+.note .m{font-size:15px;line-height:20px}
+
+/* 3-dot timeline (welcome) */
+.tl{display:flex;align-items:flex-start;justify-content:space-between;position:relative}
+.tl .ln{position:absolute;left:12px;right:12px;top:11px;height:2px;background:repeating-linear-gradient(90deg,var(--tlc) 0 4px,transparent 4px 8px)}
+.tl .st{display:flex;flex-direction:column;align-items:center;position:relative;text-align:center}
+.tl .st:nth-child(2){align-items:flex-start;text-align:left}.tl .st:last-child{align-items:flex-end;text-align:right}
+.tl .dot{width:24px;height:24px;border-radius:12px;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 2px var(--tlc);background:var(--tlbg)}
+.tl .dot.f{background:var(--tlc)}
+.tl b{font-size:14px;line-height:20px;margin-top:8px;white-space:nowrap;font-weight:600}
+.tl small{font-size:13px;line-height:16px;white-space:nowrap;color:var(--tlm)}
+
+/* lists */
+.lrow{display:flex;align-items:center;gap:12px;min-height:64px;position:relative}
+.lrow .n{flex:1;min-width:0}
+.lrow .n b{display:block;font-weight:600;font-size:16px;line-height:20px}
+.lrow .n span{display:block;font-size:14px;line-height:20px;color:var(--mute)}
+.tick{width:28px;height:28px;border-radius:14px;box-shadow:inset 0 0 0 2px #C4BBA8;flex:none;display:flex;align-items:center;justify-content:center}
+.tick.on{background:var(--ink);box-shadow:none}
+.tickhit{width:44px;height:44px;display:flex;align-items:center;justify-content:center;margin-right:-8px;flex:none}
+/* filter chips: 36pt pill inside a 44pt tap area */
+.chip{height:44px;display:flex;align-items:center;flex:none}
+.chip i{font-style:normal;height:36px;padding:0 16px;border-radius:18px;background:var(--chip);box-shadow:inset 0 0 0 1.5px var(--chipb);font-weight:600;font-size:15px;line-height:20px;display:flex;align-items:center;white-space:nowrap}
+.chip.on i{background:var(--ink);color:#fff;box-shadow:none}
+.radio{width:24px;height:24px;border-radius:12px;box-shadow:inset 0 0 0 2px #B9B09D;flex:none;display:flex;align-items:center;justify-content:center}
+.radio.on{background:var(--ink);box-shadow:none}
+.dark .radio{box-shadow:inset 0 0 0 2px #5A554C}.dark .radio.on{background:#FFCC2E;box-shadow:none}
+.tag{font:700 12px/16px Inter;color:#16140F;background:#FFCC2E;border-radius:8px;padding:2px 8px;white-space:nowrap}
+
+/* guess chips (variant) */
+.gchip{height:56px;border-radius:18px;background:var(--chip);box-shadow:inset 0 0 0 1.5px var(--chipb);display:flex;align-items:center;justify-content:space-between;padding:0 16px 0 24px;font:600 17px/24px Inter;letter-spacing:-.3px;flex:none}
+.gchip.on{background:var(--ink);color:#FFCC2E;box-shadow:none}
+
+/* charge-date rows + segmented quick pick */
+.drow{padding:12px 0;position:relative}
+.drow+.drow:before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:var(--hair)}
+.dtop{display:flex;align-items:center;gap:12px;height:32px}
+.dtop>b{flex:1;min-width:0;font-weight:600;font-size:16px;line-height:20px;white-space:nowrap}
+.dres{font-size:14px;line-height:20px;white-space:nowrap;display:flex;align-items:center;gap:4px}
+.seg{display:flex;height:44px;border-radius:14px;background:var(--seg);padding:2px;margin-top:8px}
+.seg span{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;font:600 14px/20px Inter;letter-spacing:-.2px;border-radius:12px;white-space:nowrap;color:var(--fg)}
+.seg span.on{background:var(--ink);color:#FBF7EE}
+.seg span+span{position:relative}
+.seg span+span:not(.on):not(.af):before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:1px;background:rgba(22,20,15,.12)}
+
+/* day grid */
+.dgrid{display:grid;grid-template-columns:repeat(7,1fr)}
+.dgrid div{height:44px;display:flex;align-items:center;justify-content:center}
+.dgrid span{width:40px;height:40px;border-radius:20px;display:flex;align-items:center;justify-content:center;font:600 16px/20px Inter;font-variant-numeric:tabular-nums}
+.dgrid span.on{background:var(--ink);color:var(--cream)}
+.dchip{height:44px;border-radius:22px;background:var(--chip);box-shadow:inset 0 0 0 1.5px var(--chipb);display:flex;align-items:center;justify-content:center;font:600 15px/20px Inter;flex:1}
+
+/* paywall */
+.band{background:#FFCC2E;color:#16140F;position:relative;flex:none}
+.dark .band{background:#2A2516;color:#F6F0E3}
+.cmp{position:relative;overflow:hidden;z-index:2;flex:none}
+.cmp .tr{display:flex;align-items:center;position:relative}
+.cmp .tr+.tr:before{content:"";position:absolute;top:0;left:16px;right:0;height:1px;background:var(--hair)}
+.cmp .tr.hd:before,.cmp .tr.hd+.tr:before{display:none}
+.cmp .f{flex:1;min-width:0;padding-left:16px;font-size:14px;line-height:20px;font-weight:500;white-space:nowrap}
+.cmp .c{display:flex;align-items:center;justify-content:center;flex:none;font:700 15px/20px Inter;position:relative;z-index:1}
+.cmp .procol{position:absolute;top:0;bottom:0;right:0;background:#FFF1BC}
+.dark .cmp .procol{background:#332B12}
+.plan{height:56px;border-radius:16px;background:var(--card);color:var(--cardfg);box-shadow:inset 0 0 0 1.5px var(--ctl);display:flex;align-items:center;gap:12px;padding:0 16px;position:relative;flex:none}
+.plan.on{box-shadow:inset 0 0 0 2.5px var(--fg)}
+.dark .plan{box-shadow:inset 0 0 0 1.5px #3A3630}
+.dark .plan.on{box-shadow:inset 0 0 0 2.5px #FFCC2E}
+.plan .radio{width:24px;height:24px}
+.plan.on .radio{background:var(--fg);box-shadow:none}
+.dark .plan.on .radio{background:#FFCC2E}
+.plan .nm{flex:1;min-width:0;display:flex;align-items:center;gap:8px;font:600 16px/20px Inter;white-space:nowrap}
+.plan .pr{text-align:right;white-space:nowrap;display:flex;flex-direction:column;align-items:flex-end}
+.plan .pr b{font-family:Archivo;font-stretch:108%;font-weight:800;font-size:18px;line-height:24px;letter-spacing:-.3px}
+.plan .pr small{font-size:13px;line-height:16px;color:var(--mute)}
+.plan .ribbon{position:absolute;top:-10px;left:52px;height:20px;padding:0 8px;border-radius:10px;background:var(--fg);color:var(--bg);font:700 11px/20px Inter;letter-spacing:.4px;white-space:nowrap}
+.dark .plan .ribbon{background:#FFCC2E;color:#16140F}
+.links{font-size:14px;line-height:20px;text-align:center;color:var(--fg2);margin:0;display:flex;justify-content:center;gap:4px}
+.links u{text-underline-offset:2px;display:inline-flex;align-items:center;height:44px;padding:0 4px;min-width:44px;justify-content:center}
+
+/* sheets */
+.scrim{position:absolute;inset:0;background:rgba(22,20,15,.42);z-index:20}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--sheet);border-radius:28px 28px 0 0;z-index:21;display:flex;flex-direction:column}
+.grab{width:36px;height:5px;border-radius:3px;background:#D6CDBB;margin:8px auto 0;flex:none}
+.dark .grab{background:#4A463E}
+
+/* checklist */
+.chk{display:flex;align-items:flex-start;gap:12px;padding:12px 0;position:relative}
+.chk+.chk:before{content:"";position:absolute;top:0;left:36px;right:0;height:1px;background:var(--rule)}
+.chk .ic{width:24px;height:24px;border-radius:12px;flex:none;display:flex;align-items:center;justify-content:center}
+</style></head><body>
+
+<div class="stage" id="stage"></div>
+
+<script>
+const LG = '../../assets/logos/';
+const DUCK = 'duck.png', DUCKD = 'duck-dark.png';
+const DEV = {
+  i12: { w: 390, h: 844, top: 47, bot: 34, edge: 24 },
+  se: { w: 375, h: 667, top: 20, bot: 0, edge: 24 },
+  ipad: { w: 834, h: 1194, top: 24, bot: 20, edge: 24 },
+};
+
+/* ---------- icons ---------- */
+const sig = '<svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>';
+const wifi = '<svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 2.2c2.2 0 4.2.9 5.7 2.3l1.2-1.2C13.1 1.6 10.7.5 8 .5S2.9 1.6 1.1 3.3l1.2 1.2C3.8 3.1 5.8 2.2 8 2.2zm0 3.4c1.3 0 2.4.5 3.3 1.3l1.2-1.2C11.3 4.6 9.7 3.900 8 3.9s-3.3.7-4.5 1.8l1.2 1.2c.9-.8 2-1.3 3.3-1.300zM8 9l2-2c-.5-.5-1.2-.8-2-.8s-1.5.3-2 .8l2 2z"/></svg>';
+const batt = '<svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" stroke="currentColor" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="20" height="9" rx="2" fill="currentColor"/><path d="M25 4.5v4c.8-.3 1.4-1.1 1.4-2s-.6-1.700-1.4-2z" fill="currentColor" fill-opacity=".45"/></svg>';
+const sbar = (dev) => {
+  if (dev === 'se') return '<div class="sb" style="height:20px;padding:0 8px;font:600 12px Inter"><span style="display:flex;gap:4px;align-items:center">' + sig.replace('width="18" height="12"', 'width="15" height="10"') + '</span><span>9:41 AM</span><span style="display:flex">' + batt.replace('width="27" height="13"', 'width="24" height="11"') + '</span></div>';
+  if (dev === 'ipad') return '<div class="sb" style="height:24px;padding:0 24px;font:600 14px Inter"><span>9:41&nbsp;&nbsp;Tue Nov 10</span><span class="ic">' + wifi + batt + '</span></div>';
+  return '<div class="notch"></div><div class="sb" style="height:47px;padding:4px 26px 0 32px"><span style="width:54px;text-align:center">9:41</span><span class="ic">' + sig + wifi + batt + '</span></div>';
+};
+const chev = (c = 'currentColor') => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="' + c + '" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const chevR = (c = 'currentColor', s = 16) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="' + c + '" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const chevD = (c = 'currentColor', s = 14) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="' + c + '" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const ck = (c, s) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="' + c + '" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const bell = (c, s, fill) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none"><path d="M6 16V11a6 6 0 1112 0v5l1.6 2.2H4.4L6 16z" stroke="' + c + '" stroke-width="2" stroke-linejoin="round" fill="' + (fill || 'none') + '"/><path d="M10 20.5a2 2 0 004 0" stroke="' + c + '" stroke-width="2" stroke-linecap="round"/></svg>';
+const card$ = (c, s) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12.5" rx="2.5" stroke="' + c + '" stroke-width="2"/><path d="M3 10h18" stroke="' + c + '" stroke-width="2"/></svg>';
+const xI = (c, s = 13) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 14 14"><path d="M2 2l10 10M12 2L2 12" stroke="' + c + '" stroke-width="2.2" stroke-linecap="round"/></svg>';
+const dash = (c) => '<svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 7h8" stroke="' + c + '" stroke-width="2.2" stroke-linecap="round"/></svg>';
+const searchI = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="#6B6559" stroke-width="2.2"/><path d="M16 16l4 4" stroke="#6B6559" stroke-width="2.2" stroke-linecap="round"/></svg>';
+const imgI = (c, s = 20) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="4.5" width="17" height="15" rx="3" stroke="' + c + '" stroke-width="2"/><circle cx="9" cy="10" r="1.8" fill="' + c + '"/><path d="M4.5 17.5l5-4.5 3.5 3 2.5-2 4 3.5" stroke="' + c + '" stroke-width="2" stroke-linejoin="round"/></svg>';
+const logo = (id, s, extra = '') => '<span class="lt" style="width:' + s + 'px;height:' + s + 'px;' + extra + '"><img src="' + LG + id + '.png" alt=""></span>';
+const dicon = (s) => { const w = Math.round(s * .86); return '<div class="duckicon" style="width:' + s + 'px;height:' + s + 'px"><img src="' + DUCK + '" alt="" style="width:' + w + 'px;left:' + Math.round((s - w) / 2) + 'px;bottom:0"></div>'; };
+const lockup = (size) => '<span class="lockup" style="font-size:' + size + 'px"><span class="w">ditch</span><span class="pp">Pro</span></span>';
+const duck = (d, w, st) => '<img data-duck src="' + (d ? DUCKD : DUCK) + '" alt="Ditch the duck" style="position:absolute;display:block;width:' + w + 'px;' + st + '">';
+const duckH = (d, w) => Math.round(w * (d ? 367 / 620 : 357 / 600));
+const peekTop = (d, w, sink = 4) => -(duckH(d, w) - sink);
+// progress: the main flow has 4 steps with a bar (pick, total, dates, reminders); the guess variant has 5
+const nav = (n, of = 4, right = '') => '<div class="nav"><div class="back" aria-label="Back">' + chev() + '</div><div class="steps">' + Array.from({ length: of }, (_, i) => '<i class="' + (i < n ? 'on' : '') + '"></i>').join('') + '</div>' + right + '</div>';
+const NB = '\u00A0';
+
+/* ---------- data (US, today Tue, Nov 10 2026) ---------- */
+// [logo, name, plan, monthly, yearly, next charge, exact?]
+const SUBS = {
+  chatgpt: ['chatgpt-plus', 'ChatGPT Plus', 'Plus', '20.00', '240.00', 'Sat, Nov 21', 1],
+  netflix: ['netflix', 'Netflix', 'Standard', '19.99', '239.88', 'Thu, Nov 19', 1],
+  youtube: ['youtube-premium', 'YouTube Premium', 'Individual', '15.99', '191.88', 'Tue, Nov 17', 1],
+  amazon: ['amazon-prime', 'Amazon Prime', 'Monthly', '14.99', '179.88', 'Tue, Dec 1', 0],
+  spotify: ['spotify', 'Spotify', 'Individual', '12.99', '155.88', 'Mon, Dec 7', 1],
+  disney: ['disney-plus', 'Disney+', 'With Ads', '12.49', '149.88', 'Thu, Nov 19', 0],
+};
+const ORDER = ['chatgpt', 'netflix', 'youtube', 'amazon', 'spotify', 'disney']; // biggest yearly first
+// Monthly 96.45 · yearly 1,157.40 (exact cents) → hero "$1,157"
+
+/* ---------- layout helpers ---------- */
+const S = {};
+const pad = (c, maxContent) => { const D = DEV[c.dev]; return c.dev === 'ipad' ? Math.round((D.w - maxContent) / 2) : D.edge; };
+// iPad: one centred column (512pt of content unless noted), capped in height and centred vertically.
+const COLH = 880;
+const vpad = (c, extraBottom = 16, colH = COLH) => { const D = DEV[c.dev]; let t = D.top, b = D.bot + extraBottom; if (c.dev === 'ipad') { const v = Math.round((D.h - colH) / 2 / 4) * 4; t = Math.max(t, v); b = Math.max(b, v); } return [t, b]; };
+const scrStyle = (c, maxContent = 512, extraBottom = 16, colH) => { const p = pad(c, maxContent); const [t, b] = vpad(c, extraBottom, colH); return 'padding:' + t + 'px ' + p + 'px ' + b + 'px'; };
+
+/* =====================================================================
+   1 · Welcome (v11, polished)
+   ===================================================================== */
+S.welcome = (c) => {
+  const d = c.d, se = c.dev === 'se', ipad = c.dev === 'ipad';
+  const fs = se ? 60 : ipad ? 88 : 70, lh = se ? 56 : ipad ? 80 : 64;
+  const tlv = d ? '--tlc:#F6F0E3;--tlbg:#12110E;--tlm:#A9A192' : '--tlc:#16140F;--tlbg:#FFCC2E;--tlm:#4B4220';
+  const hd = d ? ' style="background:#FFCC2E;box-shadow:none"' : '';
+  return [d ? 'dark' : 'sun', `
+<div class="scr" data-grid style="${scrStyle(c, ipad ? 480 : 0, 16, 840)}">
+  <div style="height:28px;margin-top:16px;display:flex;align-items:center;flex:none"><span class="wm">ditch</span></div>
+  <h1 class="disp" style="font-size:${fs}px;line-height:${lh}px;letter-spacing:-${(fs * .04).toFixed(1)}px;margin-top:${se ? 24 : 32}px">Ditch it<br>before it<br>${d ? '<span style="color:#FFCC2E">renews.</span>' : 'renews.'}</h1>
+  <p class="lead" data-orphan style="margin-top:16px;max-width:${ipad ? 420 : 320}px${ipad ? ';font-size:20px;line-height:28px' : ''}">See everything you pay for. Get a reminder before every${NB}charge.</p>
+  <div style="flex:1;min-height:${se ? 24 : 96}px"></div>
+  <div style="position:relative;flex:none">
+    ${se ? '' : duck(d, ipad ? 160 : 136, 'right:16px;top:' + peekTop(d, ipad ? 160 : 136, 6) + 'px')}
+    <div class="note" style="position:relative;z-index:2">
+      ${dicon(40)}
+      <div style="flex:1"><div class="h">Ditch<span>Mon 9:00 AM</span></div><div class="m">Netflix renews Thursday. $19.99. Still${NB}watching?</div></div>
+    </div>
+    <div style="position:relative;z-index:1;margin:-16px 12px 0;height:28px;border-radius:0 0 20px 20px;background:${d ? '#1C1A16' : 'rgba(255,255,255,.6)'};${d ? 'box-shadow:inset 0 0 0 1px #2C2924' : ''}"></div>
+  </div>
+  <div class="tl" style="${tlv};margin:16px 0 0">
+    <div class="ln"></div>
+    <div class="st"><span class="dot f"${hd}>${bell(d ? '#12110E' : '#FFCC2E', 13)}</span><b>Mon, Nov 16</b><small>9 AM reminder</small></div>
+    <div class="st"><span class="dot f"${hd}>${bell(d ? '#12110E' : '#FFCC2E', 13)}</span><b>Wed, Nov 18</b><small>9 AM reminder</small></div>
+    <div class="st"><span class="dot">${card$(d ? '#F6F0E3' : '#16140F', 13)}</span><b>Thu, Nov 19</b><small class="num">$19.99 charge</small></div>
+  </div>
+  <div style="flex:none;height:${se ? 24 : 32}px"></div>
+  <button class="cta">See what I pay</button>
+  <p class="sub" style="margin-top:12px;text-align:center;color:var(--fg2)">Free forever for tracking.</p>
+</div>`];
+};
+
+/* =====================================================================
+   2 · What you pay for (+ plan sheet). v = guess variant (no running total)
+   ===================================================================== */
+const pickRows = () => {
+  const rows = [
+    ['netflix', 'Netflix', 1, 'Standard · $19.99/mo', 1], ['spotify', 'Spotify', 1, 'Individual · $12.99/mo', 1],
+    ['chatgpt-plus', 'ChatGPT Plus', 1, 'Plus · $20.00/mo', 0], ['amazon-prime', 'Amazon Prime', 1, 'Monthly · $14.99/mo', 1],
+    ['youtube-premium', 'YouTube Premium', 1, 'Individual · $15.99/mo', 1], ['disney-plus', 'Disney+', 1, 'With Ads · $12.49/mo', 1],
+    ['max', 'Max', 0, 'from $10.99/mo'], ['apple-music', 'Apple Music', 0, 'from $11.99/mo'], ['hulu', 'Hulu', 0, 'from $11.99/mo'],
+  ];
+  return rows.map((r, i) => `<div class="lrow">${i ? '<i style="position:absolute;top:0;left:52px;right:0;height:1px;background:var(--hair)"></i>' : ''}${logo(r[0], 40)}<div class="n"><b>${r[1]}</b><span class="num">${r[2] ? r[3] + (r[4] ? ' · <span class="lnk" data-slop="14">Change</span>' : '') : r[3]}</span></div><span class="tickhit"><span class="tick ${r[2] ? 'on' : ''}">${r[2] ? ck('#FFCC2E', 16) : ''}</span></span></div>`).join('');
+};
+S.pick = (c, sheet, v) => {
+  const D = DEV[c.dev];
+  const p = pad(c, 512);
+  return ['cream', `
+<div class="scr" style="${scrStyle(c)};padding-bottom:0">
+  ${nav(1, v ? 5 : 4)}
+  <h1 class="title" data-orphan style="margin-top:16px">What do you pay${NB}for?</h1>
+  <p class="sub" style="margin-top:8px;color:var(--fg2)">Tick each one. Prices for 🇺🇸 US · <span class="lnk" data-slop="14">Change</span></p>
+  <div style="margin-top:16px;height:48px;border-radius:14px;background:#fff;box-shadow:inset 0 0 0 1.5px #E3DBCA;display:flex;align-items:center;gap:8px;padding:0 16px;font-size:16px;color:#6B6559;flex:none">${searchI}Search 220 services</div>
+  <div style="display:flex;gap:8px;margin-top:8px;flex:none"><span class="chip on"><i>Popular</i></span><span class="chip"><i>Streaming</i></span><span class="chip"><i>Music</i></span><span class="chip"><i>AI</i></span></div>
+  <div data-scroll style="margin-top:4px;flex:1;overflow:hidden;position:relative">${pickRows()}</div>
+</div>
+<div data-overlay style="position:absolute;left:0;right:0;bottom:0;padding:12px ${p}px ${D.bot + 16}px;background:#FBF7EE;border-top:1px solid #E6DFD0;z-index:4">
+  <div style="display:flex;align-items:center;justify-content:space-between;height:24px;margin-bottom:12px">
+    <span class="label">6 picked</span>
+    ${v ? `<span class="stack">${['netflix', 'spotify', 'chatgpt-plus', 'amazon-prime', 'youtube-premium', 'disney-plus'].map((k) => logo(k, 24, 'box-shadow:0 0 0 2px #FBF7EE')).join('')}</span>`
+    : '<span class="num"><b class="moneyS">$96.45</b><span class="label" style="margin-left:4px;font-weight:500">a month</span></span>'}
+  </div>
+  <button class="cta">${v ? 'Next' : 'See my total'}</button>
+</div>
+${sheet ? `<div class="scrim"></div>
+<div class="sheet" style="padding:0 ${p}px ${D.bot + 16}px">
+  <div class="grab"></div>
+  <div style="display:flex;align-items:center;gap:12px;margin-top:16px;flex:none">
+    ${logo('netflix', 40)}
+    <h2 class="heading" style="flex:1">Which Netflix plan?</h2>
+    <div class="xbtn" style="margin-right:-6px" aria-label="Close"><i>${xI('#16140F', 12)}</i></div>
+  </div>
+  <div class="card" style="margin-top:24px;flex:none">
+    ${[['Standard with ads', '8.99', 0], ['Standard', '19.99', 1], ['Premium', '26.99', 0]].map((q, i) => `<div style="display:flex;align-items:center;gap:12px;height:56px;padding:0 16px;position:relative">${i ? '<i style="position:absolute;top:0;left:52px;right:0;height:1px;background:#EEE7D8"></i>' : ''}<span class="radio ${q[2] ? 'on' : ''}">${q[2] ? ck('#fff', 14) : ''}</span><span class="label" style="flex:1;font-size:16px">${q[0]}</span><span class="moneyS num">$${q[1]}<span style="font:500 14px Inter;color:#6B6559">/mo</span></span></div>`).join('')}
+  </div>
+  <p class="sub" style="margin-top:12px">Not sure? Standard is the most common. You can change it${NB}later.</p>
+  <button class="txtbtn" style="margin-top:16px">Enter my own price</button>
+</div>` : ''}`];
+};
+
+/* =====================================================================
+   Guess variant (2v): sits between pick and total
+   ===================================================================== */
+S.guess = (c) => {
+  const chips = ['Under $25', '$25–50', '$50–100', '$100–200', 'Over $200', 'No idea'];
+  const se = c.dev === 'se';
+  return ['cream', `
+<div class="scr" data-grid style="${scrStyle(c)}">
+  ${nav(2, 5)}
+  <div style="display:flex;margin-top:16px;flex:none"><span class="stack">${['netflix', 'spotify', 'chatgpt-plus', 'amazon-prime', 'youtube-premium', 'disney-plus'].map((k) => logo(k, 32, 'box-shadow:0 0 0 2px #FBF7EE')).join('')}</span></div>
+  <h1 class="title" data-orphan style="margin-top:16px">What do these 6 cost you a${NB}month?</h1>
+  <p class="lead" style="margin-top:8px">Your best guess. One tap.</p>
+  <div style="display:flex;flex-direction:column;gap:${se ? 8 : 12}px;margin-top:24px;flex:none">
+    ${chips.map((t) => `<div class="gchip num${t === '$25–50' ? ' on' : ''}"${se ? ' style="height:48px"' : ''}>${t}${t === '$25–50' ? ck('#FFCC2E', 20) : ''}</div>`).join('')}
+  </div>
+  <div style="flex:1;min-height:16px"></div>
+  <p class="sub" style="text-align:center">No wrong answers. Your real total is${NB}next.</p>
+</div>`];
+};
+
+/* =====================================================================
+   3 · Your total. g = guess variant
+   ===================================================================== */
+S.total = (c, g) => {
+  const d = c.d, se = c.dev === 'se', ipad = c.dev === 'ipad';
+  const show = se ? 2 : ipad ? 6 : 3;
+  const D = DEV[c.dev];
+  const p = pad(c, 512);
+  const [vt, vb] = vpad(c, 16, 840);
+  const rows = ORDER.slice(0, show).map((k, i) => {
+    const s = SUBS[k];
+    return `<div style="display:flex;align-items:center;gap:12px;height:52px;position:relative">${i ? '<i style="position:absolute;top:0;left:44px;right:0;height:1px;background:var(--hair)"></i>' : ''}${logo(s[0], 32)}<span class="label" style="flex:1;font-size:16px">${s[1]}</span><span class="moneyM num">$${s[4]}</span></div>`;
+  }).join('');
+  const rest = ORDER.slice(show);
+  const more = rest.length ? `<div style="display:flex;align-items:center;gap:12px;height:52px;position:relative"><i style="position:absolute;top:0;left:44px;right:0;height:1px;background:var(--hair)"></i>
+      <span class="stack" style="width:32px">${rest.slice(0, 2).map((k) => logo(SUBS[k][0], 20, 'box-shadow:0 0 0 2px var(--sheet)')).join('')}</span>
+      <span class="label" style="flex:1;font-size:16px">${rest.length} more</span><span class="label" style="display:flex;align-items:center;gap:4px">Show all${chevD(d ? '#F6F0E3' : '#16140F', 14)}</span></div>` : '';
+  const fs = se ? 80 : ipad ? 128 : 104;
+  const fact = g
+    ? `<p class="body num" data-rh="fact" data-orphan style="margin-top:8px;color:var(--fg2);max-width:340px">You guessed <b style="font-weight:600;color:var(--fg)">$25–50</b> a month. Most people guess way lower: in one study, the real total was about 2.5× the${NB}guess.</p>`
+    : `<p class="body" data-rh="fact" data-orphan style="margin-top:8px;color:var(--fg2);max-width:340px">Most people guess way lower. In one study, the real total was about 2.5× the${NB}guess.</p>`;
+  return [d ? 'dark' : 'sun', `
+<div class="scr" data-grid style="padding:${ipad ? vt + 'px ' + p + 'px ' + vb + 'px' : D.top + 'px ' + p + 'px 0'}">
+  ${nav(g ? 3 : 2, g ? 5 : 4)}
+  <div class="label" data-rh="label" style="margin-top:${se ? 8 : 24}px;font-size:17px;line-height:24px">You pay</div>
+  <div class="disp num" data-fit data-rh="number" style="font-size:${fs}px;line-height:${Math.round(fs * .8 / 4) * 4}px;letter-spacing:-.045em;margin:8px 0 0 -4px;white-space:nowrap;color:var(--money)">$1,157</div>
+  <div class="heading" data-rh="ayear" style="font-size:22px;margin-top:${ipad ? 16 : 12}px">a year.</div>
+  <p class="lead num" data-rh="month" style="margin-top:16px;color:var(--fg)">That’s <b style="font-weight:600">$96.45</b> a month.</p>
+  ${fact}
+  <div style="flex:none;height:${se ? 16 : 24}px"></div>
+  <div data-grid style="flex:1;${ipad ? 'border-radius:28px;padding:24px' : 'margin:0 -' + p + 'px;border-radius:28px 28px 0 0;padding:' + (se ? 16 : 24) + 'px ' + p + 'px ' + (D.bot + 16) + 'px'};background:var(--sheet);display:flex;flex-direction:column;${d ? 'box-shadow:inset 0 1px 0 #2C2924' : ''}">
+    <div style="display:flex;justify-content:space-between;height:16px;flex:none" class="eyebrow"><span>Biggest first</span><span>Per year</span></div>
+    <div style="margin-top:4px;flex:none">${rows}${more}</div>
+    <p class="bs" data-orphan style="margin-top:${se ? 12 : 16}px">Ditch just one you don’t use: up to <span class="num">$240 a${NB}year</span> you won’t${NB}pay.</p>
+    <div style="flex:1;min-height:${se ? 8 : 16}px"></div>
+    <button class="cta">Set up reminders</button>
+  </div>
+</div>`];
+};
+
+/* =====================================================================
+   4 · Charge dates: Apple shortcut + one quick pick per subscription
+   ===================================================================== */
+// state drawn: ChatGPT Plus picked a real day, Netflix "Next week", the rest not answered yet
+// Netflix was just tapped: the segment shows the pick and the row folds a moment later
+const DSTATE = { chatgpt: ['pick', 'Sat, Nov 21'], netflix: ['next', 'Thu, Nov 19', 'live'] };
+const dateRow = (k, d) => {
+  const s = SUBS[k], st = DSTATE[k];
+  if (st && !st[2]) {
+    // answered: the row folds to one line with the result, tap to change
+    const res = st[0] === 'pick' ? `<span class="num" style="font-weight:600;display:inline-flex;align-items:center;gap:4px">${ck(d ? '#FFCC2E' : '#16140F', 14)}${st[1]}</span>` : `<span class="num">around <b style="font-weight:600">${st[1]}</b></span>`;
+    return `<div class="drow done" data-tap style="padding:12px 0;display:flex;align-items:center;gap:12px">${logo(s[0], 32)}<b style="flex:1;min-width:0;font-weight:600;font-size:16px;line-height:20px;white-space:nowrap">${s[1]}</b>
+      <span style="text-align:right;font-size:14px;line-height:20px;white-space:nowrap">${res}<span style="display:block;color:var(--mute)">${st[0] === 'pick' ? '' : 'Rough · '}<span class="lnk" data-slop="14">Change</span></span></span></div>`;
+  }
+  const segs = [['this', 'This week'], ['next', 'Next week'], ['later', 'Later'], ['pick', 'Pick a day']];
+  const onI = st ? segs.findIndex((x) => x[0] === st[0]) : -1;
+  return `<div class="drow">
+    <div class="dtop">${logo(s[0], 32)}<b>${s[1]}</b>${st ? `<span class="dres num">around <b style="font-weight:600">${st[1]}</b></span>` : ''}</div>
+    <div class="seg">${segs.map((x, i) => `<span data-slop="2" class="${i === onI ? 'on' : ''}${onI >= 0 && i === onI + 1 ? ' af' : ''}">${x[1]}</span>`).join('')}</div>
+  </div>`;
+};
+S.dates = (c, sheet) => {
+  const d = c.d, se = c.dev === 'se', ipad = c.dev === 'ipad';
+  const D = DEV[c.dev];
+  const p = pad(c, 512);
+  const [vt, vb] = vpad(c, 16, 1040);
+  const bottomPad = ipad ? vb : D.bot + 16;
+  return ['cream', `
+<div class="scr" data-grid style="padding:${vt}px ${p}px 0">
+  ${nav(3)}
+  <h1 class="title" data-orphan style="margin-top:16px">When do they charge${NB}you?</h1>
+  <p class="leadS" style="margin-top:8px">Rough is fine. Skip any you don’t know.</p>
+  <div class="card" style="margin-top:${se ? 16 : 24}px;padding:16px;flex:none">
+    <div class="bs">Paid through Apple?</div>
+    <p class="sub" data-orphan style="margin-top:4px;color:var(--fg2)">Screenshot your Subscriptions page and Ditch reads the${NB}dates.</p>
+    <p class="sub" style="margin-top:4px;color:var(--fg);font-weight:600;display:flex;align-items:center;gap:4px;white-space:nowrap">Settings${chevR(d ? '#A9A192' : '#6B6559', 12)}Your name${chevR(d ? '#A9A192' : '#6B6559', 12)}Subscriptions</p>
+    <button class="sec" style="margin-top:12px;height:44px">${imgI(d ? '#F6F0E3' : '#16140F', 20)}Choose screenshot</button>
+  </div>
+  <div class="eyebrow" style="display:flex;justify-content:space-between;margin-top:24px;flex:none"><span>Or pick roughly</span><span class="num">2 of 6 set</span></div>
+  <div data-scroll style="margin-top:4px;flex:1;overflow:hidden;position:relative">${ORDER.map((k) => dateRow(k, d)).join('')}</div>
+</div>
+<div data-overlay style="position:absolute;left:0;right:0;bottom:0;z-index:4">
+  <div style="height:24px;background:linear-gradient(rgba(251,247,238,0),#FBF7EE)"></div>
+  <div style="background:#FBF7EE;padding:0 ${p}px ${bottomPad}px"><button class="cta">Continue</button></div>
+</div>
+${sheet ? daySheet(c) : ''}`];
+};
+const daySheet = (c) => {
+  const D = DEV[c.dev], se = c.dev === 'se', ipad = c.dev === 'ipad';
+  const p = ipad ? Math.round((D.w - 420) / 2) : 24;
+  const cells = [];
+  for (let i = 1; i <= 31; i++) cells.push(`<div><span class="${i === 19 ? 'on' : ''}">${i}</span></div>`);
+  return `<div class="scrim"></div>
+<div class="sheet" data-grid style="padding:0 ${p}px ${D.bot + 16}px">
+  <div class="grab"></div>
+  <div style="display:flex;align-items:center;gap:12px;margin-top:16px;flex:none">
+    ${logo('netflix', 40)}
+    <div style="flex:1;min-width:0"><div class="bs">Netflix</div><div class="sub num">Standard · $19.99 a month</div></div>
+    <div class="xbtn" style="margin-right:-6px" aria-label="Close"><i>${xI('#16140F', 12)}</i></div>
+  </div>
+  <h2 class="heading" style="margin-top:16px">Which day does it charge${NB}you?</h2>
+  <p class="sub" style="margin-top:4px;color:var(--fg2)">Your bank app shows the last${NB}one.</p>
+  <div class="dgrid" style="margin-top:12px;flex:none">${cells.join('')}</div>
+  <div style="display:flex;margin-top:8px;flex:none"><span class="dchip">Last day of the month</span></div>
+  <div style="margin-top:16px;border-radius:16px;background:var(--tint);padding:12px 16px;display:flex;gap:12px;align-items:flex-start;flex:none">
+    <span style="margin-top:2px;display:flex">${card$('#16140F', 20)}</span>
+    <p class="body num" style="font-weight:600">Next charge: Thu, Nov 19.<br><span style="font-weight:400;color:#5A544A">Then the 19th of every month.</span></p>
+  </div>
+  <button class="cta" style="margin-top:16px">Done</button>
+</div>`;
+};
+
+/* =====================================================================
+   5 · Reminders pre-ask (after dates: shows their own soonest reminders)
+   ===================================================================== */
+S.notify = (c) => {
+  const se = c.dev === 'se';
+  const n = (date, msg, op) => `<div style="flex:none${op ? ';opacity:.6' : ''}">
+      <div class="eyebrow num" style="color:#4B4220;margin:0 0 8px 4px">${date}</div>
+      <div class="note" style="box-shadow:0 8px 24px rgba(80,55,0,.16);color:#1C1B19">${dicon(40)}<div style="flex:1"><div class="h">Ditch<span>9:00 AM</span></div><div class="m num">${msg}</div></div></div>
+    </div>`;
+  return ['cream', `
+<div class="scr" data-grid style="${scrStyle(c, 512, 16, 800)}">
+  ${nav(4)}
+  <h1 class="title" data-orphan style="margin-top:16px">Get a reminder before each${NB}charge.</h1>
+  <p class="leadS" style="margin-top:8px">3 days and 1 day before, at 9:00 AM.<br>Only about your subscriptions.</p>
+  <div style="margin-top:24px;flex:1;min-height:0;border-radius:28px;background:#FFCC2E;position:relative;overflow:hidden;padding:${se ? 16 : 24}px 12px;display:flex;flex-direction:column;justify-content:center;gap:${se ? 12 : 16}px">
+    <div class="label" style="color:#16140F;margin-left:4px;flex:none">Your first reminders</div>
+    ${n('Sat, Nov 14', `YouTube Premium renews Tuesday. $15.99. Still using${NB}it?`)}
+    ${se ? '' : n('Mon, Nov 16', `Netflix renews Thursday. $19.99. Still${NB}watching?`)}
+  </div>
+  <p class="sub" style="margin-top:16px;text-align:center;color:var(--fg2)">7 in 10 people have forgotten to cancel a free trial.</p>
+  <button class="cta" style="margin-top:16px">${bell('#fff', 20)}Turn on reminders</button>
+  <p class="sub" style="margin-top:8px;text-align:center">Tap “Allow” on the next screen.</p>
+  <button class="txtbtn" style="margin-top:4px">Maybe later</button>
+</div>`];
+};
+
+/* =====================================================================
+   6 · Paywall: v10 structure (yellow band, duck over a white card, stacked plans)
+   ===================================================================== */
+S.paywall = (c, plan = 'yearly') => {
+  const d = c.d, se = c.dev === 'se', ipad = c.dev === 'ipad';
+  const D = DEV[c.dev];
+  const p = pad(c, 440);
+  const [vt, vb] = vpad(c, 0, 740);
+  const ink = d ? '#F6F0E3' : '#16140F';
+  const rowsT = [
+    ['Subscriptions with reminders', '3', 'Unlimited'],
+    ['Choose your reminder times', '-', 'ck'],
+    ['Second nudge if you miss one', '-', 'ck'],
+    ['Import screenshots anytime', '-', 'ck'],
+  ].filter((r, i) => !(se && i === 2));
+  const colF = se ? 40 : 44, colP = se ? 76 : 80;
+  const rh = 32;
+  const cell = (v, pro) => v === 'ck' ? ck(pro && d ? '#FFCC2E' : ink, 18) : v === '-' ? `<span aria-label="Not included" style="display:flex">${dash(d ? '#8E877A' : '#8C8576')}</span>` : `<span class="num" style="${pro && d ? 'color:#FFCC2E' : ''}">${v}</span>`;
+  const table = `<div class="card cmp" style="margin-top:-${ipad ? 48 : 40}px">
+    <div class="procol" style="width:${colP}px"></div>
+    <div class="tr hd" style="height:28px;padding-top:4px"><span class="f"></span><span class="c eyebrow" style="width:${colF}px;color:var(--mute)">Free</span><span class="c eyebrow" style="width:${colP}px;color:${ink}">Pro</span></div>
+    ${rowsT.map((r) => `<div class="tr" style="height:${rh}px"><span class="f">${r[0]}</span><span class="c" style="width:${colF}px">${cell(r[1])}</span><span class="c" style="width:${colP}px">${cell(r[2], 1)}</span></div>`).join('')}
+    <div style="height:4px"></div>
+  </div>`;
+  const on = (q) => (plan === q ? ' on' : '');
+  const rd = (q) => `<span class="radio">${plan === q ? ck(d ? '#16140F' : '#fff', 14) : ''}</span>`;
+  const ph = se ? 48 : 56;
+  const plans = `<div style="display:flex;flex-direction:column;gap:8px;flex:none;margin-top:${se ? 20 : 24}px">
+    <div class="plan${on('yearly')}" style="height:${ph}px"><span class="ribbon">SAVE 49%</span>${rd('yearly')}<span class="nm">Yearly <span class="tag">7 days free</span></span><span class="pr num"><b>$29.99/yr</b><small>$2.50 a month</small></span></div>
+    <div class="plan${on('monthly')}" style="height:${ph}px">${rd('monthly')}<span class="nm">Monthly</span><span class="pr num"><b>$4.99/mo</b><small>No free trial</small></span></div>
+    <div class="plan${on('lifetime')}" style="height:${ph}px">${rd('lifetime')}<span class="nm">Lifetime</span><span class="pr num"><b>$49.99</b><small>Pay once</small></span></div>
+  </div>`;
+  const ctaT = { yearly: 'Start 7-day free trial', monthly: 'Subscribe for $4.99 a month', lifetime: 'Pay $49.99 once' }[plan];
+  const lineT = {
+    yearly: '<b style="font-weight:600;color:var(--fg)">$0 today</b> · reminder Sat, Nov 14 · $29.99 Tue, Nov 17',
+    monthly: '$4.99 today, then every month. Cancel anytime.',
+    lifetime: 'Everything in Pro, forever. Bank sync, if we add it, is a separate plan because it costs us money every' + NB + 'month.',
+  }[plan];
+  const bandPadB = ipad ? 80 : se ? 60 : 56;
+  const duckW = se ? 68 : ipad ? 104 : 96;
+  const headFs = se ? 'font-size:26px;line-height:32px;letter-spacing:-.8px' : '';
+  // phones: forced breaks so the last line is short and the duck sits beside it (v10). iPad wraps by itself.
+  const headT = ipad ? 'Get a reminder before all 6' + NB + 'renewals.' : se ? 'Get a reminder before<br>all 6' + NB + 'renewals.' : 'Get a reminder<br>before all<br>6' + NB + 'renewals.';
+  return [d ? 'dark' : 'cream', `
+<div class="scr" data-grid style="padding:0 ${p}px ${vb}px">
+  <div class="band" style="margin:0 -${p}px;padding:${vt}px ${p}px ${bandPadB}px">
+    <div style="display:flex;align-items:center;justify-content:space-between;height:44px">
+      ${lockup(se ? 20 : 22)}
+      <div class="xbtn" style="margin-right:-6px" aria-label="Close, continue free"><i style="background:${d ? '#3A3424' : 'rgba(22,20,15,.12)'}">${xI(ink)}</i></div>
+    </div>
+    <h1 class="title" data-orphan style="margin-top:0;${headFs}">${headT}</h1>
+    ${duck(d, duckW, 'right:' + p + 'px;bottom:' + ((ipad ? 48 : 40) - 12) + 'px')}
+  </div>
+  ${table}
+  ${plans}
+  <div style="flex:1;min-height:4px"></div>
+  <button class="cta"${se ? ' style="height:48px"' : ''}>${ctaT}</button>
+  <div style="height:56px;display:flex;align-items:center;justify-content:center;flex:none"><p class="sub num" data-orphan style="text-align:center;color:var(--fg2);font-size:13px;line-height:16px;${plan === 'yearly' ? 'white-space:nowrap' : ''}">${lineT}</p></div>
+  <button class="sec" style="margin-top:8px;height:48px;flex-direction:column;gap:0">Continue free<span style="font:400 13px/16px Inter;color:var(--fg2)">Reminders for 3 subscriptions</span></button>
+  <p class="links" style="height:44px;align-items:center"><u>Restore</u>·<u>Terms</u>·<u>Privacy</u></p>
+</div>`];
+};
+
+/* =====================================================================
+   7 · You're set (Which 3 folded in). off = reminders skipped → "Almost set."
+   ===================================================================== */
+const FIRSTS = [['youtube', 'Sat, Nov 14'], ['netflix', 'Mon, Nov 16'], ['chatgpt', 'Wed, Nov 18']];
+S.set = (c, off) => {
+  const d = c.d, se = c.dev === 'se', ipad = c.dev === 'ipad';
+  const ink = d ? '#F6F0E3' : '#16140F';
+  const sub2 = d ? '#BFB7A7' : '#4B4220';
+  const okI = `<span class="ic" style="background:${d ? '#FFCC2E' : '#16140F'}">${ck(d ? '#16140F' : '#FFCC2E', 14)}</span>`;
+  const todoI = `<span class="ic" style="box-shadow:inset 0 0 0 2px ${ink}"></span>`;
+  const warnI = `<span class="ic" style="background:#FF6C2C;color:#16140F;font:900 15px/1 Inter">!</span>`;
+  const items = [
+    [okI, '6 subscriptions on your list', '<span class="num">$1,157 a year</span>'],
+    off ? [warnI, 'Reminders are off', 'Nothing can reach you until you turn them on.'] : [okI, 'Reminders are on', '3 days and 1 day before, at 9:00 AM'],
+    [todoI, '2 dates to check', 'Amazon Prime and Disney+'],
+  ];
+  const cardBg = d ? '#1E1C18' : 'rgba(255,255,255,.72)';
+  const firstCard = `<div style="position:relative;border-radius:20px;padding:4px 16px 4px;background:${cardBg};${d ? 'box-shadow:inset 0 0 0 1px #2C2924' : ''}">
+      <div style="display:flex;align-items:center;justify-content:space-between;height:44px">
+        <span class="bs" style="font-size:15px;line-height:20px">${off ? 'Waiting for your OK' : 'Reminders on your 3 biggest'}</span>
+        ${off ? '' : `<span class="lnk" data-slop="14" style="font-size:15px;line-height:20px;margin-right:0">Change</span>`}
+      </div>
+      <div>${FIRSTS.map((f, i) => { const s = SUBS[f[0]]; return `<div style="display:flex;align-items:center;gap:12px;height:56px;position:relative"><i style="position:absolute;top:0;left:${i ? 44 : 0}px;right:0;height:1px;background:${d ? '#2B2823' : 'rgba(22,20,15,.1)'}"></i>${logo(s[0], 32)}<div style="flex:1;min-width:0"><div class="label">${s[1]}</div><div class="num" style="font-size:14px;line-height:20px;color:${sub2}">renews ${s[5]}</div></div><div style="text-align:right"><div class="num" style="font:600 15px/20px Inter;white-space:nowrap">${f[1]}</div><div style="font-size:14px;line-height:20px;color:${sub2}">${off ? 'paused' : 'reminder'}</div></div></div>`; }).join('')}</div>
+    </div>`;
+  return [d ? 'dark' : 'sun', `
+<div class="scr" data-grid style="${scrStyle(c, ipad ? 480 : 512, 16, 760)}">
+  <div style="flex:none;height:${se ? 16 : 56}px"></div>
+  <h1 class="disp" data-fit style="font-size:${ipad ? 80 : 60}px;line-height:${ipad ? 80 : 60}px;letter-spacing:-.04em;white-space:nowrap;align-self:flex-start">${off ? 'Almost set.' : 'You’re set.'}</h1>
+  <div style="margin-top:${se ? 8 : 24}px;flex:none">
+    ${items.map((it) => `<div class="chk">${it[0]}<div style="flex:1"><div class="bs">${it[1]}</div><div style="font-size:14px;line-height:20px;color:${sub2}">${it[2]}</div></div></div>`).join('')}
+  </div>
+  <div style="flex:1;min-height:${se ? 16 : 32}px"></div>
+  <div style="position:relative;flex:none">
+    ${se || off ? '' : duck(d, 104, 'right:16px;top:' + peekTop(d, 104, 4) + 'px')}
+    ${firstCard}
+  </div>
+  <div style="flex:none;height:${se ? 16 : 24}px"></div>
+  ${off ? `<button class="cta">${bell(d ? '#16140F' : '#FFCC2E', 20)}Turn on reminders</button><button class="txtbtn" style="margin-top:4px">Go to my list</button>` : '<button class="cta">Go to my list</button>'}
+</div>`];
+};
+
+// 7b · "Change" → picker sheet over You're set
+S.which3 = (c) => {
+  const D = DEV[c.dev];
+  const slot = (k) => { const s = SUBS[k]; return `<div style="height:64px;border-radius:20px;background:#FFCC2E;display:flex;align-items:center;gap:12px;padding:0 4px 0 12px;flex:none;color:#16140F">${logo(s[0], 40)}<div style="flex:1;min-width:0"><div class="label" style="font-size:16px">${s[1]}</div><div class="num" style="font-size:14px;line-height:20px;color:#4B4220">$${s[3]}/mo · ${s[6] ? '' : 'around '}${s[5]}</div></div><div class="xbtn" aria-label="Remove ${s[1]}"><i style="background:rgba(22,20,15,.12)">${xI('#16140F', 11)}</i></div></div>`; };
+  const rest = (k, i) => { const s = SUBS[k]; return `<div class="lrow" style="min-height:56px">${i ? '<i style="position:absolute;top:0;left:52px;right:0;height:1px;background:var(--hair)"></i>' : ''}${logo(s[0], 40)}<div class="n"><b>${s[1]}</b><span class="num">$${s[3]}/mo · ${s[6] ? '' : 'around '}${s[5]}</span></div><span style="height:44px;padding:0 4px;display:flex;align-items:center;margin-right:-4px" class="lnk">Swap in</span></div>`; };
+  const back = S.set({ dev: c.dev, d: false })[1];
+  return ['cream', `
+<div style="position:absolute;inset:0;background:#000"></div>
+<div aria-hidden="true" class="sun" style="position:absolute;left:0;right:0;top:0;height:100%;transform:translateY(${D.top - 8}px) scale(.92);transform-origin:top center;border-radius:12px;overflow:hidden;background:#FFCC2E;--fg:#16140F">${back.replace(/padding:47px/, 'padding:12px')}</div>
+<div class="scrim" style="background:rgba(0,0,0,.35)"></div>
+<div class="sheet" style="top:${D.top + 10}px;padding:0 24px ${D.bot + 16}px;border-radius:12px 12px 0 0">
+  <div class="grab"></div>
+  <h1 class="title" data-orphan style="margin-top:24px">Your 3 free${NB}reminders</h1>
+  <p class="leadS" data-orphan style="margin-top:8px">We picked your biggest charges. Swap any of${NB}them.</p>
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:24px">${['chatgpt', 'netflix', 'youtube'].map(slot).join('')}</div>
+  <div class="eyebrow" style="margin-top:32px">On your list, no reminder</div>
+  <div style="margin-top:4px">${['amazon', 'spotify', 'disney'].map(rest).join('')}</div>
+  <p class="sub" style="margin-top:8px">These stay on your list with their totals and${NB}dates.</p>
+  <div style="flex:1;min-height:16px"></div>
+  <button class="cta">Keep these 3</button>
+</div>`];
+};
+
+/* ---------- boards ---------- */
+const P = (id, cap, dev, fn, d = false) => ({ id, cap, dev, fn, d });
+const L = [
+  P('01-welcome', '1 · Welcome', 'i12', S.welcome),
+  P('02-pick', '2 · What you pay for: 6 ticked', 'i12', (c) => S.pick(c)),
+  P('02b-plan-sheet', '2b · “Change” → plan sheet', 'i12', (c) => S.pick(c, true)),
+  P('03-total', '3 · Your total', 'i12', (c) => S.total(c)),
+  P('04-dates', '4 · Charge dates (2 of 6 answered)', 'i12', (c) => S.dates(c)),
+  P('04b-day-sheet', '4b · “Pick a day” → day-grid sheet', 'i12', (c) => S.dates(c, true)),
+  P('05-reminders', '5 · Reminders pre-ask', 'i12', S.notify),
+  P('06-paywall', '6 · Paywall, Yearly picked', 'i12', (c) => S.paywall(c)),
+  P('06b-paywall-lifetime', '6b · Paywall, Lifetime picked', 'i12', (c) => S.paywall(c, 'lifetime')),
+  P('06c-paywall-monthly', '6c · Paywall, Monthly picked', 'i12', (c) => S.paywall(c, 'monthly')),
+  P('07-set', '7 · You’re set (free path)', 'i12', (c) => S.set(c)),
+  P('07b-which3-sheet', '7b · “Change” → pick your 3', 'i12', S.which3),
+  P('07c-almost-set', '7c · Almost set: reminders skipped', 'i12', (c) => S.set(c, true)),
+];
+const SZ = [
+  P('se-03-total', 'SE · Your total', 'se', (c) => S.total(c)), P('se-04-dates', 'SE · Charge dates', 'se', (c) => S.dates(c)),
+  P('se-06-paywall', 'SE · Paywall', 'se', (c) => S.paywall(c)), P('se-06b-paywall-lifetime', 'SE · Paywall, Lifetime', 'se', (c) => S.paywall(c, 'lifetime')),
+  P('se-07-set', 'SE · You’re set', 'se', (c) => S.set(c)),
+  P('ipad-03-total', 'iPad 11″ · Your total', 'ipad', (c) => S.total(c)), P('ipad-04-dates', 'iPad 11″ · Charge dates', 'ipad', (c) => S.dates(c)),
+  P('ipad-06-paywall', 'iPad 11″ · Paywall', 'ipad', (c) => S.paywall(c)), P('ipad-07-set', 'iPad 11″ · You’re set', 'ipad', (c) => S.set(c)),
+];
+const DK = [
+  P('d01-welcome', '1 · Welcome', 'i12', S.welcome, true), P('d03-total', '3 · Your total', 'i12', (c) => S.total(c), true),
+  P('d06-paywall', '6 · Paywall', 'i12', (c) => S.paywall(c), true), P('d07-set', '7 · You’re set', 'i12', (c) => S.set(c), true),
+];
+const GA = [P('02-pick', '', 'i12', (c) => S.pick(c)), P('03-total', '', 'i12', (c) => S.total(c)), P('se-03-total', '', 'se', (c) => S.total(c))];
+const GB = [
+  P('02v-pick-no-total', 'Pick (bar hides the running total)', 'i12', (c) => S.pick(c, false, true)),
+  P('02v-guess', 'Quick guess (tapped $25–50)', 'i12', S.guess),
+  P('03v-total-with-guess', 'Your total, with the guess', 'i12', (c) => S.total(c, true)),
+  P('se-02v-guess', 'SE · Quick guess', 'se', S.guess),
+  P('se-03v-total-with-guess', 'SE · Total with guess', 'se', (c) => S.total(c, true)),
+];
+GA[0].cap = 'Pick (bar shows $96.45 a month)'; GA[1].cap = 'Your total, no guess'; GA[2].cap = 'SE · Total, no guess';
+GA.forEach((x) => (x.board = 1)); // board-only copies, rendered elsewhere
+const sections = [
+  ['onboarding', 'Onboarding v12 · iPhone 12 (390×844)', 'Welcome → What you pay for → Your total → Charge dates → Reminders → Paywall → You’re set. Example: 6 ticked, US prices, today is Tue, Nov 10, 2026.', [[null, L]]],
+  ['sizes', 'Fit check · iPhone SE (375×667) and iPad 11″ (834×1194)', 'Same source, same copy, no scrolling except the two long lists (services, charge dates), which scroll under a pinned button. iPad: one centred column (512pt; paywall 440pt).', [[null, SZ]]],
+  ['dark', 'Dark mode', 'Warm ink canvas. Sunflower only for big money, CTAs and key fills.', [[null, DK]]],
+  ['guess-compare', 'Guess or no guess · side by side', 'A: the main flow (no guess screen; one fact line under the total). B: the variant, with a one-tap guess between “What you pay for” and “Your total”. In B the pick bar hides the running total so the guess isn’t spoiled.', [['A · No guess (main flow)', GA], ['B · With guess (variant)', GB]]],
+];
+const phone = (p) => {
+  const D = DEV[p.dev];
+  const [theme, html] = p.fn({ dev: p.dev, d: p.d });
+  return '<div class="cell"><div class="phone ' + p.dev + ' ' + theme + '"' + (p.board ? ' data-board="1"' : '') + ' data-name="' + p.id + '" data-top="' + D.top + '" data-bot="' + D.bot + '" style="width:' + D.w + 'px;height:' + D.h + 'px">' + sbar(p.dev) + html + (D.bot ? '<div class="hi"></div>' : '') + '</div><div class="cap">' + p.cap + '</div></div>';
+};
+document.getElementById('stage').innerHTML = sections.map((s) =>
+  '<section data-name="' + s[0] + '" class="' + (s[0] === 'dark' ? 'darksec' : '') + '"><div class="sh"><h2>' + s[1] + '</h2><p>' + s[2] + '</p></div>' + s[3].map((r) => (r[0] ? '<div class="rowh">' + r[0] + '</div>' : '') + '<div class="row">' + r[1].map(phone).join('') + '</div>').join('') + '</section>').join('');
+
+// The hero number (and "You're set.") may shrink to fit its column, nothing else.
+document.fonts.ready.then(() => {
+  document.querySelectorAll('[data-fit]').forEach((el) => {
+    const par = el.parentElement;
+    const max = par.clientWidth - parseFloat(getComputedStyle(par).paddingLeft) - parseFloat(getComputedStyle(par).paddingRight);
+    let f = parseFloat(getComputedStyle(el).fontSize); const ratio = parseFloat(getComputedStyle(el).lineHeight) / f;
+    while (el.getBoundingClientRect().width > max + 4 && f > 20) { f -= 1; el.style.fontSize = f + 'px'; el.style.lineHeight = (Math.round(f * ratio / 4) * 4) + 'px'; }
+  });
+  document.body.dataset.ready = '1';
+});
+</script>
+</body></html>

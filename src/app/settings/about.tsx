@@ -1,5 +1,6 @@
-// About Ditch: rate, terms, privacy, version.
+// About Ditch: rate, terms, privacy, sources, version.
 
+import { router } from 'expo-router';
 import { View } from 'react-native';
 
 import { openUrl } from '@/ditch/CancelHelp';
@@ -30,6 +31,7 @@ export default function About() {
         />
         <Row label="Terms" onPress={() => openUrl('https://ditchsubs.app/terms')} />
         <Row label="Privacy" onPress={() => openUrl('https://ditchsubs.app/privacy')} />
+        <Row label="Sources" hint="The studies behind the numbers in Ditch" onPress={() => router.push('/settings/sources')} />
       </Group>
       <Txt v="fine" tone="mute" style={{ textAlign: 'center', marginTop: 24 }}>
         Version {APP_VERSION} · Grasp Labs LLC

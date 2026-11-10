@@ -10,9 +10,15 @@
     "ios": {
       "icon": "./assets/expo.icon",
       "bundleIdentifier": "app.ditchsubs.ditch",
-      "supportsTablet": false,
+      "supportsTablet": true,
       "infoPlist": {
-        "CADisableMinimumFrameDurationOnPhone": true
+        "CADisableMinimumFrameDurationOnPhone": true,
+        "UISupportedInterfaceOrientations~ipad": [
+          "UIInterfaceOrientationPortrait",
+          "UIInterfaceOrientationPortraitUpsideDown",
+          "UIInterfaceOrientationLandscapeLeft",
+          "UIInterfaceOrientationLandscapeRight"
+        ]
       }
     },
     "android": {

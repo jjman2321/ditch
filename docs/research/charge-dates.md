@@ -30,3 +30,12 @@ The owner picked **option B** (ask the day of the month, no guesses) after recor
 - One tap per sub keeps onboarding short; skipping is never punished.
 - The sentence under the grid shows the reminders working before the paywall, which supports trial starts.
 - "No date yet · Add date" is a clear, finishable to-do that brings people back (retention), instead of GUESS tags that read as "this app isn't sure".
+
+## Reminder bells and import (owner follow-up, Nov 10)
+- **Bells:** Orbit and Rocket Money show only "Renews in 4 days · 28 Nov" on each row, with no per-row reminder status. Ditch keeps its own drawn bell (sunflower fill = reminder on, grey outline = off) because the free 3 make reminder status matter on every row. Emoji are never used for icons.
+- **Where import goes** (Orbit puts "Import from photos" and "Import a file" at the top of Add, locked for Pro: [Mobbin](https://mobbin.com/screens/5702f396-80eb-4f99-845a-7f64a28d4962); Brink ends a screenshot import with "We found 13. Uncheck any that aren't right": [Mobbin](https://mobbin.com/screens/d26c1251-848d-4740-8b39-ac056cd08eda); Rocket Money's add menu has "Track a free trial": [Mobbin](https://mobbin.com/screens/acd7fd86-d95d-44c0-80d2-1011c75a602f)):
+  1. **Top of Add** (screen 5): "From a screenshot" and "From a bank statement", both Pro.
+  2. **Onboarding dates step** (screen 1): "Fill them from a screenshot" (Pro), shown before the paywall so it sells Pro.
+  3. **Home "No date yet" card** (screen 3): "Add dates" or "Use a screenshot" (Pro).
+  4. **The result** (screen 6): "We found 4." Exact prices and dates filled in; nothing is added until the user confirms; already-listed subs just get their date.
+- Import needs the EAS development build (on-phone text reading). Until it ships, the Pro rows open the paywall in Expo Go.

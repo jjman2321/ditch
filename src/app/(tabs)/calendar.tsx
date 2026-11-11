@@ -6,11 +6,12 @@ import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 
-import { MONTH_LONG, WEEKDAY_LONG, addDays, parseDate, shiftMonth, weekdayDate, weekdayOf, weekdayShort, type DateOnly } from '@/domain/dates';
+import { MONTH_LONG, WEEKDAY_LONG, addDays, parseDate, shiftMonth, toDateOnly, weekdayDate, weekdayOf, weekdayShort, type DateOnly } from '@/domain/dates';
 import { HEADS_UP_LEADS } from '@/domain/charges';
-import { effectiveLeads, timeLabel } from '@/domain/settings';
-import { calendarMonth, isPending, isPricedSub, isProTrial, monthDue, remindedIds, undatedSubs, yearlyOfSub, type CalendarCharge, type CalendarDay } from '@/domain/subs';
+import { effectiveLeads, shortTimeLabel, timeLabel } from '@/domain/settings';
+import { FREE_REMINDERS, calendarMonth, isPending, isPricedSub, isProTrial, monthDue, remindedIds, undatedSubs, yearlyOfSub, type CalendarCharge, type CalendarDay } from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
+import { OffBanner, openPhoneSettings } from '@/home/HomeParts';
 import { SubLogo } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
 import { BottomFade, Card, ChevronLeft, ChevronRight, F, IconButton, SectionHeader, Txt, brand, haptic, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
@@ -48,6 +49,21 @@ export default function Calendar() {
   const rows: (CalendarDay | null)[][] = [];
   for (let i = 0; i < days.length; i += 7) rows.push(days.slice(i, i + 7));
   const blocked = app.notif === 'denied' || app.notif === 'undetermined';
+  // A day with no charge but a reminder: say which one, e.g. "Reminder at 9 AM: Netflix charges Sat, Nov 14."
+  const dayReminders = sel ? app.plan.filter((r) => r.kind !== 'keep-going' && toDateOnly(r.fireAt) === sel.date) : [];
+  const names = dayReminders.map((r) => {
+    const s = subs.find((x) => x.id === r.subId);
+    const trial = !!s && isProTrial(s);
+    return `${trial ? 'your Ditch Pro trial' : (s?.name ?? 'Ditch')} ${trial ? 'ends' : 'charges'} ${weekdayDate(r.chargeDate)}`;
+  });
+  const emptyDayLine = !sel?.headsUp
+    ? 'Nothing charges this day.'
+    : blocked
+      ? 'Reminders are off, so this one won’t arrive.'
+      : names.length
+        ? `Reminder at ${shortTimeLabel(settings.reminderTime)}: ${names.join('; ')}.`.replace(/ (\S+)$/, '\u00A0$1')
+        : `A reminder goes off at ${shortTimeLabel(settings.reminderTime)}. Nothing charges this day.`;
+  const room = pro ? 0 : Math.max(0, FREE_REMINDERS - reminded.size);
   const title = view.y === t.y ? MONTH_LONG[view.m - 1] : `${MONTH_LONG[view.m - 1]} ${view.y}`;
 
   const move = (n: number) => {
@@ -70,6 +86,12 @@ export default function Calendar() {
             <ChevronRight color={p.fg} size={26} />
           </IconButton>
         </View>
+
+        {blocked ? (
+          <View style={{ marginTop: 12 }}>
+            <OffBanner status={app.notif} onTurnOn={() => (app.notif === 'denied' ? openPhoneSettings() : void app.askNotif())} />
+          </View>
+        ) : null}
 
         <View
           accessible
@@ -103,7 +125,7 @@ export default function Calendar() {
             <View key={r} style={{ flexDirection: 'row', gap: GAP }}>
               {Array.from({ length: 7 }, (_, i) => row[i] ?? null).map((d, i) =>
                 d ? (
-                  <DayCell key={d.date} day={d} w={cellW} selected={d.date === selected} onPress={() => (haptic.select(), setPicked(d.date))} />
+                  <DayCell key={d.date} day={d} w={cellW} selected={d.date === selected} blocked={blocked} onPress={() => (haptic.select(), setPicked(d.date))} />
                 ) : (
                   <View key={`x${i}`} style={{ width: cellW, height: 64 }} />
                 ),
@@ -131,6 +153,7 @@ export default function Calendar() {
                 leads={isProTrial(c.sub) ? [...HEADS_UP_LEADS] : leads}
                 time={settings.reminderTime}
                 blocked={blocked}
+                room={room}
                 onPress={() => (isPending(c.sub) ? router.push(`/ditch/${c.sub.id}`) : editor.openEdit(c.sub.id))}
               />
             ))}
@@ -138,7 +161,7 @@ export default function Calendar() {
         ) : (
           <Card style={{ paddingHorizontal: 16, paddingVertical: 16 }}>
             <Txt v="body" tone="mute">
-              {sel?.headsUp ? `A reminder goes off at ${timeLabel(settings.reminderTime)} today. Nothing charges.` : 'Nothing charges this day.'}
+              {emptyDayLine}
             </Txt>
           </Card>
         )}
@@ -173,14 +196,14 @@ export default function Calendar() {
   );
 }
 
-function DayCell({ day, w, selected, onPress }: { day: CalendarDay; w: number; selected: boolean; onPress: () => void }) {
+function DayCell({ day, w, selected, blocked, onPress }: { day: CalendarDay; w: number; selected: boolean; blocked: boolean; onPress: () => void }) {
   const p = usePalette();
   const { d } = parseDate(day.date);
   const first = day.charges[0];
   const more = day.charges.length - 1;
   const label = `${WEEKDAY_LONG[weekdayOf(day.date)]}, ${MONTH_LONG[parseDate(day.date).m - 1]} ${d}${day.today ? ', today' : ''}${
     day.charges.length ? `, ${day.charges.map((c) => c.sub.name).join(', ')}` : ''
-  }${day.headsUp ? ', reminder day' : ''}`;
+  }${day.headsUp ? (blocked ? ', reminder day, but reminders are off' : ', reminder day') : ''}`;
   const numColor = selected ? brand.ink : day.past ? p.mute : p.cardFg;
   return (
     <Pressable
@@ -212,7 +235,8 @@ function DayCell({ day, w, selected, onPress }: { day: CalendarDay; w: number; s
           </Txt>
         )}
         {day.headsUp ? (
-          <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: brand.sunflower, borderWidth: p.dark ? 0 : 1.5, borderColor: brand.ink }} />
+          // Reminders off: a hollow dot, since nothing will actually arrive.
+          <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: blocked ? 'transparent' : brand.sunflower, borderWidth: blocked || !p.dark ? 1.5 : 0, borderColor: blocked ? p.mute : brand.ink }} />
         ) : null}
       </View>
       {first ? (
@@ -257,8 +281,10 @@ function ChargeRow({
   leads,
   time,
   blocked,
+  room,
   onPress,
 }: {
+  room: number;
   c: CalendarCharge;
   pro: boolean;
   first: boolean;
@@ -272,7 +298,10 @@ function ChargeRow({
   const money = useAppMoney();
   const s = c.sub;
   const on = (c.reminded || isProTrial(s)) && !c.pending;
-  const heads = on ? leads.map((l) => addDays(c.date, -l)).filter((d) => d >= today) : [];
+  const all = on ? [...leads].sort((a, b) => b - a).map((l) => addDays(c.date, -l)) : [];
+  const heads = all.filter((d) => d >= today);
+  // Ones already sent (only since it was added): "Reminded Wed 11, Fri 13".
+  const sent = all.filter((d) => d < today && d >= s.createdAt.slice(0, 10));
   // One line that says when the reminders land: "Reminders Mon 16, Wed 18" (no pills; the time is in Settings and VoiceOver).
   const short = (d: DateOnly) => `${weekdayShort(d)} ${parseDate(d).d}`;
   const line = c.pending
@@ -280,14 +309,18 @@ function ChargeRow({
     : !on
       ? pro
         ? 'Reminders off for this one'
-        : 'No reminder · free covers 3'
+        : room > 0
+          ? `No reminder · ${room} free left`
+          : 'No reminder · free covers 3'
       : blocked
         ? 'Reminders are off'
         : c.date < today
           ? 'Charged'
           : heads.length
             ? `${heads.length === 1 ? 'Reminder' : 'Reminders'} ${heads.map(short).join(', ')}`
-            : 'Too close for a reminder this time';
+            : sent.length
+              ? `Reminded ${sent.map(short).join(', ')}`
+              : 'Too close for a reminder this time';
   return (
     <Pressable
       accessibilityRole="button"

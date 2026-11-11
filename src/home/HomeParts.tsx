@@ -210,7 +210,7 @@ export function EmptyHome({ country, onAdd }: { country: string | null; onAdd: (
         <Duck width={128} left={110} sink={2} />
         <View style={{ borderRadius: 26, backgroundColor: p.dark ? p.card : brand.sunflower, paddingHorizontal: 22, paddingTop: 24, paddingBottom: 22, alignItems: 'center', borderWidth: p.dark ? 1 : 0, borderColor: p.cardBorder }}>
           <Txt v="displayM" center accessibilityRole="header" color={p.dark ? p.fg : brand.ink} style={{ fontSize: 33, lineHeight: 35 }}>
-            Nothing to watch yet.
+            {'Nothing to watch\u00A0yet.'}
           </Txt>
           <Txt v="leadS" center color={p.dark ? p.fg2 : '#4B4220'} style={{ marginTop: 10 }}>
             Add what you pay for. Ditch reminds you before each charge.

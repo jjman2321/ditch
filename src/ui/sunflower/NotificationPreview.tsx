@@ -54,7 +54,7 @@ export function NotificationPreview({
           </Txt>
         </View>
         <Txt v="body" color={p.noteFg} num>
-          {message}
+          {message.replace(/ (\S+)$/, '\u00A0$1')}
         </Txt>
       </View>
     </View>

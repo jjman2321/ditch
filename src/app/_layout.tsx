@@ -3,14 +3,14 @@ import { useFonts } from 'expo-font';
 import { DarkTheme, DefaultTheme, router, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { Platform, useColorScheme } from 'react-native';
+import { Linking, Platform, useColorScheme, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { EditorProvider } from '@/editor/Editor';
 import { AppProvider, useApp } from '@/state/app';
 import { OnboardingProvider } from '@/state/onboarding';
-import { brand, paletteFor } from '@/ui/sunflower';
+import { Button, EDGE, Txt, brand, paletteFor } from '@/ui/sunflower';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
@@ -62,9 +62,27 @@ if (Platform.OS === 'web' && typeof window !== 'undefined') {
   (window as unknown as { __ditchNavigate: (path: string) => void }).__ditchNavigate = (path) => router.push(path as never);
 }
 
+/** The list couldn't be opened: say so, and never start a fresh, empty app on top of it. */
+function LoadFailed({ bg }: { bg: string }) {
+  const app = useApp();
+  return (
+    <View style={{ flex: 1, backgroundColor: bg, justifyContent: 'center', padding: EDGE }}>
+      <Txt v="title" accessibilityRole="header">
+        Couldn’t open your list.
+      </Txt>
+      <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
+        It’s still on your phone. Try again, or restart the app. If it keeps happening, email us and we’ll help.
+      </Txt>
+      <Button label="Try again" onPress={app.retryLoad} style={{ marginTop: 24 }} />
+      <Button kind="text" label="Email support" onPress={() => Linking.openURL('mailto:support@ditchsubs.app?subject=Ditch%20won%E2%80%99t%20open%20my%20list').catch(() => {})} />
+    </View>
+  );
+}
+
 function Navigator({ dark, bg }: { dark: boolean; bg: string }) {
   // A fresh onboarding after "Delete all data".
-  const { generation } = useApp();
+  const { generation, loadFailed } = useApp();
+  if (loadFailed) return <LoadFailed bg={bg} />;
   const modal = { contentStyle: { backgroundColor: dark ? brand.night : brand.cream } };
   return (
     <OnboardingProvider key={generation}>

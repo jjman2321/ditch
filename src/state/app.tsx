@@ -43,6 +43,8 @@ import type { Picked } from './picks';
 
 type Data = {
   ready: boolean;
+  /** The list couldn't be read. Nothing is shown or saved until it can (never a fresh start over real data). */
+  loadFailed: boolean;
   subs: Sub[];
   settings: Settings;
   notif: NotifStatus;
@@ -81,6 +83,8 @@ type Actions = {
   /** Stub until RevenueCat. A yearly trial adds Ditch's own trial to the list. */
   setPro: (plan: ProPlan | null, opts?: { startTrial?: boolean }) => Promise<void>;
   finishOnboarding: (r: OnboardingResult) => Promise<void>;
+  /** After a failed load: open the list again. */
+  retryLoad: () => void;
   deleteAll: () => Promise<void>;
   refreshNotif: () => Promise<NotifStatus>;
   askNotif: () => Promise<NotifStatus>;
@@ -98,6 +102,7 @@ const isPro = (s: Settings) => s.proPlan !== null;
 export function AppProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<Data>(() => ({
     ready: false,
+    loadFailed: false,
     subs: [],
     settings: DEFAULT_SETTINGS,
     notif: 'undetermined',
@@ -128,7 +133,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return notif;
   }, [set]);
 
-  // Load, then schedule. Launch counts as a reschedule.
+  // Load, then schedule. Launch counts as a reschedule. `attempt` bumps on "Try again".
+  const [attempt, setAttempt] = useState(0);
   useEffect(() => {
     let alive = true;
     setupNotifications();
@@ -140,13 +146,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
       // First launch with this code: remember the day, for the rating rules.
       const withInstall = settings.review.installedOn ? settings : { ...settings, review: { ...settings.review, installedOn: clockToday() } };
       if (withInstall !== settings) repo.saveSettings({ review: withInstall.review }).catch(() => {});
-      set({ ready: true, subs, settings: withInstall, notif, today: clockToday() });
+      set({ ready: true, loadFailed: false, subs, settings: withInstall, notif, today: clockToday() });
       reschedule();
-    })().catch(() => set({ ready: true }));
+    })().catch(() => {
+      if (alive) set({ loadFailed: true });
+    });
     return () => {
       alive = false;
     };
-  }, [set, reschedule]);
+  }, [set, reschedule, attempt]);
 
   // Back to the front: new day? new permission? Reschedule either way.
   useEffect(() => {
@@ -288,6 +296,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
           const fill = defaultFreePicks(subs.filter((s) => !have.has(s.id))).slice(0, Math.max(0, FREE_REMINDERS - have.size));
           if (fill.length) await commit(subs.filter((s) => fill.includes(s.id)).map((s) => ({ ...s, freePick: true, updatedAt: stamp() })));
         }
+      },
+      retryLoad: () => {
+        set({ loadFailed: false });
+        setAttempt((a) => a + 1);
       },
       finishOnboarding: async (r) => {
         const subs = subsFromOnboarding({ picks: r.picks, reminderIds: r.reminderIds, pro: r.pro, today: ref.current.today, nowIso: stamp() });

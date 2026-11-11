@@ -6,6 +6,7 @@ import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
+import { CYCLE_SHORT } from '@/domain/money';
 import { nextReminder, whenLabel } from '@/domain/reminders';
 import { homeGroups, homeTotals, isPending, isPricedSub, isProTrial, listedUserSubs, remindedIds, undatedSubs, yearlyOfSub } from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
@@ -36,7 +37,7 @@ export default function Home() {
   // The very next one, so it's plain that reminders are scheduled.
   const next = blocked ? null : nextReminder(app.plan, subs);
   const money = useAppMoney();
-  const prices = useMemo(() => groups.flatMap((g) => g.rows.map((r) => (isPricedSub(r.sub) ? money(r.sub.amountMinor, r.sub.currency) : null))), [groups, money]);
+  const prices = useMemo(() => groups.flatMap((g) => g.rows.map((r) => (isPricedSub(r.sub) ? `${money(r.sub.amountMinor, r.sub.currency)}${r.sub.cycle === 'monthly' ? '' : CYCLE_SHORT[r.sub.cycle]}` : null))), [groups, money]);
   const [priceW, setPriceW] = useState<number | undefined>(undefined);
 
   const bellOf = (id: string): BellState => {

@@ -197,6 +197,8 @@ export function parseAmountInput(text: string, currency: string): number | null 
   // instead of guessing $129,911.
   const groups = whole.split(/[.,]/);
   if (groups.length > 1 && (groups[0].length < 1 || groups[0].length > 3 || groups.slice(1).some((g) => g.length !== 3))) return null;
+  // One group that makes it 10,000 or more ("15.490") is almost always a typo for 15.49, not a price.
+  if (digits > 0 && groups.length === 2 && Number(groups.join('')) >= 10_000) return null;
   whole = groups.join('');
   t = whole || '0';
   const minor = Number(t) * 10 ** digits + Number((frac + '00').slice(0, digits) || 0);

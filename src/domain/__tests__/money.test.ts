@@ -1,5 +1,6 @@
 import {
   formatMoney,
+  parseAmountInput,
   monthlyMinorExact,
   roundMinor,
   totalsByCurrency,
@@ -57,5 +58,14 @@ describe('money: acceptance checks (SPEC §5.1)', () => {
     expect(roundMinor(824.4999)).toBe(824);
     expect(formatMoney(128400, 'USD', { trimWhole: true })).toBe('$1,284');
     expect(formatMoney(128450, 'USD', { trimWhole: true })).toBe('$1,284.50');
+  });
+});
+
+describe('parseAmountInput typos', () => {
+  it('refuses "15.490" (a slip of 15.49) but keeps real thousands', () => {
+    expect(parseAmountInput('15.490', 'USD')).toBeNull();
+    expect(parseAmountInput('1,299', 'USD')).toBe(129900);
+    expect(parseAmountInput('1.299,00', 'EUR')).toBe(129900);
+    expect(parseAmountInput('1,299.00', 'GBP')).toBe(129900);
   });
 });

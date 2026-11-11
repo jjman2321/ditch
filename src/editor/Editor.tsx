@@ -175,7 +175,11 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
   const isNew = open.mode === 'add';
   const trialEntry = isProTrial(draft);
   const currency = draft.currency ?? settings.currency;
-  const typed = parseAmountInput(amount, currency);
+  // Over 99,999 per charge is almost always a typo, and it breaks every total.
+  const MAX_MINOR = 99_999 * 10 ** currencyDigits(currency);
+  const parsed = parseAmountInput(amount, currency);
+  const typed = parsed !== null && parsed > MAX_MINOR ? null : parsed;
+  const priceProblem = amount.trim() && typed === null;
 
   const matches = useMemo(() => {
     if (!query.trim()) return popularIn(country, 6);
@@ -202,13 +206,18 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
 
   const setAmountText = (t: string) => {
     setAmount(t);
-    const v = parseAmountInput(t, currency);
+    const raw = parseAmountInput(t, currency);
+    const v = raw !== null && raw > 99_999 * 10 ** currencyDigits(currency) ? null : raw;
     setDraft((d) => ({ ...d, amountMinor: v, currency, priceSource: v ? 'user' : d.priceSource === 'catalog' ? 'none' : d.priceSource, amountIsEstimate: false, planId: null, planName: null }));
   };
 
   const setCurrency = (c: string) => {
     haptic.select();
-    const v = parseAmountInput(amount, c);
+    // Rewrite the number for the new currency's decimals ("20.00" becomes "20" in yen).
+    const before = parseAmountInput(amount, currency);
+    const text = before === null ? amount : (before / 10 ** currencyDigits(currency)).toFixed(currencyDigits(c));
+    if (text !== amount) setAmount(text);
+    const v = parseAmountInput(text, c);
     setDraft((d) => ({ ...d, currency: c, amountMinor: v, priceSource: v ? 'user' : 'none', amountIsEstimate: false, planId: null, planName: null }));
   };
 
@@ -428,7 +437,11 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                 {currency}
               </Txt>
             </View>
-            {catalogLine ? (
+            {priceProblem ? (
+              <Txt v="sub" color={p.danger} style={{ marginTop: 6, marginHorizontal: 2 }} accessibilityLiveRegion="polite">
+                {parsed !== null && parsed > MAX_MINOR ? 'That looks too big. Check the price.' : 'Check the price.'}
+              </Txt>
+            ) : catalogLine ? (
               <Txt v="sub" tone="mute" style={{ marginTop: 6, marginHorizontal: 2 }}>
                 {catalogLine}
               </Txt>

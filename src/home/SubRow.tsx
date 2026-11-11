@@ -22,7 +22,7 @@ import Svg, { Circle } from 'react-native-svg';
 import { scheduleOnRN } from 'react-native-worklets';
 
 import { daysBetween, weekdayDate, type DateOnly } from '@/domain/dates';
-import { yearlyMinor } from '@/domain/money';
+import { CYCLE_SHORT, CYCLE_WORDS, yearlyMinor } from '@/domain/money';
 import { inTrial, isPending, isPricedSub, isProTrial, type Sub } from '@/domain/subs';
 import { useAppMoney } from '@/state/app';
 import { Bell, BellOff, DitchedTag, DuckIcon, F, LogoTile, ProLockup, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
@@ -164,7 +164,8 @@ export function SubRow({
     onActivate: start,
     onFinalize: () => stop(),
   });
-  const tap = useTapGesture({ runOnJS: true, onActivate: () => onOpen(sub) });
+  // A flick to scroll must never count as a tap (it would open the editor).
+  const tap = useTapGesture({ runOnJS: true, maxDistance: 10, onActivate: () => onOpen(sub) });
   const gesture = useExclusiveGestures(longPress, tap);
 
   const ringProps = useAnimatedProps(() => {
@@ -185,10 +186,11 @@ export function SubRow({
   const price = isPricedSub(sub) ? money(sub.amountMinor, sub.currency) : null;
   const yearly = isPricedSub(sub) ? money(yearlyMinor(sub.amountMinor, sub.cycle), sub.currency) : null;
   const line = rowLine(sub, charge, today);
+  const per = sub.cycle === 'monthly' ? '' : CYCLE_SHORT[sub.cycle];
   const on = holding && !p.dark;
   const fg = on ? brand.ink : p.cardFg;
   const sub2 = on ? '#4B4220' : p.mute;
-  const label = `${isProTrial(sub) ? 'Ditch Pro trial' : sub.name}, ${price ?? 'no price yet'}, ${charge ? line : 'no date yet, add date'}${pending ? ', ditched, not cancelled yet' : ''}, reminders ${bell === 'on' ? 'on' : 'off'}`;
+  const label = `${isProTrial(sub) ? 'Ditch Pro trial' : sub.name}, ${price ? `${price} ${CYCLE_WORDS[sub.cycle]}` : 'no price yet'}, ${charge ? line : 'no date yet, add date'}${pending ? ', ditched, not cancelled yet' : ''}, reminders ${bell === 'on' ? 'on' : 'off'}`;
 
   return (
     <GestureDetector gesture={gesture}>
@@ -196,7 +198,7 @@ export function SubRow({
         accessible
         accessibilityRole="button"
         accessibilityLabel={label}
-        accessibilityHint={canHold ? 'Opens it. Hold to ditch it.' : 'Opens the cancel check.'}
+        accessibilityHint={canHold ? 'Opens it. The actions menu has Ditch it.' : 'Opens the cancel check.'}
         accessibilityActions={canHold ? [{ name: 'activate' }, { name: 'ditch', label: 'Ditch it' }] : [{ name: 'activate' }]}
         onAccessibilityAction={(e) => (e.nativeEvent.actionName === 'ditch' ? onDitch(sub.id) : onOpen(sub))}
         style={[
@@ -259,6 +261,12 @@ export function SubRow({
           </View>
           <Txt v="moneyM" num color={price ? fg : p.mute} style={[{ minWidth: 62, textAlign: 'right', fontSize: price ? 17.5 : 13 }, priceWidth ? { width: Math.max(62, priceWidth) } : null]}>
             {price ?? 'Add price'}
+            {/* Not monthly? Say so, or $139 a year looks like $139 a month. */}
+            {price && per ? (
+              <Txt v="sub" num color={sub2} style={{ fontSize: 12 }}>
+                {per}
+              </Txt>
+            ) : null}
           </Txt>
         </View>
         {holding ? (

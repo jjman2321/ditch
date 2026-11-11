@@ -75,7 +75,8 @@ export default function Ditched() {
     return () => clearTimeout(h);
   }, [animate, reduce, card, stampScale, stampTurn, stampInk, amount, rest]);
 
-  const cardStyle = useAnimatedStyle(() => ({ opacity: card.get(), transform: [{ translateY: (1 - card.get()) * 40 }] }));
+  // Fade only: the card shows the price, and nothing moves next to a price (CLAUDE.md rule 8).
+  const cardStyle = useAnimatedStyle(() => ({ opacity: card.get() }));
   const stampStyle = useAnimatedStyle(() => ({ opacity: stampInk.get(), transform: [{ scale: stampScale.get() }, { rotate: `${stampTurn.get()}deg` }] }));
   const amountStyle = useAnimatedStyle(() => ({ opacity: amount.get() }));
   const restStyle = useAnimatedStyle(() => ({ opacity: rest.get(), transform: [{ translateY: (1 - rest.get()) * 6 }] }));

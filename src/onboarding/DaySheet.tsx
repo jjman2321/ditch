@@ -125,7 +125,10 @@ export function DayBody({
   time,
   reminderTime,
   off,
+  progress,
 }: {
+  /** "3 of 8": where they are when Save moves through the list. */
+  progress?: string;
   pick: Picked;
   onDone: (anchor: DateOnly) => void;
   onNotSure: () => void;
@@ -189,6 +192,11 @@ export function DayBody({
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 16 }}>
         <LogoTile id={pick.id} size={40} />
         <View style={{ flex: 1, minWidth: 0 }}>
+          {progress ? (
+            <Txt v="fine" tone="mute" num>
+              {progress}
+            </Txt>
+          ) : null}
           <Txt v="strong" accessibilityRole="header">
             {head}
           </Txt>
@@ -301,7 +309,9 @@ export function DaySheet({
   onNotSure,
   leads = HEADS_UP_LEADS,
   time = '9 AM',
+  progress,
 }: {
+  progress?: string;
   pick: Picked | null;
   visible: boolean;
   onClose: () => void;
@@ -314,7 +324,7 @@ export function DaySheet({
 }) {
   return (
     <Sheet visible={visible && !!pick} onClose={onClose} fit gap={0} maxContent={420} label={pick ? `${pick.name} charge day` : 'Charge day'}>
-      {pick ? <DayBody key={pick.id} pick={pick} onDone={onDone} onNotSure={onNotSure} onClose={onClose} leads={leads} time={time} /> : null}
+      {pick ? <DayBody key={pick.id} pick={pick} onDone={onDone} onNotSure={onNotSure} onClose={onClose} leads={leads} time={time} progress={progress} /> : null}
     </Sheet>
   );
 }

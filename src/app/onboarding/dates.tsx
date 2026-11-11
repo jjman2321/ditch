@@ -129,6 +129,7 @@ export default function Dates() {
       </View>
       <DaySheet
         pick={dayPick}
+        progress={dayPick ? `${sorted.findIndex((x) => x.id === dayPick.id) + 1} of ${sorted.length}` : undefined}
         visible={!!dayPick}
         onClose={() => setDayFor(null)}
         onNotSure={() => {

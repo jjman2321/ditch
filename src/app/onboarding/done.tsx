@@ -8,7 +8,7 @@
 import { getLocales } from 'expo-localization';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { AppState, Linking, Text, View } from 'react-native';
+import { AccessibilityInfo, AppState, Linking, Text, View } from 'react-native';
 import Animated, { FadeIn, useReducedMotion } from 'react-native-reanimated';
 
 import { namesLine } from '@/domain/copy';
@@ -55,7 +55,7 @@ export default function Done() {
   const { pro: proPlan } = useOnboarding();
   const f = useFrame({ maxContent: 480, colH: proPlan ? 820 : 760 });
   const { pro, notifications, setNotifications, setReminderPicks, country } = useOnboarding();
-  const { finishOnboarding } = useApp();
+  const { finishOnboarding, sendTest } = useApp();
   const countryInfo = useCountry();
   const money = useMoney();
   const list = usePickedList();
@@ -65,6 +65,7 @@ export default function Done() {
   const on = notifications === 'granted';
   const { reminders, undated, trialCharge } = useFirstReminders(pro || (f.small && notifications !== 'granted') ? 2 : 3);
   const [saving, setSaving] = useState(false);
+  const [tested, setTested] = useState(false);
   const reduce = useReducedMotion();
   const first = reminders[0];
   // A soft success buzz once the checklist has landed.
@@ -194,6 +195,23 @@ export default function Done() {
               <Txt v="sub" num color={sub2} center style={{ marginTop: 10 }}>
                 {`Then ${remindedIds.length - 1} more, each 3 days and 1 day before.`}
               </Txt>
+            ) : null}
+            {/* Prove it now: a trial lasts 7 days, the first real charge may be weeks away. */}
+            {on ? (
+              <View style={{ alignItems: 'center', marginTop: 2 }}>
+                <TextLink
+                  label={tested ? 'Sent. Check the top of your screen.' : 'Send me a test now'}
+                  a11y={tested ? 'Test reminder sent' : 'Send me a test reminder now'}
+                  onPress={async () => {
+                    if (tested) return;
+                    if (await sendTest()) {
+                      setTested(true);
+                      AccessibilityInfo.announceForAccessibility('Sent. It arrives in about 5 seconds.');
+                    }
+                  }}
+                  style={{ fontSize: 15 }}
+                />
+              </View>
             ) : null}
           </View>
         ) : null}

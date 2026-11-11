@@ -4,6 +4,7 @@ import { subsFromOnboarding } from '@/state/fromOnboarding';
 import { newPick } from '@/state/picks';
 
 import { cleanLeads, leadsLabel, parseSettings, settingsToKv, timeLabel, DEFAULT_SETTINGS } from '../settings';
+import { addDays, nextChargeDate } from '../dates';
 import { currencyDigits } from '../money';
 import {
   calendarMonth,
@@ -263,5 +264,19 @@ describe('Ditch’s own Pro trial is not one of your subscriptions (owner, Nov 1
     const days = calendarMonth(pro(), 2026, 11, TODAY, remindedIds(pro(), true), [3, 1]);
     expect(days.flatMap((d) => d?.charges ?? []).some((c) => c.sub.kind === 'ditch_pro_trial')).toBe(false);
     expect(toCsv(pro(), TODAY, currencyDigits)).not.toContain('Ditch Pro');
+  });
+});
+
+describe('chargesBetween with old anchors', () => {
+  it('never skips a charge, however old the anchor', () => {
+    for (const cycle of ['weekly', 'monthly', 'quarterly', 'yearly'] as const) {
+      for (let years = 0; years <= 30; years++) {
+        const anchor = `${2026 - years}-01-31`;
+        const sub = makeSub({ name: 'Old', cycle, anchor, dateSource: 'next' });
+        const today = '2026-11-11';
+        const next = nextChargeDate(anchor, cycle, today);
+        expect(chargesBetween(sub, today, addDays(today, 400))[0]).toBe(next);
+      }
+    }
   });
 });

@@ -304,8 +304,10 @@ export type CalendarDay = { date: DateOnly; charges: CalendarCharge[]; headsUp: 
 export function chargesBetween(s: Sub, from: DateOnly, to: DateOnly): DateOnly[] {
   if (!hasDate(s)) return [];
   // Jump close to `from`, counting from the anchor so month-end clamps never stick.
+  // Divide by the LONGEST a cycle can be, so the jump can never land past `from`
+  // (with 28-day months it overshot once an anchor was ~3 years old).
   const span = daysBetween(s.anchor, from);
-  const per = s.cycle === 'weekly' ? 7 : s.cycle === 'monthly' ? 28 : s.cycle === 'quarterly' ? 89 : 365;
+  const per = s.cycle === 'weekly' ? 7 : s.cycle === 'monthly' ? 31 : s.cycle === 'quarterly' ? 92 : 366;
   let k = Math.max(0, Math.floor(span / per) - 2);
   const out: DateOnly[] = [];
   for (let guard = 0; guard < 400; guard++, k++) {

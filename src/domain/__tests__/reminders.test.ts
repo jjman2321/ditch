@@ -65,7 +65,7 @@ describe('who gets them', () => {
     const subs = demo().map((s) => (s.id === 'disney' ? { ...s, muted: true } : s));
     const plan = planReminders(subs, { ...PRO, leadDays: [7, 1] }, NOW);
     // Disney+ is muted; Amazon Prime has no date yet.
-    expect([...new Set(plan.map((r) => r.subId))].sort()).toEqual(['chatgpt', 'netflix', 'spotify', 'youtube']);
+    expect([...new Set(plan.filter((r) => r.kind !== 'keep-going').map((r) => r.subId))].sort()).toEqual(['chatgpt', 'netflix', 'spotify', 'youtube']);
     expect(forSub(plan, 'chatgpt').slice(0, 2).map((r) => r.lead)).toEqual([7, 1]);
   });
 
@@ -205,14 +205,23 @@ describe('no duplicates, at most 64, soonest first', () => {
     expect(plan).toHaveLength(24);
   });
 
-  it('caps at 64 and keeps the soonest', () => {
+  it('caps at 60, keeps the soonest, and the last slot asks them to open Ditch', () => {
     const many = Array.from({ length: 40 }, (_, i) => sub({ id: `s${i}`, name: `Sub ${i}`, anchor: `2026-11-${String(10 + (i % 20)).padStart(2, '0')}`, cycle: 'weekly' }));
     const all = planReminders(many, PRO, NOW, { cap: 10_000 });
     const plan = planReminders(many, PRO, NOW);
     expect(all.length).toBeGreaterThan(MAX_PENDING);
     expect(plan).toHaveLength(MAX_PENDING);
-    expect(plan).toEqual(all.slice(0, MAX_PENDING));
+    expect(plan.slice(0, -1)).toEqual(all.slice(0, MAX_PENDING - 1));
+    const last = plan[plan.length - 1];
+    expect(last.kind).toBe('keep-going');
+    expect(last.id).toMatch(/^keep:/);
+    expect(last.fireAt.getTime()).toBeGreaterThan(plan[plan.length - 2].fireAt.getTime());
     for (let i = 1; i < plan.length; i++) expect(plan[i].fireAt.getTime()).toBeGreaterThanOrEqual(plan[i - 1].fireAt.getTime());
+  });
+
+  it('no keep-going reminder when everything fits', () => {
+    const one = [sub({ id: 'y', name: 'Yearly one', anchor: '2027-03-01', cycle: 'yearly' })];
+    expect(planReminders(one, PRO, NOW).some((r) => r.kind === 'keep-going')).toBe(false);
   });
 
   it('the plan is stable: same input, same output', () => {

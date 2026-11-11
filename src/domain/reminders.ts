@@ -16,11 +16,12 @@ import { effectiveLeads, parseTime, shortTimeLabel, type Settings } from './sett
 import { chargeOfSub, chargesBetween, isActive, isPending, isPricedSub, isProTrial, remindedIds, type Sub } from './subs';
 
 /** iOS keeps at most 64 pending local notifications per app. */
-export const MAX_PENDING = 64;
+/** iOS keeps 64; we stop at 60 so the test reminder never pushes one off (SPEC §5.3). */
+export const MAX_PENDING = 60;
 /** How far ahead to plan. Reschedules run on every launch, so a year is plenty. */
 export const HORIZON_DAYS = 366;
 
-export type ReminderKind = 'heads-up' | 'trial' | 'pro-trial' | 'last-check';
+export type ReminderKind = 'heads-up' | 'trial' | 'pro-trial' | 'last-check' | 'keep-going';
 
 export type PlannedReminder = {
   /** Deterministic, so the same reminder is never scheduled twice. */
@@ -164,10 +165,18 @@ export function planReminders(
     }
   }
 
-  return [...out.values()]
-    .sort((a, b) => a.fireAt.getTime() - b.fireAt.getTime() || (a.id < b.id ? -1 : 1))
-    .slice(0, Math.max(0, cap));
+  const sorted = [...out.values()].sort((a, b) => a.fireAt.getTime() - b.fireAt.getTime() || (a.id < b.id ? -1 : 1));
+  if (sorted.length <= cap) return sorted;
+  // More than fit: keep the soonest, and use the last slot to ask them to open Ditch,
+  // so a long list never just goes quiet (reminders are only lined up when the app opens).
+  const kept = sorted.slice(0, Math.max(0, cap - 1));
+  const last = kept[kept.length - 1];
+  if (!last) return kept;
+  const day = toDateOnly(last.fireAt);
+  return [...kept, { id: `keep:${day}`, subId: '', kind: 'keep-going', fireAt: atTime(addDays(day, 1), time), chargeDate: day, lead: 0, title: '', body: KEEP_GOING_BODY }];
 }
+
+export const KEEP_GOING_BODY = 'Open Ditch so your next reminders get lined up. Takes a second.';
 
 /** What's pending on the phone, as far as reconciling cares. */
 export type ScheduledInfo = { id: string; fingerprint: string | null };
@@ -178,7 +187,7 @@ export function fingerprint(r: Pick<PlannedReminder, 'fireAt' | 'body'>): string
 }
 
 /** Ids we own (the test reminder and anything else are left alone). */
-export const isPlannedId = (id: string) => /^(sub|pro|last):/.test(id);
+export const isPlannedId = (id: string) => /^(sub|pro|last|keep):/.test(id);
 
 /**
  * Turn what's pending into the plan with the fewest changes: cancel ours

@@ -60,13 +60,25 @@ async function pendingOurs() {
   return all.map((n) => ({ id: n.identifier, fingerprint: typeof n.content.data?.fp === 'string' ? (n.content.data.fp as string) : null }));
 }
 
+/** Bumped by "Delete all data", so a pass that's already running stops scheduling. */
+let generation = 0;
+
 async function apply(plan: PlannedReminder[]): Promise<void> {
+  const gen = generation;
   const status = await getNotifStatus();
   // Without permission nothing can show; clear ours and wait for the next foreground.
-  const target = canDeliver(status) ? plan : [];
+  // The plan was made a moment ago: drop anything that's now (nearly) due, since iOS
+  // rejects a date in the past.
+  const soon = Date.now() + 2000;
+  const target = canDeliver(status) ? plan.filter((r) => r.fireAt.getTime() > soon) : [];
   const { cancel, schedule } = reconcile(await pendingOurs(), target);
-  for (const id of cancel) await Notifications.cancelScheduledNotificationAsync(id);
+  // One failed call never stops the rest: each one is tried on its own.
+  for (const id of cancel) {
+    if (gen !== generation) return;
+    await Notifications.cancelScheduledNotificationAsync(id).catch(() => {});
+  }
   for (const r of schedule) {
+    if (gen !== generation) return;
     await Notifications.scheduleNotificationAsync({
       identifier: r.id,
       content: {
@@ -76,7 +88,7 @@ async function apply(plan: PlannedReminder[]): Promise<void> {
         data: { fp: fingerprint(r), subId: r.subId, kind: r.kind },
       },
       trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: r.fireAt },
-    });
+    }).catch(() => {});
   }
 }
 
@@ -134,5 +146,6 @@ export async function sendTestReminder(): Promise<boolean> {
 /** Delete all data: nothing of ours stays scheduled. */
 export async function cancelAllReminders(): Promise<void> {
   latest = null;
+  generation += 1;
   await Notifications.cancelAllScheduledNotificationsAsync().catch(() => {});
 }

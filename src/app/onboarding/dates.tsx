@@ -99,7 +99,7 @@ export default function Dates() {
         <StepHeader step={3} />
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: footerH + 8 }}>
           <Txt v="title" accessibilityRole="header" style={{ marginTop: 16 }}>
-            {'Which day does each one charge?'}
+            {'Which day does each one\u00A0charge?'}
           </Txt>
           <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
             It’s on your bank app or the receipt email. Skip any you’re not sure of.

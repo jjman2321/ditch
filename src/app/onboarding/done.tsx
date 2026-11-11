@@ -134,7 +134,7 @@ export default function Done() {
   if (n)
     items.push(
       undated.length
-        ? { mark: 'todo', title: `${undated.length} with no date yet`, sub: `Add ${undated.length === 1 ? 'its date' : 'dates'} for ${namesLine(undated)} to get ${undated.length === 1 ? 'its' : 'their'} reminders` }
+        ? { mark: 'todo', title: `${undated.length} with no date yet`, sub: `Add ${undated.length === 1 ? 'its date' : 'dates'} for ${namesLine(undated)} to get ${undated.length === 1 ? 'its' : 'their'}\u00A0reminders` }
         : { mark: 'ok', title: 'Every date is set', sub: 'Reminders land on the right day.' },
     );
 

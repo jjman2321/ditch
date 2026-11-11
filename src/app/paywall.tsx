@@ -201,6 +201,7 @@ export default function Paywall() {
   const spokenHead = `Get a reminder before ${many ? `all ${n} renewals` : 'every renewal'}.`;
   // SE drops the last row so everything fits without scrolling (the widget row stays).
   const rows = f.small ? ROWS.slice(0, 4) : ROWS;
+  const tight = f.small && f.height - f.insets.top < 640;
   const overlap = f.tablet ? 48 : 40;
   const duckW = f.small ? 68 : f.tablet ? 104 : 96;
   const ink = dark ? '#F6F0E3' : brand.ink;
@@ -261,8 +262,9 @@ export default function Paywall() {
 
         {/* For people who'd rather not add another subscription (review research, DECISIONS #42). A fixed slot,
             so the button never moves; empty once Lifetime is picked. */}
-        <View style={{ height: f.small ? 30 : 40, justifyContent: 'center' }}>
-          {planId === 'lifetime' ? null : (
+        {/* The folded iPhone Duo (short, with a notch) has no room for it: the Lifetime card is right above. */}
+        <View style={{ height: tight ? 12 : f.small ? 30 : 40, justifyContent: 'center' }}>
+          {planId === 'lifetime' || tight ? null : (
             <Pressable accessibilityRole="button" accessibilityLabel={`Rather pay once? Lifetime, ${lifetime.priceString}`} accessibilityHint="Picks Lifetime" onPress={() => select('lifetime')} hitSlop={8} style={({ pressed }) => ({ alignSelf: 'center', minHeight: 30, justifyContent: 'center', opacity: pressed ? 0.6 : 1 })}>
               <Txt v="sub" tone="fg2" num center>
                 {'Rather pay once? '}

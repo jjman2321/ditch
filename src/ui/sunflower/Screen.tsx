@@ -61,7 +61,9 @@ export function useFrame({ maxContent = 512, colH = 880, extraBottom = 16 }: { m
   const insets = useInsets();
   const { width, height, fontScale } = useWindowDimensions();
   const tablet = Math.min(width, height) >= 600;
-  const small = !tablet && height < 700;
+  // Short screens get the compact layout: the SE and the folded iPhone Duo (under 700pt),
+  // and the 12/13 mini (375pt wide, so titles take more lines; 812pt tall).
+  const small = !tablet && (height < 700 || (width < 380 && height < 830));
   const edge = tablet ? Math.max(EDGE, Math.round((width - maxContent) / 2)) : EDGE;
   let top = insets.top;
   let bottom = insets.bottom + extraBottom;

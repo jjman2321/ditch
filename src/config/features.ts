@@ -9,6 +9,9 @@ import { webParam } from '@/dev/webParams';
 
 export const IMPORT_READY = false;
 
+/** The Home and Lock Screen widget (WidgetKit, v1.1, DECISIONS #27). Its paywall row shows once it exists. */
+export const WIDGET_READY = false;
+
 export function showImport(): boolean {
   return IMPORT_READY || webParam('import') === '1';
 }

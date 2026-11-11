@@ -4,7 +4,7 @@
 
 import * as Notifications from 'expo-notifications';
 
-import { TEST_BODY, fingerprint, reconcile, type PlannedReminder } from '@/domain/reminders';
+import { TEST_BODY, fingerprint, isPlannedId, reconcile, type PlannedReminder } from '@/domain/reminders';
 
 /** granted · quiet (allowed, but banners are off) · denied · undetermined (never asked). */
 export type NotifStatus = 'granted' | 'quiet' | 'denied' | 'undetermined';
@@ -123,7 +123,7 @@ export function applyPlan(plan: PlannedReminder[]): Promise<void> {
 /** How many of our reminders are waiting on the phone (for the health check). */
 export async function pendingCount(): Promise<number | null> {
   try {
-    return (await pendingOurs()).filter((n) => /^(sub|pro|last):/.test(n.id)).length;
+    return (await pendingOurs()).filter((n) => isPlannedId(n.id)).length;
   } catch {
     return null;
   }

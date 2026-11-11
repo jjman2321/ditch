@@ -106,6 +106,8 @@ describe('the Ditch Pro trial (DECISIONS #15)', () => {
     expect(plan.map((r) => [r.fireAt.getTime(), r.body])).toEqual([
       [at(2026, 11, 13), 'Your Ditch Pro trial ends Monday. Then it’s $29.99 a year. Keep it or ditch it.'],
       [at(2026, 11, 15), 'Your Ditch Pro trial ends tomorrow. $29.99 a year after that. Cancel in iPhone Settings if you’re done.'],
+      // The second nudge, that evening (DECISIONS #27: always on for Ditch's own trial).
+      [new Date(2026, 10, 15, 19, 0).getTime(), 'Your Ditch Pro trial ends tomorrow. $29.99 a year after that. Last call to cancel in iPhone Settings.'],
     ]);
   });
 
@@ -265,7 +267,7 @@ it('nextReminder names the soonest one', () => {
 describe('the Pro trial stays off your list but still reminds you', () => {
   it('plans its two reminders from the saved list', () => {
     const trial = { ...proTrialSub(TODAY, 'x'), id: 'trial' };
-    expect(planReminders([trial], PRO, NOW).map((r) => r.kind)).toEqual(['pro-trial', 'pro-trial']);
+    expect(planReminders([trial], PRO, NOW).map((r) => r.kind)).toEqual(['pro-trial', 'pro-trial', 'nudge']);
   });
 });
 
@@ -292,7 +294,27 @@ describe('reminderDaysFor', () => {
 describe('trial ends with custom lead days', () => {
   it('always gets the 3-day and 1-day reminders as well', () => {
     const t = sub({ id: 'tr', name: 'Trial', anchor: '2026-11-25', cycle: 'monthly', isTrial: true });
-    const plan = planReminders([t], { ...PRO, leadDays: [7] }, NOW).filter((r) => r.chargeDate === '2026-11-25');
+    const plan = planReminders([t], { ...PRO, leadDays: [7] }, NOW).filter((r) => r.chargeDate === '2026-11-25' && r.kind !== 'nudge');
     expect(plan.map((r) => r.lead).sort((a, b) => b - a)).toEqual([7, 3, 1]);
+  });
+});
+
+describe('second nudge (Pro)', () => {
+  const n = sub({ id: 'nf', name: 'Netflix', anchor: '2026-11-20', cycle: 'monthly', amountMinor: 1799, currency: 'USD' });
+  it('Pro: one more at 7 PM on the day of the last reminder', () => {
+    const nudges = planReminders([n], PRO, NOW).filter((r) => r.kind === 'nudge' && r.chargeDate === '2026-11-20');
+    expect(nudges).toHaveLength(1);
+    expect(nudges[0].fireAt).toEqual(new Date(2026, 10, 19, 19, 0));
+    expect(nudges[0].body).toBe('Netflix charges tomorrow. $17.99. Last call.');
+  });
+  it('free gets none', () => {
+    expect(planReminders([{ ...n, freePick: true }], FREE, NOW).some((r) => r.kind === 'nudge')).toBe(false);
+  });
+  it('dropped once the app is opened after the first reminder (they saw it)', () => {
+    const after = new Date(2026, 10, 19, 12, 0); // the 9 AM one has gone; the app is open
+    expect(planReminders([n], PRO, after).some((r) => r.kind === 'nudge' && r.chargeDate === '2026-11-20')).toBe(false);
+  });
+  it('none when the reminder time is late in the day', () => {
+    expect(planReminders([n], { ...PRO, reminderTime: '18:00' }, NOW).some((r) => r.kind === 'nudge')).toBe(false);
   });
 });

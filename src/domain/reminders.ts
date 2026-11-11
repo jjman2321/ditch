@@ -21,7 +21,7 @@ export const MAX_PENDING = 60;
 /** How far ahead to plan. Reschedules run on every launch, so a year is plenty. */
 export const HORIZON_DAYS = 366;
 
-export type ReminderKind = 'heads-up' | 'trial' | 'pro-trial' | 'last-check' | 'keep-going';
+export type ReminderKind = 'heads-up' | 'trial' | 'pro-trial' | 'last-check' | 'keep-going' | 'nudge';
 
 export type PlannedReminder = {
   /** Deterministic, so the same reminder is never scheduled twice. */
@@ -94,6 +94,18 @@ export function lastCheckBody(s: Sub): string {
   return isProTrial(s) ? 'Did you cancel your Ditch Pro trial? It charges tomorrow.' : `Did you cancel ${s.name}? It charges tomorrow.`;
 }
 
+/** Pro's second nudge, the evening of the last reminder (DECISIONS #27): "Netflix charges tomorrow. $17.99. Last call." */
+export function nudgeBody(s: Sub, charge: DateOnly, fireDay: DateOnly, money: Money): string {
+  const price = priceOf(s, money);
+  const when = whenWords(charge, fireDay);
+  if (isProTrial(s)) return `Your Ditch Pro trial ends ${when}.${price ? ` ${price} ${CYCLE_WORDS[s.cycle]} after that.` : ''} Last call to cancel in iPhone Settings.`;
+  const what = s.isTrial ? `Your ${s.name} trial ends` : `${s.name} charges`;
+  return `${what} ${when}.${price ? ` ${price}.` : ''} Last call.`;
+}
+
+/** The second nudge goes out at 7 PM, if that's at least 2 hours after the reminder. */
+export const NUDGE_TIME = '19:00';
+
 export const TEST_BODY = 'Test from Ditch. If you can read this, you’re set.';
 
 /**
@@ -114,8 +126,8 @@ export function planReminders(
   const leads = effectiveLeads(settings, settings.pro);
   const reminded = remindedIds(subs, settings.pro);
   const out = new Map<string, PlannedReminder>();
-  const add = (r: Omit<PlannedReminder, 'fireAt' | 'title'> & { fireDay: DateOnly }) => {
-    const fireAt = atTime(r.fireDay, time);
+  const add = (r: Omit<PlannedReminder, 'fireAt' | 'title'> & { fireDay: DateOnly }, at: string = time) => {
+    const fireAt = atTime(r.fireDay, at);
     if (fireAt.getTime() <= now.getTime()) return; // never in the past
     if (out.has(r.id)) return; // never twice
     const { fireDay: _f, ...rest } = r;
@@ -167,6 +179,27 @@ export function planReminders(
     }
   }
 
+  // Pro: a second nudge on the evening of each charge's last reminder, in case the
+  // first one was missed. Only while that first one is still to come: once they've
+  // opened the app after it, they've seen it, so the nudge isn't planned any more.
+  const nudgeOk = parseTime(time).h * 60 + parseTime(time).m <= 17 * 60;
+  if (settings.pro && nudgeOk) {
+    const lastOf = new Map<string, PlannedReminder>();
+    for (const r of out.values()) {
+      if (r.kind !== 'heads-up' && r.kind !== 'trial' && r.kind !== 'pro-trial') continue;
+      if (r.lead < 1) continue;
+      const key = `${r.subId}:${r.chargeDate}`;
+      const prev = lastOf.get(key);
+      if (!prev || r.lead < prev.lead) lastOf.set(key, r);
+    }
+    for (const r of lastOf.values()) {
+      const s = subs.find((x) => x.id === r.subId);
+      if (!s) continue;
+      const day = toDateOnly(r.fireAt);
+      add({ id: `nudge:${r.subId}:${r.chargeDate}`, subId: r.subId, kind: 'nudge', chargeDate: r.chargeDate, lead: r.lead, fireDay: day, body: nudgeBody(s, r.chargeDate, day, money) }, NUDGE_TIME);
+    }
+  }
+
   const sorted = [...out.values()].sort((a, b) => a.fireAt.getTime() - b.fireAt.getTime() || (a.id < b.id ? -1 : 1));
   if (sorted.length <= cap) return sorted;
   // More than fit: keep the soonest, and use the last slot to ask them to open Ditch,
@@ -189,7 +222,7 @@ export function fingerprint(r: Pick<PlannedReminder, 'fireAt' | 'body'>): string
 }
 
 /** Ids we own (the test reminder and anything else are left alone). */
-export const isPlannedId = (id: string) => /^(sub|pro|last|keep):/.test(id);
+export const isPlannedId = (id: string) => /^(sub|pro|last|keep|nudge):/.test(id);
 
 /**
  * Turn what's pending into the plan with the fewest changes: cancel ours

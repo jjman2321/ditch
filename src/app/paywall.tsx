@@ -9,6 +9,7 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { Alert, Linking, Platform, Pressable, Text, View } from 'react-native';
 
+import { WIDGET_READY, showImport } from '@/config/features';
 import { DEV_TOOLS } from '@/dev/flags';
 import { addDays, shortDate } from '@/domain/dates';
 import { balanceLines } from '@/domain/copy';
@@ -41,14 +42,18 @@ function notice(title: string, message: string, buttons: { text: string; onPress
 type Cell = 'yes' | 'no' | string;
 type Row = { label: string; free: Cell; pro: Cell };
 
-// DECISIONS #26, #27, #30. Only Pro features that work at launch.
+// DECISIONS #26, #27, #30. Only Pro features that work in this build (App Review 2.1, 3.1.2):
+// a row appears when its feature does. The Lock Screen widget is v1.1 (#27).
 const ROWS: Row[] = [
+  // From the approved deck (#26): says up front that tracking is free and unlimited.
+  { label: 'Track every subscription', free: 'yes', pro: 'yes' },
   { label: 'Subscriptions with reminders', free: '3', pro: 'Unlimited' },
-  { label: 'Pick reminder times', free: 'no', pro: 'yes' },
+  // Free can change the time of day; Pro picks the days before (and up to 3 of them).
+  { label: 'Pick reminder days', free: 'no', pro: 'yes' },
   { label: 'Nudge if you miss one', free: 'no', pro: 'yes' },
-  { label: `Lock${NB}Screen widget`, free: 'no', pro: 'yes' },
+  ...(WIDGET_READY ? [{ label: `Lock${NB}Screen widget`, free: 'no', pro: 'yes' }] : []),
   // The first import (onboarding) is free, so "anytime" keeps this row true (DECISIONS #34).
-  { label: 'Import anytime', free: 'no', pro: 'yes' },
+  ...(showImport() ? [{ label: 'Import anytime', free: 'no', pro: 'yes' }] : []),
 ];
 
 const CELL_TEXT = { fontFamily: F.semi, fontSize: 14, lineHeight: 20 } as const;

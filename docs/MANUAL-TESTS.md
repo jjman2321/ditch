@@ -86,6 +86,34 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
+## 1g. Release audit fixes (Nov 11, docs/audits/2026-11-11-release-audit.md)
+Needs the EAS development build for the starred ones (*).
+
+**Reminders**
+- [ ] Free: 3 reminders on. Add a date to a 4th sub (Home → Add dates). It says "No reminder: your free 3 are in use", and the other 3 stay on.
+- [ ] Editor date step: after 9 AM, pick tomorrow. It doesn't promise a reminder today.
+- [ ] Track a free trial: the date step asks "When does the trial end?" with no receipt tab.
+- [ ] Calendar, notifications off: hollow dots, the off banner, and "Reminders are off, so this one won't arrive."
+- [ ] Calendar: tap a reminder day with no charge. It says which sub and when.
+- [ ] *Pro: set a charge for tomorrow, keep the app closed. You get the 9 AM reminder and a 7 PM "Last call."
+- [ ] *Pro: open the app after the 9 AM one. The 7 PM nudge doesn't come.
+
+**Not losing anything**
+- [ ] *Onboarding: tick 5, set 2 dates, swipe the app away, reopen. You're on the same step with everything kept. Back works.
+- [ ] Settings → Your data → Delete everything: the alert says it can't be undone and offers Export first. After deleting, swiping back from Welcome goes nowhere.
+- [ ] Double-tap "Add 1" in the Add sheet: it's added once.
+
+**Leaving screens**
+- [ ] Add sheet: drag the grabber down to close. The × closes it too.
+- [ ] Ditch something: the top right says Done. Done keeps it ditched. Reopen it: top left says "Put it back" and asks first.
+- [ ] Ditched tab → a cancelled one → "Not cancelled yet": it goes back to waiting.
+
+**Looks**
+- [ ] Tab bar: "Home", "Calendar", "Ditched" are fully visible, letters not cut, on your iPhone.
+- [ ] Home: a yearly sub shows "/yr" after its price.
+- [ ] *iPad (if you have one): Home, Calendar and Settings sit in a centred column, not stretched.
+- [ ] Paywall: 4 rows (Track every subscription, Subscriptions with reminders, Pick reminder days, Nudge if you miss one). No widget row.
+
 ## 1f. Next reminder, "Find the ones you forgot", paywall Lifetime line (Nov 11, DECISIONS #42)
 Pull first: `git pull`.
 

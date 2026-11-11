@@ -59,7 +59,7 @@ export function ForgottenBody({ onAdd, onDone }: { onAdd: () => void; onDone: ()
   return (
     <View style={{ flex: 1 }}>
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-        <Txt v="title" accessibilityRole="header" style={{ fontSize: 26, lineHeight: 32 }}>
+        <Txt v="title" accessibilityRole="header" style={{ fontSize: 26, lineHeight: 32, marginRight: 44 }}>
           Find the ones you forgot
         </Txt>
         <Txt v="leadS" tone="fg2" style={{ marginTop: 6 }}>

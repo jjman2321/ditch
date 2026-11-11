@@ -49,7 +49,8 @@ export function rowLine(sub: Sub, charge: DateOnly | null, today: DateOnly): str
   if (isPending(sub)) return `Cancel by ${weekdayDate(charge)}`;
   if (isProTrial(sub)) return `${weekdayDate(charge)} · trial ends`;
   if (inTrial(sub, today)) return `Trial ends ${weekdayDate(charge)}`;
-  return `${weekdayDate(charge)} · ${relative(charge, today)}`;
+  // "in N days" only for the coming week: further out the date says it, and the line fits small iPhones.
+  return daysBetween(today, charge) <= 6 ? `${weekdayDate(charge)} · ${relative(charge, today)}` : weekdayDate(charge);
 }
 
 export function SubLogo({ sub, size = TILE }: { sub: Sub; size?: number }) {

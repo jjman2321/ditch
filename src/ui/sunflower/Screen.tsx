@@ -73,6 +73,16 @@ export function useFrame({ maxContent = 512, colH = 880, extraBottom = 16 }: { m
   return { width, height, fontScale, tablet, small, edge, top, bottom, insets, content: width - edge * 2 };
 }
 
+/**
+ * Side padding for the app's own screens (Home, Calendar, Ditched, Settings):
+ * 24pt on phones; on iPad and the open iPhone Duo the content sits in one
+ * centred column at most `max` wide, so lines and rows never stretch across.
+ */
+export function usePageEdge(max = 600): number {
+  const { width } = useWindowDimensions();
+  return width >= 600 ? Math.max(EDGE, Math.round((width - max) / 2)) : EDGE;
+}
+
 export function Screen({
   surface = 'cream',
   children,

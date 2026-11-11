@@ -13,11 +13,12 @@ import { AddDatesSheet } from '@/home/AddDatesSheet';
 import { EmptyHome, ForgottenRow, NextReminderRow, NoDateRow, OffBanner, TotalCard, openPhoneSettings } from '@/home/HomeParts';
 import { PriceColumnMeasure, SubRow, type BellState } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
-import { Card, EDGE, Gear, IconButton, Plus, RowDivider, SectionHeader, SurfaceContext, Wordmark, brand, useInsets, usePalette } from '@/ui/sunflower';
+import { BottomFade, Card, Gear, IconButton, Plus, RowDivider, SectionHeader, SurfaceContext, Wordmark, brand, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
 
 export default function Home() {
   const p = usePalette();
   const insets = useInsets();
+  const edge = usePageEdge();
   const app = useApp();
   const editor = useEditor();
   const { subs, today, pro, notif, settings } = app;
@@ -61,7 +62,7 @@ export default function Home() {
       <View style={{ flex: 1, backgroundColor: p.bg }}>
         <PriceColumnMeasure prices={prices} onWidth={setPriceW} />
         <ScrollView
-          contentContainerStyle={{ paddingTop: insets.top + 6, paddingHorizontal: EDGE, paddingBottom: 28 }}
+          contentContainerStyle={{ paddingTop: insets.top + 6, paddingHorizontal: edge, paddingBottom: 28 }}
           showsVerticalScrollIndicator={false}
           scrollEnabled={!holding}
         >
@@ -134,6 +135,7 @@ export default function Home() {
             </>
           )}
         </ScrollView>
+        <BottomFade />
       </View>
       <AddDatesSheet visible={datesOpen} onClose={() => setDatesOpen(false)} />
     </SurfaceContext.Provider>

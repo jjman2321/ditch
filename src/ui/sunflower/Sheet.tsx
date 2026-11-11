@@ -1,5 +1,7 @@
-// Bottom sheet: dims the screen, slides up, closes on a tap outside, the
-// back gesture or the VoiceOver escape (two-finger scrub).
+// Bottom sheet: dims the screen, slides up, closes on a tap outside, a
+// drag down on the grabber, the × (closeButton), the back gesture or the
+// VoiceOver escape (two-finger scrub). Content that's taller than the
+// screen scrolls.
 // Reduce Motion: a quick fade instead of the slide.
 //
 // Only one sheet is ever on screen. iOS can't open a new pop-up while the
@@ -8,11 +10,13 @@
 // is closing waits its turn (see modalSlot.ts).
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
-import { Keyboard, Modal, Platform, Pressable, useColorScheme, useWindowDimensions, View } from 'react-native';
-import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withTiming } from 'react-native-reanimated';
+import { Keyboard, Modal, Platform, Pressable, ScrollView, useColorScheme, useWindowDimensions, View } from 'react-native';
+import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
+import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 
 import { scheduleOnRN } from 'react-native-worklets';
 
+import { Close } from './icons';
 import { releaseSlot, requestSlot } from './modalSlot';
 import { useInsets } from './Screen';
 import { EDGE, SurfaceContext, paletteFor, radius } from './tokens';
@@ -28,7 +32,10 @@ export function Sheet({
   maxContent = 512,
   topGap = 16,
   avoidKeyboard,
+  closeButton,
 }: {
+  /** A 44pt × in the top-right corner (sheets that don't have their own close). */
+  closeButton?: boolean;
   /** Slide up so the keyboard never covers the sheet (sheets with a text box). */
   avoidKeyboard?: boolean;
   /** Space left above a full-height sheet. */
@@ -114,6 +121,21 @@ export function Sheet({
     };
   }, [avoidKeyboard, mounted, kb]);
 
+  // Drag the grabber down to close: past a third of the way, or a quick flick.
+  const drag = useSharedValue(0);
+  const pan = Gesture.Pan()
+    .activeOffsetY(6)
+    .onUpdate((e) => {
+      drag.set(Math.max(0, e.translationY));
+    })
+    .onEnd((e) => {
+      if (e.translationY > Math.min(160, sheetH.get() / 3) || e.velocityY > 900) scheduleOnRN(onClose);
+      else drag.set(withSpring(0, { damping: 22, stiffness: 260 }));
+    });
+  useEffect(() => {
+    if (shown) drag.set(0);
+  }, [shown, drag]);
+
   const topRoom = insets.top + 8;
   const bottomInset = insets.bottom;
   const scrim = useAnimatedStyle(() => ({ opacity: t.get() }));
@@ -122,13 +144,14 @@ export function Sheet({
     const room = Math.max(0, winH - topRoom - sheetH.get());
     const lift = Math.min(Math.max(0, kb.get() - bottomInset), room);
     return reduce
-      ? { opacity: t.get(), transform: [{ translateY: -lift }] }
-      : { transform: [{ translateY: (1 - t.get()) * (winH + 40) - lift }] };
+      ? { opacity: t.get(), transform: [{ translateY: drag.get() - lift }] }
+      : { transform: [{ translateY: (1 - t.get()) * (winH + 40) + drag.get() - lift }] };
   });
 
   if (!mounted) return null;
   return (
     <Modal transparent visible statusBarTranslucent onRequestClose={onClose} animationType="none">
+      <GestureHandlerRootView style={{ flex: 1 }}>
       <SurfaceContext.Provider value="cream">
         <View style={{ flex: 1, justifyContent: 'flex-end' }}>
           <Animated.View style={[{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: p.scrim }, scrim]}>
@@ -152,11 +175,37 @@ export function Sheet({
               sheet,
             ]}
           >
-            <View style={{ width: 36, height: 5, borderRadius: 3, backgroundColor: p.grabber, alignSelf: 'center', marginBottom: gap }} />
-            {children}
+            {/* The grabber strip: drag it down to close. */}
+            <GestureDetector gesture={pan}>
+              <View style={{ height: 24, marginTop: -8, marginHorizontal: -side, marginBottom: Math.max(0, gap - 11), alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ width: 36, height: 5, borderRadius: 3, backgroundColor: p.grabber }} />
+              </View>
+            </GestureDetector>
+            {fit ? (
+              // Taller than the screen (SE, big text sizes): scroll instead of cutting off.
+              <ScrollView bounces={false} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled" style={{ flexGrow: 0 }}>
+                {children}
+              </ScrollView>
+            ) : (
+              children
+            )}
+            {closeButton ? (
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="Close"
+                onPress={onClose}
+                hitSlop={6}
+                style={({ pressed }) => ({ position: 'absolute', top: 6, right: side - 10, width: 44, height: 44, alignItems: 'center', justifyContent: 'center', opacity: pressed ? 0.6 : 1 })}
+              >
+                <View style={{ width: 30, height: 30, borderRadius: 15, backgroundColor: p.dark ? '#2A2722' : 'rgba(22,20,15,0.08)', alignItems: 'center', justifyContent: 'center' }}>
+                  <Close color={p.fg} size={12} />
+                </View>
+              </Pressable>
+            ) : null}
           </Animated.View>
         </View>
       </SurfaceContext.Provider>
+      </GestureHandlerRootView>
     </Modal>
   );
 }

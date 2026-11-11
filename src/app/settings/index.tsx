@@ -51,7 +51,7 @@ export default function Settings() {
       <HealthCard />
 
       <Group header="Reminders" note={pro ? undefined : 'Free covers 3 subscriptions. Pro covers all of them, on your own timing.'}>
-        <Row label="Remind me" value={leadsLabel(effectiveLeads(settings, pro))} onPress={() => router.push('/settings/remind-me')} />
+        <Row label="Remind me" value={leadsLabel(effectiveLeads(settings, pro)).replace(/ and (?=[^,]*$)/, ', ')} onPress={() => router.push('/settings/remind-me')} />
         <Row label="Time" right={<TimeField value={settings.reminderTime} onChange={(t) => app.updateSettings({ reminderTime: t })} />} a11yValue={`, ${shortTimeLabel(settings.reminderTime)}`} />
         <Row label="Which subscriptions" value={whichValue} onPress={() => router.push('/settings/which')} />
       </Group>

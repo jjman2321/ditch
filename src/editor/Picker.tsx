@@ -171,7 +171,7 @@ export function Picker({ onCustom, onTrial, onForgotten, onClose }: { onCustom: 
 
   const header = (
     <View>
-      <Txt v="title" accessibilityRole="header" style={{ fontSize: 26, lineHeight: 32 }}>
+      <Txt v="title" accessibilityRole="header" style={{ fontSize: 26, lineHeight: 32, marginRight: 44 }}>
         Add a subscription
       </Txt>
       {showImport() ? (

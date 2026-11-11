@@ -37,13 +37,16 @@ export default function DataPage() {
   };
 
   const deleteAll = () =>
-    ask('Delete everything?', 'Your list, ditched subs and settings go from this phone, and all reminders stop. This doesn’t cancel any subscriptions, including Ditch Pro.', [
+    ask('Delete everything?', 'Your list, ditched subs and settings go from this phone, and all reminders stop. This can’t be undone. It doesn’t cancel any subscriptions, including Ditch Pro.', [
       { text: 'Keep it', style: 'cancel' },
+      { text: 'Export first', onPress: () => void exportCsv() },
       {
         text: 'Delete',
         style: 'destructive',
         onPress: async () => {
           await app.deleteAll();
+          // Start over with nothing behind onboarding, so no swipe lands on the old list.
+          if (router.canDismiss()) router.dismissAll();
           router.replace('/onboarding');
         },
       },

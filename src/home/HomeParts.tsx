@@ -185,7 +185,7 @@ export function NoDateRow({ count, onPress }: { count: number; onPress: () => vo
             <Txt v="body" color={p.cardFg} style={{ fontFamily: F.bold, fontSize: 15 }}>
               {`${count} ${count === 1 ? 'has' : 'have'} no date yet,`}
             </Txt>
-            {' so no reminders.'}
+            {' so no\u00A0reminders.'}
           </Txt>
           <Txt v="label" color={p.cardFg} style={{ fontSize: 15 }}>
             {count === 1 ? 'Add date' : 'Add dates'}
@@ -198,7 +198,7 @@ export function NoDateRow({ count, onPress }: { count: number; onPress: () => vo
 }
 
 const QUICK = ['netflix', 'spotify', 'chatgpt-plus', 'amazon-prime', 'disney-plus', 'max', 'apple-music', 'hulu'];
-const SHORT_NAME: Record<string, string> = { 'chatgpt-plus': 'ChatGPT', max: 'Max' };
+const SHORT_NAME: Record<string, string> = { 'chatgpt-plus': 'ChatGPT', max: 'HBO Max', 'amazon-prime': 'Prime', 'disney-plus': 'Disney+', 'apple-music': 'Apple Music' };
 
 /** 11 · Nothing on the list yet. */
 export function EmptyHome({ country, onAdd }: { country: string | null; onAdd: (catalogId?: string) => void }) {

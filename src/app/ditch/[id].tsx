@@ -5,7 +5,7 @@
 
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo } from 'react';
-import { Platform, Pressable, ScrollView, useWindowDimensions, View } from 'react-native';
+import { Linking, Platform, Pressable, ScrollView, useWindowDimensions, View } from 'react-native';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -25,7 +25,8 @@ import { chargeOfSub, confirmedSavings, isPending, isPricedSub, isProTrial } fro
 import { helpFor, openUrl, useCancelHelp } from '@/ditch/CancelHelp';
 import { SubLogo } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
-import { Bell, Button, Card, Duck, EDGE, External, F, ProLockup, Stamp, SurfaceContext, Txt, brand, haptic, paletteFor, useInsets, useIsDark } from '@/ui/sunflower';
+import { ask } from '@/ui/alert';
+import { Bell, Button, Card, Duck, EDGE, External, F, ProLockup, Stamp, SurfaceContext, Txt, brand, haptic, paletteFor, useInsets, useIsDark, usePageEdge } from '@/ui/sunflower';
 
 const IMPACT_MS = 420;
 
@@ -34,6 +35,7 @@ export default function Ditched() {
   const app = useApp();
   const money = useAppMoney();
   const insets = useInsets();
+  const edge = usePageEdge();
   const { height } = useWindowDimensions();
   const reduce = useReducedMotion();
   const compact = height < 720;
@@ -95,6 +97,11 @@ export default function Ditched() {
     await app.reactivate(sub.id);
     router.back();
   };
+  const putBack = () =>
+    ask(`Still paying for ${sub.name}?`, 'It goes back on your list with its reminders.', [
+      { text: 'Keep it ditched', style: 'cancel' },
+      { text: 'Put it back', onPress: () => void undo() },
+    ]);
   const cancelled = async () => {
     await app.confirmCancelled(sub.id);
     haptic.success();
@@ -104,11 +111,13 @@ export default function Ditched() {
   };
 
   const check = blocked
-    ? { title: 'Reminders are off', line: 'Turn them on in iPhone Settings so the last check can reach you.' }
+    ? app.notif === 'denied'
+      ? { title: 'Reminders are off', line: 'Turn them on in iPhone Settings so the last check can reach\u00A0you.' }
+      : { title: 'Reminders aren’t on yet', line: 'Tap to turn them on, so the last check can reach\u00A0you.' }
     : lastCheck
       ? {
           title: `One last check: ${weekdayDate(toDateOnly(lastCheck.fireAt))} · ${shortTimeLabel(app.settings.reminderTime)}`,
-          line: `“${lastCheck.body}”`,
+          line: `“${lastCheck.body}”`.replace(/ (\S+)$/, '\u00A0$1'),
         }
       : charge
         ? { title: `It charges ${weekdayDate(charge)}`, line: 'Too close for a last check. Cancel now to be safe.' }
@@ -117,11 +126,24 @@ export default function Ditched() {
   return (
     <SurfaceContext.Provider value="sun">
       <View style={{ flex: 1, backgroundColor: p.bg }}>
-        <ScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, 12), paddingHorizontal: EDGE }} showsVerticalScrollIndicator={false}>
-          <View style={{ height: 44, justifyContent: 'center', alignItems: 'flex-start' }}>
-            <Pressable accessibilityRole="button" accessibilityLabel={`Undo, keep ${sub.name}`} onPress={undo} hitSlop={12} style={{ minHeight: 44, justifyContent: 'center', paddingRight: 16 }}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, 12), paddingHorizontal: edge }} showsVerticalScrollIndicator={false}>
+          {/* Done leaves it ditched (cancel later, the last check still comes). Undo only right
+              after ditching; reopened, it's "Put it back", which asks first. */}
+          <View style={{ height: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={animate ? `Undo, keep ${sub.name}` : `Put ${sub.name} back on your list`}
+              onPress={animate ? undo : putBack}
+              hitSlop={12}
+              style={{ minHeight: 44, justifyContent: 'center', paddingRight: 16 }}
+            >
               <Txt v="label" style={{ fontSize: 17 }}>
-                Undo
+                {animate ? 'Undo' : 'Put it back'}
+              </Txt>
+            </Pressable>
+            <Pressable accessibilityRole="button" accessibilityLabel="Done" accessibilityHint="Keeps it ditched" onPress={() => router.back()} hitSlop={12} style={{ minHeight: 44, justifyContent: 'center', paddingLeft: 16 }}>
+              <Txt v="label" style={{ fontSize: 17, fontFamily: F.bold }}>
+                Done
               </Txt>
             </Pressable>
           </View>
@@ -187,7 +209,8 @@ export default function Ditched() {
                 accessibilityRole={blocked ? 'button' : 'text'}
                 accessibilityLabel={`${check.title}. ${check.line}`}
                 disabled={!blocked}
-                onPress={() => router.push('/settings')}
+                accessibilityHint={app.notif === 'denied' ? 'Opens iPhone Settings' : 'Shows the iPhone permission prompt'}
+                onPress={() => (app.notif === 'denied' ? Linking.openSettings().catch(() => {}) : void app.askNotif())}
               >
                 <Card style={{ flexDirection: 'row', alignItems: 'center', gap: compact ? 12 : 14, paddingHorizontal: compact ? 14 : 16, paddingVertical: compact ? 10 : 13 }}>
                   <View style={{ width: compact ? 32 : 36, height: compact ? 32 : 36, borderRadius: 18, backgroundColor: brand.sunflower, borderWidth: p.dark ? 0 : 2, borderColor: brand.ink, alignItems: 'center', justifyContent: 'center' }}>

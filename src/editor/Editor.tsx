@@ -61,7 +61,7 @@ export function EditorProvider({ children }: { children: ReactNode }) {
   return (
     <Ctx.Provider value={value}>
       {children}
-      <Sheet visible={visible} onClose={() => setVisible(false)} maxHeight={780} label={open?.mode === 'edit' ? 'Edit subscription' : open?.mode === 'forgotten' ? 'Find the ones you forgot' : 'Add a subscription'}>
+      <Sheet visible={visible} onClose={() => setVisible(false)} maxHeight={780} closeButton label={open?.mode === 'edit' ? 'Edit subscription' : open?.mode === 'forgotten' ? 'Find the ones you forgot' : 'Add a subscription'}>
         {open?.mode === 'forgotten' ? (
           <ForgottenBody
             onAdd={() => setOpen({ mode: 'add' })}
@@ -317,7 +317,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
       <ScrollView style={{ flex: 1 }} keyboardShouldPersistTaps="handled" keyboardDismissMode="interactive" automaticallyAdjustKeyboardInsets showsVerticalScrollIndicator={false}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
           {draft.catalogId || draft.name || trialEntry ? <SubLogo sub={{ ...draft, name: draft.name || query || '?' }} size={44} /> : <LogoTile id="?" size={44} mono="+" color={brand.sunflower} ink={brand.ink} />}
-          <Txt v="heading" accessibilityRole="header" style={{ flex: 1 }} numberOfLines={2}>
+          <Txt v="heading" accessibilityRole="header" style={{ flex: 1, marginRight: 40 }} numberOfLines={2}>
             {isNew ? (open.mode === 'add' && open.trial ? (draft.catalogId ? `${draft.name} free trial` : 'Track a free trial') : draft.catalogId ? `Add ${draft.name}` : 'Add a subscription') : trialEntry ? 'Ditch Pro trial' : draft.name}
           </Txt>
         </View>

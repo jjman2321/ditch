@@ -13,11 +13,12 @@ import { StepChart } from '@/ditched/StepChart';
 import { SubLogo } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
 import { ask } from '@/ui/alert';
-import { Card, ChevronRight, DitchedTag, EDGE, F, ProLockup, RowDivider, SectionHeader, Stamp, Txt, brand, haptic, useInsets, usePalette } from '@/ui/sunflower';
+import { BottomFade, Card, ChevronRight, DitchedTag, F, ProLockup, RowDivider, SectionHeader, Stamp, Txt, brand, haptic, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
 
 export default function DitchedTab() {
   const p = usePalette();
   const insets = useInsets();
+  const edge = usePageEdge();
   const app = useApp();
   const money = useAppMoney();
   const help = useCancelHelp();
@@ -45,7 +46,7 @@ export default function DitchedTab() {
 
   return (
     <View style={{ flex: 1, backgroundColor: p.bg }}>
-      <ScrollView contentContainerStyle={{ paddingTop: insets.top + 8, paddingHorizontal: EDGE, paddingBottom: 28 }} showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={{ paddingTop: insets.top + 8, paddingHorizontal: edge, paddingBottom: 28 }} showsVerticalScrollIndicator={false}>
         <Txt v="displayM" accessibilityRole="header" style={{ fontSize: 32, lineHeight: 40 }}>
           Ditched
         </Txt>
@@ -233,6 +234,7 @@ export default function DitchedTab() {
           </>
         )}
       </ScrollView>
+      <BottomFade />
       {help.sheet}
     </View>
   );

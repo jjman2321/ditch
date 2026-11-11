@@ -13,7 +13,7 @@ import { calendarMonth, isPending, isPricedSub, isProTrial, monthDue, remindedId
 import { useEditor } from '@/editor/Editor';
 import { SubLogo } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
-import { Card, ChevronLeft, ChevronRight, EDGE, F, IconButton, SectionHeader, Txt, brand, haptic, useInsets, usePalette } from '@/ui/sunflower';
+import { BottomFade, Card, ChevronLeft, ChevronRight, F, IconButton, SectionHeader, Txt, brand, haptic, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
 
 const WEEK = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 const GAP = 4;
@@ -21,6 +21,7 @@ const GAP = 4;
 export default function Calendar() {
   const p = usePalette();
   const insets = useInsets();
+  const edge = usePageEdge();
   const app = useApp();
   const money = useAppMoney();
   const editor = useEditor();
@@ -57,7 +58,7 @@ export default function Calendar() {
 
   return (
     <View style={{ flex: 1, backgroundColor: p.bg }}>
-      <ScrollView contentContainerStyle={{ paddingTop: insets.top + 8, paddingHorizontal: EDGE, paddingBottom: 28 }} showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={{ paddingTop: insets.top + 8, paddingHorizontal: edge, paddingBottom: 28 }} showsVerticalScrollIndicator={false}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Txt v="displayM" accessibilityRole="header" style={{ flex: 1, fontSize: 32, lineHeight: 40 }} numberOfLines={1}>
             {title}
@@ -167,6 +168,7 @@ export default function Calendar() {
           </>
         ) : null}
       </ScrollView>
+      <BottomFade />
     </View>
   );
 }

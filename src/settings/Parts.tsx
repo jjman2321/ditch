@@ -6,14 +6,15 @@ import { router } from 'expo-router';
 import { Children, type ReactNode } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 
-import { Card, ChevronLeft, ChevronRight, EDGE, F, Txt, usePalette, useInsets } from '@/ui/sunflower';
+import { Card, ChevronLeft, ChevronRight,  F, Txt, usePalette, useInsets, usePageEdge } from '@/ui/sunflower';
 
 export function SettingsPage({ title, back = 'Settings', children, intro }: { title: string; back?: string; children: ReactNode; intro?: string }) {
   const p = usePalette();
   const insets = useInsets();
+  const edge = usePageEdge();
   return (
     <View style={{ flex: 1, backgroundColor: p.bg }}>
-      <ScrollView contentContainerStyle={{ paddingTop: insets.top, paddingHorizontal: EDGE, paddingBottom: Math.max(insets.bottom, 16) + 16 }} showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={{ paddingTop: insets.top, paddingHorizontal: edge, paddingBottom: Math.max(insets.bottom, 16) + 16 }} showsVerticalScrollIndicator={false}>
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={`Back to ${back}`}

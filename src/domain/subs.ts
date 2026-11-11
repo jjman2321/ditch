@@ -267,6 +267,12 @@ export function confirmCancel(s: Sub, today: DateOnly, nowIso = new Date().toISO
   return { ...s, status: 'ditched-confirmed', confirmedOn: s.confirmedOn ?? today, updatedAt: nowIso };
 }
 
+/** Tapped "I cancelled it" by mistake: back to waiting, with its last check and price kept. */
+export function unconfirmCancel(s: Sub, nowIso = new Date().toISOString()): Sub {
+  if (s.status !== 'ditched-confirmed') return s;
+  return { ...s, status: 'ditched-pending', confirmedOn: null, updatedAt: nowIso };
+}
+
 /** Undo or "Oops, still paying": back on the list, out of savings. */
 export function reactivateSub(s: Sub, nowIso = new Date().toISOString()): Sub {
   return {

@@ -22,6 +22,7 @@ import {
   defaultFreePicks,
   remindedIds,
   settleFreePicks,
+  unconfirmCancel,
   type Sub,
 } from '@/domain/subs';
 import { now as clockNow, today as clockToday } from '@/services/clock';
@@ -73,6 +74,8 @@ type Actions = {
   ditch: (id: string) => Promise<Sub | null>;
   undoDitch: (before: Sub) => Promise<void>;
   confirmCancelled: (id: string) => Promise<void>;
+  /** "Not cancelled yet": a confirmed one goes back to waiting. */
+  unconfirmCancelled: (id: string) => Promise<void>;
   /** Offer Apple's rating prompt after a win, if the rules allow (src/domain/review.ts). */
   maybeAskReview: (moment: ReviewMoment) => Promise<void>;
   reactivate: (id: string) => Promise<void>;
@@ -259,6 +262,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
       confirmCancelled: async (id) => {
         const s = find(id);
         if (s) await commit([confirmCancel(s, ref.current.today, stamp())]);
+      },
+      unconfirmCancelled: async (id) => {
+        const s = find(id);
+        if (s) await commit([unconfirmCancel(s, stamp())]);
       },
       reactivate: async (id) => {
         const s = find(id);

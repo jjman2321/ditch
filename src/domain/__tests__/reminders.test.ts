@@ -318,3 +318,11 @@ describe('second nudge (Pro)', () => {
     expect(planReminders([n], { ...PRO, reminderTime: '18:00' }, NOW).some((r) => r.kind === 'nudge')).toBe(false);
   });
 });
+
+describe('weekly subs with long Pro lead days', () => {
+  it('skip leads of a week or more (they would stack on the last charge)', () => {
+    const w = sub({ id: 'wk', name: 'Weekly box', anchor: '2026-11-16', cycle: 'weekly' });
+    const plan = planReminders([w], { ...PRO, leadDays: [14, 7, 1] }, NOW).filter((r) => r.kind === 'heads-up');
+    expect(new Set(plan.map((r) => r.lead))).toEqual(new Set([1]));
+  });
+});

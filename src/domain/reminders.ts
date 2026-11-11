@@ -163,7 +163,10 @@ export function planReminders(
     for (const charge of charges) {
       const trial = s.isTrial && charge === s.anchor;
       // A trial's end always gets the 3-day and 1-day ones too, whatever days they picked.
-      const theseLeads = trial ? [...new Set([...leads, ...HEADS_UP_LEADS])] : leads;
+      // Weekly: a lead of a week or more would land on (or before) the last charge, so skip those.
+      const base = s.cycle === 'weekly' ? leads.filter((l) => l < 7) : leads;
+      const usable = base.length ? base : [1];
+      const theseLeads = trial ? [...new Set([...usable, ...HEADS_UP_LEADS])] : usable;
       for (const lead of theseLeads) {
         const fireDay = addDays(charge, -lead);
         add({

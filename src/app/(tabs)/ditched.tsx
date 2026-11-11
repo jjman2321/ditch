@@ -24,7 +24,12 @@ export default function DitchedTab() {
   const help = useCancelHelp();
   const home = app.settings.currency;
 
-  const pending = app.subs.filter(isPending);
+  // Most urgent first: the soonest cancel-by date; no date last.
+  const pending = app.subs
+    .filter(isPending)
+    .map((s) => ({ s, by: s.cancelBy && s.cancelBy >= app.today ? s.cancelBy : chargeOfSub(s, app.today) }))
+    .sort((a, b) => (a.by ?? '9999').localeCompare(b.by ?? '9999'))
+    .map((x) => x.s);
   const confirmed = useMemo(
     () => app.subs.filter(isConfirmed).sort((a, b) => ((a.confirmedOn ?? '') < (b.confirmedOn ?? '') ? 1 : -1)),
     [app.subs],
@@ -37,9 +42,10 @@ export default function DitchedTab() {
   const sinceWord = since ? sinceLabel(since, app.today) : '';
 
   const reactivate = (s: Sub) =>
-    ask(`Still paying for ${s.name}?`, 'It goes back on your list and out of your savings.', [
+    ask(`Still paying for ${s.name}?`, 'Put it back on your list, or back with the ones waiting for you to cancel.', [
       { text: 'Keep it cancelled', style: 'cancel' },
-      { text: 'Put it back', onPress: () => app.reactivate(s.id) },
+      { text: 'Not cancelled yet', onPress: () => void app.unconfirmCancelled(s.id) },
+      { text: 'Put it back on my list', onPress: () => void app.reactivate(s.id) },
     ]);
 
   const nothing = pending.length === 0 && confirmed.length === 0;

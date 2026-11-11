@@ -7,15 +7,16 @@
 
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Linking, Platform, View } from 'react-native';
 import Animated, { FadeInDown, LinearTransition, useReducedMotion } from 'react-native-reanimated';
 
 import { catalogPrice } from '@/catalog/prices';
 import { addDays, longDate, weekdayDate, weekdayName, type DateOnly } from '@/domain/dates';
 import { FitScroll, OnbRoot } from '@/onboarding/Parts';
 import { useFirstReminders } from '@/onboarding/useFirstReminders';
-import { requestNotifPermission } from '@/services/notifications';
-import { onboardingToday, useMoney, useOnboarding, usePickedList } from '@/state/onboarding';
+import { getNotifStatus, requestNotifPermission, type NotifStatus } from '@/services/notifications';
+import { isPriced as isPricedPick } from '@/state/picks';
+import { byYearlyDesc, onboardingToday, useMoney, useOnboarding, usePickedList } from '@/state/onboarding';
 import { Bell, Button, Camera, Duck, F, Flashlight, ForceLightContext, Lock, NotificationPreview, StepHeader, Txt, brand, useFrame, usePalette } from '@/ui/sunflower';
 
 const NB = ' ';
@@ -36,17 +37,32 @@ export default function Reminders() {
   const f = useFrame({ colH: 800 });
   const { setNotifications, country } = useOnboarding();
   const n = usePickedList().length;
+  // Already answered the iPhone prompt (e.g. after Delete all): no prompt will show, so say what happens.
+  const [status, setStatus] = useState<NotifStatus | null>(null);
+  useEffect(() => {
+    // The web preview has no real permission: always show the first-run version.
+    if (Platform.OS !== 'web') getNotifStatus().then(setStatus).catch(() => {});
+  }, []);
+  const decided = status === 'granted' || status === 'quiet' || status === 'denied';
   const money = useMoney();
   const { reminders } = useFirstReminders(f.small ? 1 : 2);
   const today = onboardingToday();
   const reduce = useReducedMotion();
 
-  // Soonest first. Nothing picked yet: the Welcome example instead.
-  const shown: Shown[] = reminders.length
+  // Soonest first. Nothing with a date yet: an example from their own biggest pick
+  // (or Netflix if nothing's picked), clearly called an example.
+  const list = usePickedList();
+  const example = reminders.length === 0;
+  const shown: Shown[] = !example
     ? reminders.map((r) => ({ key: r.id, day: r.reminder, body: r.body }))
     : (() => {
-        const local = catalogPrice('netflix', country);
+        const biggest = [...list].sort(byYearlyDesc)[0];
         const charge = addDays(today, 9);
+        if (biggest) {
+          const price = isPricedPick(biggest) ? ` ${money(biggest.amountMinor, biggest.currency)}.` : '';
+          return [{ key: 'example', day: addDays(charge, -3), body: `${biggest.name} renews ${weekdayName(charge)}.${price} Still using it?` }];
+        }
+        const local = catalogPrice('netflix', country);
         const price = local ? ` ${money(local.amountMinor, local.currency)}.` : '';
         return [{ key: 'example', day: addDays(charge, -3), body: `Netflix renews ${weekdayName(charge)}.${price} Still watching?` }];
       })();
@@ -80,8 +96,9 @@ export default function Reminders() {
     <OnbRoot surface="cream">
       <FitScroll style={{ paddingTop: f.top, paddingHorizontal: f.edge, paddingBottom: f.bottom }}>
         <StepHeader step={4} />
-        <Txt v="title" accessibilityRole="header" style={{ marginTop: 16 }}>
-          {`Get a reminder before each${NB}charge.`}
+        {/* SE: the paywall's smaller title size, so no word sits alone on a line. */}
+        <Txt v="title" accessibilityRole="header" style={[{ marginTop: 16 }, f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null]}>
+          {f.small ? `Get a reminder before\neach${NB}charge.` : `Get a reminder before each${NB}charge.`}
         </Txt>
         <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
           {'3 days and 1 day before, at 9:00 AM.\nOnly about your subscriptions.'}
@@ -91,7 +108,7 @@ export default function Reminders() {
         <ForceLightContext.Provider value>
           <View
             accessible
-            accessibilityLabel={`Your first reminders: ${shown.map((s) => `${weekdayDate(s.day)}, 9 AM: ${s.body}`).join('. ')}`}
+            accessibilityLabel={`${example ? 'An example reminder' : 'Your first reminders'}: ${shown.map((s) => `${weekdayDate(s.day)}, 9 AM: ${s.body}`).join('. ')}`}
             style={{
               marginTop: 20,
               flex: 1,
@@ -151,19 +168,25 @@ export default function Reminders() {
           </View>
         </ForceLightContext.Provider>
 
-        <Button label="Turn on reminders" hint="Shows the iPhone permission prompt" left={<Bell color={p.ctaFg} size={20} />} onPress={turnOn} style={{ marginTop: 16 }} />
+        {status === 'denied' ? (
+          <Button label="Open iPhone Settings" hint="Turn on notifications for Ditch there" left={<Bell color={p.ctaFg} size={20} />} onPress={() => (setNotifications('denied'), Linking.openSettings().catch(() => {}), go())} style={{ marginTop: 16 }} />
+        ) : (
+          <Button label={decided ? 'Continue' : 'Turn on reminders'} hint={decided ? undefined : 'Shows the iPhone permission prompt'} left={decided ? undefined : <Bell color={p.ctaFg} size={20} />} onPress={turnOn} style={{ marginTop: 16 }} />
+        )}
         <Txt v="sub" tone="mute" center style={{ marginTop: 8 }}>
-          Tap “Allow” on the next screen.
+          {status === 'denied' ? 'Notifications for Ditch are off on this iPhone.' : decided ? 'Reminders are already on.' : 'Tap “Allow” on the next screen.'}
         </Txt>
-        <Button
-          kind="text"
-          label="Maybe later"
-          onPress={() => {
-            setNotifications('later');
-            go();
-          }}
-          style={{ marginTop: 4 }}
-        />
+        {status === 'granted' || status === 'quiet' ? null : (
+          <Button
+            kind="text"
+            label="Maybe later"
+            onPress={() => {
+              setNotifications('later');
+              go();
+            }}
+            style={{ marginTop: 4 }}
+          />
+        )}
       </FitScroll>
     </OnbRoot>
   );

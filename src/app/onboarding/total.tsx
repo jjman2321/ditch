@@ -111,7 +111,7 @@ export default function Total() {
               <RollingNumber text={hero} style={heroStyle} lineHeight={lh} play={play} accessibilityLabel={`${hero} a year`} />
             </Animated.View>
             <Animated.View style={yearStyle}>
-              <Txt v="heading" importantForAccessibility="no" style={{ fontSize: 22, marginTop: f.tablet ? 16 : 12 }}>
+              <Txt v="heading" importantForAccessibility="no" accessibilityElementsHidden style={{ fontSize: 22, marginTop: f.tablet ? 16 : 12 }}>
                 a year.
               </Txt>
               {others.map((t) => (

@@ -33,7 +33,9 @@ function useRowLine() {
       const amount = `${money(pick.amountMinor, pick.currency)}${CYCLE_SHORT[pick.cycle]}`;
       if (pick.priceSource === 'user') return { text: `Your price · ${amount}`, link: 'price' };
       const plans = planChoices(s.id, pick.priceCountry);
-      const name = pick.planName ? shortPlanName(pick.planName, s.name, plans.map((x) => x.name)) : null;
+      const short = pick.planName ? shortPlanName(pick.planName, s.name, plans.map((x) => x.name)) : null;
+      // "Monthly · $14.99/mo" says it twice: drop a plan name that's only a cycle word.
+      const name = short && /^(monthly|yearly|annual|annually|weekly|quarterly)$/i.test(short.trim()) ? null : short;
       return { text: name ? `${name} · ${amount}` : amount, link: plans.length > 1 ? 'plan' : null };
     }
     // Not ticked yet: show the plan and price a tick will give, so ticking
@@ -72,6 +74,9 @@ function Row({
       accessibilityRole="checkbox"
       accessibilityLabel={`${s.name}, ${spoken}`}
       accessibilityState={{ checked: on }}
+      // VoiceOver can't reach the "Change" link inside the row, so it's an action on the row too.
+      accessibilityActions={line.link ? [{ name: 'activate' }, { name: 'change', label: line.link === 'plan' ? 'Change plan' : line.text ? 'Change price' : 'Add your price' }] : undefined}
+      onAccessibilityAction={(e) => (e.nativeEvent.actionName === 'change' && line.link ? onChange(line.link) : onToggle())}
       onPress={onToggle}
       style={({ pressed }) => ({ minHeight: 64, flexDirection: 'row', alignItems: 'center', gap: 12, opacity: pressed ? 0.7 : 1 })}
     >
@@ -208,10 +213,14 @@ export default function Services() {
   const [footerH, setFooterH] = useState(140);
 
   const data = useMemo(() => {
-    const here = SERVICES.filter((s) => availableIn(s, country));
+    // Anything already ticked stays findable (and untickable) even after a country change.
+    const here = SERVICES.filter((s) => availableIn(s, country) || picked[s.id]);
     if (query.trim()) return searchServices(query, here);
-    return filter === 'Popular' ? popularIn(country) : here.filter((s) => s.category === filter);
-  }, [filter, query, country]);
+    if (filter !== 'Popular') return here.filter((s) => s.category === filter);
+    const popular = popularIn(country);
+    const stray = here.filter((s) => picked[s.id] && !availableIn(s, country) && !popular.some((x) => x.id === s.id));
+    return [...popular, ...stray];
+  }, [filter, query, country, picked]);
   const total = SERVICES.filter((s) => availableIn(s, country)).length;
   const editPick = editing ? (picked[editing] ?? null) : null;
   const n = list.length;

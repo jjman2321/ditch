@@ -7,7 +7,7 @@ import { Pressable, View } from 'react-native';
 
 import { priceRow, defaultPlan } from '@/catalog/prices';
 import { shortPlanName } from '@/domain/copy';
-import { CYCLE_SHORT } from '@/domain/money';
+import { CYCLE_SHORT, CYCLE_WORDS } from '@/domain/money';
 import { useMoney, type Picked } from '@/state/onboarding';
 import { Button, Card, F, LogoTile, Radio, Sheet, Txt, haptic, usePalette } from '@/ui/sunflower';
 
@@ -43,7 +43,7 @@ function Body({ pick, onPick, onClose, onOwnPrice }: { pick: Picked; onPick: (pl
                 key={plan.id}
                 accessibilityRole="radio"
                 accessibilityState={{ selected: on }}
-                accessibilityLabel={`${name}, ${amount} ${CYCLE_SHORT[plan.cycle] === '/yr' ? 'a year' : 'a month'}`}
+                accessibilityLabel={`${name}, ${amount} ${CYCLE_WORDS[plan.cycle]}`}
                 onPress={() => {
                   haptic.select();
                   onPick(plan.id);

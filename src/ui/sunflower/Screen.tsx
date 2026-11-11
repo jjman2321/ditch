@@ -21,6 +21,22 @@ const FAKE_INSETS: Record<string, { top: number; bottom: number }> = {
   max: { top: 59, bottom: 34 }, // Pro Max, 430×932
   se: { top: 20, bottom: 0 }, // iPhone SE, 375×667
   ipad: { top: 24, bottom: 20 }, // iPad 11", 834×1194
+  // The rest of scripts/shoot-v12.mjs's device list.
+  mini: { top: 50, bottom: 34 },
+  i16: { top: 59, bottom: 34 },
+  i17: { top: 62, bottom: 34 },
+  xr: { top: 48, bottom: 34 },
+  air: { top: 68, bottom: 34 },
+  pm12: { top: 47, bottom: 34 },
+  pm17: { top: 62, bottom: 34 },
+  duo: { top: 47, bottom: 20 },
+  duoOpen: { top: 32, bottom: 20 },
+  ipadMini: { top: 24, bottom: 20 },
+  ipadAir: { top: 24, bottom: 20 },
+  ipad13: { top: 24, bottom: 20 },
+  ipadLand: { top: 24, bottom: 20 },
+  ipadSplit: { top: 24, bottom: 20 },
+  ipadSlide: { top: 24, bottom: 20 },
 };
 
 /**

@@ -12,6 +12,8 @@ import { createRequire } from 'node:module';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { DEVICES, audit } from './lib/fit.mjs';
+
 const require = createRequire(import.meta.url);
 let playwright;
 try {
@@ -30,12 +32,6 @@ const lightOnly = args.includes('--light');
 const BASE = process.env.BASE ?? 'http://localhost:8081';
 mkdirSync(out, { recursive: true });
 
-const DEVICES = {
-  i12: { width: 390, height: 844, top: 47, bot: 34 },
-  se: { width: 375, height: 667, top: 20, bot: 0 },
-  max: { width: 430, height: 932, top: 59, bot: 34 },
-  ipad: { width: 834, height: 1194, top: 24, bot: 20 },
-};
 
 const click = (label) => async (page) => {
   await page.getByLabel(label, { exact: true }).first().click();
@@ -83,97 +79,18 @@ const SHOTS = [
   { name: '06b-paywall-lifetime', q: 'ob=v12', path: '/paywall', steps: [click('Lifetime, $49.99, pay once')], noScroll: true },
   { name: '06c-paywall-monthly', q: 'ob=v12', path: '/paywall', steps: [click('Monthly, $4.99 a month, no free trial')], noScroll: true },
   { name: '07-set', q: 'ob=v12', path: '/onboarding/done', noScroll: true },
-  { name: '07b-which3-sheet', q: 'ob=v12', path: '/onboarding/done', steps: [click('Change which 3 get reminders')] },
+  { name: '07b-which3-sheet', q: 'ob=v12', path: '/onboarding/done', steps: [click('See and change which 3 get reminders')] },
   { name: '07c-almost-set', q: 'ob=v12&obnotif=later', path: '/onboarding/done', noScroll: true },
   { name: '07d-set-pro', q: 'ob=v12&obpro=yearly', path: '/onboarding/done', noScroll: true },
 ];
 
-/**
- * Text that's cut off, past the 24pt side edges, under the status bar or the
- * home indicator, or a lone last word on a line. Text that's scrolled out of
- * view or covered by a pinned footer is skipped (it isn't on screen).
- */
-async function audit(page, dev) {
-  return page.evaluate(({ dev }) => {
-    const issues = [];
-    const W = window.innerWidth;
-    const H = window.innerHeight;
-    const scrollers = [...document.querySelectorAll('div')].filter((el) => {
-      const cs = getComputedStyle(el);
-      return (cs.overflowY === 'auto' || cs.overflowY === 'scroll') && el.scrollHeight > el.clientHeight + 1 && el.clientHeight > 300;
-    });
-    const overflow = scrollers.map((el) => el.scrollHeight - el.clientHeight);
-    /** The part of a rect that its clipping ancestors let through. */
-    const visible = (el, r) => {
-      let { left, right, top, bottom } = r;
-      for (let a = el.parentElement; a; a = a.parentElement) {
-        const cs = getComputedStyle(a);
-        if (cs.overflowX !== 'visible' || cs.overflowY !== 'visible') {
-          const c = a.getBoundingClientRect();
-          left = Math.max(left, c.left); right = Math.min(right, c.right); top = Math.max(top, c.top); bottom = Math.min(bottom, c.bottom);
-        }
-      }
-      return right - left > 1 && bottom - top > 1 ? { left, right, top, bottom } : null;
-    };
-    const covered = (el, r) => {
-      const x = (r.left + r.right) / 2, y = (r.top + r.bottom) / 2;
-      if (x < 0 || y < 0 || x > W || y > H) return true;
-      const hit = document.elementFromPoint(x, y);
-      return hit && hit !== el && !el.contains(hit) && !hit.contains(el);
-    };
-    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-    const seen = new Set();
-    while (walker.nextNode()) {
-      const node = walker.currentNode;
-      const text = node.textContent.trim();
-      if (!text) continue;
-      const el = node.parentElement;
-      if (!el || seen.has(el)) continue;
-      seen.add(el);
-      let hidden = false;
-      for (let a = el; a; a = a.parentElement) {
-        const cs = getComputedStyle(a);
-        if (cs.opacity === '0' || cs.visibility === 'hidden' || cs.display === 'none') hidden = true;
-      }
-      if (hidden) continue;
-      const big = parseFloat(getComputedStyle(el).fontSize) >= 60;
-      // Chips in a sideways scroller run off the edge on purpose.
-      let sideways = false;
-      for (let a = el.parentElement; a; a = a.parentElement) if (['auto', 'scroll'].includes(getComputedStyle(a).overflowX) && a.scrollWidth > a.clientWidth + 1) sideways = true;
-      const range = document.createRange();
-      range.selectNodeContents(node);
-      for (const raw of range.getClientRects()) {
-        const r = visible(el, raw);
-        if (!r || covered(el, r)) continue;
-        // The hero number sits 4pt into the edge on purpose (optical alignment).
-        if (r.left < 23.5 && W < 600 && !(big && r.left > 18)) issues.push(`edge-left ${Math.round(r.left)}: ${text.slice(0, 30)}`);
-        if (r.right > W - 23.5 && W < 600 && !sideways) issues.push(`edge-right ${Math.round(W - r.right)}: ${text.slice(0, 30)}`);
-        if (r.top < dev.top - 1) issues.push(`under status bar: ${text.slice(0, 30)}`);
-        if (dev.bot && r.bottom > H - dev.bot + 1) issues.push(`under home indicator: ${text.slice(0, 30)}`);
-      }
-      const cs = getComputedStyle(el);
-      if (el.scrollWidth > el.clientWidth + 1 && (cs.overflow === 'hidden' || cs.textOverflow === 'ellipsis')) issues.push(`clipped: ${text.slice(0, 30)}`);
-      // A lone last word: group each word by its line.
-      const words = [...node.textContent.matchAll(/\S+/g)];
-      if (words.length > 2) {
-        const tops = words.map((m) => {
-          const wr = document.createRange();
-          wr.setStart(node, m.index);
-          wr.setEnd(node, m.index + m[0].length);
-          return Math.round(wr.getBoundingClientRect().top);
-        });
-        const lines = [...new Set(tops)];
-        if (lines.length > 1 && tops.filter((t) => t === lines[lines.length - 1]).length === 1 && !node.textContent.includes('\n')) issues.push(`lone last word: …${words[words.length - 1][0]}`);
-      }
-    }
-    return { issues: [...new Set(issues)], overflow };
-  }, { dev });
-}
+
 
 const browser = await playwright.chromium.launch();
 const report = [];
+const DEFAULT_DEVS = ['i12', 'se', 'max', 'ipad'];
 for (const [devName, dev] of Object.entries(DEVICES)) {
-  if (devs && !devs.includes(devName)) continue;
+  if (devs ? !(devs.includes('all') || devs.includes(devName)) : !DEFAULT_DEVS.includes(devName)) continue;
   for (const dark of lightOnly ? [false] : [false, true]) {
     for (const s of SHOTS) {
       if (only && !only.includes(s.name)) continue;
@@ -183,12 +100,17 @@ for (const [devName, dev] of Object.entries(DEVICES)) {
       await page.waitForTimeout(900);
       await page.evaluate((p) => window.__ditchNavigate?.(p), s.path);
       await page.waitForTimeout(1500);
-      for (const step of s.steps ?? []) await step(page);
+      let failed = null;
+      try {
+        for (const step of s.steps ?? []) await step(page);
+      } catch (e) {
+        failed = String(e.message ?? e).split('\n')[0];
+      }
       const file = `${dev === DEVICES.i12 ? '' : `${devName}-`}${dark ? 'd' : ''}${s.name}.jpg`;
       await page.screenshot({ path: join(out, file), type: 'jpeg', quality: 84 });
       const a = await audit(page, dev);
       const scrolls = s.noScroll && a.overflow.some((o) => o > 0);
-      const line = `${file}: ${a.issues.length ? a.issues.join(' | ') : 'ok'}${scrolls ? ` | SCROLLS by ${Math.max(...a.overflow)}pt` : ''}`;
+      const line = `${file}: ${failed ? `STEP FAILED (${failed}) | ` : ''}${a.issues.length ? a.issues.join(' | ') : 'ok'}${scrolls ? ` | SCROLLS by ${Math.max(...a.overflow)}pt` : ''}`;
       report.push(line);
       console.log(line);
       await ctx.close();

@@ -11,13 +11,12 @@ Six auditors each covered one area of the app:
 Each auditor read the code, tapped through the web preview with Playwright, and compared the screens with Mobbin and our competitors. After that, the app was screenshotted on 19 device shapes, from the iPhone SE to the 18 Pro Max, plus the iPhone Duo folded and open, and iPad mini to 13" in landscape, Split View and Slide Over. An automatic fit check ran on every screenshot. The raw reports are in the session scratchpad, under `audit/reports/A–F`.
 
 ## Verdict
-**The app is ready for a TestFlight build, but not yet for App Store submission.** Every P0 and P1 that code can fix has been fixed and pushed (14 commits, 228 tests passing). Four things still block submission, and none of them can be fixed in code:
+**The app is ready for a TestFlight build, but not yet for App Store submission.** Every P0 and P1 that code can fix has been fixed and pushed (14 commits, 228 tests passing). Three things still block submission, and none of them can be fixed in code (the app icon and splash were done after the audit, DECISIONS #50):
 
 | Blocker | Who | Why |
 |---|---|---|
 | Purchases and Restore are stubs | M2: RevenueCat, plus App Store Connect products | App Review 2.1, 3.1.1 |
 | ditchsubs.app is a parked domain: /terms, /privacy and /support don't load | Owner | 3.1.2 and 5.1.1 need working Terms and Privacy links, and App Store Connect needs Privacy and Support URLs |
-| The app icon and splash are still the Expo template | Owner (designer) | 2.1 (placeholder) and first impression |
 | Nothing has been tested on a real iPhone | Owner, with an EAS development build | Reminders must fire (CLAUDE.md rule 3) |
 
 ## What was fixed
@@ -122,7 +121,6 @@ Each auditor read the code, tapped through the web preview with Playwright, and 
 ## Owner-only tasks (exact steps in STATUS.md)
 1. **ditchsubs.app:** publish /terms (or use Apple's standard EULA), /privacy and /support over HTTPS. Check each loads on your iPhone.
 2. **support@ditchsubs.app:** create the inbox and send it a test email.
-3. **App icon and splash:** commission the duck or stamp mark.
 4. **App Store Connect:** finish the Paid Apps agreement, tax and bank, create the app record, and paste the App Store ID into `src/app/settings/about.tsx`.
 5. **RevenueCat (M2):** create the account and the 3 products. Put the key in EAS environment variables (`eas env:create`), never in chat.
 6. **First EAS development build:** `eas build --profile development --platform ios`, then run MANUAL-TESTS §5 (reminders really arrive) and §1g.

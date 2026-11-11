@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  
+  <g transform="translate(46 70) scale(0.88)">
+    <!-- body: a dome rising from the bottom edge, head turned right -->
+    <path d="M 168 1300 L 168 690 C 168 430 330 262 528 262 C 712 262 842 392 872 560 L 884 640 C 904 700 912 780 912 1300 Z"
+          fill="#FFFFFF" stroke="#FFFFFF" stroke-width="50" stroke-linejoin="round"/>
+    <!-- eyes, clear of the bill -->
+    <circle cx="446" cy="520" r="36" fill="#000000"/>
+    <circle cx="716" cy="484" r="34" fill="#000000"/>
+    <!-- bill: long, soft, pointing right, past the head -->
+    <path d="M 430 706 C 430 658 476 642 520 638 C 610 630 680 590 760 582 C 820 576 870 578 918 582 C 980 588 1000 640 974 680 C 940 734 820 774 640 782 C 540 786 470 774 444 754 C 432 744 430 726 430 706 Z"
+          fill="#FFFFFF" stroke="#FFFFFF" stroke-width="44" stroke-linejoin="round"/>
+  </g>
+</svg>

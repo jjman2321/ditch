@@ -54,6 +54,7 @@ The source of truth for Ditch. Copied from `jjman2321/MMTEST` (`docs/ditch/DECIS
 | 47 | Wide screens | iPad and the open iPhone Duo (width 600+): Home, Calendar, Ditched and Settings sit in one centred column, at most 600pt (`usePageEdge`). Onboarding and the paywall keep their own columns. Tab bar: 54pt plus the home indicator, 24pt icons, 11pt labels (the built-in 49pt cut the labels off). | 2026-11-11 |
 | 48 | Onboarding is resumable | Saved as you go to a small file on the phone (`src/services/onboardingDraft.ts`). A relaunch returns to the same step, and Back still works from there. Cleared on finish and on Delete all. Not used in the web preview. | 2026-11-11 |
 | 49 | Release builds | `eas.json` with development, preview and production profiles (EAS keeps build numbers). The production profile sets `EXPO_PUBLIC_APP_ENV=production`, which switches off Preview Pro and the test settings whatever else is set. | 2026-11-11 |
+| 50 | App icon and splash (vector duck) | The duck redrawn as clean vector shapes (`design/icon/v2/duck.svg.tpl`): white peeking body, ink outline, tangerine bill, on **sunflower** (light icon). iOS 18+ dark icons: ink background with a sunflower outline. Tinted: grayscale of the dark one. Splash: the rounded icon, centred, on cream (dark: night). Android adaptive icon on sunflower. Replaces the Expo template (App Review 2.1). Boards: `design/icon/v2/board-icons.jpg`, `board-splash.jpg`. | 2026-11-11 |
 | 13 | Rewards | **No streaks, badges or points.** Reward real results, never app opens. Allowed: money you're no longer paying ("You're saving $431 a year"; never "saved" or "kept", since Ditch can't see the bank), finishing setup ("Reminders 2 of 3 set"), one celebration per ditch, milestones tied to real money ("Saving $500 a year"). If we ever want a streak-like hook: "months with no surprise charges", which doesn't need the app to be opened. Why: Ditch succeeds when people open it rarely and save money; streaks turn into nagging (Tim Gabe gamification research, `docs/research/tim-gabe-notes.md`). | 2026-11-09 |
 
 ## Roadmap
@@ -151,7 +152,7 @@ A trial timeline (Today → reminder day → charge day) with real dates. Refere
 Ditch twist: when a trial starts, Ditch adds "Ditch Pro trial" to the user's own list and reminds them 2 days before the charge.
 
 ## Still open (next interview rounds)
-- **App icon (parked Nov 9, owner: "not bad but doesn't feel professional, later"):** favourite so far is duck 6 reframed (`design/icon/hf-6-peek-up240.png`). Needs a professional redraw before it ships.
+- **App icon:** done Nov 11 as a vector redraw (#50). Before launch, test it against a stamp icon with App Store Product Page Optimization.
 - **App icon: stamp or a flat animal mark?** Bobby (4.7★, 8,033 US ratings, no update since Dec 2025) uses a squirrel *only* as its icon: no squirrel in its App Store screenshots, which sell colourful real-logo cards. An icon is the one place a character can't sit near money, and it helps stand out in search. If we try it: a flat, hand-finished mark (not the AI 3D raccoon, not raccoon-like BitePal), tested against the stamp icon with App Store Product Page Optimization after launch. In-app stays character-free either way (#5).
 - Screen-by-screen onboarding and home designs.
 - Languages.

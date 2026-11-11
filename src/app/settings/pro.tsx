@@ -6,7 +6,7 @@ import { View } from 'react-native';
 
 import { APPLE_SUBSCRIPTIONS_URL } from '@/catalog/cancel';
 import { weekdayDate } from '@/domain/dates';
-import { isProTrial } from '@/domain/subs';
+import { runningProTrial } from '@/domain/subs';
 import { openUrl } from '@/ditch/CancelHelp';
 import { planById, restorePurchases } from '@/services/purchases';
 import { Group, Row, SettingsPage } from '@/settings/Parts';
@@ -18,7 +18,7 @@ export default function ProPage() {
   const p = usePalette();
   const app = useApp();
   const { pro, settings, subs } = app;
-  const trial = subs.find((s) => isProTrial(s) && s.status === 'active');
+  const trial = runningProTrial(subs, app.today);
   const plan = settings.proPlan ? planById(settings.proPlan) : null;
   const restore = async () => {
     const r = await restorePurchases();

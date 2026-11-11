@@ -19,6 +19,7 @@ import {
   ditchSub,
   isProTrial,
   reactivateSub,
+  defaultFreePicks,
   remindedIds,
   settleFreePicks,
   type Sub,
@@ -275,19 +276,26 @@ export function AppProvider({ children }: { children: ReactNode }) {
         await updateSettings({ proPlan: plan });
         const hasTrial = ref.current.subs.some((s) => isProTrial(s) && s.status === 'active');
         if (plan === 'yearly' && opts?.startTrial && !hasTrial) await commit([proTrialSub(ref.current.today, stamp())]);
+        // Ditch's trial entry (and its "trial ends" reminders) only belongs to a yearly trial.
+        const trials = ref.current.subs.filter((s) => isProTrial(s) && s.status === 'active');
+        if (plan !== 'yearly' && trials.length) await commit(trials.map((s) => ({ ...s, status: 'deleted' as const, updatedAt: stamp() })));
         if (!plan) {
-          // Pro ended (or the dev preview was switched off): keep everything,
-          // reminders drop back to the 3 picks. Ditch's trial entry goes.
-          const trials = ref.current.subs.filter((s) => isProTrial(s) && s.status === 'active');
-          if (trials.length) await commit(trials.map((s) => ({ ...s, status: 'deleted' as const, updatedAt: stamp() })));
+          // Pro ended: keep everything; reminders drop back to 3. If fewer than 3 are
+          // picked, the biggest ones with a date fill the gap (SPEC §6).
+          const subs = ref.current.subs;
+          const have = remindedIds(subs, false);
+          const fill = defaultFreePicks(subs.filter((s) => !have.has(s.id))).slice(0, Math.max(0, FREE_REMINDERS - have.size));
+          if (fill.length) await commit(subs.filter((s) => fill.includes(s.id)).map((s) => ({ ...s, freePick: true, updatedAt: stamp() })));
         }
       },
       finishOnboarding: async (r) => {
         const subs = subsFromOnboarding({ picks: r.picks, reminderIds: r.reminderIds, pro: r.pro, today: ref.current.today, nowIso: stamp() });
         const settings: Partial<Settings> = { onboardingDone: true, country: r.country, currency: r.currency, proPlan: r.pro };
         set({ settings: { ...ref.current.settings, ...settings } });
-        await repoRef.current?.saveSettings(settings);
+        // The list is saved before "onboarding done", so a crash in between can't
+        // leave someone past onboarding with an empty list.
         await commit(subs);
+        await repoRef.current?.saveSettings(settings);
         await refreshNotif();
         reschedule();
       },

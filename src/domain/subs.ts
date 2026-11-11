@@ -110,6 +110,10 @@ export const isActive = (s: Sub) => s.status === 'active';
 export const isPending = (s: Sub) => s.status === 'ditched-pending';
 export const isConfirmed = (s: Sub) => s.status === 'ditched-confirmed';
 export const isProTrial = (s: Sub) => s.kind === 'ditch_pro_trial';
+/** Ditch Pro's own free trial, while it's still running (its end date hasn't passed). */
+export function runningProTrial(subs: Sub[], today: DateOnly): Sub | null {
+  return subs.find((s) => isProTrial(s) && s.status === 'active' && s.anchor >= today) ?? null;
+}
 
 /** Still in a free trial: the trial end hasn't come yet (or we don't know it yet). */
 export function inTrial(s: Sub, today: DateOnly): boolean {

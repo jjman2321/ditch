@@ -150,7 +150,9 @@ export function planReminders(
     const charges = chargesBetween(s, first, until);
     for (const charge of charges) {
       const trial = s.isTrial && charge === s.anchor;
-      for (const lead of leads) {
+      // A trial's end always gets the 3-day and 1-day ones too, whatever days they picked.
+      const theseLeads = trial ? [...new Set([...leads, ...HEADS_UP_LEADS])] : leads;
+      for (const lead of theseLeads) {
         const fireDay = addDays(charge, -lead);
         add({
           id: `sub:${s.id}:${charge}:${lead}`,

@@ -20,7 +20,7 @@ import { Which3Sheet } from '@/onboarding/Which3Sheet';
 import { now as clockNow } from '@/services/clock';
 import { getNotifStatus, requestNotifPermission } from '@/services/notifications';
 import { useApp } from '@/state/app';
-import { onboardingToday, totalsFor, useCountry, useMoney, useOnboarding, usePickedList, useRemindedIds } from '@/state/onboarding';
+import { defaultReminderPicks, onboardingToday, totalsFor, useCountry, useMoney, useOnboarding, usePickedList, useRemindedIds } from '@/state/onboarding';
 import { Bell, Button, Check, Duck, F, NotificationPreview, Txt, brand, haptic, useFitSize, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
 
 /** Keep the last two words together, so a line never ends on one word. */
@@ -100,7 +100,9 @@ export default function Done() {
     // Save everything first, so nothing is lost if the app closes.
     setSaving(true);
     const currency = countryInfo?.currency ?? list.find((x) => x.currency)?.currency ?? getLocales()[0]?.currencyCode ?? 'USD';
-    await finishOnboarding({ picks: list, reminderIds: remindedIds, pro, country, currency });
+    // Pro: the free 3 (for if Pro ever ends) are the 3 biggest with a date, not tick order.
+    const freeIds = pro ? defaultReminderPicks(list) : remindedIds;
+    await finishOnboarding({ picks: list, reminderIds: freeIds, pro, country, currency });
     router.replace('/(tabs)');
   };
 
@@ -114,10 +116,19 @@ export default function Done() {
       ? { mark: 'ok', title: `${n} ${n === 1 ? 'subscription' : 'subscriptions'} on your list`, sub: yearly ? `${yearly} a year` : 'Add prices to see your total' }
       : { mark: 'todo', title: 'Your list is ready', sub: 'Add what you pay for, and we’ll remind you before each charge.' },
     on
-      ? { mark: 'ok', title: pro ? (undated.length ? `Reminders on all ${n - undated.length} with a date` : `Reminders on all ${n}`) : 'Reminders are on', sub: '3 days and 1 day before, at 9:00 AM' }
+      ? pro
+        ? { mark: 'ok', title: undated.length ? `Reminders on all ${n - undated.length} with a date` : `Reminders on all ${n}`, sub: '3 days and 1 day before, at 9:00 AM' }
+        : remindedIds.length
+          ? { mark: 'ok', title: remindedIds.length < n ? `Reminders on ${remindedIds.length} of ${n}` : 'Reminders are on', sub: '3 days and 1 day before, at 9:00 AM' }
+          : { mark: 'todo', title: 'No reminders picked yet', sub: 'Pick up to 3 from your list. Free covers 3.' }
       : { mark: 'warn', title: 'Reminders are off', sub: 'Nothing can reach you until you turn them\u00A0on.' },
   ];
-  if (trialDays.length) items.push({ mark: 'ok', title: 'We’ll remind you before your trial ends', sub: trialDays.map(weekdayDate).join(' and ') });
+  if (trialDays.length)
+    items.push(
+      on
+        ? { mark: 'ok', title: 'We’ll remind you before your trial ends', sub: trialDays.map(weekdayDate).join(' and ') }
+        : { mark: 'warn', title: 'Trial reminders are paused', sub: `Turn on reminders so we can warn you before ${weekdayDate(trialCharge!)}.` },
+    );
   // No guesses (DECISIONS #33): say plainly which ones have no reminder yet.
   if (n)
     items.push(
@@ -179,9 +190,9 @@ export default function Done() {
               <View style={{ alignItems: 'center', marginTop: 8 }}>
                 <TextLink label={`See all ${Math.min(3, remindedIds.length)} reminders`} a11y="See and change which 3 get reminders" onPress={() => setPicking(true)} style={{ fontSize: 15 }} />
               </View>
-            ) : reminders.length > 1 ? (
+            ) : remindedIds.length > 1 ? (
               <Txt v="sub" num color={sub2} center style={{ marginTop: 10 }}>
-                {`Then ${reminders.length - 1} more, each 3 days and 1 day before.`}
+                {`Then ${remindedIds.length - 1} more, each 3 days and 1 day before.`}
               </Txt>
             ) : null}
           </View>

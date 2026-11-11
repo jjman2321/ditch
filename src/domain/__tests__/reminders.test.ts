@@ -288,3 +288,11 @@ describe('reminderDaysFor', () => {
     expect(reminderDaysFor('2026-11-20', at10, [7, 3, 1], '09:00')).toEqual(['2026-11-13', '2026-11-17', '2026-11-19']);
   });
 });
+
+describe('trial ends with custom lead days', () => {
+  it('always gets the 3-day and 1-day reminders as well', () => {
+    const t = sub({ id: 'tr', name: 'Trial', anchor: '2026-11-25', cycle: 'monthly', isTrial: true });
+    const plan = planReminders([t], { ...PRO, leadDays: [7] }, NOW).filter((r) => r.chargeDate === '2026-11-25');
+    expect(plan.map((r) => r.lead).sort((a, b) => b - a)).toEqual([7, 3, 1]);
+  });
+});

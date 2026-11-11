@@ -10,7 +10,7 @@ import { DEV_TOOLS } from '@/dev/flags';
 import { weekdayDate, toDateOnly } from '@/domain/dates';
 import { nextReminder } from '@/domain/reminders';
 import { effectiveLeads, formatTime, leadsLabel, shortTimeLabel } from '@/domain/settings';
-import { FREE_REMINDERS, isProTrial, listedUserSubs, remindedIds } from '@/domain/subs';
+import { FREE_REMINDERS, listedUserSubs, remindedIds, runningProTrial } from '@/domain/subs';
 import { pendingCount } from '@/services/notifications';
 import { Group, Row, SettingsPage } from '@/settings/Parts';
 import { APP_VERSION, SHORT_VERSION } from '@/settings/version';
@@ -25,7 +25,7 @@ export default function Settings() {
   const { settings, pro, subs } = app;
   const listed = listedUserSubs(subs);
   const reminded = remindedIds(subs, pro);
-  const trial = subs.find((s) => isProTrial(s) && s.status === 'active');
+  const trial = runningProTrial(subs, app.today);
 
   // Health check every time Settings opens.
   const { recheck } = app;

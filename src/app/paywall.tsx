@@ -5,7 +5,7 @@
 // discounts, no trial toggle. The billed price is always the biggest price.
 // Fits without scrolling on iPhone 12 (390×844) and SE (375×667).
 
-import { router, useLocalSearchParams } from 'expo-router';
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { Alert, Linking, Platform, Pressable, Text, View } from 'react-native';
 
@@ -138,8 +138,9 @@ export default function Paywall() {
   const f = useFrame({ maxContent: 440, colH: 740, extraBottom: 0 });
   const { setPro: setOnboardingPro } = useOnboarding();
   const app = useApp();
-  // Opened from Settings or a PRO tag (after onboarding) vs. during onboarding.
-  const inApp = useLocalSearchParams<{ from?: string }>().from === 'app';
+  // After onboarding (Settings, a PRO tag, the editor) vs. during onboarding. Decided by
+  // whether onboarding is done, never by the link, so no link can rerun onboarding.
+  const inApp = app.settings.onboardingDone;
   const picked = usePickedList().length;
   const n = inApp ? listedUserSubs(app.subs).length : picked;
   const many = n > 3;

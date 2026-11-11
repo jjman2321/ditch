@@ -3,7 +3,7 @@
 // Apple-style grouped lists (docs/research/settings.md).
 
 import { router } from 'expo-router';
-import { Children, type ReactNode } from 'react';
+import { Children, useRef, type ReactNode } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 
 import { Card, ChevronLeft, ChevronRight,  F, Txt, usePalette, useInsets, usePageEdge } from '@/ui/sunflower';
@@ -90,10 +90,18 @@ export function Row({
   a11yValue?: string;
 }) {
   const p = usePalette();
+  // One tap at a time: a quick double tap must not open the same page twice.
+  const last = useRef(0);
+  const press = () => {
+    const now = Date.now();
+    if (now - last.current < 600) return;
+    last.current = now;
+    onPress?.();
+  };
   const body = (pressed: boolean) => (
     <View style={{ minHeight: 52, flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 8, opacity: pressed ? 0.6 : 1 }}>
       {labelNode ?? (
-        <Txt v="leadS" color={danger ? p.danger : p.cardFg} style={{ flexShrink: 0, fontFamily: danger ? F.semi : F.regular, fontSize: 16.5 }}>
+        <Txt v="leadS" color={danger ? p.danger : p.cardFg} style={{ flexShrink: 1, fontFamily: danger ? F.semi : F.regular, fontSize: 16.5 }}>
           {label}
         </Txt>
       )}
@@ -107,9 +115,11 @@ export function Row({
       {chevron ? <ChevronRight color={p.mute} size={16} /> : null}
     </View>
   );
-  if (!onPress) return <View accessible accessibilityLabel={`${label}${value ? `, ${value}` : ''}`}>{body(false)}</View>;
+  // A control on the right (the time picker, a switch) carries its own label, so the row
+  // mustn't group it away from VoiceOver.
+  if (!onPress) return right ? body(false) : <View accessible accessibilityLabel={`${label}${a11yValue ?? (value ? `, ${value}` : '')}`}>{body(false)}</View>;
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={`${label}${a11yValue ?? (value ? `, ${value}` : '')}`} accessibilityHint={hint} onPress={onPress}>
+    <Pressable accessibilityRole="button" accessibilityLabel={`${label}${a11yValue ?? (value ? `, ${value}` : '')}`} accessibilityHint={hint} onPress={press}>
       {({ pressed }) => body(pressed)}
     </Pressable>
   );

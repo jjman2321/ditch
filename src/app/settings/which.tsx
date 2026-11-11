@@ -3,6 +3,7 @@
 // rest stay on the list with dates and totals.
 
 import { router } from 'expo-router';
+import { useState } from 'react';
 import { AccessibilityInfo, Pressable, View } from 'react-native';
 import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withSequence, withTiming } from 'react-native-reanimated';
 
@@ -11,6 +12,7 @@ import { CYCLE_WORDS } from '@/domain/money';
 import { FREE_REMINDERS, chargeOfSub, isPricedSub, listedUserSubs, remindedIds, yearlyOfSub } from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
 import { SubLogo } from '@/home/SubRow';
+import { TextLink } from '@/onboarding/Parts';
 import { Group, Row, SettingsPage } from '@/settings/Parts';
 import { useApp, useAppMoney } from '@/state/app';
 import { Bell, BellMark, SunSwitch, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
@@ -25,6 +27,7 @@ export default function Which() {
   const list = [...listedUserSubs(subs)].sort((a, b) => yearlyOfSub(b) - yearlyOfSub(a));
   const on = remindedIds(subs, pro);
   const nudge = useSharedValue(0);
+  const [limitHit, setLimitHit] = useState(false);
   const nudgeStyle = useAnimatedStyle(() => ({ transform: [{ translateX: nudge.get() }] }));
 
   const toggle = async (id: string, name: string) => {
@@ -35,6 +38,7 @@ export default function Which() {
       return;
     }
     haptic.warning();
+    setLimitHit(true);
     AccessibilityInfo.announceForAccessibility(`Free covers ${FREE_REMINDERS}. Turn one off first to remind you about ${name}.`);
     if (!reduce) nudge.set(withSequence(withTiming(3, { duration: 30 }), withTiming(-3, { duration: 60 }), withTiming(3, { duration: 60 }), withTiming(-3, { duration: 60 }), withTiming(0, { duration: 30 })));
   };
@@ -53,6 +57,15 @@ export default function Which() {
           </Txt>
         </Animated.View>
       )}
+      {/* The 4th tap: say why, and offer the way out (DECISIONS #24). */}
+      {!pro && limitHit ? (
+        <View style={{ marginTop: 10, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: 6 }}>
+          <Txt v="body" tone="fg2" style={{ fontSize: 15 }}>
+            Free covers {FREE_REMINDERS}. Turn one off, or
+          </Txt>
+          <TextLink label="see Pro" a11y="See Ditch Pro" onPress={() => router.push('/paywall?from=app')} style={{ fontSize: 15 }} />
+        </View>
+      ) : null}
       {list.length ? (
         <Group
           style={{ marginTop: 14 }}

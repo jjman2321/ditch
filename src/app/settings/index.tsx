@@ -4,13 +4,13 @@
 
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import { Linking, Platform, View } from 'react-native';
+import { AccessibilityInfo, Linking, Platform, View } from 'react-native';
 
 import { DEV_TOOLS } from '@/dev/flags';
 import { weekdayDate, toDateOnly } from '@/domain/dates';
 import { nextReminder } from '@/domain/reminders';
 import { effectiveLeads, formatTime, leadsLabel, shortTimeLabel } from '@/domain/settings';
-import { FREE_REMINDERS, listedUserSubs, remindedIds, runningProTrial } from '@/domain/subs';
+import { FREE_REMINDERS, hasDate, listedUserSubs, remindedIds, runningProTrial } from '@/domain/subs';
 import { pendingCount } from '@/services/notifications';
 import { Group, Row, SettingsPage } from '@/settings/Parts';
 import { APP_VERSION, SHORT_VERSION } from '@/settings/version';
@@ -131,7 +131,9 @@ function HealthCard() {
   }, [sent]);
 
   const next = nextReminder(plan, subs);
-  const nonePicked = !pro && remindedIds(subs, false).size === 0 && listedUserSubs(subs).length > 0;
+  const listed = listedUserSubs(subs);
+  const anyDated = listed.some(hasDate);
+  const nonePicked = !pro && remindedIds(subs, false).size === 0 && anyDated;
   const openPhone = () => Linking.openSettings().catch(() => {});
 
   let h: Health;
@@ -141,6 +143,10 @@ function HealthCard() {
     h = { icon: 'bell', title: 'Reminders aren’t on yet', line: 'Ditch needs your OK to send them.', button: { label: 'Turn on reminders', onPress: () => app.askNotif() }, test: false };
   } else if (notif === 'quiet') {
     h = { icon: 'warn', title: 'On, but quiet', line: 'Banners are off, so reminders slip into Notification Center without a sound.', button: { label: 'Change in iPhone Settings', onPress: openPhone }, test: true };
+  } else if (!listed.length) {
+    h = { icon: 'ok', title: 'All set up', line: 'Nothing on your list yet. Add a subscription and reminders start once it has a date.', test: true };
+  } else if (!anyDated) {
+    h = { icon: 'bell', title: 'No dates yet', line: 'Reminders start once a subscription has a date. Add them from your list.', button: { label: 'Go to my list', onPress: () => router.back() }, test: true };
   } else if (nonePicked) {
     h = { icon: 'bell', title: 'No reminders picked', line: 'Pick up to 3 and you’ll hear before they charge.', button: { label: 'Pick 3', onPress: () => router.push('/settings/which') }, test: true };
   } else if (next) {
@@ -150,9 +156,14 @@ function HealthCard() {
   }
 
   const test = async () => {
+    // One at a time: the last one is still on its way.
+    if (sent) return;
     haptic.select();
     const ok = await app.sendTest();
-    if (ok) setSent(true);
+    if (ok) {
+      setSent(true);
+      AccessibilityInfo.announceForAccessibility('Sent. It arrives in about 5 seconds.');
+    }
     else tell('Couldn’t send it', 'Check that notifications for Ditch are on in iPhone Settings.');
   };
 

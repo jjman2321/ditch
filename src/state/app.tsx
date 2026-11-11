@@ -34,6 +34,7 @@ import {
   setupNotifications,
   type NotifStatus,
 } from '@/services/notifications';
+import { clearDraft } from '@/services/onboardingDraft';
 import { offerReview } from '@/services/review';
 import { MARKETING_VERSION } from '@/settings/version';
 
@@ -296,11 +297,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
         // leave someone past onboarding with an empty list.
         await commit(subs);
         await repoRef.current?.saveSettings(settings);
+        clearDraft();
         await refreshNotif();
         reschedule();
       },
       deleteAll: async () => {
         await repoRef.current?.wipe();
+        clearDraft();
         await cancelAllReminders();
         set({ subs: [], settings: DEFAULT_SETTINGS, plan: [], generation: ref.current.generation + 1 });
       },

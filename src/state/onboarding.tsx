@@ -2,7 +2,8 @@
 // Phase 2 saves them to SQLite so a force-quit resumes where they left off.
 
 import { getLocales } from 'expo-localization';
-import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { Platform } from 'react-native';
 
 import { COUNTRY_BY_CODE, supportedCountry, type Country } from '@/catalog/prices';
 import { type CatalogService } from '@/catalog/services';
@@ -11,6 +12,7 @@ import { chargeFrom, type DateSource } from '@/domain/charges';
 import { addDays, anchorForDayOfMonth, type DateOnly } from '@/domain/dates';
 import { webParam } from '@/dev/webParams';
 import { today as clockToday } from '@/services/clock';
+import { loadDraft, saveDraft } from '@/services/onboardingDraft';
 import { CYCLE_SHORT, CYCLE_WORDS, formatMoney, formatWholeMoney, spendTotals, type Cycle, type SpendTotal } from '@/domain/money';
 import type { PlanId } from '@/services/purchases';
 
@@ -36,6 +38,12 @@ type OnboardingState = {
 };
 
 type Actions = {
+  /** The saved draft has been read (or there was none): safe to decide where to start. */
+  draftReady: boolean;
+  /** Where they were when the app closed, e.g. "/onboarding/dates". */
+  resumePath: string | null;
+  /** Each onboarding screen reports itself, so a relaunch can resume there. */
+  setStep: (path: string) => void;
   toggleService: (service: CatalogService) => void;
   setCountry: (code: string) => void;
   setPlan: (id: string, planId: string) => void;
@@ -108,6 +116,40 @@ function seededState(): OnboardingState {
 
 export function OnboardingProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<OnboardingState>(seededState);
+  // Saved as you go (src/services/onboardingDraft.ts): a relaunch picks up where they were.
+  const seeded = webParam('ob') !== null;
+  const [draftReady, setDraftReady] = useState(Platform.OS === 'web' || seeded);
+  const [resumePath, setResumePath] = useState<string | null>(null);
+  const step = useRef('/onboarding');
+  const loaded = useRef(Platform.OS === 'web' || seeded);
+  useEffect(() => {
+    if (loaded.current) return;
+    let alive = true;
+    loadDraft<OnboardingState>().then((d) => {
+      if (!alive) return;
+      if (d) {
+        setState({ ...emptyState(), ...d.state });
+        setResumePath(d.path);
+        step.current = d.path;
+      }
+      loaded.current = true;
+      setDraftReady(true);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
+  useEffect(() => {
+    if (loaded.current && Platform.OS !== 'web') saveDraft(state, step.current);
+  }, [state]);
+  const setStep = useCallback(
+    (path: string) => {
+      if (step.current === path) return;
+      step.current = path;
+      if (loaded.current && Platform.OS !== 'web') saveDraft(state, path);
+    },
+    [state],
+  );
 
   const toggleService = useCallback((service: CatalogService) => {
     setState((s) => {
@@ -150,6 +192,9 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
   const value = useMemo(
     () => ({
       ...state,
+      draftReady,
+      resumePath,
+      setStep,
       toggleService,
       setCountry,
       setPlan,
@@ -162,7 +207,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       setPro,
       markTotalShown,
     }),
-    [state, toggleService, setCountry, setPlan, setPrice, setDate, clearDate, setCycle, setReminderPicks, setNotifications, setPro, markTotalShown],
+    [state, draftReady, resumePath, setStep, toggleService, setCountry, setPlan, setPrice, setDate, clearDate, setCycle, setReminderPicks, setNotifications, setPro, markTotalShown],
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

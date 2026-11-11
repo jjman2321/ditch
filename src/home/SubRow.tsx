@@ -6,7 +6,7 @@
 // the stamp's heavy impact on the next screen is the completion haptic.
 
 import { useEffect, useRef } from 'react';
-import { View } from 'react-native';
+import { useWindowDimensions, View } from 'react-native';
 import { GestureDetector, useExclusiveGestures, useLongPressGesture, useTapGesture } from 'react-native-gesture-handler';
 import Animated, {
   Easing,
@@ -44,13 +44,15 @@ function relative(charge: DateOnly, today: DateOnly): string {
 }
 
 /** The grey line under the name. No date yet: "Add date" (DECISIONS #33). */
-export function rowLine(sub: Sub, charge: DateOnly | null, today: DateOnly): string {
+export function rowLine(sub: Sub, charge: DateOnly | null, today: DateOnly, narrow = false): string {
   if (!charge) return isPending(sub) ? 'Cancel before it renews' : 'Add date';
   if (isPending(sub)) return `Cancel by ${weekdayDate(charge)}`;
   if (isProTrial(sub)) return `${weekdayDate(charge)} · trial ends`;
   if (inTrial(sub, today)) return `Trial ends ${weekdayDate(charge)}`;
-  // "in N days" only for the coming week: further out the date says it, and the line fits small iPhones.
-  return daysBetween(today, charge) <= 6 ? `${weekdayDate(charge)} · ${relative(charge, today)}` : weekdayDate(charge);
+  // "in N days" only for the coming week (further out the date says it). Narrow iPhones
+  // (SE, mini) keep it for today and tomorrow only, so the line never gets cut off.
+  const n = daysBetween(today, charge);
+  return n <= (narrow ? 1 : 6) ? `${weekdayDate(charge)} · ${relative(charge, today)}` : weekdayDate(charge);
 }
 
 export function SubLogo({ sub, size = TILE }: { sub: Sub; size?: number }) {
@@ -185,7 +187,8 @@ export function SubRow({
 
   const price = isPricedSub(sub) ? money(sub.amountMinor, sub.currency) : null;
   const yearly = isPricedSub(sub) ? money(yearlyMinor(sub.amountMinor, sub.cycle), sub.currency) : null;
-  const line = rowLine(sub, charge, today);
+  const narrow = useWindowDimensions().width < 380;
+  const line = rowLine(sub, charge, today, narrow);
   const per = sub.cycle === 'monthly' ? '' : CYCLE_SHORT[sub.cycle];
   const on = holding && !p.dark;
   const fg = on ? brand.ink : p.cardFg;

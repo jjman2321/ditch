@@ -4,7 +4,7 @@
 
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import { AccessibilityInfo, Linking, Platform, View } from 'react-native';
+import { AccessibilityInfo, Linking, View } from 'react-native';
 
 import { DEV_TOOLS } from '@/dev/flags';
 import { weekdayDate, toDateOnly } from '@/domain/dates';
@@ -13,7 +13,8 @@ import { effectiveLeads, formatTime, leadsLabel, shortTimeLabel } from '@/domain
 import { FREE_REMINDERS, hasDate, listedUserSubs, remindedIds, runningProTrial } from '@/domain/subs';
 import { pendingCount } from '@/services/notifications';
 import { Group, Row, SettingsPage } from '@/settings/Parts';
-import { APP_VERSION, SHORT_VERSION } from '@/settings/version';
+import { SUPPORT_EMAIL, rateDitch, reportProblem, suggestFeature } from '@/settings/feedback';
+import { SHORT_VERSION } from '@/settings/version';
 import { TimeField } from '@/settings/TimeField';
 import { useApp } from '@/state/app';
 import { tell } from '@/ui/alert';
@@ -38,13 +39,6 @@ export default function Settings() {
 
   const whichValue = pro ? (reminded.size === listed.length ? `All ${listed.length}` : `${reminded.size} of ${listed.length}`) : `${reminded.size} of ${FREE_REMINDERS}`;
   const proValue = !pro ? null : trial ? `Trial, ends ${weekdayDate(trial.anchor).split(', ')[1]}` : settings.proPlan === 'lifetime' ? 'Lifetime' : settings.proPlan === 'monthly' ? 'Monthly' : 'Yearly';
-
-  const support = () => {
-    const body = `\n\n—\nDitch ${APP_VERSION} · iOS ${Platform.Version}`;
-    Linking.openURL(`mailto:support@ditchsubs.app?subject=${encodeURIComponent('Ditch support')}&body=${encodeURIComponent(body)}`).catch(() =>
-      tell('Email us', 'support@ditchsubs.app'),
-    );
-  };
 
   return (
     <SettingsPage title="Settings" back="Home">
@@ -83,8 +77,14 @@ export default function Settings() {
         <Row label="Your data" onPress={() => router.push('/settings/data')} />
       </Group>
 
+      {/* Feedback & help: a person reads every one (reviews: a developer who answers turns 1★ into 5★). */}
+      <Group header="Feedback & help" note="A real person reads every email.">
+        <Row label="Report a problem" hint="Opens an email with a line of counts, no names or prices" onPress={() => void reportProblem({ subs, settings, pro, notif: app.notif, leads: effectiveLeads(settings, pro) })} />
+        <Row label="Suggest a feature" hint={`Opens an email to ${SUPPORT_EMAIL}`} onPress={suggestFeature} />
+        <Row label="Rate Ditch" hint="Opens the App Store" onPress={rateDitch} />
+      </Group>
+
       <Group>
-        <Row label="Contact support" onPress={support} hint="Opens an email to support@ditchsubs.app" />
         <Row label="About Ditch" onPress={() => router.push('/settings/about')} />
       </Group>
 

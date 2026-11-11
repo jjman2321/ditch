@@ -1,4 +1,4 @@
-// About Ditch: rate, terms, privacy, sources, version.
+// About Ditch: terms, privacy, sources, version. (Rating lives in Settings → Feedback & help.)
 
 import { router } from 'expo-router';
 import { View } from 'react-native';
@@ -6,11 +6,7 @@ import { View } from 'react-native';
 import { openUrl } from '@/ditch/CancelHelp';
 import { Group, Row, SettingsPage } from '@/settings/Parts';
 import { APP_VERSION } from '@/settings/version';
-import { tell } from '@/ui/alert';
 import { DuckIcon, Txt, Wordmark } from '@/ui/sunflower';
-
-/** Filled in once the app has an App Store listing (Milestone 5). */
-const APP_STORE_ID: string | null = null;
 
 export default function About() {
   return (
@@ -23,12 +19,6 @@ export default function About() {
         </Txt>
       </View>
       <Group>
-        <Row
-          label="Rate Ditch"
-          onPress={() =>
-            APP_STORE_ID ? openUrl(`https://apps.apple.com/app/id${APP_STORE_ID}?action=write-review`) : tell('Not yet', 'Rating opens once Ditch is in the App Store. Thanks for wanting to!')
-          }
-        />
         <Row label="Terms" onPress={() => openUrl('https://ditchsubs.app/terms')} />
         <Row label="Privacy" onPress={() => openUrl('https://ditchsubs.app/privacy')} />
         <Row label="Sources" hint="The studies behind the numbers in Ditch" onPress={() => router.push('/settings/sources')} />

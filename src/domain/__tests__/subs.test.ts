@@ -305,3 +305,13 @@ describe('settleFreePicks', () => {
     expect(settleFreePicks(all, [mk('e', 1)], true)[0].freePick).toBe(true);
   });
 });
+
+describe('support diagnostics line', () => {
+  it('has counts only: never names or prices', () => {
+    const { diagnosticsLine } = jest.requireActual('@/settings/feedback') as typeof import('@/settings/feedback');
+    const subs = [makeSub({ id: 'n', name: 'Netflix', cycle: 'monthly', anchor: '2026-11-20', dateSource: 'next', amountMinor: 1799, currency: 'USD', freePick: true })];
+    const line = diagnosticsLine({ subs, settings: DEFAULT_SETTINGS, pro: false, notif: 'granted', pending: 2, leads: [3, 1] });
+    expect(line).toContain('Reminders on · Free · 1 subs, 1 with reminders, 0 with no date');
+    expect(line).not.toMatch(/Netflix|17\.99/);
+  });
+});

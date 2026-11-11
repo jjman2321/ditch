@@ -86,6 +86,26 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
+## 1f. Next reminder, "Find the ones you forgot", paywall Lifetime line (Nov 11, DECISIONS #42)
+Pull first: `git pull`.
+
+**Next reminder**
+- [ ] With reminders on, Home shows **Next reminder: (name)** under the yellow total, with the day and time underneath (e.g. "Tomorrow, 9 AM").
+- [ ] It matches Settings and the Calendar. Tapping it opens the Calendar.
+- [ ] Change the reminder time in Settings: the row shows the new time.
+- [ ] Turn notifications off in iPhone Settings: the row goes and the "Reminders are off" banner shows.
+
+**Find the ones you forgot**
+- [ ] Scroll to the bottom of Home: **Missing any? See where subscriptions hide**. Tap it.
+- [ ] 6 places. **Apple subscriptions** opens Apple's page and ticks itself; **Google Play** opens play.google.com. The other four tick on tap.
+- [ ] **Add what I found** opens the Add sheet.
+- [ ] **Done** closes it and the Home card is gone for good.
+- [ ] Home → **+**: under "Track a free trial" there's **Missing any? See where they hide**, which opens the same checklist.
+
+**Paywall**
+- [ ] Yearly or Monthly picked: **Rather pay once? Lifetime, $49.99** sits between the plans and the button. Tap it: Lifetime is picked and the line goes. The button doesn't move.
+- [ ] On an SE-size phone nothing scrolls.
+
 ## 1e. Rating ask, "Track a free trial", cancel guides (Nov 10, DECISIONS #38–41)
 Pull first: `git pull`, `npm install`. The rating prompt **can't be fully tested in Expo Go or TestFlight**: Apple shows it in development builds only as a test sheet and never in TestFlight. Check the rules here; the real prompt is checked after launch.
 

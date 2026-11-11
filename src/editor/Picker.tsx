@@ -103,7 +103,28 @@ function TrialRow({ onPress }: { onPress: () => void }) {
   );
 }
 
-export function Picker({ onCustom, onTrial, onClose }: { onCustom: (name: string) => void; onTrial: () => void; onClose: () => void }) {
+/** "Missing any? See where subscriptions hide", a quiet link under the trial row (opens the checklist). */
+function ForgottenLink({ onPress }: { onPress: () => void }) {
+  const p = usePalette();
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Missing any? See where subscriptions hide"
+      onPress={onPress}
+      style={({ pressed }) => ({ minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 4, opacity: pressed ? 0.6 : 1 })}
+    >
+      <Search color={p.fg2} size={16} />
+      <Txt v="body" tone="fg2" numberOfLines={1} style={{ flex: 1, fontSize: 15 }}>
+        Missing any?{' '}
+        <Txt v="body" style={{ fontSize: 15, fontFamily: F.semi, textDecorationLine: 'underline' }}>
+          See where they hide
+        </Txt>
+      </Txt>
+    </Pressable>
+  );
+}
+
+export function Picker({ onCustom, onTrial, onForgotten, onClose }: { onCustom: (name: string) => void; onTrial: () => void; onForgotten: () => void; onClose: () => void }) {
   const p = usePalette();
   const app = useApp();
   const money = useAppMoney();
@@ -165,9 +186,10 @@ export function Picker({ onCustom, onTrial, onClose }: { onCustom: (name: string
       <View style={{ marginTop: 14 }}>
         <TrialRow onPress={onTrial} />
       </View>
+      <ForgottenLink onPress={onForgotten} />
       <View
         style={{
-          marginTop: 14,
+          marginTop: 4,
           height: 48,
           borderRadius: 14,
           backgroundColor: p.chipBg,

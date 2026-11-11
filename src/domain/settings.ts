@@ -20,6 +20,8 @@ export type Settings = {
   proPlan: ProPlan | null;
   /** The "Hold a sub to ditch it" hint goes away after the first ditch. */
   holdHintDone: boolean;
+  /** The "Find the ones you forgot" card on Home goes away once they tap Done. */
+  forgottenDone: boolean;
   /** When we last offered Apple's rating prompt (src/domain/review.ts). */
   review: ReviewState;
 };
@@ -32,6 +34,7 @@ export const DEFAULT_SETTINGS: Settings = {
   onboardingDone: false,
   proPlan: null,
   holdHintDone: false,
+  forgottenDone: false,
   review: EMPTY_REVIEW,
 };
 
@@ -102,6 +105,7 @@ export function parseSettings(kv: Record<string, string>): Settings {
     onboardingDone: kv.onboarding_done === '1',
     proPlan: PLANS.includes(kv.pro_plan as ProPlan) ? (kv.pro_plan as ProPlan) : null,
     holdHintDone: kv.hold_hint_done === '1',
+    forgottenDone: kv.forgotten_done === '1',
     review: parseReview(kv.review),
   };
 }
@@ -116,6 +120,7 @@ export function settingsToKv(patch: Partial<Settings>): Record<string, string | 
   if (patch.onboardingDone !== undefined) out.onboarding_done = patch.onboardingDone ? '1' : '0';
   if (patch.proPlan !== undefined) out.pro_plan = patch.proPlan;
   if (patch.holdHintDone !== undefined) out.hold_hint_done = patch.holdHintDone ? '1' : '0';
+  if (patch.forgottenDone !== undefined) out.forgotten_done = patch.forgottenDone ? '1' : '0';
   if (patch.review !== undefined) out.review = JSON.stringify(patch.review);
   return out;
 }

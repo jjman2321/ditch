@@ -9,8 +9,7 @@ import {
   planReminders,
   reconcile,
   type PlanSettings,
-  type PlannedReminder,
-} from '../reminders';
+  type PlannedReminder, whenLabel } from '../reminders';
 import { DEFAULT_SETTINGS } from '../settings';
 import { confirmCancel, ditchSub, makeSub, type Sub } from '../subs';
 
@@ -258,5 +257,13 @@ describe('the Pro trial stays off your list but still reminds you', () => {
   it('plans its two reminders from the saved list', () => {
     const trial = { ...proTrialSub(TODAY, 'x'), id: 'trial' };
     expect(planReminders([trial], PRO, NOW).map((r) => r.kind)).toEqual(['pro-trial', 'pro-trial']);
+  });
+});
+
+describe('whenLabel', () => {
+  it('says today, tomorrow, or the date, with the reminder time', () => {
+    expect(whenLabel(new Date(2026, 10, 10, 9, 0), '2026-11-10', '09:00')).toBe('Today, 9 AM');
+    expect(whenLabel(new Date(2026, 10, 11, 9, 0), '2026-11-10', '09:00')).toBe('Tomorrow, 9 AM');
+    expect(whenLabel(new Date(2026, 10, 14, 18, 30), '2026-11-10', '18:30')).toBe('Sat, Nov 14, 6:30 PM');
   });
 });

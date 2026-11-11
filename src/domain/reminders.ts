@@ -12,7 +12,7 @@ import { HEADS_UP_LEADS } from './charges';
 import { stillUsingIt } from './copy';
 import { addDays, daysBetween, parseDate, toDateOnly, weekdayDate, weekdayName, type DateOnly } from './dates';
 import { CYCLE_WORDS, formatMoney } from './money';
-import { effectiveLeads, parseTime, type Settings } from './settings';
+import { effectiveLeads, parseTime, shortTimeLabel, type Settings } from './settings';
 import { chargeOfSub, chargesBetween, isActive, isPending, isPricedSub, isProTrial, remindedIds, type Sub } from './subs';
 
 /** iOS keeps at most 64 pending local notifications per app. */
@@ -202,4 +202,12 @@ export function nextReminder(plan: PlannedReminder[], subs: Sub[]): { name: stri
   if (!r) return null;
   const s = subs.find((x) => x.id === r.subId);
   return { name: s ? (isProTrial(s) ? 'Ditch Pro trial' : s.name) : 'Ditch', fireAt: r.fireAt };
+}
+
+/** When the next reminder lands, for Home: "Today, 9 AM", "Tomorrow, 9 AM", "Sat, Nov 14, 9 AM". */
+export function whenLabel(fireAt: Date, today: DateOnly, time: string): string {
+  const day = toDateOnly(fireAt);
+  const t = shortTimeLabel(time);
+  const n = daysBetween(today, day);
+  return n === 0 ? `Today, ${t}` : n === 1 ? `Tomorrow, ${t}` : `${weekdayDate(day)}, ${t}`;
 }

@@ -253,7 +253,20 @@ export default function Paywall() {
           />
         </View>
 
-        <View style={{ height: f.small ? 12 : 20 }} />
+        {/* For people who'd rather not add another subscription (review research, DECISIONS #42). A fixed slot,
+            so the button never moves; empty once Lifetime is picked. */}
+        <View style={{ height: f.small ? 30 : 40, justifyContent: 'center' }}>
+          {planId === 'lifetime' ? null : (
+            <Pressable accessibilityRole="button" accessibilityLabel={`Rather pay once? Lifetime, ${lifetime.priceString}`} accessibilityHint="Picks Lifetime" onPress={() => select('lifetime')} hitSlop={8} style={({ pressed }) => ({ alignSelf: 'center', minHeight: 30, justifyContent: 'center', opacity: pressed ? 0.6 : 1 })}>
+              <Txt v="sub" tone="fg2" num center>
+                {'Rather pay once? '}
+                <Txt v="sub" num style={{ fontFamily: F.semi, textDecorationLine: 'underline' }}>
+                  {`Lifetime, ${lifetime.priceString}`}
+                </Txt>
+              </Txt>
+            </Pressable>
+          )}
+        </View>
         <Button label={cta} onPress={buy} height={f.small ? 48 : 56} />
         {/* A fixed slot, so the button never moves when the plan changes. Price and the real start date by the
             button (App Review); no reminder text (owner, Nov 10). */}

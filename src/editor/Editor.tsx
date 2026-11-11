@@ -19,6 +19,8 @@ import { FREE_REMINDERS, chargeOfSub, isActive, isProTrial, makeSub, remindedIds
 import { rowLine, SubLogo } from '@/home/SubRow';
 import { DateBody } from '@/onboarding/DateSheet';
 
+import { ForgottenBody } from '@/home/Forgotten';
+
 import { Picker } from './Picker';
 import { useApp, useAppMoney } from '@/state/app';
 import { chooseCycle, choosePlan, newPick, type Picked } from '@/state/picks';
@@ -29,9 +31,9 @@ import { Button, Card, ChevronRight, Chip, F, KEYBOARD_DONE, KeyboardDone, LogoT
  * add: the picker first; `custom` is a name typed there (the full form);
  * `catalogId` opens one service's form; `trial` opens the form as a free trial.
  */
-type Open = { mode: 'add'; catalogId?: string; custom?: string; trial?: boolean } | { mode: 'edit'; id: string };
+type Open = { mode: 'add'; catalogId?: string; custom?: string; trial?: boolean } | { mode: 'edit'; id: string } | { mode: 'forgotten' };
 
-const Ctx = createContext<{ openAdd: (catalogId?: string) => void; openEdit: (id: string) => void } | null>(null);
+const Ctx = createContext<{ openAdd: (catalogId?: string) => void; openEdit: (id: string) => void; openForgotten: () => void } | null>(null);
 
 export function useEditor() {
   const v = useContext(Ctx);
@@ -50,13 +52,31 @@ export function EditorProvider({ children }: { children: ReactNode }) {
     setOpen({ mode: 'edit', id });
     setVisible(true);
   }, []);
-  const value = useMemo(() => ({ openAdd, openEdit }), [openAdd, openEdit]);
+  const openForgotten = useCallback(() => {
+    setOpen({ mode: 'forgotten' });
+    setVisible(true);
+  }, []);
+  const app = useApp();
+  const value = useMemo(() => ({ openAdd, openEdit, openForgotten }), [openAdd, openEdit, openForgotten]);
   return (
     <Ctx.Provider value={value}>
       {children}
-      <Sheet visible={visible} onClose={() => setVisible(false)} maxHeight={780} label={open?.mode === 'edit' ? 'Edit subscription' : 'Add a subscription'}>
-        {open?.mode === 'add' && !open.catalogId && open.custom === undefined ? (
-          <Picker onCustom={(name) => setOpen({ mode: 'add', custom: name })} onTrial={() => setOpen({ mode: 'add', custom: '', trial: true })} onClose={() => setVisible(false)} />
+      <Sheet visible={visible} onClose={() => setVisible(false)} maxHeight={780} label={open?.mode === 'edit' ? 'Edit subscription' : open?.mode === 'forgotten' ? 'Find the ones you forgot' : 'Add a subscription'}>
+        {open?.mode === 'forgotten' ? (
+          <ForgottenBody
+            onAdd={() => setOpen({ mode: 'add' })}
+            onDone={() => {
+              setVisible(false);
+              if (!app.settings.forgottenDone) app.updateSettings({ forgottenDone: true });
+            }}
+          />
+        ) : open?.mode === 'add' && !open.catalogId && open.custom === undefined ? (
+          <Picker
+            onCustom={(name) => setOpen({ mode: 'add', custom: name })}
+            onTrial={() => setOpen({ mode: 'add', custom: '', trial: true })}
+            onForgotten={() => setOpen({ mode: 'forgotten' })}
+            onClose={() => setVisible(false)}
+          />
         ) : open ? (
           <EditorBody key={JSON.stringify(open)} open={open} close={() => setVisible(false)} />
         ) : null}

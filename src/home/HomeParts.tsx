@@ -9,7 +9,7 @@ import type { NotifStatus } from '@/services/notifications';
 import { approxLine } from '@/domain/copy';
 import { useCombinedTotal } from '@/services/fx';
 import { useApp, useAppMoney } from '@/state/app';
-import { Bang, Bell, BellOff, Button, Card, ChevronRight, Duck, F, LogoTile, Plus, Txt, brand, usePalette } from '@/ui/sunflower';
+import { Bang, Bell, BellOff, Button, Card, ChevronRight, Duck, F, LogoTile, Plus, Search, Txt, brand, usePalette } from '@/ui/sunflower';
 
 export function TotalCard({ totals, on, of, all, blocked }: { totals: SpendTotal[]; on: number; of: number; all: boolean; blocked: boolean }) {
   const p = usePalette();
@@ -117,6 +117,61 @@ export function OffBanner({ status, onTurnOn }: { status: NotifStatus; onTurnOn:
 
 export function openPhoneSettings() {
   Linking.openSettings().catch(() => {});
+}
+
+/**
+ * "🔔 Next reminder · Tomorrow, 9 AM · Netflix ›" under the total, so it's
+ * plain that reminders are scheduled (reviews: users couldn't tell a broken
+ * reminder from a setting). Tap: the Calendar, which shows every one.
+ */
+export function NextReminderRow({ when, name, onPress }: { when: string; name: string; onPress: () => void }) {
+  const p = usePalette();
+  return (
+    <Pressable accessibilityRole="button" accessibilityLabel={`Next reminder: ${name}, ${when}`} accessibilityHint="Opens the calendar" onPress={onPress}>
+      {({ pressed }) => (
+        <Card style={{ minHeight: 56, borderRadius: 16, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, paddingVertical: 9, opacity: pressed ? 0.75 : 1 }}>
+          <Bell color={p.cardFg} fill={p.dark ? brand.sunflower : brand.ink} size={17} />
+          <View style={{ flex: 1, minWidth: 0 }}>
+            <Txt v="body" color={p.cardFg} numberOfLines={1} style={{ fontSize: 15 }}>
+              <Txt v="body" color={p.cardFg} style={{ fontFamily: F.bold, fontSize: 15 }}>
+                Next reminder:
+              </Txt>
+              {` ${name}`}
+            </Txt>
+            <Txt v="sub" tone="mute" num numberOfLines={1}>
+              {when}
+            </Txt>
+          </View>
+          <ChevronRight color={p.cardFg} size={16} />
+        </Card>
+      )}
+    </Pressable>
+  );
+}
+
+/** "Missing any? See where subscriptions hide ›", until they tap Done in the sheet. */
+export function ForgottenRow({ onPress }: { onPress: () => void }) {
+  const p = usePalette();
+  return (
+    <Pressable accessibilityRole="button" accessibilityLabel="Missing any? See where subscriptions hide" onPress={onPress}>
+      {({ pressed }) => (
+        <Card style={{ minHeight: 64, borderRadius: 20, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, paddingVertical: 12, opacity: pressed ? 0.75 : 1 }}>
+          <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: p.dark ? '#2A2721' : '#FFF1BC', alignItems: 'center', justifyContent: 'center' }}>
+            <Search color={p.fg} size={20} />
+          </View>
+          <View style={{ flex: 1, minWidth: 0 }}>
+            <Txt v="label" color={p.cardFg}>
+              Missing any?
+            </Txt>
+            <Txt v="sub" tone="mute">
+              See where subscriptions hide
+            </Txt>
+          </View>
+          <ChevronRight color={p.mute} />
+        </Card>
+      )}
+    </Pressable>
+  );
 }
 
 /** "4 have no date yet, so no reminders. Add dates ›" (design/v13-dates screen 3). */

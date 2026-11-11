@@ -85,6 +85,13 @@ export default function Dates() {
   const [footerH, setFooterH] = useState(120);
   const set = list.filter(pickHasDate).length;
   const dayPick = dayFor ? (list.find((x) => x.id === dayFor) ?? null) : null;
+  // After Save (or "I'm not sure"), go straight to the next one without a date, further
+  // down the list; close after the last. Many picks used to mean opening a sheet for each.
+  const nextUndated = (from: string | null): string | null => {
+    // Forward only, so skipping with "I'm not sure" never loops back round.
+    const i = sorted.findIndex((x) => x.id === from);
+    return sorted.slice(i + 1).find((x) => !pickHasDate(x))?.id ?? null;
+  };
 
   return (
     <OnbRoot surface="cream">
@@ -126,11 +133,11 @@ export default function Dates() {
         onClose={() => setDayFor(null)}
         onNotSure={() => {
           if (dayFor) clearDate(dayFor);
-          setDayFor(null);
+          setDayFor(nextUndated(dayFor));
         }}
         onDone={(anchor) => {
           if (dayFor) setDate(dayFor, anchor, 'next');
-          setDayFor(null);
+          setDayFor(nextUndated(dayFor));
         }}
       />
     </OnbRoot>

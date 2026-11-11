@@ -108,10 +108,18 @@ Needs the EAS development build for the starred ones (*).
 - [ ] Ditch something: the top right says Done. Done keeps it ditched. Reopen it: top left says "Put it back" and asks first.
 - [ ] Ditched tab → a cancelled one → "Not cancelled yet": it goes back to waiting.
 
+**Additions**
+- [ ] Welcome: under the button, "Free forever for tracking. Reminders on 3."
+- [ ] Dates step: tap the first "Pick day", choose a day, Save. The sheet goes straight to the next one without a date. After the last, it closes.
+- [ ] Paywall, Yearly: two lines under the button, "$0 today · $29.99/yr from …" and "Renews yearly · Cancel anytime".
+- [ ] Track a free trial with a price and end date: the Home total shows "+ 1 trial, then $X a month".
+- [ ] Settings → Feedback & help → Report a problem: an email opens with one line of counts at the bottom, with no subscription names or prices.
+
 **Looks**
 - [ ] Tab bar: "Home", "Calendar", "Ditched" are fully visible, letters not cut, on your iPhone.
 - [ ] Home: a yearly sub shows "/yr" after its price.
 - [ ] *iPad (if you have one): Home, Calendar and Settings sit in a centred column, not stretched.
+- [ ] Home screen: the yellow duck icon. Splash: the icon on cream (dark: on black).
 - [ ] Paywall: 4 rows (Track every subscription, Subscriptions with reminders, Pick reminder days, Nudge if you miss one). No widget row.
 
 ## 1f. Next reminder, "Find the ones you forgot", paywall Lifetime line (Nov 11, DECISIONS #42)

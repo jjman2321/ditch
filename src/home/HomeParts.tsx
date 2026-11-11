@@ -11,7 +11,22 @@ import { useCombinedTotal } from '@/services/fx';
 import { useApp, useAppMoney } from '@/state/app';
 import { Bang, Bell, BellOff, Button, Card, ChevronRight, Duck, F, LogoTile, Plus, Search, Txt, brand, usePalette } from '@/ui/sunflower';
 
-export function TotalCard({ totals, on, of, all, blocked }: { totals: SpendTotal[]; on: number; of: number; all: boolean; blocked: boolean }) {
+export function TotalCard({
+  totals,
+  on,
+  of,
+  all,
+  blocked,
+  trials,
+}: {
+  totals: SpendTotal[];
+  on: number;
+  of: number;
+  all: boolean;
+  blocked: boolean;
+  /** Free trials still running: "+ 1 trial, then $13.99 a month" (SPEC §3.2). */
+  trials?: { count: number; monthly: { currency: string; monthlyMinor: number }[] };
+}) {
   const p = usePalette();
   const money = useAppMoney();
   const [first, ...rest] = totals;
@@ -20,9 +35,13 @@ export function TotalCard({ totals, on, of, all, blocked }: { totals: SpendTotal
   const combined = useCombinedTotal(totals, useApp().settings.currency);
   const approx = combined ? approxLine(money(combined.monthlyMinor, combined.currency, { whole: true }), 'a month', combined.date) : null;
   const reminders = blocked ? 'Reminders off' : all && of > 0 ? `all ${of}` : `${on} of ${of}`;
+  // One currency: "+ 1 trial, then $13.99 a month". Mixed or unpriced: just the count.
+  const trialLine = trials?.count
+    ? `+ ${trials.count} ${trials.count === 1 ? 'trial' : 'trials'}${trials.monthly.length === 1 ? `, then ${money(trials.monthly[0].monthlyMinor, trials.monthly[0].currency)} a month` : ''}`
+    : null;
   const a11y = first
-    ? `${money(first.monthlyMinor, first.currency)} a month, ${money(first.yearlyMinor, first.currency, { whole: true })} a year. ${rest.map((t) => `Plus ${money(t.monthlyMinor, t.currency)} a month.`).join(' ')}${approx ? ` ${approx.spoken}` : ''} ${blocked ? 'Reminders are off.' : `Reminders on ${reminders}.`}`
-    : 'No prices yet.';
+    ? `${money(first.monthlyMinor, first.currency)} a month, ${money(first.yearlyMinor, first.currency, { whole: true })} a year. ${rest.map((t) => `Plus ${money(t.monthlyMinor, t.currency)} a month.`).join(' ')}${approx ? ` ${approx.spoken}` : ''} ${trialLine ? ` ${trialLine}.` : ''} ${blocked ? 'Reminders are off.' : `Reminders on ${reminders}.`}`
+    : `${trialLine ? `Nothing charging yet. ${trialLine}.` : 'No prices yet.'}`;
   return (
     <View
       accessible
@@ -43,9 +62,14 @@ export function TotalCard({ totals, on, of, all, blocked }: { totals: SpendTotal
         </View>
       ) : (
         <Txt v="heading" color={fg}>
-          Add prices to see your total
+          {trialLine ? 'Nothing charging yet' : 'Add prices to see your total'}
         </Txt>
       )}
+      {trialLine ? (
+        <Txt v="label" num color={fg} style={{ marginTop: 2 }}>
+          {trialLine}
+        </Txt>
+      ) : null}
       {rest.map((t) => (
         <Txt key={t.currency} v="label" num color={fg} style={{ marginTop: 2 }}>
           + {money(t.monthlyMinor, t.currency)} a month · {money(t.yearlyMinor, t.currency, { whole: true })} a year

@@ -87,8 +87,9 @@ export default function Welcome() {
 
         <View style={{ height: f.small ? 24 : 32 }} />
         <Button label="See what I pay" onPress={() => router.push('/onboarding/services')} />
+        {/* The deal, before any work (review research: ~155 "told me after I typed it all"). */}
         <Txt v="sub" tone="fg2" center style={{ marginTop: 12 }}>
-          Free forever for tracking.
+          {'Free forever for tracking. Reminders on\u00A03.'}
         </Txt>
       </FitScroll>
     </OnbRoot>

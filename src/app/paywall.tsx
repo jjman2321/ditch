@@ -283,7 +283,7 @@ export default function Paywall() {
                 <Txt v="fine" num style={{ fontFamily: F.semi }}>
                   {`${formatWholeMoney(0, yearly.currency)} today`}
                 </Txt>
-                {` · ${yearly.priceString}/yr from ${shortDate(charge)} · Cancel${NB}anytime`}
+                {` · ${yearly.priceString}/yr from ${shortDate(charge)}\nRenews yearly · Cancel${NB}anytime`}
               </>
             ) : planId === 'monthly' ? (
               `${monthly.priceString} today, then every month. Cancel anytime.`

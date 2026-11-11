@@ -17,6 +17,7 @@ import {
   homeTotals,
   makeSub,
   settleFreePicks,
+  trialsAfter,
   monthDue,
   pendingSavings,
   reactivateSub,
@@ -313,5 +314,17 @@ describe('support diagnostics line', () => {
     const line = diagnosticsLine({ subs, settings: DEFAULT_SETTINGS, pro: false, notif: 'granted', pending: 2, leads: [3, 1] });
     expect(line).toContain('Reminders on · Free · 1 subs, 1 with reminders, 0 with no date');
     expect(line).not.toMatch(/Netflix|17\.99/);
+  });
+});
+
+describe('trialsAfter', () => {
+  it('monthly cost once running trials start, per currency', () => {
+    const t = (id: string, amountMinor: number, cycle: 'monthly' | 'yearly', currency = 'USD') =>
+      makeSub({ id, name: id, cycle, anchor: '2026-11-20', dateSource: 'next', amountMinor, currency, isTrial: true });
+    expect(trialsAfter([t('a', 1399, 'monthly')], '2026-11-11')).toEqual({ count: 1, monthly: [{ currency: 'USD', monthlyMinor: 1399 }] });
+    expect(trialsAfter([t('a', 1399, 'monthly'), t('b', 12000, 'yearly')], '2026-11-11').monthly).toEqual([{ currency: 'USD', monthlyMinor: 2399 }]);
+    expect(trialsAfter([t('a', 1399, 'monthly'), t('b', 999, 'monthly', 'GBP')], '2026-11-11').monthly).toHaveLength(2);
+    // Over once the end date has passed.
+    expect(trialsAfter([t('a', 1399, 'monthly')], '2026-11-21').count).toBe(0);
   });
 });

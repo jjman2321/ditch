@@ -8,7 +8,7 @@ import { ScrollView, View } from 'react-native';
 
 import { CYCLE_SHORT } from '@/domain/money';
 import { nextReminder, whenLabel } from '@/domain/reminders';
-import { homeGroups, homeTotals, isPending, isPricedSub, isProTrial, listedUserSubs, remindedIds, undatedSubs, yearlyOfSub } from '@/domain/subs';
+import { trialsAfter, homeGroups, homeTotals, isPending, isPricedSub, isProTrial, listedUserSubs, remindedIds, undatedSubs, yearlyOfSub } from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
 import { AddDatesSheet } from '@/home/AddDatesSheet';
 import { EmptyHome, ForgottenRow, NextReminderRow, NoDateRow, OffBanner, TotalCard, openPhoneSettings } from '@/home/HomeParts';
@@ -28,6 +28,7 @@ export default function Home() {
 
   const groups = useMemo(() => homeGroups(subs, today), [subs, today]);
   const totals = useMemo(() => homeTotals(subs, today, settings.currency), [subs, today, settings.currency]);
+  const trials = useMemo(() => trialsAfter(subs, today), [subs, today]);
   const reminded = useMemo(() => remindedIds(subs, pro), [subs, pro]);
   const listed = listedUserSubs(subs);
   const blocked = notif === 'denied' || notif === 'undetermined';
@@ -90,7 +91,7 @@ export default function Home() {
                 </View>
               ) : null}
               <View style={{ marginTop: 14 }}>
-                <TotalCard totals={totals} on={[...reminded].filter((id) => listed.some((s) => s.id === id)).length} of={listed.length} all={pro && listed.every((s) => reminded.has(s.id))} blocked={blocked} />
+                <TotalCard totals={totals} on={[...reminded].filter((id) => listed.some((s) => s.id === id)).length} of={listed.length} all={pro && listed.every((s) => reminded.has(s.id))} blocked={blocked} trials={trials} />
               </View>
               {next ? (
                 <View style={{ marginTop: 10 }}>

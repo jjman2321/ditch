@@ -4,7 +4,7 @@
 
 import { chargeFrom, type DateSource } from './charges';
 import { addDays, daysBetween, monthGrid, occurrence, parseDate, weekdayOf, type DateOnly } from './dates';
-import { spendTotals, yearlyMinor, type Cycle, type SpendTotal } from './money';
+import { monthlyMinorExact, roundMinor, spendTotals, yearlyMinor, type Cycle, type SpendTotal } from './money';
 
 export type SubStatus = 'active' | 'ditched-pending' | 'ditched-confirmed' | 'deleted';
 /** 'ditch_pro_trial' is Ditch's own trial entry (DECISIONS #15). */
@@ -128,6 +128,17 @@ export function yearlyOfSub(s: Sub): number {
 /** What the user pays now: active, priced, not in a trial, not Ditch's own trial. */
 export function payingSubs(subs: Sub[], today: DateOnly): PricedSub[] {
   return subs.filter((s): s is PricedSub => isActive(s) && !isProTrial(s) && isPricedSub(s) && !inTrial(s, today));
+}
+
+/**
+ * Free trials still running, for the Home total: what they'll cost once they
+ * start charging, as a monthly figure per currency (never added across currencies).
+ */
+export function trialsAfter(subs: Sub[], today: DateOnly): { count: number; monthly: { currency: string; monthlyMinor: number }[] } {
+  const trials = subs.filter((s) => isActive(s) && !isProTrial(s) && inTrial(s, today));
+  const by = new Map<string, number>();
+  for (const s of trials) if (isPricedSub(s)) by.set(s.currency, (by.get(s.currency) ?? 0) + monthlyMinorExact(s.amountMinor, s.cycle));
+  return { count: trials.length, monthly: [...by].map(([currency, m]) => ({ currency, monthlyMinor: roundMinor(m) })) };
 }
 
 /** One total per currency; the user's own currency first, then biggest first. */

@@ -6,9 +6,11 @@
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
-import { headsUpDates, nextFromLastCharge, previousCharge } from '@/domain/charges';
+import { HEADS_UP_LEADS, nextFromLastCharge, previousCharge } from '@/domain/charges';
 import { addDays, longDate, monthGrid, monthTitle, parseDate, shiftMonth, shortDate, toDateOnly, weekdayDate, type DateOnly } from '@/domain/dates';
 import { type Cycle } from '@/domain/money';
+import { reminderDaysFor } from '@/domain/reminders';
+import { now as clockNow } from '@/services/clock';
 import { usePickPrice, type Picked } from '@/state/onboarding';
 import { chooseCycle, cycleChoices } from '@/state/picks';
 import {
@@ -37,12 +39,33 @@ function B({ children }: { children: string }) {
   return <Txt v="body" style={{ fontFamily: F.bold, fontSize: 14 }}>{children}</Txt>;
 }
 
-export function DateBody({ sub, onSave, onNotSure }: { sub: Picked; onSave: (anchor: DateOnly, source: Mode, cycle: Cycle) => void; onNotSure: () => void }) {
+export function DateBody({
+  sub,
+  onSave,
+  onNotSure,
+  trial = false,
+  leads = HEADS_UP_LEADS,
+  reminderTime = '09:00',
+  off,
+}: {
+  sub: Picked;
+  onSave: (anchor: DateOnly, source: Mode, cycle: Cycle) => void;
+  onNotSure: () => void;
+  /** A free trial: ask when it ends (a future day). There's no receipt yet. */
+  trial?: boolean;
+  leads?: readonly number[];
+  reminderTime?: string;
+  /** Shown instead of the reminder dates when this one won't get any. */
+  off?: string;
+}) {
   const p = usePalette();
   const priceOf = usePickPrice();
-  const today = toDateOnly();
+  const today = toDateOnly(clockNow());
   const confirmed = sub.dateSource !== 'none';
-  const [mode, setMode] = useState<Mode>(sub.dateSource === 'next' ? 'next' : 'receipt');
+  const [mode, setMode] = useState<Mode>(trial || sub.dateSource === 'next' ? 'next' : 'receipt');
+  // Switching modes shows the matching receipt, but the real next charge is kept,
+  // so a 31st never becomes the 28th by going through February.
+  const [keepNext, setKeepNext] = useState<DateOnly | null>(null);
   const [cycle, setCycle] = useState<Cycle>(sub.cycle);
   // Nothing is pre-selected without a real date: the user taps the real day.
   const [selected, setSelected] = useState<DateOnly | null>(confirmed ? sub.anchor : null);
@@ -64,17 +87,21 @@ export function DateBody({ sub, onSave, onNotSure }: { sub: Picked; onSave: (anc
   const switchMode = (m: Mode) => {
     // Carry the answer across: a next charge becomes the receipt before it, and back.
     let sel: DateOnly | null = null;
+    let keep: DateOnly | null = null;
     if (selected) {
-      sel = m === 'receipt' ? previousCharge(selected, cycle) : nextFromLastCharge(selected, cycle, today);
+      const realNext = keepNext ?? (mode === 'receipt' ? nextFromLastCharge(selected, cycle, today) : selected);
+      sel = m === 'receipt' ? previousCharge(realNext, cycle) : realNext;
       if (m === 'receipt' && sel > today) sel = null;
+      keep = sel ? realNext : null;
     }
     setMode(m);
     setSelected(sel);
+    setKeepNext(keep);
     setView(start(m, sel));
   };
 
-  const next = selected ? (mode === 'receipt' ? nextFromLastCharge(selected, cycle, today) : selected) : null;
-  const heads = next ? headsUpDates(next, today, { nowHour: new Date().getHours() }) : [];
+  const next = selected ? (keepNext ?? (mode === 'receipt' ? nextFromLastCharge(selected, cycle, today) : selected)) : null;
+  const heads = next ? reminderDaysFor(next, clockNow(), leads, reminderTime) : [];
   // Preview the plan the cycle switch would move to.
   const preview = chooseCycle(sub, cycle);
   const price = priceOf(preview) ?? 'No price yet';
@@ -111,16 +138,22 @@ export function DateBody({ sub, onSave, onNotSure }: { sub: Picked; onSave: (anc
         ) : null}
       </View>
 
-      <Segmented
-        label="Which date do you know"
-        value={mode}
-        onChange={switchMode}
-        options={[
-          { value: 'next', label: 'Next charge' },
-          { value: 'receipt', label: 'From my last receipt' },
-        ]}
-        style={{ marginTop: 14 }}
-      />
+      {trial ? (
+        <Txt v="heading" accessibilityRole="header" style={{ marginTop: 14 }}>
+          When does the trial end?
+        </Txt>
+      ) : (
+        <Segmented
+          label="Which date do you know"
+          value={mode}
+          onChange={switchMode}
+          options={[
+            { value: 'next', label: 'Next charge' },
+            { value: 'receipt', label: 'From my last receipt' },
+          ]}
+          style={{ marginTop: 14 }}
+        />
+      )}
 
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
         <Txt v="heading" accessibilityRole="header">
@@ -162,6 +195,7 @@ export function DateBody({ sub, onSave, onNotSure }: { sub: Picked; onSave: (anc
                 onPress={() => {
                   haptic.select();
                   setSelected(d);
+                  setKeepNext(null);
                 }}
                 style={{ flex: 1, height: 44, alignItems: 'center', justifyContent: 'center' }}
               >
@@ -214,16 +248,18 @@ export function DateBody({ sub, onSave, onNotSure }: { sub: Picked; onSave: (anc
             <View style={{ flexDirection: 'row', gap: 9, alignItems: 'center' }}>
               <Bell color={p.fg} size={17} fill={brand.sunflower} />
               <Txt v="body" style={{ flex: 1, fontSize: 14 }}>
-                {heads.length === 2 ? (
+                {off ? (
+                  off
+                ) : heads.length >= 2 ? (
                   <>
-                    Reminders <B>{weekdayDate(heads[0])}</B> and <B>{weekdayDate(heads[1])}</B>
+                    Reminders <B>{heads.slice(0, -1).map(weekdayDate).join(', ')}</B> and <B>{weekdayDate(heads[heads.length - 1])}</B>
                   </>
                 ) : heads.length === 1 ? (
                   <>
                     Reminder <B>{weekdayDate(heads[0])}</B>
                   </>
                 ) : (
-                  'Too close for a reminder this time. The next one gets two.'
+                  trial ? 'Too close for a reminder. Cancel it today if you don’t want it.' : 'Too close for a reminder this time. The next one gets them.'
                 )}
               </Txt>
             </View>
@@ -232,9 +268,11 @@ export function DateBody({ sub, onSave, onNotSure }: { sub: Picked; onSave: (anc
           <View style={{ flexDirection: 'row', gap: 9, alignItems: 'center', minHeight: 46 }}>
             <CardIcon color={p.fg} size={17} />
             <Txt v="body" style={{ flex: 1, fontSize: 14 }}>
-              {mode === 'receipt'
-                ? `Tap the day on your last ${sub.name} receipt. Your email or bank app has it.`
-                : `Tap the day ${sub.name} charges you next.`}
+              {trial
+                ? `Tap the day your ${sub.name} trial ends. It’s in the sign-up email.`
+                : mode === 'receipt'
+                  ? `Tap the day on your last ${sub.name} receipt. Your email or bank app has it.`
+                  : `Tap the day ${sub.name} charges you next.`}
             </Txt>
           </View>
         )}
@@ -242,9 +280,13 @@ export function DateBody({ sub, onSave, onNotSure }: { sub: Picked; onSave: (anc
 
       <View style={{ flex: 1, minHeight: 12 }} />
       <Button
-        label={next ? `Set next charge ${weekdayDate(next)}` : 'Pick a day'}
+        label={next ? (trial ? `Trial ends ${weekdayDate(next)}` : `Set next charge ${weekdayDate(next)}`) : 'Pick a day'}
         disabled={!selected}
-        onPress={() => selected && onSave(selected, mode, cycle)}
+        onPress={() => {
+          if (!selected) return;
+          if (keepNext) onSave(keepNext, 'next', cycle);
+          else onSave(selected, mode, cycle);
+        }}
       />
       <Button kind="text" label="I’m not sure" onPress={onNotSure} style={{ marginTop: 4 }} />
     </View>

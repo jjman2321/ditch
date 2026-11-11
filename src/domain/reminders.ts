@@ -213,6 +213,18 @@ export function nextReminder(plan: PlannedReminder[], subs: Sub[]): { name: stri
   return { name: s ? (isProTrial(s) ? 'Ditch Pro trial' : s.name) : 'Ditch', fireAt: r.fireAt };
 }
 
+/**
+ * The days a charge's reminders land, soonest first, leaving out any whose
+ * time has already passed. What the date pickers promise, so it has to match
+ * what planReminders actually schedules.
+ */
+export function reminderDaysFor(charge: DateOnly, now: Date, leads: readonly number[], time: string): DateOnly[] {
+  return [...new Set(leads)]
+    .sort((a, b) => b - a)
+    .map((d) => addDays(charge, -d))
+    .filter((d) => atTime(d, time).getTime() > now.getTime());
+}
+
 /** When the next reminder lands, for Home: "Today, 9 AM", "Tomorrow, 9 AM", "Sat, Nov 14, 9 AM". */
 export function whenLabel(fireAt: Date, today: DateOnly, time: string): string {
   const day = toDateOnly(fireAt);

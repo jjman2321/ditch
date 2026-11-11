@@ -155,6 +155,38 @@ export function remindedIds(subs: Sub[], pro: boolean): Set<string> {
   return new Set(picked.slice(0, FREE_REMINDERS).map((s) => s.id));
 }
 
+/**
+ * Free plan: keep the "3 reminders" promise exact when subs change.
+ * - A sub with no date holds no slot (nothing could fire).
+ * - A changed sub that asks for a slot only gets one if fewer than 3 dated
+ *   subs already have one; subs that already held a slot keep it.
+ * So giving one sub a date can never quietly turn another one's reminder off.
+ * Returns the changed subs, adjusted. Pro ignores slots, so nothing changes.
+ */
+export function settleFreePicks(all: Sub[], changed: Sub[], pro: boolean): Sub[] {
+  if (pro) return changed;
+  const ids = new Set(changed.map((s) => s.id));
+  const before = new Map(all.map((s) => [s.id, s]));
+  // Slots held by subs that aren't changing, or that already held one with a date.
+  const keeps = (s: Sub) => s.freePick && hasDate(s) && isActive(s) && !isProTrial(s);
+  const held = (s: Sub) => {
+    const was = before.get(s.id);
+    return !!was && keeps(was);
+  };
+  let used = all.filter((s) => !ids.has(s.id) && keeps(s)).length + changed.filter((s) => keeps(s) && held(s)).length;
+  return changed.map((s) => {
+    // Ditched ones keep theirs (it doesn't count), so Undo brings the reminder back if there's room.
+    if (!s.freePick || isProTrial(s) || !isActive(s)) return s;
+    if (!hasDate(s)) return { ...s, freePick: false };
+    if (held(s)) return s;
+    if (used < FREE_REMINDERS) {
+      used += 1;
+      return s;
+    }
+    return { ...s, freePick: false };
+  });
+}
+
 /** The 3 biggest yearly charges with a date: the free default (DECISIONS #11, #33). */
 export function defaultFreePicks(subs: Sub[]): string[] {
   return [...listedUserSubs(subs).filter(hasDate)]

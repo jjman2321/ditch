@@ -9,9 +9,9 @@ import { AccessibilityInfo, Pressable, ScrollView, TextInput, View } from 'react
 
 import { catalogPrice, planChoices } from '@/catalog/prices';
 import { SERVICES, SERVICE_BY_ID, availableIn, popularIn, searchServices, type CatalogService } from '@/catalog/services';
-import { headsUpDates } from '@/domain/charges';
 import { weekdayDate, weekdayShort, type DateOnly } from '@/domain/dates';
-import { headsUpBody, trialBody } from '@/domain/reminders';
+import { headsUpBody, reminderDaysFor, trialBody } from '@/domain/reminders';
+import { now as clockNow } from '@/services/clock';
 import { shortPlanName } from '@/domain/copy';
 import { CYCLE_SHORT, CYCLE_WORDS, currencyDigits, formatMoney, parseAmountInput, type Cycle } from '@/domain/money';
 import { leadsLabel, shortTimeLabel, effectiveLeads } from '@/domain/settings';
@@ -276,6 +276,10 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
         <Button kind="text" label="Back" onPress={() => setStep('form')} style={{ alignSelf: 'flex-start', marginTop: -8, marginLeft: -12 }} />
         <DateBody
           sub={asPick(draft)}
+          trial={draft.isTrial}
+          leads={effectiveLeads(settings, pro)}
+          reminderTime={settings.reminderTime}
+          off={remindOn || trialEntry ? undefined : atLimit ? 'No reminder: your free 3 are in use.' : 'Reminders are off for this one.'}
           onSave={(anchor, source, cycle) => {
             const moved = cycle !== draft.cycle ? fromPick(draft, chooseCycle(asPick(draft), cycle)) : draft;
             setDraft({ ...moved, cycle, anchor, dateSource: source });
@@ -294,7 +298,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
   const charge = chargeOfSub(draft, today);
   // When the reminders land, and a preview of the first one, worded like the real notification.
   const leadsNow = trialEntry ? [3, 1] : effectiveLeads(settings, pro);
-  const heads = charge ? headsUpDates(charge, today, { leads: leadsNow, nowHour: new Date().getHours() }) : [];
+  const heads = charge ? reminderDaysFor(charge, clockNow(), leadsNow, settings.reminderTime) : [];
   const previewName = (draft.name || query).trim();
   const preview =
     remindOn && charge && heads[0] && previewName && !trialEntry
@@ -495,11 +499,13 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                       : !charge && !trialEntry
                         ? 'Starts once it has a date'
                         : remindOn && heads.length
-                          ? `${heads.map(weekdayDate).join(' and ')} at ${shortTimeLabel(settings.reminderTime)}`
-                          : `${leadsLabel(leadsNow)}, at ${shortTimeLabel(settings.reminderTime)}`}
+                          ? `${heads.slice(0, -1).map(weekdayDate).join(', ')}${heads.length > 1 ? ' and ' : ''}${weekdayDate(heads[heads.length - 1])} at ${shortTimeLabel(settings.reminderTime)}`
+                          : remindOn && charge
+                            ? 'Too close for a reminder this time. The next one gets them.'
+                            : `${leadsLabel(leadsNow)}, at ${shortTimeLabel(settings.reminderTime)}`}
                   </Txt>
                 </View>
-                <SunSwitch label="Remind me" hint={atLimit ? 'Free covers 3 reminders' : undefined} value={remindOn} disabled={trialEntry} onValueChange={toggleRemind} />
+                <SunSwitch label="Remind me" hint={atLimit ? 'Free covers 3 reminders' : !charge && !trialEntry ? 'Starts once it has a date' : undefined} value={!charge && !trialEntry ? false : remindOn} disabled={trialEntry || !charge} onValueChange={toggleRemind} />
               </View>
               {/* The exact notification they'll get (design/v14 option A). */}
               {preview ? (
@@ -517,7 +523,14 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                 <Button
                   kind="text"
                   label="Try Pro for reminders on everything"
-                  onPress={() => {
+                  onPress={async () => {
+                    // Keep what they typed: save it (no reminder yet), then show Pro.
+                    const name = (draft.name || query).trim();
+                    if (name && canSave) {
+                      const final: Sub = { ...draft, name, freePick: false, currency: draft.amountMinor ? currency : draft.currency };
+                      if (isNew) await app.addSub(final);
+                      else await app.saveSub(final);
+                    }
                     close();
                     router.push('/paywall?from=app');
                   }}

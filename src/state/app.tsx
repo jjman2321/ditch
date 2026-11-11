@@ -20,6 +20,7 @@ import {
   isProTrial,
   reactivateSub,
   remindedIds,
+  settleFreePicks,
   type Sub,
 } from '@/domain/subs';
 import { now as clockNow, today as clockToday } from '@/services/clock';
@@ -167,7 +168,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   /** Save changed subs, update memory, reschedule. */
   const commit = useCallback(
-    async (changed: Sub[]) => {
+    async (input: Sub[]) => {
+      // Free: the 3 reminder slots stay exact, whatever changed (settleFreePicks).
+      const changed = settleFreePicks(ref.current.subs, input, isPro(ref.current.settings));
       const byId = new Map(changed.map((s) => [s.id, s]));
       const existing = new Set(ref.current.subs.map((s) => s.id));
       const subs = [

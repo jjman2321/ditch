@@ -8,8 +8,9 @@
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
-import { HEADS_UP_LEADS, headsUpDates, ordinal } from '@/domain/charges';
+import { HEADS_UP_LEADS, ordinal } from '@/domain/charges';
 import { shortPlanName } from '@/domain/copy';
+import { reminderDaysFor } from '@/domain/reminders';
 import {
   addDays,
   anchorForDayOfMonth,
@@ -25,6 +26,7 @@ import {
   weekdayDate,
   type DateOnly,
 } from '@/domain/dates';
+import { now as clockNow } from '@/services/clock';
 import { onboardingToday, usePickPrice, type Picked } from '@/state/onboarding';
 import { Button, ChevronLeft, ChevronRight, F, IconButton, LogoTile, Sheet, Txt, haptic, usePalette } from '@/ui/sunflower';
 
@@ -34,9 +36,19 @@ const WEEKDAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 const EVERY = { weekly: 'every week', monthly: 'every month', quarterly: 'every 3 months', yearly: 'every year' } as const;
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-/** "Reminders Fri, Nov 13 and Sun, Nov 15 at 9 AM." (or why there are none this time) */
-export function remindersLine(next: DateOnly, today: DateOnly, leads: readonly number[], time: string): string {
-  const heads = headsUpDates(next, today, { leads });
+/**
+ * "Reminders Fri, Nov 13 and Sun, Nov 15 at 9 AM." (or why there are none).
+ * `off`: this one won't get reminders (e.g. the free 3 are in use), so say that instead.
+ */
+export function remindersLine(
+  next: DateOnly,
+  _today: DateOnly,
+  leads: readonly number[],
+  time: string,
+  { reminderTime = '09:00', now = clockNow(), off }: { reminderTime?: string; now?: Date; off?: string } = {},
+): string {
+  if (off) return off;
+  const heads = reminderDaysFor(next, now, leads, reminderTime);
   if (heads.length === 0) return 'Too close for a reminder this time. The next one gets them.';
   if (heads.length === 1) return `Reminder ${weekdayDate(heads[0])} at ${time}.`;
   return `Reminders ${heads.slice(0, -1).map(weekdayDate).join(', ')} and ${weekdayDate(heads[heads.length - 1])} at ${time}.`;
@@ -111,6 +123,8 @@ export function DayBody({
   onClose,
   leads,
   time,
+  reminderTime,
+  off,
 }: {
   pick: Picked;
   onDone: (anchor: DateOnly) => void;
@@ -118,6 +132,10 @@ export function DayBody({
   onClose: () => void;
   leads: readonly number[];
   time: string;
+  /** "HH:MM", to leave out reminders whose time has passed today. */
+  reminderTime?: string;
+  /** Shown instead of the reminder dates when this one won't get any. */
+  off?: string;
 }) {
   const p = usePalette();
   const priceOf = usePickPrice();
@@ -266,7 +284,7 @@ export function DayBody({
           {rule ?? (monthly ? 'Tap the day it charges.' : yearly ? 'Tap the month, then the day.' : 'Tap the day it charges next.')}
         </Txt>
         <Txt v="body" tone="fg2" num style={{ marginTop: 2 }}>
-          {next ? `Next: ${weekdayDate(next)}. ${remindersLine(next, today, leads, time)}` : 'It’s on your bank app or the receipt email.'}
+          {next ? `Next: ${weekdayDate(next)}. ${remindersLine(next, today, leads, time, { reminderTime, off })}` : 'It’s on your bank app or the receipt email.'}
         </Txt>
       </View>
       <Button label="Save" disabled={!anchor} onPress={() => anchor && onDone(anchor)} style={{ marginTop: 16 }} />

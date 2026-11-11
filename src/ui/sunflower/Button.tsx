@@ -1,7 +1,7 @@
 // Buttons. Primary: ink (sunflower in dark), 56pt. Secondary: outline, 52pt.
 // Text: 44pt. Every one has a VoiceOver label (its text) and a 44pt+ target.
 
-import { type ReactNode } from 'react';
+import { useRef, type ReactNode } from 'react';
 import { Pressable, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { TAP, usePalette } from './tokens';
@@ -26,7 +26,8 @@ export function Button({
   label: string;
   /** Red text, for destructive actions (Delete). */
   danger?: boolean;
-  onPress: () => void;
+  /** May return a promise: further taps are ignored until it settles. */
+  onPress: () => unknown;
   kind?: Kind;
   disabled?: boolean;
   hint?: string;
@@ -35,6 +36,22 @@ export function Button({
   left?: ReactNode;
 }) {
   const p = usePalette();
+  // One press at a time: a quick double tap must never add twice or open a screen twice.
+  const busy = useRef(false);
+  const press = () => {
+    if (busy.current) return;
+    busy.current = true;
+    let out: unknown;
+    try {
+      out = onPress();
+    } catch (e) {
+      busy.current = false;
+      throw e;
+    }
+    const release = () => setTimeout(() => (busy.current = false), 450);
+    if (out && typeof (out as Promise<unknown>).then === 'function') (out as Promise<unknown>).then(release, release);
+    else release();
+  };
   const h = height ?? (kind === 'primary' ? 56 : kind === 'secondary' ? 52 : TAP);
   const bg = kind === 'primary' ? p.cta : 'transparent';
   const fg = kind === 'primary' ? p.ctaFg : danger ? p.danger : p.fg;
@@ -45,7 +62,7 @@ export function Button({
       accessibilityHint={hint}
       accessibilityState={{ disabled: !!disabled }}
       disabled={disabled}
-      onPress={onPress}
+      onPress={press}
       style={({ pressed }) => [
         {
           minHeight: h,

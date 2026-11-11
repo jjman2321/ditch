@@ -58,18 +58,21 @@ function Body({ close }: { close: () => void }) {
   const save = async (s: Sub, anchor: string) => {
     // Room in the free 3? Then this one gets reminders now that it has a date.
     const room = !pro && remindedIds(app.subs.filter((x) => x.id !== s.id), false).size < FREE_REMINDERS;
-    await app.saveSub({ ...s, anchor, dateSource: 'next', freePick: s.freePick || room });
+    await app.saveSub({ ...s, anchor, dateSource: 'next', freePick: room });
     haptic.select();
     setEditing(null);
     if (list.length <= 1) close();
   };
 
   if (sub) {
+    const room = pro || remindedIds(app.subs.filter((x) => x.id !== sub.id), false).size < FREE_REMINDERS;
     return (
       <DayBody
         pick={asPick(sub)}
         leads={effectiveLeads(settings, pro)}
         time={shortTimeLabel(settings.reminderTime)}
+        reminderTime={settings.reminderTime}
+        off={room ? undefined : 'No reminder: your free 3 are in use. Swap one in Settings.'}
         onClose={() => setEditing(null)}
         onNotSure={() => setEditing(null)}
         onDone={(anchor) => save(sub, anchor)}

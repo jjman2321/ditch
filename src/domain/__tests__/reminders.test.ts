@@ -9,7 +9,7 @@ import {
   planReminders,
   reconcile,
   type PlanSettings,
-  type PlannedReminder, whenLabel } from '../reminders';
+  type PlannedReminder, reminderDaysFor, whenLabel } from '../reminders';
 import { DEFAULT_SETTINGS } from '../settings';
 import { confirmCancel, ditchSub, makeSub, type Sub } from '../subs';
 
@@ -274,5 +274,17 @@ describe('whenLabel', () => {
     expect(whenLabel(new Date(2026, 10, 10, 9, 0), '2026-11-10', '09:00')).toBe('Today, 9 AM');
     expect(whenLabel(new Date(2026, 10, 11, 9, 0), '2026-11-10', '09:00')).toBe('Tomorrow, 9 AM');
     expect(whenLabel(new Date(2026, 10, 14, 18, 30), '2026-11-10', '18:30')).toBe('Sat, Nov 14, 6:30 PM');
+  });
+});
+
+describe('reminderDaysFor', () => {
+  it('leaves out a reminder whose time has passed today', () => {
+    const at10 = new Date(2026, 10, 10, 10, 0);
+    // Charge Wed Nov 11: the 1-day reminder is today at 9:00, already gone.
+    expect(reminderDaysFor('2026-11-11', at10, [3, 1], '09:00')).toEqual([]);
+    expect(reminderDaysFor('2026-11-13', at10, [3, 1], '09:00')).toEqual(['2026-11-12']);
+    // A later reminder time is still to come today.
+    expect(reminderDaysFor('2026-11-11', at10, [3, 1], '18:30')).toEqual(['2026-11-10']);
+    expect(reminderDaysFor('2026-11-20', at10, [7, 3, 1], '09:00')).toEqual(['2026-11-13', '2026-11-17', '2026-11-19']);
   });
 });

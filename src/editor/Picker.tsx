@@ -15,7 +15,7 @@ import { SERVICES, availableIn, popularIn, searchServices, type CatalogService }
 import { showImport } from '@/config/features';
 import { shortPlanName } from '@/domain/copy';
 import { CYCLE_SHORT } from '@/domain/money';
-import { FREE_REMINDERS, isActive, isPending, remindedIds } from '@/domain/subs';
+import { isActive, isPending } from '@/domain/subs';
 import { subFromPick } from '@/state/fromOnboarding';
 import { useApp, useAppMoney } from '@/state/app';
 import { newPick } from '@/state/picks';
@@ -128,7 +128,7 @@ export function Picker({ onCustom, onTrial, onForgotten, onClose }: { onCustom: 
   const p = usePalette();
   const app = useApp();
   const money = useAppMoney();
-  const { settings, today, pro } = app;
+  const { settings, today } = app;
   const country = settings.country;
   const [filter, setFilter] = useState<Filter>('Popular');
   const [query, setQuery] = useState('');
@@ -159,13 +159,10 @@ export function Picker({ onCustom, onTrial, onForgotten, onClose }: { onCustom: 
 
   const add = async () => {
     const nowIso = new Date().toISOString();
-    // Free reminder slots go to the first ones ticked while there's room (they need a date to fire).
-    let room = pro ? 0 : FREE_REMINDERS - remindedIds(app.subs, false).size;
+    // No date yet, so no reminder slot yet: one is offered when they add the date (settleFreePicks).
     const subs = ticked.map((id) => {
       const svc = SERVICES.find((s) => s.id === id)!;
-      const sub = subFromPick(newPick(svc, country, today), { freePick: !pro && room > 0, nowIso });
-      room -= 1;
-      return { ...sub, source: 'catalog' as const };
+      return { ...subFromPick(newPick(svc, country, today), { freePick: false, nowIso }), source: 'catalog' as const };
     });
     await app.addSubs(subs);
     haptic.select();

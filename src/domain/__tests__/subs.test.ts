@@ -16,6 +16,7 @@ import {
   homeGroups,
   homeTotals,
   makeSub,
+  settleFreePicks,
   monthDue,
   pendingSavings,
   reactivateSub,
@@ -278,5 +279,29 @@ describe('chargesBetween with old anchors', () => {
         expect(chargesBetween(sub, today, addDays(today, 400))[0]).toBe(next);
       }
     }
+  });
+});
+
+describe('settleFreePicks', () => {
+  const mk = (id: string, amountMinor: number, dated = true, freePick = true) =>
+    makeSub({ id, name: id, cycle: 'monthly', anchor: '2026-11-20', dateSource: dated ? 'next' : 'none', amountMinor, currency: 'USD', freePick });
+  it('adding a date never turns another sub’s reminder off', () => {
+    const all = [mk('a', 2000), mk('b', 1500), mk('c', 1000), mk('d', 5000, false)];
+    const dated = { ...all[3], dateSource: 'next' as const };
+    const [after] = settleFreePicks(all, [dated], false);
+    expect(after.freePick).toBe(false);
+    const next = all.map((s) => (s.id === 'd' ? after : s));
+    expect([...remindedIds(next, false)].sort()).toEqual(['a', 'b', 'c']);
+  });
+  it('gives the slot when there is room, and none to a sub without a date', () => {
+    const all = [mk('a', 2000), mk('b', 1500)];
+    expect(settleFreePicks(all, [mk('c', 900)], false)[0].freePick).toBe(true);
+    expect(settleFreePicks(all, [mk('c', 900, false)], false)[0].freePick).toBe(false);
+  });
+  it('a swap in one save works, and Pro is left alone', () => {
+    const all = [mk('a', 2000), mk('b', 1500), mk('c', 1000), mk('d', 800, true, false)];
+    const out = settleFreePicks(all, [{ ...all[2], freePick: false }, { ...all[3], freePick: true }], false);
+    expect(out.map((s) => s.freePick)).toEqual([false, true]);
+    expect(settleFreePicks(all, [mk('e', 1)], true)[0].freePick).toBe(true);
   });
 });

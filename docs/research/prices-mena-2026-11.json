@@ -1,0 +1,2809 @@
+{
+ "about": {
+  "what": "Per-country subscription prices for 5 MENA countries (UAE, Saudi Arabia, Egypt, Qatar, Kuwait), checked by hand-run scripts on official pricing pages and App Store In-App Purchase lists. Same format as docs/research/prices-2026-11.json.",
+  "checked": "2026-11-12",
+  "amounts": "amountMinor is in the currency's minor unit (fils for AED, halalas for SAR, piastres for EGP, dirhams for QAR, cents for USD). 1999 = 19.99. KWD would be in fils with 3 decimals (1.500 KWD = 1500), but no row uses KWD: every service we checked bills Kuwait in US dollars, so Kuwait rows have currency USD. Netflix and PlayStation also bill Qatar in US dollars. Prices are the regular price after any free trial or intro offer.",
+  "status": {
+   "verified": "Read today from the official page in 'source'.",
+   "partial": "Some plans read from the official page; others missing (see note).",
+   "unverified": "Read from an official list but the amount is ambiguous (several prices under one name), or not read from an official page. Don't ship without checking."
+  },
+  "taxes": "UAE VAT 5%, Saudi VAT 15%, Egypt VAT 14%, Qatar and Kuwait no VAT. App Store and apple.com prices include VAT (Apple's footnote says so for AE, SA, EG). Most service pages don't say either way; each row's note says what the page says. Netflix's help page says taxes 'may be charged in addition'.",
+  "serviceIds": "Match src/catalog/services.data.ts ids. Local services not in the catalog (OSN+, Shahid, Anghami, STARZPLAY, TOD, Weyyak, Careem Plus, noon One, talabat pro) are in notChecked with the prices we saw, as candidates.",
+  "countries": {
+   "AE": "AED",
+   "SA": "SAR",
+   "EG": "EGP",
+   "QA": "QAR (Netflix, PlayStation: USD)",
+   "KW": "USD (Apple, Netflix, Spotify, Disney+, PlayStation all bill in USD; KWD unused)"
+  },
+  "method": "Service pages read with curl or Playwright (chromium) from a US cloud IP using the country URL (e.g. spotify.com/ae-en/premium). App Store lists read from apps.apple.com/{cc}/app/id{ID}?l=en-GB (Apple shows at most 10 items). Pages that pick the country from the visitor's IP (youtube.com, osnplus.com, anghami.com, careem.com, noon.com, talabat.com, deezer.com) could not be read for these countries."
+ },
+ "prices": [
+  {
+   "serviceId": "netflix",
+   "country": "AE",
+   "currency": "AED",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic",
+     "name": "Basic",
+     "amountMinor": 3500,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 4900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 7100,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/ae",
+   "checked": "2026-11-12",
+   "note": "No ad tier in this country. Extra member: 18 AED/month. The help page says taxes may be charged on top. The App Store sells the same plans at the same amounts (VAT-inclusive there), so the web price most likely includes VAT, but Netflix doesn't say so."
+  },
+  {
+   "serviceId": "netflix",
+   "country": "SA",
+   "currency": "SAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic",
+     "name": "Basic",
+     "amountMinor": 3500,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 4900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 7100,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/sa",
+   "checked": "2026-11-12",
+   "note": "No ad tier in this country. Extra member: 18 SAR/month. The help page says taxes may be charged on top. The App Store sells the same plans at the same amounts (VAT-inclusive there), so the web price most likely includes VAT, but Netflix doesn't say so."
+  },
+  {
+   "serviceId": "netflix",
+   "country": "EG",
+   "currency": "EGP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic",
+     "name": "Basic",
+     "amountMinor": 11000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 19000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 27000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/eg",
+   "checked": "2026-11-12",
+   "note": "No ad tier in this country. Extra member: 60 EGP/month. The help page says taxes may be charged on top. The App Store sells the same plans at the same amounts (VAT-inclusive there), so the web price most likely includes VAT, but Netflix doesn't say so. App Store amounts differ slightly: Basic EGP 109.99, Premium EGP 269.99."
+  },
+  {
+   "serviceId": "netflix",
+   "country": "QA",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic",
+     "name": "Basic",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1799,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/qa",
+   "checked": "2026-11-12",
+   "note": "Netflix bills Qatar in US dollars (the page says 'Pricing (US Dollar)'). No ad tier in this country. Extra member: 3.99 USD/month. Qatar has no VAT; the App Store charges QAR 32.95/43.49/65.99 instead."
+  },
+  {
+   "serviceId": "netflix",
+   "country": "KW",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic",
+     "name": "Basic",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1799,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/kw",
+   "checked": "2026-11-12",
+   "note": "Netflix bills Kuwait in US dollars (the page says 'Pricing (US Dollar)'). No ad tier in this country. Extra member: 3.99 USD/month. Kuwait has no VAT."
+  },
+  {
+   "serviceId": "spotify",
+   "country": "AE",
+   "currency": "AED",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard",
+     "name": "Premium Standard",
+     "amountMinor": 2399,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "platinum",
+     "name": "Premium Platinum",
+     "amountMinor": 5999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Premium Student",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/ae-en/premium/",
+   "checked": "2026-11-12",
+   "note": "Saudi Arabia and the UAE have Spotify's new tiers: Premium Standard and Premium Platinum (Platinum covers up to 3 accounts). No Duo or Family on the page. A prepaid year (AED 239, one-time, doesn't auto-renew) is not recorded. The page doesn't say whether VAT is included."
+  },
+  {
+   "serviceId": "spotify",
+   "country": "SA",
+   "currency": "SAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard",
+     "name": "Premium Standard",
+     "amountMinor": 2399,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "platinum",
+     "name": "Premium Platinum",
+     "amountMinor": 5999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Premium Student",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/sa-en/premium/",
+   "checked": "2026-11-12",
+   "note": "Saudi Arabia and the UAE have Spotify's new tiers: Premium Standard and Premium Platinum (Platinum covers up to 3 accounts). No Duo or Family on the page. A prepaid year (SAR 239, one-time, doesn't auto-renew) is not recorded. The page doesn't say whether VAT is included."
+  },
+  {
+   "serviceId": "spotify",
+   "country": "EG",
+   "currency": "EGP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 7900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 10900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 13900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Premium Student",
+     "amountMinor": 3900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/eg-en/premium/",
+   "checked": "2026-11-12",
+   "note": "Also sold as prepaid packs (e.g. 3 months for EGP 237), not recorded. Mobile-operator billing is offered at checkout. The page doesn't say whether VAT is included."
+  },
+  {
+   "serviceId": "spotify",
+   "country": "QA",
+   "currency": "QAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 2199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 2999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 3799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Premium Student",
+     "amountMinor": 1099,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/qa-en/premium/",
+   "checked": "2026-11-12",
+   "note": "Qatar has no VAT."
+  },
+  {
+   "serviceId": "spotify",
+   "country": "KW",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 549,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 749,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 949,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Premium Student",
+     "amountMinor": 299,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/kw-en/premium/",
+   "checked": "2026-11-12",
+   "note": "Spotify bills Kuwait in US dollars. Kuwait has no VAT."
+  },
+  {
+   "serviceId": "youtube-premium",
+   "country": "QA",
+   "currency": "QAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 3299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 4799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "lite",
+     "name": "Premium Lite",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/qa/app/id544007664",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Qatar has no VAT. youtube.com/premium told our cloud browser it isn't available, so the web price wasn't read; Google usually charges more through Apple than on the web. Read from the YouTube app. The YouTube Music app's list also shows a third 'YouTube Premium' price (QAR 39.99), likely an older product."
+  },
+  {
+   "serviceId": "youtube-premium",
+   "country": "SA",
+   "currency": "SAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 3999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 7499,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/sa/app/id1017492454",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Saudi prices on the App Store include 15% VAT. youtube.com/premium told our cloud browser it isn't available, so the web price wasn't read; Google usually charges more through Apple than on the web. Read from the YouTube Music app (which also sells YouTube Premium); the YouTube app's own page shows no In-App Purchases list here."
+  },
+  {
+   "serviceId": "youtube-premium",
+   "country": "AE",
+   "currency": "AED",
+   "status": "unverified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 3899,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 6399,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/ae/app/id1017492454",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). UAE prices on the App Store include 5% VAT. youtube.com/premium told our cloud browser it isn't available, so the web price wasn't read; Google usually charges more through Apple than on the web. The list shows several prices under 'YouTube Premium' (AED 38.99 twice, 32.99, 39.99); 38.99 is the most repeated. Check on a UAE iPhone before shipping."
+  },
+  {
+   "serviceId": "youtube-premium",
+   "country": "EG",
+   "currency": "EGP",
+   "status": "unverified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 11499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 20999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/eg/app/id1017492454",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Egypt prices on the App Store include 14% VAT. youtube.com/premium told our cloud browser it isn't available, so the web price wasn't read; Google usually charges more through Apple than on the web. The list shows several prices under 'YouTube Premium' (EGP 114.99 twice, 79.99, 229.99); 114.99 is the most repeated. Check on an Egyptian iPhone before shipping."
+  },
+  {
+   "serviceId": "youtube-premium",
+   "country": "KW",
+   "currency": "USD",
+   "status": "unverified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 899,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 1499,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/kw/app/id1017492454",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple’s Kuwait storefront charges in US dollars, not dinars. Kuwait has no VAT. youtube.com/premium told our cloud browser it isn't available, so the web price wasn't read; Google usually charges more through Apple than on the web. The list shows $8.99 twice and $9.99 once under 'YouTube Premium'. Check on a Kuwaiti iPhone before shipping."
+  },
+  {
+   "serviceId": "youtube-music",
+   "country": "AE",
+   "currency": "AED",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 3199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 4799,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/ae/app/id1017492454",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). UAE prices on the App Store include 5% VAT."
+  },
+  {
+   "serviceId": "youtube-music",
+   "country": "SA",
+   "currency": "SAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 3199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 4799,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/sa/app/id1017492454",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Saudi prices on the App Store include 15% VAT."
+  },
+  {
+   "serviceId": "youtube-music",
+   "country": "EG",
+   "currency": "EGP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 9099,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 13999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/eg/app/id1017492454",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Egypt prices on the App Store include 14% VAT."
+  },
+  {
+   "serviceId": "youtube-music",
+   "country": "QA",
+   "currency": "QAR",
+   "status": "unverified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 2799,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 3999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/qa/app/id1017492454",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Qatar has no VAT. Two prices under 'YouTube Music' (QAR 27.99 twice, 32.99 once)."
+  },
+  {
+   "serviceId": "youtube-music",
+   "country": "KW",
+   "currency": "USD",
+   "status": "unverified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 749,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 1199,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/kw/app/id1017492454",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple’s Kuwait storefront charges in US dollars, not dinars. Kuwait has no VAT. Two prices under 'YouTube Music' ($7.49 twice, $8.49 once)."
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "AE",
+   "currency": "AED",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 4999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.disneyplus.com/en-ae",
+   "checked": "2026-11-12",
+   "note": "Disney+ is sold directly in this country with one plan (Premium). Add this country to the catalog's availableIn for disney-plus. Monthly price read from the offer terms ('currently: AED 49.99'). The page's annual price (AED 449.90) is tied to a promo ending 24 Nov 2026, so it isn't recorded. App Store lists the same AED 49.99. The page doesn't mention VAT."
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "SA",
+   "currency": "SAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 4999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.disneyplus.com/en-sa",
+   "checked": "2026-11-12",
+   "note": "Disney+ is sold directly in this country with one plan (Premium). Add this country to the catalog's availableIn for disney-plus. Monthly price read from the offer terms ('currently: SAR 49.99'). The annual price on the page (SAR 449.90) is tied to a promo ending 24 Nov 2026, so it isn't recorded. The page doesn't mention VAT."
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "EG",
+   "currency": "EGP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 17000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 170000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/en-eg",
+   "checked": "2026-11-12",
+   "note": "Disney+ is sold directly in this country with one plan (Premium). Add this country to the catalog's availableIn for disney-plus. From the FAQ: 'EGP 170 a month or EGP 1,700 a year.' App Store: EGP 169.99 / 1,699."
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "QA",
+   "currency": "QAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 4999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 49990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/en-qa",
+   "checked": "2026-11-12",
+   "note": "Disney+ is sold directly in this country with one plan (Premium). Add this country to the catalog's availableIn for disney-plus. From the FAQ: 'QAR 49.99 a month or QAR 499.90 a year.'"
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "KW",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 12990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/en-kw",
+   "checked": "2026-11-12",
+   "note": "Disney+ is sold directly in this country with one plan (Premium). Add this country to the catalog's availableIn for disney-plus. From the FAQ: 'USD 12.99 a month or USD 129.90 a year.' Disney+ bills Kuwait in US dollars."
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "AE",
+   "currency": "AED",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 2399,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 3999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/ae/apple-music/",
+   "checked": "2026-11-12",
+   "note": "Apple's UAE prices include VAT."
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "SA",
+   "currency": "SAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 2399,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 3999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/sa/apple-music/",
+   "checked": "2026-11-12",
+   "note": "Apple's Saudi prices include VAT."
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "EG",
+   "currency": "EGP",
+   "status": "partial",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 7999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://music.apple.com/eg/new",
+   "checked": "2026-11-12",
+   "note": "apple.com has no Apple Music page for this country (it redirects to the web player). Individual price read from the web player's banner ('Plan auto-renews for ... /month'). Family and Student not shown."
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "QA",
+   "currency": "QAR",
+   "status": "partial",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 2199,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://music.apple.com/qa/new",
+   "checked": "2026-11-12",
+   "note": "apple.com has no Apple Music page for this country (it redirects to the web player). Individual price read from the web player's banner ('Plan auto-renews for ... /month'). Family and Student not shown."
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "KW",
+   "currency": "USD",
+   "status": "partial",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 549,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://music.apple.com/kw/new",
+   "checked": "2026-11-12",
+   "note": "apple.com has no Apple Music page for this country (it redirects to the web player). Individual price read from the web player's banner ('Plan auto-renews for ... /month'). Family and Student not shown. Apple bills Kuwait in US dollars."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "AE",
+   "currency": "AED",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 399,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 3999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 11999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 23999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-12",
+   "note": "Apple says taxes are included. In this country every iCloud+ plan now includes Apple TV and Apple Arcade (tv.apple.com FAQ: 'Apple TV isn’t sold separately in your region')."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "SA",
+   "currency": "SAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 399,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 4499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 12999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 26999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-12",
+   "note": "Apple says taxes are included. In this country every iCloud+ plan now includes Apple TV and Apple Arcade (tv.apple.com FAQ: 'Apple TV isn’t sold separately in your region')."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "EG",
+   "currency": "EGP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 4999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 17999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 59999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 179999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 359999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-12",
+   "note": "Apple says taxes are included. In this country every iCloud+ plan now includes Apple TV and Apple Arcade (tv.apple.com FAQ: 'Apple TV isn’t sold separately in your region')."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "QA",
+   "currency": "QAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 369,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 1099,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 3699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 10999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 21999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-12",
+   "note": "No tax footnote (Qatar has no VAT). In this country every iCloud+ plan now includes Apple TV and Apple Arcade (tv.apple.com FAQ: 'Apple TV isn’t sold separately in your region')."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "KW",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 99,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 2999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 5999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-12",
+   "note": "Billed in US dollars. Apple's footnote: 'prices may be slightly higher due to VAT' (Kuwait has no VAT today). In this country every iCloud+ plan now includes Apple TV and Apple Arcade (tv.apple.com FAQ: 'Apple TV isn’t sold separately in your region')."
+  },
+  {
+   "serviceId": "amazon-prime",
+   "country": "AE",
+   "currency": "AED",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "prime",
+     "name": "Prime (monthly)",
+     "amountMinor": 1600,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "prime-yearly",
+     "name": "Prime (yearly)",
+     "amountMinor": 14000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.amazon.ae/-/en/prime",
+   "checked": "2026-11-12",
+   "note": "Regular price after the intro offer (3 months at AED 8/month). Includes Prime Video. The page doesn't say whether VAT is included."
+  },
+  {
+   "serviceId": "amazon-prime",
+   "country": "SA",
+   "currency": "SAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "prime",
+     "name": "Prime (monthly)",
+     "amountMinor": 1600,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "prime-yearly",
+     "name": "Prime (yearly)",
+     "amountMinor": 14000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.amazon.sa/-/en/prime",
+   "checked": "2026-11-12",
+   "note": "Regular price after the intro offer (3 months at SAR 8/month). Includes Prime Video. The page doesn't say whether VAT is included."
+  },
+  {
+   "serviceId": "amazon-prime",
+   "country": "EG",
+   "currency": "EGP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "prime",
+     "name": "Prime (monthly)",
+     "amountMinor": 2900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "prime-yearly",
+     "name": "Prime (yearly)",
+     "amountMinor": 24900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.amazon.eg/-/en/prime",
+   "checked": "2026-11-12",
+   "note": "Regular prices; a first-year offer (EGP 124.50) was running. Includes Prime Video. The page doesn't say whether VAT is included."
+  },
+  {
+   "serviceId": "chatgpt-plus",
+   "country": "AE",
+   "currency": "AED",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "go",
+     "name": "Go",
+     "amountMinor": 2999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus",
+     "name": "Plus",
+     "amountMinor": 7999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro",
+     "name": "Pro",
+     "amountMinor": 79999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/ae/app/id6448311069",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). UAE prices on the App Store include 5% VAT. 'ChatGPT Plus' also appears at the Pro price, so Plus is the lower one. 'Pro' is the 'ChatGPT Pro 200' product; the list also has Pro 100 and Pro 500 tiers."
+  },
+  {
+   "serviceId": "chatgpt-plus",
+   "country": "SA",
+   "currency": "SAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "go",
+     "name": "Go",
+     "amountMinor": 3500,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus",
+     "name": "Plus",
+     "amountMinor": 8999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro",
+     "name": "Pro",
+     "amountMinor": 89999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/sa/app/id6448311069",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Saudi prices on the App Store include 15% VAT. 'ChatGPT Plus' also appears at the Pro price, so Plus is the lower one. 'Pro' is the 'ChatGPT Pro 200' product; the list also has Pro 100 and Pro 500 tiers."
+  },
+  {
+   "serviceId": "chatgpt-plus",
+   "country": "EG",
+   "currency": "EGP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "go",
+     "name": "Go",
+     "amountMinor": 24999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus",
+     "name": "Plus",
+     "amountMinor": 99999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro",
+     "name": "Pro",
+     "amountMinor": 999999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/eg/app/id6448311069",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Egypt prices on the App Store include 14% VAT. 'ChatGPT Plus' also appears at the Pro price, so Plus is the lower one. 'Pro' is the 'ChatGPT Pro 200' product; the list also has Pro 100 and Pro 500 tiers."
+  },
+  {
+   "serviceId": "chatgpt-plus",
+   "country": "QA",
+   "currency": "QAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "go",
+     "name": "Go",
+     "amountMinor": 2999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus",
+     "name": "Plus",
+     "amountMinor": 6999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro",
+     "name": "Pro",
+     "amountMinor": 69999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/qa/app/id6448311069",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Qatar has no VAT. 'ChatGPT Plus' also appears at the Pro price, so Plus is the lower one. 'Pro' is the 'ChatGPT Pro 200' product; the list also has Pro 100 and Pro 500 tiers."
+  },
+  {
+   "serviceId": "chatgpt-plus",
+   "country": "KW",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "go",
+     "name": "Go",
+     "amountMinor": 799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus",
+     "name": "Plus",
+     "amountMinor": 1999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro",
+     "name": "Pro",
+     "amountMinor": 20000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/kw/app/id6448311069",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple’s Kuwait storefront charges in US dollars, not dinars. Kuwait has no VAT. 'ChatGPT Plus' also appears at the Pro price, so Plus is the lower one. 'Pro' is the 'ChatGPT Pro 200' product; the list also has Pro 100 and Pro 500 tiers."
+  },
+  {
+   "serviceId": "claude-pro",
+   "country": "AE",
+   "currency": "AED",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Pro (monthly)",
+     "amountMinor": 7999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 79999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Max",
+     "amountMinor": 49999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/ae/app/id6473753684",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). UAE prices on the App Store include 5% VAT. The list also has a 'Claude Ultra - Monthly' product."
+  },
+  {
+   "serviceId": "claude-pro",
+   "country": "SA",
+   "currency": "SAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Pro (monthly)",
+     "amountMinor": 8999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 99999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Max",
+     "amountMinor": 49999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/sa/app/id6473753684",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Saudi prices on the App Store include 15% VAT. The list also has a 'Claude Ultra - Monthly' product."
+  },
+  {
+   "serviceId": "claude-pro",
+   "country": "EG",
+   "currency": "EGP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Pro (monthly)",
+     "amountMinor": 99999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 999999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Max",
+     "amountMinor": 699999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/eg/app/id6473753684",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Egypt prices on the App Store include 14% VAT. The list also has a 'Claude Ultra - Monthly' product."
+  },
+  {
+   "serviceId": "claude-pro",
+   "country": "QA",
+   "currency": "QAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Pro (monthly)",
+     "amountMinor": 6999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 79999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Max",
+     "amountMinor": 49999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/qa/app/id6473753684",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Qatar has no VAT. The list also has a 'Claude Ultra - Monthly' product."
+  },
+  {
+   "serviceId": "claude-pro",
+   "country": "KW",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Pro (monthly)",
+     "amountMinor": 2000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 21499,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Max",
+     "amountMinor": 12499,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/kw/app/id6473753684",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple’s Kuwait storefront charges in US dollars, not dinars. Kuwait has no VAT. The list also has a 'Claude Ultra - Monthly' product."
+  },
+  {
+   "serviceId": "google-one",
+   "country": "AE",
+   "currency": "AED",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "100gb",
+     "name": "100 GB",
+     "amountMinor": 749,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "100gb-yearly",
+     "name": "100 GB (yearly)",
+     "amountMinor": 7499,
+     "cycle": "yearly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 1099,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb-yearly",
+     "name": "200 GB (yearly)",
+     "amountMinor": 10999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "ai-plus",
+     "name": "AI Plus (2 TB)",
+     "amountMinor": 3699,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/ae/app/id1451784328",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). UAE prices on the App Store include 5% VAT."
+  },
+  {
+   "serviceId": "google-one",
+   "country": "SA",
+   "currency": "SAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "100gb",
+     "name": "100 GB",
+     "amountMinor": 699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "100gb-yearly",
+     "name": "100 GB (yearly)",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 1099,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ai-plus",
+     "name": "AI Plus (2 TB)",
+     "amountMinor": 3499,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/sa/app/id1451784328",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Saudi prices on the App Store include 15% VAT."
+  },
+  {
+   "serviceId": "google-one",
+   "country": "EG",
+   "currency": "EGP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "100gb",
+     "name": "100 GB",
+     "amountMinor": 9499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "100gb-yearly",
+     "name": "100 GB (yearly)",
+     "amountMinor": 94999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 14499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ai-plus",
+     "name": "AI Plus (2 TB)",
+     "amountMinor": 44999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/eg/app/id1451784328",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Egypt prices on the App Store include 14% VAT."
+  },
+  {
+   "serviceId": "google-one",
+   "country": "QA",
+   "currency": "QAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "100gb",
+     "name": "100 GB",
+     "amountMinor": 699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "100gb-yearly",
+     "name": "100 GB (yearly)",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 1099,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ai-plus",
+     "name": "AI Plus (2 TB)",
+     "amountMinor": 3699,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/qa/app/id1451784328",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Qatar has no VAT."
+  },
+  {
+   "serviceId": "google-one",
+   "country": "KW",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "100gb",
+     "name": "100 GB",
+     "amountMinor": 199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "100gb-yearly",
+     "name": "100 GB (yearly)",
+     "amountMinor": 1999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb-yearly",
+     "name": "200 GB (yearly)",
+     "amountMinor": 2999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "ai-plus",
+     "name": "AI Plus (2 TB)",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/kw/app/id1451784328",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple’s Kuwait storefront charges in US dollars, not dinars. Kuwait has no VAT."
+  },
+  {
+   "serviceId": "google-ai-pro",
+   "country": "AE",
+   "currency": "AED",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Google AI Pro (5 TB)",
+     "amountMinor": 7699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus",
+     "name": "Google AI Plus (400 GB)",
+     "amountMinor": 1899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultra",
+     "name": "Google AI Ultra",
+     "amountMinor": 76999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/ae/app/id6477489729",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). UAE prices on the App Store include 5% VAT. Some names in this list don’t say the period; those plans are monthly."
+  },
+  {
+   "serviceId": "google-ai-pro",
+   "country": "SA",
+   "currency": "SAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Google AI Pro (5 TB)",
+     "amountMinor": 8599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus",
+     "name": "Google AI Plus (400 GB)",
+     "amountMinor": 1899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultra",
+     "name": "Google AI Ultra",
+     "amountMinor": 85999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/sa/app/id6477489729",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Saudi prices on the App Store include 15% VAT. Some names in this list don’t say the period; those plans are monthly."
+  },
+  {
+   "serviceId": "google-ai-pro",
+   "country": "QA",
+   "currency": "QAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Google AI Pro (5 TB)",
+     "amountMinor": 7300,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus",
+     "name": "Google AI Plus (400 GB)",
+     "amountMinor": 1849,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultra",
+     "name": "Google AI Ultra",
+     "amountMinor": 75000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/qa/app/id6477489729",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Qatar has no VAT. Some names in this list don’t say the period; those plans are monthly."
+  },
+  {
+   "serviceId": "google-ai-pro",
+   "country": "KW",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Google AI Pro (5 TB)",
+     "amountMinor": 1999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus",
+     "name": "Google AI Plus (400 GB)",
+     "amountMinor": 499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultra",
+     "name": "Google AI Ultra",
+     "amountMinor": 19999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/kw/app/id6477489729",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple’s Kuwait storefront charges in US dollars, not dinars. Kuwait has no VAT. Some names in this list don’t say the period; those plans are monthly."
+  },
+  {
+   "serviceId": "google-ai-pro",
+   "country": "EG",
+   "currency": "EGP",
+   "status": "unverified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Google AI Pro (5 TB)",
+     "amountMinor": 93999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus",
+     "name": "Google AI Plus (400 GB)",
+     "amountMinor": 24999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/eg/app/id6477489729",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Egypt prices on the App Store include 14% VAT. Two prices under 'Google AI Pro (5 TB)' (EGP 939.99 several times, 809.99 once); 939.99 taken. Plus is clear. Check on an Egyptian iPhone."
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "AE",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 9999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 13999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 1399,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 20999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 2099,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/en-ae/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-12",
+   "note": "Microsoft's UAE store bills in US dollars ('USD$99.99/year'). In the iPhone app Apple charges dirhams instead: Personal AED 36.99/month or 369.99/year, Family AED 50.99/month or 509.99/year, Premium AED 76.99/month. The page doesn't mention VAT."
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "SA",
+   "currency": "SAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 42999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 4299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 55999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 5599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 85999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 8599,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/en-sa/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-12",
+   "note": "Same amounts as the App Store (VAT-inclusive there). The page doesn't mention VAT."
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "EG",
+   "currency": "EGP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 239900,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 23900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 28900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 699900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 69900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/eg/app/id541164041",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Egypt prices on the App Store include 14% VAT. microsoft.com has no Microsoft 365 plans page for this country (page not found), so this is the App Store price. Personal has two prices; the higher (at least 6x) is yearly."
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "QA",
+   "currency": "QAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 35999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 3599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 4699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 7499,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/qa/app/id541164041",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Qatar has no VAT. microsoft.com has no Microsoft 365 plans page for this country (page not found), so this is the App Store price. Personal has two prices; the higher (at least 6x) is yearly."
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "KW",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 8999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/kw/app/id541164041",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple’s Kuwait storefront charges in US dollars, not dinars. Kuwait has no VAT. microsoft.com has no Microsoft 365 plans page for this country (page not found), so this is the App Store price. Personal has two prices; the higher (at least 6x) is yearly."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "AE",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Game Pass Essential",
+     "amountMinor": 799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Game Pass Premium",
+     "amountMinor": 1099,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Game Pass Ultimate",
+     "amountMinor": 1599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pc",
+     "name": "PC Game Pass",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.xbox.com/en-AE/xbox-game-pass",
+   "checked": "2026-11-12",
+   "note": "Xbox bills the UAE in US dollars. Regular monthly price after the 14-day US$1 intro offer. The page doesn't mention VAT."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "SA",
+   "currency": "SAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Game Pass Essential",
+     "amountMinor": 2999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Game Pass Premium",
+     "amountMinor": 3999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Game Pass Ultimate",
+     "amountMinor": 6099,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pc",
+     "name": "PC Game Pass",
+     "amountMinor": 4199,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.xbox.com/en-SA/xbox-game-pass",
+   "checked": "2026-11-12",
+   "note": "Regular monthly price after the 14-day SAR 3.90 intro offer. The page doesn't mention VAT."
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "AE",
+   "currency": "AED",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "deluxe-yearly",
+     "name": "Deluxe (12 months)",
+     "amountMinor": 45999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "deluxe-quarterly",
+     "name": "Deluxe (3 months)",
+     "amountMinor": 16199,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "deluxe",
+     "name": "Deluxe (1 month)",
+     "amountMinor": 5899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 39699,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 13999,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 4999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 23999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 8499,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 3299,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.playstation.com/en-ae/ps-plus/",
+   "checked": "2026-11-12",
+   "note": "The top tier is called Deluxe here (Premium elsewhere). The page doesn't mention VAT."
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "SA",
+   "currency": "SAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "deluxe-yearly",
+     "name": "Deluxe (12 months)",
+     "amountMinor": 46999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "deluxe-quarterly",
+     "name": "Deluxe (3 months)",
+     "amountMinor": 16499,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "deluxe",
+     "name": "Deluxe (1 month)",
+     "amountMinor": 5999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 39999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 14199,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 4999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 24399,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 8599,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 3399,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.playstation.com/en-sa/ps-plus/",
+   "checked": "2026-11-12",
+   "note": "The top tier is called Deluxe here (Premium elsewhere). The page doesn't mention VAT."
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "QA",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "deluxe-yearly",
+     "name": "Deluxe (12 months)",
+     "amountMinor": 12499,
+     "cycle": "yearly"
+    },
+    {
+     "id": "deluxe-quarterly",
+     "name": "Deluxe (3 months)",
+     "amountMinor": 4399,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "deluxe",
+     "name": "Deluxe (1 month)",
+     "amountMinor": 1599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 10799,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 3799,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 1349,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 6499,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 2299,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.playstation.com/en-qa/ps-plus/",
+   "checked": "2026-11-12",
+   "note": "The top tier is called Deluxe here (Premium elsewhere). PlayStation bills this country in US dollars."
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "KW",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "deluxe-yearly",
+     "name": "Deluxe (12 months)",
+     "amountMinor": 12499,
+     "cycle": "yearly"
+    },
+    {
+     "id": "deluxe-quarterly",
+     "name": "Deluxe (3 months)",
+     "amountMinor": 4399,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "deluxe",
+     "name": "Deluxe (1 month)",
+     "amountMinor": 1599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 10799,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 3799,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 1349,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 6499,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 2299,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.playstation.com/en-kw/ps-plus/",
+   "checked": "2026-11-12",
+   "note": "The top tier is called Deluxe here (Premium elsewhere). PlayStation bills this country in US dollars."
+  },
+  {
+   "serviceId": "snapchat-plus",
+   "country": "QA",
+   "currency": "QAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Snapchat+ (monthly)",
+     "amountMinor": 1499,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/qa/app/id447188370",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Qatar has no VAT."
+  },
+  {
+   "serviceId": "snapchat-plus",
+   "country": "KW",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Snapchat+ (monthly)",
+     "amountMinor": 399,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/kw/app/id447188370",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple’s Kuwait storefront charges in US dollars, not dinars. Kuwait has no VAT."
+  },
+  {
+   "serviceId": "snapchat-plus",
+   "country": "SA",
+   "currency": "SAR",
+   "status": "unverified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Snapchat+ (monthly)",
+     "amountMinor": 1699,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/sa/app/id447188370",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Saudi prices on the App Store include 15% VAT. Two prices under the monthly plan (SAR 16.99 four times, 18.99 once). Saudi is one of Snapchat's biggest markets; worth checking on a phone."
+  },
+  {
+   "serviceId": "snapchat-plus",
+   "country": "AE",
+   "currency": "AED",
+   "status": "unverified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Snapchat+ (monthly)",
+     "amountMinor": 1499,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/ae/app/id447188370",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). UAE prices on the App Store include 5% VAT. Two prices under the monthly plan (AED 14.99 four times, 16.99 once)."
+  },
+  {
+   "serviceId": "telegram-premium",
+   "country": "AE",
+   "currency": "AED",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 1799,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 12999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/ae/app/id686449807",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). UAE prices on the App Store include 5% VAT."
+  },
+  {
+   "serviceId": "telegram-premium",
+   "country": "SA",
+   "currency": "SAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 2099,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/sa/app/id686449807",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Saudi prices on the App Store include 15% VAT. The yearly product isn't in the 10 items Apple shows."
+  },
+  {
+   "serviceId": "telegram-premium",
+   "country": "EG",
+   "currency": "EGP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 18999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 139999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/eg/app/id686449807",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Egypt prices on the App Store include 14% VAT."
+  },
+  {
+   "serviceId": "telegram-premium",
+   "country": "QA",
+   "currency": "QAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 1799,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/qa/app/id686449807",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Qatar has no VAT. The yearly product isn't in the 10 items Apple shows."
+  },
+  {
+   "serviceId": "telegram-premium",
+   "country": "KW",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 499,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/kw/app/id686449807",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple’s Kuwait storefront charges in US dollars, not dinars. Kuwait has no VAT. The yearly product isn't in the 10 items Apple shows."
+  },
+  {
+   "serviceId": "perplexity",
+   "country": "AE",
+   "currency": "AED",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Pro",
+     "amountMinor": 7999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro-yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 79999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Max",
+     "amountMinor": 79999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/ae/app/id1668000334",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). UAE prices on the App Store include 5% VAT. Where one name has two prices and the list doesn’t say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly."
+  },
+  {
+   "serviceId": "perplexity",
+   "country": "SA",
+   "currency": "SAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Pro",
+     "amountMinor": 8999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro-yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 89999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Max",
+     "amountMinor": 89999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/sa/app/id1668000334",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Saudi prices on the App Store include 15% VAT. Where one name has two prices and the list doesn’t say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly."
+  },
+  {
+   "serviceId": "perplexity",
+   "country": "EG",
+   "currency": "EGP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Pro",
+     "amountMinor": 99999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro-yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 999999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Max",
+     "amountMinor": 999999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/eg/app/id1668000334",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Egypt prices on the App Store include 14% VAT. Where one name has two prices and the list doesn’t say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly."
+  },
+  {
+   "serviceId": "perplexity",
+   "country": "QA",
+   "currency": "QAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Pro",
+     "amountMinor": 6999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro-yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 69999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Max",
+     "amountMinor": 69999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/qa/app/id1668000334",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Qatar has no VAT. Where one name has two prices and the list doesn’t say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly."
+  },
+  {
+   "serviceId": "perplexity",
+   "country": "KW",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Pro",
+     "amountMinor": 2000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro-yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 20000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Max",
+     "amountMinor": 20000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/kw/app/id1668000334",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple’s Kuwait storefront charges in US dollars, not dinars. Kuwait has no VAT. Where one name has two prices and the list doesn’t say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly."
+  },
+  {
+   "serviceId": "grok",
+   "country": "AE",
+   "currency": "AED",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "lite",
+     "name": "SuperGrok Lite",
+     "amountMinor": 3999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "supergrok",
+     "name": "SuperGrok",
+     "amountMinor": 11999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "supergrok-yearly",
+     "name": "SuperGrok (yearly)",
+     "amountMinor": 119999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "heavy",
+     "name": "SuperGrok Heavy",
+     "amountMinor": 119999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/ae/app/id6670324846",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). UAE prices on the App Store include 5% VAT. Where one name has two prices, the lower is monthly and the one 10x higher is yearly. The list also has a 'SuperGrok Plus' product."
+  },
+  {
+   "serviceId": "grok",
+   "country": "SA",
+   "currency": "SAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "lite",
+     "name": "SuperGrok Lite",
+     "amountMinor": 3999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "supergrok",
+     "name": "SuperGrok",
+     "amountMinor": 12999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "supergrok-yearly",
+     "name": "SuperGrok (yearly)",
+     "amountMinor": 129999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "heavy",
+     "name": "SuperGrok Heavy",
+     "amountMinor": 129999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/sa/app/id6670324846",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Saudi prices on the App Store include 15% VAT. Where one name has two prices, the lower is monthly and the one 10x higher is yearly. The list also has a 'SuperGrok Plus' product."
+  },
+  {
+   "serviceId": "grok",
+   "country": "EG",
+   "currency": "EGP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "lite",
+     "name": "SuperGrok Lite",
+     "amountMinor": 49999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "supergrok",
+     "name": "SuperGrok",
+     "amountMinor": 149999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "supergrok-yearly",
+     "name": "SuperGrok (yearly)",
+     "amountMinor": 1499999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "heavy",
+     "name": "SuperGrok Heavy",
+     "amountMinor": 1499999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/eg/app/id6670324846",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Egypt prices on the App Store include 14% VAT. Where one name has two prices, the lower is monthly and the one 10x higher is yearly. The list also has a 'SuperGrok Plus' product."
+  },
+  {
+   "serviceId": "grok",
+   "country": "QA",
+   "currency": "QAR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "lite",
+     "name": "SuperGrok Lite",
+     "amountMinor": 3999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "supergrok",
+     "name": "SuperGrok",
+     "amountMinor": 9999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "supergrok-yearly",
+     "name": "SuperGrok (yearly)",
+     "amountMinor": 99999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "heavy",
+     "name": "SuperGrok Heavy",
+     "amountMinor": 99999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/qa/app/id6670324846",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Qatar has no VAT. Where one name has two prices, the lower is monthly and the one 10x higher is yearly. The list also has a 'SuperGrok Plus' product."
+  },
+  {
+   "serviceId": "grok",
+   "country": "KW",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "lite",
+     "name": "SuperGrok Lite",
+     "amountMinor": 1000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "supergrok",
+     "name": "SuperGrok",
+     "amountMinor": 3000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "supergrok-yearly",
+     "name": "SuperGrok (yearly)",
+     "amountMinor": 30000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "heavy",
+     "name": "SuperGrok Heavy",
+     "amountMinor": 30000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/kw/app/id6670324846",
+   "checked": "2026-11-12",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple’s Kuwait storefront charges in US dollars, not dinars. Kuwait has no VAT. Where one name has two prices, the lower is monthly and the one 10x higher is yearly. The list also has a 'SuperGrok Plus' product."
+  }
+ ],
+ "notChecked": {
+  "apple-tv": "Not sold separately in any of the 5 countries. tv.apple.com FAQ (AE, SA, EG, QA, KW): 'Apple TV isn’t sold separately in your region — it’s included in every iCloud+ plan at no extra cost.' apple.com/ae/apple-tv still has an old footnote (AED 27.99/month), ignore it. In-app: point people to iCloud+.",
+  "apple-arcade": "Included in every iCloud+ plan in all 5 countries (same tv.apple.com FAQ). Not sold separately.",
+  "apple-one": "Not offered in these markets ('Apple One is not offered in these markets, since Apple TV and Apple Arcade are already included in iCloud+'). apple.com/{ae,sa,eg,qa,kw}/apple-one redirects away.",
+  "amazon-prime": "QA, KW: no Amazon store with Prime for these countries (Amazon serves them from amazon.ae/amazon.com without a local Prime membership). Not checked further.",
+  "prime-video": "Standalone Prime Video: in AE/SA/EG it comes with Amazon Prime (rows above). In QA/KW it's sold on primevideo.com, which picks the country from the visitor's IP, and the App Store page shows no In-App Purchases list. Not checked.",
+  "disney-plus": "All 5 rows found. Catalog availableIn currently excludes these countries; add AE, SA, EG, QA, KW.",
+  "max": "HBO Max isn't on the MENA App Store (search finds no app); HBO shows stream on OSN+ in the region. Hide 'max' in these countries or alias it to OSN+.",
+  "xbox-game-pass": "EG, QA, KW: xbox.com/en-{cc}/xbox-game-pass shows 'page not found'; Game Pass isn't officially sold there.",
+  "ps-plus": "EG: playstation.com/en-eg/ps-plus returns 404; PlayStation Store isn't official in Egypt.",
+  "google-ai-pro": "EG row is unverified (two prices for Pro).",
+  "youtube-premium": "AE, EG, KW unverified (several prices under one name on the App Store; the YouTube app's own page shows no In-App Purchases list in AE/SA/EG/KW, so the YouTube Music app's list was used). youtube.com/premium says 'not available in your country' to our cloud browser.",
+  "deezer": "deezer.com/{cc}/offers returned an empty page. App Store lists mix country-named products at different prices (e.g. AE 'Deezer Premium UAE' AED 29.99 and 27.99), so no clear price.",
+  "tinder": "App Store lists mix 1/6/12-month packages and Tinder's age-based prices (e.g. AE Gold AED 54.99/57.00/57.99/109.99). No single clear price.",
+  "duolingo": "No public price page; App Store list shows many different 'Super Duolingo' prices with no period in the name.",
+  "linkedin-premium": "App Store list shows several prices under 'Premium Career' (AE 90.00, 149.99, 154.99); linkedin.com/premium needs sign-in.",
+  "snapchat-plus": "EG: list has 6 different 'Snapchat+' prices (EGP 9.99–49.99). AE, SA rows unverified.",
+  "canva-pro": "App Store lists show 2–3 prices under 'Canva Pro - Monthly' in every country; canva.com picks currency from IP.",
+  "crunchyroll": "Only EG shows a list (Fan EGP 249.99). Low MENA demand; not recorded.",
+  "osn-plus (candidate, not in catalog)": "Strongest candidate. Clean App Store list (Apple billing, id862390640, seller Anghami): AE Standard with ads 29.99, Standard 48.99, Premium 64.99, Standard yearly 489.99, Premium yearly 649.99, Mobile 29.99 AED. SA: 34.99 / 48.99 / 69.99 / 489.99 / 699.99, Mobile 34.99 SAR. EG: 99.99 / 169.99 / 239.99 / 1,699.99 / 2,399.99, Mobile 90 EGP. QA: 29.99 / 39.99 / 59.99 / 399.99 / 599.99 QAR. KW: $7.99 / $11.49 / $16.49 / $114.99 / $164.99. Home of HBO in MENA; bundled with noon One, talabat pro and e&/du packages. osnplus.com returned HTTP 406 to us.",
+  "shahid (candidate, not in catalog)": "MBC Shahid (id879915134): No.1 SVOD in MENA by subscribers (Omdia, Dec 2024: 4.4M). App Store 'VIP' monthly: AE AED 44.99, SA SAR 44.99, QA QAR 44.99, KW $11.99, EG EGP 159.99; VIP yearly AED/SAR/QAR 449.99, KW $119.99, EG 1,599.99; 'VIP | Sports' AED/SAR/QAR 69.99; 'Ultimate' AED/SAR/QAR 89.99. Several other prices also appear under 'VIP' (weekly/quarterly/promo), so treat as unverified. Netflix + Shahid bundle exists since Jul 2025. Often billed via STC, du, e&, Zain.",
+  "anghami (candidate, not in catalog)": "Biggest Arabic music app (id545395155). App Store 'Anghami Plus' monthly: AE AED 22.99, SA SAR 22.99, QA QAR 21.99, KW $5.99 (also a $6.99 product), EG EGP 69.99 ('Anghami Plus Egypt'). Students AED/SAR 11.99. Family AE AED 34.49. Plus Lite SAR 3.99. anghami.com returned an empty page.",
+  "starzplay (candidate, not in catalog)": "STARZPLAY (id962284784, Playco, UAE). App Store list is messy: 'STARZPLAY Monthly Plan' AE AED 39.99 and 29.99; SA SAR 45.99 and 29.99; QA QAR 39.99 and 29.99; KW $10.99 and $7.99; EG 119.99 and 39.99. Not the same as the catalog's US 'starz'. Unverified.",
+  "tod (candidate, not in catalog)": "TOD by beIN (id1585841527): sports, big around football seasons. AE 'TOD' AED 69.99 / 79.99 / 149.99 (several periods), Mobile Monthly 44.99; EG HD Monthly EGP 369.99, Mobile Monthly 129.99. Not offered on the Saudi App Store (no list). Unverified.",
+  "weyyak (candidate, not in catalog)": "Weyyak (Z5X Global, id1226514781): Monthly AED/SAR 18.99, QAR 17.99, EGP 49.99, $4.99; Weekly AED/SAR 5.99; Yearly AED/SAR 149.99. Clean list but smaller service.",
+  "stc-tv (candidate, not in catalog)": "stc tv (id1315586892), Saudi telco streaming: 'Monthly Subscription' SAR 32.99, 'Premium Monthly' SAR 15.00 on the App Store. Mostly bundled with STC mobile plans.",
+  "yango-play (candidate, not in catalog)": "Yango Play: 'Yango Plus' QAR 44, $9.99 (KW), EGP 139, AED 39–44. All products are intro/trial/winback variants; unverified.",
+  "careem-plus (candidate, not in catalog)": "No App Store In-App Purchases (billed inside the app with a card). careem.com/en-ae/careem-plus says page not found; help.careem.com returned 403. Press and trackers say about AED 19–19.99/month in the UAE (unverified, secondary). Real local habit (rides + food + groceries), big in UAE, KSA, Qatar, Kuwait.",
+  "noon-one (candidate, not in catalog)": "noon One (UAE, KSA, Egypt): no In-App Purchases list; noon.com page failed to load; help article 404. Secondary sources disagree (AED 15 limited offer, AED 24.99/month, AED 143.88/year). Unverified. Bundles OSN+.",
+  "talabat-pro (candidate, not in catalog)": "talabat pro (UAE, Kuwait, Qatar, Bahrain, Oman, Egypt): no In-App Purchases list; talabat.com/uae/pro is page-not-found. Secondary sources: AED 29–39/month solo, family plan AED 49/month. Unverified. Includes OSN+ in some markets."
+ }
+}

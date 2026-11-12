@@ -1,4 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
+import Link from 'next/link';
+
 import { Calculator, type CalcService } from '@/components/Calculator';
 import { EmailBox } from '@/components/EmailBox';
 import { Notif } from '@/components/Notif';
@@ -10,36 +12,35 @@ import { BRAND, COMPANY, PRO, SITE } from '@/lib/site';
 
 const CALC_IDS = ['netflix', 'spotify', 'chatgpt-plus', 'amazon-prime', 'disney-plus', 'apple-music', 'youtube-premium', 'youtube-music', 'max', 'xbox-game-pass', 'claude-pro', 'microsoft-365', 'hulu', 'ps-plus', 'paramount-plus', 'peacock', 'google-one', 'audible'];
 
-/** Hero rotation: only real services we have checked prices for. Netflix twice so the loop joins up smoothly. */
+/** Hero rotation: only real services we have checked prices for. */
 const HERO_ROTATION = [
   { id: 'netflix', name: 'Netflix' },
   { id: 'spotify', name: 'Spotify' },
   { id: 'chatgpt-plus', name: 'ChatGPT' },
   { id: 'disney-plus', name: 'Disney+' },
   { id: 'amazon-prime', name: 'Prime' },
-  { id: 'netflix', name: 'Netflix' },
 ];
 
 const FAQ = [
-  { q: 'Is it really free?', a: 'Tracking is free forever: your full list, real totals and the calendar. Reminders are free on 3 subscriptions you pick. Pro adds reminders on all of them.' },
-  { q: 'A subscription to track subscriptions?', a: `Fair question. Pro is ${PRO.yearly} a year, about ${PRO.yearlyPerMonth} a month, and two forgotten months of Netflix cost more than that. Rather not subscribe? Lifetime is ${PRO.lifetime}, once.` },
+  { q: 'Is Ditch free?', a: 'Yes. Tracking is free forever: your full list, your totals and the calendar, with no card and no account. Reminders are free on 3 subscriptions you pick. Pro adds reminders on all of them.' },
+  { q: 'Why pay for a subscription tracker?', a: `Fair question. Pro is ${PRO.yearly} a year, about ${PRO.yearlyPerMonth} a month, and two forgotten months of Netflix cost more than that. Rather not subscribe? Lifetime is ${PRO.lifetime}, once.` },
   { q: 'What’s the difference between Pro and Lifetime?', a: `Nothing in the app. Pro renews (${PRO.yearly} a year or ${PRO.monthly} a month). Lifetime is ${PRO.lifetime} once and never renews.` },
-  { q: 'Can Ditch cancel for me?', a: 'No. No app can do that honestly without your passwords. Ditch reminds you before each charge and shows you the official place to cancel, step by step.' },
-  { q: 'How does it know what I pay for?', a: 'You tell it. Tap the logos or type a name, and the price fills in for your country. Ditch never reads your bank or your email.' },
-  { q: 'Do reminders work if the app is closed?', a: 'Yes. Reminders are set on your iPhone, so they arrive even when Ditch is closed. Opening it now and then keeps them topped up.' },
+  { q: 'Can Ditch cancel subscriptions for me?', a: 'No. No app can do that honestly without your passwords. Ditch reminds you before each charge and opens the official cancel page, with the steps.' },
+  { q: 'Do I need to link my bank?', a: 'No. You add what you pay for: tap the logos or type a name, and the price fills in for your country. Ditch never reads your bank or your email.' },
+  { q: 'Do reminders work when the app is closed?', a: 'Yes. Reminders are set on your iPhone, so they arrive even when Ditch is closed. Opening it now and then keeps them topped up.' },
   { q: 'Can it remind me before a free trial ends?', a: 'Yes. Add the trial and its end date, and Ditch reminds you 3 days and 1 day before it turns into a charge.' },
-  { q: 'Do you sell my data?', a: 'No. Your list stays on your phone. No ads, no tracking. Pro payments go through Apple.' },
-  { q: 'Which countries does it work in?', a: 'Anywhere with the App Store. Prices fill in for 12 countries, including the US, UK, Canada, Australia, much of Europe and India. Elsewhere you type the price in.' },
-  { q: 'What if I stop paying for Pro?', a: 'Nothing gets deleted or hidden. Reminders go back to 3.' },
-  { q: 'How do I cancel Pro?', a: 'In iPhone Settings → your name → Subscriptions → Ditch. Cancel at least 24 hours before it renews.' },
-  { q: 'Is it on Android?', a: 'Not yet. Ditch is made for iPhone.' },
-  { q: 'When does it launch?', a: 'Soon. Join the waitlist and you get one email the day it’s on the App Store.' },
+  { q: 'Is my subscription list private?', a: 'Yes. Your list stays on your phone. No ads, no tracking, and we never sell anything about you. Pro payments go through Apple.' },
+  { q: 'Which countries does Ditch work in?', a: 'Anywhere with the App Store. Prices fill in for 12 countries, including the US, UK, Canada, Australia, much of Europe and India. Elsewhere you type the price in.' },
+  { q: 'What happens if I stop paying for Pro?', a: 'Nothing gets deleted or hidden. Your list stays as it is, and reminders go back to 3.' },
+  { q: 'How do I cancel Ditch Pro?', a: 'In iPhone Settings → your name → Subscriptions → Ditch. Cancel at least 24 hours before it renews.' },
+  { q: 'Is Ditch on Android?', a: 'Not yet. Ditch is made for iPhone.' },
+  { q: 'When does Ditch come out?', a: 'Soon. Join the waitlist and you get one email the day it’s on the App Store.' },
 ];
 
 export const metadata = {
   alternates: { canonical: '/' },
   title: { absolute: 'Ditch: Subscription Tracker for iPhone | Ditch it before it renews' },
-  description: 'Ditch keeps every subscription in one list and reminds you 3 days before each charge. No bank login, no account. Free forever for tracking.',
+  description: 'Track every subscription in one list and get a reminder 3 days before each charge. No bank login, no account. Free to track, for iPhone.',
 };
 
 export default function Home() {
@@ -100,7 +101,7 @@ export default function Home() {
               <span className="slot" aria-hidden="true">
                 <span className="reel">
                   {HERO_ROTATION.map((r, i) => (
-                    <span className="chip" key={i} data-n={r.name}>
+                    <span className="chip" key={i} data-n={r.name} style={{ ['--d' as string]: `${i * 2 - 0.4}s` }}>
                       <img src={`/logos/${r.id}.png`} alt="" width={64} height={64} />
                     </span>
                   ))}
@@ -110,13 +111,10 @@ export default function Home() {
               <br />
               before it renews.
             </h1>
-            <p className="lead">Ditch keeps every subscription in one list and reminds you 3 days before each charge. No bank login, no account.</p>
+            <p className="lead">Track every subscription in one list and get a reminder 3 days before each charge. No bank login, no account.</p>
             <div id="join">
-              <EmailBox source="home-hero" bare cta="Tell me when it’s out" />
+              <EmailBox source="home-hero" bare cta="Join the waitlist" />
             </div>
-            <p className="hero-note">
-              <b>Free forever for tracking.</b> Reminders on 3, or all of them with Pro. Coming to iPhone.
-            </p>
             <div className="hero-notifs" aria-hidden>
               <Notif text={`Netflix renews in 3 days. ${formatMoney(nfPlan.amountMinor, 'USD')}. Still watching?`} />
               <Notif when="Tue" text={`Spotify renews in 3 days. ${formatMoney(defaultPlan(priceFor('spotify', 'US')!).amountMinor, 'USD')}.`} />
@@ -159,9 +157,9 @@ export default function Home() {
         <div className="wrap">
           <div className="sec-head">
             <h2 id="calc-h" className="h2">
-              Tap what you pay for.
+              See what your subscriptions cost in a year
             </h2>
-            <p className="lead">See what it all costs in a year. Real prices for your country, checked by hand.</p>
+            <p className="lead">Tap the ones you pay for. Prices fill in for your country, checked by hand.</p>
           </div>
           <div className="sec-body">
             <Calculator services={calc} countries={calcCountries} />
@@ -174,14 +172,14 @@ export default function Home() {
         <div className="wrap">
           <div className="sec-head">
             <h2 id="how-h" className="h2">
-              Add it. <span className="nw">Get reminded.</span> <span className="nw">Ditch it.</span>
+              How it works: <span className="nw">from sign-up</span> <span className="nw">to cancelled</span>
             </h2>
           </div>
           <div className="sec-body steps">
             <div className="card step" data-reveal style={{ ['--i' as string]: 0 }}>
               <span className="n">1</span>
-              <h3 className="h3">Add it</h3>
-              <p>Tap the logos. Prices fill in for your country. Anything else, type it in.</p>
+              <h3 className="h3">Add your subscriptions</h3>
+              <p>Tap Netflix, Spotify, ChatGPT and the rest. The price fills in. Anything else, type it in.</p>
               <div className="shot">
                 <div className="mini-list" aria-hidden>
                   {['netflix', 'spotify', 'chatgpt-plus'].map((id) => {
@@ -199,16 +197,16 @@ export default function Home() {
             </div>
             <div className="card step" data-reveal style={{ ['--i' as string]: 1 }}>
               <span className="n">2</span>
-              <h3 className="h3">Get reminded</h3>
-              <p>3 days and 1 day before each charge, at 9:00. Free trials too.</p>
+              <h3 className="h3">Get reminded before you pay</h3>
+              <p>A reminder 3 days and 1 day before each charge, at 9:00. Free trials too.</p>
               <div className="shot">
                 <Notif text={`Spotify renews tomorrow. ${formatMoney(defaultPlan(priceFor('spotify', 'US')!).amountMinor, 'USD')}.`} when="9:00" />
               </div>
             </div>
             <div className="card step" data-reveal style={{ ['--i' as string]: 2 }}>
               <span className="n">3</span>
-              <h3 className="h3">Ditch it</h3>
-              <p>Hold to ditch. Ditch opens the official cancel page and walks you through it.</p>
+              <h3 className="h3">Cancel what you don’t use</h3>
+              <p>Hold to ditch. Ditch opens the official cancel page and shows you the steps.</p>
               <div className="shot" style={{ alignItems: 'center', paddingBottom: 24 }}>
                 <div style={{ width: 220 }}>
                   <Stamp date="2026-11-12" paper="#FFCC2E" still />
@@ -224,10 +222,21 @@ export default function Home() {
         <div className="wrap split">
           <div>
             <h2 id="dd-h" className="h2">
-              Changed your mind? <span className="nw">Ditch it.</span>
+              Cancel it and see what you won’t pay
             </h2>
             <p className="lead" style={{ marginTop: 20 }}>
-              Hold to ditch, cancel on the official page, and see what it’s worth in a year.
+              Once you’ve cancelled, Ditch stamps it and shows what it would have cost you in a year.
+            </p>
+            <ul className="ticks">
+              <li>
+                Official cancel pages<span>The real page for each service, never a lookalike.</span>
+              </li>
+              <li>
+                Steps checked by hand<span>With the date we last checked them.</span>
+              </li>
+            </ul>
+            <p style={{ marginTop: 20 }}>
+              <Link href="/cancel">Browse all cancel guides →</Link>
             </p>
           </div>
           <DitchDemo name="Netflix" plan={nfPlan.name} price={`${formatMoney(nfPlan.amountMinor, 'USD')}/mo`} renews="Nov 18" yearly={formatMoney(nfPlan.amountMinor * 12, 'USD')} logo="/logos/netflix.png" />
@@ -239,20 +248,20 @@ export default function Home() {
         <div className="wrap split">
           <div>
             <h2 id="rem-h" className="h2">
-              Reminders that actually show up.
+              Reminders that actually arrive
             </h2>
             <p className="lead" style={{ marginTop: 20 }}>
-              One of the biggest complaints about other trackers: reminders that never came. Ditch plans every one on your phone and shows you the next one, so you know it’s on.
+              Missed reminders are a common complaint about subscription trackers. Ditch sets every reminder on your iPhone and shows you the next one, so you know it’s set.
             </p>
             <ul className="ticks">
               <li>
-                3 days and 1 day before<span>Or pick your own days with Pro.</span>
+                3 days and 1 day before each charge<span>Or pick your own days with Pro.</span>
               </li>
               <li>
-                Free trials too<span>Hear about it before a trial turns into a charge.</span>
+                Free trial alerts<span>Know before a trial turns into a charge.</span>
               </li>
               <li>
-                Send yourself a test<span>A real reminder in 5 seconds.</span>
+                Test it in 5 seconds<span>Send yourself a real reminder to check it works.</span>
               </li>
             </ul>
           </div>
@@ -269,10 +278,10 @@ export default function Home() {
         <div className="wrap">
           <div className="sec-head">
             <h2 id="price-h" className="h2">
-              About {PRO.yearlyPerMonth} a month. Less than the one you forgot about.
+              Free to track. Pro for about {PRO.yearlyPerMonth}&nbsp;a&nbsp;month.
             </h2>
             <p className="lead">
-              Pro is {PRO.yearly} a year (about {PRO.yearlyPerMonth} a month) or {PRO.monthly} a month. Rather pay once? {PRO.lifetime} for Pro, for good.
+              Cancel anytime in iPhone Settings. Rather not subscribe? Lifetime is {PRO.lifetime}, once.
             </p>
           </div>
           <div className="sec-body plans">
@@ -330,27 +339,27 @@ export default function Home() {
         <div className="wrap">
           <div className="sec-head">
             <h2 id="trust-h" className="h2">
-              No bank login. <span className="nw">No account.</span> <span className="nw">No catch.</span>
+              Private by design: <span className="nw">no bank login,</span> <span className="nw">no account</span>
             </h2>
           </div>
           <div className="sec-body dont">
             <div className="card">
               <h3 className="h3">Your list stays on your phone</h3>
-              <p>You add what you pay for. Nothing reads your bank or your email.</p>
+              <p>You add what you pay for. Ditch never reads your bank or your email.</p>
             </div>
             <div className="card">
               <h3 className="h3">No ads, no tracking</h3>
-              <p>We don’t sell anything about you. Pro payments go through Apple.</p>
+              <p>We never sell anything about you. Payments go through Apple.</p>
             </div>
             <div className="card">
               <h3 className="h3">Honest about cancelling</h3>
-              <p>Ditch can’t cancel for you. It opens the right page and walks you through it.</p>
+              <p>Ditch can’t cancel for you, and it won’t pretend to. You cancel on the service’s own page.</p>
             </div>
           </div>
           <div className="faq" style={{ marginTop: 96 }}>
             <div>
               <h2 id="faq-h" className="h2" style={{ fontSize: 'clamp(1.75rem, 1rem + 2vw, 2.5rem)' }}>
-                Fair questions.
+                Frequently asked questions
               </h2>
               <p className="lead" style={{ marginTop: 16 }}>
                 Something else? Email us at <a href="mailto:support@ditchsubs.app">support@ditchsubs.app</a>.
@@ -379,10 +388,10 @@ export default function Home() {
       <section className="wrap" aria-labelledby="final-h" data-has-cta>
         <div className="final">
           <h2 id="final-h" className="h2">
-            Catch the next one before it charges.
+            Fewer surprise charges. More say in what renews.
           </h2>
-          <p className="lead">One email when Ditch is on the App Store. Want the monthly Price Hike Report too? Tick the box.</p>
-          <EmailBox source="home-final" cta="Tell me when it’s out" />
+          <p className="lead">Join the waitlist and get one email the day Ditch is on the App Store.</p>
+          <EmailBox source="home-final" cta="Join the waitlist" />
         </div>
       </section>
 

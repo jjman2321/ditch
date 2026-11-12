@@ -385,3 +385,11 @@ Why: an app feels premium when the bad moments are handled well, not only the ha
 - [ ] Airplane mode, then open the paywall. It says it can't reach the App Store, **Try again** works, and × still closes it.
 - [ ] Empty Home, empty Ditched, and a search with no match each show a friendly line and one clear button.
 - [ ] Set a charge date in the past. It moves to the next charge and says so.
+
+## W. Website (ditchsubs.app, once it's live)
+- [ ] Home on your iPhone: headline rotates Netflix → Spotify → ChatGPT → Disney+ → Prime with no white bar under the logo. With Reduce Motion on, it stays on Netflix.
+- [ ] Under the hero button there's no extra text, just the two reminder cards.
+- [ ] Each heading reads as plain English and says what the section is about. No repeated lines.
+- [ ] Turn the phone sideways and back, and zoom text to the largest size: nothing runs off the right edge.
+- [ ] Open a cancel guide with a long web address (Microsoft 365, Xbox Game Pass): the address wraps, the page doesn't scroll sideways.
+- [ ] Join the waitlist with a real email: you see "Check your inbox", the email arrives, the link confirms.

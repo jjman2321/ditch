@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { EmailBox } from '@/components/EmailBox';
 import { Logo } from '@/components/Logo';
 import { PriceTable } from '@/components/PriceTable';
-import { COUNTRY, dateRange, defaultPlan, guideById, isAppStorePrice, neighbours, priceHubServices, pubDates, serviceById, verifiedPrices, type PriceRow } from '@/lib/data';
+import { COUNTRIES, COUNTRY, dateRange, defaultPlan, guideById, isAppStorePrice, neighbours, priceHubServices, pubDates, serviceById, verifiedPrices, type PriceRow } from '@/lib/data';
 import { formatMoney, monthlyMinor } from '@/lib/money';
 import { AUTHOR, COMPANY, SITE, SUPPORT_EMAIL } from '@/lib/site';
 
@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: PageProps<'/prices/[slug]'>):
     title: `${s.name} price ${latest.slice(0, 4)} in ${rows.length} countries`,
     description: `${summary(s.name, rows)} Main plans in ${rows.length} countries, checked ${dateRange(rows.map((r) => r.checked))}.`,
     alternates: { canonical: `/prices/${s.id}` },
-    openGraph: { title: `${s.name} prices in ${rows.length} countries`, url: `/prices/${s.id}`, type: 'article', siteName: 'Ditch: Subscription Tracker', locale: 'en_US', images: [{ url: '/og/prices.png', width: 1200, height: 630, alt: 'Subscription prices in 17 countries' }] },
+    openGraph: { title: `${s.name} prices in ${rows.length} countries`, url: `/prices/${s.id}`, type: 'article', siteName: 'Ditch: Subscription Tracker', locale: 'en_US', images: [{ url: '/og/prices.png', width: 1200, height: 630, alt: `Subscription prices in ${COUNTRIES.length} countries` }] },
     twitter: { card: 'summary_large_image', images: ['/og/prices.png'] },
   };
 }
@@ -172,7 +172,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
               <h2 className="h3" style={{ margin: 0 }}>
                 Paying for {s.name}?
               </h2>
-              <p>Ditch reminds you 3 days and 1 day before it renews, so a charge never surprises you.</p>
+              <p>Ditch reminds you 3 days and 1 day before it renews, so you can decide before you pay.</p>
               <EmailBox source={`prices-${s.id}`} compact />
             </div>
           </div>
@@ -224,7 +224,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
             {guide ? <a href="#cancel">How to cancel</a> : null}
           </nav>
           <div className="side-card">
-            <p className="h3">Never get surprised</p>
+            <p className="h3">Get reminded before it renews</p>
             <p>A reminder 3 days and 1 day before each charge. Free on 3 subscriptions.</p>
             <Link className="btn block sm" href="/#join" prefetch={false}>
               Join the waitlist

@@ -26,9 +26,9 @@ export default function CancelIndex() {
   return (
     <div className="wrap index-head">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
-      <h1 className="d-h1">Cancel guides</h1>
+      <h1 className="d-h1">How to cancel a subscription</h1>
       <p className="lead" style={{ marginTop: 20, maxWidth: '34rem' }}>
-        {guides.length} services, checked by hand on each service’s own pages. Every guide starts with how you pay, because that decides where you cancel.
+        Step-by-step cancel guides for {guides.length} services, checked by hand on each service’s own pages. Each one starts with how you pay, because that decides where you cancel.
       </p>
       <ServiceIndex items={items} base="/cancel" noun="guides" />
     </div>

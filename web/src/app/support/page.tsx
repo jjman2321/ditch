@@ -30,7 +30,7 @@ export default function Support() {
   return (
     <Doc title="Support">
       <p className="lead" style={{ marginTop: 16 }}>
-        Email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>. A person reads every message, usually within a day.
+        Email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>. We read every message and usually reply within a day.
       </p>
       {QA.map((x, i) => (
         <section key={x.q}>

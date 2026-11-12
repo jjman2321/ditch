@@ -54,8 +54,8 @@ export function EmailBox({ source, cta = 'Join the waitlist', onCream = false, c
             </>
           ) : state === 'unsent' ? (
             <>
-              <b>You’re saved.</b>
-              <p className="small" style={{ color: 'var(--fg2)' }}>The confirm email didn’t go out just now. We’ll send it again soon.</p>
+              <b>You’re on the list.</b>
+              <p className="small" style={{ color: 'var(--fg2)' }}>The confirm email didn’t go out just now. We’ll try again soon.</p>
             </>
           ) : (
             <>

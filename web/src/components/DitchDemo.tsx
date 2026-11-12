@@ -32,7 +32,6 @@ export function DitchDemo({ name, plan, price, renews, yearly, logo }: { name: s
       <p className="dd-year num">
         {yearly} a year <span>you won’t pay.</span>
       </p>
-      <p className="dd-cap">Ditch can’t cancel for you. It opens the right page and walks you through it.</p>
     </div>
   );
 }

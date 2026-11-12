@@ -507,14 +507,25 @@ img { display: block; max-width: 100%; }
 .crumbs a { min-width: 44px; justify-content: center; }
 @media print { .js [data-reveal] { opacity: 1 !important; transform: none !important; } }
 
-/* hero rotation (owner, Nov 12): each logo holds 1.6s, slides up in 0.4s; Reduce Motion stays on Netflix */
-.slot { display: inline-flex; vertical-align: bottom; height: 1em; overflow: hidden; position: relative; top: .06em; }
-.reel { display: flex; flex-direction: column; align-items: flex-start; }
-.chip { height: .96em; margin-bottom: .08em; display: inline-flex; align-items: center; gap: .14em; background: #fff; border-radius: .18em; padding: 0 .16em 0 .1em; box-shadow: 0 .05em 0 rgba(22, 20, 15, .18); white-space: nowrap; }
+/* hero rotation (owner, Nov 12): one logo at a time. Each holds 1.6s, then the next slides in over 0.4s.
+   All chips share one grid cell, so only the visible one shows (no edge of the next one peeking out).
+   Reduce Motion: Netflix only, still. */
+.slot { display: inline-grid; vertical-align: bottom; overflow: hidden; padding: .02em .06em .06em 0; margin: -.02em -.06em -.06em 0; }
+.reel { display: contents; }
+.chip { grid-area: 1 / 1; justify-self: start; height: .96em; display: inline-flex; align-items: center; gap: .14em; background: #fff; border-radius: .18em; padding: 0 .16em 0 .1em; box-shadow: 0 .05em 0 rgba(22, 20, 15, .18); white-space: nowrap; }
 .chip img { width: .72em; height: .72em; border-radius: .17em; }
 .chip::after { content: attr(data-n); }
-@media (prefers-reduced-motion: no-preference) { .reel { animation: reel 10s cubic-bezier(.65, 0, .35, 1) infinite; } }
-@keyframes reel { 0%, 16% { transform: translateY(0); } 20%, 36% { transform: translateY(-1.04em); } 40%, 56% { transform: translateY(-2.08em); } 60%, 76% { transform: translateY(-3.12em); } 80%, 96% { transform: translateY(-4.16em); } 100% { transform: translateY(-5.2em); } }
+.chip:not(:first-child) { visibility: hidden; }
+@media (prefers-reduced-motion: no-preference) {
+  .chip, .chip:not(:first-child) { visibility: visible; opacity: 0; animation: chip 10s cubic-bezier(.65, 0, .35, 1) var(--d, 0s) infinite both; }
+}
+@keyframes chip {
+  0% { opacity: 0; transform: translateY(1.05em); }
+  4% { opacity: 1; transform: translateY(0); }
+  20% { opacity: 1; transform: translateY(0); }
+  24% { opacity: 0; transform: translateY(-1.05em); }
+  100% { opacity: 0; transform: translateY(-1.05em); }
+}
 
 /* iPhone hero: no phone inside the phone; the two reminders instead (research: 28/28 app sites keep the product on mobile) */
 .hero-notifs { display: none; }
@@ -574,3 +585,7 @@ img { display: block; max-width: 100%; }
 }
 
 .hero .d-h1 { font-size: clamp(2.875rem, 1.2rem + 4vw, 4.5rem); }
+
+
+/* Long web addresses in guides wrap instead of pushing the page sideways on small phones. */
+.art, .answer, .side-card { overflow-wrap: anywhere; }

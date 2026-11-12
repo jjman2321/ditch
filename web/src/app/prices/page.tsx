@@ -23,9 +23,9 @@ export default function PricesIndex() {
   return (
     <div className="wrap index-head">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
-      <h1 className="d-h1">Subscription prices</h1>
+      <h1 className="d-h1">Subscription prices by country</h1>
       <p className="lead" style={{ marginTop: 20, maxWidth: '34rem' }}>
-        {hubs.length} services in up to {COUNTRIES.length} countries, in each country’s own money. Checked by hand, with the date and the page we read.
+        What {hubs.length} subscriptions cost in up to {COUNTRIES.length} countries, in local money. Checked by hand, with the date and the page we read.
       </p>
       <ServiceIndex items={items} base="/prices" noun="services" />
     </div>

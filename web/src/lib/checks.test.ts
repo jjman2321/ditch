@@ -55,3 +55,13 @@ describe('publishing gates', () => {
     for (const s of priceHubServices()) for (const r of verifiedPrices(s.id)) for (const n of publicNotes(r.note)) expect(n).not.toMatch(/automat|snippet/i);
   });
 });
+
+describe('Pro prices', () => {
+  it('the cents match the shown prices', async () => {
+    const { PRO, PRO_MINOR } = await import('./site');
+    expect(formatMoney(PRO_MINOR.yearly, 'USD')).toBe(PRO.yearly);
+    expect(formatMoney(PRO_MINOR.monthly, 'USD')).toBe(PRO.monthly);
+    expect(formatMoney(PRO_MINOR.lifetime, 'USD')).toBe(PRO.lifetime);
+    expect(formatMoney(Math.round(PRO_MINOR.yearly / 12), 'USD')).toBe(PRO.yearlyPerMonth);
+  });
+});

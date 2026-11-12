@@ -1,0 +1,254 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Pricing + stamp options</title>
+<style>
+@font-face{font-family:Display;src:url(../../../web/src/fonts/ArchivoDitch-Display.woff2)}
+@font-face{font-family:WideHeavy;src:url(../../../web/src/fonts/ArchivoDitch-WideHeavy.woff2)}
+@font-face{font-family:WideBold;src:url(../../../web/src/fonts/ArchivoDitch-WideBold.woff2)}
+@font-face{font-family:Title;src:url(../../../web/src/fonts/ArchivoDitch-Title.woff2)}
+:root{--sun:#FFCC2E;--ink:#16140F;--cream:#FBF7EE;--bill:#FF6C2C;--fg2:#5A544A;--mute:#6B6559;--sunfg2:#4B4220;--rule:#E6DFD0;--chip:#EFE8D9}
+*{box-sizing:border-box;margin:0}
+body{background:#E9E2D2;font-family:-apple-system,"SF Pro Text","Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);padding:40px}
+.board-h{font-family:Display;font-size:44px;letter-spacing:-.02em}
+.note{color:var(--fg2);font-size:17px;margin-top:8px;max-width:900px;line-height:1.45}
+.opt{background:var(--cream);border-radius:28px;padding:56px 64px;margin-top:36px;position:relative}
+.lbl{display:flex;gap:12px;align-items:center;margin-bottom:28px}
+.lbl b{background:var(--ink);color:var(--sun);border-radius:999px;padding:6px 14px;font-size:15px}
+.lbl span{font-size:16px;color:var(--fg2)}
+.lbl .score{margin-left:auto;font-family:WideBold;font-size:15px;background:#fff;border-radius:999px;padding:6px 14px}
+.lbl .pick{background:var(--bill);color:#fff}
+h2{font-family:Display;font-size:56px;line-height:1.02;letter-spacing:-.025em}
+.lead{font-size:20px;line-height:1.45;color:var(--fg2);margin-top:18px;max-width:34rem}
+.num{font-variant-numeric:tabular-nums}
+/* heading options */
+.hgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.hcard{background:#fff;border-radius:20px;padding:32px}
+.hcard h3{font-family:Display;font-size:34px;line-height:1.05;letter-spacing:-.02em}
+.hcard p{font-size:17px;color:var(--fg2);margin-top:12px;line-height:1.45}
+.hcard .why{font-size:14px;color:var(--mute);margin-top:16px;border-top:1px solid var(--rule);padding-top:12px}
+.hcard.top{box-shadow:inset 0 0 0 3px var(--ink)}
+/* P1 app paywall */
+.p1{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:center}
+.cmp{margin-top:32px;width:100%;border-collapse:collapse;font-size:17px}
+.cmp th{font-family:WideBold;font-size:14px;letter-spacing:.06em;text-transform:uppercase;text-align:center;padding:0 0 10px;width:84px}
+.cmp th:first-child{text-align:left;width:auto}
+.cmp td{border-top:1px solid var(--rule);padding:13px 0}
+.cmp td+td{text-align:center;font-weight:700}
+.cmp td.pro{background:rgba(255,204,46,.35)}
+.cmp th.pro{background:rgba(255,204,46,.35);border-radius:12px 12px 0 0;padding-top:10px}
+.cmp tr:last-child td.pro{border-radius:0 0 12px 12px}
+.dash{color:#B8AF9C}
+.pw{background:var(--sun);border-radius:28px;padding:40px 32px 32px;position:relative}
+.pw .duck{position:absolute;right:28px;top:-62px;width:130px}
+.pw .t{font-family:WideBold;font-size:14px;letter-spacing:.08em}
+.row{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:18px;padding:18px 22px;margin-top:12px;box-shadow:inset 0 0 0 2px rgba(22,20,15,.08)}
+.row.on{box-shadow:inset 0 0 0 3px var(--ink)}
+.row .n{font-size:20px;font-weight:600;display:flex;align-items:center;gap:10px}
+.row .chip{background:var(--sun);border-radius:8px;padding:3px 9px;font-size:14px;font-weight:700}
+.row .chip.ink{background:var(--ink);color:var(--sun)}
+.row .r{text-align:right}
+.row .r b{font-size:20px;display:block}
+.row .r small{font-size:15px;color:var(--fg2)}
+.btn{display:flex;justify-content:center;align-items:center;height:60px;border-radius:999px;background:var(--ink);color:#fff;font-weight:700;font-size:18px;margin-top:20px}
+.fine{font-size:14px;color:var(--sunfg2);text-align:center;margin-top:12px}
+/* P2 craft */
+.p2{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:20px;margin-top:40px}
+.card{background:#fff;border-radius:24px;padding:32px;box-shadow:inset 0 0 0 1px rgba(22,20,15,.08)}
+.card .nm{font-family:WideHeavy;font-size:22px}
+.big{font-family:Display;font-size:64px;letter-spacing:-.03em;line-height:1;margin-top:18px}
+.card ul{list-style:none;padding:0;margin-top:20px}
+.card li{padding:9px 0 9px 26px;border-top:1px solid var(--rule);position:relative;font-size:16px}
+.card li::before{content:"✓";position:absolute;left:0;font-weight:800}
+.dark{background:var(--ink);color:#fff;box-shadow:none}
+.dark .two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+.dark .two>div{background:#24211A;border-radius:18px;padding:22px}
+.dark .two .y{box-shadow:inset 0 0 0 2px var(--sun)}
+.dark .big{color:var(--sun);font-size:52px;margin-top:10px}
+.dark small{color:#C9C1AE;font-size:15px;display:block;margin-top:6px}
+.dark li{border-color:#3A352B}
+.dark .k{font-family:WideBold;font-size:14px;letter-spacing:.06em;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center}
+.dark .k .chip{background:var(--sun);color:var(--ink);border-radius:8px;padding:3px 8px;letter-spacing:0;text-transform:none;font-family:inherit}
+.lifebar{grid-column:1/-1;background:var(--sun);border-radius:24px;padding:26px 32px;display:flex;align-items:center;gap:24px;position:relative;overflow:hidden}
+.lifebar .big{font-size:48px;margin:0}
+.lifebar .txt{flex:1;font-size:18px;color:var(--sunfg2)}
+.lifebar .txt b{color:var(--ink);font-family:WideHeavy;font-size:22px;display:block}
+.lifebar img{width:110px;margin:-26px 0 -40px}
+.pill{border-radius:999px;background:var(--ink);color:#fff;padding:14px 22px;font-weight:700;font-size:16px;white-space:nowrap}
+.pill.ghost{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+/* P3 sticker */
+.p3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:40px}
+.stk{display:inline-block;font-family:Display;font-size:26px;letter-spacing:-.01em;padding:4px 12px 6px;border-radius:10px;transform:rotate(-3deg);box-shadow:0 3px 0 rgba(22,20,15,.25)}
+.s-free{background:#fff;box-shadow:inset 0 0 0 2px var(--ink),0 3px 0 rgba(22,20,15,.25)}
+.s-pro{background:var(--sun)}
+.s-life{background:var(--bill);color:#fff}
+.p3 .card{display:flex;flex-direction:column}
+.p3 .one{font-size:16px;color:var(--fg2);margin-top:8px;min-height:44px}
+.p3 .card.hi{box-shadow:inset 0 0 0 3px var(--ink)}
+/* stamp options */
+.sgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.scard{background:#fff;border-radius:24px;padding:28px;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:420px;justify-content:center;position:relative;overflow:hidden}
+.scard.sun{background:var(--sun)}
+.sub{display:flex;align-items:center;gap:14px;background:#fff;border-radius:18px;padding:14px 18px;width:100%;box-shadow:0 2px 0 rgba(22,20,15,.08),inset 0 0 0 1px rgba(22,20,15,.06)}
+.sub img{width:46px;height:46px;border-radius:11px}
+.sub .nm{font-weight:700;font-size:18px}
+.sub .nm s{text-decoration-thickness:2px}
+.sub .m{font-size:14px;color:var(--fg2)}
+.yr{font-family:Display;font-size:56px;letter-spacing:-.03em;line-height:1;margin-top:18px}
+.yrl{font-family:WideHeavy;font-size:19px}
+.tag2{margin-left:auto;display:flex;align-items:center;gap:6px;background:var(--ink);color:var(--sun);border-radius:999px;padding:6px 12px 6px 8px;font-family:WideBold;font-size:13px;letter-spacing:.08em}
+.tag2 i{width:18px;height:18px;border-radius:99px;background:var(--bill);display:grid;place-items:center;color:#fff;font-style:normal;font-size:12px}
+.cap{position:absolute;left:24px;bottom:18px;font-size:13px;color:var(--mute)}
+.pw2{border-radius:28px;overflow:hidden;background:var(--cream);box-shadow:inset 0 0 0 1px rgba(22,20,15,.08)}
+.pw2 .top{background:var(--sun);height:150px;position:relative}
+.duck2{position:absolute;right:44px;bottom:34px;width:140px}
+.tcard{background:#fff;border-radius:20px;margin:-40px 24px 0;position:relative;box-shadow:0 2px 0 rgba(22,20,15,.06),0 10px 30px rgba(22,20,15,.08);overflow:hidden}
+.t2{width:100%;border-collapse:collapse;font-size:16px}
+.t2 th{font-family:WideBold;font-size:13px;letter-spacing:.12em;color:var(--mute);padding:14px 0 8px;width:70px;text-align:center}
+.t2 th.pc{color:var(--ink)}
+.t2 td{padding:11px 0;border-top:1px solid var(--hair,#EEE7D8);text-align:center}
+.t2 td:first-child{text-align:left;padding-left:18px}
+.t2 tr:nth-child(2) td{border-top:0}
+.t2 .pc{background:#FFF3C4;width:100px}
+.rows{padding:12px 24px 24px}
+.rows .row{position:relative}
+.badge{position:absolute;left:52px;top:-12px;background:var(--ink);color:#fff;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.06em;padding:3px 10px}
+</style></head><body>
+
+<p class="board-h">Pricing + the ditch moment: options</p>
+<p class="note">From Mobbin: Craft, Headspace, Deezer, Dabbit, Clipo, Oku, Jitter, Pangram and Monarch pricing sections, plus our own app paywall and Ditched screen. Each option has an honest score out of 10 and my pick.</p>
+
+<!-- HEADINGS -->
+<div class="opt">
+  <div class="lbl"><b>1 · Pricing heading + subheading</b><span>What the section says first. US prices; other countries see their App Store price.</span></div>
+  <div class="hgrid">
+    <div class="hcard top">
+      <h3>Pro costs less than two months of Netflix.</h3>
+      <p>Tracking is free forever. Pro puts reminders on every subscription for $29.99 a year. Rather not subscribe? Pay $49.99 once.</p>
+      <p class="why"><b>9/10 · my pick.</b> Compares our price to something they already pay (Netflix Standard is $19.99 a month, so two months is $39.98). Says free, the price and lifetime in two lines.</p>
+    </div>
+    <div class="hcard">
+      <h3>Free to track. About $2.50 a month for the rest.</h3>
+      <p>Your list, totals and 3 reminders are free. Pro adds reminders on everything. Or pay $49.99 once and it never renews.</p>
+      <p class="why"><b>7/10.</b> Clear, but "$2.50 a month" is the yearly plan split up, and people read it as a monthly price.</p>
+    </div>
+    <div class="hcard">
+      <h3>Pay once, or about $2.50 a month.</h3>
+      <p>Tracking is free forever. Pro is $29.99 a year or $4.99 a month. Lifetime is $49.99 once, with no renewals ever.</p>
+      <p class="why"><b>7/10.</b> Puts the lifetime plan first, but hides that tracking is free.</p>
+    </div>
+    <div class="hcard">
+      <h3>Simple pricing. Free to start.</h3>
+      <p>Track everything for free. Upgrade when you want reminders on all of them.</p>
+      <p class="why"><b>5/10.</b> What most sites say (Jitter, Sprig). Safe, but forgettable, and no reason to pay.</p>
+    </div>
+  </div>
+</div>
+
+<!-- P1 -->
+<div class="opt">
+  <div class="lbl"><b>2A · The app's real paywall, on the site</b><span>Same table, same plan rows, same duck as the current app (screenshot from today's build).</span><span class="score pick">9/10 · my pick</span></div>
+  <div class="p1">
+    <div>
+      <h2>Pro costs less than two months of Netflix.</h2>
+      <p class="lead">Tracking is free forever. Pro puts reminders on every subscription for $29.99 a year. Rather not subscribe? Pay $49.99 once.</p>
+      <p class="lead" style="font-size:16px;margin-top:28px">US prices. Your App Store shows your price before you pay. Cancel anytime in iPhone Settings.</p>
+    </div>
+    <div class="pw2">
+      <div class="top"><img class="duck2" src="../../../web/public/duck.webp" alt=""></div>
+      <div class="tcard">
+        <table class="t2">
+          <tr><th></th><th>FREE</th><th class="pc">PRO</th></tr>
+          <tr><td>Track every subscription</td><td>✓</td><td class="pc">✓</td></tr>
+          <tr><td>Subscriptions with reminders</td><td class="num">3</td><td class="pc"><b>Unlimited</b></td></tr>
+          <tr><td>Pick reminder days</td><td class="dash">–</td><td class="pc">✓</td></tr>
+          <tr><td>Nudge if you miss one</td><td class="dash">–</td><td class="pc">✓</td></tr>
+        </table>
+      </div>
+      <div class="rows">
+        <div class="row on"><span class="badge">SAVE 49%</span><span class="n">Yearly <span class="chip">7 days free</span></span><span class="r num"><b>$29.99/yr</b><small>$2.50 a month</small></span></div>
+        <div class="row"><span class="n">Monthly</span><span class="r num"><b>$4.99/mo</b><small>No free trial</small></span></div>
+        <div class="row"><span class="n">Lifetime</span><span class="r num"><b>$49.99</b><small>Pay once</small></span></div>
+        <div class="btn">Join the waitlist</div>
+      </div>
+    </div>
+  </div>
+  <p class="note" style="margin-top:28px">Why: the site and the app look like one product, so nothing feels different when people download it. The Free | Pro table shows exactly what Free gets, and Lifetime sits right next to the other plans. On a phone it stacks: heading, table, plans, button. The plan rows are for show only (no fake radio buttons) until the app is out.</p>
+</div>
+
+<!-- P2 -->
+<div class="opt">
+  <div class="lbl"><b>2B · Free card + dark Pro card + Lifetime bar</b><span>After Craft: Free on its own, Pro yearly and monthly side by side in ink, Lifetime as a full-width bar.</span><span class="score">8/10</span></div>
+  <h2>Pro costs less than two months of Netflix.</h2>
+  <p class="lead">Tracking is free forever. Pro puts reminders on every subscription for $29.99 a year. Rather not subscribe? Pay $49.99 once.</p>
+  <div class="p2">
+    <div class="card">
+      <p class="nm">Free</p>
+      <p class="big num">$0</p>
+      <ul><li>Track every subscription</li><li>Totals, calendar, cancel guides</li><li>Reminders on 3</li></ul>
+    </div>
+    <div class="card dark">
+      <p class="nm">Pro</p>
+      <div class="two">
+        <div class="y"><p class="k">Yearly <span class="chip">7 days free</span></p><p class="big num">$29.99</p><small>a year · about $2.50 a month</small></div>
+        <div><p class="k">Monthly</p><p class="big num">$4.99</p><small>a month · no trial</small></div>
+      </div>
+      <ul><li>Reminders on every subscription</li><li>Pick your own reminder days · nudge if you miss one</li></ul>
+    </div>
+    <div class="lifebar">
+      <p class="big num">$49.99</p>
+      <p class="txt"><b>Rather not subscribe? Lifetime.</b>Everything in Pro. Pay once, never renews.</p>
+      <span class="pill">Join the waitlist</span>
+      <img src="../../../web/public/duck.webp" alt="">
+    </div>
+  </div>
+  <p class="note" style="margin-top:28px">Why: very clear hierarchy, and the dark card stands out on cream. Lifetime gets its own bar to say "no subscription". It's less like the app, though, and the bar is busier on a phone.</p>
+</div>
+
+<!-- P3 -->
+<div class="opt">
+  <div class="lbl"><b>2C · Three short sticker cards</b><span>After Deezer: plan names as hand-placed stickers, one line each, big price.</span><span class="score">7/10</span></div>
+  <h2>Pro costs less than two months of Netflix.</h2>
+  <div class="p3">
+    <div class="card"><span class="stk s-free">Free</span><p class="big num">$0</p><p class="one">Track everything. Reminders on 3.</p></div>
+    <div class="card hi"><span class="stk s-pro">Pro</span><p class="big num">$29.99<span style="font-size:22px">/yr</span></p><p class="one">7 days free, then about $2.50 a month. Or $4.99 a month.</p></div>
+    <div class="card"><span class="stk s-life">Lifetime</span><p class="big num">$49.99</p><p class="one">Pay once. Everything in Pro, never renews.</p></div>
+  </div>
+  <p class="note" style="margin-top:28px">Why: playful and short. But it hides what Free leaves out, which matters for an honest paywall, and the stickers fight the stamp for attention.</p>
+</div>
+
+<!-- STAMP -->
+<div class="opt">
+  <div class="lbl"><b>3 · The ditch moment, instead of the drawn stamp</b><span>Used in "How it works" step 3 and the "Cancel it" section.</span></div>
+  <div class="sgrid">
+    <div class="scard sun">
+      <img src="../../../web/public/duck.webp" alt="" style="width:150px;margin-bottom:-14px;position:relative;z-index:0">
+      <div class="sub" style="position:relative;z-index:1"><img src="../../../web/public/logos/netflix.png" alt=""><div><p class="nm">Netflix</p><p class="m num">Cancel by Tue, Nov 17 · $19.99 a month</p></div></div>
+      <p class="yr num">$239.88</p>
+      <p class="yrl">a year you won’t pay.</p>
+      <p class="cap" style="color:var(--sunfg2)"><b>A · Duck celebrates (the app’s Ditched screen, no stamp) · 9/10 · my pick</b></p>
+    </div>
+    <div class="scard">
+      <div class="sub"><img src="../../../web/public/logos/netflix.png" alt=""><div><p class="nm">Netflix</p><p class="m num">$19.99 a month</p></div><span class="tag2"><i>✓</i>DITCHED</span></div>
+      <p class="yr num">$239.88</p>
+      <p class="yrl">a year you won’t pay.</p>
+      <p class="cap"><b>B · Clean "Ditched" tag · 8/10</b></p>
+    </div>
+    <div class="scard sun">
+      <svg viewBox="0 0 320 150" width="300" style="transform:rotate(-5deg)">
+        <defs>
+          <filter id="g" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 1.35" result="m"/><feComposite in="SourceGraphic" in2="m" operator="in" result="c"/><feTurbulence type="fractalNoise" baseFrequency=".04" numOctaves="2" seed="2" result="w"/><feDisplacementMap in="c" in2="w" scale="5"/></filter>
+        <filter id="g2"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="3" result="w"/><feDisplacementMap in="SourceGraphic" in2="w" scale="4"/></filter></defs>
+        <g filter="url(#g2)" fill="none" stroke="#16140F">
+          <rect x="8" y="8" width="304" height="134" rx="14" stroke-width="10"/>
+          <rect x="24" y="24" width="272" height="102" rx="8" stroke-width="4"/>
+          <text x="160" y="86" text-anchor="middle" fill="#16140F" stroke="none" style="font-family:Display;font-size:52px;letter-spacing:-1px">DITCHED</text>
+          <text x="160" y="112" text-anchor="middle" fill="#16140F" stroke="none" style="font-family:WideBold;font-size:14px;letter-spacing:3px">NOV 12 · 2026</text>
+        </g><circle cx="10" cy="10" r="1.0" fill="#FFCC2E"/><circle cx="63" cy="47" r="1.6" fill="#FFCC2E"/><circle cx="116" cy="84" r="2.2" fill="#FFCC2E"/><circle cx="169" cy="121" r="1.0" fill="#FFCC2E"/><circle cx="222" cy="28" r="1.6" fill="#FFCC2E"/><circle cx="275" cy="65" r="2.2" fill="#FFCC2E"/><circle cx="28" cy="102" r="1.0" fill="#FFCC2E"/><circle cx="81" cy="139" r="1.6" fill="#FFCC2E"/><circle cx="134" cy="46" r="2.2" fill="#FFCC2E"/><circle cx="187" cy="83" r="1.0" fill="#FFCC2E"/><circle cx="240" cy="120" r="1.6" fill="#FFCC2E"/><circle cx="293" cy="27" r="2.2" fill="#FFCC2E"/><circle cx="46" cy="64" r="1.0" fill="#FFCC2E"/><circle cx="99" cy="101" r="1.6" fill="#FFCC2E"/><circle cx="152" cy="138" r="2.2" fill="#FFCC2E"/><circle cx="205" cy="45" r="1.0" fill="#FFCC2E"/><circle cx="258" cy="82" r="1.6" fill="#FFCC2E"/><circle cx="11" cy="119" r="2.2" fill="#FFCC2E"/><circle cx="64" cy="26" r="1.0" fill="#FFCC2E"/><circle cx="117" cy="63" r="1.6" fill="#FFCC2E"/><circle cx="170" cy="100" r="2.2" fill="#FFCC2E"/><circle cx="223" cy="137" r="1.0" fill="#FFCC2E"/><circle cx="276" cy="44" r="1.6" fill="#FFCC2E"/><circle cx="29" cy="81" r="2.2" fill="#FFCC2E"/><circle cx="82" cy="118" r="1.0" fill="#FFCC2E"/><circle cx="135" cy="25" r="1.6" fill="#FFCC2E"/><circle cx="188" cy="62" r="2.2" fill="#FFCC2E"/><circle cx="241" cy="99" r="1.0" fill="#FFCC2E"/><circle cx="294" cy="136" r="1.6" fill="#FFCC2E"/><circle cx="47" cy="43" r="2.2" fill="#FFCC2E"/><circle cx="100" cy="80" r="1.0" fill="#FFCC2E"/><circle cx="153" cy="117" r="1.6" fill="#FFCC2E"/><circle cx="206" cy="24" r="2.2" fill="#FFCC2E"/><circle cx="259" cy="61" r="1.0" fill="#FFCC2E"/><circle cx="12" cy="98" r="1.6" fill="#FFCC2E"/><circle cx="65" cy="135" r="2.2" fill="#FFCC2E"/><circle cx="118" cy="42" r="1.0" fill="#FFCC2E"/><circle cx="171" cy="79" r="1.6" fill="#FFCC2E"/><circle cx="224" cy="116" r="2.2" fill="#FFCC2E"/><circle cx="277" cy="23" r="1.0" fill="#FFCC2E"/><circle cx="30" cy="60" r="1.6" fill="#FFCC2E"/><circle cx="83" cy="97" r="2.2" fill="#FFCC2E"/><circle cx="136" cy="134" r="1.0" fill="#FFCC2E"/><circle cx="189" cy="41" r="1.6" fill="#FFCC2E"/><circle cx="242" cy="78" r="2.2" fill="#FFCC2E"/><circle cx="295" cy="115" r="1.0" fill="#FFCC2E"/><circle cx="48" cy="22" r="1.6" fill="#FFCC2E"/><circle cx="101" cy="59" r="2.2" fill="#FFCC2E"/><circle cx="154" cy="96" r="1.0" fill="#FFCC2E"/><circle cx="207" cy="133" r="1.6" fill="#FFCC2E"/><circle cx="260" cy="40" r="2.2" fill="#FFCC2E"/><circle cx="13" cy="77" r="1.0" fill="#FFCC2E"/><circle cx="66" cy="114" r="1.6" fill="#FFCC2E"/><circle cx="119" cy="21" r="2.2" fill="#FFCC2E"/><circle cx="172" cy="58" r="1.0" fill="#FFCC2E"/><circle cx="225" cy="95" r="1.6" fill="#FFCC2E"/><circle cx="278" cy="132" r="2.2" fill="#FFCC2E"/><circle cx="31" cy="39" r="1.0" fill="#FFCC2E"/><circle cx="84" cy="76" r="1.6" fill="#FFCC2E"/><circle cx="137" cy="113" r="2.2" fill="#FFCC2E"/><circle cx="190" cy="20" r="1.0" fill="#FFCC2E"/><circle cx="243" cy="57" r="1.6" fill="#FFCC2E"/><circle cx="296" cy="94" r="2.2" fill="#FFCC2E"/><circle cx="49" cy="131" r="1.0" fill="#FFCC2E"/><circle cx="102" cy="38" r="1.6" fill="#FFCC2E"/><circle cx="155" cy="75" r="2.2" fill="#FFCC2E"/><circle cx="208" cy="112" r="1.0" fill="#FFCC2E"/><circle cx="261" cy="19" r="1.6" fill="#FFCC2E"/><circle cx="14" cy="56" r="2.2" fill="#FFCC2E"/><circle cx="67" cy="93" r="1.0" fill="#FFCC2E"/>
+      </svg>
+      <p class="yr num" style="margin-top:8px">$239.88</p>
+      <p class="yrl">a year you won’t pay.</p>
+      <p class="cap" style="color:var(--sunfg2)"><b>C · Keep the stamp, but inked and bolder · 6/10</b></p>
+    </div>
+  </div>
+  <p class="note" style="margin-top:28px"><b>A</b> is the app's own Ditched screen: the duck has a job here (celebrating a ditch), the crossed-out row shows what happened, and the big number is the reward. <b>B</b> is the calmest and works small. <b>C</b> keeps the stamp with real ink texture, but it's still a rubber stamp, which is what doesn't feel like us.</p>
+</div>
+</body></html>

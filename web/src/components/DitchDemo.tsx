@@ -1,37 +1,29 @@
 /* eslint-disable @next/next/no-img-element */
-import { Stamp } from './Stamp';
 
 /**
- * "Changed your mind? Ditch it." The app's ditch moment, shown in order: the row, the hold ring fills,
- * the stamp lands below the row (never on the price), then the yearly number fades in. Runs once when
- * scrolled into view (Reveal adds .is-in). Reduce Motion: shown finished.
+ * The app's Ditched screen (src/app/ditch/[id].tsx), without the stamp (owner, Nov 12): the duck peeks over the
+ * subscription row, then the yearly number. When scrolled into view the duck pops up once and the number fades in
+ * (it never moves). Reduce Motion: shown finished. `small` is the step-card version.
  */
-export function DitchDemo({ name, plan, price, renews, yearly, logo }: { name: string; plan: string; price: string; renews: string; yearly: string; logo: string }) {
+export function DitchDemo({ name, meta, yearly, logo, small = false }: { name: string; meta: string; yearly?: string; logo: string; small?: boolean }) {
   return (
-    <div className="ditch-demo" data-reveal>
-      <div className="dd-row">
-        <img src={logo} alt="" width={44} height={44} className="logo" />
-        <div className="dd-name">
-          <b>{name}</b>
-          <span>
-            {plan} · renews {renews}
-          </span>
+    <div className={`ditch-demo${small ? ' sm' : ''}`} data-reveal={small ? undefined : true} role="img" aria-label={yearly ? `${name} ditched. ${yearly} a year you won’t pay.` : `${name} ditched.`}>
+      <div className="dd-stack">
+        <img className="dd-duck" src="/duck.webp" alt="" width={200} height={117} loading="lazy" />
+        <div className="dd-row">
+          <img src={logo} alt="" width={44} height={44} className="logo" />
+          <div className="dd-name">
+            <b>{name}</b>
+            <span className="num">{meta}</span>
+          </div>
         </div>
-        <span className="dd-price num">{price}</span>
       </div>
-      <div className="dd-hold" aria-hidden>
-        <svg viewBox="0 0 44 44" width="44" height="44">
-          <circle cx="22" cy="22" r="19" className="track" />
-          <circle cx="22" cy="22" r="19" className="ring" />
-        </svg>
-        Hold to ditch
-      </div>
-      <div className="dd-stamp">
-        <Stamp date="2026-11-12" />
-      </div>
-      <p className="dd-year num">
-        {yearly} a year <span>you won’t pay.</span>
-      </p>
+      {yearly ? (
+        <p className="dd-year num">
+          {yearly}
+          <span>a year you won’t pay.</span>
+        </p>
+      ) : null}
     </div>
   );
 }

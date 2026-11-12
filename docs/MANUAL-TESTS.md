@@ -393,3 +393,7 @@ Why: an app feels premium when the bad moments are handled well, not only the ha
 - [ ] Turn the phone sideways and back, and zoom text to the largest size: nothing runs off the right edge.
 - [ ] Open a cancel guide with a long web address (Microsoft 365, Xbox Game Pass): the address wraps, the page doesn't scroll sideways.
 - [ ] Join the waitlist with a real email: you see "Check your inbox", the email arrives, the link confirms.
+- [ ] "Cancel it and see what you won't pay": a phone shows the app's Ditched screen. As you scroll to it the phone rises, the duck pops up over the Netflix card, then the number and buttons fade in. No stamp.
+- [ ] Pricing: heading "Pro costs less than two months of Netflix." A clean list (Free, Pro yearly, Pro monthly, Lifetime) on the left, the app's paywall in a phone on the right. Table, plans and button fade in one after another.
+- [ ] With Reduce Motion on, both phones show finished, nothing moves.
+- [ ] On your iPhone both phones fit the screen width with no sideways scroll.

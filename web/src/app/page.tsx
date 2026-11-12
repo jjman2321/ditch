@@ -48,7 +48,6 @@ export default function Home() {
   });
   const nf = priceFor('netflix', 'US')!;
   const nfPlan = defaultPlan(nf);
-  const nfYear = formatMoney(nfPlan.amountMinor * 12, 'USD');
 
   const ld = [
     { '@context': 'https://schema.org', '@type': 'Organization', name: 'Ditch', legalName: COMPANY, url: SITE, logo: `${SITE}/icon.png`, email: 'support@ditchsubs.app' },
@@ -214,21 +213,6 @@ export default function Home() {
             <Notif text={`Your Disney+ trial ends tomorrow. Then ${formatMoney(defaultPlan(priceFor('disney-plus', 'US')!).amountMinor, 'USD')} a month.`} when="9:00" />
             <span className="next">Next reminder: Netflix · Sun 9:00 AM</span>
           </div>
-        </div>
-      </section>
-
-      {/* 5. The ditch moment */}
-      <section className="sec-moment stamp-moment" aria-labelledby="ditch-h">
-        <div className="wrap">
-          <h2 id="ditch-h" className="sr">
-            Ditch a subscription
-          </h2>
-          <Stamp date="2026-11-12" />
-          <p className="d-money">{nfYear} a year</p>
-          <p className="d-line" style={{ fontSize: 'clamp(1.75rem, 1.2rem + 1.6vw, 2.5rem)', marginTop: 8 }}>
-            you won’t pay.
-          </p>
-          <p className="cap">Netflix Standard, ditched.</p>
         </div>
       </section>
 

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { COUNTRIES, priceHubServices, publishedGuides } from '@/lib/data';
+import { priceHubServices, publishedGuides } from '@/lib/data';
 import { COMPANY } from '@/lib/site';
 
 /** Dark footer card: link columns that help people (and search engines) reach every guide, plus the giant wordmark. */
@@ -51,9 +51,6 @@ export function SiteFooter() {
             </text>
           </svg>
         </div>
-        <p className="meta" style={{ color: '#A69E8C', marginTop: 20 }}>
-          Prices for {COUNTRIES.map((c) => c.short).join(' · ')}
-        </p>
         <div className="legal">
           <span>
             © 2026 {COMPANY} · Made by <Link href="/about" style={{ display: 'inline', minHeight: 0, color: '#A69E8C', textDecoration: 'underline' }}>Aribo</Link>

@@ -4,6 +4,8 @@
 
 export const DUCK_LIGHT = require('../../../assets/brand/duck.png');
 export const DUCK_DARK = require('../../../assets/brand/duck-dark.png');
+/** The home-screen app icon (assets/images/icon.png at 256px), for in-app copies of the icon. */
+export const APP_ICON = require('../../../assets/brand/app-icon.png');
 
 export const DUCK_W = 600;
 export const DUCK_H = 350;

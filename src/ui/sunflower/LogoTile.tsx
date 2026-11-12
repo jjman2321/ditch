@@ -11,7 +11,7 @@ import { SERVICE_BY_ID } from '@/catalog/services';
 import { brand, tileRadius, usePalette } from './tokens';
 import { F } from './type';
 
-import { DUCK_H, DUCK_INK, DUCK_LIGHT, DUCK_W } from './duckAsset';
+import { APP_ICON } from './duckAsset';
 
 const continuous = Platform.OS === 'ios' ? ({ borderCurve: 'continuous' } as const) : null;
 
@@ -68,20 +68,15 @@ export function LogoTile({
 
 /** The Ditch app icon: sunflower tile, the duck centred and resting on the bottom edge. */
 export function DuckIcon({ size = 38, style }: { size?: number; style?: StyleProp<ViewStyle> }) {
-  // The file has air around the head; size it so the duck fills ~86% of the tile.
-  const w = Math.round((size * 0.86) / DUCK_INK);
+  // The real app icon (assets/images/icon.png, scaled), so notification previews and
+  // About show exactly what's on the home screen.
   return (
     <View
       accessible={false}
       importantForAccessibility="no-hide-descendants"
       style={[{ width: size, height: size, borderRadius: tileRadius(size), overflow: 'hidden', backgroundColor: brand.sunflower }, continuous, style]}
     >
-      <Image
-        source={DUCK_LIGHT}
-        style={{ position: 'absolute', width: w, height: (w * DUCK_H) / DUCK_W, left: Math.round((size - w) / 2), bottom: 0 }}
-        contentFit="contain"
-        transition={0}
-      />
+      <Image source={APP_ICON} style={{ width: size, height: size }} contentFit="cover" transition={0} />
       <View
         pointerEvents="none"
         style={[{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, borderRadius: tileRadius(size), borderWidth: 0.5, borderColor: 'rgba(22,20,15,0.18)' }, continuous]}

@@ -119,7 +119,11 @@ Needs the EAS development build for the starred ones (*).
 - [ ] Tab bar: "Home", "Calendar", "Ditched" are fully visible, letters not cut, on your iPhone.
 - [ ] Home: a yearly sub shows "/yr" after its price.
 - [ ] *iPad (if you have one): Home, Calendar and Settings sit in a centred column, not stretched.
-- [ ] Home screen: the yellow duck icon. Splash: the icon on cream (dark: on black).
+- [ ] Home screen: the yellow "Bean" duck icon (round white duck, orange bill, on yellow). Needs an EAS build: Expo Go always shows its own icon.
+- [ ] iPhone Settings → Display & Brightness → Dark: the icon turns dark with a yellow outline round the duck.
+- [ ] Long-press the home screen → Edit → Customize → Tinted: a grey duck.
+- [ ] Open Ditch from closed: the splash is the rounded Bean on cream.
+- [ ] Settings → About, and the lock-screen example in onboarding: the small icon is the same Bean as the home screen.
 - [ ] Paywall: 4 rows (Track every subscription, Subscriptions with reminders, Pick reminder days, Nudge if you miss one). No widget row.
 
 ## 1f. Next reminder, "Find the ones you forgot", paywall Lifetime line (Nov 11, DECISIONS #42)

@@ -390,8 +390,8 @@ export default function Home() {
           <h2 id="final-h" className="h2">
             Fewer surprise charges. More say in what renews.
           </h2>
-          <p className="lead">Join the waitlist and get one email the day Ditch is on the App Store.</p>
-          <EmailBox source="home-final" cta="Join the waitlist" />
+          <p className="lead">Be the first to know when it’s out.</p>
+          <EmailBox source="home-final" bare cta="Join the waitlist" />
         </div>
       </section>
 

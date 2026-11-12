@@ -14,12 +14,14 @@ Win Google and AI answers with **fewer, better pages built from data nobody else
 ## Brand name
 Always **"Ditch: Subscription Tracker"** / "ditchsubs". "Ditch app" clashes with "Ditch: Pay Off Debt Faster" (iOS finance app) and Ditch Labs.
 
-## Stack
-- **Astro (static HTML) on Cloudflare**, in `site/` in this repo, reading the same data files as the app (`docs/research/prices-*.json`, `cancel-guides-*.json`, `src/catalog/services.data.ts`, `assets/logos/`). Free, fast, almost no JavaScript (only the calculator).
-- Workflow: Claude edits `site/` → pull request → owner merges → Cloudflare deploys.
+## Stack (owner: same as Ankidecks and PeptideTracker)
+- **Next.js 16 (App Router) + TypeScript + Tailwind 4 on Cloudflare Workers via OpenNext** (`@opennextjs/cloudflare`), copied from `jjman2321/pepsi` (PeptideTracker), which already has the SEO pieces we need: `sitemap.ts`, `robots.txt` route, `llms.txt` and `llms-full.txt` routes, `manifest.ts`, `search.json`, methodology, corrections, editorial-policy and privacy pages, and a content registry with `draft: true`.
+- Lives in `web/` in this repo, so the site reads the same data files as the app (`docs/research/prices-*.json`, `cancel-guides-*.json`, `src/catalog/services.data.ts`, `assets/logos/`). Price and guide pages are statically generated at build time (no database reads per visit), so they're fast and fully readable without JavaScript.
+- Deploy: `npm run deploy` (OpenNext build + wrangler deploy), custom domain ditchsubs.app on the Worker.
 - **Cloudflare trap:** new domains block AI crawlers by default ("Block AI bots" + managed robots.txt). Turn both off and serve our own robots.txt, or ChatGPT/Claude/Perplexity never see the site.
 - Analytics: Cloudflare Web Analytics (no cookies) → **no cookie banner**. Google Search Console + Bing Webmaster Tools (Bing shows AI citations). IndexNow.
-- Waitlist: Resend audience, double opt-in, one email at launch + optional monthly "Price Hike Report" (separate tick).
+- Waitlist: Resend audience (owner pick), double opt-in, one email at launch + optional monthly "Price Hike Report" (separate tick). Also saved to D1 as a backup, like PeptideTracker.
+- Tests: Vitest for the price maths and the publishing gates.
 
 ## Look (from the app, Sunflower)
 Cream pages, sunflower for brand moments, ink text, tangerine accent, Archivo 900 display, Inter body, the duck in a few jobs only (hero welcome, waitlist success, 404/empty search, trial card), the DITCHED stamp, real logos. Nothing moves next to a price. No star ratings or user counts until they're real. Ink on sunflower (white on sunflower fails contrast).
@@ -51,7 +53,7 @@ References: **Givingli** (cream, huge tight headline, objects floating round it,
 | Index pages | /cancel, /prices | Search, category chips, popular row, A–Z, logo cards |
 | Guides | /guides/… | Hand-written: find all your subscriptions, see and cancel on iPhone, what APPLE.COM/BILL means, cancel a free trial before it charges (with a checked table), price rises 2026 |
 | Calculator | /calculator | Real local yearly total |
-| Compare | /compare/… | Fair, dated, says where rivals win (owner to confirm) |
+| Compare | /compare/… | Owner, Nov 12: tables show only where Ditch wins (checked with his lawyer). Every row must be true today, dated, and sourced to the rival's own App Store page or site. No rival logos. |
 | Trust | /about, /how-we-check, /sources, /data | Aribo (no photo), method, studies, the data with a Dataset schema |
 | Legal | /privacy, /terms, /support | App Review needs them. Privacy covers app + site + waitlist; "short version" first |
 
@@ -69,6 +71,11 @@ References: **Givingli** (cream, huge tight headline, objects floating round it,
 - robots.txt allows search and AI bots (OAI-SearchBot, ChatGPT-User, Claude-SearchBot, PerplexityBot, Googlebot, Bingbot, Applebot), and training bots too (judgement: brand presence beats hiding public prices).
 - llms.txt (cheap; evidence it helps is weak).
 - A "what 6 popular subscriptions cost in 12 countries" data study for press, to earn links.
+
+## Owner answers (Nov 12, round 3)
+- Logos: small, unchanged logos + "not affiliated" line on every page; never in ads or share images.
+- Upkeep: 1–2 hours a week, so ~200 pages at launch is OK.
+- Launch list: waitlist (no App Store pre-order for now).
 
 ## Phases (English)
 - **Phase 0, now (owner: go live now with waitlist + guides; overrides "after the app ships" in DECISIONS #9/#18):** home + waitlist, /privacy, /terms, /support, /about, /how-we-check, ~15 price hubs (Netflix, Spotify, Disney+, ChatGPT Plus, Apple One, iCloud+, Apple Music, Apple TV, Microsoft 365, Xbox Game Pass, PS Plus, Claude Pro, Google AI Pro, Amazon Prime, Dropbox), the 31 high-confidence cancel guides, 2 guides, robots/sitemap/llms.txt, favicons, OG images.

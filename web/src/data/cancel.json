@@ -1,0 +1,805 @@
+{
+ "checkedOn": "2026-11-10",
+ "services": [
+  {
+   "id": "netflix",
+   "name": "Netflix",
+   "url": "https://www.netflix.com/cancelplan",
+   "helpUrl": null,
+   "steps": [
+    "Open netflix.com/cancelplan in Safari and sign in",
+    "Tap Cancel",
+    "Tap Finish Cancellation and keep the email"
+   ],
+   "appleNote": false,
+   "source": "https://help.netflix.com/en/node/407",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Netflix says this page is the only way to cancel. No cancel button = billed by a partner (shown under Membership on netflix.com/account). New Apple sign-ups ended years ago, old ones may still bill via Apple."
+  },
+  {
+   "id": "amazon-prime",
+   "name": "Amazon Prime",
+   "url": null,
+   "helpUrl": "https://www.amazon.com/gp/help/customer/display.html?nodeId=GTJQ7QZY7QL2HK4Y",
+   "steps": [
+    "Amazon app: tap Account, then Your Prime Membership",
+    "Tap Update, cancel and more",
+    "Tap Cancel membership and confirm every screen"
+   ],
+   "appleNote": false,
+   "source": "https://www.amazon.com/gp/help/customer/display.html?nodeId=GTJQ7QZY7QL2HK4Y",
+   "checkedOn": "2026-11-10",
+   "confidence": "medium",
+   "note": "amazon.com returned 503 to automated fetches; steps from official help-page search snippets. Several confirm screens with offers. Free trial button says End trial and benefits. Google Play sign-ups cancel in Google Play."
+  },
+  {
+   "id": "spotify",
+   "name": "Spotify",
+   "url": "https://www.spotify.com/account/subscription/manage/",
+   "helpUrl": null,
+   "steps": [
+    "Open spotify.com/account in Safari and sign in",
+    "Tap Manage your plan",
+    "Tap Cancel subscription and confirm"
+   ],
+   "appleNote": false,
+   "source": "https://support.spotify.com/us/article/cancel-premium/",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Official link is /account/subscription/manage/ (cancel.ts has /account/subscription/, which also works as the plan page). No cancel option = billed by a partner like a phone carrier. Family/Duo members can only leave, not cancel."
+  },
+  {
+   "id": "youtube-premium",
+   "name": "YouTube Premium",
+   "url": "https://www.youtube.com/paid_memberships",
+   "helpUrl": null,
+   "steps": [
+    "YouTube app: tap your profile picture",
+    "Tap Purchases and memberships (Paid memberships)",
+    "Pick Premium, tap Deactivate or Cancel, then confirm"
+   ],
+   "appleNote": true,
+   "source": "https://support.google.com/youtube/answer/6308278",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "If you joined in the YouTube iOS app, Apple bills you: cancel in iPhone Settings. Google lists Android menu names only; iOS label may read Purchases and memberships."
+  },
+  {
+   "id": "disney-plus",
+   "name": "Disney+",
+   "url": "https://www.disneyplus.com/account/cancel-subscription",
+   "helpUrl": null,
+   "steps": [
+    "Open disneyplus.com/account in Safari and sign in",
+    "Tap Subscription, then Cancel Subscription",
+    "Confirm. Cancel before 11:59pm ET the day before renewal"
+   ],
+   "appleNote": true,
+   "source": "https://www.hulu.com/subscriber_agreement",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Direct cancel URL is stated in the official Disney+, Hulu and ESPN Subscriber Agreement. help.disneyplus.com returned empty pages to automated fetches. App Store or partner billing: cancel there."
+  },
+  {
+   "id": "chatgpt-plus",
+   "name": "ChatGPT",
+   "url": null,
+   "helpUrl": "https://help.openai.com/en/articles/7232927-how-do-i-cancel-my-chatgpt-plus-subscription",
+   "steps": [
+    "Open chatgpt.com in Safari and sign in",
+    "Tap your name, then Settings, then Billing",
+    "Under Cancel plan, tap Cancel and confirm"
+   ],
+   "appleNote": true,
+   "source": "https://help.openai.com/en/articles/7232927-how-do-i-cancel-my-chatgpt-plus-subscription",
+   "checkedOn": "2026-11-10",
+   "confidence": "medium",
+   "note": "help.openai.com returned 403; steps from official snippets. If you subscribed in the iPhone app, Apple bills you. Deleting the app or account does not cancel. Cancel 24h before renewal."
+  },
+  {
+   "id": "prime-video",
+   "name": "Prime Video",
+   "url": "https://www.primevideo.com/settings",
+   "helpUrl": null,
+   "steps": [
+    "Open primevideo.com/settings in Safari and sign in",
+    "Tap the Your Account tab",
+    "Tap End Subscription and confirm"
+   ],
+   "appleNote": true,
+   "source": "https://www.primevideo.com/help?nodeId=GWGDSNXVPJ93UW5V",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "For Prime Video-only plans. If Prime Video comes with Amazon Prime, cancel Prime instead (Edit on Amazon). Channel add-ons can be billed by Apple; cancel those 24h before renewal."
+  },
+  {
+   "id": "icloud",
+   "name": "iCloud+",
+   "url": "https://apps.apple.com/account/subscriptions",
+   "helpUrl": null,
+   "steps": [
+    "Open Settings and tap your name",
+    "Tap Subscriptions, then iCloud+",
+    "Tap Cancel Subscription (iOS 18.4 or later)"
+   ],
+   "appleNote": true,
+   "source": "https://support.apple.com/en-us/108318",
+   "checkedOn": "2026-11-10",
+   "confidence": "medium",
+   "note": "Read via official-domain search snippets. iOS 18 to 18.3: Settings → name → iCloud → Manage Plan. iOS 17: iCloud → Manage Account Storage → Downgrade Options. Over the free 5 GB, sync and backups stop."
+  },
+  {
+   "id": "apple-music",
+   "name": "Apple Music",
+   "url": "https://apps.apple.com/account/subscriptions",
+   "helpUrl": null,
+   "steps": [
+    "Open Settings and tap your name",
+    "Tap Subscriptions, then Apple Music",
+    "Tap Cancel Subscription and confirm"
+   ],
+   "appleNote": true,
+   "source": "https://support.apple.com/en-us/118428",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Billed by Apple. Also cancellable at music.apple.com → Account → Settings → Subscriptions → Manage. Downloaded Apple Music songs stop playing after it ends."
+  },
+  {
+   "id": "max",
+   "name": "HBO Max",
+   "url": "https://www.hbomax.com/subscription",
+   "helpUrl": null,
+   "steps": [
+    "Open hbomax.com/subscription in Safari and sign in",
+    "Tap Cancel Your Subscription",
+    "Confirm and note your end date"
+   ],
+   "appleNote": true,
+   "source": "https://help.hbomax.com/us/Answer/Detail/000002526",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Help site moved from help.max.com to help.hbomax.com. No cancel option = third-party billing; the provider is shown at the top of the Subscription page. App path (Profile → Subscription) only shows billing, cancel on the web."
+  },
+  {
+   "id": "apple-tv",
+   "name": "Apple TV",
+   "url": "https://apps.apple.com/account/subscriptions",
+   "helpUrl": null,
+   "steps": [
+    "Open Settings and tap your name",
+    "Tap Subscriptions, then Apple TV",
+    "Tap Cancel Subscription and confirm"
+   ],
+   "appleNote": true,
+   "source": "https://support.apple.com/en-us/118428",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Billed by Apple. Channels added inside the Apple TV app show up here as separate subscriptions."
+  },
+  {
+   "id": "hulu",
+   "name": "Hulu",
+   "url": "https://www.hulu.com/account",
+   "helpUrl": null,
+   "steps": [
+    "Open hulu.com/account in Safari and sign in",
+    "Tap Cancel next to your subscription",
+    "Follow it through and confirm"
+   ],
+   "appleNote": true,
+   "source": "https://www.hulu.com/subscriber_agreement",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Official agreement says go to www.hulu.com/account, log in and click Cancel. cancel.ts uses secure.hulu.com/account/cancel, which no official page we could read confirms. Apple, Google, Amazon or Roku billing: cancel there. Hulu may offer a pause first."
+  },
+  {
+   "id": "google-one",
+   "name": "Google One",
+   "url": "https://one.google.com/settings",
+   "helpUrl": null,
+   "steps": [
+    "Google One app: tap Menu, then Membership plans",
+    "Tap Manage plan, then Cancel membership",
+    "Tap Cancel Subscription on the page that opens"
+   ],
+   "appleNote": true,
+   "source": "https://support.google.com/googleone/answer/9056360?co=GENIE.Platform%3DiOS&hl=en",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "On iPhone the app hands off to the App Store page if Apple bills you. Web: one.google.com/settings → Cancel membership. Files stay; you drop to 15 GB free."
+  },
+  {
+   "id": "microsoft-365",
+   "name": "Microsoft 365",
+   "url": "https://account.microsoft.com/services/microsoft365",
+   "helpUrl": null,
+   "steps": [
+    "Open account.microsoft.com/services in Safari",
+    "Sign in, then tap Cancel subscription (or Upgrade or Cancel)",
+    "Scroll down and tap I don't want my subscription"
+   ],
+   "appleNote": true,
+   "source": "https://support.microsoft.com/en-us/office/cancel-a-microsoft-subscription-46e2634c-c64b-4c65-94b9-2cc9c960e91b",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Bought in the iPhone app: Apple bills it, Microsoft can't cancel. Turn on recurring billing showing = already set to expire. Storage drops to free; OneDrive may stop syncing."
+  },
+  {
+   "id": "xbox-game-pass",
+   "name": "Xbox Game Pass",
+   "url": "https://account.microsoft.com/services",
+   "helpUrl": null,
+   "steps": [
+    "Open account.microsoft.com/services and sign in",
+    "Find Game Pass and tap Manage",
+    "Tap Cancel subscription and follow the steps"
+   ],
+   "appleNote": false,
+   "source": "https://support.microsoft.com/en-us/accounts-billing/subscriptions/cancel-your-microsoft-subscription",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Also cancellable on an Xbox console. support.xbox.com pages rendered empty to automated fetches."
+  },
+  {
+   "id": "ps-plus",
+   "name": "PlayStation Plus",
+   "url": "https://www.playstation.com/acct/management",
+   "helpUrl": null,
+   "steps": [
+    "PlayStation App: tap the PlayStation Store icon",
+    "Tap the menu, then Subscriptions Management",
+    "Tap Cancel under PlayStation Plus"
+   ],
+   "appleNote": false,
+   "source": "https://www.playstation.com/en-us/support/store/cancel-ps-store-subscription/",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Web: Account Management → Subscription → Cancel. Access lasts until the next payment date."
+  },
+  {
+   "id": "audible",
+   "name": "Audible",
+   "url": null,
+   "helpUrl": "https://help.audible.com/s/article/cancel-membership",
+   "steps": [
+    "Open audible.com in Safari and sign in",
+    "Go to Account Details, then Membership details",
+    "Tap Cancel membership and get past the offers"
+   ],
+   "appleNote": true,
+   "source": "https://help.audible.com/s/article/cancel-membership",
+   "checkedOn": "2026-11-10",
+   "confidence": "medium",
+   "note": "Help page needed sign-in for automated fetch; steps from official snippets. The iPhone app can't cancel. Apple-billed memberships cancel in iPhone Settings. Unused credits are lost at the end, so spend them first."
+  },
+  {
+   "id": "paramount-plus",
+   "name": "Paramount+",
+   "url": "https://www.paramountplus.com/account/",
+   "helpUrl": null,
+   "steps": [
+    "Open paramountplus.com/account in Safari",
+    "Sign in and tap Cancel Subscription",
+    "Follow the prompts to the end"
+   ],
+   "appleNote": true,
+   "source": "https://support.paramountplus.com/s/article/PI-How-do-I-cancel-my-subscription",
+   "checkedOn": "2026-11-10",
+   "confidence": "medium",
+   "note": "Help page wouldn't render for automated fetch; from official snippets. Apple, Google, Amazon or Roku billing: cancel there."
+  },
+  {
+   "id": "peacock",
+   "name": "Peacock",
+   "url": "https://www.peacocktv.com/account/plans",
+   "helpUrl": null,
+   "steps": [
+    "Open peacocktv.com/account/plans and sign in",
+    "Tap Cancel All Subscriptions",
+    "Confirm and watch for the email"
+   ],
+   "appleNote": true,
+   "source": "https://www.peacocktv.com/help/article/cancellation",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Cancel All Subscriptions also ends add-ons. No such button = third-party billing (Apple, Google, Roku, Amazon, Verizon). Cancel by the day before renewal."
+  },
+  {
+   "id": "duolingo",
+   "name": "Duolingo Super",
+   "url": null,
+   "helpUrl": "https://www.duolingo.com/help/cancel-my-super-duolingo-subscription",
+   "steps": [
+    "Duolingo app: tap the Super icon at the top",
+    "Tap the Settings gear, then Manage subscription",
+    "Tap Cancel subscription and confirm in the App Store"
+   ],
+   "appleNote": true,
+   "source": "https://www.duolingo.com/help/cancel-my-super-duolingo-subscription",
+   "checkedOn": "2026-11-10",
+   "confidence": "medium",
+   "note": "Help page rendered empty for automated fetch; from official snippets. Usually Apple-billed on iPhone. Deleting the account doesn't stop App Store charges."
+  },
+  {
+   "id": "apple-one",
+   "name": "Apple One",
+   "url": "https://apps.apple.com/account/subscriptions",
+   "helpUrl": null,
+   "steps": [
+    "Open Settings and tap your name",
+    "Tap Subscriptions, then Apple One",
+    "Tap Cancel Subscription and confirm"
+   ],
+   "appleNote": true,
+   "source": "https://support.apple.com/en-us/118428",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Billed by Apple. Ending it cancels all bundled services; keep single ones by resubscribing to them."
+  },
+  {
+   "id": "tinder",
+   "name": "Tinder",
+   "url": null,
+   "helpUrl": "https://www.help.tinder.com/hc/en-us/articles/115003554466-Cancel-your-subscription",
+   "steps": [
+    "Bought in the app? Settings → your name → Subscriptions",
+    "Else log in at tinder.com and open your profile",
+    "Tap Manage Payment Account, then Cancel Subscription"
+   ],
+   "appleNote": true,
+   "source": "https://www.help.tinder.com/hc/en-us/articles/115003554466-Cancel-your-subscription",
+   "checkedOn": "2026-11-10",
+   "confidence": "medium",
+   "note": "help.tinder.com returned 403; from official snippets. Order number starting MK = Apple, GPA = Google, TNDR = Tinder. Deleting the app or account doesn't cancel."
+  },
+  {
+   "id": "canva-pro",
+   "name": "Canva Pro",
+   "url": null,
+   "helpUrl": "https://www.canva.com/help/cancel-canva-plan/",
+   "steps": [
+    "Open canva.com in Safari and sign in",
+    "Go to Settings, then Billing",
+    "Tap Cancel plan and confirm Cancel subscription"
+   ],
+   "appleNote": true,
+   "source": "https://www.canva.com/help/cancel-canva-plan/",
+   "checkedOn": "2026-11-10",
+   "confidence": "medium",
+   "note": "canva.com returned 403; from official snippets. App Store purchases can't be cancelled in Canva. Canva offers a 3-month pause instead. Designs stay on the free plan."
+  },
+  {
+   "id": "youtube-music",
+   "name": "YouTube Music",
+   "url": "https://www.youtube.com/paid_memberships",
+   "helpUrl": null,
+   "steps": [
+    "YouTube or YouTube Music app: tap your profile picture",
+    "Tap Purchases and memberships (Paid memberships)",
+    "Pick Music Premium, tap Deactivate or Cancel, confirm"
+   ],
+   "appleNote": true,
+   "source": "https://support.google.com/youtube/answer/6308278",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Same page as YouTube Premium. Joined in an iOS app: cancel in iPhone Settings."
+  },
+  {
+   "id": "nintendo-online",
+   "name": "Nintendo Switch Online",
+   "url": "https://accounts.nintendo.com/portal",
+   "helpUrl": null,
+   "steps": [
+    "Open accounts.nintendo.com in Safari and sign in",
+    "Tap Nintendo Switch Online",
+    "Tap Cancel Your Pass by Turning Off Auto-Renewal, Confirm"
+   ],
+   "appleNote": false,
+   "source": "https://en-americas-support.nintendo.com/app/answers/detail/a_id/41196/",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Do it at least 48 hours before expiry. Auto-renew can't be turned back on once off. No refunds for unused time."
+  },
+  {
+   "id": "amazon-music",
+   "name": "Amazon Music Unlimited",
+   "url": null,
+   "helpUrl": "https://www.amazon.com/gp/help/customer/display.html?nodeId=GCRZL3F2UZMNP3T3",
+   "steps": [
+    "Open Amazon Music Settings on amazon.com in Safari",
+    "Find the Amazon Music Unlimited section",
+    "Tap Cancel under Subscription Renewal, then confirm"
+   ],
+   "appleNote": true,
+   "source": "https://www.amazon.com/gp/help/customer/display.html?nodeId=GCRZL3F2UZMNP3T3",
+   "checkedOn": "2026-11-10",
+   "confidence": "medium",
+   "note": "amazon.com returned 503; from official snippets. Apple, Google or carrier billing: cancel there (Amazon can't). Monthly plans may offer pause."
+  },
+  {
+   "id": "crunchyroll",
+   "name": "Crunchyroll",
+   "url": null,
+   "helpUrl": "https://help.crunchyroll.com/hc/en-us/articles/46070271612820-How-can-I-cancel-my-Premium-Membership",
+   "steps": [
+    "Bought in the app? Settings → your name → Subscriptions",
+    "Else open crunchyroll.com in Safari and sign in",
+    "Open your account's membership page and cancel"
+   ],
+   "appleNote": true,
+   "source": "https://help.crunchyroll.com/hc/en-us/articles/46070271612820-How-can-I-cancel-my-Premium-Membership",
+   "checkedOn": "2026-11-10",
+   "confidence": "medium",
+   "note": "Article body didn't load for automated fetch; snippets confirm cancel-anytime and Apple route but not current web menu names. The app may have no cancel option."
+  },
+  {
+   "id": "uber-one",
+   "name": "Uber One",
+   "url": null,
+   "helpUrl": "https://help.uber.com/en/riders/article/how-can-i-cancel-my-uber-one-membership?nodeId=8f62fc7a-6cc9-4ac7-a59a-3f5627bf616c",
+   "steps": [
+    "Uber app: tap Account, then Uber One",
+    "Tap Manage Membership, then End Membership",
+    "Pick a reason, tap Continue twice, then End Membership"
+   ],
+   "appleNote": false,
+   "source": "https://help.uber.com/en/riders/article/how-can-i-cancel-my-uber-one-membership?nodeId=8f62fc7a-6cc9-4ac7-a59a-3f5627bf616c",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Cancel at least 48 hours before renewal (US); inside that window you must contact support. Three confirm screens."
+  },
+  {
+   "id": "doordash",
+   "name": "DashPass",
+   "url": null,
+   "helpUrl": "https://help.doordash.com/en-us/consumers/article/how-do-i-cancel-my-dashpass-subscription",
+   "steps": [
+    "DoorDash app: tap the Account icon",
+    "Tap Manage DashPass, then Cancel Membership",
+    "Pick a reason and tap Cancel DashPass"
+   ],
+   "appleNote": false,
+   "source": "https://help.doordash.com/en-us/consumers/article/how-do-i-cancel-my-dashpass-subscription",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Cancel 24h before the next payment. Cancelling a free trial ends benefits right away. A Pause option sits on the same page."
+  },
+  {
+   "id": "walmart-plus",
+   "name": "Walmart+",
+   "url": null,
+   "helpUrl": "https://www.walmart.com/help/article/manage-walmart-membership/126c9a990a944c3abd8531de52a87440",
+   "steps": [
+    "Walmart app: tap Account, then Walmart+",
+    "Tap Manage membership, then Manage next to your plan",
+    "Tap Cancel next to Cancel membership and confirm"
+   ],
+   "appleNote": false,
+   "source": "https://www.walmart.com/help/article/manage-walmart-membership/126c9a990a944c3abd8531de52a87440",
+   "checkedOn": "2026-11-10",
+   "confidence": "medium",
+   "note": "walmart.com showed a bot check, not bypassed; from official snippets. Expect a Remind Me Later offer first. Phone: 800-924-9206. Cancelling a trial ends benefits right away."
+  },
+  {
+   "id": "costco",
+   "name": "Costco",
+   "url": "https://www.costco.com/RenewMembershipView?storeId=10301&catalogId=10701&langId=-1",
+   "helpUrl": null,
+   "steps": [
+    "Sign in at costco.com, then Account → Renew Membership",
+    "Remove the card set for Auto Renew",
+    "Do it 2+ business days before your renewal month"
+   ],
+   "appleNote": false,
+   "source": "https://customerservice.costco.com/app/answers/answer_view/a_id/1812/~/how-can-i-manage-membership-auto-renewal-online%3F",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Online you can only turn off auto-renew. A full cancel with refund is at a warehouse membership counter or 1-800-774-2678 / chat. US site."
+  },
+  {
+   "id": "adobe-cc",
+   "name": "Adobe Creative Cloud",
+   "url": "https://account.adobe.com/plans",
+   "helpUrl": null,
+   "steps": [
+    "Open account.adobe.com/plans in Safari and sign in",
+    "Tap Manage plan, then Cancel your plan",
+    "Pick a reason, review, then confirm"
+   ],
+   "appleNote": true,
+   "source": "https://helpx.adobe.com/account/individual/subscriptions-and-plans/renewals-and-cancellations/cancel-adobe-subscription.html",
+   "checkedOn": "2026-11-10",
+   "confidence": "medium",
+   "note": "helpx.adobe.com returned 403; from official snippets. Annual plans paid monthly can charge an early-cancel fee after 14 days. Each plan cancels separately. Can't cancel with a failed payment pending."
+  },
+  {
+   "id": "claude-pro",
+   "name": "Claude Pro",
+   "url": "https://claude.ai/settings/billing",
+   "helpUrl": null,
+   "steps": [
+    "Claude app: tap your initials",
+    "Tap Billing, then Manage subscription",
+    "Follow the prompts to cancel"
+   ],
+   "appleNote": true,
+   "source": "https://support.claude.com/en/articles/8325617-cancel-your-pro-or-max-subscription",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Web: Settings → Billing → Cancel. iPhone-app subscriptions are billed by Apple. Cancel 24h before renewal; account drops to Free, chats stay."
+  },
+  {
+   "id": "google-ai-pro",
+   "name": "Google AI Pro",
+   "url": "https://one.google.com/settings",
+   "helpUrl": null,
+   "steps": [
+    "Open gemini.google.com in Safari, tap Menu, then Settings",
+    "Tap Manage subscription to open Google One settings",
+    "Tap Cancel membership, then Cancel"
+   ],
+   "appleNote": true,
+   "source": "https://support.google.com/googleone/answer/16476811?hl=en&co=GENIE.Platform%3DiOS",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Billed through Google One. If Apple bills it, it shows as Google One (or Gmail, Drive, Photos) in iPhone Settings → Subscriptions. Storage drops to 15 GB."
+  },
+  {
+   "id": "youtube-tv",
+   "name": "YouTube TV",
+   "url": "https://tv.youtube.com/settings/subscriptions?setac=cancel",
+   "helpUrl": null,
+   "steps": [
+    "Open tv.youtube.com in Safari, tap your profile photo",
+    "Tap Settings, then Membership",
+    "Tap Manage, then Cancel membership"
+   ],
+   "appleNote": false,
+   "source": "https://support.google.com/youtubetv/answer/7129668?hl=en&co=GENIE.Platform%3DiOS",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "URL is the one Google's help page links to. A Pause (up to 6 months) is offered first. Recordings expire 21 days after it ends. Apple billing not mentioned on the official page."
+  },
+  {
+   "id": "hinge",
+   "name": "Hinge",
+   "url": null,
+   "helpUrl": "https://help.hinge.co/hc/en-us/articles/36311108859411-Adjusting-or-Canceling-Your-Subscription",
+   "steps": [
+    "Bought via Apple? Settings → your name → Subscriptions",
+    "Paid in Hinge? Open Hinge and tap the gear icon",
+    "Tap Cancel Subscription and follow the prompts"
+   ],
+   "appleNote": true,
+   "source": "https://help.hinge.co/hc/en-us/articles/36311108859411-Adjusting-or-Canceling-Your-Subscription",
+   "checkedOn": "2026-11-10",
+   "confidence": "medium",
+   "note": "help.hinge.co returned 403; from official snippets. Most iPhone subs are Apple-billed. Hinge now also sells direct via Stripe. Cancel 24h before renewal."
+  },
+  {
+   "id": "bumble",
+   "name": "Bumble",
+   "url": null,
+   "helpUrl": "https://support.bumble.com/hc/articles/28534541366045-Canceling-subscriptions",
+   "steps": [
+    "Bought via Apple? Settings → your name → Subscriptions",
+    "Paid by card or PayPal? Open Bumble, tap Profile",
+    "Tap Subscription details → Manage your subscription"
+   ],
+   "appleNote": true,
+   "source": "https://support.bumble.com/hc/articles/28534541366045-Canceling-subscriptions",
+   "checkedOn": "2026-11-10",
+   "confidence": "medium",
+   "note": "support.bumble.com returned 403; from official snippets. Deleting the app or account doesn't cancel. Cancel 24h before renewal."
+  },
+  {
+   "id": "dropbox",
+   "name": "Dropbox Plus",
+   "url": null,
+   "helpUrl": "https://help.dropbox.com/plans/downgrade-dropbox-individual-plans",
+   "steps": [
+    "Open dropbox.com in Safari and sign in",
+    "Tap your avatar, then Manage account",
+    "Tap Cancel plan at the bottom and confirm"
+   ],
+   "appleNote": true,
+   "source": "https://help.dropbox.com/plans/downgrade-dropbox-individual-plans",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "No Cancel plan button = bought in the app, so cancel in iPhone Settings. You drop to Basic (2 GB) and syncing stops if you're over."
+  },
+  {
+   "id": "linkedin-premium",
+   "name": "LinkedIn Premium",
+   "url": null,
+   "helpUrl": "https://www.linkedin.com/help/linkedin/answer/a545578",
+   "steps": [
+    "LinkedIn: tap your photo, then Premium features",
+    "Tap Manage subscription, then Cancel subscription",
+    "Follow the prompts and confirm"
+   ],
+   "appleNote": true,
+   "source": "https://www.linkedin.com/help/linkedin/answer/a545578",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Bought in the iPhone app: LinkedIn says cancel it in the LinkedIn app on an Apple device. Bought on iOS mobile web: cancel on a desktop browser. Free trial ends at once when cancelled."
+  },
+  {
+   "id": "snapchat-plus",
+   "name": "Snapchat+",
+   "url": "https://accounts.snapchat.com/v2/my-subscription",
+   "helpUrl": null,
+   "steps": [
+    "Bought in the app? Settings → your name → Subscriptions",
+    "Bought on the web? Open accounts.snapchat.com",
+    "Tap My Subscription and cancel"
+   ],
+   "appleNote": true,
+   "source": "https://help.snapchat.com/hc/en-us/articles/8098571884948-How-do-I-cancel-my-subscription-to-Snapchat-or-Memories",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Link only works for web subscribers. Most iPhone subs are Apple-billed. Cancel a trial 24h before it ends."
+  },
+  {
+   "id": "kindle-unlimited",
+   "name": "Kindle Unlimited",
+   "url": "https://www.amazon.com/kucentral",
+   "helpUrl": null,
+   "steps": [
+    "Open amazon.com/kucentral in Safari and sign in",
+    "Tap Cancel Kindle Unlimited Membership",
+    "Confirm (or pick Pause for a month instead)"
+   ],
+   "appleNote": false,
+   "source": "https://www.amazon.com/gp/help/customer/display.html?nodeId=T14kmeziBQrl6FYUjz",
+   "checkedOn": "2026-11-10",
+   "confidence": "medium",
+   "note": "amazon.com returned 503; from official snippets. Some Amazon pages now say Kindle+ (with amazon.com/kpcentral) instead of Kindle Unlimited; check the name. Google Play sign-ups cancel in Play."
+  },
+  {
+   "id": "nyt",
+   "name": "New York Times",
+   "url": null,
+   "helpUrl": null,
+   "steps": [
+    "Open the NYT site in Safari and sign in",
+    "Go to your account's subscription page",
+    "Look for the cancel option or ask in chat"
+   ],
+   "appleNote": true,
+   "source": null,
+   "checkedOn": "2026-11-10",
+   "confidence": "none",
+   "note": "Couldn't tie to an official source: nytimes.com blocks our search and fetch tools, and the help pages only showed up on third-party mirrors, which we don't use. Owner should check help.nytimes.com by hand. App Store subs cancel in iPhone Settings."
+  },
+  {
+   "id": "strava",
+   "name": "Strava",
+   "url": "https://www.strava.com/account",
+   "helpUrl": null,
+   "steps": [
+    "Bought in the app? Settings → your name → Subscriptions",
+    "Else open strava.com in Safari and sign in",
+    "Go to Settings → My Account → Cancel Subscription"
+   ],
+   "appleNote": true,
+   "source": "https://support.strava.com/en-us/articles/15401936-how-do-i-cancel-my-subscription",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "The iPhone app has no cancel button; Manage Your Subscription opens the App Store page. Cancel 24h before renewal."
+  },
+  {
+   "id": "calm",
+   "name": "Calm",
+   "url": null,
+   "helpUrl": "https://support.calm.com/hc/en-us/articles/115002473607-How-to-Cancel-Your-Subscription-or-Free-Trial",
+   "steps": [
+    "Bought in the app? Settings → your name → Subscriptions",
+    "Bought on the web? Sign in at calm.com",
+    "Tap Settings → Manage Subscription → Cancel Subscription"
+   ],
+   "appleNote": true,
+   "source": "https://support.calm.com/hc/en-us/articles/115002473607-How-to-Cancel-Your-Subscription-or-Free-Trial",
+   "checkedOn": "2026-11-10",
+   "confidence": "medium",
+   "note": "support.calm.com returned 403; from official snippets. Family plans cancel only on the website by the admin."
+  },
+  {
+   "id": "headspace",
+   "name": "Headspace",
+   "url": null,
+   "helpUrl": "https://help.headspace.com/hc/en-us/articles/115008364988-How-do-I-cancel-my-subscription",
+   "steps": [
+    "Bought in the app? Settings → your name → Subscriptions",
+    "Bought on the web? Sign in at headspace.com in Safari",
+    "Open subscription management and tap cancel"
+   ],
+   "appleNote": true,
+   "source": "https://help.headspace.com/hc/en-us/articles/115008364988-How-do-I-cancel-my-subscription",
+   "checkedOn": "2026-11-10",
+   "confidence": "medium",
+   "note": "help.headspace.com returned 403; from official snippets. Web subs cancel in a browser, not the app. No button? Email help@headspace.com."
+  },
+  {
+   "id": "apple-arcade",
+   "name": "Apple Arcade",
+   "url": "https://apps.apple.com/account/subscriptions",
+   "helpUrl": null,
+   "steps": [
+    "Open Settings and tap your name",
+    "Tap Subscriptions, then Apple Arcade",
+    "Tap Cancel Subscription and confirm"
+   ],
+   "appleNote": true,
+   "source": "https://support.apple.com/en-us/118428",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Billed by Apple. Arcade games stop working after it ends, even downloaded ones."
+  },
+  {
+   "id": "apple-fitness",
+   "name": "Apple Fitness+",
+   "url": "https://apps.apple.com/account/subscriptions",
+   "helpUrl": null,
+   "steps": [
+    "Fitness app: tap Summary, then your profile picture",
+    "Tap your account name, then Apple Fitness+",
+    "Follow the steps to cancel"
+   ],
+   "appleNote": true,
+   "source": "https://support.apple.com/guide/fitness-plus/subscribe-to-apple-fitness-apdcd321df40/ios",
+   "checkedOn": "2026-11-10",
+   "confidence": "medium",
+   "note": "Read via official-domain snippets. Settings → your name → Subscriptions works too. If it's part of Apple One Premier, cancel Apple One instead."
+  },
+  {
+   "id": "siriusxm",
+   "name": "SiriusXM",
+   "url": "https://care.siriusxm.com/account/manage/dashboard",
+   "helpUrl": null,
+   "steps": [
+    "Open the SiriusXM Online Account Center and sign in",
+    "Tap the Subscriptions tab",
+    "Choose cancel, or call 866-635-8641"
+   ],
+   "appleNote": true,
+   "source": "https://www.siriusxm.com/help/manage-or-cancel-service",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Bought in the iPhone app: Apple bills it. Roku and T-Mobile billing cancel with them. Expect retention offers. Cancel 24h before renewal."
+  },
+  {
+   "id": "espn",
+   "name": "ESPN",
+   "url": null,
+   "helpUrl": "https://support.espn.com/hc/en-us/articles/40377550796308-Cancelling-Your-ESPN-Select-or-Unlimited-Subscription",
+   "steps": [
+    "Open espn.com in Safari, sign in, tap your profile",
+    "Tap Account, then Manage Subscription",
+    "Tap Subscription, pick the plan, then Cancel and confirm"
+   ],
+   "appleNote": true,
+   "source": "https://support.espn.com/hc/en-us/articles/40377550796308-Cancelling-Your-ESPN-Select-or-Unlimited-Subscription",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Covers ESPN Select and Unlimited (the old ESPN+ plans). Apple, Google or Roku billing: cancel there. Bundles cancel where you bought them."
+  },
+  {
+   "id": "instacart",
+   "name": "Instacart+",
+   "url": null,
+   "helpUrl": "https://www.instacart.com/help/section/107169420/423178048",
+   "steps": [
+    "Instacart app: tap the Account icon",
+    "Tap Your Instacart+ membership",
+    "Tap Cancel membership, skip the offer, then confirm"
+   ],
+   "appleNote": false,
+   "source": "https://www.instacart.com/help/section/107169420/423178048",
+   "checkedOn": "2026-11-10",
+   "confidence": "high",
+   "note": "Annual plans refund in full only within 5 days with no orders. Costco and NYT Cooking bundles have their own rules."
+  }
+ ]
+}

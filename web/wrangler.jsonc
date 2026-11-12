@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "main": "custom-worker.ts",
+  "name": "ditchsubs",
+  "compatibility_date": "2026-11-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+  "routes": [
+    { "pattern": "ditchsubs.app", "custom_domain": true },
+    { "pattern": "www.ditchsubs.app", "custom_domain": true }
+  ],
+  // Waitlist. Create with `npx wrangler d1 create ditchsubs` and paste the id here (see README).
+  "d1_databases": [{ "binding": "DB", "database_name": "ditchsubs", "database_id": "REPLACE_WITH_D1_ID", "migrations_dir": "migrations" }],
+  "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "ditchsubs" }]
+}

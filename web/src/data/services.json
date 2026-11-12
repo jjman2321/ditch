@@ -1,0 +1,3099 @@
+[
+ {
+  "id": "netflix",
+  "name": "Netflix",
+  "category": "Streaming",
+  "color": "#E50914",
+  "mono": "N",
+  "cycle": "monthly",
+  "rank": 1,
+  "popular": true
+ },
+ {
+  "id": "disney-plus",
+  "name": "Disney+",
+  "category": "Streaming",
+  "color": "#0B1F5C",
+  "mono": "D+",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "GB",
+   "CA",
+   "AU",
+   "IE",
+   "NZ",
+   "DE",
+   "NL",
+   "FR",
+   "IT",
+   "ES"
+  ],
+  "aliases": [
+   "disney plus",
+   "disney"
+  ],
+  "rank": 5,
+  "popular": true
+ },
+ {
+  "id": "youtube-premium",
+  "name": "YouTube Premium",
+  "category": "Streaming",
+  "color": "#FF0033",
+  "mono": "YT",
+  "cycle": "monthly",
+  "aliases": [
+   "yt",
+   "youtube",
+   "yt premium"
+  ],
+  "rank": 4,
+  "popular": true
+ },
+ {
+  "id": "max",
+  "name": "HBO Max",
+  "category": "Streaming",
+  "color": "#002BE7",
+  "mono": "M",
+  "cycle": "monthly",
+  "aliases": [
+   "hbo",
+   "max",
+   "hbo max"
+  ],
+  "rank": 10,
+  "popular": true
+ },
+ {
+  "id": "prime-video",
+  "name": "Prime Video",
+  "category": "Streaming",
+  "color": "#00A8E1",
+  "mono": "pv",
+  "cycle": "monthly",
+  "aliases": [
+   "amazon prime video",
+   "amazon video"
+  ],
+  "rank": 7,
+  "popular": true
+ },
+ {
+  "id": "hulu",
+  "name": "Hulu",
+  "category": "Streaming",
+  "color": "#1CE783",
+  "mono": "h",
+  "cycle": "monthly",
+  "availableIn": [
+   "US"
+  ],
+  "rank": 12,
+  "popular": true,
+  "ink": "#16140F"
+ },
+ {
+  "id": "apple-tv",
+  "name": "Apple TV",
+  "category": "Streaming",
+  "color": "#111111",
+  "mono": "tv",
+  "cycle": "monthly",
+  "aliases": [
+   "apple tv+",
+   "apple tv plus",
+   "tv+"
+  ],
+  "billedVia": "apple",
+  "rank": 11,
+  "popular": true
+ },
+ {
+  "id": "peacock",
+  "name": "Peacock",
+  "category": "Streaming",
+  "color": "#1A1A1A",
+  "mono": "P",
+  "cycle": "monthly",
+  "availableIn": [
+   "US"
+  ],
+  "aliases": [
+   "nbc"
+  ],
+  "rank": 19,
+  "popular": true
+ },
+ {
+  "id": "paramount-plus",
+  "name": "Paramount+",
+  "category": "Streaming",
+  "color": "#0064FF",
+  "mono": "P+",
+  "cycle": "monthly",
+  "aliases": [
+   "paramount plus",
+   "paramount",
+   "cbs"
+  ],
+  "rank": 18,
+  "popular": true
+ },
+ {
+  "id": "crunchyroll",
+  "name": "Crunchyroll",
+  "category": "Streaming",
+  "color": "#F47521",
+  "mono": "C",
+  "cycle": "monthly",
+  "aliases": [
+   "anime"
+  ],
+  "rank": 27
+ },
+ {
+  "id": "youtube-tv",
+  "name": "YouTube TV",
+  "category": "Streaming",
+  "color": "#FF0033",
+  "mono": "TV",
+  "cycle": "monthly",
+  "availableIn": [
+   "US"
+  ],
+  "aliases": [
+   "yttv",
+   "yt tv"
+  ],
+  "rank": 35
+ },
+ {
+  "id": "espn",
+  "name": "ESPN",
+  "category": "Streaming",
+  "color": "#D00000",
+  "mono": "E",
+  "cycle": "monthly",
+  "availableIn": [
+   "US"
+  ],
+  "aliases": [
+   "espn+",
+   "espn plus",
+   "espn unlimited"
+  ],
+  "rank": 49
+ },
+ {
+  "id": "sling-tv",
+  "name": "Sling TV",
+  "category": "Streaming",
+  "color": "#0072EF",
+  "mono": "S",
+  "cycle": "monthly",
+  "availableIn": [
+   "US"
+  ],
+  "aliases": [
+   "sling"
+  ],
+  "rank": 71
+ },
+ {
+  "id": "fubo",
+  "name": "Fubo",
+  "category": "Streaming",
+  "color": "#FA4616",
+  "mono": "f",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "CA"
+  ],
+  "aliases": [
+   "fubotv",
+   "fubo tv"
+  ],
+  "rank": 72
+ },
+ {
+  "id": "philo",
+  "name": "Philo",
+  "category": "Streaming",
+  "color": "#1E1A5A",
+  "mono": "Ph",
+  "cycle": "monthly",
+  "availableIn": [
+   "US"
+  ]
+ },
+ {
+  "id": "starz",
+  "name": "STARZ",
+  "category": "Streaming",
+  "color": "#000000",
+  "mono": "S",
+  "cycle": "monthly",
+  "availableIn": [
+   "US"
+  ]
+ },
+ {
+  "id": "discovery-plus",
+  "name": "discovery+",
+  "category": "Streaming",
+  "color": "#0036E7",
+  "mono": "d+",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "GB",
+   "IE",
+   "CA"
+  ],
+  "aliases": [
+   "discovery plus"
+  ]
+ },
+ {
+  "id": "britbox",
+  "name": "BritBox",
+  "category": "Streaming",
+  "color": "#00263A",
+  "mono": "BB",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "CA"
+  ],
+  "aliases": [
+   "brit box"
+  ]
+ },
+ {
+  "id": "mubi",
+  "name": "MUBI",
+  "category": "Streaming",
+  "color": "#001489",
+  "mono": "M",
+  "cycle": "monthly"
+ },
+ {
+  "id": "shudder",
+  "name": "Shudder",
+  "category": "Streaming",
+  "color": "#000000",
+  "mono": "Sh",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "CA",
+   "GB",
+   "IE",
+   "AU",
+   "NZ"
+  ],
+  "aliases": [
+   "horror"
+  ]
+ },
+ {
+  "id": "dazn",
+  "name": "DAZN",
+  "category": "Streaming",
+  "color": "#0C161C",
+  "mono": "DZ",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "CA",
+   "GB",
+   "IE",
+   "DE",
+   "IT",
+   "ES"
+  ],
+  "aliases": [
+   "nfl game pass"
+  ],
+  "rank": 51
+ },
+ {
+  "id": "nba-league-pass",
+  "name": "NBA League Pass",
+  "category": "Streaming",
+  "color": "#1D428A",
+  "mono": "NBA",
+  "cycle": "yearly",
+  "aliases": [
+   "nba"
+  ]
+ },
+ {
+  "id": "mlb-tv",
+  "name": "MLB.TV",
+  "category": "Streaming",
+  "color": "#041E42",
+  "mono": "MLB",
+  "cycle": "yearly",
+  "aliases": [
+   "mlb",
+   "baseball"
+  ]
+ },
+ {
+  "id": "f1-tv",
+  "name": "F1 TV",
+  "category": "Streaming",
+  "color": "#E10600",
+  "mono": "F1",
+  "cycle": "yearly",
+  "aliases": [
+   "formula 1",
+   "f1"
+  ]
+ },
+ {
+  "id": "now",
+  "name": "NOW",
+  "category": "Streaming",
+  "color": "#00142C",
+  "mono": "NOW",
+  "cycle": "monthly",
+  "availableIn": [
+   "GB",
+   "IE"
+  ],
+  "aliases": [
+   "now tv",
+   "nowtv"
+  ],
+  "rank": 52
+ },
+ {
+  "id": "sky",
+  "name": "Sky",
+  "category": "Streaming",
+  "color": "#0072C9",
+  "mono": "Sky",
+  "cycle": "monthly",
+  "availableIn": [
+   "GB",
+   "IE",
+   "DE",
+   "IT"
+  ],
+  "aliases": [
+   "sky go",
+   "sky tv",
+   "sky q"
+  ],
+  "rank": 53
+ },
+ {
+  "id": "itvx",
+  "name": "ITVX Premium",
+  "category": "Streaming",
+  "color": "#0B0B0B",
+  "mono": "ITV",
+  "cycle": "monthly",
+  "availableIn": [
+   "GB"
+  ],
+  "aliases": [
+   "itv",
+   "itvx"
+  ]
+ },
+ {
+  "id": "wow",
+  "name": "WOW",
+  "category": "Streaming",
+  "color": "#0B0B0B",
+  "mono": "W",
+  "cycle": "monthly",
+  "availableIn": [
+   "DE"
+  ],
+  "aliases": [
+   "sky wow"
+  ]
+ },
+ {
+  "id": "joyn",
+  "name": "Joyn PLUS+",
+  "category": "Streaming",
+  "color": "#000000",
+  "mono": "J",
+  "cycle": "monthly",
+  "availableIn": [
+   "DE"
+  ],
+  "aliases": [
+   "joyn plus"
+  ],
+  "rank": 100
+ },
+ {
+  "id": "rtl-plus",
+  "name": "RTL+",
+  "category": "Streaming",
+  "color": "#FF0000",
+  "mono": "RTL",
+  "cycle": "monthly",
+  "availableIn": [
+   "DE"
+  ],
+  "aliases": [
+   "rtl plus",
+   "rtl"
+  ],
+  "rank": 98
+ },
+ {
+  "id": "canal-plus",
+  "name": "CANAL+",
+  "category": "Streaming",
+  "color": "#000000",
+  "mono": "C+",
+  "cycle": "monthly",
+  "availableIn": [
+   "FR"
+  ],
+  "aliases": [
+   "canal plus",
+   "canal"
+  ],
+  "rank": 97
+ },
+ {
+  "id": "videoland",
+  "name": "Videoland",
+  "category": "Streaming",
+  "color": "#E3007A",
+  "mono": "V",
+  "cycle": "monthly",
+  "availableIn": [
+   "NL"
+  ],
+  "rank": 99
+ },
+ {
+  "id": "npo-plus",
+  "name": "NPO Plus",
+  "category": "Streaming",
+  "color": "#FF6D00",
+  "mono": "NPO",
+  "cycle": "monthly",
+  "availableIn": [
+   "NL"
+  ],
+  "aliases": [
+   "npo start",
+   "npo"
+  ]
+ },
+ {
+  "id": "skyshowtime",
+  "name": "SkyShowtime",
+  "category": "Streaming",
+  "color": "#14002E",
+  "mono": "SS",
+  "cycle": "monthly",
+  "availableIn": [
+   "NL",
+   "ES"
+  ],
+  "aliases": [
+   "sky showtime"
+  ]
+ },
+ {
+  "id": "movistar-plus",
+  "name": "Movistar Plus+",
+  "category": "Streaming",
+  "color": "#019DF4",
+  "mono": "M+",
+  "cycle": "monthly",
+  "availableIn": [
+   "ES"
+  ],
+  "aliases": [
+   "movistar+",
+   "movistar plus"
+  ]
+ },
+ {
+  "id": "mediaset-infinity",
+  "name": "Mediaset Infinity",
+  "category": "Streaming",
+  "color": "#0D1F4F",
+  "mono": "MI",
+  "cycle": "monthly",
+  "availableIn": [
+   "IT"
+  ],
+  "aliases": [
+   "infinity+",
+   "mediaset"
+  ]
+ },
+ {
+  "id": "timvision",
+  "name": "TIMVISION",
+  "category": "Streaming",
+  "color": "#00217A",
+  "mono": "TIM",
+  "cycle": "monthly",
+  "availableIn": [
+   "IT"
+  ],
+  "aliases": [
+   "tim vision"
+  ]
+ },
+ {
+  "id": "stan",
+  "name": "Stan",
+  "category": "Streaming",
+  "color": "#0072FF",
+  "mono": "S",
+  "cycle": "monthly",
+  "availableIn": [
+   "AU"
+  ],
+  "rank": 94
+ },
+ {
+  "id": "binge",
+  "name": "Binge",
+  "category": "Streaming",
+  "color": "#000000",
+  "mono": "B",
+  "cycle": "monthly",
+  "availableIn": [
+   "AU"
+  ],
+  "rank": 95
+ },
+ {
+  "id": "kayo",
+  "name": "Kayo Sports",
+  "category": "Streaming",
+  "color": "#00E2A7",
+  "mono": "K",
+  "cycle": "monthly",
+  "availableIn": [
+   "AU"
+  ],
+  "aliases": [
+   "kayo"
+  ],
+  "ink": "#16140F"
+ },
+ {
+  "id": "neon",
+  "name": "Neon",
+  "category": "Streaming",
+  "color": "#E7008A",
+  "mono": "N",
+  "cycle": "monthly",
+  "availableIn": [
+   "NZ"
+  ],
+  "aliases": [
+   "neon tv"
+  ]
+ },
+ {
+  "id": "crave",
+  "name": "Crave",
+  "category": "Streaming",
+  "color": "#0A1E3F",
+  "mono": "C",
+  "cycle": "monthly",
+  "availableIn": [
+   "CA"
+  ],
+  "rank": 96
+ },
+ {
+  "id": "jiohotstar",
+  "name": "JioHotstar",
+  "category": "Streaming",
+  "color": "#0F1014",
+  "mono": "JH",
+  "cycle": "monthly",
+  "availableIn": [
+   "IN"
+  ],
+  "aliases": [
+   "hotstar",
+   "jiocinema",
+   "disney+ hotstar"
+  ],
+  "rank": 54
+ },
+ {
+  "id": "zee5",
+  "name": "ZEE5",
+  "category": "Streaming",
+  "color": "#8230C6",
+  "mono": "Z5",
+  "cycle": "monthly",
+  "availableIn": [
+   "IN"
+  ],
+  "aliases": [
+   "zee"
+  ],
+  "rank": 92
+ },
+ {
+  "id": "sonyliv",
+  "name": "Sony LIV",
+  "category": "Streaming",
+  "color": "#000000",
+  "mono": "SL",
+  "cycle": "monthly",
+  "availableIn": [
+   "IN"
+  ],
+  "aliases": [
+   "sonyliv",
+   "sony"
+  ],
+  "rank": 93
+ },
+ {
+  "id": "spotify",
+  "name": "Spotify",
+  "category": "Music & audio",
+  "color": "#1DB954",
+  "mono": "S",
+  "cycle": "monthly",
+  "rank": 3,
+  "popular": true
+ },
+ {
+  "id": "apple-music",
+  "name": "Apple Music",
+  "category": "Music & audio",
+  "color": "#FA2D48",
+  "mono": "♪",
+  "cycle": "monthly",
+  "aliases": [
+   "itunes"
+  ],
+  "billedVia": "apple",
+  "rank": 9,
+  "popular": true
+ },
+ {
+  "id": "youtube-music",
+  "name": "YouTube Music",
+  "category": "Music & audio",
+  "color": "#FF0033",
+  "mono": "YM",
+  "cycle": "monthly",
+  "aliases": [
+   "yt music"
+  ],
+  "rank": 24
+ },
+ {
+  "id": "amazon-music",
+  "name": "Amazon Music Unlimited",
+  "category": "Music & audio",
+  "color": "#25D1DA",
+  "mono": "am",
+  "cycle": "monthly",
+  "aliases": [
+   "amazon music"
+  ],
+  "rank": 26,
+  "ink": "#16140F"
+ },
+ {
+  "id": "audible",
+  "name": "Audible",
+  "category": "Music & audio",
+  "color": "#F8991C",
+  "mono": "A",
+  "cycle": "monthly",
+  "aliases": [
+   "audiobooks"
+  ],
+  "rank": 17,
+  "popular": true
+ },
+ {
+  "id": "siriusxm",
+  "name": "SiriusXM",
+  "category": "Music & audio",
+  "color": "#0000EB",
+  "mono": "SX",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "CA"
+  ],
+  "aliases": [
+   "sirius",
+   "xm"
+  ],
+  "rank": 48
+ },
+ {
+  "id": "tidal",
+  "name": "TIDAL",
+  "category": "Music & audio",
+  "color": "#000000",
+  "mono": "T",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "GB",
+   "CA",
+   "AU",
+   "IE",
+   "NZ",
+   "DE",
+   "NL",
+   "FR",
+   "IT",
+   "ES"
+  ],
+  "rank": 56
+ },
+ {
+  "id": "deezer",
+  "name": "Deezer",
+  "category": "Music & audio",
+  "color": "#A238FF",
+  "mono": "dz",
+  "cycle": "monthly",
+  "rank": 55
+ },
+ {
+  "id": "soundcloud",
+  "name": "SoundCloud Go+",
+  "category": "Music & audio",
+  "color": "#FF5500",
+  "mono": "SC",
+  "cycle": "monthly",
+  "aliases": [
+   "soundcloud"
+  ]
+ },
+ {
+  "id": "pandora",
+  "name": "Pandora",
+  "category": "Music & audio",
+  "color": "#3668FF",
+  "mono": "P",
+  "cycle": "monthly",
+  "availableIn": [
+   "US"
+  ]
+ },
+ {
+  "id": "qobuz",
+  "name": "Qobuz",
+  "category": "Music & audio",
+  "color": "#000000",
+  "mono": "Q",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "GB",
+   "CA",
+   "AU",
+   "IE",
+   "NZ",
+   "DE",
+   "NL",
+   "FR",
+   "IT",
+   "ES"
+  ]
+ },
+ {
+  "id": "jiosaavn",
+  "name": "JioSaavn",
+  "category": "Music & audio",
+  "color": "#2BC5B4",
+  "mono": "JS",
+  "cycle": "monthly",
+  "availableIn": [
+   "IN"
+  ],
+  "aliases": [
+   "saavn"
+  ]
+ },
+ {
+  "id": "gaana",
+  "name": "Gaana",
+  "category": "Music & audio",
+  "color": "#E72C30",
+  "mono": "G",
+  "cycle": "monthly",
+  "availableIn": [
+   "IN"
+  ]
+ },
+ {
+  "id": "everand",
+  "name": "Everand",
+  "category": "Music & audio",
+  "color": "#1E7B85",
+  "mono": "E",
+  "cycle": "monthly",
+  "aliases": [
+   "scribd"
+  ]
+ },
+ {
+  "id": "storytel",
+  "name": "Storytel",
+  "category": "Music & audio",
+  "color": "#FF5C28",
+  "mono": "St",
+  "cycle": "monthly",
+  "availableIn": [
+   "NL",
+   "ES",
+   "IN"
+  ],
+  "aliases": [
+   "audiobooks"
+  ]
+ },
+ {
+  "id": "pocket-fm",
+  "name": "Pocket FM",
+  "category": "Music & audio",
+  "color": "#E91E4B",
+  "mono": "PF",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "IN"
+  ]
+ },
+ {
+  "id": "pocket-casts",
+  "name": "Pocket Casts Plus",
+  "category": "Music & audio",
+  "color": "#F43E37",
+  "mono": "PC",
+  "cycle": "yearly",
+  "aliases": [
+   "podcasts",
+   "pocket casts"
+  ]
+ },
+ {
+  "id": "chatgpt-plus",
+  "name": "ChatGPT",
+  "category": "AI",
+  "color": "#10A37F",
+  "mono": "G",
+  "cycle": "monthly",
+  "aliases": [
+   "chatgpt plus",
+   "chatgpt",
+   "openai",
+   "gpt",
+   "chat gpt"
+  ],
+  "rank": 6,
+  "popular": true
+ },
+ {
+  "id": "claude-pro",
+  "name": "Claude Pro",
+  "category": "AI",
+  "color": "#D97757",
+  "mono": "C",
+  "cycle": "monthly",
+  "aliases": [
+   "claude",
+   "anthropic"
+  ],
+  "rank": 33
+ },
+ {
+  "id": "google-ai-pro",
+  "name": "Google AI Pro",
+  "category": "AI",
+  "color": "#4285F4",
+  "mono": "G",
+  "cycle": "monthly",
+  "aliases": [
+   "gemini",
+   "gemini advanced",
+   "google one ai premium",
+   "ai premium"
+  ],
+  "rank": 34
+ },
+ {
+  "id": "perplexity",
+  "name": "Perplexity Pro",
+  "category": "AI",
+  "color": "#20808D",
+  "mono": "P",
+  "cycle": "monthly",
+  "aliases": [
+   "perplexity"
+  ],
+  "rank": 64
+ },
+ {
+  "id": "copilot-pro",
+  "name": "Copilot Pro",
+  "category": "AI",
+  "color": "#0078D4",
+  "mono": "Co",
+  "cycle": "monthly",
+  "aliases": [
+   "copilot",
+   "microsoft copilot",
+   "bing"
+  ],
+  "rank": 65
+ },
+ {
+  "id": "grok",
+  "name": "SuperGrok",
+  "category": "AI",
+  "color": "#000000",
+  "mono": "X",
+  "cycle": "monthly",
+  "aliases": [
+   "grok",
+   "xai"
+  ],
+  "rank": 89
+ },
+ {
+  "id": "midjourney",
+  "name": "Midjourney",
+  "category": "AI",
+  "color": "#0B0B0B",
+  "mono": "MJ",
+  "cycle": "monthly",
+  "aliases": [
+   "mj"
+  ],
+  "rank": 90
+ },
+ {
+  "id": "github-copilot",
+  "name": "GitHub Copilot",
+  "category": "AI",
+  "color": "#24292F",
+  "mono": "GH",
+  "cycle": "monthly",
+  "aliases": [
+   "github",
+   "copilot"
+  ],
+  "rank": 91
+ },
+ {
+  "id": "cursor",
+  "name": "Cursor Pro",
+  "category": "AI",
+  "color": "#000000",
+  "mono": "Cu",
+  "cycle": "monthly",
+  "aliases": [
+   "cursor"
+  ]
+ },
+ {
+  "id": "elevenlabs",
+  "name": "ElevenLabs",
+  "category": "AI",
+  "color": "#000000",
+  "mono": "11",
+  "cycle": "monthly",
+  "aliases": [
+   "eleven labs"
+  ]
+ },
+ {
+  "id": "suno",
+  "name": "Suno",
+  "category": "AI",
+  "color": "#000000",
+  "mono": "S",
+  "cycle": "monthly"
+ },
+ {
+  "id": "character-ai",
+  "name": "Character.AI",
+  "category": "AI",
+  "color": "#18181B",
+  "mono": "c.ai",
+  "cycle": "monthly",
+  "aliases": [
+   "c.ai",
+   "character ai"
+  ]
+ },
+ {
+  "id": "le-chat",
+  "name": "Le Chat Pro",
+  "category": "AI",
+  "color": "#FA500F",
+  "mono": "M",
+  "cycle": "monthly",
+  "aliases": [
+   "mistral",
+   "le chat"
+  ]
+ },
+ {
+  "id": "remini",
+  "name": "Remini",
+  "category": "AI",
+  "color": "#2F3AFF",
+  "mono": "R",
+  "cycle": "monthly"
+ },
+ {
+  "id": "microsoft-365",
+  "name": "Microsoft 365",
+  "category": "Productivity",
+  "color": "#0078D4",
+  "mono": "365",
+  "cycle": "yearly",
+  "aliases": [
+   "office",
+   "word",
+   "excel",
+   "ms 365",
+   "office 365",
+   "outlook",
+   "onedrive"
+  ],
+  "rank": 14,
+  "popular": true
+ },
+ {
+  "id": "adobe-cc",
+  "name": "Adobe Creative Cloud",
+  "category": "Productivity",
+  "color": "#DA1F26",
+  "mono": "Ac",
+  "cycle": "monthly",
+  "aliases": [
+   "adobe",
+   "photoshop",
+   "creative cloud",
+   "illustrator",
+   "premiere"
+  ],
+  "rank": 32
+ },
+ {
+  "id": "canva-pro",
+  "name": "Canva Pro",
+  "category": "Productivity",
+  "color": "#7D2AE8",
+  "mono": "C",
+  "cycle": "yearly",
+  "aliases": [
+   "canva"
+  ],
+  "rank": 23
+ },
+ {
+  "id": "notion",
+  "name": "Notion Plus",
+  "category": "Productivity",
+  "color": "#191919",
+  "mono": "N",
+  "cycle": "monthly",
+  "aliases": [
+   "notion"
+  ],
+  "rank": 57
+ },
+ {
+  "id": "google-workspace",
+  "name": "Google Workspace",
+  "category": "Productivity",
+  "color": "#4285F4",
+  "mono": "GW",
+  "cycle": "monthly",
+  "aliases": [
+   "gsuite",
+   "g suite",
+   "workspace"
+  ]
+ },
+ {
+  "id": "grammarly",
+  "name": "Grammarly Pro",
+  "category": "Productivity",
+  "color": "#15C39A",
+  "mono": "G",
+  "cycle": "monthly",
+  "aliases": [
+   "grammarly"
+  ],
+  "rank": 58
+ },
+ {
+  "id": "adobe-acrobat",
+  "name": "Adobe Acrobat Pro",
+  "category": "Productivity",
+  "color": "#EC1C24",
+  "mono": "Ac",
+  "cycle": "monthly",
+  "aliases": [
+   "acrobat",
+   "pdf"
+  ]
+ },
+ {
+  "id": "adobe-lightroom",
+  "name": "Adobe Lightroom",
+  "category": "Productivity",
+  "color": "#31A8FF",
+  "mono": "Lr",
+  "cycle": "monthly",
+  "aliases": [
+   "lightroom"
+  ]
+ },
+ {
+  "id": "capcut",
+  "name": "CapCut Pro",
+  "category": "Productivity",
+  "color": "#000000",
+  "mono": "CC",
+  "cycle": "monthly",
+  "aliases": [
+   "capcut"
+  ]
+ },
+ {
+  "id": "figma",
+  "name": "Figma",
+  "category": "Productivity",
+  "color": "#0ACF83",
+  "mono": "F",
+  "cycle": "monthly",
+  "ink": "#16140F"
+ },
+ {
+  "id": "linkedin-premium",
+  "name": "LinkedIn Premium",
+  "category": "Productivity",
+  "color": "#0A66C2",
+  "mono": "in",
+  "cycle": "monthly",
+  "aliases": [
+   "linkedin"
+  ],
+  "rank": 39
+ },
+ {
+  "id": "zoom",
+  "name": "Zoom Pro",
+  "category": "Productivity",
+  "color": "#0B5CFF",
+  "mono": "Z",
+  "cycle": "monthly",
+  "aliases": [
+   "zoom"
+  ]
+ },
+ {
+  "id": "slack",
+  "name": "Slack Pro",
+  "category": "Productivity",
+  "color": "#4A154B",
+  "mono": "S",
+  "cycle": "monthly",
+  "aliases": [
+   "slack"
+  ]
+ },
+ {
+  "id": "evernote",
+  "name": "Evernote",
+  "category": "Productivity",
+  "color": "#00A82D",
+  "mono": "E",
+  "cycle": "monthly"
+ },
+ {
+  "id": "todoist",
+  "name": "Todoist Pro",
+  "category": "Productivity",
+  "color": "#E44332",
+  "mono": "T",
+  "cycle": "monthly",
+  "aliases": [
+   "todoist"
+  ]
+ },
+ {
+  "id": "goodnotes",
+  "name": "Goodnotes",
+  "category": "Productivity",
+  "color": "#2F80ED",
+  "mono": "G",
+  "cycle": "yearly",
+  "aliases": [
+   "good notes"
+  ]
+ },
+ {
+  "id": "vsco",
+  "name": "VSCO",
+  "category": "Productivity",
+  "color": "#000000",
+  "mono": "V",
+  "cycle": "yearly"
+ },
+ {
+  "id": "icloud",
+  "name": "iCloud+",
+  "category": "Cloud & security",
+  "color": "#3693F3",
+  "mono": "☁",
+  "cycle": "monthly",
+  "aliases": [
+   "icloud",
+   "icloud plus",
+   "apple storage"
+  ],
+  "billedVia": "apple",
+  "rank": 8,
+  "popular": true
+ },
+ {
+  "id": "apple-one",
+  "name": "Apple One",
+  "category": "Cloud & security",
+  "color": "#1D1D1F",
+  "mono": "1",
+  "cycle": "monthly",
+  "aliases": [
+   "apple bundle"
+  ],
+  "billedVia": "apple",
+  "rank": 21
+ },
+ {
+  "id": "applecare",
+  "name": "AppleCare+",
+  "category": "Cloud & security",
+  "color": "#1D1D1F",
+  "mono": "AC",
+  "cycle": "monthly",
+  "aliases": [
+   "applecare",
+   "apple care",
+   "phone insurance"
+  ],
+  "billedVia": "apple",
+  "rank": 88
+ },
+ {
+  "id": "google-one",
+  "name": "Google One",
+  "category": "Cloud & security",
+  "color": "#4285F4",
+  "mono": "G1",
+  "cycle": "monthly",
+  "aliases": [
+   "google drive",
+   "google storage",
+   "google photos"
+  ],
+  "rank": 13,
+  "popular": true
+ },
+ {
+  "id": "dropbox",
+  "name": "Dropbox Plus",
+  "category": "Cloud & security",
+  "color": "#0061FE",
+  "mono": "Db",
+  "cycle": "monthly",
+  "aliases": [
+   "dropbox"
+  ],
+  "rank": 38
+ },
+ {
+  "id": "onedrive",
+  "name": "OneDrive",
+  "category": "Cloud & security",
+  "color": "#0078D4",
+  "mono": "OD",
+  "cycle": "monthly",
+  "aliases": [
+   "microsoft 365 basic"
+  ]
+ },
+ {
+  "id": "proton",
+  "name": "Proton Unlimited",
+  "category": "Cloud & security",
+  "color": "#6D4AFF",
+  "mono": "P",
+  "cycle": "monthly",
+  "aliases": [
+   "proton mail",
+   "protonmail",
+   "proton drive"
+  ],
+  "rank": 87
+ },
+ {
+  "id": "1password",
+  "name": "1Password",
+  "category": "Cloud & security",
+  "color": "#0094F5",
+  "mono": "1P",
+  "cycle": "yearly",
+  "aliases": [
+   "one password"
+  ],
+  "rank": 61
+ },
+ {
+  "id": "bitwarden",
+  "name": "Bitwarden",
+  "category": "Cloud & security",
+  "color": "#175DDC",
+  "mono": "B",
+  "cycle": "yearly"
+ },
+ {
+  "id": "dashlane",
+  "name": "Dashlane",
+  "category": "Cloud & security",
+  "color": "#0E353D",
+  "mono": "D",
+  "cycle": "yearly"
+ },
+ {
+  "id": "lastpass",
+  "name": "LastPass",
+  "category": "Cloud & security",
+  "color": "#D32D27",
+  "mono": "LP",
+  "cycle": "yearly",
+  "aliases": [
+   "last pass"
+  ]
+ },
+ {
+  "id": "nordvpn",
+  "name": "NordVPN",
+  "category": "Cloud & security",
+  "color": "#4687FF",
+  "mono": "N",
+  "cycle": "yearly",
+  "aliases": [
+   "nord",
+   "vpn",
+   "nordpass"
+  ],
+  "rank": 59
+ },
+ {
+  "id": "expressvpn",
+  "name": "ExpressVPN",
+  "category": "Cloud & security",
+  "color": "#DA3940",
+  "mono": "E",
+  "cycle": "yearly",
+  "aliases": [
+   "vpn",
+   "express"
+  ],
+  "rank": 60
+ },
+ {
+  "id": "surfshark",
+  "name": "Surfshark",
+  "category": "Cloud & security",
+  "color": "#1EBFBF",
+  "mono": "S",
+  "cycle": "yearly",
+  "aliases": [
+   "vpn"
+  ],
+  "rank": 86
+ },
+ {
+  "id": "proton-vpn",
+  "name": "Proton VPN",
+  "category": "Cloud & security",
+  "color": "#6D4AFF",
+  "mono": "PV",
+  "cycle": "monthly",
+  "aliases": [
+   "vpn",
+   "protonvpn"
+  ]
+ },
+ {
+  "id": "norton",
+  "name": "Norton 360",
+  "category": "Cloud & security",
+  "color": "#FFE01A",
+  "mono": "N",
+  "cycle": "yearly",
+  "aliases": [
+   "norton",
+   "antivirus"
+  ],
+  "ink": "#16140F"
+ },
+ {
+  "id": "mcafee",
+  "name": "McAfee+",
+  "category": "Cloud & security",
+  "color": "#C01818",
+  "mono": "M",
+  "cycle": "yearly",
+  "aliases": [
+   "mcafee",
+   "antivirus"
+  ]
+ },
+ {
+  "id": "aura",
+  "name": "Aura",
+  "category": "Cloud & security",
+  "color": "#2E2A72",
+  "mono": "A",
+  "cycle": "yearly",
+  "availableIn": [
+   "US"
+  ],
+  "aliases": [
+   "identity theft"
+  ]
+ },
+ {
+  "id": "life360",
+  "name": "Life360",
+  "category": "Cloud & security",
+  "color": "#8B5CF6",
+  "mono": "L",
+  "cycle": "monthly",
+  "aliases": [
+   "tile"
+  ]
+ },
+ {
+  "id": "amazon-prime",
+  "name": "Amazon Prime",
+  "category": "Shopping & food",
+  "color": "#FF9900",
+  "mono": "a",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "GB",
+   "CA",
+   "AU",
+   "IE",
+   "DE",
+   "NL",
+   "FR",
+   "IT",
+   "ES",
+   "IN"
+  ],
+  "aliases": [
+   "prime",
+   "amazon"
+  ],
+  "rank": 2,
+  "popular": true
+ },
+ {
+  "id": "walmart-plus",
+  "name": "Walmart+",
+  "category": "Shopping & food",
+  "color": "#0071CE",
+  "mono": "W+",
+  "cycle": "monthly",
+  "availableIn": [
+   "US"
+  ],
+  "aliases": [
+   "walmart",
+   "walmart plus"
+  ],
+  "rank": 30
+ },
+ {
+  "id": "costco",
+  "name": "Costco",
+  "category": "Shopping & food",
+  "color": "#E31837",
+  "mono": "Co",
+  "cycle": "yearly",
+  "availableIn": [
+   "US",
+   "GB",
+   "CA",
+   "AU",
+   "NZ",
+   "ES"
+  ],
+  "aliases": [
+   "costco membership"
+  ],
+  "rank": 31
+ },
+ {
+  "id": "uber-one",
+  "name": "Uber One",
+  "category": "Shopping & food",
+  "color": "#000000",
+  "mono": "U1",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "GB",
+   "CA",
+   "AU",
+   "IE",
+   "NZ",
+   "DE",
+   "NL",
+   "FR",
+   "IT",
+   "ES"
+  ],
+  "aliases": [
+   "uber",
+   "uber eats"
+  ],
+  "rank": 28
+ },
+ {
+  "id": "doordash",
+  "name": "DashPass",
+  "category": "Shopping & food",
+  "color": "#FF3008",
+  "mono": "DD",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "CA",
+   "AU",
+   "NZ",
+   "DE"
+  ],
+  "aliases": [
+   "doordash"
+  ],
+  "rank": 29
+ },
+ {
+  "id": "instacart",
+  "name": "Instacart+",
+  "category": "Shopping & food",
+  "color": "#0AAD0A",
+  "mono": "i+",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "CA"
+  ],
+  "aliases": [
+   "instacart"
+  ],
+  "rank": 50
+ },
+ {
+  "id": "sams-club",
+  "name": "Sam's Club",
+  "category": "Shopping & food",
+  "color": "#0067A0",
+  "mono": "SC",
+  "cycle": "yearly",
+  "availableIn": [
+   "US"
+  ],
+  "aliases": [
+   "sams",
+   "sam's club plus"
+  ]
+ },
+ {
+  "id": "target-circle",
+  "name": "Target Circle 360",
+  "category": "Shopping & food",
+  "color": "#CC0000",
+  "mono": "T",
+  "cycle": "yearly",
+  "availableIn": [
+   "US"
+  ],
+  "aliases": [
+   "target"
+  ]
+ },
+ {
+  "id": "grubhub",
+  "name": "Grubhub+",
+  "category": "Shopping & food",
+  "color": "#FF8000",
+  "mono": "GH",
+  "cycle": "monthly",
+  "availableIn": [
+   "US"
+  ],
+  "aliases": [
+   "grubhub"
+  ]
+ },
+ {
+  "id": "lyft-pink",
+  "name": "Lyft Pink",
+  "category": "Shopping & food",
+  "color": "#FF00BF",
+  "mono": "L",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "CA"
+  ],
+  "aliases": [
+   "lyft"
+  ]
+ },
+ {
+  "id": "deliveroo-plus",
+  "name": "Deliveroo Plus",
+  "category": "Shopping & food",
+  "color": "#00CCBC",
+  "mono": "D",
+  "cycle": "monthly",
+  "availableIn": [
+   "GB",
+   "IE",
+   "FR",
+   "IT"
+  ],
+  "aliases": [
+   "deliveroo"
+  ],
+  "rank": 79,
+  "ink": "#16140F"
+ },
+ {
+  "id": "just-eat",
+  "name": "Just Eat+",
+  "category": "Shopping & food",
+  "color": "#FF8000",
+  "mono": "JE",
+  "cycle": "monthly",
+  "availableIn": [
+   "GB",
+   "IE"
+  ],
+  "aliases": [
+   "just eat",
+   "lieferando",
+   "thuisbezorgd"
+  ]
+ },
+ {
+  "id": "tesco-clubcard",
+  "name": "Tesco Clubcard Plus",
+  "category": "Shopping & food",
+  "color": "#00539F",
+  "mono": "T",
+  "cycle": "monthly",
+  "availableIn": [
+   "GB",
+   "IE"
+  ],
+  "aliases": [
+   "tesco",
+   "clubcard"
+  ]
+ },
+ {
+  "id": "wolt-plus",
+  "name": "Wolt+",
+  "category": "Shopping & food",
+  "color": "#009DE0",
+  "mono": "W+",
+  "cycle": "monthly",
+  "availableIn": [
+   "DE"
+  ],
+  "aliases": [
+   "wolt"
+  ]
+ },
+ {
+  "id": "glovo-prime",
+  "name": "Glovo Prime",
+  "category": "Shopping & food",
+  "color": "#FFC244",
+  "mono": "G",
+  "cycle": "monthly",
+  "availableIn": [
+   "ES",
+   "IT"
+  ],
+  "aliases": [
+   "glovo"
+  ],
+  "ink": "#16140F"
+ },
+ {
+  "id": "zalando-plus",
+  "name": "Zalando Plus",
+  "category": "Shopping & food",
+  "color": "#FF6900",
+  "mono": "Z",
+  "cycle": "yearly",
+  "availableIn": [
+   "DE",
+   "NL",
+   "FR",
+   "IT",
+   "ES",
+   "IE"
+  ],
+  "aliases": [
+   "zalando"
+  ]
+ },
+ {
+  "id": "swiggy-one",
+  "name": "Swiggy One",
+  "category": "Shopping & food",
+  "color": "#FC8019",
+  "mono": "S1",
+  "cycle": "monthly",
+  "availableIn": [
+   "IN"
+  ],
+  "aliases": [
+   "swiggy"
+  ]
+ },
+ {
+  "id": "zomato-gold",
+  "name": "Zomato Gold",
+  "category": "Shopping & food",
+  "color": "#E23744",
+  "mono": "ZG",
+  "cycle": "monthly",
+  "availableIn": [
+   "IN"
+  ],
+  "aliases": [
+   "zomato"
+  ]
+ },
+ {
+  "id": "hellofresh",
+  "name": "HelloFresh",
+  "category": "Shopping & food",
+  "color": "#91C11E",
+  "mono": "HF",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "GB",
+   "CA",
+   "AU",
+   "IE",
+   "NZ",
+   "DE",
+   "NL",
+   "FR",
+   "IT",
+   "ES"
+  ],
+  "aliases": [
+   "hello fresh"
+  ]
+ },
+ {
+  "id": "apple-fitness",
+  "name": "Apple Fitness+",
+  "category": "Health & fitness",
+  "color": "#A6FF00",
+  "mono": "F+",
+  "cycle": "monthly",
+  "aliases": [
+   "fitness+",
+   "fitness plus"
+  ],
+  "billedVia": "apple",
+  "rank": 47,
+  "ink": "#16140F"
+ },
+ {
+  "id": "strava",
+  "name": "Strava",
+  "category": "Health & fitness",
+  "color": "#FC4C02",
+  "mono": "S",
+  "cycle": "yearly",
+  "rank": 43
+ },
+ {
+  "id": "peloton",
+  "name": "Peloton App",
+  "category": "Health & fitness",
+  "color": "#000000",
+  "mono": "P",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "GB",
+   "CA",
+   "AU",
+   "DE"
+  ],
+  "aliases": [
+   "peloton"
+  ],
+  "rank": 66
+ },
+ {
+  "id": "myfitnesspal",
+  "name": "MyFitnessPal",
+  "category": "Health & fitness",
+  "color": "#0066EE",
+  "mono": "MF",
+  "cycle": "yearly",
+  "aliases": [
+   "mfp",
+   "calorie counter"
+  ],
+  "rank": 67
+ },
+ {
+  "id": "planet-fitness",
+  "name": "Planet Fitness",
+  "category": "Health & fitness",
+  "color": "#5C2D91",
+  "mono": "PF",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "CA",
+   "AU",
+   "ES"
+  ],
+  "aliases": [
+   "gym"
+  ],
+  "rank": 85
+ },
+ {
+  "id": "calm",
+  "name": "Calm",
+  "category": "Health & fitness",
+  "color": "#2E7BD6",
+  "mono": "C",
+  "cycle": "yearly",
+  "aliases": [
+   "meditation",
+   "sleep"
+  ],
+  "rank": 44
+ },
+ {
+  "id": "headspace",
+  "name": "Headspace",
+  "category": "Health & fitness",
+  "color": "#F47D31",
+  "mono": "H",
+  "cycle": "monthly",
+  "aliases": [
+   "meditation"
+  ],
+  "rank": 45
+ },
+ {
+  "id": "whoop",
+  "name": "WHOOP",
+  "category": "Health & fitness",
+  "color": "#000000",
+  "mono": "W",
+  "cycle": "yearly",
+  "aliases": [
+   "whoop"
+  ],
+  "rank": 82
+ },
+ {
+  "id": "fitbit-premium",
+  "name": "Fitbit Premium",
+  "category": "Health & fitness",
+  "color": "#00B0B9",
+  "mono": "Fb",
+  "cycle": "monthly",
+  "aliases": [
+   "fitbit",
+   "google health"
+  ]
+ },
+ {
+  "id": "oura",
+  "name": "Oura Membership",
+  "category": "Health & fitness",
+  "color": "#000000",
+  "mono": "O",
+  "cycle": "monthly",
+  "aliases": [
+   "oura ring"
+  ],
+  "rank": 83
+ },
+ {
+  "id": "flo",
+  "name": "Flo Premium",
+  "category": "Health & fitness",
+  "color": "#FF5C8A",
+  "mono": "Flo",
+  "cycle": "yearly",
+  "aliases": [
+   "period tracker",
+   "flo health"
+  ],
+  "rank": 84
+ },
+ {
+  "id": "ww",
+  "name": "WeightWatchers",
+  "category": "Health & fitness",
+  "color": "#4A3AFF",
+  "mono": "WW",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "GB",
+   "CA",
+   "AU",
+   "NZ",
+   "DE",
+   "NL",
+   "FR",
+   "ES"
+  ],
+  "aliases": [
+   "weight watchers",
+   "ww"
+  ]
+ },
+ {
+  "id": "noom",
+  "name": "Noom",
+  "category": "Health & fitness",
+  "color": "#FB513B",
+  "mono": "N",
+  "cycle": "monthly"
+ },
+ {
+  "id": "alltrails",
+  "name": "AllTrails+",
+  "category": "Health & fitness",
+  "color": "#142800",
+  "mono": "AT",
+  "cycle": "yearly",
+  "aliases": [
+   "alltrails"
+  ]
+ },
+ {
+  "id": "garmin-connect",
+  "name": "Garmin Connect+",
+  "category": "Health & fitness",
+  "color": "#000000",
+  "mono": "G",
+  "cycle": "monthly",
+  "aliases": [
+   "garmin"
+  ]
+ },
+ {
+  "id": "runna",
+  "name": "Runna",
+  "category": "Health & fitness",
+  "color": "#0E0E0E",
+  "mono": "R",
+  "cycle": "monthly",
+  "aliases": [
+   "running plan"
+  ]
+ },
+ {
+  "id": "zwift",
+  "name": "Zwift",
+  "category": "Health & fitness",
+  "color": "#FC6719",
+  "mono": "Z",
+  "cycle": "monthly",
+  "aliases": [
+   "cycling"
+  ]
+ },
+ {
+  "id": "classpass",
+  "name": "ClassPass",
+  "category": "Health & fitness",
+  "color": "#0055FF",
+  "mono": "CP",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "GB",
+   "CA",
+   "AU",
+   "IE",
+   "NZ",
+   "DE",
+   "NL",
+   "FR",
+   "IT",
+   "ES"
+  ],
+  "aliases": [
+   "class pass"
+  ]
+ },
+ {
+  "id": "yazio",
+  "name": "YAZIO",
+  "category": "Health & fitness",
+  "color": "#FF8A00",
+  "mono": "Y",
+  "cycle": "yearly",
+  "aliases": [
+   "calorie counter"
+  ]
+ },
+ {
+  "id": "betterhelp",
+  "name": "BetterHelp",
+  "category": "Health & fitness",
+  "color": "#397A4A",
+  "mono": "BH",
+  "cycle": "monthly",
+  "aliases": [
+   "therapy"
+  ]
+ },
+ {
+  "id": "puregym",
+  "name": "PureGym",
+  "category": "Health & fitness",
+  "color": "#00A3A1",
+  "mono": "PG",
+  "cycle": "monthly",
+  "availableIn": [
+   "GB"
+  ],
+  "aliases": [
+   "gym"
+  ]
+ },
+ {
+  "id": "cult-fit",
+  "name": "cult.fit",
+  "category": "Health & fitness",
+  "color": "#000000",
+  "mono": "cf",
+  "cycle": "monthly",
+  "availableIn": [
+   "IN"
+  ],
+  "aliases": [
+   "cultfit",
+   "cure.fit"
+  ]
+ },
+ {
+  "id": "tinder",
+  "name": "Tinder",
+  "category": "Dating",
+  "color": "#FD5068",
+  "mono": "T",
+  "cycle": "monthly",
+  "aliases": [
+   "tinder gold",
+   "tinder plus"
+  ],
+  "rank": 22
+ },
+ {
+  "id": "hinge",
+  "name": "Hinge",
+  "category": "Dating",
+  "color": "#000000",
+  "mono": "H",
+  "cycle": "monthly",
+  "aliases": [
+   "hinge+"
+  ],
+  "rank": 36
+ },
+ {
+  "id": "bumble",
+  "name": "Bumble",
+  "category": "Dating",
+  "color": "#FFC629",
+  "mono": "B",
+  "cycle": "monthly",
+  "aliases": [
+   "bumble premium"
+  ],
+  "rank": 37,
+  "ink": "#16140F"
+ },
+ {
+  "id": "match",
+  "name": "Match",
+  "category": "Dating",
+  "color": "#000000",
+  "mono": "M",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "GB",
+   "CA",
+   "AU",
+   "IE",
+   "NZ"
+  ],
+  "aliases": [
+   "match.com"
+  ],
+  "rank": 81
+ },
+ {
+  "id": "grindr",
+  "name": "Grindr",
+  "category": "Dating",
+  "color": "#FFCC00",
+  "mono": "G",
+  "cycle": "monthly",
+  "aliases": [
+   "grindr xtra",
+   "grindr unlimited"
+  ],
+  "rank": 80,
+  "ink": "#16140F"
+ },
+ {
+  "id": "okcupid",
+  "name": "OkCupid",
+  "category": "Dating",
+  "color": "#0046D5",
+  "mono": "OK",
+  "cycle": "monthly",
+  "aliases": [
+   "ok cupid"
+  ]
+ },
+ {
+  "id": "plenty-of-fish",
+  "name": "Plenty of Fish",
+  "category": "Dating",
+  "color": "#00A1E4",
+  "mono": "POF",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "GB",
+   "CA",
+   "AU",
+   "IE",
+   "NZ"
+  ],
+  "aliases": [
+   "pof"
+  ]
+ },
+ {
+  "id": "eharmony",
+  "name": "eharmony",
+  "category": "Dating",
+  "color": "#EE5A3B",
+  "mono": "eH",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "GB",
+   "CA",
+   "AU"
+  ],
+  "aliases": [
+   "e harmony"
+  ]
+ },
+ {
+  "id": "feeld",
+  "name": "Feeld",
+  "category": "Dating",
+  "color": "#000000",
+  "mono": "F",
+  "cycle": "monthly"
+ },
+ {
+  "id": "badoo",
+  "name": "Badoo",
+  "category": "Dating",
+  "color": "#783BF9",
+  "mono": "B",
+  "cycle": "monthly"
+ },
+ {
+  "id": "happn",
+  "name": "happn",
+  "category": "Dating",
+  "color": "#FF4A68",
+  "mono": "h",
+  "cycle": "monthly"
+ },
+ {
+  "id": "lovoo",
+  "name": "LOVOO",
+  "category": "Dating",
+  "color": "#E5004D",
+  "mono": "L",
+  "cycle": "monthly",
+  "availableIn": [
+   "DE"
+  ],
+  "aliases": [
+   "lovoo"
+  ]
+ },
+ {
+  "id": "parship",
+  "name": "Parship",
+  "category": "Dating",
+  "color": "#C8102E",
+  "mono": "P",
+  "cycle": "monthly",
+  "availableIn": [
+   "DE",
+   "NL",
+   "IT",
+   "ES",
+   "FR"
+  ],
+  "aliases": [
+   "parship"
+  ]
+ },
+ {
+  "id": "meetic",
+  "name": "Meetic",
+  "category": "Dating",
+  "color": "#E5004D",
+  "mono": "M",
+  "cycle": "monthly",
+  "availableIn": [
+   "FR",
+   "IT",
+   "ES",
+   "NL"
+  ],
+  "aliases": [
+   "meetic"
+  ]
+ },
+ {
+  "id": "shaadi",
+  "name": "Shaadi.com",
+  "category": "Dating",
+  "color": "#FF5A60",
+  "mono": "S",
+  "cycle": "monthly",
+  "availableIn": [
+   "IN"
+  ],
+  "aliases": [
+   "shaadi"
+  ]
+ },
+ {
+  "id": "snapchat-plus",
+  "name": "Snapchat+",
+  "category": "Social",
+  "color": "#FFFC00",
+  "mono": "S+",
+  "cycle": "monthly",
+  "aliases": [
+   "snapchat",
+   "snap+",
+   "snapchat plus"
+  ],
+  "rank": 40,
+  "ink": "#16140F"
+ },
+ {
+  "id": "x-premium",
+  "name": "X Premium",
+  "category": "Social",
+  "color": "#000000",
+  "mono": "X",
+  "cycle": "monthly",
+  "aliases": [
+   "twitter",
+   "twitter blue",
+   "x"
+  ],
+  "rank": 63
+ },
+ {
+  "id": "discord-nitro",
+  "name": "Discord Nitro",
+  "category": "Social",
+  "color": "#5865F2",
+  "mono": "D",
+  "cycle": "monthly",
+  "aliases": [
+   "discord",
+   "nitro"
+  ],
+  "rank": 62
+ },
+ {
+  "id": "telegram-premium",
+  "name": "Telegram Premium",
+  "category": "Social",
+  "color": "#26A5E4",
+  "mono": "T",
+  "cycle": "monthly",
+  "aliases": [
+   "telegram"
+  ]
+ },
+ {
+  "id": "meta-verified",
+  "name": "Meta Verified",
+  "category": "Social",
+  "color": "#0866FF",
+  "mono": "M",
+  "cycle": "monthly",
+  "aliases": [
+   "instagram",
+   "facebook",
+   "meta"
+  ]
+ },
+ {
+  "id": "patreon",
+  "name": "Patreon",
+  "category": "Social",
+  "color": "#000000",
+  "mono": "P",
+  "cycle": "monthly"
+ },
+ {
+  "id": "truecaller",
+  "name": "Truecaller Premium",
+  "category": "Social",
+  "color": "#0087FF",
+  "mono": "TC",
+  "cycle": "monthly",
+  "aliases": [
+   "truecaller"
+  ]
+ },
+ {
+  "id": "nyt",
+  "name": "New York Times",
+  "category": "News & reading",
+  "color": "#121212",
+  "mono": "T",
+  "cycle": "monthly",
+  "aliases": [
+   "nytimes",
+   "nyt",
+   "new york times",
+   "ny times",
+   "wordle",
+   "games"
+  ],
+  "rank": 42
+ },
+ {
+  "id": "wsj",
+  "name": "Wall Street Journal",
+  "category": "News & reading",
+  "color": "#0274B6",
+  "mono": "W",
+  "cycle": "monthly",
+  "aliases": [
+   "wsj",
+   "wall street journal"
+  ],
+  "rank": 74
+ },
+ {
+  "id": "substack",
+  "name": "Substack",
+  "category": "News & reading",
+  "color": "#FF6719",
+  "mono": "S",
+  "cycle": "monthly"
+ },
+ {
+  "id": "kindle-unlimited",
+  "name": "Kindle Unlimited",
+  "category": "News & reading",
+  "color": "#FF9900",
+  "mono": "KU",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "GB",
+   "CA",
+   "AU",
+   "DE",
+   "NL",
+   "FR",
+   "IT",
+   "ES",
+   "IN"
+  ],
+  "aliases": [
+   "kindle",
+   "books"
+  ],
+  "rank": 41
+ },
+ {
+  "id": "apple-news",
+  "name": "Apple News+",
+  "category": "News & reading",
+  "color": "#FA3D50",
+  "mono": "N+",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "GB",
+   "CA",
+   "AU"
+  ],
+  "aliases": [
+   "apple news",
+   "news+"
+  ],
+  "billedVia": "apple",
+  "rank": 73
+ },
+ {
+  "id": "the-athletic",
+  "name": "The Athletic",
+  "category": "News & reading",
+  "color": "#000000",
+  "mono": "A",
+  "cycle": "yearly",
+  "aliases": [
+   "athletic"
+  ],
+  "rank": 77
+ },
+ {
+  "id": "washington-post",
+  "name": "Washington Post",
+  "category": "News & reading",
+  "color": "#000000",
+  "mono": "WP",
+  "cycle": "monthly",
+  "aliases": [
+   "wapo",
+   "washington post"
+  ],
+  "rank": 78
+ },
+ {
+  "id": "economist",
+  "name": "The Economist",
+  "category": "News & reading",
+  "color": "#E3120B",
+  "mono": "E",
+  "cycle": "yearly",
+  "aliases": [
+   "economist"
+  ],
+  "rank": 75
+ },
+ {
+  "id": "ft",
+  "name": "Financial Times",
+  "category": "News & reading",
+  "color": "#FCD0B1",
+  "mono": "FT",
+  "cycle": "monthly",
+  "aliases": [
+   "financial times"
+  ],
+  "ink": "#16140F"
+ },
+ {
+  "id": "bloomberg",
+  "name": "Bloomberg",
+  "category": "News & reading",
+  "color": "#000000",
+  "mono": "B",
+  "cycle": "monthly"
+ },
+ {
+  "id": "the-atlantic",
+  "name": "The Atlantic",
+  "category": "News & reading",
+  "color": "#E7131A",
+  "mono": "A",
+  "cycle": "yearly",
+  "aliases": [
+   "atlantic"
+  ]
+ },
+ {
+  "id": "guardian",
+  "name": "The Guardian",
+  "category": "News & reading",
+  "color": "#052962",
+  "mono": "G",
+  "cycle": "monthly",
+  "aliases": [
+   "guardian"
+  ],
+  "rank": 76
+ },
+ {
+  "id": "the-times",
+  "name": "The Times",
+  "category": "News & reading",
+  "color": "#000000",
+  "mono": "T",
+  "cycle": "monthly",
+  "availableIn": [
+   "GB",
+   "IE"
+  ],
+  "aliases": [
+   "times",
+   "sunday times"
+  ]
+ },
+ {
+  "id": "telegraph",
+  "name": "The Telegraph",
+  "category": "News & reading",
+  "color": "#000000",
+  "mono": "T",
+  "cycle": "monthly",
+  "availableIn": [
+   "GB"
+  ],
+  "aliases": [
+   "telegraph"
+  ]
+ },
+ {
+  "id": "irish-times",
+  "name": "The Irish Times",
+  "category": "News & reading",
+  "color": "#000000",
+  "mono": "IT",
+  "cycle": "monthly",
+  "availableIn": [
+   "IE"
+  ],
+  "aliases": [
+   "irish times"
+  ]
+ },
+ {
+  "id": "globe-and-mail",
+  "name": "The Globe and Mail",
+  "category": "News & reading",
+  "color": "#C8102E",
+  "mono": "G",
+  "cycle": "monthly",
+  "availableIn": [
+   "CA"
+  ],
+  "aliases": [
+   "globe"
+  ]
+ },
+ {
+  "id": "smh",
+  "name": "Sydney Morning Herald",
+  "category": "News & reading",
+  "color": "#096DD2",
+  "mono": "SMH",
+  "cycle": "monthly",
+  "availableIn": [
+   "AU"
+  ],
+  "aliases": [
+   "smh",
+   "sydney morning herald"
+  ]
+ },
+ {
+  "id": "nz-herald",
+  "name": "NZ Herald",
+  "category": "News & reading",
+  "color": "#000000",
+  "mono": "NZH",
+  "cycle": "monthly",
+  "availableIn": [
+   "NZ"
+  ],
+  "aliases": [
+   "herald premium"
+  ]
+ },
+ {
+  "id": "le-monde",
+  "name": "Le Monde",
+  "category": "News & reading",
+  "color": "#000000",
+  "mono": "M",
+  "cycle": "monthly",
+  "availableIn": [
+   "FR"
+  ],
+  "aliases": [
+   "monde"
+  ]
+ },
+ {
+  "id": "spiegel",
+  "name": "Der Spiegel",
+  "category": "News & reading",
+  "color": "#E64415",
+  "mono": "S",
+  "cycle": "monthly",
+  "availableIn": [
+   "DE"
+  ],
+  "aliases": [
+   "spiegel plus",
+   "der spiegel"
+  ]
+ },
+ {
+  "id": "nrc",
+  "name": "NRC",
+  "category": "News & reading",
+  "color": "#D4002A",
+  "mono": "NRC",
+  "cycle": "monthly",
+  "availableIn": [
+   "NL"
+  ]
+ },
+ {
+  "id": "corriere",
+  "name": "Corriere della Sera",
+  "category": "News & reading",
+  "color": "#000000",
+  "mono": "C",
+  "cycle": "monthly",
+  "availableIn": [
+   "IT"
+  ],
+  "aliases": [
+   "corriere"
+  ]
+ },
+ {
+  "id": "el-pais",
+  "name": "El País",
+  "category": "News & reading",
+  "color": "#000000",
+  "mono": "P",
+  "cycle": "monthly",
+  "availableIn": [
+   "ES"
+  ],
+  "aliases": [
+   "el pais"
+  ]
+ },
+ {
+  "id": "times-of-india",
+  "name": "Times of India",
+  "category": "News & reading",
+  "color": "#E21B22",
+  "mono": "TOI",
+  "cycle": "yearly",
+  "availableIn": [
+   "IN"
+  ],
+  "aliases": [
+   "toi",
+   "toi+",
+   "times of india"
+  ]
+ },
+ {
+  "id": "blinkist",
+  "name": "Blinkist",
+  "category": "News & reading",
+  "color": "#2CE080",
+  "mono": "B",
+  "cycle": "yearly",
+  "ink": "#16140F"
+ },
+ {
+  "id": "xbox-game-pass",
+  "name": "Xbox Game Pass",
+  "category": "Gaming",
+  "color": "#107C10",
+  "mono": "X",
+  "cycle": "monthly",
+  "aliases": [
+   "xbox",
+   "game pass",
+   "gamepass"
+  ],
+  "rank": 15,
+  "popular": true
+ },
+ {
+  "id": "ps-plus",
+  "name": "PlayStation Plus",
+  "category": "Gaming",
+  "color": "#0070D1",
+  "mono": "PS",
+  "cycle": "yearly",
+  "aliases": [
+   "playstation",
+   "psn",
+   "ps plus",
+   "ps+"
+  ],
+  "rank": 16,
+  "popular": true
+ },
+ {
+  "id": "nintendo-online",
+  "name": "Nintendo Switch Online",
+  "category": "Gaming",
+  "color": "#E60012",
+  "mono": "NS",
+  "cycle": "yearly",
+  "aliases": [
+   "nintendo",
+   "switch online"
+  ],
+  "rank": 25
+ },
+ {
+  "id": "apple-arcade",
+  "name": "Apple Arcade",
+  "category": "Gaming",
+  "color": "#FF2D55",
+  "mono": "AA",
+  "cycle": "monthly",
+  "aliases": [
+   "arcade"
+  ],
+  "billedVia": "apple",
+  "rank": 46
+ },
+ {
+  "id": "roblox",
+  "name": "Roblox Premium",
+  "category": "Gaming",
+  "color": "#000000",
+  "mono": "R",
+  "cycle": "monthly",
+  "aliases": [
+   "roblox"
+  ],
+  "rank": 70
+ },
+ {
+  "id": "fortnite-crew",
+  "name": "Fortnite Crew",
+  "category": "Gaming",
+  "color": "#3D8BFF",
+  "mono": "F",
+  "cycle": "monthly",
+  "aliases": [
+   "fortnite",
+   "epic games"
+  ]
+ },
+ {
+  "id": "minecraft",
+  "name": "Minecraft Realms",
+  "category": "Gaming",
+  "color": "#62B47A",
+  "mono": "M",
+  "cycle": "monthly",
+  "aliases": [
+   "minecraft"
+  ]
+ },
+ {
+  "id": "ea-play",
+  "name": "EA Play",
+  "category": "Gaming",
+  "color": "#FF4747",
+  "mono": "EA",
+  "cycle": "monthly",
+  "aliases": [
+   "ea",
+   "electronic arts"
+  ]
+ },
+ {
+  "id": "ubisoft-plus",
+  "name": "Ubisoft+",
+  "category": "Gaming",
+  "color": "#0070FF",
+  "mono": "U+",
+  "cycle": "monthly",
+  "aliases": [
+   "ubisoft"
+  ]
+ },
+ {
+  "id": "geforce-now",
+  "name": "GeForce NOW",
+  "category": "Gaming",
+  "color": "#76B900",
+  "mono": "GF",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "GB",
+   "CA",
+   "AU",
+   "IE",
+   "NZ",
+   "DE",
+   "NL",
+   "FR",
+   "IT",
+   "ES",
+   "IN"
+  ],
+  "aliases": [
+   "nvidia",
+   "geforce"
+  ]
+ },
+ {
+  "id": "chess-com",
+  "name": "Chess.com",
+  "category": "Gaming",
+  "color": "#81B64C",
+  "mono": "C",
+  "cycle": "yearly",
+  "aliases": [
+   "chess"
+  ]
+ },
+ {
+  "id": "duolingo",
+  "name": "Duolingo Super",
+  "category": "Learning",
+  "color": "#58CC02",
+  "mono": "D",
+  "cycle": "yearly",
+  "aliases": [
+   "duolingo",
+   "duo",
+   "super duolingo",
+   "duolingo max"
+  ],
+  "rank": 20,
+  "popular": true,
+  "ink": "#16140F"
+ },
+ {
+  "id": "babbel",
+  "name": "Babbel",
+  "category": "Learning",
+  "color": "#FF7300",
+  "mono": "B",
+  "cycle": "monthly",
+  "rank": 68
+ },
+ {
+  "id": "masterclass",
+  "name": "MasterClass",
+  "category": "Learning",
+  "color": "#000000",
+  "mono": "MC",
+  "cycle": "yearly",
+  "availableIn": [
+   "US",
+   "GB",
+   "CA",
+   "AU",
+   "IE",
+   "NZ",
+   "DE",
+   "NL",
+   "FR",
+   "IT",
+   "ES",
+   "IN"
+  ],
+  "aliases": [
+   "master class"
+  ],
+  "rank": 69
+ },
+ {
+  "id": "coursera",
+  "name": "Coursera Plus",
+  "category": "Learning",
+  "color": "#0056D2",
+  "mono": "C",
+  "cycle": "monthly",
+  "aliases": [
+   "coursera"
+  ]
+ },
+ {
+  "id": "skillshare",
+  "name": "Skillshare",
+  "category": "Learning",
+  "color": "#00FF84",
+  "mono": "S",
+  "cycle": "yearly",
+  "ink": "#16140F"
+ },
+ {
+  "id": "brilliant",
+  "name": "Brilliant",
+  "category": "Learning",
+  "color": "#000000",
+  "mono": "B",
+  "cycle": "yearly"
+ },
+ {
+  "id": "busuu",
+  "name": "Busuu",
+  "category": "Learning",
+  "color": "#2A69F2",
+  "mono": "B",
+  "cycle": "yearly"
+ },
+ {
+  "id": "rosetta-stone",
+  "name": "Rosetta Stone",
+  "category": "Learning",
+  "color": "#0098DB",
+  "mono": "RS",
+  "cycle": "yearly"
+ },
+ {
+  "id": "memrise",
+  "name": "Memrise",
+  "category": "Learning",
+  "color": "#FFC200",
+  "mono": "M",
+  "cycle": "yearly",
+  "ink": "#16140F"
+ },
+ {
+  "id": "speak",
+  "name": "Speak",
+  "category": "Learning",
+  "color": "#000000",
+  "mono": "S",
+  "cycle": "yearly",
+  "aliases": [
+   "english"
+  ]
+ },
+ {
+  "id": "udemy",
+  "name": "Udemy Personal Plan",
+  "category": "Learning",
+  "color": "#A435F0",
+  "mono": "U",
+  "cycle": "monthly",
+  "aliases": [
+   "udemy"
+  ]
+ },
+ {
+  "id": "quizlet",
+  "name": "Quizlet Plus",
+  "category": "Learning",
+  "color": "#4255FF",
+  "mono": "Q",
+  "cycle": "yearly",
+  "aliases": [
+   "quizlet"
+  ]
+ },
+ {
+  "id": "chegg",
+  "name": "Chegg Study",
+  "category": "Learning",
+  "color": "#EB7100",
+  "mono": "C",
+  "cycle": "monthly",
+  "availableIn": [
+   "US",
+   "CA"
+  ],
+  "aliases": [
+   "chegg"
+  ]
+ },
+ {
+  "id": "photomath",
+  "name": "Photomath Plus",
+  "category": "Learning",
+  "color": "#E9263D",
+  "mono": "PM",
+  "cycle": "yearly",
+  "aliases": [
+   "photomath"
+  ]
+ },
+ {
+  "id": "simply-piano",
+  "name": "Simply Piano",
+  "category": "Learning",
+  "color": "#FF7A00",
+  "mono": "SP",
+  "cycle": "yearly",
+  "aliases": [
+   "piano"
+  ]
+ }
+]

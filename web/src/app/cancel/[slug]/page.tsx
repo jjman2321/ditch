@@ -126,7 +126,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
               Steps checked <time dateTime={g.checkedOn}>{formatDate(g.checkedOn)}</time>
             </span>
             <span>
-              on <a href={g.source} rel="noopener">{host(g.source)}</a> · By <Link href={AUTHOR.url}>{AUTHOR.name}</Link>
+              Source: <a href={g.source} rel="noopener">{host(g.source)}</a> · By <Link href={AUTHOR.url}>{AUTHOR.name}</Link>
             </span>
           </div>
           {fresh !== 'fresh' ? <p className="stale">Last checked {formatDate(g.checkedOn)}. {g.name} may have changed its steps since. We re-check every 90 days.</p> : null}
@@ -137,9 +137,13 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
             <div className="acts">
               {g.url ? (
                 <a className="btn" href={g.url} rel="noopener">
-                  Open {g.name}’s {appleOnly ? 'subscriptions page' : 'cancel page'} ↗
+                  {appleOnly ? 'Open your Apple subscriptions ↗' : `Open ${g.name}’s cancel page ↗`}
                 </a>
-              ) : null}
+              ) : (
+                <a className="btn" href="#direct">
+                  Jump to the steps ↓
+                </a>
+              )}
               <a className="btn ghost" href="#partner">
                 No cancel button?
               </a>
@@ -152,8 +156,8 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
           </h2>
           <nav className="how" aria-label="How you pay">
             <a href="#direct">{appleOnly ? 'Apple (iPhone)' : `${g.name} directly`}</a>
-            {appleOnly ? null : <a href="#apple">Apple (in the iPhone app)</a>}
-            <a href="#partner">Someone else (phone, TV…)</a>
+            {appleOnly ? null : <a href="#apple">Apple (signed up on iPhone)</a>}
+            <a href="#partner">A phone or TV company</a>
           </nav>
           <p className="meta" style={{ marginTop: 10 }}>
             Not sure? Check your bank statement: <b>APPLE.COM/BILL</b> means Apple bills you.
@@ -220,7 +224,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
                 Not ready to cancel?
               </h2>
               <p>Ditch reminds you 3 days and 1 day before {g.name} renews, so you can decide in time. It can’t cancel for you. It just makes sure you don’t forget.</p>
-              <EmailBox source={`cancel-${g.id}`} cta="Join" compact />
+              <EmailBox source={`cancel-${g.id}`} compact />
             </div>
             {usPlan ? <Notif text={`${g.name} renews in 3 days. ${formatMoney(usPlan.amountMinor, 'USD')}. Still using it?`} /> : null}
           </div>
@@ -260,7 +264,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
 
           <p className="disc">
             Checked by hand on {formatDate(g.checkedOn)} from <a href={g.source} rel="noopener">{host(g.source)}</a>. {g.name} is a trademark of its owner. Ditch isn’t affiliated with or endorsed by {g.name}.{' '}
-            <Link href="/how-we-check">How we check guides</Link>. © {year} {COMPANY}.
+            <Link href="/how-we-check">How we check guides</Link>. <span className="nw">© {year} {COMPANY}.</span>
           </p>
         </article>
         <aside>

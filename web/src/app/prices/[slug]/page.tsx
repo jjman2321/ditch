@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { EmailBox } from '@/components/EmailBox';
 import { Logo } from '@/components/Logo';
 import { PriceTable } from '@/components/PriceTable';
-import { COUNTRY, dateRange, defaultPlan, formatDate, guideById, neighbours, priceHubServices, pubDates, publicNotes, serviceById, verifiedPrices, type PriceRow } from '@/lib/data';
+import { COUNTRY, dateRange, defaultPlan, guideById, neighbours, priceHubServices, pubDates, publicNotes, serviceById, verifiedPrices, type PriceRow } from '@/lib/data';
 import { formatMoney, monthlyMinor } from '@/lib/money';
 import { AUTHOR, COMPANY, SITE, SUPPORT_EMAIL } from '@/lib/site';
 
@@ -59,7 +59,9 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
   if (!s || rows.length < 6) notFound();
   const latest = rows.map((r) => r.checked).sort().pop()!;
   const guide = guideById(s.id);
-  const notes = rows.flatMap((r) => publicNotes(r.note).map((n) => ({ c: COUNTRY[r.country].name, n })));
+  const notes = rows
+    .map((r) => ({ c: COUNTRY[r.country].name, n: [...new Set(publicNotes(r.note))].join(' ') }))
+    .filter((x) => x.n);
   const taxNote = rows.some((r) => ['US', 'CA'].includes(r.country)) ? ` ${rows.some((r) => r.country === 'CA') ? 'US and Canada prices are' : 'US prices are'} before sales tax.` : '';
   const ans = `${summary(s.name, rows)}${taxNote} Checked ${dateRange(rows.map((r) => r.checked))} on ${s.name}’s own pages.`;
   const others = neighbours(priceHubServices().filter((x) => x.category === s.category), s.id, 4);
@@ -135,14 +137,16 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
           </p>
 
           <h2 id="cheapest">The cheapest {s.name} plan in each country</h2>
-          <ul className="ticks" style={{ marginTop: 8 }}>
+          <ul className="plain">
             {rows.map((r) => {
               const p = cheapest(r);
               return (
                 <li key={r.country}>
-                  {COUNTRY[r.country].name}: {p.name}
-                  <span className="num">
-                    {money(r, p.amountMinor)} {p.cycle === 'monthly' ? 'a month' : p.cycle === 'yearly' ? 'a year' : 'every 3 months'}
+                  <span>
+                    {s.name} price in {COUNTRY[r.country].name}: {p.name}
+                  </span>
+                  <span>
+                    {formatMoney(p.amountMinor, r.currency, { country: r.country, whole: true })} {p.cycle === 'monthly' ? 'a month' : p.cycle === 'yearly' ? 'a year' : 'every 3 months'}
                   </span>
                 </li>
               );
@@ -166,7 +170,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
                 Paying for {s.name}?
               </h2>
               <p>Ditch reminds you 3 days and 1 day before it renews, so a charge never surprises you.</p>
-              <EmailBox source={`prices-${s.id}`} cta="Join" compact />
+              <EmailBox source={`prices-${s.id}`} compact />
             </div>
           </div>
 

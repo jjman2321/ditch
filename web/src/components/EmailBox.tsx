@@ -99,7 +99,7 @@ export function EmailBox({ source, cta = 'Join the waitlist', onCream = false, c
       )}
       {bare ? null : (
         <p id={`${id}-fine`} className="fine">
-          One email when Ditch is on the App Store. Unsubscribe anytime. <a href="/privacy">Privacy</a>
+          One email when Ditch is on the App Store. Unsubscribe anytime. <a href="/privacy">Privacy policy</a>
         </p>
       )}
     </form>

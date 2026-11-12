@@ -3,7 +3,6 @@ import { Calculator, type CalcService } from '@/components/Calculator';
 import { EmailBox } from '@/components/EmailBox';
 import { Notif } from '@/components/Notif';
 import { Stamp } from '@/components/Stamp';
-import { StickyCta } from '@/components/StickyCta';
 import { COUNTRIES, defaultPlan, formatDate, hasLogo, priceFor, serviceById, verifiedPrices } from '@/lib/data';
 import { formatMoney } from '@/lib/money';
 import { BRAND, COMPANY, PRO, SITE } from '@/lib/site';
@@ -93,7 +92,7 @@ export default function Home() {
                 </svg>
               </span>
             </h1>
-            <p className="lead">Every subscription in one list. A reminder 3 days before each charge. No bank login.</p>
+            <p className="lead">Every subscription in one list. A reminder 3 days and 1 day before each charge. No bank login.</p>
             <div id="join">
               <EmailBox source="home-hero" bare />
             </div>
@@ -121,7 +120,7 @@ export default function Home() {
                 <div className="day">Wednesday, November 18</div>
                 <div className="time">9:00</div>
                 <Notif text={`Netflix renews in 3 days. ${formatMoney(nfPlan.amountMinor, 'USD')}. Still watching?`} style={{ top: 236 }} />
-                <Notif className="second" when="Mon" text={`ChatGPT Plus renews tomorrow. ${formatMoney(defaultPlan(priceFor('chatgpt-plus', 'US')!).amountMinor, 'USD')}.`} style={{ top: 330 }} />
+                <Notif className="second" when="Tue" text={`Spotify renews in 3 days. ${formatMoney(defaultPlan(priceFor('spotify', 'US')!).amountMinor, 'USD')}.`} style={{ top: 330 }} />
                 <div className="lockbtns">
                   <span />
                   <span />
@@ -153,7 +152,7 @@ export default function Home() {
         <div className="wrap">
           <div className="sec-head">
             <h2 id="how-h" className="h2">
-              Add it. Get reminded. Ditch it.
+              Add it. <span className="nw">Get reminded.</span> <span className="nw">Ditch it.</span>
             </h2>
           </div>
           <div className="sec-body steps">
@@ -223,7 +222,7 @@ export default function Home() {
           <div className="big-notif" aria-hidden>
             <Notif text={`Netflix renews in 3 days. ${formatMoney(nfPlan.amountMinor, 'USD')}. Still watching?`} />
             <Notif text={`Your Disney+ trial ends tomorrow. Then ${formatMoney(defaultPlan(priceFor('disney-plus', 'US')!).amountMinor, 'USD')} a month.`} when="9:00" />
-            <span className="next">Next reminder: Netflix · Sun 9:00 AM</span>
+            <span className="next">Next reminder: Netflix · Fri 9:00</span>
           </div>
         </div>
       </section>
@@ -255,11 +254,11 @@ export default function Home() {
             <div className="card plan pro">
               <div className="plan-head">
                 <h3 className="h3">Pro</h3>
-                <span className="tag">{PRO.trialDays} days free</span>
+                <span className="tag">{PRO.trialDays} days free on yearly</span>
               </div>
               <div className="price num">{PRO.yearly}</div>
               <p className="per">
-                a year (about {PRO.yearlyPerMonth} a month), or {PRO.monthly} a month. Cancel anytime in iPhone Settings.
+                a year after {PRO.trialDays} days free (about {PRO.yearlyPerMonth} a month), or {PRO.monthly} a month with no trial. Cancel anytime in iPhone Settings.
               </p>
               <ul>
                 <li>Track every subscription</li>
@@ -294,7 +293,7 @@ export default function Home() {
         <div className="wrap">
           <div className="sec-head">
             <h2 id="trust-h" className="h2">
-              No bank login. No account. No catch.
+              No bank login. <span className="nw">No account.</span> <span className="nw">No catch.</span>
             </h2>
           </div>
           <div className="sec-body dont">
@@ -350,7 +349,6 @@ export default function Home() {
         </div>
       </section>
 
-      <StickyCta />
     </>
   );
 }

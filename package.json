@@ -65,7 +65,11 @@
     "preset": "jest-expo",
     "testPathIgnorePatterns": [
       "/node_modules/",
-      "/design/"
+      "/design/",
+      "/web/"
+    ],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/web/"
     ]
   }
 }

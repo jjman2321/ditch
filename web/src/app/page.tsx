@@ -6,17 +6,24 @@ import { Stamp } from '@/components/Stamp';
 import { StickyCta } from '@/components/StickyCta';
 import { COUNTRIES, defaultPlan, formatDate, hasLogo, priceFor, serviceById, verifiedPrices } from '@/lib/data';
 import { formatMoney } from '@/lib/money';
-import { BRAND, COMPANY, PRO, SITE, STATS } from '@/lib/site';
+import { BRAND, COMPANY, PRO, SITE } from '@/lib/site';
 
 const CALC_IDS = ['netflix', 'spotify', 'chatgpt-plus', 'amazon-prime', 'disney-plus', 'apple-music', 'youtube-premium', 'youtube-music', 'max', 'xbox-game-pass', 'claude-pro', 'microsoft-365', 'hulu', 'ps-plus', 'paramount-plus', 'peacock', 'google-one', 'audible'];
 
 const FAQ = [
   { q: 'Is it really free?', a: 'Tracking is free forever: your full list, real totals and the calendar. Reminders are free on 3 subscriptions you pick. Pro adds reminders on all of them.' },
   { q: 'A subscription to track subscriptions?', a: `Fair question. Pro is ${PRO.yearly} a year, about ${PRO.yearlyPerMonth} a month, and two forgotten months of Netflix cost more than that. Rather not subscribe? Lifetime is ${PRO.lifetime}, once.` },
+  { q: 'What’s the difference between Pro and Lifetime?', a: `Nothing in the app. Pro renews (${PRO.yearly} a year or ${PRO.monthly} a month). Lifetime is ${PRO.lifetime} once and never renews.` },
   { q: 'Can Ditch cancel for me?', a: 'No. No app can do that honestly without your passwords. Ditch reminds you before each charge and shows you the official place to cancel, step by step.' },
-  { q: 'How does it know what I pay for?', a: 'You tell it. Tap the logos or type a name. Ditch never reads your bank or your email.' },
+  { q: 'How does it know what I pay for?', a: 'You tell it. Tap the logos or type a name, and the price fills in for your country. Ditch never reads your bank or your email.' },
+  { q: 'Do reminders work if the app is closed?', a: 'Yes. Reminders are set on your iPhone, so they arrive even when Ditch is closed. Opening it now and then keeps them topped up.' },
+  { q: 'Can it remind me before a free trial ends?', a: 'Yes. Add the trial and its end date, and Ditch reminds you 3 days and 1 day before it turns into a charge.' },
   { q: 'Do you sell my data?', a: 'No. Your list stays on your phone. No ads, no tracking. Pro payments go through Apple.' },
+  { q: 'Which countries does it work in?', a: 'Anywhere with the App Store. Prices fill in for 12 countries, including the US, UK, Canada, Australia, much of Europe and India. Elsewhere you type the price in.' },
   { q: 'What if I stop paying for Pro?', a: 'Nothing gets deleted or hidden. Reminders go back to 3.' },
+  { q: 'How do I cancel Pro?', a: 'In iPhone Settings → your name → Subscriptions → Ditch. Cancel at least 24 hours before it renews.' },
+  { q: 'Is it on Android?', a: 'Not yet. Ditch is made for iPhone.' },
+  { q: 'When does it launch?', a: 'Soon. Join the waitlist and you get one email the day it’s on the App Store.' },
 ];
 
 export const metadata = {
@@ -67,11 +74,17 @@ export default function Home() {
         <div className="wrap grid">
           <div className="copy">
             <h1 id="hero-h" className="d-h1">
-              Ditch it before it <span className="hl">renews.</span>
+              Ditch it before it{' '}
+              <span className="scribble">
+                renews.
+                <svg viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden>
+                  <path d="M4 15 C 52 7, 110 5, 168 9 S 262 17, 296 8" />
+                </svg>
+              </span>
             </h1>
             <p className="lead">Every subscription in one list. A reminder 3 days before each charge. No bank login.</p>
             <div id="join">
-              <EmailBox source="home-hero" />
+              <EmailBox source="home-hero" bare />
             </div>
             <p className="hero-note">
               <b>Free forever for tracking.</b> Reminders on 3, or all of them with Pro. Coming to iPhone.
@@ -227,7 +240,7 @@ export default function Home() {
               Costs less than the one you forgot.
             </h2>
             <p className="lead">
-              Pro is about {PRO.yearlyPerMonth} a month. People lose ~$205 a year on subscriptions they don’t use ({STATS.wasted.source}). Hate subscriptions? Pay once.
+              Pro is about {PRO.yearlyPerMonth} a month. People lose around $205 a year on subscriptions they don’t use. Hate subscriptions? Pay once.
             </p>
           </div>
           <div className="sec-body plans">

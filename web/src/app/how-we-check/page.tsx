@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import { Doc } from '@/components/Doc';
 import { COUNTRIES, formatDate, siteCounts } from '@/lib/data';
-import { SUPPORT_EMAIL } from '@/lib/site';
+import { STATS, SUPPORT_EMAIL } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'How we check prices and cancel guides',
@@ -50,6 +50,16 @@ export default function HowWeCheck() {
 
       <h2 id="limits">What we don’t do</h2>
       <p>We don’t take money to list or rank anyone, we don’t use affiliate links, and we can’t see your bank or cancel for you. Services change things without warning, so their own page always wins.</p>
+
+      <h2 id="sources">Sources for the numbers we quote</h2>
+      <ul>
+        <li>
+          <b>~$205 a year on unused subscriptions:</b> CNET/YouGov survey of 2,440 US adults, 2025 (<a href={STATS.wasted.url} rel="noopener">report</a>).
+        </li>
+        <li>
+          <b>5,535 reviews of other trackers:</b> every App Store review Apple’s public feed returned for 17 subscription and bill apps in the US, UK, Canada and Australia, read in November 2026.
+        </li>
+      </ul>
 
       <h2 id="corrections">Corrections</h2>
       <p>

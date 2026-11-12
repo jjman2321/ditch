@@ -9,7 +9,7 @@ type State = 'idle' | 'sending' | 'done' | 'closed' | 'error';
  * The waitlist box. One email field, an unticked Price Hike Report option, and a plain promise line.
  * Posts to /api/subscribe (D1 + Resend double opt-in). Never claims it saved when it didn't.
  */
-export function EmailBox({ source, cta = 'Join the waitlist', onCream = false, compact = false }: { source: string; cta?: string; onCream?: boolean; compact?: boolean }) {
+export function EmailBox({ source, cta = 'Join the waitlist', onCream = false, compact = false, bare = false }: { source: string; cta?: string; onCream?: boolean; compact?: boolean; bare?: boolean }) {
   const id = useId();
   const [state, setState] = useState<State>('idle');
   const [email, setEmail] = useState('');
@@ -75,7 +75,7 @@ export function EmailBox({ source, cta = 'Join the waitlist', onCream = false, c
             setInvalid(false);
           }}
           aria-invalid={invalid || undefined}
-          aria-describedby={invalid ? `${id}-err` : `${id}-fine`}
+          aria-describedby={invalid ? `${id}-err` : bare ? undefined : `${id}-fine`}
         />
         <button className="btn" type="submit" disabled={state === 'sending'}>
           {state === 'sending' ? 'Sending…' : cta}
@@ -91,15 +91,17 @@ export function EmailBox({ source, cta = 'Join the waitlist', onCream = false, c
           Something went wrong. Try again in a minute.
         </p>
       ) : null}
-      {compact ? null : (
+      {compact || bare ? null : (
         <label className="opt">
           <input type="checkbox" checked={report} onChange={(e) => setReport(e.target.checked)} />
           Also send me the monthly Price Hike Report
         </label>
       )}
-      <p id={`${id}-fine`} className="fine">
-        One email when Ditch is on the App Store. Unsubscribe anytime. <a href="/privacy">Privacy</a>
-      </p>
+      {bare ? null : (
+        <p id={`${id}-fine`} className="fine">
+          One email when Ditch is on the App Store. Unsubscribe anytime. <a href="/privacy">Privacy</a>
+        </p>
+      )}
     </form>
   );
 }

@@ -470,3 +470,13 @@ img { display: block; max-width: 100%; }
 .phone .lockbtns { position: absolute; left: 26px; right: 26px; bottom: 30px; display: flex; justify-content: space-between; }
 .phone .lockbtns span { width: 48px; height: 48px; border-radius: 99px; background: rgba(255,255,255,.14); backdrop-filter: blur(6px); }
 @media (max-width: 860px) { .notif.second { display: none; } }
+
+/* hero accent: a hand-drawn ink underline (same hand as the DITCHED stamp), not a box */
+.scribble { position: relative; display: inline-block; white-space: nowrap; }
+.scribble svg { position: absolute; left: -2%; right: -2%; width: 104%; bottom: -.12em; height: .26em; overflow: visible; }
+.scribble path { fill: none; stroke: var(--ink); stroke-width: 7; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+@media (max-width: 639px) { .scribble path { stroke-width: 5; } }
+@media (prefers-reduced-motion: no-preference) {
+  .js .scribble path { stroke-dasharray: 400; stroke-dashoffset: 400; animation: draw .7s .35s cubic-bezier(.16, 1, .3, 1) forwards; }
+}
+@keyframes draw { to { stroke-dashoffset: 0; } }

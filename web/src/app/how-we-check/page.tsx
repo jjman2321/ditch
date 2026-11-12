@@ -30,20 +30,20 @@ export default function HowWeCheck() {
 
       <h2 id="method">How a price gets on the site</h2>
       <ul>
-        <li><b>1. Read it at the source.</b> We open the service’s own page for that country and record every plan, its price and how often it bills.</li>
+        <li><b>1. Read it at the source.</b> We open the service’s own page for that country, or Apple’s in-app price list when that’s where you’d pay, and record each plan we list, its price and how often it bills.</li>
         <li><b>2. Write down where and when.</b> The exact page and the date go next to the price.</li>
         <li><b>3. Keep the country’s own money.</b> Prices stay in the currency you’re charged in. We never add different currencies together.</li>
-        <li><b>4. Re-check.</b> Popular services every month, the rest at least every 90 days. After 90 days a page says the price may have changed; after 180 days it’s hidden from search until we check again.</li>
+        <li><b>4. Re-check.</b> At least every 90 days. After 90 days a page says the price may have changed; after 180 days it’s hidden from search until we check again.</li>
       </ul>
 
       <h2 id="status">What the labels mean</h2>
       <ul>
-        <li><b>Verified:</b> every plan read from an official page on the date shown. Only verified prices appear on this site.</li>
+        <li><b>Verified:</b> every plan we list was read from an official page on the date shown. Only verified prices appear on this site.</li>
         <li><b>Partial / unverified:</b> some or all plans couldn’t be read from an official page. We keep these off the site until they’re confirmed.</li>
       </ul>
 
       <h2 id="tax">Taxes</h2>
-      <p>US and Canada prices are before sales tax. UK, EU, Australia, New Zealand and India prices include VAT or GST. In the Middle East it depends on the service; each country’s row says what its page says.</p>
+      <p>US and Canada prices are before sales tax. UK, EU, Australia, New Zealand and India prices include VAT or GST. In the Middle East, some services don’t say whether VAT is included; where Apple bills you, its prices include VAT.</p>
 
       <h2 id="guides">Cancel guides</h2>
       <p>Steps come from the service’s own help page or terms. Each guide starts with how you pay, because that decides where you cancel: with the service, with Apple, or with a partner like your phone company. A guide is only published when we’re confident in every step.</p>

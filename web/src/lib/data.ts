@@ -43,6 +43,14 @@ export type CancelGuide = {
   checkedOn: string;
   confidence: 'high' | 'medium' | 'none';
   note?: string;
+  /** Hand-written copy for the website (scripts/catalog/guide-copy.py). */
+  answer?: string;
+  tips?: string[];
+  partner?: string;
+  app?: string;
+  company?: string;
+  appleBilling?: boolean;
+  related?: string[];
 };
 
 export const SERVICES = servicesJson as Service[];
@@ -67,11 +75,11 @@ export const COUNTRIES: Country[] = ([
   { code: 'NL', slug: 'nl', name: 'Netherlands', short: 'Netherlands', tax: 'incl. VAT' },
   { code: 'IN', slug: 'in', name: 'India', short: 'India', tax: 'incl. GST' },
   // Middle East (owner, Nov 12): English pages. Kuwait (and some Qatar/UAE services) bill in US dollars.
-  { code: 'AE', slug: 'uae', name: 'United Arab Emirates', short: 'UAE', tax: 'VAT 5%: see the note' },
-  { code: 'SA', slug: 'saudi-arabia', name: 'Saudi Arabia', short: 'Saudi', tax: 'VAT 15%: see the note' },
-  { code: 'EG', slug: 'egypt', name: 'Egypt', short: 'Egypt', tax: 'VAT 14%: see the note' },
+  { code: 'AE', slug: 'uae', name: 'United Arab Emirates', short: 'UAE', tax: 'VAT 5%' },
+  { code: 'SA', slug: 'saudi-arabia', name: 'Saudi Arabia', short: 'Saudi', tax: 'VAT 15%' },
   { code: 'QA', slug: 'qatar', name: 'Qatar', short: 'Qatar', tax: 'no VAT' },
   { code: 'KW', slug: 'kuwait', name: 'Kuwait', short: 'Kuwait', tax: 'no VAT' },
+  { code: 'EG', slug: 'egypt', name: 'Egypt', short: 'Egypt', tax: 'VAT 14%' },
 ] as Omit<Country, 'region'>[]).map((c) => ({ ...c, region: ['AE', 'SA', 'EG', 'QA', 'KW'].includes(c.code) ? 'mena' : 'main' }));
 export const COUNTRY = Object.fromEntries(COUNTRIES.map((c) => [c.code, c])) as Record<string, Country>;
 
@@ -188,3 +196,6 @@ export function neighbours<T extends { id: string }>(list: T[], id: string, n = 
   }
   return out;
 }
+
+/** True when a price row was read from Apple's in-app price list (what you pay if you subscribe in the iPhone app). */
+export const isAppStorePrice = (r: PriceRow) => /apps\.apple\.com/.test(r.source);

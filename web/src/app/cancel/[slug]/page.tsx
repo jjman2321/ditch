@@ -31,19 +31,17 @@ function shortUrl(url: string) {
   return `${u.hostname.replace(/^www\./, '')}${path.length > 28 ? '/…' : path}`;
 }
 
-function answer(steps: string[], apple: boolean, name?: string, checked?: string, src?: string) {
-  const first = steps.map((s, i) => (i ? s.replace(/^[A-Z](?=[a-z])/, (c) => c.toLowerCase()) : s.replace(/^[A-Z](?=[a-z])/, (c) => c.toLowerCase())).replace(/\.$/, '')).join(', then ');
-  const lead = name ? `To cancel ${name}, ${first}.` : `${first.replace(/^./, (c) => c.toUpperCase())}.`;
-  const appleLine = apple ? ' If your statement shows APPLE.COM/BILL, Apple bills you: cancel in iPhone Settings → your name → Subscriptions instead.' : '';
-  const dated = checked && src ? ` Checked ${formatDate(checked)} on ${src}.` : '';
-  return `${lead}${appleLine}${dated}`;
+/** The short answer: hand-written per guide, plus where and when it was checked (for people and AI answers). */
+function answer(g: { answer?: string; steps: string[]; name: string; checkedOn: string; source: string }) {
+  const base = g.answer ?? `${g.steps.join('. ')}.`;
+  return `${base} Checked ${formatDate(g.checkedOn)} on ${host(g.source)}.`;
 }
 
 export async function generateMetadata({ params }: PageProps<'/cancel/[slug]'>): Promise<Metadata> {
   const { slug } = await params;
   const g = guideById(slug);
   if (!g) return {};
-  const desc = `${answer(g.steps, g.appleNote)} Checked ${formatDate(g.checkedOn)} on ${host(g.source)}.`;
+  const desc = answer(g);
   return {
     title: `How to cancel ${g.name} in ${g.checkedOn.slice(0, 4)}: official steps`,
     description: desc.length > 158 ? `${desc.slice(0, 155).replace(/\s+\S*$/, '')}…` : desc,
@@ -60,22 +58,26 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
   if (!g) notFound();
   const s = serviceById(g.id);
   const notes = publicNotes(g.note);
-  const partnerNotes = notes.filter((n) => /partner|third-party|carrier|provider|Roku|Google|Amazon|Verizon|T-Mobile|bundle/i.test(n));
-  const otherNotes = notes.filter((n) => !partnerNotes.includes(n));
+  const otherNotes = g.tips ?? notes;
+  const partnerText = g.partner;
+  const app = g.app ?? g.name;
+  const company = g.company ?? g.name;
   const fresh = freshness(g.checkedOn);
   const us = priceFor(g.id, 'US');
   const usPlan = us ? defaultPlan(us) : null;
   const sameCat = publishedGuides().filter((x) => serviceById(x.id)?.category === s?.category);
-  const related = neighbours(sameCat, g.id, 4);
+  const picked = (g.related ?? []).map((id) => guideById(id)).filter((x): x is NonNullable<typeof x> => Boolean(x));
+  const related = picked.length ? picked.slice(0, 4) : neighbours(sameCat, g.id, 4);
   const more = related.length < 4 ? publishedGuides().filter((x) => x.id !== g.id && !related.includes(x)).slice(0, 4 - related.length) : [];
   const appleOnly = g.url?.startsWith('https://apps.apple.com');
   const hasHub = priceHubServices().some((x) => x.id === g.id);
-  const ans = answer(g.steps, g.appleNote && !appleOnly, g.name, g.checkedOn, host(g.source));
+  const ans = answer(g);
+  const showApple = !appleOnly && g.appleBilling !== false;
   const year = g.checkedOn.slice(0, 4);
 
   const toc = [
     { id: 'direct', label: appleOnly ? 'Cancel on iPhone' : `Cancel with ${g.name}` },
-    ...(appleOnly ? [] : [{ id: 'apple', label: 'If Apple bills you' }]),
+    ...(showApple ? [{ id: 'apple', label: 'If Apple bills you' }] : []),
     { id: 'partner', label: 'No cancel button?' },
     ...(us ? [{ id: 'price', label: `What ${g.name} costs` }] : []),
   ];
@@ -139,6 +141,10 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
                 <a className="btn" href={g.url} rel="noopener">
                   {appleOnly ? 'Open your Apple subscriptions ↗' : `Open ${g.name}’s cancel page ↗`}
                 </a>
+              ) : g.helpUrl ? (
+                <a className="btn" href={g.helpUrl} rel="noopener">
+                  Open {company}’s help page ↗
+                </a>
               ) : (
                 <a className="btn" href="#direct">
                   Jump to the steps ↓
@@ -148,7 +154,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
                 No cancel button?
               </a>
             </div>
-            {g.url ? <p className="url">{shortUrl(g.url)} · opens {appleOnly ? 'Apple’s' : `${g.name}’s`} site</p> : null}
+            {g.url ? <p className="url">{appleOnly ? 'Opens your subscriptions in the App Store' : `${shortUrl(g.url)} · opens ${company}’s site`}</p> : null}
           </div>
 
           <h2 id="how" style={{ marginTop: 48 }}>
@@ -156,7 +162,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
           </h2>
           <nav className="how" aria-label="How you pay">
             <a href="#direct">{appleOnly ? 'Apple (iPhone)' : `${g.name} directly`}</a>
-            {appleOnly ? null : <a href="#apple">Apple (signed up on iPhone)</a>}
+            {showApple ? <a href="#apple">Apple (signed up on iPhone)</a> : null}
             <a href="#partner">A phone or TV company</a>
           </nav>
           <p className="meta" style={{ marginTop: 10 }}>
@@ -166,8 +172,8 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
           <H2 id="ready">Have this ready</H2>
           <ul className="ticks" style={{ marginTop: 8 }}>
             <li>
-              The email you use for {g.name}
-              <span>Not sure which? Search your inbox for “{g.name}” receipts.</span>
+              {appleOnly ? 'Your Apple Account sign-in' : `The email you use for ${g.name}`}
+              <span>{appleOnly ? 'The one your iPhone is signed in with.' : `Not sure which? Search your inbox for “${g.name}” receipts.`}</span>
             </li>
             <li>
               The last 4 digits of the card it charges
@@ -190,12 +196,12 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
             </div>
           ) : null}
 
-          {appleOnly ? null : (
+          {!showApple ? null : (
             <>
               <H2 id="apple">If Apple bills you</H2>
               <p>
                 {g.appleNote
-                  ? `If you signed up in the ${g.name} iPhone app, Apple bills you, and ${g.name} can’t cancel it for you. Cancel on your iPhone:`
+                  ? `If you signed up in the ${app} iPhone app, Apple bills you, and ${company} can’t cancel it for you. Cancel on your iPhone:`
                   : notes.some((n) => /apple/i.test(n))
                     ? `Signed up through Apple? Cancel on your iPhone:`
                     : `${g.name} doesn’t mention Apple billing, but if you see APPLE.COM/BILL on your statement, cancel on your iPhone:`}
@@ -212,18 +218,14 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
           )}
 
           <H2 id="partner">No cancel button?</H2>
-          {partnerNotes.length ? (
-            partnerNotes.map((n) => <p key={n}>{n}</p>)
-          ) : (
-            <p>Then {g.name} probably isn’t billing you directly. Look for the company named on your bank statement (a phone, TV or internet provider, Apple, Google or Amazon) and cancel with them.</p>
-          )}
+          <p>{partnerText ?? `Then ${company} probably isn’t billing you directly. Look for the company named on your bank statement and cancel with them.`}</p>
 
           <div className="appcard" data-has-cta>
             <div>
               <h2 className="h3" style={{ margin: 0 }}>
                 Not ready to cancel?
               </h2>
-              <p>Ditch reminds you 3 days and 1 day before {g.name} renews, so you can decide in time. It can’t cancel for you. It just makes sure you don’t forget.</p>
+              <p>Ditch reminds you 3 days and 1 day before {g.name} renews, so you can decide in time. It can’t cancel for you. It makes sure you don’t forget.</p>
               <EmailBox source={`cancel-${g.id}`} compact />
             </div>
             {usPlan ? <Notif text={`${g.name} renews in 3 days. ${formatMoney(usPlan.amountMinor, 'USD')}. Still using it?`} /> : null}

@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { EmailBox } from '@/components/EmailBox';
 import { Logo } from '@/components/Logo';
 import { PriceTable } from '@/components/PriceTable';
-import { COUNTRY, dateRange, defaultPlan, guideById, neighbours, priceHubServices, pubDates, publicNotes, serviceById, verifiedPrices, type PriceRow } from '@/lib/data';
+import { COUNTRY, dateRange, defaultPlan, guideById, isAppStorePrice, neighbours, priceHubServices, pubDates, serviceById, verifiedPrices, type PriceRow } from '@/lib/data';
 import { formatMoney, monthlyMinor } from '@/lib/money';
 import { AUTHOR, COMPANY, SITE, SUPPORT_EMAIL } from '@/lib/site';
 
@@ -13,7 +13,7 @@ export function generateStaticParams() {
   return priceHubServices().map((s) => ({ slug: s.id }));
 }
 
-const money = (r: PriceRow, minor: number) => formatMoney(minor, r.currency, { country: r.country });
+const money = (r: PriceRow, minor: number) => formatMoney(minor, r.currency, { country: r.country, whole: true });
 
 function range(r: PriceRow) {
   const monthly = r.plans.filter((p) => p.cycle === 'monthly').sort((a, b) => a.amountMinor - b.amountMinor);
@@ -59,11 +59,14 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
   if (!s || rows.length < 6) notFound();
   const latest = rows.map((r) => r.checked).sort().pop()!;
   const guide = guideById(s.id);
-  const notes = rows
-    .map((r) => ({ c: COUNTRY[r.country].name, n: [...new Set(publicNotes(r.note))].join(' ') }))
-    .filter((x) => x.n);
+  // Research notes stay in the data. The page says only what a reader needs.
+  const appRows = rows.filter(isAppStorePrice);
+  const appShare = appRows.length / rows.length;
+  const notes: { c: string; n: string }[] = [];
+  if (appRows.length) notes.push({ c: 'iPhone app prices', n: appShare > 0.5 ? `Most prices here are what ${s.name} charges when you subscribe in its iPhone app, from Apple’s in-app price list. Prices on ${s.name}’s website can be different.` : `Rows marked “iPhone app price” are what you pay when you subscribe in the iPhone app. Prices on the website can be different.` });
+  if (rows.some((r) => ['AE', 'SA', 'EG'].includes(r.country))) notes.push({ c: 'Middle East', n: 'Some services don’t say whether VAT is included. Where Apple bills you, its prices include VAT.' });
   const taxNote = rows.some((r) => ['US', 'CA'].includes(r.country)) ? ` ${rows.some((r) => r.country === 'CA') ? 'US and Canada prices are' : 'US prices are'} before sales tax.` : '';
-  const ans = `${summary(s.name, rows)}${taxNote} Checked ${dateRange(rows.map((r) => r.checked))} on ${s.name}’s own pages.`;
+  const ans = `${summary(s.name, rows)}${appShare > 0.5 ? ' These are iPhone app prices.' : ''}${taxNote} Checked ${dateRange(rows.map((r) => r.checked))}.`;
   const others = neighbours(priceHubServices().filter((x) => x.category === s.category), s.id, 4);
 
   const ld = [
@@ -113,7 +116,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
               Prices checked <time dateTime={latest}>{dateRange(rows.map((r) => r.checked))}</time>
             </span>
             <span>
-              on {s.name}’s own pages · By <Link href={AUTHOR.url}>{AUTHOR.name}</Link>
+              {appShare > 0.5 ? 'from Apple’s in-app price list' : `on ${s.name}’s own pages`} · By <Link href={AUTHOR.url}>{AUTHOR.name}</Link>
             </span>
           </div>
           <div className="answer">
@@ -133,7 +136,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
           </h2>
           <PriceTable serviceId={s.id} caption={`${s.name}’s main plans by country. Each country links to the page we checked.`} />
           <p className="meta" style={{ marginTop: 12 }}>
-            A year = the monthly price × 12. Prices are in each country’s own money, and we never add different currencies together. <Link href="/how-we-check">How we check prices</Link>.
+            A year = monthly × 12, every 3 months × 4, yearly as charged. Prices are in each country’s own money, and we never add different currencies together. <Link href="/how-we-check">How we check prices</Link>.
           </p>
 
           <h2 id="cheapest">The cheapest {s.name} plan in each country</h2>

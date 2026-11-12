@@ -1,4 +1,4 @@
-import { COUNTRY, formatDate, host, verifiedPrices } from '@/lib/data';
+import { COUNTRY, formatDate, host, isAppStorePrice, verifiedPrices } from '@/lib/data';
 import { CYCLE_WORD, formatMoney, yearlyMinor } from '@/lib/money';
 
 /**
@@ -33,9 +33,10 @@ export function PriceTable({ serviceId, countries, caption }: { serviceId: strin
               <th colSpan={3} scope="rowgroup">
                 <span className="cn">{c.name}</span>
                 <span className="sub">
+                  {isAppStorePrice(r) ? 'iPhone app price · ' : ''}
                   {c.tax} · checked <time dateTime={r.checked}>{formatDate(r.checked)}</time> ·{' '}
                   <a href={r.source} rel="noopener">
-                    {host(r.source)}
+                    {isAppStorePrice(r) ? 'App Store' : host(r.source)}
                   </a>
                 </span>
               </th>

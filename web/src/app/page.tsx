@@ -1,13 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import Link from 'next/link';
-
 import { Calculator, type CalcService } from '@/components/Calculator';
 import { EmailBox } from '@/components/EmailBox';
-import { Logo } from '@/components/Logo';
 import { Notif } from '@/components/Notif';
 import { Stamp } from '@/components/Stamp';
 import { StickyCta } from '@/components/StickyCta';
-import { COUNTRIES, defaultPlan, formatDate, hasLogo, priceFor, priceHubServices, publishedGuides, serviceById, siteCounts, verifiedPrices } from '@/lib/data';
+import { COUNTRIES, defaultPlan, formatDate, hasLogo, priceFor, serviceById, verifiedPrices } from '@/lib/data';
 import { formatMoney } from '@/lib/money';
 import { BRAND, COMPANY, PRO, SITE, STATS } from '@/lib/site';
 
@@ -23,12 +20,11 @@ const FAQ = [
 ];
 
 export const metadata = {
-  title: { absolute: 'Ditch: Subscription Tracker for iPhone | Reminders before every charge' },
-  description: 'See everything you pay for and get a reminder 3 days and 1 day before each charge. Free forever for tracking. No bank login, no account.',
+  title: { absolute: 'Ditch: Subscription Tracker for iPhone | Ditch it before it renews' },
+  description: 'Every subscription in one list. A reminder 3 days before each charge. No bank login, no account. Free forever for tracking.',
 };
 
 export default function Home() {
-  const counts = siteCounts();
   const calc: CalcService[] = CALC_IDS.flatMap((id) => {
     const s = serviceById(id);
     if (!s) return [];
@@ -46,14 +42,6 @@ export default function Home() {
   const nf = priceFor('netflix', 'US')!;
   const nfPlan = defaultPlan(nf);
   const nfYear = formatMoney(nfPlan.amountMinor * 12, 'USD');
-  const guides = publishedGuides();
-  const byCat = (cat: string) => guides.filter((g) => serviceById(g.id)?.category === cat);
-  const cats = [
-    { cat: 'Streaming', label: 'Streaming' },
-    { cat: 'Music & audio', label: 'Music' },
-    { cat: 'AI', label: 'AI' },
-    { cat: 'Gaming', label: 'Gaming' },
-  ];
 
   const ld = [
     { '@context': 'https://schema.org', '@type': 'Organization', name: 'Ditch', legalName: COMPANY, url: SITE, logo: `${SITE}/icon.png`, email: 'support@ditchsubs.app' },
@@ -81,7 +69,7 @@ export default function Home() {
             <h1 id="hero-h" className="d-h1">
               Ditch it before it <span className="hl">renews.</span>
             </h1>
-            <p className="lead">See everything you pay for. Get a reminder 3 days before every charge, so nothing renews by surprise.</p>
+            <p className="lead">Every subscription in one list. A reminder 3 days before each charge. No bank login.</p>
             <div id="join">
               <EmailBox source="home-hero" />
             </div>
@@ -90,15 +78,30 @@ export default function Home() {
             </p>
           </div>
           <div className="stage" aria-hidden>
-            <img className="float" src="/logos/netflix.png" alt="" style={{ left: '2%', top: 96, transform: 'rotate(-4deg)' }} />
-            <img className="float" src="/logos/spotify.png" alt="" style={{ right: '0%', top: 40, transform: 'rotate(5deg)' }} />
-            <img className="float" src="/logos/chatgpt-plus.png" alt="" style={{ left: '0%', top: 330, transform: 'rotate(3deg)' }} />
+            <img className="float" src="/logos/netflix.png" alt="" style={{ left: '4%', top: 70, transform: 'rotate(-6deg)' }} />
+            <img className="float" src="/logos/spotify.png" alt="" style={{ right: '2%', top: 36, transform: 'rotate(6deg)' }} />
+            <img className="float" src="/logos/chatgpt-plus.png" alt="" style={{ left: '0%', top: 300, transform: 'rotate(4deg)' }} />
+            <img className="float" src="/logos/disney-plus.png" alt="" style={{ right: '0%', top: 268, transform: 'rotate(-5deg)' }} />
             <div className="phone">
               <div className="scr">
+                <div className="sbar">
+                  <span>9:00</span>
+                  <span className="sicons">
+                    <i />
+                    <i />
+                    <i />
+                  </span>
+                </div>
                 <div className="island" />
+                <div className="lock">🔒</div>
                 <div className="day">Wednesday, November 18</div>
                 <div className="time">9:00</div>
-                <Notif text={`Netflix renews in 3 days. ${formatMoney(nfPlan.amountMinor, 'USD')}. Still watching?`} style={{ top: 214 }} />
+                <Notif text={`Netflix renews in 3 days. ${formatMoney(nfPlan.amountMinor, 'USD')}. Still watching?`} style={{ top: 236 }} />
+                <Notif className="second" when="Mon" text={`ChatGPT Plus renews tomorrow. ${formatMoney(defaultPlan(priceFor('chatgpt-plus', 'US')!).amountMinor, 'USD')}.`} style={{ top: 330 }} />
+                <div className="lockbtns">
+                  <span />
+                  <span />
+                </div>
               </div>
             </div>
             <img className="duck" src="/duck.png" alt="" />
@@ -106,39 +109,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. Proof strip: real counts from the data */}
-      <section className="proof" aria-label="What's behind Ditch">
-        <div className="wrap cells">
-          <div className="cell">
-            <b className="num">{counts.services}</b>
-            <span>services with checked prices</span>
-          </div>
-          <div className="cell">
-            <b className="num">{counts.countries}</b>
-            <span>countries, in local money</span>
-          </div>
-          <div className="cell">
-            <b className="num">{counts.plans.toLocaleString('en-US')}</b>
-            <span>plan prices checked by hand</span>
-          </div>
-          <div className="cell">
-            <b>{formatDate(counts.checked).replace(/, \d{4}$/, '')}</b>
-            <span>
-              last checked · <Link href="/how-we-check">how</Link>
-            </span>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. Calculator */}
+      {/* 2. The number */}
       <section className="sec" aria-labelledby="calc-h" data-has-cta>
         <div className="wrap">
           <div className="sec-head">
-            <p className="eyebrow">Try it</p>
             <h2 id="calc-h" className="h2">
-              What do you pay for?
+              What do you actually pay?
             </h2>
-            <p className="lead">People guess low. Tap what you have and see the real yearly number, with real prices for your country.</p>
+            <p className="lead">Tap what you have. Real prices for your country, checked by hand.</p>
           </div>
           <div className="sec-body">
             <Calculator services={calc} countries={calcCountries} />
@@ -146,18 +124,18 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. How it works */}
+      {/* 3. How it works */}
       <section className="sec" style={{ paddingTop: 0 }} aria-labelledby="how-h">
         <div className="wrap">
           <div className="sec-head">
             <h2 id="how-h" className="h2">
-              Three steps. Then you’re covered.
+              Add it. Get reminded. Ditch it.
             </h2>
           </div>
           <div className="sec-body steps">
             <div className="card step" data-reveal style={{ ['--i' as string]: 0 }}>
               <span className="n">1</span>
-              <h3 className="h3">Add what you pay for</h3>
+              <h3 className="h3">Add it</h3>
               <p>Tap the logos. Prices fill in for your country. Anything else, type it in.</p>
               <div className="shot">
                 <div className="mini-list" aria-hidden>
@@ -176,7 +154,7 @@ export default function Home() {
             </div>
             <div className="card step" data-reveal style={{ ['--i' as string]: 1 }}>
               <span className="n">2</span>
-              <h3 className="h3">Get a reminder</h3>
+              <h3 className="h3">Get reminded</h3>
               <p>3 days and 1 day before each charge, at 9:00. Free trials too.</p>
               <div className="shot">
                 <Notif text={`Spotify renews tomorrow. ${formatMoney(defaultPlan(priceFor('spotify', 'US')!).amountMinor, 'USD')}.`} when="9:00" />
@@ -184,8 +162,8 @@ export default function Home() {
             </div>
             <div className="card step" data-reveal style={{ ['--i' as string]: 2 }}>
               <span className="n">3</span>
-              <h3 className="h3">Ditch what you don’t use</h3>
-              <p>Hold to ditch. Ditch shows you the official place to cancel, step by step.</p>
+              <h3 className="h3">Ditch it</h3>
+              <p>Hold to ditch. Ditch opens the official place to cancel and walks you through it.</p>
               <div className="shot" style={{ alignItems: 'center', paddingBottom: 24 }}>
                 <div style={{ width: 220 }}>
                   <Stamp date="2026-11-12" paper="#FFCC2E" />
@@ -196,24 +174,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. One-liner moment */}
-      <section className="sec-moment oneliner" aria-label="Why Ditch">
-        <div className="wrap">
-          <p className="d-line" data-reveal>
-            Nobody signs up for nine subscriptions. <span>It just happens.</span>
-          </p>
-        </div>
-      </section>
-
-      {/* 6. Reminders */}
+      {/* 4. Reminders */}
       <section className="sec" style={{ paddingTop: 0 }} aria-labelledby="rem-h">
         <div className="wrap split">
           <div>
             <h2 id="rem-h" className="h2">
-              Reminders that actually go off.
+              Reminders that actually show up.
             </h2>
             <p className="lead" style={{ marginTop: 20 }}>
-              We read 5,535 reviews of other trackers. Reminders that never came were one of the biggest complaints. Ditch plans every reminder on your phone, re-checks them each time you open it, and shows you the next one.
+              One of the biggest complaints about other trackers: reminders that never came. Ditch plans every one on your phone and shows you the next one, so you know it’s on.
             </p>
             <ul className="ticks">
               <li>
@@ -223,7 +192,7 @@ export default function Home() {
                 Free trials too<span>Hear about it before a trial turns into a charge.</span>
               </li>
               <li>
-                Send yourself a test<span>See a real reminder arrive in 5 seconds.</span>
+                Send yourself a test<span>A real reminder in 5 seconds.</span>
               </li>
             </ul>
           </div>
@@ -235,7 +204,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 7. The DITCHED moment */}
+      {/* 5. The ditch moment */}
       <section className="sec-moment stamp-moment" aria-labelledby="ditch-h">
         <div className="wrap">
           <h2 id="ditch-h" className="sr">
@@ -246,54 +215,20 @@ export default function Home() {
           <p className="d-line" style={{ fontSize: 'clamp(1.75rem, 1.2rem + 1.6vw, 2.5rem)', marginTop: 8 }}>
             you won’t pay.
           </p>
-          <p className="cap">Netflix Standard ({formatMoney(nfPlan.amountMinor, 'USD')} a month in the US), ditched.</p>
+          <p className="cap">Netflix Standard, ditched.</p>
         </div>
       </section>
 
-      {/* 8. Value: yes it's a subscription, and it's cheap */}
-      <section className="sec" style={{ paddingTop: 0 }} aria-labelledby="val-h">
-        <div className="wrap">
-          <div className="sec-head">
-            <h2 id="val-h" className="h2">
-              Yes, Pro is a subscription. It costs less than the ones it catches.
-            </h2>
-          </div>
-          <div className="sec-body value">
-            <div className="card" data-reveal style={{ ['--i' as string]: 0 }}>
-              <p className="eyebrow">Pro, yearly</p>
-              <b className="big num">{PRO.yearlyPerMonth}</b>
-              <p>
-                a month, billed {PRO.yearly} a year after a {PRO.trialDays}-day free trial. Less than one streaming plan.
-              </p>
-            </div>
-            <div className="card" data-reveal style={{ ['--i' as string]: 1 }}>
-              <p className="eyebrow">What people lose</p>
-              <b className="big">~$205</b>
-              <p>
-                a year on {STATS.wasted.on}, on average.{' '}
-                <a href={STATS.wasted.url} rel="noopener">
-                  {STATS.wasted.source}
-                </a>
-              </p>
-            </div>
-            <div className="card" data-reveal style={{ ['--i' as string]: 2, background: 'var(--sun)', borderColor: 'transparent' }}>
-              <p className="eyebrow" style={{ color: 'var(--sunfg2)' }}>Hate subscriptions?</p>
-              <b className="big num">{PRO.lifetime}</b>
-              <p style={{ color: 'var(--sunfg2)' }}>once. Pro for good, no renewals.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 9. Pricing */}
+      {/* 6. Price + lifetime */}
       <section id="pricing" className="sec" style={{ paddingTop: 0 }} aria-labelledby="price-h" data-has-cta>
         <div className="wrap">
-          <div className="row-head">
-            <div className="sec-head">
-              <h2 id="price-h" className="h2">
-                Free to track. Pro to never miss one.
-              </h2>
-            </div>
+          <div className="sec-head">
+            <h2 id="price-h" className="h2">
+              Costs less than the one you forgot.
+            </h2>
+            <p className="lead">
+              Pro is about {PRO.yearlyPerMonth} a month. People lose ~$205 a year on subscriptions they don’t use ({STATS.wasted.source}). Hate subscriptions? Pay once.
+            </p>
           </div>
           <div className="sec-body plans">
             <div className="card plan">
@@ -321,141 +256,72 @@ export default function Home() {
                 <li>Track every subscription</li>
                 <li>Totals, calendar and cancel guides</li>
                 <li>
-                  <b>Reminders on unlimited subscriptions</b>
+                  <b>Reminders on every subscription</b>
                 </li>
                 <li>Pick reminder days</li>
                 <li>Nudge if you miss one</li>
               </ul>
             </div>
             <div className="card plan life">
-              <h3 className="h3">Lifetime</h3>
+              <div className="plan-head">
+                <h3 className="h3">Lifetime</h3>
+                <span className="tag">Pay once</span>
+              </div>
               <div className="price num">{PRO.lifetime}</div>
               <p className="per">once. Everything in Pro, no renewals ever.</p>
               <ul>
                 <li>Everything in Pro</li>
-                <li>Pay once, keep it</li>
+                <li>Never renews</li>
                 <li>Restore it on a new iPhone</li>
               </ul>
             </div>
           </div>
-          <p className="price-line">US prices. Your App Store shows the price in your currency before you pay. Lifetime covers Pro.</p>
+          <p className="price-line">US prices. Your App Store shows your price before you pay. Lifetime covers Pro.</p>
         </div>
       </section>
 
-      {/* 10. Honest: what Ditch doesn't do */}
-      <section className="sec" style={{ paddingTop: 0 }} aria-labelledby="dont-h">
+      {/* 7. Trust */}
+      <section className="sec" style={{ paddingTop: 0 }} aria-labelledby="trust-h">
         <div className="wrap">
           <div className="sec-head">
-            <h2 id="dont-h" className="h2">
-              What Ditch doesn’t do.
+            <h2 id="trust-h" className="h2">
+              No bank login. No account. No catch.
             </h2>
-            <p className="lead">So you know exactly what you’re getting.</p>
           </div>
           <div className="sec-body dont">
             <div className="card">
-              <span className="x" aria-hidden>
-                ✕
-              </span>
-              <h3 className="h3">Read your bank</h3>
-              <p>No bank login, no email scanning, no account. You add what you pay for, and your list stays on your phone.</p>
+              <h3 className="h3">Your list stays on your phone</h3>
+              <p>You add what you pay for. Nothing reads your bank or your email.</p>
             </div>
             <div className="card">
-              <span className="x" aria-hidden>
-                ✕
-              </span>
-              <h3 className="h3">Cancel for you</h3>
-              <p>Nobody can do that honestly without your passwords. Ditch opens the right page and walks you through it.</p>
+              <h3 className="h3">No ads, no tracking</h3>
+              <p>We don’t sell anything about you. Pro payments go through Apple.</p>
             </div>
             <div className="card">
-              <span className="x" aria-hidden>
-                ✕
-              </span>
-              <h3 className="h3">Run on Android</h3>
-              <p>Ditch is for iPhone. It uses iPhone reminders that work even when the app is closed.</p>
+              <h3 className="h3">Honest about cancelling</h3>
+              <p>Ditch can’t cancel for you. It opens the right page and walks you through it.</p>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* 11. Guides + prices */}
-      <section className="sec" style={{ paddingTop: 0 }} aria-labelledby="guides-h">
-        <div className="wrap">
-          <div className="row-head">
-            <div className="sec-head">
-              <h2 id="guides-h" className="h2">
-                Want out? There’s a guide for that.
+          <div className="faq" style={{ marginTop: 96 }}>
+            <div>
+              <h2 id="faq-h" className="h2" style={{ fontSize: 'clamp(1.75rem, 1rem + 2vw, 2.5rem)' }}>
+                Fair questions.
               </h2>
-              <p className="lead">Official cancel links and steps, split by how you pay. Checked by hand, with the date on every page.</p>
+              <p className="lead" style={{ marginTop: 16 }}>
+                Something else? <a href="mailto:support@ditchsubs.app">Email us</a>. A person answers.
+              </p>
             </div>
-            <Link href="/cancel" className="hide-sm">
-              All {guides.length} guides →
-            </Link>
-          </div>
-          <div className="sec-body cats">
-            {cats.map(({ cat, label }) => {
-              const list = byCat(cat);
-              if (!list.length) return null;
-              return (
-                <Link key={cat} className="card cat" href={`/cancel#${cat.split(' ')[0].toLowerCase()}`}>
-                  <span className="stack" aria-hidden>
-                    {list.slice(0, 3).map((g) => (
-                      <Logo key={g.id} id={g.id} size={32} />
-                    ))}
-                  </span>
-                  <span className="h3">{label}</span>
-                  <span>
-                    {list.length} guides · {list.slice(0, 2).map((g) => g.name).join(', ')}…
-                  </span>
-                </Link>
-              );
-            })}
-          </div>
-          <nav className="linkrow" aria-label="Popular cancel guides">
-            {guides.slice(0, 10).map((g) => (
-              <Link key={g.id} href={`/cancel/${g.id}`}>
-                Cancel {g.name}
-              </Link>
-            ))}
-          </nav>
-          <div style={{ marginTop: 64 }}>
-            <div className="row-head">
-              <h3 className="h3">Prices in your country</h3>
-              <Link href="/prices">All prices →</Link>
+            <div>
+              {FAQ.map((f, i) => (
+                <details key={f.q} open={i === 0}>
+                  <summary>
+                    {f.q}
+                    <span className="pm" aria-hidden />
+                  </summary>
+                  <p>{f.a}</p>
+                </details>
+              ))}
             </div>
-            <nav className="linkrow" aria-label="Popular price pages">
-              {priceHubServices()
-                .slice(0, 10)
-                .map((s) => (
-                  <Link key={s.id} href={`/prices/${s.id}`}>
-                    {s.name} prices
-                  </Link>
-                ))}
-            </nav>
-          </div>
-        </div>
-      </section>
-
-      {/* 12. FAQ */}
-      <section className="sec" style={{ paddingTop: 0 }} aria-labelledby="faq-h">
-        <div className="wrap faq">
-          <div>
-            <h2 id="faq-h" className="h2">
-              These tend to come up.
-            </h2>
-            <p className="lead" style={{ marginTop: 20 }}>
-              Something else? <a href="mailto:support@ditchsubs.app">Email us</a>. A person answers.
-            </p>
-          </div>
-          <div>
-            {FAQ.map((f, i) => (
-              <details key={f.q} open={i === 0}>
-                <summary>
-                  {f.q}
-                  <span className="pm" aria-hidden />
-                </summary>
-                <p>{f.a}</p>
-              </details>
-            ))}
           </div>
         </div>
       </section>
@@ -464,11 +330,11 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: FAQ.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }) }}
       />
 
-      {/* 13. Final CTA */}
+      {/* 8. Final */}
       <section className="wrap" aria-labelledby="final-h" data-has-cta>
         <div className="final">
           <h2 id="final-h" className="h2">
-            Be first when it’s out.
+            Stop paying for stuff you forgot.
           </h2>
           <p className="lead">One email when Ditch is on the App Store. Want the monthly Price Hike Report too? Tick the box.</p>
           <EmailBox source="home-final" />

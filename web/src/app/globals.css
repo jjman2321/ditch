@@ -455,3 +455,18 @@ img { display: block; max-width: 100%; }
 .email input[type=email], .search-in input { align-self: stretch; min-height: 44px; }
 .row-head a { display: inline-flex; align-items: center; min-height: 44px; }
 @media (hover: none) { .art h2 .anchor { display: none; } }
+
+/* hero phone details (v1 look, sharper) */
+.phone .sbar { position: absolute; top: 18px; left: 30px; right: 26px; display: flex; justify-content: space-between; font: 600 15px var(--body); z-index: 2; }
+.phone .sicons { display: inline-flex; gap: 5px; align-items: center; }
+.phone .sicons i { display: block; width: 16px; height: 10px; border-radius: 3px; background: rgba(255,255,255,.9); }
+.phone .sicons i:first-child { width: 14px; height: 9px; border-radius: 2px; background: linear-gradient(90deg, rgba(255,255,255,.9) 70%, rgba(255,255,255,.35) 70%); }
+.phone .sicons i:last-child { width: 24px; height: 11px; border-radius: 3px; border: 1.5px solid rgba(255,255,255,.85); background: linear-gradient(90deg, rgba(255,255,255,.9) 72%, transparent 72%); background-clip: content-box; padding: 1px; }
+.phone .island { position: relative; z-index: 3; }
+.phone .lock { margin-top: 18px; font-size: 16px; opacity: .85; filter: grayscale(1) brightness(2); }
+.phone .day { margin-top: 6px; }
+.phone .scr { background: radial-gradient(120% 80% at 50% 0%, #4a4537 0%, #2b2923 55%, #1d1b17 100%); }
+.notif.second { opacity: .92; transform: scale(.97); transform-origin: top center; }
+.phone .lockbtns { position: absolute; left: 26px; right: 26px; bottom: 30px; display: flex; justify-content: space-between; }
+.phone .lockbtns span { width: 48px; height: 48px; border-radius: 99px; background: rgba(255,255,255,.14); backdrop-filter: blur(6px); }
+@media (max-width: 860px) { .notif.second { display: none; } }

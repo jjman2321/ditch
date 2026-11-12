@@ -62,7 +62,7 @@ def source():
     return rgb, lum, chroma, outside
 
 
-def build(body_drop=70, feet=True, rim=None):
+def build(body_drop=70, feet=True, rim=None, head_line=True):
     rgb, lum, chroma, outside = source()
     h, w = lum.shape
     H = 1320
@@ -98,8 +98,11 @@ def build(body_drop=70, feet=True, rim=None):
             fw, fh = 0.34 * rx, 0.24 * rx
             box = [(fx - fw / 2) * K, (bottom - fh * 0.30) * K, (fx + fw / 2) * K, (bottom + fh * 0.70) * K]
             d.ellipse(box, fill=TANGERINE + (255,), outline=ink + (255,), width=int(STROKE * 0.8 * K))
-    out.paste(ink + (255,), (0, 0), m_s)
-    out.paste((255, 255, 255, 255), (0, 0), inner_s)
+    if head_line:
+        out.paste(ink + (255,), (0, 0), m_s)
+        out.paste((255, 255, 255, 255), (0, 0), inner_s)
+    else:  # flat, Finch-style: no line round the head, just the white shape
+        out.paste((255, 255, 255, 255), (0, 0), m_s)
     # 4. The original eyes and bill on top (ink and colour inside the head, plus the whole bill area).
     src = np.zeros((H, w, 4), np.uint8)
     feat = np.zeros((H, w), float)

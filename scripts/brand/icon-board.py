@@ -13,6 +13,9 @@ RES = Path(sys.argv[1])
 F = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 26)
 FS = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 15)
 OPTS = [('1-close.png', '1  Face close-up'), ('2-peek.png', '2  Peek'), ('3-whole.png', '3  Whole duck')]
+if len(sys.argv) > 2:  # another folder: icon-board.py <research> <folder> file=Label ...
+    V4 = ROOT / sys.argv[2]
+    OPTS = [tuple(a.split('=', 1)) for a in sys.argv[3:]]
 NEIGH = ['duolingo', 'snapchat', 'bobby', 'rocketmoney', 'cashapp', 'finch', 'reddit', 'headspace', 'calm', 'waze', 'copilot']
 
 

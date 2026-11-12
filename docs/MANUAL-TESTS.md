@@ -120,9 +120,9 @@ Needs the EAS development build for the starred ones (*).
 - [ ] Home: a yearly sub shows "/yr" after its price.
 - [ ] *iPad (if you have one): Home, Calendar and Settings sit in a centred column, not stretched.
 - [ ] Home screen: the yellow "Bean" duck icon (round white duck, orange bill, on yellow). Needs an EAS build: Expo Go always shows its own icon.
-- [ ] iPhone Settings → Display & Brightness → Dark: the icon turns dark with a yellow outline round the duck.
+- [ ] iPhone Settings → Display & Brightness → Dark: the icon stays the same yellow Bean (not darkened).
 - [ ] Long-press the home screen → Edit → Customize → Tinted: a grey duck.
-- [ ] Open Ditch from closed: the splash is the rounded Bean on cream.
+- [ ] Open Ditch from closed: the splash is the rounded yellow Bean, on cream (in dark mode, on black).
 - [ ] Settings → About, and the lock-screen example in onboarding: the small icon is the same Bean as the home screen.
 - [ ] Paywall: 4 rows (Track every subscription, Subscriptions with reminders, Pick reminder days, Nudge if you miss one). No widget row.
 

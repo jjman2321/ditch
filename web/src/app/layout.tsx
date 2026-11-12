@@ -16,13 +16,12 @@ const wordmark = localFont({ src: '../fonts/ArchivoDitch-Wordmark.woff2', variab
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
-  title: { default: `${BRAND} for iPhone`, template: '%s | Ditch' },
+  title: { default: `${BRAND} for iPhone`, template: '%s | ditchsubs' },
   description: 'See everything you pay for and get a reminder 3 days and 1 day before each charge. Free forever for tracking. No bank login, no account.',
   applicationName: 'Ditch',
   authors: [{ name: COMPANY }],
-  openGraph: { siteName: 'Ditch', type: 'website', locale: 'en_US' },
-  twitter: { card: 'summary_large_image' },
-  alternates: { canonical: '/' },
+  openGraph: { siteName: 'Ditch: Subscription Tracker', type: 'website', locale: 'en_US', images: [{ url: '/og/home.png', width: 1200, height: 630, alt: 'Ditch: Subscription Tracker. Ditch it before it renews.' }] },
+  twitter: { card: 'summary_large_image', images: ['/og/home.png'] },
 };
 
 export const viewport: Viewport = { themeColor: '#FFCC2E', colorScheme: 'light' };

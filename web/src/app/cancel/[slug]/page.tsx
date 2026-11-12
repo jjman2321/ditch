@@ -6,7 +6,7 @@ import { EmailBox } from '@/components/EmailBox';
 import { Logo } from '@/components/Logo';
 import { Notif } from '@/components/Notif';
 import { PriceTable } from '@/components/PriceTable';
-import { APPLE_SOURCE, APPLE_STEPS, defaultPlan, formatDate, freshness, guideById, host, priceFor, publicNotes, publishedGuides, serviceById } from '@/lib/data';
+import { APPLE_SOURCE, APPLE_STEPS, defaultPlan, formatDate, freshness, guideById, host, neighbours, priceFor, priceHubServices, pubDates, publicNotes, publishedGuides, serviceById } from '@/lib/data';
 import { formatMoney } from '@/lib/money';
 import { AUTHOR, COMPANY, SITE, SUPPORT_EMAIL } from '@/lib/site';
 
@@ -31,9 +31,12 @@ function shortUrl(url: string) {
   return `${u.hostname.replace(/^www\./, '')}${path.length > 28 ? '/…' : path}`;
 }
 
-function answer(steps: string[], apple: boolean) {
-  const first = steps.map((s, i) => (i ? s.replace(/^[A-Z](?=[a-z])/, (c) => c.toLowerCase()) : s).replace(/\.$/, '')).join(', then ');
-  return `${first}.${apple ? ' Billed by Apple? Cancel in iPhone Settings instead.' : ''}`;
+function answer(steps: string[], apple: boolean, name?: string, checked?: string, src?: string) {
+  const first = steps.map((s, i) => (i ? s.replace(/^[A-Z](?=[a-z])/, (c) => c.toLowerCase()) : s.replace(/^[A-Z](?=[a-z])/, (c) => c.toLowerCase())).replace(/\.$/, '')).join(', then ');
+  const lead = name ? `To cancel ${name}, ${first}.` : `${first.replace(/^./, (c) => c.toUpperCase())}.`;
+  const appleLine = apple ? ' If your statement shows APPLE.COM/BILL, Apple bills you: cancel in iPhone Settings → your name → Subscriptions instead.' : '';
+  const dated = checked && src ? ` Checked ${formatDate(checked)} on ${src}.` : '';
+  return `${lead}${appleLine}${dated}`;
 }
 
 export async function generateMetadata({ params }: PageProps<'/cancel/[slug]'>): Promise<Metadata> {
@@ -42,10 +45,11 @@ export async function generateMetadata({ params }: PageProps<'/cancel/[slug]'>):
   if (!g) return {};
   const desc = `${answer(g.steps, g.appleNote)} Checked ${formatDate(g.checkedOn)} on ${host(g.source)}.`;
   return {
-    title: `How to cancel ${g.name} (${g.checkedOn.slice(0, 4)}): on iPhone and the web`,
+    title: `How to cancel ${g.name} in ${g.checkedOn.slice(0, 4)}: official steps`,
     description: desc.length > 158 ? `${desc.slice(0, 155).replace(/\s+\S*$/, '')}…` : desc,
     alternates: { canonical: `/cancel/${g.id}` },
-    openGraph: { title: `How to cancel ${g.name}`, url: `/cancel/${g.id}`, type: 'article' },
+    openGraph: { title: `How to cancel ${g.name}`, url: `/cancel/${g.id}`, type: 'article', siteName: 'Ditch: Subscription Tracker', locale: 'en_US', images: [{ url: '/og/cancel.png', width: 1200, height: 630, alt: 'How to cancel any subscription' }] },
+    twitter: { card: 'summary_large_image', images: ['/og/cancel.png'] },
     robots: freshness(g.checkedOn) === 'expired' ? { index: false } : undefined,
   };
 }
@@ -61,12 +65,12 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
   const fresh = freshness(g.checkedOn);
   const us = priceFor(g.id, 'US');
   const usPlan = us ? defaultPlan(us) : null;
-  const related = publishedGuides()
-    .filter((x) => x.id !== g.id && serviceById(x.id)?.category === s?.category)
-    .slice(0, 4);
+  const sameCat = publishedGuides().filter((x) => serviceById(x.id)?.category === s?.category);
+  const related = neighbours(sameCat, g.id, 4);
   const more = related.length < 4 ? publishedGuides().filter((x) => x.id !== g.id && !related.includes(x)).slice(0, 4 - related.length) : [];
   const appleOnly = g.url?.startsWith('https://apps.apple.com');
-  const ans = answer(g.steps, g.appleNote && !appleOnly);
+  const hasHub = priceHubServices().some((x) => x.id === g.id);
+  const ans = answer(g.steps, g.appleNote && !appleOnly, g.name, g.checkedOn, host(g.source));
   const year = g.checkedOn.slice(0, 4);
 
   const toc = [
@@ -82,8 +86,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
       '@type': 'Article',
       headline: `How to cancel ${g.name}`,
       description: ans,
-      datePublished: '2026-11-12',
-      dateModified: g.checkedOn,
+      ...pubDates(g.checkedOn),
       author: { '@type': 'Person', name: AUTHOR.name, url: `${SITE}${AUTHOR.url}` },
       publisher: { '@type': 'Organization', name: COMPANY, url: SITE },
       mainEntityOfPage: `${SITE}/cancel/${g.id}`,
@@ -189,7 +192,9 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
               <p>
                 {g.appleNote
                   ? `If you signed up in the ${g.name} iPhone app, Apple bills you, and ${g.name} can’t cancel it for you. Cancel on your iPhone:`
-                  : `${g.name} doesn’t mention Apple billing, but if you see APPLE.COM/BILL on your statement, cancel on your iPhone:`}
+                  : notes.some((n) => /apple/i.test(n))
+                    ? `Signed up through Apple? Cancel on your iPhone:`
+                    : `${g.name} doesn’t mention Apple billing, but if you see APPLE.COM/BILL on your statement, cancel on your iPhone:`}
               </p>
               <ol className="olist" style={{ marginTop: 14 }}>
                 {APPLE_STEPS.map((st) => (
@@ -224,9 +229,11 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
             <>
               <H2 id="price">What {g.name} costs</H2>
               <PriceTable serviceId={g.id} countries={['US']} caption={`${g.name} prices in the US`} />
-              <p className="meta" style={{ marginTop: 10 }}>
-                <Link href={`/prices/${g.id}`}>{g.name} prices in every country we check →</Link>
-              </p>
+              {hasHub ? (
+                <p className="meta" style={{ marginTop: 10 }}>
+                  <Link href={`/prices/${g.id}`}>{g.name} prices in every country we check →</Link>
+                </p>
+              ) : null}
             </>
           ) : null}
 
@@ -246,7 +253,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
             {[...related, ...more].map((r) => (
               <Link key={r.id} href={`/cancel/${r.id}`}>
                 <Logo id={r.id} size={36} />
-                {r.name}
+                Cancel {r.name}
               </Link>
             ))}
           </div>

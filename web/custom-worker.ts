@@ -29,6 +29,9 @@ function knownPaths(origin: string, env: unknown, ctx: unknown) {
 
 const clean = (p: string) => p.replace(/\/+$/, "") || "/";
 
+/** Real pages that are deliberately not in the sitemap (noindex), so they must not get a 404. */
+const ALLOW = new Set(["/waitlist"]);
+
 /** Only page addresses are checked. Files, Next internals and API routes pass straight through. */
 const isPage = (p: string) => !p.includes(".") && !/^\/(_next|api|cdn-cgi|_vercel)(\/|$)/.test(p);
 
@@ -58,7 +61,7 @@ async function route(req: Request, url: URL, env: unknown, ctx: unknown): Promis
   const path = clean(url.pathname);
   if ((req.method === "GET" || req.method === "HEAD") && isPage(path)) {
     const set = await knownPaths(url.origin, env, ctx);
-    if (set && !set.has(path)) {
+    if (set && !set.has(path) && !ALLOW.has(path)) {
       const res = await app.fetch(req, env, ctx);
       const headers = new Headers(res.headers);
       headers.set("cache-control", "public, max-age=0, must-revalidate");

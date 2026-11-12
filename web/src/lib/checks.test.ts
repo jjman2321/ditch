@@ -51,6 +51,7 @@ describe('publishing gates', () => {
       }
   });
   it('notes shown on pages never mention how we fetched things', () => {
-    for (const g of publishedGuides()) for (const n of publicNotes(g.note)) expect(n).not.toMatch(/automated|cancel\.ts|snippet/i);
+    for (const g of publishedGuides()) for (const n of publicNotes(g.note)) expect(n).not.toMatch(/automat|cancel\.ts|snippet/i);
+    for (const s of priceHubServices()) for (const r of verifiedPrices(s.id)) for (const n of publicNotes(r.note)) expect(n).not.toMatch(/automat|snippet/i);
   });
 });

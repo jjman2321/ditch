@@ -141,7 +141,7 @@ export function host(url: string): string {
 }
 
 /** Guide notes mix tips for people with notes about how we checked. Only the tips go on the page. */
-const INTERNAL = /automated fetch|cancel\.ts|returned empty|rendered empty|returned 503|no official page we could read|^Official link is|^URL is the one|search snippets/i;
+const INTERNAL = /automated fetch|cancel\.ts|returned empty|rendered empty|returned 503|no official page we could read|^Official link is|^URL is the one|search snippets|blocks? automated reads/i;
 export function publicNotes(note?: string): string[] {
   if (!note) return [];
   return note
@@ -161,3 +161,30 @@ export function publicNotes(note?: string): string[] {
 /** Apple's own steps for subscriptions billed through the App Store (support.apple.com/118428). */
 export const APPLE_STEPS = ['Open Settings on your iPhone', 'Tap your name, then Subscriptions', 'Tap the subscription, then Cancel Subscription'];
 export const APPLE_SOURCE = 'https://support.apple.com/en-us/118428';
+
+/** The site went live with these pages on this day. dateModified is never earlier than this. */
+export const FIRST_PUBLISHED = '2026-11-12';
+export const pubDates = (checked: string) => ({ datePublished: checked < FIRST_PUBLISHED ? checked : FIRST_PUBLISHED, dateModified: checked });
+
+/** "Nov 9, 2026" or "Nov 9–12, 2026" when rows were checked on different days. */
+export function dateRange(dates: string[]): string {
+  const d = [...new Set(dates)].sort();
+  if (d.length <= 1) return formatDate(d[0]);
+  const a = formatDate(d[0]);
+  const b = formatDate(d[d.length - 1]);
+  if (a.slice(0, 3) === b.slice(0, 3) && a.slice(-4) === b.slice(-4)) return `${a.replace(/, \d{4}$/, '')}–${b.split(' ')[1]} ${b.slice(-4)}`;
+  return `${a} – ${b}`;
+}
+
+/** Neighbours in the same category (2 before, 2 after, wrapping), so every page gets links, not only the top ones. */
+export function neighbours<T extends { id: string }>(list: T[], id: string, n = 4): T[] {
+  const i = list.findIndex((x) => x.id === id);
+  if (i < 0 || list.length <= 1) return [];
+  const out: T[] = [];
+  for (const off of [-2, -1, 1, 2, -3, 3, -4, 4]) {
+    const x = list[(i + off + list.length * 4) % list.length];
+    if (x.id !== id && !out.includes(x)) out.push(x);
+    if (out.length >= Math.min(n, list.length - 1)) break;
+  }
+  return out;
+}

@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { EmailBox } from '@/components/EmailBox';
 import { Logo } from '@/components/Logo';
 import { PriceTable } from '@/components/PriceTable';
-import { COUNTRY, defaultPlan, formatDate, guideById, priceHubServices, publicNotes, serviceById, verifiedPrices, type PriceRow } from '@/lib/data';
+import { COUNTRY, dateRange, defaultPlan, formatDate, guideById, neighbours, priceHubServices, pubDates, publicNotes, serviceById, verifiedPrices, type PriceRow } from '@/lib/data';
 import { formatMoney, monthlyMinor } from '@/lib/money';
 import { AUTHOR, COMPANY, SITE, SUPPORT_EMAIL } from '@/lib/site';
 
@@ -44,10 +44,11 @@ export async function generateMetadata({ params }: PageProps<'/prices/[slug]'>):
   if (!s || rows.length < 6) return {};
   const latest = rows.map((r) => r.checked).sort().pop()!;
   return {
-    title: `${s.name} price ${latest.slice(0, 4)}: every plan in ${rows.length} countries`,
-    description: `${summary(s.name, rows)} Every plan in ${rows.length} countries, checked ${formatDate(latest)}.`,
+    title: `${s.name} price ${latest.slice(0, 4)} in ${rows.length} countries`,
+    description: `${summary(s.name, rows)} Main plans in ${rows.length} countries, checked ${dateRange(rows.map((r) => r.checked))}.`,
     alternates: { canonical: `/prices/${s.id}` },
-    openGraph: { title: `${s.name} prices in ${rows.length} countries`, url: `/prices/${s.id}`, type: 'article' },
+    openGraph: { title: `${s.name} prices in ${rows.length} countries`, url: `/prices/${s.id}`, type: 'article', siteName: 'Ditch: Subscription Tracker', locale: 'en_US', images: [{ url: '/og/prices.png', width: 1200, height: 630, alt: 'Subscription prices in 17 countries' }] },
+    twitter: { card: 'summary_large_image', images: ['/og/prices.png'] },
   };
 }
 
@@ -59,10 +60,9 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
   const latest = rows.map((r) => r.checked).sort().pop()!;
   const guide = guideById(s.id);
   const notes = rows.flatMap((r) => publicNotes(r.note).map((n) => ({ c: COUNTRY[r.country].name, n })));
-  const ans = `${summary(s.name, rows)} US and Canada prices are before sales tax; each country’s tax note is in the table.`;
-  const others = priceHubServices()
-    .filter((x) => x.id !== s.id && x.category === s.category)
-    .slice(0, 4);
+  const taxNote = rows.some((r) => ['US', 'CA'].includes(r.country)) ? ` ${rows.some((r) => r.country === 'CA') ? 'US and Canada prices are' : 'US prices are'} before sales tax.` : '';
+  const ans = `${summary(s.name, rows)}${taxNote} Checked ${dateRange(rows.map((r) => r.checked))} on ${s.name}’s own pages.`;
+  const others = neighbours(priceHubServices().filter((x) => x.category === s.category), s.id, 4);
 
   const ld = [
     {
@@ -70,8 +70,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
       '@type': 'Article',
       headline: `${s.name} prices in ${rows.length} countries`,
       description: ans,
-      datePublished: '2026-11-12',
-      dateModified: latest,
+      ...pubDates(latest),
       author: { '@type': 'Person', name: AUTHOR.name, url: `${SITE}${AUTHOR.url}` },
       publisher: { '@type': 'Organization', name: COMPANY, url: SITE },
       mainEntityOfPage: `${SITE}/prices/${s.id}`,
@@ -109,7 +108,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
           </h1>
           <div className="metarow">
             <span className="pill ok">
-              Prices checked <time dateTime={latest}>{formatDate(latest)}</time>
+              Prices checked <time dateTime={latest}>{dateRange(rows.map((r) => r.checked))}</time>
             </span>
             <span>
               on {s.name}’s own pages · By <Link href={AUTHOR.url}>{AUTHOR.name}</Link>
@@ -128,9 +127,9 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
             ))}
           </nav>
           <h2 id="all" style={{ marginTop: 20 }}>
-            Every plan, every country
+            {s.name} price by country
           </h2>
-          <PriceTable serviceId={s.id} caption={`${s.name} prices by country. Each country links to the page we checked.`} />
+          <PriceTable serviceId={s.id} caption={`${s.name}’s main plans by country. Each country links to the page we checked.`} />
           <p className="meta" style={{ marginTop: 12 }}>
             A year = the monthly price × 12. Prices are in each country’s own money, and we never add different currencies together. <Link href="/how-we-check">How we check prices</Link>.
           </p>
@@ -212,7 +211,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
         <aside>
           <nav className="side-toc" aria-label="On this page">
             <p className="ttl">On this page</p>
-            <a href="#all">Every plan, every country</a>
+            <a href="#all">Price by country</a>
             <a href="#cheapest">Cheapest plan per country</a>
             {notes.length ? <a href="#notes">Good to know</a> : null}
             {guide ? <a href="#cancel">How to cancel</a> : null}

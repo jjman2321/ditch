@@ -27,6 +27,7 @@ const FAQ = [
 ];
 
 export const metadata = {
+  alternates: { canonical: '/' },
   title: { absolute: 'Ditch: Subscription Tracker for iPhone | Ditch it before it renews' },
   description: 'Every subscription in one list. A reminder 3 days before each charge. No bank login, no account. Free forever for tracking.',
 };
@@ -49,18 +50,29 @@ export default function Home() {
   const nf = priceFor('netflix', 'US')!;
   const nfPlan = defaultPlan(nf);
 
+  const org = { '@id': `${SITE}/#org` };
   const ld = [
-    { '@context': 'https://schema.org', '@type': 'Organization', name: 'Ditch', legalName: COMPANY, url: SITE, logo: `${SITE}/icon.png`, email: 'support@ditchsubs.app' },
-    { '@context': 'https://schema.org', '@type': 'WebSite', name: BRAND, url: SITE, publisher: { '@type': 'Organization', name: COMPANY } },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      '@id': `${SITE}/#org`,
+      name: COMPANY,
+      url: SITE,
+      logo: `${SITE}/icon.png`,
+      email: 'support@ditchsubs.app',
+      brand: { '@type': 'Brand', name: BRAND, alternateName: 'ditchsubs' },
+    },
+    { '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${SITE}/#site`, name: BRAND, alternateName: ['ditchsubs', 'Ditch Subscription Tracker'], url: SITE, publisher: org },
     {
       '@context': 'https://schema.org',
       '@type': 'MobileApplication',
       name: BRAND,
+      alternateName: 'ditchsubs',
       operatingSystem: 'iOS',
       applicationCategory: 'FinanceApplication',
-      description: 'See everything you pay for and get a reminder 3 days and 1 day before each charge. Free forever for tracking. No bank login, no account.',
+      description: 'An iPhone app that lists everything you pay for and reminds you 3 days and 1 day before each charge. Free forever for tracking. No bank login, no account.',
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-      publisher: { '@type': 'Organization', name: COMPANY },
+      publisher: org,
     },
   ];
 

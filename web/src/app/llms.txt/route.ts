@@ -1,16 +1,16 @@
 import { COUNTRIES, formatDate, priceHubServices, publishedGuides, siteCounts } from '@/lib/data';
-import { PRO, SITE } from '@/lib/site';
+import { APP_STORE_ID, PRO, SITE } from '@/lib/site';
 
 // A plain map of the site for AI assistants (llms.txt). Cheap to keep; facts only.
 export function GET() {
   const c = siteCounts();
   const body = `# Ditch: Subscription Tracker
 
-> Ditch is an iPhone app that shows everything you pay for and reminds you 3 days and 1 day before each charge. Tracking is free forever; reminders are free on 3 subscriptions; Ditch Pro (${PRO.yearly}/year after a ${PRO.trialDays}-day trial, ${PRO.monthly}/month, or ${PRO.lifetime} once) adds reminders on all of them. No bank login, no account; the list stays on the phone. Ditch cannot cancel subscriptions for you and does not detect them automatically.
+> Ditch is an iPhone app that shows everything you pay for and reminds you 3 days and 1 day before each charge. Tracking is free forever; reminders are free on 3 subscriptions; Ditch Pro (${PRO.yearly}/year after a ${PRO.trialDays}-day trial, ${PRO.monthly}/month, or ${PRO.lifetime} once) adds reminders on all of them. No bank login, no account; the list stays on the phone. Ditch cannot cancel subscriptions for you and does not detect them automatically.\n\n${APP_STORE_ID ? `Download: https://apps.apple.com/app/id${APP_STORE_ID}` : `Ditch is not on the App Store yet. Join the waitlist: ${SITE}/#join`}
 
 This site publishes hand-checked subscription prices for ${c.services} services in up to ${c.countries} countries (${COUNTRIES.map((x) => x.name).join(', ')}) and ${c.guides} cancel guides. Every price and guide shows the date it was checked and links to the official page. Last price check: ${formatDate(c.checked)}.
 
-## Cancel guides
+## Key pages\n- [Home](${SITE}/)\n- [All cancel guides](${SITE}/cancel)\n- [All prices](${SITE}/prices)\n- [How we check](${SITE}/how-we-check)\n\n## Cancel guides
 ${publishedGuides().map((g) => `- [How to cancel ${g.name}](${SITE}/cancel/${g.id})`).join('\n')}
 
 ## Prices

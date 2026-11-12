@@ -7,8 +7,11 @@ export function Logo({ id, size = 40, className = '' }: { id: string; size?: num
   if (hasLogo(id)) {
     return <img className={`logo ${className}`} src={`/logos/${id}.png`} alt="" width={size} height={size} loading="lazy" decoding="async" style={{ width: size, height: size }} />;
   }
+  const bg = s?.color ?? '#6B6559';
+  const [r, g, b] = [1, 3, 5].map((i) => parseInt(bg.slice(i, i + 2), 16) / 255).map((c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+  const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
   return (
-    <span className={`mono ${className}`} aria-hidden style={{ width: size, height: size, background: s?.color ?? '#6B6559', fontSize: Math.round(size * 0.34) }}>
+    <span className={`mono ${className}`} aria-hidden style={{ width: size, height: size, background: bg, color: lum > 0.35 ? '#16140F' : '#fff', fontSize: Math.round(size * 0.34) }}>
       {s?.mono ?? s?.name.slice(0, 1) ?? '?'}
     </span>
   );

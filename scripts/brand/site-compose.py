@@ -7,8 +7,8 @@ from PIL import Image, ImageDraw, ImageFilter
 
 ROOT = Path(__file__).resolve().parents[2]
 ART = ROOT / 'design/site/v3/art'
-APP = ROOT / 'web/public/app'
-OUT = ROOT / 'web/public/art'
+APP = ROOT / 'design/site/v3/public-assets/app'
+OUT = ROOT / 'design/site/v3/public-assets/art'
 OUT.mkdir(parents=True, exist_ok=True)
 
 

@@ -2,7 +2,7 @@
 from pathlib import Path
 
 D = Path(__file__).parent
-P = '../../../web/public'
+P = 'public-assets'
 L = '../../../assets/logos'
 
 NAV = f'''<div class="wrap nav"><a class="wm" href="#">ditch</a><div class="links"><a href="#">Cancel guides</a><a href="#">Prices</a><a href="#">Pricing</a><a href="#">Support</a></div><div class="sp"></div>

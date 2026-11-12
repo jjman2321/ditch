@@ -69,7 +69,7 @@ export function ServiceIndex({ items, base, noun }: { items: IndexItem[]; base: 
         </div>
       ) : (
         <div className="empty">
-          <img src="/duck.png" alt="" width={140} />
+          <img src="/duck.webp" alt="" width={140} height={82} loading="lazy" />
           <p>
             Nothing for <b>“{q}”</b> yet.
           </p>

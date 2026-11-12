@@ -3,7 +3,7 @@
 export function Notif({ text, when = 'now', className = '', style }: { text: string; when?: string; className?: string; style?: React.CSSProperties }) {
   return (
     <div className={`notif ${className}`} style={style} role="img" aria-label={`Ditch reminder: ${text}`}>
-      <img src="/app-icon.png" alt="" width={40} height={40} />
+      <img src="/app-icon.webp" alt="" width={40} height={40} />
       <div>
         <b>
           Ditch <span>{when}</span>

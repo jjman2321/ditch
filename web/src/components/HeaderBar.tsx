@@ -2,12 +2,37 @@
 
 /* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { NAV } from '@/lib/site';
 
 export type SearchItem = { id: string; name: string; aliases: string[]; guide: boolean; prices: boolean; rank: number };
+
+/** Keeps Tab inside a dialog, locks page scroll, and returns focus to whatever opened it. */
+function useDialog(ref: React.RefObject<HTMLElement | null>, onClose: () => void) {
+  useEffect(() => {
+    const opener = document.activeElement as HTMLElement | null;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const key = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') return onClose();
+      if (e.key !== 'Tab' || !ref.current) return;
+      const f = Array.from(ref.current.querySelectorAll<HTMLElement>('a[href], button, input, [tabindex="0"]')).filter((x) => !x.hasAttribute('disabled'));
+      if (!f.length) return;
+      const first = f[0];
+      const last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    };
+    window.addEventListener('keydown', key);
+    return () => {
+      window.removeEventListener('keydown', key);
+      document.body.style.overflow = prev;
+      opener?.focus?.();
+    };
+  }, [ref, onClose]);
+}
 
 const norm = (s: string) => s.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]/g, '');
 
@@ -46,7 +71,7 @@ export function HeaderBar({ items }: { items: SearchItem[] }) {
   return (
     <header className={`hdr${onSun && !scrolled ? ' on-sun' : ''}${scrolled ? ' scrolled' : ''}`}>
       <div className="wrap bar">
-        <Link className="wordmark" href="/" aria-label="Ditch, home">
+        <Link className="wordmark" href="/" aria-label="Ditch, home" prefetch={false}>
           ditch
         </Link>
         <nav className="links" aria-label="Main">
@@ -63,10 +88,11 @@ export function HeaderBar({ items }: { items: SearchItem[] }) {
             <path d="M13 13l5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
           </svg>
         </button>
-        <Link className="btn sm" href="/#join">
-          Join the waitlist
+        <Link className="btn sm" href="/#join" prefetch={false}>
+          <span className="hide-xs">Join the waitlist</span>
+          <span className="show-xs">Join</span>
         </Link>
-        <button className="iconbtn menu-btn" type="button" aria-label="Menu" aria-expanded={menu} onClick={() => setMenu(true)}>
+        <button className="iconbtn menu-btn" type="button" aria-label="Menu" aria-expanded={menu} aria-controls="menu-sheet" onClick={() => setMenu(true)}>
           <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden>
             <path d="M3 6h14M3 14h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
           </svg>
@@ -79,14 +105,11 @@ export function HeaderBar({ items }: { items: SearchItem[] }) {
 }
 
 function MenuSheet({ onClose }: { onClose: () => void }) {
-  useEffect(() => {
-    const esc = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
-    window.addEventListener('keydown', esc);
-    return () => window.removeEventListener('keydown', esc);
-  }, [onClose]);
+  const box = useRef<HTMLDivElement>(null);
+  useDialog(box, onClose);
   return (
-    <div className="sheet" role="dialog" aria-modal="true" aria-label="Menu" onClick={onClose}>
-      <div className="in" onClick={(e) => e.stopPropagation()}>
+    <div className="sheet" id="menu-sheet" role="dialog" aria-modal="true" aria-label="Menu" onClick={onClose}>
+      <div className="in" ref={box} onClick={(e) => e.stopPropagation()}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 56 }}>
           <span className="wordmark">ditch</span>
           <button className="iconbtn" type="button" aria-label="Close menu" onClick={onClose} autoFocus>
@@ -102,7 +125,7 @@ function MenuSheet({ onClose }: { onClose: () => void }) {
             </Link>
           ))}
         </nav>
-        <Link className="btn block" href="/#join" onClick={onClose} style={{ marginTop: 20 }}>
+        <Link className="btn block" href="/#join" prefetch={false} onClick={onClose} style={{ marginTop: 20 }}>
           Join the waitlist
         </Link>
       </div>
@@ -114,6 +137,9 @@ function SearchDialog({ items, onClose }: { items: SearchItem[]; onClose: () => 
   const [q, setQ] = useState('');
   const [sel, setSel] = useState(0);
   const input = useRef<HTMLInputElement>(null);
+  const box = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  useDialog(box, onClose);
   const results = useMemo(() => {
     const n = norm(q);
     const list = n ? items.filter((i) => [i.name, ...i.aliases].some((a) => norm(a).includes(n))) : items.slice(0, 8);
@@ -125,14 +151,14 @@ function SearchDialog({ items, onClose }: { items: SearchItem[]; onClose: () => 
 
   useEffect(() => {
     input.current?.focus();
-    const esc = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
-    window.addEventListener('keydown', esc);
-    return () => window.removeEventListener('keydown', esc);
-  }, [onClose]);
+  }, []);
+  useEffect(() => {
+    if (results[sel]) document.getElementById(`sr-${results[sel].key}`)?.scrollIntoView({ block: 'nearest' });
+  }, [sel, results]);
 
   return (
     <div className="search-dlg" role="dialog" aria-modal="true" aria-label="Search" onClick={onClose}>
-      <div className="box" onClick={(e) => e.stopPropagation()}>
+      <div className="box" ref={box} onClick={(e) => e.stopPropagation()}>
         <div className="search-in">
           <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden>
             <circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" strokeWidth="2" />
@@ -148,7 +174,10 @@ function SearchDialog({ items, onClose }: { items: SearchItem[]; onClose: () => 
             onKeyDown={(e) => {
               if (e.key === 'ArrowDown') { e.preventDefault(); setSel((s) => Math.min(s + 1, results.length - 1)); }
               if (e.key === 'ArrowUp') { e.preventDefault(); setSel((s) => Math.max(s - 1, 0)); }
-              if (e.key === 'Enter' && results[sel]) window.location.href = results[sel].href;
+              if (e.key === 'Enter' && results[sel]) {
+                onClose();
+                router.push(results[sel].href);
+              }
             }}
             placeholder="Netflix, Spotify, ChatGPT…"
             aria-label="Search guides and prices"
@@ -165,10 +194,10 @@ function SearchDialog({ items, onClose }: { items: SearchItem[]; onClose: () => 
         </div>
         <p className="sr" aria-live="polite">{results.length} results</p>
         {results.length ? (
-          <ul className="search-res" id="search-results" role="listbox">
+          <ul className="search-res" id="search-results" role="listbox" aria-label="Results">
             {results.map((r, i) => (
-              <li key={r.key} role="option" id={`sr-${r.key}`} aria-selected={i === sel}>
-                <Link href={r.href} aria-selected={i === sel} onClick={onClose}>
+              <li key={r.key} role="option" id={`sr-${r.key}`} aria-selected={i === sel} className={i === sel ? 'sel' : undefined}>
+                <Link href={r.href} tabIndex={-1} onClick={onClose}>
                   <img className="logo" src={`/logos/${r.id}.png`} alt="" width={32} height={32} onError={(e) => ((e.target as HTMLImageElement).style.visibility = 'hidden')} />
                   {r.label}
                   <small>{r.kind}</small>
@@ -178,7 +207,7 @@ function SearchDialog({ items, onClose }: { items: SearchItem[]; onClose: () => 
           </ul>
         ) : (
           <div className="empty">
-            <img src="/duck.png" alt="" width={140} />
+            <img src="/duck.webp" alt="" width={140} height={82} loading="lazy" />
             <p>
               No guide for <b>“{q}”</b> yet.
             </p>

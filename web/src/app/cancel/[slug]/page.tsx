@@ -110,7 +110,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
     <div className="wrap">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
       <nav className="crumbs" aria-label="Breadcrumb">
-        <Link href="/">Home</Link>
+        <Link href="/" prefetch={false}>Home</Link>
         <span aria-hidden>›</span>
         <Link href="/cancel">Cancel guides</Link>
         <span aria-hidden>›</span>
@@ -281,7 +281,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
           <div className="side-card">
             <p className="h3">Get a reminder first</p>
             <p>3 days and 1 day before each charge. Free on 3 subscriptions.</p>
-            <Link className="btn block sm" href="/#join">
+            <Link className="btn block sm" href="/#join" prefetch={false}>
               Join the waitlist
             </Link>
           </div>

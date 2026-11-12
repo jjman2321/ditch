@@ -20,6 +20,7 @@ export async function POST(req: Request) {
   // Until the database is set up (see web/README.md), say so instead of pretending it saved.
   if (!DB) return Response.json({ ok: false, error: 'not-configured' }, { status: 503 });
 
+  try {
   const token = crypto.randomUUID();
   await DB.prepare(
     'INSERT INTO waitlist (email, source, report, token) VALUES (?, ?, ?, ?) ON CONFLICT(email) DO UPDATE SET report = MAX(report, excluded.report)',
@@ -28,9 +29,11 @@ export async function POST(req: Request) {
     .run();
   const row = await DB.prepare('SELECT token, confirmed_at FROM waitlist WHERE email = ?').bind(email).first<{ token: string; confirmed_at: string | null }>();
 
-  if (RESEND_API_KEY && row && !row.confirmed_at) {
+  if (row?.confirmed_at) return Response.json({ ok: true, confirmed: true, sent: false });
+  let sent = false;
+  if (RESEND_API_KEY && row) {
     const link = `${SITE}/api/confirm?t=${row.token}`;
-    await fetch('https://api.resend.com/emails', {
+    const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { authorization: `Bearer ${RESEND_API_KEY}`, 'content-type': 'application/json' },
       body: JSON.stringify({
@@ -40,6 +43,11 @@ export async function POST(req: Request) {
         text: `Tap to confirm: ${link}\n\nOne email when Ditch is on the App Store${report ? ', plus the monthly Price Hike Report' : ''}. Unsubscribe anytime.\n\nDidn't sign up? Ignore this and nothing happens.\n\nDitch · Grasp Labs LLC`,
       }),
     }).catch(() => null);
+    sent = Boolean(r?.ok);
   }
-  return Response.json({ ok: true, confirmed: Boolean(row?.confirmed_at) });
+  return Response.json({ ok: true, confirmed: false, sent });
+  } catch {
+    // Database not ready (e.g. migration not applied): say so instead of failing silently.
+    return Response.json({ ok: false, error: 'unavailable' }, { status: 503 });
+  }
 }

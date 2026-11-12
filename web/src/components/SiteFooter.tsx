@@ -31,8 +31,8 @@ export function SiteFooter() {
           </nav>
           <nav aria-label="Ditch">
             <p className="ttl">Ditch</p>
-            <Link href="/#pricing">Pricing</Link>
-            <Link href="/#join">Join the waitlist</Link>
+            <Link href="/#pricing" prefetch={false}>Pricing</Link>
+            <Link href="/#join" prefetch={false}>Join the waitlist</Link>
             <Link href="/support">Support</Link>
             <Link href="/how-we-check">How we check prices</Link>
             <Link href="/about">About</Link>

@@ -6,7 +6,7 @@ import { publishedGuides } from '@/lib/data';
 export default function NotFound() {
   return (
     <div className="wrap doc" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <img src="/duck.png" alt="" width={200} />
+      <img src="/duck.webp" alt="" width={200} height={117} loading="lazy" />
       <h1 style={{ marginTop: 8 }}>Nothing here. Not even a subscription.</h1>
       <p className="lead" style={{ marginTop: 16 }}>Try one of these instead.</p>
       <div className="chips" style={{ justifyContent: 'center' }}>

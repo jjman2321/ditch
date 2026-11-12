@@ -12,7 +12,7 @@ export function WaitlistStatus() {
     return (
       <>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/duck.png" alt="" width={200} style={{ margin: '0 auto 8px' }} />
+        <img src="/duck.webp" alt="" width={200} height={117} loading="lazy" style={{ margin: '0 auto 8px' }} />
         <h1>You’re on the list.</h1>
         <p className="lead" style={{ marginTop: 16, maxWidth: '34rem' }}>One email when Ditch is on the App Store. While you wait, see what your subscriptions cost.</p>
         <Link className="btn" href="/#calc-h" style={{ marginTop: 28 }}>

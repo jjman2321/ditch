@@ -101,10 +101,10 @@ export default function Home() {
             </p>
           </div>
           <div className="stage" aria-hidden>
-            <img className="float" src="/logos/netflix.png" alt="" style={{ left: '4%', top: 70, transform: 'rotate(-6deg)' }} />
-            <img className="float" src="/logos/spotify.png" alt="" style={{ right: '2%', top: 36, transform: 'rotate(6deg)' }} />
-            <img className="float" src="/logos/chatgpt-plus.png" alt="" style={{ left: '0%', top: 300, transform: 'rotate(4deg)' }} />
-            <img className="float" src="/logos/disney-plus.png" alt="" style={{ right: '0%', top: 268, transform: 'rotate(-5deg)' }} />
+            <img className="float" fetchPriority="low" src="/logos/netflix.png" alt="" style={{ left: '4%', top: 70, transform: 'rotate(-6deg)' }} />
+            <img className="float" fetchPriority="low" src="/logos/spotify.png" alt="" style={{ right: '2%', top: 36, transform: 'rotate(6deg)' }} />
+            <img className="float" fetchPriority="low" src="/logos/chatgpt-plus.png" alt="" style={{ left: '0%', top: 300, transform: 'rotate(4deg)' }} />
+            <img className="float" fetchPriority="low" src="/logos/disney-plus.png" alt="" style={{ right: '0%', top: 268, transform: 'rotate(-5deg)' }} />
             <div className="phone">
               <div className="scr">
                 <div className="sbar">
@@ -127,7 +127,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <img className="duck" src="/duck.png" alt="" />
+            <img className="duck" src="/duck.webp" alt="" width={200} height={117} fetchPriority="low" />
           </div>
         </div>
       </section>

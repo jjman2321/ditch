@@ -38,10 +38,8 @@ for (const s of services) {
   if (existsSync(src)) { copyFileSync(src, out(`public/logos/${s.id}.png`)); logos.push(s.id); }
 }
 // Fonts: small WOFF2 cuts live in src/fonts (made by scripts/fonts.py).
-copyFileSync(join(APP, 'assets/brand/duck.png'), out('public/duck.png'));
-copyFileSync(join(APP, 'assets/brand/app-icon.png'), out('public/app-icon.png'));
-copyFileSync(join(APP, 'assets/images/icon.png'), out('src/app/icon.png'));
-copyFileSync(join(APP, 'assets/images/icon.png'), out('src/app/apple-icon.png'));
+// duck.webp and app-icon.webp are small web copies made once from assets/brand.
+// Small icons (icon.png 192, apple-icon.png 180, favicon.ico) are made once from assets/images/icon.png.
 
 const w = (name, data) => writeFileSync(out(`src/data/${name}.json`), JSON.stringify(data, null, 1) + '\n');
 w('services', services);

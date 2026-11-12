@@ -6,7 +6,7 @@ Growth is organic only: SEO + ASO (DECISIONS #18). The site is a main growth cha
 - **Who's behind it:** "Aribo", no photo (the duck can be the avatar). Shown on About and as the author of guides.
 - **Domain:** registered at Spaceship, DNS on Cloudflare (same nameservers as the owner's other sites: normal and safe, each domain is its own zone).
 - **Stack:** code on Cloudflare Pages, like the owner's other sites.
-- **Languages at launch:** English + German, French, Spanish, Italian. Written by Claude in each language (not word-for-word), no paid native check.
+- **Languages:** English first (owner, Nov 12: "finish English version first then work on translations"). Then German, French, Spanish, Italian, written by Claude in each language (not word-for-word), no paid native check. Build the site so adding a language later is easy (locale folders, hreflang ready).
 - **Timing:** go live now, before the app: home with waitlist, Privacy, Terms, Support, plus the first cancel and price pages, so they start ageing in Google.
 - **Waitlist:** Resend audience (email only, no tracking). Launch email from support@ditchsubs.app.
 - **References the owner likes (not locked):** Givingli, Spellbook, Quartz, Remote, Miro.

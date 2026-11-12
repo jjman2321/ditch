@@ -6,7 +6,8 @@ Nov 12, 2026. From two research passes (design references on Mobbin and live sit
 Win Google and AI answers with **fewer, better pages built from data nobody else has**: hand-checked prices for 12 countries with an official source and a "checked on" date on every row, and cancel guides split by how you pay. Every page funnels to the App Store (or the waitlist before launch).
 
 ## Why we can win
-- The long tail ("cancel X", "X price UK") is flooded with AI-made template sites (subtracker.io, recurdash, resubs, subger, joingerald, *.pages.dev). Most show no source, mix currencies, or contradict their own dates. Google's spam policy calls this "scaled content abuse". We do the opposite.
+- The long tail ("cancel X", "X price UK") is flooded with AI-made template sites (subtracker.io, subger, joingerald, *.pages.dev). Most show no source, mix currencies, or contradict their own dates. Google's spam policy calls this "scaled content abuse". We do the opposite.
+- **The one strong rival is RecurDash** (US only, re-reads 47 vendor pages nightly, dated, methodology page). We beat it on 12 countries, how-you-pay-first guides, iPhone reminders and visible honesty. Full teardown: `research-competitors.md`.
 - Big publishers own "how to cancel Netflix" (Netflix help, Tom's Guide, TechRadar). We aim for the long tail, the countries they skip (**Ireland, New Zealand, Canada**), and AI citations: only ~38% of Google AI Overview citations come from the top 10 results (Ahrefs, Mar 2026), and AI tools prefer fresh, dated, sourced facts.
 - Our data is fresher: Netflix Italy's Nov 5 price rise is in our file; ranking Italian pages still show old prices.
 - App Store keywords can't use trademarks (Guideline 2.3.7), so "Netflix" can't go in our ASO keywords. The website is where we rank for service names.

@@ -506,3 +506,71 @@ img { display: block; max-width: 100%; }
 .art .meta a { display: inline-flex; align-items: center; min-height: 44px; }
 .crumbs a { min-width: 44px; justify-content: center; }
 @media print { .js [data-reveal] { opacity: 1 !important; transform: none !important; } }
+
+/* hero rotation (owner, Nov 12): each logo holds 1.6s, slides up in 0.4s; Reduce Motion stays on Netflix */
+.slot { display: inline-flex; vertical-align: bottom; height: 1em; overflow: hidden; position: relative; top: .06em; }
+.reel { display: flex; flex-direction: column; align-items: flex-start; }
+.chip { height: .96em; margin-bottom: .08em; display: inline-flex; align-items: center; gap: .14em; background: #fff; border-radius: .18em; padding: 0 .16em 0 .1em; box-shadow: 0 .05em 0 rgba(22, 20, 15, .18); white-space: nowrap; }
+.chip img { width: .72em; height: .72em; border-radius: .17em; }
+.chip::after { content: attr(data-n); }
+@media (prefers-reduced-motion: no-preference) { .reel { animation: reel 10s cubic-bezier(.65, 0, .35, 1) infinite; } }
+@keyframes reel { 0%, 16% { transform: translateY(0); } 20%, 36% { transform: translateY(-1.04em); } 40%, 56% { transform: translateY(-2.08em); } 60%, 76% { transform: translateY(-3.12em); } 80%, 96% { transform: translateY(-4.16em); } 100% { transform: translateY(-5.2em); } }
+
+/* iPhone hero: no phone inside the phone; the two reminders instead (research: 28/28 app sites keep the product on mobile) */
+.hero-notifs { display: none; }
+@media (max-width: 639px) {
+  .hero .stage { display: none; }
+  .hero-notifs { display: grid; gap: 8px; margin-top: 28px; }
+  .hero-notifs .notif { position: static; background: rgba(255, 255, 255, .92); box-shadow: 0 8px 20px -10px rgba(22, 20, 15, .35); }
+  .hero .copy { padding-bottom: 40px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js .hero-notifs .notif { opacity: 0; animation: fade .3s ease-out forwards; }
+  .js .hero-notifs .notif:nth-child(1) { animation-delay: .4s; }
+  .js .hero-notifs .notif:nth-child(2) { animation-delay: .85s; }
+}
+@keyframes fade { to { opacity: 1; } }
+
+/* the ditch demo: ring fills, stamp lands below the row, then the number fades in */
+.ditch-demo { background: var(--white); border: 1px solid var(--card-border); border-radius: var(--r-l); padding: 32px; display: grid; justify-items: center; text-align: center; gap: 20px; }
+.dd-row { width: 100%; display: flex; align-items: center; gap: 14px; text-align: left; padding: 14px 16px; border: 1px solid var(--hair); border-radius: var(--r-m); }
+.dd-name { flex: 1; min-width: 0; }
+.dd-name b { display: block; }
+.dd-name span { font-size: 14px; color: var(--mute); }
+.dd-price { font-weight: 700; }
+.dd-hold { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; }
+.dd-hold .track { fill: none; stroke: var(--hair); stroke-width: 4; }
+.dd-hold .ring { fill: none; stroke: var(--ink); stroke-width: 4; stroke-linecap: round; transform: rotate(-90deg); transform-origin: 22px 22px; stroke-dasharray: 120; stroke-dashoffset: 0; }
+.dd-stamp .stamp svg { width: min(300px, 70vw); }
+.dd-year { font-family: var(--f-display); font-size: clamp(2.25rem, 1.4rem + 2.4vw, 3.25rem); line-height: 1; letter-spacing: -.03em; }
+.dd-year span { display: block; font-family: var(--f-wide); font-size: .5em; letter-spacing: -.01em; margin-top: 6px; }
+.dd-cap { font-size: 14px; color: var(--mute); max-width: 32ch; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .ditch-demo[data-reveal] { opacity: 1 !important; transform: none !important; }
+  .js .ditch-demo .ring { stroke-dashoffset: 120; }
+  .js .ditch-demo .dd-stamp .stamp { opacity: 0; }
+  .js .ditch-demo .dd-year, .js .ditch-demo .dd-cap { opacity: 0; }
+  .js .ditch-demo.is-in .ring { transition: stroke-dashoffset .9s linear .2s; stroke-dashoffset: 0; }
+  .js .ditch-demo.is-in .dd-stamp .stamp { animation: stamp-land2 .18s cubic-bezier(.3, 1.4, .5, 1) 1.15s both; }
+  .js .ditch-demo.is-in .dd-year { transition: opacity .25s ease-out 1.45s; opacity: 1; }
+  .js .ditch-demo.is-in .dd-cap { transition: opacity .25s ease-out 1.6s; opacity: 1; }
+}
+@keyframes stamp-land2 { 0% { opacity: 0; transform: rotate(-10deg) scale(1.18); } 100% { opacity: 1; transform: rotate(-6deg) scale(1); } }
+
+/* calculator taps */
+@media (prefers-reduced-motion: no-preference) {
+  .tile:active { transform: scale(.96); transition: transform .1s ease-out; }
+  .tile[aria-pressed="true"]::after { animation: pop .16s cubic-bezier(.3, 1.4, .5, 1); }
+}
+@keyframes pop { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* reminders section: notifications fade in one after another (no movement next to prices) */
+@media (prefers-reduced-motion: no-preference) {
+  .js .big-notif[data-reveal] { opacity: 1 !important; transform: none !important; }
+  .js .big-notif > * { opacity: 0; }
+  .js .big-notif.is-in > * { animation: fade .3s ease-out forwards; }
+  .js .big-notif.is-in > :nth-child(2) { animation-delay: .45s; }
+  .js .big-notif.is-in > :nth-child(3) { animation-delay: .9s; }
+}
+
+.hero .d-h1 { font-size: clamp(2.875rem, 1.2rem + 4vw, 4.5rem); }

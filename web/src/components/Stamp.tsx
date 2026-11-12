@@ -27,14 +27,14 @@ function wobblyRect(x: number, y: number, w: number, h: number, r: number, amp: 
 
 const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
-export function Stamp({ date, paper = '#FBF7EE' }: { date: string; paper?: string }) {
+export function Stamp({ date, paper = '#FBF7EE', still = false }: { date: string; paper?: string; still?: boolean }) {
   const [y, m, d] = date.split('-').map(Number);
   const rand = rng(y * 400 + m * 31 + d);
   const W = 300;
   const H = 128;
   const specks = Array.from({ length: 90 }, () => ({ cx: 8 + rand() * (W - 16), cy: 6 + rand() * (H - 12), r: 0.5 + rand() * 1.3 }));
   return (
-    <div className="stamp" data-reveal role="img" aria-label={`Ditched stamp, ${MONTHS[m - 1]} ${d}, ${y}`}>
+    <div className="stamp" data-reveal={still ? undefined : true} role="img" aria-label={`Ditched stamp, ${MONTHS[m - 1]} ${d}, ${y}`}>
       <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H}>
         <path d={wobblyRect(5, 5, W - 10, H - 10, 12, 1.6, rand)} stroke="#16140F" strokeWidth={7} fill="none" strokeLinejoin="round" />
         <path d={wobblyRect(17, 17, W - 34, H - 34, 7, 1.1, rand)} stroke="#16140F" strokeWidth={3.2} fill="none" strokeLinejoin="round" />

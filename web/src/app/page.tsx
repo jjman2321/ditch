@@ -2,12 +2,23 @@
 import { Calculator, type CalcService } from '@/components/Calculator';
 import { EmailBox } from '@/components/EmailBox';
 import { Notif } from '@/components/Notif';
+import { DitchDemo } from '@/components/DitchDemo';
 import { Stamp } from '@/components/Stamp';
 import { COUNTRIES, defaultPlan, formatDate, hasLogo, priceFor, serviceById, verifiedPrices } from '@/lib/data';
 import { formatMoney } from '@/lib/money';
 import { BRAND, COMPANY, PRO, SITE } from '@/lib/site';
 
 const CALC_IDS = ['netflix', 'spotify', 'chatgpt-plus', 'amazon-prime', 'disney-plus', 'apple-music', 'youtube-premium', 'youtube-music', 'max', 'xbox-game-pass', 'claude-pro', 'microsoft-365', 'hulu', 'ps-plus', 'paramount-plus', 'peacock', 'google-one', 'audible'];
+
+/** Hero rotation: only real services we have checked prices for. Netflix twice so the loop joins up smoothly. */
+const HERO_ROTATION = [
+  { id: 'netflix', name: 'Netflix' },
+  { id: 'spotify', name: 'Spotify' },
+  { id: 'chatgpt-plus', name: 'ChatGPT' },
+  { id: 'disney-plus', name: 'Disney+' },
+  { id: 'amazon-prime', name: 'Prime' },
+  { id: 'netflix', name: 'Netflix' },
+];
 
 const FAQ = [
   { q: 'Is it really free?', a: 'Tracking is free forever: your full list, real totals and the calendar. Reminders are free on 3 subscriptions you pick. Pro adds reminders on all of them.' },
@@ -28,7 +39,7 @@ const FAQ = [
 export const metadata = {
   alternates: { canonical: '/' },
   title: { absolute: 'Ditch: Subscription Tracker for iPhone | Ditch it before it renews' },
-  description: 'Every subscription in one list. A reminder 3 days before each charge. No bank login, no account. Free forever for tracking.',
+  description: 'Ditch keeps every subscription in one list and reminds you 3 days before each charge. No bank login, no account. Free forever for tracking.',
 };
 
 export default function Home() {
@@ -83,22 +94,33 @@ export default function Home() {
       <section className="hero" aria-labelledby="hero-h">
         <div className="wrap grid">
           <div className="copy">
+            {/* Screen readers and Google read "Ditch it before it renews." (the App Store subtitle). The logos are visual only. */}
             <h1 id="hero-h" className="d-h1">
-              Ditch it before it{' '}
-              <span className="scribble">
-                renews.
-                <svg viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden>
-                  <path d="M4 15 C 52 7, 110 5, 168 9 S 262 17, 296 8" />
-                </svg>
+              Ditch{' '}
+              <span className="slot" aria-hidden="true">
+                <span className="reel">
+                  {HERO_ROTATION.map((r, i) => (
+                    <span className="chip" key={i} data-n={r.name}>
+                      <img src={`/logos/${r.id}.png`} alt="" width={64} height={64} />
+                    </span>
+                  ))}
+                </span>
               </span>
+              <span className="sr">it </span>
+              <br />
+              before it renews.
             </h1>
-            <p className="lead">Every subscription in one list. A reminder 3 days and 1 day before each charge. No bank login.</p>
+            <p className="lead">Ditch keeps every subscription in one list and reminds you 3 days before each charge. No bank login, no account.</p>
             <div id="join">
-              <EmailBox source="home-hero" bare />
+              <EmailBox source="home-hero" bare cta="Tell me when it’s out" />
             </div>
             <p className="hero-note">
               <b>Free forever for tracking.</b> Reminders on 3, or all of them with Pro. Coming to iPhone.
             </p>
+            <div className="hero-notifs" aria-hidden>
+              <Notif text={`Netflix renews in 3 days. ${formatMoney(nfPlan.amountMinor, 'USD')}. Still watching?`} />
+              <Notif when="Tue" text={`Spotify renews in 3 days. ${formatMoney(defaultPlan(priceFor('spotify', 'US')!).amountMinor, 'USD')}.`} />
+            </div>
           </div>
           <div className="stage" aria-hidden>
             <img className="float" fetchPriority="low" src="/logos/netflix.png" alt="" style={{ left: '4%', top: 70, transform: 'rotate(-6deg)' }} />
@@ -137,9 +159,9 @@ export default function Home() {
         <div className="wrap">
           <div className="sec-head">
             <h2 id="calc-h" className="h2">
-              What do you actually pay?
+              Tap what you pay for.
             </h2>
-            <p className="lead">Tap what you have. Real prices for your country, checked by hand.</p>
+            <p className="lead">See what it all costs in a year. Real prices for your country, checked by hand.</p>
           </div>
           <div className="sec-body">
             <Calculator services={calc} countries={calcCountries} />
@@ -186,14 +208,29 @@ export default function Home() {
             <div className="card step" data-reveal style={{ ['--i' as string]: 2 }}>
               <span className="n">3</span>
               <h3 className="h3">Ditch it</h3>
-              <p>Hold to ditch. Ditch opens the official place to cancel and walks you through it.</p>
+              <p>Hold to ditch. Ditch opens the official cancel page and walks you through it.</p>
               <div className="shot" style={{ alignItems: 'center', paddingBottom: 24 }}>
                 <div style={{ width: 220 }}>
-                  <Stamp date="2026-11-12" paper="#FFCC2E" />
+                  <Stamp date="2026-11-12" paper="#FFCC2E" still />
                 </div>
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* 3b. The ditch moment, with context */}
+      <section className="sec" style={{ paddingTop: 0 }} aria-labelledby="dd-h">
+        <div className="wrap split">
+          <div>
+            <h2 id="dd-h" className="h2">
+              Changed your mind? <span className="nw">Ditch it.</span>
+            </h2>
+            <p className="lead" style={{ marginTop: 20 }}>
+              Hold to ditch, cancel on the official page, and see what it’s worth in a year.
+            </p>
+          </div>
+          <DitchDemo name="Netflix" plan={nfPlan.name} price={`${formatMoney(nfPlan.amountMinor, 'USD')}/mo`} renews="Nov 18" yearly={formatMoney(nfPlan.amountMinor * 12, 'USD')} logo="/logos/netflix.png" />
         </div>
       </section>
 
@@ -219,7 +256,7 @@ export default function Home() {
               </li>
             </ul>
           </div>
-          <div className="big-notif" aria-hidden>
+          <div className="big-notif" aria-hidden data-reveal>
             <Notif text={`Netflix renews in 3 days. ${formatMoney(nfPlan.amountMinor, 'USD')}. Still watching?`} />
             <Notif text={`Your Disney+ trial ends tomorrow. Then ${formatMoney(defaultPlan(priceFor('disney-plus', 'US')!).amountMinor, 'USD')} a month.`} when="9:00" />
             <span className="next">Next reminder: Netflix · Fri 9:00</span>
@@ -232,10 +269,10 @@ export default function Home() {
         <div className="wrap">
           <div className="sec-head">
             <h2 id="price-h" className="h2">
-              Costs less than the one you forgot.
+              About {PRO.yearlyPerMonth} a month. Less than the one you forgot about.
             </h2>
             <p className="lead">
-              Pro is about {PRO.yearlyPerMonth} a month. People lose around $205 a year on subscriptions they don’t use. Hate subscriptions? Pay once.
+              Pro is {PRO.yearly} a year (about {PRO.yearlyPerMonth} a month) or {PRO.monthly} a month. Rather pay once? {PRO.lifetime} for Pro, for good.
             </p>
           </div>
           <div className="sec-body plans">
@@ -316,7 +353,7 @@ export default function Home() {
                 Fair questions.
               </h2>
               <p className="lead" style={{ marginTop: 16 }}>
-                Something else? <a href="mailto:support@ditchsubs.app">Email us</a>. A person answers.
+                Something else? Email us at <a href="mailto:support@ditchsubs.app">support@ditchsubs.app</a>.
               </p>
             </div>
             <div>
@@ -342,10 +379,10 @@ export default function Home() {
       <section className="wrap" aria-labelledby="final-h" data-has-cta>
         <div className="final">
           <h2 id="final-h" className="h2">
-            Stop paying for stuff you forgot.
+            Catch the next one before it charges.
           </h2>
           <p className="lead">One email when Ditch is on the App Store. Want the monthly Price Hike Report too? Tick the box.</p>
-          <EmailBox source="home-final" />
+          <EmailBox source="home-final" cta="Tell me when it’s out" />
         </div>
       </section>
 

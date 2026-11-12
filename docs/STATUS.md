@@ -60,6 +60,7 @@ _Update this at the end of every session._
 - 🗄️ Retired: raccoon poses and Seedance loops in `design/premium-white/anim/` (kept for reference, not used).
 
 ## Next
+- **Later (owner, Nov 12):** polish the app's Ditched screen to match the site: duck instead of the stamp. Also open: change "you'll be saving $647 a year" to "$647 a year you won't pay" (waiting on owner).
 - **Only you can do this (blocks submission):** put ditchsubs.app/terms, /privacy and /support live over HTTPS. The domain is still a parking page. Check each on your iPhone.
 - **Only you can do this (5 min):** New York Times blocks our research tools. On help.nytimes.com, find "cancel subscription" and send me the link and steps. Also: is Kindle Unlimited now called "Kindle+" in the US Amazon app?
 - **Only you can do this (when ready):** a launch waitlist on ditchsubs.app (a simple email form). Nothing in the app collects email (DECISIONS #40).

@@ -88,7 +88,7 @@ function ChargeFinderInner({ points, countries, biller: start = 'any' }: { point
                 </li>
               ))}
             </ul>
-            <p className="note-l">These are possible matches, not a diagnosis. Only {biller === 'apple' ? 'Apple' : biller === 'google' ? 'Google' : biller === 'amazon' ? 'Amazon' : 'the company that charged you'} can tell you for sure. See where to check below.</p>
+            <p className="note-l">These are possible matches, not a diagnosis. Only {biller === 'apple' ? 'Apple' : biller === 'google' ? 'Google' : biller === 'amazon' ? 'Amazon' : 'the company that charged you'} can tell you for sure. See below for where to check.</p>
           </>
         ) : (
           <p className="say">Nothing on our checked list costs exactly {formatMoney(minor, cur, { country: c })} in {countries.find((x) => x.code === c)?.name}. It may be a plan we don’t track, a one-off purchase, or a price with tax added. Check the official places below.</p>

@@ -3,18 +3,23 @@ import { ToolPage } from '@/components/ToolPage';
 import { CYCLE_WORD, formatMoney } from '@/lib/money';
 import { allPoints, countryList, type Biller, type Pt } from '@/lib/tools';
 
-const APPLE_BILL = 'https://support.apple.com/102396';
-const APPLE_REFUND = 'https://support.apple.com/118223';
-const APPLE_SUBS = 'https://support.apple.com/en-us/118428';
-const GOOGLE_HISTORY = 'https://support.google.com/googleplay/answer/2850369';
+const SRC = { apple: ['https://support.apple.com/102396', 'https://support.apple.com/118223'], google: ['https://support.google.com/googleplay/answer/2850369'], amazon: [] as string[] };
 
-export const HUBS: Record<string, { biller: Biller; title: string; meta: string; lead: string }> = {
-  'apple-com-bill': { biller: 'apple', title: 'What is APPLE.COM/BILL? Find the charge', meta: 'APPLE.COM/BILL charge: what is it?', lead: 'APPLE.COM/BILL is how Apple shows App Store and Apple subscription charges on your statement. Type the amount to see which subscriptions cost exactly that.' },
-  google: { biller: 'google', title: 'What is this Google charge?', meta: 'Google charge on your statement: what is it?', lead: 'Google bills for Google One, YouTube Premium, YouTube Music, YouTube TV and Google AI plans. Type the amount to see which ones cost exactly that.' },
-  amazon: { biller: 'amazon', title: 'What is this Amazon charge?', meta: 'Amazon subscription charge: what is it?', lead: 'Amazon bills for Prime and Amazon Music. Type the amount to see which plans cost exactly that.' },
+export const HUBS: Record<string, { biller: Biller; title: string; meta: string; lead: string; name: string; desc: string }> = {
+  'apple-com-bill': { biller: 'apple', name: 'Apple', desc: 'App Store and Apple subscription charges, by amount.', title: 'APPLE.COM/BILL charge finder', meta: 'What is APPLE.COM/BILL? Find the charge by amount', lead: 'APPLE.COM/BILL is how Apple shows App Store and subscription charges. Type the amount to see what it could be.' },
+  google: { biller: 'google', name: 'Google', desc: 'Google One, YouTube and Google AI charges, by amount.', title: 'Google charge finder', meta: 'Google charge on your statement: find it by amount', lead: 'Google bills for Google One, YouTube Premium, YouTube TV and Google AI. Type the amount to see what it could be.' },
+  amazon: { biller: 'amazon', name: 'Amazon', desc: 'Prime and Amazon Music charges, by amount.', title: 'Amazon charge finder', meta: 'Amazon subscription charge: find it by amount', lead: 'Amazon bills for Prime and Amazon Music. Type the amount to see what it could be.' },
 };
 
-/** Amounts we've checked for one biller in one country, grouped by amount (anchors like #9-99). */
+const HOW: Record<Biller | 'any', React.ReactNode[]> = {
+  apple: [<>Sign in at <b>reportaproblem.apple.com</b> to see what you bought.</>, <>To stop it: <kbd>Settings</kbd> → your name → <kbd>Subscriptions</kbd>.</>, <>Use Family Sharing? It may be someone in your family group.</>],
+  google: [<>Play Store app: profile icon → <kbd>Payments &amp; subscriptions</kbd> → <kbd>Budget &amp; history</kbd>.</>, <>Or check <b>payments.google.com</b> → <kbd>Subscriptions &amp; services</kbd>.</>],
+  amazon: [<>Sign in at <b>amazon.com</b> → <kbd>Memberships &amp; Subscriptions</kbd>.</>, <>One-off digital buys are in <kbd>Your Orders</kbd>.</>],
+  direct: [],
+  any: [<>Type the amount and pick who charged you.</>, <>Check the matches against your email receipts.</>, <>Confirm with the company that billed you: Apple, Google, Amazon or the service itself.</>],
+};
+
+/** Amounts we've checked for one biller in the US, grouped by amount (anchors like #9-99). */
 function amountTable(pts: Pt[]) {
   const by = new Map<number, Pt[]>();
   for (const p of pts) by.set(p.a, [...(by.get(p.a) ?? []), p]);
@@ -23,104 +28,53 @@ function amountTable(pts: Pt[]) {
 
 export function ChargesBody({ hub }: { hub: string | null }) {
   const h = hub ? HUBS[hub] : null;
-  const points = allPoints();
   const biller = h?.biller ?? 'any';
-  const usPts = points.filter((p) => p.c === 'US' && (!h || p.b === h.biller));
-  const rows = amountTable(usPts);
-  const top = h ? rows : rows.filter(([, ps]) => ps.length > 1 || ps[0].a % 100 === 99).slice(0, 40);
-  const slug = hub ? `charges/${hub}` : 'charges';
-  const title = h?.title ?? 'What is this charge? Subscription charge finder';
-  const faq = [
-    ...(biller === 'apple' || biller === 'any'
-      ? [
-          { q: 'What is APPLE.COM/BILL on my statement?', a: 'It’s how Apple shows charges for App Store purchases and subscriptions billed by Apple. Apple says these can appear as apple.com/bill or itunes.com/bill.' },
-          { q: 'How do I see what Apple charged me for?', a: 'Sign in at reportaproblem.apple.com to see your purchases. If you use Family Sharing, a charge may be from someone else in your family group.' },
-        ]
-      : []),
-    ...(biller === 'google' || biller === 'any' ? [{ q: 'How do I see what Google charged me for?', a: 'In the Play Store app, tap your profile icon, then Payments & subscriptions, then Budget & history. You can also check payments.google.com under Activity or Subscriptions & services.' }] : []),
-    { q: 'Why doesn’t the amount match exactly?', a: 'In the US and Canada, listed prices are before sales tax, so your bank shows a little more. Some charges are one-off purchases, not subscriptions.' },
-    { q: 'Does this tool see my bank or my statement?', a: 'No. It runs in your browser and only compares the amount you type with our checked price list. Nothing is sent anywhere.' },
-  ];
-  const more = (
-      <>
-        <h2 id="check">Where to check for sure</h2>
-        {biller === 'apple' || biller === 'any' ? (
-          <>
-            <h3 className="h3s">Charged by Apple (APPLE.COM/BILL)</h3>
-            <ol className="st">
-              <li><span>Sign in at <b>reportaproblem.apple.com</b> to see what you bought.</span></li>
-              <li><span>To stop a subscription, open <kbd>Settings</kbd> on your iPhone, tap your name, then <kbd>Subscriptions</kbd>.</span></li>
-              <li><span>Use Family Sharing? Ask your family group. Their purchases can show up on your card.</span></li>
-            </ol>
-          </>
-        ) : null}
-        {biller === 'google' || biller === 'any' ? (
-          <>
-            <h3 className="h3s">Charged by Google</h3>
-            <ol className="st">
-              <li><span>In the Play Store app, tap your profile icon, then <kbd>Payments &amp; subscriptions</kbd>, then <kbd>Budget &amp; history</kbd>.</span></li>
-              <li><span>Or go to <b>payments.google.com</b> and check <kbd>Activity</kbd> or <kbd>Subscriptions &amp; services</kbd>.</span></li>
-            </ol>
-          </>
-        ) : null}
-        {biller === 'amazon' || biller === 'any' ? (
-          <>
-            <h3 className="h3s">Charged by Amazon</h3>
-            <ol className="st">
-              <li><span>Sign in at <b>amazon.com</b> and open <kbd>Memberships &amp; Subscriptions</kbd> to see what renews.</span></li>
-              <li><span>Check <kbd>Your Orders</kbd> for one-off digital purchases.</span></li>
-            </ol>
-          </>
-        ) : null}
-        {biller === 'any' ? (
-          <>
-            <h3 className="h3s">Charged by the company itself</h3>
-            <p className="lead-s">Search your inbox for the company name and the amount. Receipts usually name the plan. Then use our cancel guide for that service.</p>
-          </>
-        ) : null}
-
-        <h2 id="amounts">{h ? `${h.biller === 'apple' ? 'Apple' : h.biller === 'google' ? 'Google' : 'Amazon'} charges in the US, by amount` : 'Common subscription charges in the US, by amount'}</h2>
-        <p className="lead-s">From our hand-checked price list. US prices are before sales tax.</p>
-        <table className="ttable">
-          <thead>
-            <tr>
-              <th scope="col">Amount</th>
-              <th scope="col">Could be</th>
-            </tr>
-          </thead>
-          <tbody>
-            {top.map(([a, ps]) => (
-              <tr key={a} id={(a / 100).toFixed(2).replace('.', '-')}>
-                <td>
-                  <b className="num">{formatMoney(a, 'USD')}</b>
-                </td>
-                <td>
-                  {ps.map((p, i) => (
-                    <span key={p.s + p.p}>
-                      {i ? ' · ' : ''}
-                      {p.n} {p.p} ({CYCLE_WORD[p.cy]})
-                    </span>
-                  ))}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        <h2 id="sources-h" className="srcs-h">Sources</h2>
-        <ul className="srcs">
-          {[APPLE_BILL, APPLE_REFUND, APPLE_SUBS, GOOGLE_HISTORY].map((u) => (
-            <li key={u}>
-              <a href={u} rel="noopener">
-                {u.replace(/^https?:\/\//, '')}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </>
-  );
+  const us = allPoints().filter((p) => p.c === 'US' && (!h || p.b === h.biller));
+  const rows = amountTable(us);
+  const top = h ? rows : rows.filter(([, ps]) => ps.length > 1).slice(0, 30);
   return (
-    <ToolPage more={more} slug={slug} title={title} lead={h?.lead ?? 'Found a charge you don’t recognise? Type the amount and who charged you, and see which subscriptions cost exactly that in your country.'} faq={faq} cta="Know every charge before it happens">
+    <ToolPage
+      slug={hub ? `charges/${hub}` : 'charges'}
+      title={h?.title ?? 'Subscription charge finder'}
+      lead={h?.lead ?? 'Found a charge you don’t recognise? Type the amount and see which subscriptions cost exactly that.'}
+      cta="Know every charge before it happens"
+      how={HOW[biller]}
+      good={[
+        'Matches come from prices we check by hand. Only the company that billed you can confirm it.',
+        'US and Canada prices are before sales tax, so your bank shows a bit more. The tool allows for that.',
+        'Nothing you type leaves your browser.',
+      ]}
+      sources={h ? SRC[h.biller as 'apple' | 'google' | 'amazon'] : [...SRC.apple, ...SRC.google]}
+      faq={[
+        ...(biller !== 'google' && biller !== 'amazon' ? [{ q: 'What is APPLE.COM/BILL on my statement?', a: 'Apple’s name for App Store and Apple subscription charges. Apple says they can also show as itunes.com/bill.' }] : []),
+        ...(biller === 'google' ? [{ q: 'How do I see what Google charged me for?', a: 'In the Play Store app, tap your profile icon, then Payments & subscriptions, then Budget & history.' }] : []),
+        ...(biller === 'amazon' ? [{ q: 'How do I see what Amazon charged me for?', a: 'Sign in at amazon.com and open Memberships & Subscriptions. One-off digital purchases are in Your Orders.' }] : []),
+        { q: 'Why doesn’t the amount match exactly?', a: 'Tax may be added, or it may be a one-off purchase rather than a subscription.' },
+      ]}
+      extra={
+        <>
+          <h2 id="amounts">{h ? `${h.name} charges by amount (US)` : 'Common charges by amount (US)'}</h2>
+          <table className="ttable">
+            <thead>
+              <tr>
+                <th scope="col">Amount</th>
+                <th scope="col">Could be</th>
+              </tr>
+            </thead>
+            <tbody>
+              {top.map(([a, ps]) => (
+                <tr key={a} id={(a / 100).toFixed(2).replace('.', '-')}>
+                  <td>
+                    <b className="num">{formatMoney(a, 'USD')}</b>
+                  </td>
+                  <td>{ps.map((p) => `${p.n} ${p.p} (${CYCLE_WORD[p.cy]})`).join(' · ')}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      }
+    >
       <ChargeFinder countries={countryList()} biller={biller} />
     </ToolPage>
   );

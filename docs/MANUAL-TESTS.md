@@ -413,3 +413,7 @@ Why: an app feels premium when the bad moments are handled well, not only the ha
 - [ ] Refund helper: Apple + "forgot to cancel" → reportaproblem.apple.com steps.
 - [ ] Spreadsheet: download, open in Numbers or Google Sheets; prices filled in for your country.
 - [ ] Turn on airplane mode after a page loads: tools still work (nothing is sent).
+- [ ] /tools is grouped (Check a charge, Know what you pay, Before you pay, Share a plan, Compare, Get money back); the chips at the top jump to each group.
+- [ ] Service tools: open /tools/spotify-family-split → Premium Family $21.99 picked, 4 people → $5.50 each. Open /tools/chatgpt-plus-vs-claude-pro → both plans listed side by side.
+- [ ] Each tool page: short heading, one line under it, the tool, then How it works, Good to know, 3 questions, one Sources line. No strap line above the heading.
+- [ ] Every example line reads right ("Claude Pro is $20.00", not "Claude Pro Pro").

@@ -5,8 +5,8 @@ import { Compare } from '@/components/tools/PlanTools';
 import { countryList } from '@/lib/tools';
 
 export const metadata: Metadata = {
-  title: 'Subscription price comparison: compare two services side by side',
-  description: 'Compare the plans and prices of two subscriptions side by side, in your country, from a hand-checked price list.',
+  title: 'Subscription price comparison: two services side by side',
+  description: 'Compare two subscriptions plan by plan, in your country, from prices checked by hand.',
   alternates: { canonical: '/tools/compare-prices' },
 };
 
@@ -15,11 +15,10 @@ export default function Page() {
     <ToolPage
       slug="tools/compare-prices"
       title='Subscription price comparison'
-      lead='Put two subscriptions side by side, plan by plan, in your country.'
-      faq={[
-        { q: 'Where do these prices come from?', a: 'From each service’s own pricing pages, or Apple’s in-app price list for iPhone app prices, checked by hand with the date.' },
-        { q: 'Are prices the same in every country?', a: 'No. Prices, plans and even what’s included change from country to country.' },
-      ]}
+      lead='Two services side by side, plan by plan.'
+      how={['Pick your country.', 'Pick two services.', 'Compare every plan and the yearly cost.']}
+      good={['Prices come from each service’s own pages, or Apple’s in-app price list for iPhone app prices.']}
+      faq={[{ q: 'Are prices the same in every country?', a: 'No. Prices and plans change from country to country.' }]}
     >
       <Compare countries={countryList()} />
     </ToolPage>

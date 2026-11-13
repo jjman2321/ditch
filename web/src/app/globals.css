@@ -1034,3 +1034,22 @@ h1, h2, h3 { overflow-wrap: break-word; }
 @media (max-width: 480px) { .tool .btn-row .btn { white-space: normal; width: 100%; text-align: center; } }
 @media (max-width: 400px) { .gv3 kbd { white-space: normal; } .tool .ttable { font-size: 14px; } .tool .ttable td { overflow-wrap: anywhere; } }
 @media (max-width: 340px) { .tool h1 { font-size: 24px; } .tool .seg button { padding: 0 12px; font-size: 14px; } }
+/* Tool template v2 (AnkiDecks-style, Nov 13) */
+.tool .sub { max-width: 44ch; }
+.tool .good { list-style: none; padding: 0; }
+.tool .good li { position: relative; padding: 8px 0 8px 22px; font-size: 17px; line-height: 1.55; }
+.tool .good li::before { content: ""; position: absolute; left: 4px; top: 18px; width: 7px; height: 7px; border-radius: 9px; background: var(--ink); }
+.tool .srcline { margin-top: 32px; font-size: 13px; color: var(--mute); }
+.tool .srcline a { color: var(--mute); overflow-wrap: anywhere; }
+.tool .tool-col > h2 { margin-top: 56px; }
+.tool .jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.tool .jump a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px; border-radius: 999px; box-shadow: inset 0 0 0 1.5px var(--rule); background: var(--white); font-weight: 600; font-size: 14px; text-decoration: none; color: var(--ink); }
+@media (pointer: coarse) { .tool .jump a { min-height: 44px; } }
+.tool .hub-sub { color: var(--fg2); margin-top: 4px; }
+.tool .hub { list-style: none; padding: 0; margin-top: 12px; border-top: 1px solid var(--rule); }
+.tool .hub li { border-bottom: 1px solid var(--rule); }
+.tool .hub a { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "n go" "d go"; column-gap: 16px; padding: 16px 0; text-decoration: none; color: var(--ink); }
+.tool .hub a::after { content: "→"; grid-area: go; align-self: center; color: var(--mute); }
+.tool .hub a:hover b { text-decoration: underline; }
+.tool .hub b { grid-area: n; font-family: var(--f-widebold); font-weight: 400; font-size: 17px; }
+.tool .hub span { grid-area: d; color: var(--fg2); font-size: 15px; margin-top: 2px; }

@@ -36,18 +36,18 @@ const prefer = (list: { s: string }[], ids: string[]) => ids.map((id) => list.fi
 const money = (a: number, p: { cur: string; c: string }) => formatMoney(a, p.cur, { country: p.c });
 
 /* ---------- Monthly vs yearly ---------- */
-export function MonthlyYearly({ countries }: { countries: C }) {
+export function MonthlyYearly({ countries, only }: { countries: C; only?: string }) {
   const loaded = usePoints();
   if (!loaded) return <Loading />;
-  return <MonthlyYearlyInner points={loaded} countries={countries} />;
+  return <MonthlyYearlyInner points={loaded} countries={countries} only={only} />;
 }
 
-function MonthlyYearlyInner({ points, countries }: { points: Pt[]; countries: C }) {
+function MonthlyYearlyInner({ points, countries, only }: { points: Pt[]; countries: C; only?: string }) {
   const pairs = (c: string, s: string) => {
     const ps = points.filter((p) => p.c === c && p.s === s);
     return ps.filter((y) => y.cy === 'yearly').map((y) => ({ y, m: ps.find((m) => m.cy === 'monthly' && base(m.p) === base(y.p)) ?? (ps.filter((m) => m.cy === 'monthly').length === 1 ? ps.find((m) => m.cy === 'monthly') : undefined) })).filter((x) => x.m);
   };
-  const okSvc = (c: string) => services(points.filter((p) => p.c === c)).filter((x) => pairs(c, x.s).length);
+  const okSvc = (c: string) => services(points.filter((p) => p.c === c && (!only || p.s === only))).filter((x) => pairs(c, x.s).length);
   const [c, setC] = useCountryPick(countries, (code) => okSvc(code).length > 0);
   const list = okSvc(c);
   const [svc, setSvc] = useState<string | null>(null);
@@ -57,7 +57,7 @@ function MonthlyYearlyInner({ points, countries }: { points: Pt[]; countries: C 
     <div>
       <div className="row">
         <CountrySelect value={c} onChange={setC} countries={countries.filter((x) => okSvc(x.code).length)} />
-        <ServiceSelect value={s ?? ''} onChange={setSvc} list={list} />
+        {only ? null : <ServiceSelect value={s ?? ''} onChange={setSvc} list={list} />}
       </div>
       <div className="result" aria-live="polite">
         {ps.map(({ y, m }) => {
@@ -97,23 +97,23 @@ function MonthlyYearlyInner({ points, countries }: { points: Pt[]; countries: C 
 }
 
 /* ---------- Family plan split ---------- */
-export function FamilySplit({ countries }: { countries: C }) {
+export function FamilySplit({ countries, only, all }: { countries: C; only?: string; all?: boolean }) {
   const loaded = usePoints();
   if (!loaded) return <Loading />;
-  return <FamilySplitInner points={loaded} countries={countries} />;
+  return <FamilySplitInner points={loaded} countries={countries} only={only} all={all} />;
 }
 
-function FamilySplitInner({ points, countries }: { points: Pt[]; countries: C }) {
-  const fam = (p: Pt) => /family|duo/i.test(p.p);
-  const okSvc = (c: string) => services(points.filter((p) => p.c === c && fam(p)));
+function FamilySplitInner({ points, countries, only, all }: { points: Pt[]; countries: C; only?: string; all?: boolean }) {
+  const fam = (p: Pt) => (all ? !/student/i.test(p.p) : /family|duo/i.test(p.p));
+  const okSvc = (c: string) => services(points.filter((p) => p.c === c && fam(p) && (!only || p.s === only)));
   const [c, setC] = useCountryPick(countries, (code) => okSvc(code).length > 0);
   const list = okSvc(c);
   const [svc, setSvc] = useState<string | null>(null);
   const s = list.some((x) => x.s === svc) ? svc! : prefer(list, ['spotify', 'youtube-premium', 'apple-music']);
   const plans = points.filter((p) => p.c === c && p.s === s && fam(p));
   const [planName, setPlan] = useState<string | null>(null);
-  const plan = plans.find((p) => p.p === planName) ?? plans[0];
-  const solo = points.filter((p) => p.c === c && p.s === s && !fam(p) && !/student/i.test(p.p) && p.cy === plan?.cy).sort((a, b) => b.a - a.a)[0];
+  const plan = plans.find((p) => p.p === planName) ?? plans.find((p) => /family|premium/i.test(p.p) && !/duo/i.test(p.p)) ?? plans[0];
+  const solo = all ? undefined : points.filter((p) => p.c === c && p.s === s && !fam(p) && !/student/i.test(p.p) && p.cy === plan?.cy).sort((a, b) => b.a - a.a)[0];
   const maxPeople = plan && /duo/i.test(plan.p) ? 2 : 6;
   const [people, setPeople] = useState(4);
   const n = Math.min(people, maxPeople);
@@ -122,7 +122,7 @@ function FamilySplitInner({ points, countries }: { points: Pt[]; countries: C })
     <div>
       <div className="row">
         <CountrySelect value={c} onChange={setC} countries={countries.filter((x) => okSvc(x.code).length)} />
-        <ServiceSelect value={s ?? ''} onChange={(v) => { setSvc(v); setPlan(null); }} list={list} />
+        {only ? null : <ServiceSelect value={s ?? ''} onChange={(v) => { setSvc(v); setPlan(null); }} list={list} />}
       </div>
       <div className="row">
         {plans.length > 1 ? (
@@ -162,7 +162,7 @@ function FamilySplitInner({ points, countries }: { points: Pt[]; countries: C })
               {plan.cy === 'monthly' ? `, or ${money((solo.a - each) * 12, plan)} a year` : ''}.
             </p>
           ) : null}
-          <p className="note-l">Family plans usually need everyone in the same household. Check {plan.n}’s own rules.</p>
+          <p className="note-l">{all ? `${plan.n} accounts are for one household.` : 'Family plans usually need everyone at the same address.'} Check {plan.n}’s own rules.</p>
         </div>
       ) : null}
     </div>
@@ -170,19 +170,19 @@ function FamilySplitInner({ points, countries }: { points: Pt[]; countries: C })
 }
 
 /* ---------- Compare two services ---------- */
-export function Compare({ countries }: { countries: C }) {
+export function Compare({ countries, first, second }: { countries: C; first?: string; second?: string }) {
   const loaded = usePoints();
   if (!loaded) return <Loading />;
-  return <CompareInner points={loaded} countries={countries} />;
+  return <CompareInner points={loaded} countries={countries} first={first} second={second} />;
 }
 
-function CompareInner({ points, countries }: { points: Pt[]; countries: C }) {
-  const [c, setC] = useCountryPick(countries, () => true);
+function CompareInner({ points, countries, first = 'netflix', second = 'disney-plus' }: { points: Pt[]; countries: C; first?: string; second?: string }) {
+  const [c, setC] = useCountryPick(countries, (code) => points.some((p) => p.c === code && p.s === first) && points.some((p) => p.c === code && p.s === second));
   const list = services(points.filter((p) => p.c === c));
   const [a, setA] = useState<string | null>(null);
   const [b, setB] = useState<string | null>(null);
-  const A = list.some((x) => x.s === a) ? a! : list.find((x) => x.s === 'netflix')?.s ?? list[0]?.s;
-  const B = list.some((x) => x.s === b) ? b! : list.find((x) => x.s === 'disney-plus' && x.s !== A)?.s ?? list.find((x) => x.s !== A)?.s;
+  const A = list.some((x) => x.s === a) ? a! : list.find((x) => x.s === first)?.s ?? list[0]?.s;
+  const B = list.some((x) => x.s === b) ? b! : list.find((x) => x.s === second && x.s !== A)?.s ?? list.find((x) => x.s !== A)?.s;
   const col = (s?: string) => points.filter((p) => p.c === c && p.s === s).sort((x, y) => monthlyMinor(x.a, x.cy) - monthlyMinor(y.a, y.cy));
   const ca = col(A);
   const cb = col(B);
@@ -190,7 +190,7 @@ function CompareInner({ points, countries }: { points: Pt[]; countries: C }) {
   return (
     <div>
       <div className="row">
-        <CountrySelect value={c} onChange={setC} countries={countries} />
+        <CountrySelect value={c} onChange={setC} countries={countries.filter((x) => points.some((p) => p.c === x.code && p.s === first) && points.some((p) => p.c === x.code && p.s === second))} />
       </div>
       <div className="row">
         <ServiceSelect value={A ?? ''} onChange={setA} list={list} label="First" />
@@ -338,6 +338,42 @@ function SpreadsheetInner({ points, countries }: { points: Pt[]; countries: C })
           </button>
         </div>
         <p className="note-l">Opens in Excel, Numbers and Google Sheets. Made on your device; nothing is sent anywhere.</p>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Disney+ and Hulu bundle (US) ---------- */
+export function DisneyBundle() {
+  const loaded = usePoints();
+  const [ads, setAds] = useState(true);
+  if (!loaded) return <Loading />;
+  const us = (s: string, re: RegExp) => loaded.find((p) => p.c === 'US' && p.s === s && p.cy === 'monthly' && re.test(p.p));
+  const d = us('disney-plus', ads ? /with ads/i : /premium \(no ads\)/i);
+  const h = us('hulu', ads ? /^hulu \(with ads\)$/i : /premium \(no ads\)/i);
+  const b = us('disney-plus', ads ? /bundle \(with ads\)/i : /bundle premium/i);
+  if (!d || !h || !b) return <p className="say">Bundle prices aren’t checked right now.</p>;
+  const both = d.a + h.a;
+  return (
+    <div>
+      <div className="seg" role="group" aria-label="Ads">
+        <button type="button" aria-pressed={ads} onClick={() => setAds(true)}>With ads</button>
+        <button type="button" aria-pressed={!ads} onClick={() => setAds(false)}>No ads</button>
+      </div>
+      <div className="result" aria-live="polite">
+        <div className="cards2">
+          <div>
+            <b>Disney+ and Hulu separately</b>
+            <p className="v num">{money(both, d)}<small style={{ display: 'inline', marginLeft: 4 }}>/mo</small></p>
+            <small>{money(d.a, d)} + {money(h.a, h)}</small>
+          </div>
+          <div className="win">
+            <b>{b.p}</b>
+            <p className="v num">{money(b.a, b)}<small style={{ display: 'inline', marginLeft: 4 }}>/mo</small></p>
+            <small>One subscription, both apps</small>
+          </div>
+        </div>
+        <p className="say">The bundle is <b>{money(both - b.a, b)} a month less</b> than both, or {money((both - b.a) * 12, b)} a year. US prices, before tax.</p>
       </div>
     </div>
   );

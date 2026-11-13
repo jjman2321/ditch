@@ -5,8 +5,8 @@ import { MonthlyYearly } from '@/components/tools/PlanTools';
 import { countryList } from '@/lib/tools';
 
 export const metadata: Metadata = {
-  title: 'Monthly vs yearly calculator: is a yearly subscription cheaper?',
-  description: 'See how much less a yearly plan costs than 12 months of the monthly one, for real subscriptions in your country.',
+  title: 'Monthly vs yearly calculator: is a yearly plan cheaper?',
+  description: 'See what a yearly subscription costs next to 12 months of the monthly plan, for real services in your country.',
   alternates: { canonical: '/tools/monthly-vs-yearly' },
 };
 
@@ -15,11 +15,10 @@ export default function Page() {
     <ToolPage
       slug="tools/monthly-vs-yearly"
       title='Monthly vs yearly calculator'
-      lead='Pick a subscription and see what a yearly plan costs compared with 12 months of the monthly one.'
-      faq={[
-        { q: 'Is a yearly subscription cheaper?', a: 'Usually, yes. Most yearly plans cost less than 12 months of the monthly plan. The catch: you pay it all up front, and it’s harder to stop halfway.' },
-        { q: 'When is monthly better?', a: 'When you’re not sure you’ll keep it all year, or you only need it for a few months.' },
-      ]}
+      lead='What a yearly plan costs next to 12 months of monthly.'
+      how={['Pick your country.', 'Pick a subscription that sells both.', 'See which costs less over a year.']}
+      good={['Yearly is usually less, but you pay it all up front.', 'Monthly is easier to stop if you change your mind.']}
+      faq={[{ q: 'Is a yearly subscription cheaper?', a: 'Usually. Most yearly plans cost less than 12 months of monthly.' }, { q: 'When is monthly better?', a: 'When you’re not sure you’ll keep it all year.' }]}
     >
       <MonthlyYearly countries={countryList()} />
     </ToolPage>

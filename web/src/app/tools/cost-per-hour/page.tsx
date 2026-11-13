@@ -5,8 +5,8 @@ import { CostPerHour } from '@/components/tools/PlanTools';
 import { countryList } from '@/lib/tools';
 
 export const metadata: Metadata = {
-  title: 'Cost per hour calculator: is your subscription worth it?',
-  description: 'Work out what a subscription costs for each hour you use it. Pick a service and plan, add your hours a week.',
+  title: 'Cost per hour calculator: what each hour of a subscription costs',
+  description: 'Work out what a subscription costs for each hour you use it. Pick a service, a plan and your hours a week.',
   alternates: { canonical: '/tools/cost-per-hour' },
 };
 
@@ -15,11 +15,10 @@ export default function Page() {
     <ToolPage
       slug="tools/cost-per-hour"
       title='Cost per hour calculator'
-      lead='Pick a subscription and how many hours a week you use it. See what each hour costs.'
-      faq={[
-        { q: 'How is cost per hour worked out?', a: 'Monthly price ÷ hours you use it in a month. We count a month as 52 weeks ÷ 12.' },
-        { q: 'What’s a good cost per hour?', a: 'There’s no right number. It’s a quick way to compare subscriptions with each other and with what you use.' },
-      ]}
+      lead='What a subscription costs for each hour you use it.'
+      how={['Pick a service and plan.', 'Type how many hours a week you use it.', 'See the cost per hour.']}
+      good={['Cost per hour = monthly price ÷ hours a month. A month is 52 weeks ÷ 12.']}
+      faq={[{ q: 'What’s a good cost per hour?', a: 'There’s no right number. It’s a quick way to compare what you pay with what you use.' }]}
     >
       <CostPerHour countries={countryList()} />
     </ToolPage>

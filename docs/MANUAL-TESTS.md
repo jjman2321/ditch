@@ -399,3 +399,7 @@ Why: an app feels premium when the bad moments are handled well, not only the ha
 - [ ] On your iPhone both phones fit the screen width with no sideways scroll.
 - [ ] Pricing (option C): Free card + yellow Pro card (Yearly with "7 days free", Monthly) + dark Lifetime strip. On iPhone: Pro first, Yearly and Monthly as full-width rows, no button on the Free card, nothing cut off. The duck pops up over the Pro card and the "7 days free" badge drops in.
 - [ ] Ditch card: the hold ring fills, "Hold to ditch" becomes a "Ditched" tag, the Netflix logo greys, the duck pops up, then "$239.88 a year you won't pay." fades in.
+- [ ] Calculator: tap a few logos, then use the email box under the total. You see "Check your inbox" (or "Sign-ups aren't open yet" before launch).
+- [ ] Open a cancel guide and tap the side card's "Join the waitlist": it scrolls to the box on the same page, it doesn't jump to the home page.
+- [ ] Hover the hero headline on a laptop: the logo rotation pauses.
+- [ ] On an iPad, tap the footer links and the "On this page" links: each is easy to hit.

@@ -57,6 +57,7 @@ _Update this at the end of every session._
 - ✅ **From the reviews (Nov 11, DECISIONS #42):** "Next reminder" row on Home, "Find the ones you forgot" checklist (Home card + Add link), "Rather pay once? Lifetime, $49.99" on the paywall. Checklist: `docs/MANUAL-TESTS.md` §1f.
 - ✅ **Release audit (Nov 11):** 6 auditors plus 19 device shapes (SE to 18 Pro Max, iPhone Duo folded and open, iPad mini to 13", Split View, Slide Over). All code P0 and P1 items fixed in 14 commits, 228 tests passing. Report, open items and 12 owner decisions: `docs/audits/2026-11-11-release-audit.md`. iPhone checklist: `docs/MANUAL-TESTS.md` §1g. **Still blocking App Store submission:** RevenueCat (M2), live Terms, Privacy and Support pages, and a real-iPhone test. (App icon and splash: done, the Bean icon, DECISIONS #52.)
 - ✅ **Website wording + audit (Nov 12):** ditchsubs.app copy rewritten in the plain ankidecks.ai style, founder note and hero small print removed, full crawl (86 pages × 3 widths) with 0 errors or broken links, Lighthouse a11y 100. Notes: `docs/website/audit-2026-11-12.md`. Phone checklist: `docs/MANUAL-TESTS.md` §W.
+- ✅ **Website audit round 2 (Nov 13):** 5 auditors + 28-screen test (448 checks, 0 issues), Lighthouse a11y 100. Fixes and the open owner decisions: `docs/website/audit-2026-11-13/README.md`.
 - 🗄️ Retired: raccoon poses and Seedance loops in `design/premium-white/anim/` (kept for reference, not used).
 
 ## Next

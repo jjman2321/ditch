@@ -67,7 +67,7 @@ img { display: block; max-width: 100%; }
 @media (prefers-reduced-motion: no-preference) { .btn:hover { transform: translateY(-1px); } .btn:active { transform: scale(.98); transition-duration: 80ms; } }
 .btn.ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
 .btn.ghost:hover { background: rgba(22, 20, 15, .05); }
-.btn.sm { min-height: 40px; padding: 0 18px; font-size: 14px; }
+.btn.sm { min-height: 44px; padding: 0 18px; font-size: 14px; }
 .btn.block { width: 100%; }
 @media (max-width: 639px) { .btn { min-height: 52px; } .btn.sm { min-height: 44px; } }
 
@@ -653,8 +653,8 @@ img { display: block; max-width: 100%; }
   .pc-opt .amt { grid-area: amt; font-size: 30px; margin: 0; }
   .pc-opt .per { grid-area: per; font-size: 14px; margin-top: 4px; }
   .pc-opt + .pc-opt { padding-top: 16px; }
-  .pc-badge { left: 16px; font-size: 10px; padding: 4px 9px; top: -11px; }
-  .pc-save { right: 16px; font-size: 10px; padding: 4px 9px; top: -11px; }
+  .pc-badge { left: 16px; font-size: 11px; padding: 4px 9px; top: -11px; }
+  .pc-save { right: 16px; font-size: 11px; padding: 4px 9px; top: -11px; }
   .pc-opts .pc-opt.on { margin-top: 6px; }
   .pc-pro ul { grid-template-columns: minmax(0, 1fr); margin-top: 18px; }
   .pc-card li { padding: 10px 0 10px 30px; font-size: 15px; }
@@ -704,7 +704,7 @@ img { display: block; max-width: 100%; }
 /* calculator: 4 across on phones so the grid isn't 2 screens tall */
 @media (max-width: 400px) { .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; } .tile { min-height: 84px; padding: 10px 2px 8px; font-size: 11px; } .tile img { width: 34px; height: 34px; } }
 /* filter chips: one sideways row on phones */
-@media (max-width: 639px) { .chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-left: -16px; margin-right: -16px; padding: 0 16px 4px; } .chips::-webkit-scrollbar { display: none; } .chips button, .chips a { flex: none; } }
+@media (max-width: 639px) { .index-head .chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; } .index-head .chips::-webkit-scrollbar { display: none; } .index-head .chips button, .index-head .chips a { flex: none; } }
 @media (max-width: 380px) { .dd-row { flex-wrap: wrap; } .dd-name span { white-space: normal; } .dd-act { flex-basis: 100%; justify-items: start; padding-left: 50px; } }
 .calc-cta { font-weight: 700; font-size: 16px; margin-top: 20px; }
 .receipt .email-wrap { margin-top: 12px; }
@@ -715,3 +715,12 @@ input::placeholder { color: var(--mute); opacity: 1; }
 @media (min-width: 640px) and (max-width: 860px) { body:has(.cstrip) .tbl thead th { top: 120px; } }
 .pc-life .t .lh { display: block; font-family: var(--f-wide); font-size: 22px; line-height: 1.2; }
 @media (max-width: 520px) { .pc-life .t .lh { font-size: 20px; } }
+/* hero rotation pauses while hovered or focused (owner Nov 13: keep the loop, no button) */
+.hero h1:hover .chip, .hero h1:focus-within .chip { animation-play-state: paused; }
+/* touch screens (tablets, phones sideways): every link and button gets a 44pt target */
+@media (pointer: coarse), (hover: none) { .ftr a, .side-toc a { min-height: 44px; } .side-toc a { display: flex; align-items: center; padding-top: 0; padding-bottom: 0; } }
+.ftr a { overflow-wrap: anywhere; }
+/* folded Galaxy Fold (280pt): long words in big headings still fit */
+h1, h2, h3 { overflow-wrap: break-word; }
+@media (max-width: 340px) { .index-head .d-h1 { font-size: 34px; } }
+@media (max-width: 340px) { .hero .d-h1 { font-size: 38px; } }

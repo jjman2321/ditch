@@ -1,0 +1,48 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="base.css"><style>
+.tbl{margin-top:56px;background:#fff;border-radius:28px;box-shadow:inset 0 0 0 1.5px var(--rule);overflow:hidden}
+.grid{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,1fr))}
+.hd{padding:32px 20px 24px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px}
+.hd .ic{height:76px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:8px}
+.hd .nm{font:400 14px WideBold;letter-spacing:.12em;text-transform:uppercase}
+.hd .pr{font-family:Display;font-size:40px;letter-spacing:-.03em;line-height:1;margin-top:6px}
+.hd .pr small{font:600 15px -apple-system,sans-serif;letter-spacing:0;color:var(--fg2)}
+.hd .sub{font-size:14px;color:var(--fg2);min-height:20px}
+.hd .btn{margin-top:14px;height:44px;font-size:15px;width:100%;max-width:200px}
+.col-pro{background:var(--sun)}
+.hd.col-pro .sub{color:var(--sunfg2)}
+.intro{padding:32px 28px;display:flex;flex-direction:column;justify-content:flex-end}
+.intro b{font:400 22px WideHeavy;line-height:1.15}
+.intro p{font-size:15px;color:var(--fg2);margin-top:8px}
+.row>div{border-top:1px solid var(--hair);padding:16px 20px;text-align:center;font-weight:700;font-size:16px}
+.row>div:first-child{text-align:left;font-weight:400;padding-left:28px}
+.row .col-pro{background:#FFE58A;border-top-color:rgba(22,20,15,.08)}
+.no{color:#B8AF9C;font-weight:400!important}
+.tag{position:relative;top:-2px;display:inline-block;background:var(--ink);color:var(--sun);font:400 11px WideBold;letter-spacing:.1em;border-radius:99px;padding:5px 11px;margin-bottom:6px}
+.duck{width:96px}
+.bell{width:54px;height:60px}
+@media(max-width:700px){
+ .grid{grid-template-columns:minmax(0,1.15fr) repeat(3,minmax(0,1fr))}
+ .intro{padding:0;visibility:hidden}.grid{grid-template-columns:minmax(0,1.05fr) repeat(3,minmax(0,1fr))}.hd .sub{font-size:11px}
+ .hd{padding:22px 6px 18px}.hd .ic{height:52px}.duck{width:66px}.bell{width:38px;height:42px}
+ .hd .pr{font-size:19px}.hd .pr small{font-size:12px;display:block}.hd .sub{font-size:12px}
+ .hd .btn{display:none}.hd .nm{font-size:11px;letter-spacing:.06em}.tag{font-size:9px;padding:4px 8px}
+ .row>div{padding:12px 4px;font-size:14px}.row>div:first-child{padding-left:14px;font-size:14px}
+}
+</style></head><body><div class="wrap">
+<div class="head"><h2>Pro costs less than two months of Netflix.</h2><p class="lead">Tracking is free forever. Pro puts reminders on every subscription. Rather not subscribe? Pay once.</p></div>
+<div class="tbl">
+ <div class="grid top">
+  <div class="intro"><b>Pick what fits.</b><p>Every plan tracks everything. Pro adds reminders on all of them.</p></div>
+  <div class="hd"><div class="ic"><svg class="bell" viewBox="0 0 54 60"><path d="M27 6c-10 0-16 8-16 18v12l-6 8h44l-6-8V24c0-10-6-18-16-18z" fill="#fff" stroke="#16140F" stroke-width="3.5" stroke-linejoin="round"/><path d="M21 50a6 6 0 0012 0" fill="none" stroke="#16140F" stroke-width="3.5" stroke-linecap="round"/><text x="27" y="36" text-anchor="middle" font-family="Display" font-size="17">3</text></svg></div><p class="nm">Free</p><p class="pr num">$0</p><p class="sub">forever</p><span class="btn ghost">Join the waitlist</span></div>
+  <div class="hd col-pro"><div class="ic"><img class="duck" src="../../../web/public/duck.webp" alt=""></div><span class="tag">7 DAYS FREE</span><p class="nm">Pro</p><p class="pr num">$29.99<small>/yr</small></p><p class="sub">about $2.50 a month · or $4.99/mo</p><span class="btn">Join the waitlist</span></div>
+  <div class="hd"><div class="ic"><svg class="bell" viewBox="0 0 54 60"><circle cx="27" cy="32" r="22" fill="#FFCC2E" stroke="#16140F" stroke-width="3.5"/><path d="M15 32c0-5 4-8 7-8 6 0 10 16 16 16 3 0 7-3 7-8s-4-8-7-8c-6 0-10 16-16 16-3 0-7-3-7-8z" fill="none" stroke="#16140F" stroke-width="3.5" transform="translate(-3 0) scale(1.06)"/></svg></div><p class="nm">Lifetime</p><p class="pr num">$49.99</p><p class="sub">once, never renews</p><span class="btn ghost">Join the waitlist</span></div>
+ </div>
+ <div class="grid row"><div>Track every subscription</div><div>✓</div><div class="col-pro">✓</div><div>✓</div></div>
+ <div class="grid row"><div>Totals, calendar, cancel guides</div><div>✓</div><div class="col-pro">✓</div><div>✓</div></div>
+ <div class="grid row"><div>Reminders</div><div>On 3</div><div class="col-pro">On all</div><div>On all</div></div>
+ <div class="grid row"><div>Pick reminder days</div><div class="no">–</div><div class="col-pro">✓</div><div>✓</div></div>
+ <div class="grid row"><div>Nudge if you miss one</div><div class="no">–</div><div class="col-pro">✓</div><div>✓</div></div>
+ <div class="grid row"><div>Renews</div><div class="no">–</div><div class="col-pro">Yearly or monthly</div><div>Never</div></div>
+</div>
+<p class="fine">US prices. Your App Store shows your price before you pay. Cancel Pro anytime in iPhone Settings.</p>
+</div></body></html>

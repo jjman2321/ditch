@@ -1,0 +1,36 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="base.css"><style>
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:64px;align-items:stretch}
+.c{border-radius:28px;padding:36px 28px 30px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.c.free{background:#fff;box-shadow:inset 0 0 0 1.5px var(--rule)}
+.c.pro{background:var(--sun);padding-top:72px}
+.c.life{background:var(--ink);color:#fff}
+.banner{position:absolute;top:0;left:0;right:0;height:44px;background:var(--ink);color:var(--sun);display:flex;align-items:center;justify-content:center;font:400 13px WideBold;letter-spacing:.12em}
+.nm{font:400 24px WideHeavy}
+.desc{font-size:15px;color:var(--fg2);margin-top:6px}
+.pro .desc{color:var(--sunfg2)}.life .desc{color:#C9C1AE}
+.pr{font-family:Display;font-size:64px;letter-spacing:-.035em;line-height:1;margin-top:28px;display:flex;align-items:flex-start}
+.pr sup{font-size:.42em;margin-top:.12em;margin-right:2px;letter-spacing:0}
+.pr .c2{font-size:.42em;margin-top:.12em;letter-spacing:0}
+.life .pr{color:var(--sun)}
+.per{font-size:15px;color:var(--fg2);margin-top:8px}.pro .per{color:var(--sunfg2)}.life .per{color:#C9C1AE}
+ul{list-style:none;padding:0;margin:24px 0 0;flex:1}
+li{padding:9px 0 9px 28px;position:relative;font-size:16px;border-top:1px solid rgba(22,20,15,.1)}
+.life li{border-color:rgba(255,255,255,.12)}
+li::before{content:"";position:absolute;left:0;top:11px;width:18px;height:18px;border-radius:99px;background:var(--ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 10.5l3 3 6-7' fill='none' stroke='%23FFCC2E' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/15px}
+.life li::before{background-color:var(--sun);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 10.5l3 3 6-7' fill='none' stroke='%2316140F' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.c .btn{margin-top:24px;width:100%}
+.life .btn{background:var(--sun);color:var(--ink)}
+.duck{position:absolute;right:18px;bottom:-12px;width:110px;opacity:1}
+@media(max-width:860px){.cards{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:40px}.c.pro{order:-1}.pr{font-size:52px}}
+</style></head><body><div class="wrap">
+<div class="head"><h2>Pro costs less than two months of Netflix.</h2><p class="lead">Tracking is free forever. Pro puts reminders on every subscription. Rather not subscribe? Pay once.</p></div>
+<div class="cards">
+ <div class="c free"><p class="nm">Free</p><p class="desc">Track everything, forever.</p><p class="pr num"><sup>$</sup>0</p><p class="per">No card, no account.</p>
+  <ul><li>Every subscription, one list</li><li>Totals, calendar, cancel guides</li><li>Reminders on 3</li></ul><span class="btn ghost">Join the waitlist</span></div>
+ <div class="c pro"><div class="banner">7 DAYS FREE · SAVE 49%</div><p class="nm">Pro</p><p class="desc">Reminders on everything.</p><p class="pr num"><sup>$</sup>29<span class="c2">.99</span></p><p class="per">a year, about $2.50 a month. Or $4.99 a month.</p>
+  <ul><li>Everything in Free</li><li>Reminders on every subscription</li><li>Pick your reminder days</li><li>A nudge if you miss one</li></ul><span class="btn">Join the waitlist</span></div>
+ <div class="c life"><p class="nm">Lifetime</p><p class="desc">Rather not subscribe?</p><p class="pr num"><sup>$</sup>49<span class="c2">.99</span></p><p class="per">once. Never renews.</p>
+  <ul><li>Everything in Pro</li><li>Pay once, keep it</li><li>Restore on a new iPhone</li></ul><span class="btn">Join the waitlist</span></div>
+</div>
+<p class="fine">US prices. Your App Store shows your price before you pay. Cancel Pro anytime in iPhone Settings.</p>
+</div></body></html>

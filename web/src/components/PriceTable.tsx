@@ -10,7 +10,6 @@ export function PriceTable({ serviceId, countries, caption }: { serviceId: strin
   const rows = verifiedPrices(serviceId).filter((r) => !countries || countries.includes(r.country));
   return (
     <>
-    <p className="tbl-cap" aria-hidden>{caption}</p>
     <div className="tbl-wrap">
     <table className="tbl">
       <caption>{caption}</caption>
@@ -53,7 +52,7 @@ export function PriceTable({ serviceId, countries, caption }: { serviceId: strin
                       {' '}
                       {p.cycle === 'monthly' ? '/mo' : p.cycle === 'yearly' ? '/yr' : '/qtr'}
                     </span>
-                    {p.cycle !== 'yearly' ? <span className="ym">{year} a year</span> : null}
+                    {p.cycle !== 'yearly' ? <span className="ym" aria-hidden>{year} a year</span> : null}
                   </td>
                   <td className="r y">{year}</td>
                 </tr>

@@ -37,6 +37,15 @@ function summary(name: string, rows: PriceRow[]) {
   return `${name} costs ${parts.join(' and ')}.`;
 }
 
+/** "Netflix price 2026: from $8.99/mo in the US". The answer in the title, from the cheapest monthly plan we list. */
+function titleFor(name: string, year: string, rows: PriceRow[]) {
+  const r = rows.find((x) => x.country === 'US') ?? rows.find((x) => x.country === 'GB');
+  const monthly = r?.plans.filter((p) => p.cycle === 'monthly').sort((a, b) => a.amountMinor - b.amountMinor)[0];
+  if (!r || !monthly) return `${name} price ${year} in ${rows.length} countries`;
+  const where = r.country === 'US' ? 'the US' : 'the UK';
+  return `${name} price ${year}: from ${formatMoney(monthly.amountMinor, r.currency, { country: r.country })}/mo in ${where}`;
+}
+
 export async function generateMetadata({ params }: PageProps<'/prices/[slug]'>): Promise<Metadata> {
   const { slug } = await params;
   const s = serviceById(slug);
@@ -44,7 +53,7 @@ export async function generateMetadata({ params }: PageProps<'/prices/[slug]'>):
   if (!s || rows.length < 6) return {};
   const latest = rows.map((r) => r.checked).sort().pop()!;
   return {
-    title: `${s.name} price ${latest.slice(0, 4)} in ${rows.length} countries`,
+    title: titleFor(s.name, latest.slice(0, 4), rows),
     description: `${summary(s.name, rows)} Main plans in ${rows.length} countries, checked ${dateRange(rows.map((r) => r.checked))}.`,
     alternates: { canonical: `/prices/${s.id}` },
     openGraph: { title: `${s.name} prices in ${rows.length} countries`, url: `/prices/${s.id}`, type: 'article', siteName: 'Ditch: Subscription Tracker', locale: 'en_US', images: [{ url: '/og/prices.png', width: 1200, height: 630, alt: `Subscription prices in ${COUNTRIES.length} countries` }] },
@@ -167,7 +176,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
             </>
           ) : null}
 
-          <div className="appcard" data-has-cta>
+          <div className="appcard" id="remind" data-has-cta>
             <div>
               <h2 className="h3" style={{ margin: 0 }}>
                 Paying for {s.name}?
@@ -224,11 +233,11 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
             {guide ? <a href="#cancel">How to cancel</a> : null}
           </nav>
           <div className="side-card">
-            <p className="h3">Get reminded before it renews</p>
-            <p>A reminder 3 days and 1 day before each charge. Free on 3 subscriptions.</p>
-            <Link className="btn block sm" href="/#join" prefetch={false}>
+            <p className="h3">Get a reminder before {s.name} renews</p>
+            <p>3 days and 1 day before each charge. Free on 3 subscriptions.</p>
+            <a className="btn block sm" href="#remind">
               Join the waitlist
-            </Link>
+            </a>
           </div>
         </aside>
       </div>

@@ -5,8 +5,8 @@ import { COMPANY } from '@/lib/site';
 
 /** Dark footer card: link columns that help people (and search engines) reach every guide, plus the giant wordmark. */
 export function SiteFooter() {
-  const guides = publishedGuides().slice(0, 8);
-  const hubs = priceHubServices().slice(0, 8);
+  const guides = publishedGuides().slice(0, 12);
+  const hubs = priceHubServices().slice(0, 12);
   return (
     <footer className="ftr on-ink">
       <div className="wrap">

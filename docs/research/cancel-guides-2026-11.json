@@ -18,7 +18,7 @@
    "note": "Netflix says this page is the only way to cancel. No cancel button = billed by a partner (shown under Membership on netflix.com/account). New Apple sign-ups ended years ago, old ones may still bill via Apple.",
    "app": "Netflix",
    "company": "Netflix",
-   "answer": "Go to netflix.com/cancelplan and sign in. Tap Cancel, then Finish Cancellation, and keep the confirmation email. Netflix says this page is the only way to cancel; the iPhone app has no cancel button.",
+   "answer": "Go to netflix.com/cancelplan and sign in. Tap Cancel, then Finish Cancellation, and keep the confirmation email. Deleting the Netflix app doesn’t cancel it.",
    "tips": [
     "Netflix stopped new sign-ups through Apple years ago, but older ones may still be billed by Apple. If your statement says APPLE.COM/BILL, cancel on your iPhone instead."
    ],
@@ -63,7 +63,7 @@
    "note": "Official link is /account/subscription/manage/ (cancel.ts has /account/subscription/, which also works as the plan page). No cancel option = billed by a partner like a phone carrier. Family/Duo members can only leave, not cancel.",
    "app": "Spotify",
    "company": "Spotify",
-   "answer": "Open spotify.com/account in Safari and sign in. Tap Manage your plan, then Cancel subscription, and confirm. You can’t cancel inside the Spotify app.",
+   "answer": "Open spotify.com/account in Safari and sign in. Tap Manage your plan, then Cancel subscription, and confirm.",
    "tips": [
     "On a Family or Duo plan? Only the plan manager can cancel. Members can leave the plan instead."
    ],
@@ -479,7 +479,7 @@
    "note": "Cancel All Subscriptions also ends add-ons. No such button = third-party billing (Apple, Google, Roku, Amazon, Verizon). Cancel by the day before renewal.",
    "app": "Peacock",
    "company": "Peacock",
-   "answer": "Open peacocktv.com/account/plans in Safari and sign in. Tap Cancel All Subscriptions and confirm, then watch for the email. Cancel by the day before it renews.",
+   "answer": "Open peacocktv.com/account/plans in Safari and sign in. Tap Cancel All Subscriptions and confirm, then watch for the email.",
    "tips": [
     "Cancel All Subscriptions also ends any add-ons.",
     "Cancel by the day before your renewal date."
@@ -768,7 +768,8 @@
     "doordash",
     "uber-one",
     "netflix"
-   ]
+   ],
+   "urlLabel": "Open Costco’s auto-renew page ↗"
   },
   {
    "id": "adobe-cc",

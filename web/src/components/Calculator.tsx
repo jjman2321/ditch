@@ -3,6 +3,8 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState } from 'react';
 
+import { EmailBox } from './EmailBox';
+
 import { formatMoney, minorPerMajor, yearlyMinor, type Cycle } from '@/lib/money';
 
 export type CalcPrice = { plan: string; amountMinor: number; cycle: Cycle; currency: string };
@@ -99,9 +101,8 @@ export function Calculator({ services, countries, initial = ['netflix', 'spotify
             </div>
           ) : null}
         </div>
-        <a className="btn" href="#join">
-          Remind me before these renew
-        </a>
+        <p className="calc-cta">Ditch reminds you before each of these renews. Free iPhone app, coming soon.</p>
+        <EmailBox source="calculator" bare />
         <p className="note">
           {c.name} prices, usual plan, checked by hand ({c.checked}). This runs in your browser. We don’t see what you tap.
         </p>

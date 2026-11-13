@@ -25,7 +25,7 @@ export function WaitlistStatus() {
   return (
     <>
       <h1>{invalid ? 'That link didn’t work.' : 'Join the waitlist'}</h1>
-      <p className="lead" style={{ marginTop: 16, maxWidth: '34rem' }}>{invalid ? 'It may have expired. Pop your email in again and we’ll send a fresh one.' : 'Ditch is coming to iPhone. Leave your email and we’ll tell you the day it’s out.'}</p>
+      <p className="lead" style={{ marginTop: 16, maxWidth: '34rem' }}>{invalid ? 'Put your email in again and we’ll send a new one.' : 'Ditch is coming to iPhone. Leave your email and we’ll tell you the day it’s out.'}</p>
       <div style={{ marginTop: 28, width: '100%', maxWidth: 520, textAlign: 'left' }}>
         <EmailBox source="waitlist-page" onCream />
       </div>

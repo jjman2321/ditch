@@ -16,8 +16,8 @@ export function EmailBox({ source, cta = 'Join the waitlist', onCream = false, c
   const [report, setReport] = useState(false);
   const [invalid, setInvalid] = useState<false | 'empty' | 'typo'>(false);
 
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
+  async function submit(e?: React.FormEvent) {
+    e?.preventDefault();
     if (!email.trim()) return setInvalid('empty');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) return setInvalid('typo');
     setState('sending');
@@ -46,6 +46,7 @@ export function EmailBox({ source, cta = 'Join the waitlist', onCream = false, c
               <p className="small" style={{ color: 'var(--fg2)' }}>
                 We sent a link to <b>{email}</b>. Tap it to confirm your spot.
               </p>
+              <p className="small" style={{ color: 'var(--fg2)', marginTop: 4 }}>Not there in a minute? Check Spam or Promotions.</p>
             </>
           ) : state === 'already' ? (
             <>
@@ -54,13 +55,16 @@ export function EmailBox({ source, cta = 'Join the waitlist', onCream = false, c
             </>
           ) : state === 'unsent' ? (
             <>
-              <b>You’re on the list.</b>
-              <p className="small" style={{ color: 'var(--fg2)' }}>The confirm email didn’t go out just now. We’ll try again soon.</p>
+              <b>Almost there.</b>
+              <p className="small" style={{ color: 'var(--fg2)' }}>Our confirm email didn’t send.</p>
+              <button type="button" className="linkbtn" onClick={() => submit()}>
+                Send it again
+              </button>
             </>
           ) : (
             <>
-              <b>Sign-ups open very soon.</b>
-              <p className="small" style={{ color: 'var(--fg2)' }}>Nothing was saved yet. Try again in a day or two.</p>
+              <b>Sign-ups aren’t open yet.</b>
+              <p className="small" style={{ color: 'var(--fg2)' }}>We didn’t keep your email. Try again in a day or two.</p>
             </>
           )}
         </div>

@@ -34,7 +34,7 @@ function shortUrl(url: string) {
 /** The short answer: hand-written per guide, plus where and when it was checked (for people and AI answers). */
 function answer(g: { answer?: string; steps: string[]; name: string; checkedOn: string; source: string }) {
   const base = g.answer ?? `${g.steps.join('. ')}.`;
-  return `${base} Checked ${formatDate(g.checkedOn)} on ${host(g.source)}.`;
+  return `${base} Checked ${formatDate(g.checkedOn)}.`;
 }
 
 export async function generateMetadata({ params }: PageProps<'/cancel/[slug]'>): Promise<Metadata> {
@@ -139,7 +139,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
             <div className="acts">
               {g.url ? (
                 <a className="btn" href={g.url} rel="noopener">
-                  {appleOnly ? 'Open your Apple subscriptions ↗' : `Open ${g.name}’s cancel page ↗`}
+                  {appleOnly ? 'Open your Apple subscriptions ↗' : (g.urlLabel ?? `Open ${g.name}’s cancel page ↗`)}
                 </a>
               ) : g.helpUrl ? (
                 <a className="btn" href={g.helpUrl} rel="noopener">
@@ -163,11 +163,13 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
           <nav className="how" aria-label="How you pay">
             <a href="#direct">{appleOnly ? 'Apple (iPhone)' : `${g.name} directly`}</a>
             {showApple ? <a href="#apple">Apple (signed up on iPhone)</a> : null}
-            <a href="#partner">A phone or TV company</a>
+            <a href="#partner">Another company bills you</a>
           </nav>
-          <p className="meta" style={{ marginTop: 10 }}>
-            Not sure? Check your bank statement: <b>APPLE.COM/BILL</b> means Apple bills you.
-          </p>
+          {showApple ? (
+            <p className="meta" style={{ marginTop: 10 }}>
+              Not sure? Check your bank statement: <b>APPLE.COM/BILL</b> means Apple bills you.
+            </p>
+          ) : null}
 
           <H2 id="ready">Have this ready</H2>
           <ul className="ticks" style={{ marginTop: 8 }}>
@@ -212,7 +214,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
                 ))}
               </ol>
               <p className="meta" style={{ marginTop: 10 }}>
-                From <a href={APPLE_SOURCE} rel="noopener">Apple Support</a>. Cancel at least 24 hours before it renews.
+                From <a href={APPLE_SOURCE} rel="noopener">Apple Support</a>.
               </p>
             </>
           )}
@@ -220,12 +222,12 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
           <H2 id="partner">No cancel button?</H2>
           <p>{partnerText ?? `Then ${company} probably isn’t billing you directly. Look for the company named on your bank statement and cancel with them.`}</p>
 
-          <div className="appcard" data-has-cta>
+          <div className="appcard" id="remind" data-has-cta>
             <div>
               <h2 className="h3" style={{ margin: 0 }}>
-                Not ready to cancel?
+                Keeping {g.name} for now?
               </h2>
-              <p>Ditch reminds you 3 days and 1 day before {g.name} renews, so you can decide in time. It can’t cancel for you. It makes sure you don’t forget.</p>
+              <p>Ditch reminds you 3 days and 1 day before it renews, so you decide in time, not after the charge. You still cancel on {company}’s own page.</p>
               <EmailBox source={`cancel-${g.id}`} compact />
             </div>
             {usPlan ? <Notif text={`${g.name} renews in 3 days. ${formatMoney(usPlan.amountMinor, 'USD')}. Still using it?`} /> : null}
@@ -279,11 +281,11 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
             ))}
           </nav>
           <div className="side-card">
-            <p className="h3">Get a reminder first</p>
+            <p className="h3">Get a reminder before {g.name} renews</p>
             <p>3 days and 1 day before each charge. Free on 3 subscriptions.</p>
-            <Link className="btn block sm" href="/#join" prefetch={false}>
+            <a className="btn block sm" href="#remind">
               Join the waitlist
-            </Link>
+            </a>
           </div>
         </aside>
       </div>

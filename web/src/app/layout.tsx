@@ -19,7 +19,8 @@ export const metadata: Metadata = {
   title: { default: `${BRAND} for iPhone`, template: '%s | ditchsubs' },
   description: 'Track every subscription in one list and get a reminder 3 days and 1 day before each charge. Free to track. No bank login, no account.',
   applicationName: 'Ditch',
-  authors: [{ name: COMPANY }],
+  authors: [{ name: 'Aribo', url: '/about' }],
+  publisher: COMPANY,
   openGraph: { siteName: 'Ditch: Subscription Tracker', type: 'website', locale: 'en_US', images: [{ url: '/og/home.png', width: 1200, height: 630, alt: 'Ditch: Subscription Tracker. Ditch it before it renews.' }] },
   twitter: { card: 'summary_large_image', images: ['/og/home.png'] },
 };

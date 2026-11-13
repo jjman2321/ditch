@@ -51,6 +51,8 @@ export type CancelGuide = {
   company?: string;
   appleBilling?: boolean;
   related?: string[];
+  /** Button text when the link isn't a cancel page (e.g. Costco's auto-renew page). */
+  urlLabel?: string;
 };
 
 export const SERVICES = servicesJson as Service[];

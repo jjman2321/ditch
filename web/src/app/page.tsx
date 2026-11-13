@@ -7,7 +7,7 @@ import { Notif } from '@/components/Notif';
 import { DitchDemo } from '@/components/DitchDemo';
 import { COUNTRIES, defaultPlan, formatDate, hasLogo, priceFor, serviceById, verifiedPrices } from '@/lib/data';
 import { formatMoney } from '@/lib/money';
-import { BRAND, COMPANY, PRO, PRO_MINOR, SITE } from '@/lib/site';
+import { BRAND, COMPANY, PRO, PRO_MINOR, SITE, STATS } from '@/lib/site';
 
 const CALC_IDS = ['netflix', 'spotify', 'chatgpt-plus', 'amazon-prime', 'disney-plus', 'apple-music', 'youtube-premium', 'youtube-music', 'max', 'xbox-game-pass', 'claude-pro', 'microsoft-365', 'hulu', 'ps-plus', 'paramount-plus', 'peacock', 'google-one', 'audible'];
 
@@ -22,14 +22,14 @@ const HERO_ROTATION = [
 
 const FAQ = [
   { q: 'Is Ditch free?', a: 'Yes. Tracking is free forever: your full list, your totals and the calendar, with no card and no account. Reminders are free on 3 subscriptions you pick. Pro adds reminders on all of them.' },
-  { q: 'Why pay for a subscription tracker?', a: `Fair question. Pro is ${PRO.yearly} a year, about ${PRO.yearlyPerMonth} a month, and two forgotten months of Netflix cost more than that. Rather not subscribe? Lifetime is ${PRO.lifetime}, once.` },
+  { q: 'Why pay for a subscription tracker?', a: `Fair question. Pro is ${PRO.yearly} a year, about ${PRO.yearlyPerMonth} a month. In a 2025 CNET survey, Americans said they spend ${STATS.wasted.text} on ${STATS.wasted.on}. Rather not subscribe? Lifetime is ${PRO.lifetime}, once.` },
   { q: 'What’s the difference between Pro and Lifetime?', a: `Nothing in the app. Pro renews (${PRO.yearly} a year or ${PRO.monthly} a month). Lifetime is ${PRO.lifetime} once and never renews.` },
   { q: 'Can Ditch cancel subscriptions for me?', a: 'No. No app can do that honestly without your passwords. Ditch reminds you before each charge and opens the official cancel page, with the steps.' },
   { q: 'Do I need to link my bank?', a: 'No. You add what you pay for: tap the logos or type a name, and the price fills in for your country. Ditch never reads your bank or your email.' },
   { q: 'Do reminders work when the app is closed?', a: 'Yes. Reminders are set on your iPhone, so they arrive even when Ditch is closed. Opening it now and then keeps them topped up.' },
   { q: 'Can it remind me before a free trial ends?', a: 'Yes. Add the trial and its end date, and Ditch reminds you 3 days and 1 day before it turns into a charge.' },
   { q: 'Is my subscription list private?', a: 'Yes. Your list stays on your phone. No ads, no tracking, and we never sell anything about you. Pro payments go through Apple.' },
-  { q: 'Which countries does Ditch work in?', a: 'Anywhere with the App Store. Prices fill in for 12 countries, including the US, UK, Canada, Australia, much of Europe and India. Elsewhere you type the price in.' },
+  { q: 'Which countries does Ditch work in?', a: 'Anywhere with the App Store. In the app, prices fill in for 12 countries, including the US, UK, Canada, Australia, much of Europe and India. Elsewhere you type the price in.' },
   { q: 'What happens if I stop paying for Pro?', a: 'Nothing gets deleted or hidden. Your list stays as it is, and reminders go back to 3.' },
   { q: 'How do I cancel Ditch Pro?', a: 'In iPhone Settings → your name → Subscriptions → Ditch. Cancel at least 24 hours before it renews.' },
   { q: 'Is Ditch on Android?', a: 'Not yet. Ditch is made for iPhone.' },
@@ -174,7 +174,7 @@ export default function Home() {
         <div className="wrap">
           <div className="sec-head">
             <h2 id="how-h" className="h2">
-              How it works: <span className="nw">from sign-up</span> <span className="nw">to cancelled</span>
+              How it works: add it, get reminded, <span className="nw">ditch it</span>
             </h2>
           </div>
           <div className="sec-body steps">
@@ -208,38 +208,17 @@ export default function Home() {
             <div className="card step" data-reveal style={{ ['--i' as string]: 2 }}>
               <span className="n">3</span>
               <h3 className="h3">Cancel what you don’t use</h3>
-              <p>Hold to ditch. Ditch opens the official cancel page and shows you the steps.</p>
-              <div className="shot" style={{ paddingTop: 0 }}>
-                <DitchDemo small name="Netflix" meta={`${formatMoney(nfPlan.amountMinor, 'USD')}/mo`} logo="/logos/netflix.png" />
+              <p>Hold to ditch, then cancel on the service’s own page with the steps right there.</p>
+              <div className="shot">
+                <div className="cpage" aria-hidden>
+                  <span className="bar">netflix.com/cancelplan</span>
+                  <p className="t">Cancel your membership?</p>
+                  <p className="s">Your plan ends on Nov 18.</p>
+                  <span className="b">Finish cancellation</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* 3b. The ditch moment, with context */}
-      <section className="sec" style={{ paddingTop: 0 }} aria-labelledby="dd-h">
-        <div className="wrap split">
-          <div>
-            <h2 id="dd-h" className="h2">
-              Cancel it and see what you won’t pay
-            </h2>
-            <p className="lead" style={{ marginTop: 20 }}>
-              Once you’ve cancelled, Ditch shows what it would have cost you in a year.
-            </p>
-            <ul className="ticks">
-              <li>
-                Official cancel pages<span>The real page for each service, never a lookalike.</span>
-              </li>
-              <li>
-                Steps checked by hand<span>With the date we last checked them.</span>
-              </li>
-            </ul>
-            <p style={{ marginTop: 20 }}>
-              <Link href="/cancel">Browse all cancel guides →</Link>
-            </p>
-          </div>
-          <DitchDemo name="Netflix" logo="/logos/netflix.png" meta={`${nfPlan.name} · ${formatMoney(nfPlan.amountMinor, 'USD')}/mo`} yearly={formatMoney(nfPlan.amountMinor * 12, 'USD')} />
         </div>
       </section>
 
@@ -251,7 +230,7 @@ export default function Home() {
               Reminders that actually arrive
             </h2>
             <p className="lead" style={{ marginTop: 20 }}>
-              Missed reminders are a common complaint about subscription trackers. Ditch sets every reminder on your iPhone and shows you the next one, so you know it’s set.
+              We read 5,535 App Store reviews of subscription trackers. About 125 said reminders never came, came late or were wrong. Ditch sets every reminder on your iPhone and shows you the next one, so you know it’s set.
             </p>
             <ul className="ticks">
               <li>
@@ -270,6 +249,32 @@ export default function Home() {
             <Notif text={`Your Disney+ trial ends tomorrow. Then ${formatMoney(defaultPlan(priceFor('disney-plus', 'US')!).amountMinor, 'USD')} a month.`} when="9:00" />
             <span className="next">Next reminder: Netflix · Fri 9:00</span>
           </div>
+        </div>
+      </section>
+
+      {/* 3b. The ditch moment, with context */}
+      <section className="sec" style={{ paddingTop: 0 }} aria-labelledby="dd-h">
+        <div className="wrap split">
+          <div>
+            <h2 id="dd-h" className="h2">
+              Cancel it and see what you won’t pay
+            </h2>
+            <p className="lead" style={{ marginTop: 20 }}>
+              Once you’ve cancelled, Ditch shows what it would have cost you in a year.
+            </p>
+            <ul className="ticks">
+              <li>
+                Official links only<span>The service’s own cancel or help page, never a lookalike.</span>
+              </li>
+              <li>
+                Steps checked by hand<span>With the date we last checked them.</span>
+              </li>
+            </ul>
+            <p style={{ marginTop: 20 }}>
+              <Link href="/cancel">Browse all cancel guides →</Link>
+            </p>
+          </div>
+          <DitchDemo name="Netflix" logo="/logos/netflix.png" meta={`${nfPlan.name} · ${formatMoney(nfPlan.amountMinor, 'USD')}/mo`} yearly={formatMoney(nfPlan.amountMinor * 12, 'USD')} />
         </div>
       </section>
 
@@ -322,7 +327,7 @@ export default function Home() {
                 <li>Everything in Free</li>
                 <li>Reminders on all of them</li>
                 <li>Pick your reminder days</li>
-                <li>A nudge if you miss one</li>
+                <li>A last call the evening before</li>
               </ul>
               <span className="push" />
               <Link className="btn" href="/#join" prefetch={false}>

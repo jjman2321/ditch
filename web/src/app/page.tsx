@@ -20,21 +20,6 @@ const HERO_ROTATION = [
   { id: 'amazon-prime', name: 'Prime' },
 ];
 
-const PLAN_ROWS: [string, string, string][] = [
-  ['Track every subscription', '✓', '✓'],
-  ['Totals, calendar and cancel guides', '✓', '✓'],
-  ['Subscriptions with reminders', '3', 'All'],
-  ['Pick reminder days', '–', '✓'],
-  ['Nudge if you miss one', '–', '✓'],
-];
-
-/** A table cell: ticks and dashes get words for screen readers. */
-function cell(v: string) {
-  if (v === '✓') return (<><span aria-hidden>✓</span><span className="sr">Yes</span></>);
-  if (v === '–') return (<><span aria-hidden>–</span><span className="sr">No</span></>);
-  return v;
-}
-
 const FAQ = [
   { q: 'Is Ditch free?', a: 'Yes. Tracking is free forever: your full list, your totals and the calendar, with no card and no account. Reminders are free on 3 subscriptions you pick. Pro adds reminders on all of them.' },
   { q: 'Why pay for a subscription tracker?', a: `Fair question. Pro is ${PRO.yearly} a year, about ${PRO.yearlyPerMonth} a month, and two forgotten months of Netflix cost more than that. Rather not subscribe? Lifetime is ${PRO.lifetime}, once.` },
@@ -288,7 +273,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. Price + lifetime: three plan tiles like native paywalls, then what Free and Pro include */}
+      {/* 6. Price + lifetime (owner pick C): Free card, big Pro card with yearly and monthly, Lifetime strip */}
       <section id="pricing" className="sec" style={{ paddingTop: 0 }} aria-labelledby="price-h" data-has-cta>
         <div className="wrap">
           <div className="price-head">
@@ -297,56 +282,64 @@ export default function Home() {
             </h2>
             <p className="lead">Tracking is free forever. Pro puts reminders on every subscription. Rather not subscribe? Pay once.</p>
           </div>
-          <div className="ptiles" data-reveal>
-            <div className="ptile" style={{ ['--i' as string]: 1 }}>
-              <p className="k">Monthly</p>
-              <p className="amt num">{PRO.monthly}</p>
-              <p className="s">a month</p>
+          <div className="pg" data-reveal>
+            <div className="pc-card pc-free">
+              <h3 className="nm">Free</h3>
+              <p className="desc">Track everything, forever.</p>
+              <p className="amt num">$0</p>
+              <p className="per">No card, no account.</p>
+              <ul>
+                <li>Every subscription in one list</li>
+                <li>Totals, calendar and cancel guides</li>
+                <li>Reminders on 3 you pick</li>
+              </ul>
+              <span className="push" />
+              <Link className="btn ghost" href="/#join" prefetch={false}>
+                Join the waitlist
+              </Link>
             </div>
-            <div className="ptile hi" style={{ ['--i' as string]: 0 }}>
-              <span className="badge">SAVE {yearlySave}%</span>
-              <p className="k">Yearly</p>
-              <p className="amt num">{PRO.yearly}</p>
-              <p className="s">a year, about {PRO.yearlyPerMonth} a month</p>
-              <span className="trial">{PRO.trialDays} days free</span>
+            <div className="pc-card pc-pro">
+              <img className="pc-duck" src="/duck.webp" alt="" width={200} height={117} loading="lazy" />
+              <h3 className="nm">Pro</h3>
+              <p className="desc">Reminders on every subscription.</p>
+              <div className="pc-opts">
+                <div className="pc-opt on">
+                  <span className="pc-badge">{PRO.trialDays} DAYS FREE</span>
+                  <p className="k">Yearly</p>
+                  <p className="amt num">{PRO.yearly}</p>
+                  <p className="per">
+                    {PRO.yearlyPerMonth} a month · save {yearlySave}%
+                  </p>
+                </div>
+                <div className="pc-opt">
+                  <p className="k">Monthly</p>
+                  <p className="amt num">{PRO.monthly}</p>
+                  <p className="per">No free trial</p>
+                </div>
+              </div>
+              <ul>
+                <li>Everything in Free</li>
+                <li>Reminders on all of them</li>
+                <li>Pick your reminder days</li>
+                <li>A nudge if you miss one</li>
+              </ul>
+              <span className="push" />
+              <Link className="btn" href="/#join" prefetch={false}>
+                Join the waitlist
+              </Link>
             </div>
-            <div className="ptile life" style={{ ['--i' as string]: 2 }}>
-              <p className="k">Lifetime</p>
+            <div className="pc-life">
               <p className="amt num">{PRO.lifetime}</p>
-              <p className="s">once, never renews</p>
+              <p className="t">
+                <b>Lifetime. Pay once.</b>
+                <span>Everything in Pro, and it never renews. For people who are done with subscriptions.</span>
+              </p>
+              <Link className="btn" href="/#join" prefetch={false}>
+                Join the waitlist
+              </Link>
             </div>
           </div>
-          <div className="cmp-card">
-            <table>
-              <caption className="sr">What Free and Pro include</caption>
-              <thead>
-                <tr>
-                  <th scope="col">
-                    <span className="sr">Feature</span>
-                  </th>
-                  <th scope="col">FREE</th>
-                  <th scope="col" className="pc">
-                    PRO
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {PLAN_ROWS.map(([label, free, pro]) => (
-                  <tr key={label}>
-                    <td>{label}</td>
-                    <td className={free === '–' ? 'no' : 'num'}>{cell(free)}</td>
-                    <td className="pc">{cell(pro)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="price-cta">
-            <Link className="btn" href="/#join" prefetch={false}>
-              Join the waitlist
-            </Link>
-            <p className="price-line">US prices. Your App Store shows your price before you pay. Cancel anytime in iPhone Settings.</p>
-          </div>
+          <p className="pc-foot">US prices. Your App Store shows your price before you pay. Cancel Pro anytime in iPhone Settings.</p>
         </div>
       </section>
 

@@ -397,3 +397,5 @@ Why: an app feels premium when the bad moments are handled well, not only the ha
 - [ ] Pricing: heading "Pro costs less than two months of Netflix." A clean list (Free, Pro yearly, Pro monthly, Lifetime) on the left, the app's paywall in a phone on the right. Table, plans and button fade in one after another.
 - [ ] With Reduce Motion on, both phones show finished, nothing moves.
 - [ ] On your iPhone both phones fit the screen width with no sideways scroll.
+- [ ] Pricing (option C): Free card + yellow Pro card (Yearly with "7 days free", Monthly) + dark Lifetime strip. On iPhone: Pro first, Yearly and Monthly as full-width rows, no button on the Free card, nothing cut off. The duck pops up over the Pro card and the "7 days free" badge drops in.
+- [ ] Ditch card: the hold ring fills, "Hold to ditch" becomes a "Ditched" tag, the Netflix logo greys, the duck pops up, then "$239.88 a year you won't pay." fades in.

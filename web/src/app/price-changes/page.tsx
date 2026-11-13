@@ -5,6 +5,7 @@ import { EmailBox } from '@/components/EmailBox';
 import { Logo } from '@/components/Logo';
 import { COUNTRY, formatDate, guideById, inCountry, priceChanges, priceChangesChecked, priceHubServices, slugOf } from '@/lib/data';
 import { formatMoney } from '@/lib/money';
+import { planLabel } from '@/lib/tools';
 import { SITE } from '@/lib/site';
 
 const YEAR = new Date().getFullYear();
@@ -26,15 +27,16 @@ const host = (u: string) => u.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
  */
 export default function PriceChanges() {
   const all = priceChanges();
+  const rises = all.filter((c) => c.pct > 0);
   const checked = priceChangesChecked();
-  const biggest = [...all].sort((a, b) => b.pct - a.pct)[0];
+  const biggest = [...rises].sort((a, b) => b.pct - a.pct)[0];
   const services = [...new Set(all.map((c) => c.serviceId))];
   const months = [...new Set(all.map((c) => monthKey(c.when)))];
-  const latest = all[0];
+  const latest = rises[0];
   const faq = all.length
     ? [
-        { q: `Which subscription went up the most?`, a: `${biggest.name} ${biggest.plan} in ${inCountry(biggest.country)}: ${formatMoney(biggest.oldPrice, biggest.currency, { country: biggest.country })} to ${formatMoney(biggest.newPrice, biggest.currency, { country: biggest.country })} ${per(biggest.cycle)}, ${Math.round(biggest.pct)}% more, from ${formatDate(biggest.when)}.` },
-        { q: 'What was the latest price rise?', a: `${latest.name} ${latest.plan} in ${inCountry(latest.country)} went from ${formatMoney(latest.oldPrice, latest.currency, { country: latest.country })} to ${formatMoney(latest.newPrice, latest.currency, { country: latest.country })} ${per(latest.cycle)} on ${formatDate(latest.when)}.` },
+        { q: `Which subscription went up the most?`, a: `${planLabel(biggest.name, biggest.plan)} in ${inCountry(biggest.country)}: ${formatMoney(biggest.oldPrice, biggest.currency, { country: biggest.country })} to ${formatMoney(biggest.newPrice, biggest.currency, { country: biggest.country })} ${per(biggest.cycle)}, ${Math.round(biggest.pct)}% more, from ${formatDate(biggest.when)}.` },
+        { q: 'What was the latest price rise?', a: `${planLabel(latest.name, latest.plan)} in ${inCountry(latest.country)} went from ${formatMoney(latest.oldPrice, latest.currency, { country: latest.country })} to ${formatMoney(latest.newPrice, latest.currency, { country: latest.country })} ${per(latest.cycle)} on ${formatDate(latest.when)}.` },
         { q: 'Do price rises apply to people who already pay?', a: 'Usually, yes, but often later than for new subscribers. Each row shows both dates when the company gave them.' },
       ]
     : [];
@@ -46,7 +48,7 @@ export default function PriceChanges() {
   const hubs = new Set(priceHubServices().map((s) => s.id));
 
   return (
-    <div className="wrap v4 gv3 guide4 changes">
+    <div className="wrap v4 gv3 guide4 pchg">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
       <nav className="crumbs" aria-label="Breadcrumb">
         <Link href="/prices">Prices</Link>
@@ -58,7 +60,7 @@ export default function PriceChanges() {
           <h1>Subscription price increases {YEAR}</h1>
           <p className="lead">
             {all.length
-              ? `${all.length} price rises across ${services.length} subscriptions since 2024, newest first. Each one has the old price, the new price, the date and the page that says so.`
+              ? `${rises.length} price rises across ${services.length} subscriptions since 2024, newest first, and the odd price cut. Each one has the old price, the new price, the date and the page that says so.`
               : 'Every subscription price rise we can confirm, with the old price, the new price, the date and the page that says so. The first list is on its way.'}
           </p>
         </div>
@@ -68,7 +70,7 @@ export default function PriceChanges() {
         <>
           <div className="ch-stats" role="list">
             <div role="listitem">
-              <b className="num">{all.length}</b>
+              <b className="num">{rises.length}</b>
               <span>price rises</span>
             </div>
             <div role="listitem">
@@ -78,7 +80,7 @@ export default function PriceChanges() {
             <div role="listitem">
               <b className="num">+{Math.round(biggest.pct)}%</b>
               <span>
-                biggest: {biggest.name} {biggest.plan}
+                biggest: {planLabel(biggest.name, biggest.plan)}
               </span>
             </div>
           </div>
@@ -94,7 +96,7 @@ export default function PriceChanges() {
                       <Logo id={c.serviceId} size={44} />
                       <div className="ch-main">
                         <h3>
-                          {c.name} {c.plan} <span className="ch-c">{COUNTRY[c.country].short ?? c.country}</span>
+                          {planLabel(c.name, c.plan)} <span className="ch-c">{COUNTRY[c.country].short ?? c.country}</span>
                         </h3>
                         <p className="ch-price">
                           <s className="num">{formatMoney(c.oldPrice, c.currency, { country: c.country })}</s> <span aria-hidden>→</span>
@@ -110,8 +112,9 @@ export default function PriceChanges() {
                           </a>
                         </p>
                       </div>
-                      <span className="ch-pct num" aria-label={`${Math.round(c.pct)}% more`}>
-                        +{Math.round(c.pct)}%
+                      <span className={`ch-pct num${c.pct < 0 ? ' down' : ''}`} aria-label={c.pct < 0 ? `${Math.round(-c.pct)}% less` : `${Math.round(c.pct)}% more`}>
+                        {c.pct < 0 ? '−' : '+'}
+                        {Math.round(Math.abs(c.pct))}%
                       </span>
                     </li>
                   ))}

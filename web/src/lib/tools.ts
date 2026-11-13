@@ -85,6 +85,10 @@ export const planLabel = (n: string, plan: string) => {
     if (lc(nw.slice(-k)) === lc(pw.slice(0, k))) return [...nw, ...pw.slice(k)].join(' ');
   }
   if (lc(nw).includes(lc(pw))) return n;
+  // "Google AI Pro" + "Google AI Plus": the plan starts with the brand, so it's already a full name.
+  if (pw.length > 1 && lc(pw.slice(0, 1)) === lc(nw.slice(0, 1))) return pl;
+  // "Peacock" + "Apple TV and Peacock Premium bundle": the plan already names the service.
+  if (new RegExp(`(^|\\s)${lc(nw).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(\\s|$)`).test(lc(pw))) return pl;
   return `${n} ${pl}`;
 };
 

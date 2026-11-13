@@ -429,3 +429,11 @@ Why: an app feels premium when the bad moments are handled well, not only the ha
 - [ ] Every tool's yellow box says "Free for 3 subscriptions, Pro covers the rest."
 - [ ] Tab through /tools/spotify-family-split with a keyboard: the focus ring is yellow inside the black answer box.
 - [ ] /tools/youtube-premium-family-split is gone from the site (parked until US prices are checked).
+
+### W4. Price changes, new guides (Nov 13)
+- [ ] Home: the line under the headline reads "Track every subscription free. Get a reminder 3 days before a charge." No checkbox under any email box.
+- [ ] /price-changes: 3 number cards (rises, subscriptions, biggest %), then months newest first. Each row: logo, plan, country tag, old price crossed out → new price, dates, a source link that opens. Xbox Game Pass (April 2026) shows a green "−" cut.
+- [ ] /prices/netflix: a "Netflix price history" section with dated rises and a link to /price-changes.
+- [ ] New guides open: /cancel/icloud, /cancel/adobe-cc, /cancel/crunchyroll, /cancel/kindle-unlimited (title says Kindle+), /cancel/nyt.
+- [ ] /cancel/google-one: "What happens after", "How to check", "Pause instead" and 3 questions, each fact matching Google's own page.
+- [ ] Footer → Prices column has "Price increases".

@@ -31,7 +31,7 @@ const mena = latest('prices-mena-');
 prices.prices = [...prices.prices, ...mena.prices];
 prices.about.countries = { ...prices.about.countries, ...(mena.about.countries ?? {}) };
 // Cancel guides: every cancel-guides-*.json, oldest first; a later file's guide replaces the same id (e.g. the "-b" re-check).
-const all = (prefix) => readdirSync(join(APP, 'docs/research')).filter((n) => n.startsWith(prefix) && n.endsWith('.json')).sort().map((f) => JSON.parse(readFileSync(join(APP, 'docs/research', f), 'utf8')));
+const all = (prefix) => readdirSync(join(APP, 'docs/research')).filter((n) => n.startsWith(prefix) && n.endsWith('.json')).sort((a, b) => a.replace(/\.json$/, '').localeCompare(b.replace(/\.json$/, ''))).map((f) => JSON.parse(readFileSync(join(APP, 'docs/research', f), 'utf8')));
 const cancelFiles = all('cancel-guides-');
 const cancel = cancelFiles[0];
 for (const f of cancelFiles.slice(1)) {

@@ -1380,30 +1380,32 @@ img.tv, .tv .logo { width: 44px; height: 44px; border-radius: 12px; }
 .tcard .logo, .tcard img.tv { flex: none; }
 
 /* /price-changes (Nov 13) */
-.changes .ch-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 36px; }
-.changes .ch-stats > div { background: var(--white); border-radius: 20px; box-shadow: inset 0 0 0 1.5px var(--hair); padding: 20px 22px; }
-.changes .ch-stats > div:last-child { background: var(--sun); box-shadow: none; }
-.changes .ch-stats b { display: block; font: 400 clamp(2rem, 1.5rem + 1.6vw, 2.75rem)/1 var(--f-display); letter-spacing: -.03em; }
-.changes .ch-stats span { display: block; margin-top: 8px; font-size: 14.5px; color: var(--fg2); }
-.changes .ch-stats > div:last-child span { color: var(--sunfg2); }
-.changes .ch-month { margin-top: 64px; }
-.changes .ch-list { list-style: none; padding: 0; margin-top: 16px; display: grid; gap: 10px; }
-.changes .ch-list li { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 16px; align-items: center; background: var(--white); border-radius: 20px; box-shadow: inset 0 0 0 1.5px var(--hair); padding: 16px 20px; scroll-margin-top: 88px; }
-.changes .ch-list .logo, .changes .ch-list .mono { width: 44px; height: 44px; border-radius: 12px; }
-.changes .ch-main { min-width: 0; }
-.changes .ch-main h3 { font-size: 16.5px; }
-.changes .ch-c { font: 600 12px var(--body); color: var(--mute); background: var(--chip); border-radius: 6px; padding: 2px 6px; margin-left: 4px; vertical-align: 2px; }
-.changes .ch-price { margin-top: 4px; font-size: 16px; }
-.changes .ch-price s { color: var(--mute); }
-.changes .ch-price b { font-weight: 700; }
-.changes .ch-when { margin-top: 4px; font-size: 13.5px; color: var(--mute); }
-.changes .ch-when a { color: var(--mute); }
-.changes .ch-pct { font: 400 22px var(--f-display); letter-spacing: -.02em; background: #FFE1D2; color: #8A2E05; border-radius: 10px; padding: 4px 10px; white-space: nowrap; }
+.pchg .ch-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 36px; }
+.pchg .ch-stats > div { background: var(--white); border-radius: 20px; box-shadow: inset 0 0 0 1.5px var(--hair); padding: 20px 22px; }
+.pchg .ch-stats > div:last-child { background: var(--sun); box-shadow: none; }
+.pchg .ch-stats b { display: block; font: 400 clamp(2rem, 1.5rem + 1.6vw, 2.75rem)/1 var(--f-display); letter-spacing: -.03em; }
+.pchg .ch-stats span { display: block; margin-top: 8px; font-size: 14.5px; color: var(--fg2); }
+.pchg .ch-stats > div:last-child span { color: var(--sunfg2); }
+.pchg .ch-month { margin-top: 64px; }
+.pchg .ch-list { list-style: none; padding: 0; margin-top: 16px; display: grid; gap: 10px; }
+.pchg .ch-list li { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 16px; align-items: center; background: var(--white); border-radius: 20px; box-shadow: inset 0 0 0 1.5px var(--hair); padding: 16px 20px; scroll-margin-top: 88px; }
+.pchg .ch-list .logo, .pchg .ch-list .mono { width: 44px; height: 44px; border-radius: 12px; }
+.pchg .ch-main { min-width: 0; }
+.pchg .ch-main h3 { font-size: 16.5px; }
+.pchg .ch-c { font: 600 12px var(--body); color: var(--mute); background: var(--chip); border-radius: 6px; padding: 2px 6px; margin-left: 4px; vertical-align: 2px; }
+.pchg .ch-price { margin-top: 4px; font-size: 16px; }
+.pchg .ch-price s { color: var(--mute); }
+.pchg .ch-price b { font-weight: 700; }
+.pchg .ch-when { margin-top: 4px; font-size: 13.5px; color: var(--mute); }
+.pchg .ch-when a { color: var(--mute); }
+.pchg .ch-pct { font: 400 22px var(--f-display); letter-spacing: -.02em; background: #FFE1D2; color: #8A2E05; border-radius: 10px; padding: 4px 10px; white-space: nowrap; }
 @media (max-width: 760px) {
-  .changes .ch-stats { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-  .changes .ch-stats > div:last-child { grid-column: 1 / -1; }
-  .changes .ch-list li { grid-template-columns: 40px minmax(0, 1fr); gap: 12px; padding: 14px 16px; }
-  .changes .ch-pct { grid-column: 2; justify-self: start; font-size: 18px; }
-  .changes .ch-month { margin-top: 44px; }
+  .pchg .ch-stats { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .pchg .ch-stats > div:last-child { grid-column: 1 / -1; }
+  .pchg .ch-list li { grid-template-columns: 40px minmax(0, 1fr); gap: 12px; padding: 14px 16px; }
+  .pchg .ch-pct { grid-column: 2; justify-self: start; font-size: 18px; }
+  .pchg .ch-month { margin-top: 44px; }
 }
-@media (pointer: coarse) { .changes .ch-when a { display: inline-flex; align-items: center; min-height: 44px; } }
+@media (pointer: coarse) { .pchg .ch-when a { display: inline-flex; align-items: center; min-height: 44px; } }
+.pchg .ch-pct.down { background: #DDF2E3; color: #135C2B; }
+@media (max-width: 400px) { .v4 kbd { white-space: normal; } }

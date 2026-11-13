@@ -265,9 +265,9 @@ export type PriceChange = {
   quote?: string;
   notes?: string;
 };
-/** Sourced price rises, newest first, for services we know. `when` is the first date we have; `pct` is the rise in %. */
+/** Sourced price changes (rises and the odd cut), newest first, for services we know. `when` is the first date we have; `pct` is the change in % (negative = cut). Rows whose own notes call the figures uncertain are left out. */
 export function priceChanges() {
-  const raw = ((priceChangesJson as { changes?: PriceChange[] }).changes ?? []).filter((c) => c.newPrice > c.oldPrice && c.source && serviceById(c.serviceId) && COUNTRY[c.country]);
+  const raw = ((priceChangesJson as { changes?: PriceChange[] }).changes ?? []).filter((c) => c.newPrice !== c.oldPrice && c.source && serviceById(c.serviceId) && COUNTRY[c.country] && !/uncertain/i.test(c.notes ?? ''));
   return raw
     .map((c) => ({ ...c, name: serviceById(c.serviceId)!.name, when: (c.effectiveNew ?? c.announcedOn ?? c.effectiveExisting ?? '') as string, pct: ((c.newPrice - c.oldPrice) / c.oldPrice) * 100 }))
     .filter((c) => c.when)

@@ -1,0 +1,988 @@
+{
+  "checkedOn": "2026-11-13",
+  "notes": [
+    "Second batch: the 19 high-confidence guides not covered in guide-depth-2026-11.json. Same shape and rules as that file.",
+    "Every fact below was read live on an official page on 2026-11-13. Quotes are verbatim (some are cut short where the sentence was long; the cut is marked with ...).",
+    "null means the official page we could read is silent or could not be loaded. Never fill a null from memory or a blog.",
+    "googlePlay steps come from Google Play Help (support.google.com/googleplay/answer/7018481, Android version). They are only included where the service's own help (or Google's, for Google services) says Google Play billing is possible.",
+    "FAQ questions are the usual People Also Ask questions for 'how to cancel <service>'. Google's PAA box itself can't be read by our tools, so the question list is an informed pick, not a scrape."
+  ],
+  "googlePlaySource": {
+    "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+    "steps": [
+      "On your Android device, go to subscriptions in Google Play.",
+      "Select the subscription you want to cancel.",
+      "Tap Cancel subscription.",
+      "Follow the instructions."
+    ],
+    "extraQuotes": [
+      "When you cancel a subscription, you'll still be able to use your subscription for the time you've already paid.",
+      "When you uninstall the app, your subscription won't cancel.",
+      "If you can't find your subscription, it may be on a different account."
+    ]
+  },
+  "guides": [
+    {
+      "id": "google-one",
+      "checkedOn": "2026-11-13",
+      "after": {
+        "access": {
+          "text": "Your extra storage and perks stay until the end of the billing cycle.",
+          "source": "https://support.google.com/googleone/answer/9056360?co=GENIE.Platform%3DiOS&hl=en",
+          "quote": "When you cancel your membership, your Google One storage and benefits won’t go away immediately. You have until the end of the billing cycle to use them."
+        },
+        "data": {
+          "text": "You drop back to 15 GB free. If you're over that, Gmail can't send or receive mail and new files won't upload.",
+          "source": "https://support.google.com/googleone/answer/9056360?co=GENIE.Platform%3DiOS&hl=en",
+          "quote": "Each person will keep their default storage of up to 15 GB at no charge. ... Gmail: You can't send or receive messages. Messages sent to you are returned to the sender."
+        },
+        "refunds": {
+          "text": "Google says storage plans aren't refundable in most countries. You keep the storage until the period ends. Paid through Apple? Ask Apple.",
+          "source": "https://support.google.com/googleone/answer/9056360?co=GENIE.Platform%3DiOS&hl=en",
+          "quote": "In most countries or regions, Google storage plan purchases are non-refundable. The amount of storage you purchased is yours for the length of the subscription, even if you decide to cancel it."
+        }
+      },
+      "verify": {
+        "text": "How to check it worked: you should get a confirmation. No Cancel Subscription button, or a red expiry message, means it's already cancelled.",
+        "source": "https://support.google.com/googleone/answer/9056360?co=GENIE.Platform%3DiOS&hl=en",
+        "quote": "If there isn't a \"Cancel Subscription\" button or there's an expiration message in red, the subscription is already canceled. You should get confirmation that your subscription is canceled."
+      },
+      "pause": {
+        "text": "Not sure? Google says you can switch to a smaller storage plan instead of cancelling.",
+        "source": "https://support.google.com/googleone/answer/9056360?co=GENIE.Platform%3DiOS&hl=en",
+        "quote": "If you don't want to cancel your membership, you can decrease storage instead."
+      },
+      "googlePlay": {
+        "steps": [
+          "On your Android device, go to subscriptions in Google Play.",
+          "Select Google One.",
+          "Tap Cancel subscription.",
+          "Follow the instructions."
+        ],
+        "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+        "serviceSource": "https://support.google.com/googleone/answer/9056360?co=GENIE.Platform%3DAndroid&hl=en",
+        "serviceQuote": "I purchased my current plan from the Play Store",
+        "serviceNote": "Google's own Android steps cancel in the Google One app: Menu → Settings → Cancel membership."
+      },
+      "faq": [
+        {
+          "q": "What happens to my photos and files if I cancel Google One?",
+          "a": "You drop to 15 GB. If you're over it, Photos stops backing up, Drive stops syncing, and nobody can edit your files until you free up space.",
+          "source": "https://support.google.com/googleone/answer/9056360?co=GENIE.Platform%3DiOS&hl=en",
+          "quote": "Until you reduce the amount of storage you use, no one can edit or copy your files. ... Google Photos: You can't back up any photos or videos."
+        },
+        {
+          "q": "Will I lose YouTube Premium if it came with Google One?",
+          "a": "Yes. Google says you lose premium subscriptions that came with your plan, like YouTube Premium.",
+          "source": "https://support.google.com/googleone/answer/9056360?co=GENIE.Platform%3DiOS&hl=en",
+          "quote": "You'll lose access to premium subscriptions, like Google Home Premium, Google Health Premium, and YouTube Premium."
+        },
+        {
+          "q": "Does cancelling affect my family group?",
+          "a": "Yes. Everyone you share with loses the extra storage and drops back to their own free 15 GB.",
+          "source": "https://support.google.com/googleone/answer/9056360?co=GENIE.Platform%3DiOS&hl=en",
+          "quote": "You and your family members will lose access to your additional storage. Each person will keep their default storage of up to 15 GB at no charge."
+        }
+      ]
+    },
+    {
+      "id": "ps-plus",
+      "checkedOn": "2026-11-13",
+      "after": {
+        "access": {
+          "text": "You keep every PlayStation Plus benefit until the end of the period you already paid for.",
+          "source": "https://www.playstation.com/en-us/support/subscriptions/cancel-playstation-plus/",
+          "quote": "If you cancel your PlayStation Plus subscription you will continue to have access to all of your PlayStation Plus subscription benefits until the end of any previously purchased subscription payment period."
+        },
+        "data": {
+          "text": "Free monthly games stop working when it ends. Games you bought at a PS Plus discount, plus packs and avatars, are yours to keep.",
+          "source": "https://www.playstation.com/en-us/support/subscriptions/cancel-playstation-plus/",
+          "quote": "Once your PlayStation Plus subscription ends, content you previously downloaded at no cost as part of the subscription (such as monthly games) will no longer be available. However, redeemed PlayStation Plus packs and avatars, and PlayStation Plus discounted purchases are yours to keep."
+        },
+        "refunds": {
+          "text": "In the US you can cancel and ask for a refund within 14 days of first paying. Sony may cut it for the time you used.",
+          "source": "https://www.playstation.com/en-us/legal/playstation-store-cancellation-policy/",
+          "quote": "You can cancel your purchase of a subscription and request a refund within 14 days from the initial transaction date, even after you start using the subscription. The refund may be reduced pro-rata to reflect the use you've had of the service."
+        }
+      },
+      "verify": {
+        "text": "How to check it worked: in Account Management → Subscription, you should now see Reactivate Subscription. Leave it alone unless you want to stay.",
+        "source": "https://www.playstation.com/en-us/support/store/cancel-ps-store-subscription/",
+        "quote": "If you’d like to keep your subscription, select Reactivate Subscription to keep it active."
+      },
+      "pause": null,
+      "googlePlay": null,
+      "faq": [
+        {
+          "q": "Do I keep my PS Plus games if I cancel?",
+          "a": "Not the free monthly games. They stop working once it ends. Games you bought at a PS Plus discount stay yours.",
+          "source": "https://www.playstation.com/en-us/support/subscriptions/cancel-playstation-plus/",
+          "quote": "Once your PlayStation Plus subscription ends, content you previously downloaded at no cost as part of the subscription (such as monthly games) will no longer be available."
+        },
+        {
+          "q": "Can I get a refund on PlayStation Plus?",
+          "a": "Within 14 days of your first payment, yes, maybe reduced for time used. After that, cancelling only stops future payments.",
+          "source": "https://www.playstation.com/en-us/legal/playstation-store-cancellation-policy/",
+          "quote": "This will stop future subscription fees being taken, but you will not receive a refund for payments already made."
+        },
+        {
+          "q": "Can I cancel PS Plus on my phone?",
+          "a": "Yes. In the PlayStation App, tap the Store icon, then the menu, then Subscriptions Management, and tap Cancel.",
+          "source": "https://www.playstation.com/en-us/support/store/cancel-ps-store-subscription/",
+          "quote": "Select the menu icon from the top right of the screen and choose Subscriptions Management. ... Select Cancel below the subscription you’d like to cancel."
+        }
+      ]
+    },
+    {
+      "id": "apple-one",
+      "checkedOn": "2026-11-13",
+      "after": {
+        "access": null,
+        "data": null,
+        "refunds": {
+          "text": "Apple says some purchases might be eligible for a refund. You ask at reportaproblem.apple.com.",
+          "source": "https://support.apple.com/en-us/118223",
+          "quote": "Some purchases from the App Store, iTunes Store, Apple Books, or other Apple services might be eligible for a refund."
+        }
+      },
+      "verify": {
+        "text": "How to check it worked: in Settings → your name → Subscriptions, tap Apple One. No Cancel button, or a red expiry message, means it's already cancelled.",
+        "source": "https://support.apple.com/en-us/118428",
+        "quote": "If there is no Cancel button or you see an expiration message in red text, the subscription is already canceled."
+      },
+      "pause": null,
+      "googlePlay": null,
+      "faq": [
+        {
+          "q": "If I cancel Apple One, can I still play Apple Arcade games?",
+          "a": "No. Apple says if you cancel, you can't play any Arcade games, even downloaded ones. Resubscribe and your game progress comes back.",
+          "source": "https://support.apple.com/guide/iphone/subscribe-to-apple-arcade-iphc49263025/ios",
+          "quote": "If you cancel your subscription, you can’t play any Apple Arcade games, even if you downloaded them to your device. You can resubscribe to play Apple Arcade games again and regain access to your gameplay data."
+        },
+        {
+          "q": "Cancelling a free trial?",
+          "a": "Apple says to cancel at least 24 hours before the trial ends.",
+          "source": "https://support.apple.com/en-us/118428",
+          "quote": "If you signed up for a trial subscription and you don't want to renew it, cancel it at least 24 hours before the trial ends."
+        },
+        {
+          "q": "I don't see Apple One in my subscriptions.",
+          "a": "You may get it through your phone carrier or another company. Apple says to contact them.",
+          "source": "https://support.apple.com/en-us/118428",
+          "quote": "Contact your wireless carrier or other provider for support."
+        }
+      ]
+    },
+    {
+      "id": "youtube-music",
+      "checkedOn": "2026-11-13",
+      "after": {
+        "access": {
+          "text": "Your Music Premium perks keep working until the end of the billing period. You won't be charged again unless you sign up again.",
+          "source": "https://support.google.com/youtube/answer/6308278?co=GENIE.Platform%3DiOS&hl=en",
+          "quote": "When you cancel your membership, you won't be charged again unless you re-subscribe. Your YouTube paid member benefits will continue until the end of the billing period."
+        },
+        "data": null,
+        "refunds": {
+          "text": "No refund for the days between cancelling and the end of your billing cycle. Paid through Apple? Apple's refund rules apply.",
+          "source": "https://support.google.com/youtube/answer/12014038?hl=en&co=GENIE.Platform%3DDesktop",
+          "quote": "You won't be refunded for the period between when you cancel and when your membership ends. ... YouTube purchases made through the Apple store require authorization from Apple and are subject to Apple’s refund policies."
+        }
+      },
+      "verify": {
+        "text": "How to check it worked: open youtube.com/paid_memberships and look at your membership.",
+        "source": "https://support.google.com/youtube/answer/6308278?co=GENIE.Platform%3DDesktop&hl=en",
+        "quote": "You can confirm by checking the paid membership section of your account on youtube.com/paid_memberships."
+      },
+      "pause": {
+        "text": "Not sure? You can pause for 1 to 6 months at youtube.com/paid_memberships instead. Not for yearly plans or if Apple bills you.",
+        "source": "https://support.google.com/youtubemusic/answer/11950175?hl=en",
+        "quote": "Annual plans cannot be paused. Pausing and resuming your paid membership is not available to users who are billed through Apple. ... You can choose the length of this paused state, from 1 to 6 months."
+      },
+      "googlePlay": {
+        "steps": [
+          "On your Android device, go to subscriptions in Google Play.",
+          "Select YouTube Music.",
+          "Tap Cancel subscription.",
+          "Follow the instructions."
+        ],
+        "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+        "serviceSource": "https://support.google.com/youtube/answer/6308278?co=GENIE.Platform%3DAndroid&hl=en",
+        "serviceQuote": "If you have access to your YouTube paid membership through a Google Play subscription, you can cancel within your Google Play account settings."
+      },
+      "faq": [
+        {
+          "q": "Can I cancel YouTube Music on my iPhone?",
+          "a": "Only if Apple bills you. If Google bills you, Google says to cancel on a non-iOS device, like a computer.",
+          "source": "https://support.google.com/youtube/answer/6308278?co=GENIE.Platform%3DiOS&hl=en",
+          "quote": "iOS users who are billed through Google must cancel using a non-iOS device (for example, a computer)."
+        },
+        {
+          "q": "Can I pause YouTube Music instead?",
+          "a": "Yes, for 1 to 6 months, unless you're on a yearly plan or Apple bills you. Your downloads are kept, but locked until you resume.",
+          "source": "https://support.google.com/youtubemusic/answer/11950175?hl=en",
+          "quote": "If you have a YouTube Music Premium subscription, any music you've downloaded will be retained. You can't access them until you resume your membership."
+        },
+        {
+          "q": "Can I cancel right away and get money back?",
+          "a": "Normally you keep it to the end of the cycle with no refund. To cancel straight away with a refund, YouTube says to contact its support team.",
+          "source": "https://support.google.com/youtube/answer/12014038?hl=en&co=GENIE.Platform%3DDesktop",
+          "quote": "If you want to cancel your YouTube paid membership immediately and get a refund, get in touch with the YouTube support team."
+        }
+      ]
+    },
+    {
+      "id": "nintendo-online",
+      "checkedOn": "2026-11-13",
+      "after": {
+        "access": {
+          "text": "Your membership stays active until the end of its term.",
+          "source": "https://en-americas-support.nintendo.com/app/answers/detail/a_id/41196/",
+          "quote": "Your membership will remain active until the end of its term"
+        },
+        "data": {
+          "text": "Cloud save backups go when it ends. Rejoin within 180 days to get them back. Saves on your console stay.",
+          "source": "https://en-americas-support.nintendo.com/app/answers/detail/a_id/41196/",
+          "quote": "Save Data Cloud backup will no longer be available. You can begin a new membership within 180 days to regain access to your save data cloud backups. You can continue to use the save data that is saved to your console's memory."
+        },
+        "refunds": {
+          "text": "No refunds or credits for the time left on your membership.",
+          "source": "https://en-americas-support.nintendo.com/app/answers/detail/a_id/41196/",
+          "quote": "you will not receive any refunds or credits for the remaining time left on your subscription."
+        }
+      },
+      "verify": null,
+      "pause": null,
+      "googlePlay": null,
+      "faq": [
+        {
+          "q": "When do I need to cancel Nintendo Switch Online by?",
+          "a": "Turn off auto-renewal at least 48 hours before your membership expires.",
+          "source": "https://en-americas-support.nintendo.com/app/answers/detail/a_id/41196/",
+          "quote": "by turning off auto-renewal at least 48 hours before the membership is set to expire."
+        },
+        {
+          "q": "Can I turn auto-renewal back on?",
+          "a": "No. Nintendo says once it's off, it can't be turned on again. Your membership just runs to the end of its term.",
+          "source": "https://en-americas-support.nintendo.com/app/answers/detail/a_id/41196/",
+          "quote": "Once auto-renewal is turned off, it cannot be turned on again."
+        },
+        {
+          "q": "I'm on a family membership. Does everyone lose it?",
+          "a": "Yes. When it ends, the rest of your family group can't use the service either.",
+          "source": "https://en-americas-support.nintendo.com/app/answers/detail/a_id/41196/",
+          "quote": "If you have purchased a family membership, the other members of your family group will also no longer be able to use the service when your membership ends."
+        }
+      ]
+    },
+    {
+      "id": "uber-one",
+      "checkedOn": "2026-11-13",
+      "sourceLabel": "Uber's US Terms and Conditions for Renewable Memberships",
+      "after": {
+        "access": {
+          "text": "You keep Uber One benefits until the end of the current billing cycle. Cancel during a free trial and they end straight away.",
+          "source": "https://www.uber.com/us/en/legal/renewable-passes-terms/",
+          "quote": "If you cancel your Renewable Membership, you will still have access to your Membership Benefits until the end of the current Billing Cycle; however, if you have a free trial and you cancel your Renewable Membership, then your access to your Membership Benefits will end immediately upon cancellation."
+        },
+        "data": {
+          "text": "Your Uber One credits expire at the end of that membership cycle, so use them first.",
+          "source": "https://www.uber.com/us/en/legal/renewable-passes-terms/",
+          "quote": "Upon termination or cancellation of your Renewable Membership your Uber One credits shall expire at the end of that membership cycle."
+        },
+        "refunds": {
+          "text": "No refund for the rest of a monthly cycle. Cancel within 24 hours before renewal after you've been charged, and Uber refunds that charge automatically.",
+          "source": "https://www.uber.com/us/en/legal/renewable-passes-terms/",
+          "quote": "If you cancel within 24 hours prior to your renewal day and your payment for the next Billing Cycle already has been processed, Uber will issue an automatic refund for that payment. ... All payments for a monthly Renewal Membership already charged for the current Billing Cycle are non-refundable"
+        }
+      },
+      "verify": null,
+      "pause": null,
+      "googlePlay": null,
+      "faq": [
+        {
+          "q": "I cancelled right after being charged. Do I get it back?",
+          "a": "If you cancel within 24 hours before your renewal day and the payment already went through, Uber's US terms say it's refunded automatically.",
+          "source": "https://www.uber.com/us/en/legal/renewable-passes-terms/",
+          "quote": "If you cancel within 24 hours prior to your renewal day and your payment for the next Billing Cycle already has been processed, Uber will issue an automatic refund for that payment."
+        },
+        {
+          "q": "I got my trial through a partner promo. When does it end?",
+          "a": "You keep the benefits for the length of the promo, then they end.",
+          "source": "https://www.uber.com/us/en/legal/renewable-passes-terms/",
+          "quote": "If you acquired your free trial through a third-party promotional offer, you will retain access to your Membership Benefits for the duration of the promotional offer, after which your Membership Benefits will end."
+        },
+        {
+          "q": "Does cancelling cut off someone I share with?",
+          "a": "Yes. Linked accounts lose access at the same time as you, with no separate notice or refund.",
+          "source": "https://www.uber.com/us/en/legal/renewable-passes-terms/",
+          "quote": "If the Primary Member’s membership is paused, canceled, suspended, or terminated, Linked Accounts lose access at the same time without separate notice or refund."
+        }
+      ]
+    },
+    {
+      "id": "doordash",
+      "checkedOn": "2026-11-13",
+      "after": {
+        "access": {
+          "text": "Your DashPass benefits last until the end of the billing period. Cancel during a free period and they end straight away.",
+          "source": "https://help.doordash.com/en-us/consumers/article/how-do-i-cancel-my-dashpass-subscription",
+          "quote": "After canceling, your DashPass benefits will be valid through the end of the current billing period. If you cancel during a free period, your benefits will be terminated immediately."
+        },
+        "data": null,
+        "refunds": {
+          "text": "DoorDash's US terms say the fee isn't refundable. Exception: after a free trial, cancel within 48 hours of your first paid period for a full refund.",
+          "source": "https://help.doordash.com/en-us/consumers/article/consumer-terms-and-conditions-us-english-section-12-14",
+          "quote": "If you participated in a free trial or other promotional subscription period for DashPass, you may cancel within the first 48 hours of your first paid DashPass subscription period and receive a full refund of your DashPass fee (as applicable). ... YOUR SUBSCRIPTION FEE IS NONREFUNDABLE"
+        }
+      },
+      "verify": {
+        "text": "How to check it worked: DoorDash emails you to confirm DashPass is cancelled.",
+        "source": "https://help.doordash.com/en-us/consumers/article/how-do-i-cancel-my-dashpass-subscription",
+        "quote": "After canceling your membership, you will receive a confirmation via email that your DashPass membership has been canceled."
+      },
+      "pause": {
+        "text": "Just need a break? There's a Pause Membership option on the same Manage DashPass page.",
+        "source": "https://help.doordash.com/en-us/consumers/article/how-do-i-cancel-my-dashpass-subscription",
+        "quote": "If you choose to “Pause” your membership instead of canceling, select “Pause Membership” on the “Manage DashPass” page."
+      },
+      "googlePlay": null,
+      "faq": [
+        {
+          "q": "When do I need to cancel DashPass by?",
+          "a": "At least 24 hours before your next payment, or you'll pay for the next period.",
+          "source": "https://help.doordash.com/en-us/consumers/article/how-do-i-cancel-my-dashpass-subscription",
+          "quote": "To avoid charges for the next subscription period, you must cancel your DashPass membership 24 hours before your next scheduled payment."
+        },
+        {
+          "q": "Can I get a refund on DashPass?",
+          "a": "Usually not. Cancel within 48 hours of your first period without a DashPass order, and DoorDash may refund it. That's its call.",
+          "source": "https://help.doordash.com/en-us/consumers/article/consumer-terms-and-conditions-us-english-section-12-14",
+          "quote": "For both monthly and annual subscribers, if you cancel your DashPass subscription within the first 48 hours of your first subscription period and have not placed a DashPass-eligible order during that period, DoorDash may, in its sole discretion, refund your DashPass fee."
+        },
+        {
+          "q": "What if I cancel during a free trial?",
+          "a": "Your DashPass benefits end right away.",
+          "source": "https://help.doordash.com/en-us/consumers/article/how-do-i-cancel-my-dashpass-subscription",
+          "quote": "If you cancel during a free period, your benefits will be terminated immediately."
+        }
+      ]
+    },
+    {
+      "id": "costco",
+      "checkedOn": "2026-11-13",
+      "after": {
+        "access": {
+          "text": "Turn off Auto Renew and your membership just runs out at the end of your membership year.",
+          "source": "https://customerservice.costco.com/app/answers/answer_view/a_id/1812/~/how-can-i-manage-membership-auto-renewal-online%3F",
+          "quote": "If you want to let your membership expire at the end of your current membership year, remove Auto Renew at least two business days before the first day of your renewal month."
+        },
+        "data": null,
+        "refunds": {
+          "text": "Costco's guarantee: it will cancel and refund your membership fee at any time if you're not happy.",
+          "source": "https://customerservice.costco.com/app/answers/answer_view/a_id/1191",
+          "quote": "On Membership: We will cancel and refund your membership fee at any time if you are dissatisfied."
+        }
+      },
+      "verify": null,
+      "pause": null,
+      "googlePlay": null,
+      "faq": [
+        {
+          "q": "How do I cancel Costco and get my money back?",
+          "a": "Go to any warehouse membership counter for an immediate refund, or call Member Services at 1-800-774-2678.",
+          "source": "https://customerservice.costco.com/app/answers/answer_view/a_id/1308",
+          "quote": "Speak with a team member at any warehouse membership counter and receive an immediate refund, or... Call our Member Services Center at 1-800-774-2678 and speak to a live agent."
+        },
+        {
+          "q": "I turned off Auto Renew late. Will I be charged?",
+          "a": "Within 48 hours of the renewal date, your card will likely be charged. Costco says it refunds that charge within two business days.",
+          "source": "https://customerservice.costco.com/app/answers/answer_view/a_id/1812/~/how-can-i-manage-membership-auto-renewal-online%3F",
+          "quote": "If you remove Auto Renewal within 48 hours of your Auto Renewal date (typically on the first of the month), your credit card on file will likely be charged. However, Costco will systematically refund the charge back to the card on file within two business days."
+        },
+        {
+          "q": "When does Costco charge the renewal?",
+          "a": "Once a year, on the first day of your renewal month.",
+          "source": "https://customerservice.costco.com/app/answers/answer_view/a_id/1812/~/how-can-i-manage-membership-auto-renewal-online%3F",
+          "quote": "The card you set up for Auto Renewal will be charged on the first day of your renewal month."
+        }
+      ]
+    },
+    {
+      "id": "claude-pro",
+      "checkedOn": "2026-11-13",
+      "after": {
+        "access": {
+          "text": "You can keep using your paid plan until the end of the billing period.",
+          "source": "https://support.claude.com/en/articles/8325617-cancel-your-pro-or-max-subscription",
+          "quote": "Your cancellation will take effect at the end of your current billing period and you can continue using your paid plan until then."
+        },
+        "data": {
+          "text": "Usage credits you bought stay on your account, but they only work with an active paid plan.",
+          "source": "https://support.claude.com/en/articles/8325617-cancel-your-pro-or-max-subscription",
+          "quote": "Cancelling doesn't refund any usage credits you've purchased. Your balance stays on your account, but usage credits can only be used with an active paid plan."
+        },
+        "refunds": {
+          "text": "Anthropic's help page says payments aren't refundable unless its terms or the law say so, or there's fraud. EU and UK: see the FAQ.",
+          "source": "https://support.claude.com/en/articles/12386328-request-a-refund-for-a-paid-claude-plan",
+          "quote": "Except as expressly provided in our Consumer Terms of Service, where required by law, or in cases of fraud, all payments are non-refundable."
+        }
+      },
+      "verify": null,
+      "pause": null,
+      "googlePlay": {
+        "steps": [
+          "On your Android device, go to subscriptions in Google Play.",
+          "Select Claude.",
+          "Tap Cancel subscription.",
+          "Follow the instructions."
+        ],
+        "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+        "serviceSource": "https://support.claude.com/en/articles/8325617-cancel-your-pro-or-max-subscription",
+        "serviceQuote": "If you subscribed to a Pro, Max, or Ultra plan via Claude for Android, your subscription and payment will be handled directly on your Android device.",
+        "serviceNote": "Claude's page also gives in-app steps on Android: tap your initials → Billing → Manage subscription."
+      },
+      "faq": [
+        {
+          "q": "When should I cancel Claude Pro?",
+          "a": "At least 24 hours before your next billing date, so you aren't charged again.",
+          "source": "https://support.claude.com/en/articles/8325617-cancel-your-pro-or-max-subscription",
+          "quote": "To avoid being charged for your next billing period, cancel your subscription at least 24 hours before your next billing date."
+        },
+        {
+          "q": "I paid in the iPhone app. Who refunds me?",
+          "a": "Only Apple, at reportaproblem.apple.com. Asking for a refund doesn't cancel the plan, so cancel it too.",
+          "source": "https://support.claude.com/en/articles/12386328-request-a-refund-for-a-paid-claude-plan",
+          "quote": "Apple processed this payment, so only Apple can review and issue a refund—our Support team can't access or refund App Store charges. ... Note: Requesting a refund doesn't cancel your subscription."
+        },
+        {
+          "q": "I'm in the EU or UK. Can I get a refund?",
+          "a": "You may get one within 14 days of buying. It's cut down based on how much you used.",
+          "source": "https://support.claude.com/en/articles/12386328-request-a-refund-for-a-paid-claude-plan",
+          "quote": "In the European Economic Area and the United Kingdom, you may receive a refund within 14 days of purchase. You may find this option available in your Settings. Your refunds will be prorated according to your use."
+        }
+      ]
+    },
+    {
+      "id": "google-ai-pro",
+      "checkedOn": "2026-11-13",
+      "after": {
+        "access": {
+          "text": "Google AI Pro is a Google One plan. Google says your storage and benefits last until the end of the billing cycle.",
+          "source": "https://support.google.com/googleone/answer/9056360?co=GENIE.Platform%3DiOS&hl=en",
+          "quote": "When you cancel your membership, your Google One storage and benefits won’t go away immediately. You have until the end of the billing cycle to use them."
+        },
+        "data": {
+          "text": "When it ends, you can't start or continue Gemini chats with Pro, and the extra storage across Drive, Gmail and Photos goes.",
+          "source": "https://support.google.com/googleone/answer/16476811?hl=en&co=GENIE.Platform%3DiOS",
+          "quote": "When your AI Pro plan ends, you’ll no longer have access to: ... Start new chats with Pro ... Continue chats created with Pro ... Expanded storage across Drive, Gmail, and Photos"
+        },
+        "refunds": {
+          "text": "AI Pro comes with Google storage. Google says storage plan purchases aren't refundable in most countries.",
+          "source": "https://support.google.com/googleone/answer/9056360?co=GENIE.Platform%3DiOS&hl=en",
+          "quote": "In most countries or regions, Google storage plan purchases are non-refundable."
+        }
+      },
+      "verify": null,
+      "pause": null,
+      "googlePlay": {
+        "steps": [
+          "On your Android device, go to subscriptions in Google Play.",
+          "Select Google One.",
+          "Tap Cancel subscription.",
+          "Follow the instructions."
+        ],
+        "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+        "serviceSource": "https://support.google.com/googleone/answer/16476811?hl=en&co=GENIE.Platform%3DAndroid",
+        "serviceQuote": "If you signed up via the Play Store:",
+        "serviceNote": "Google's own Android steps cancel through the Gemini app or Google One settings: Manage subscriptions → Cancel membership. The plan may show as Google One."
+      },
+      "faq": [
+        {
+          "q": "What happens to my Gemini chats if I cancel AI Pro?",
+          "a": "Once the plan ends, you can't continue chats you made with Pro, or start new ones with Pro.",
+          "source": "https://support.google.com/googleone/answer/16476811?hl=en&co=GENIE.Platform%3DiOS",
+          "quote": "When your AI Pro plan ends, you’ll no longer have access to: ... Start new chats with Pro ... Continue chats created with Pro"
+        },
+        {
+          "q": "I also pay for YouTube Premium. Does that get cancelled?",
+          "a": "No. A YouTube Premium you pay for on its own isn't cancelled automatically. The Premium Lite that came with AI Pro goes when the plan ends.",
+          "source": "https://support.google.com/googleone/answer/16476811?hl=en&co=GENIE.Platform%3DiOS",
+          "quote": "When your AI Pro plan ends, you’ll no longer have access to: ... YouTube Premium Lite individual plan ... Standalone YouTube Premium Lite or YouTube Premium subscriptions aren’t automatically canceled."
+        },
+        {
+          "q": "Apple bills me. Where do I cancel?",
+          "a": "In the Google app, tap Gemini, your profile, Settings, Manage subscription. That opens Apple's subscriptions. Pick Google One and cancel.",
+          "source": "https://support.google.com/googleone/answer/16476811?hl=en&co=GENIE.Platform%3DiOS",
+          "quote": "This opens your subscriptions in Apple settings. ... Select Google One. ... Cancel your current plan."
+        }
+      ]
+    },
+    {
+      "id": "youtube-tv",
+      "checkedOn": "2026-11-13",
+      "after": {
+        "access": {
+          "text": "You keep watching until the end of your payment period, even if you cancel during the free trial.",
+          "source": "https://support.google.com/youtubetv/answer/7129668?hl=en&co=GENIE.Platform%3DiOS",
+          "quote": "When you cancel or pause your membership, you'll still have access to YouTube TV until the end of your payment period. Canceling YouTube TV does not immediately remove your access to the service, even during the free trial period."
+        },
+        "data": {
+          "text": "Recordings in your library expire 21 days after it ends. YouTube TV keeps your library preferences in case you come back.",
+          "source": "https://support.google.com/youtubetv/answer/7129668?hl=en&co=GENIE.Platform%3DiOS",
+          "quote": "Each recorded programs in your library will expire after 21 days. We'll save your library preferences in case you want to re-sign up later."
+        },
+        "refunds": {
+          "text": "No refunds or credits for part of a billing period. Refunds are only for features that are broken or don't work as stated.",
+          "source": "https://support.google.com/youtubetv/answer/7298539?hl=en",
+          "quote": "If features included with your YouTube TV membership are defective, or do not perform as stated, click the button below to request a refund. ... We do not give refunds or credits for partial billing periods."
+        }
+      },
+      "verify": null,
+      "pause": {
+        "text": "Just need a break? Pause for up to 6 months instead. It starts after this billing cycle, and you can't watch or record while paused.",
+        "source": "https://support.google.com/youtubetv/answer/7129668?hl=en&co=GENIE.Platform%3DiOS",
+        "quote": "You can pause for up to 6 months. ... Your membership will be paused after the end of your current billing cycle. While your membership is paused, you won’t be able to access YouTube TV or record new programs."
+      },
+      "googlePlay": null,
+      "faq": [
+        {
+          "q": "What happens to my recordings if I cancel YouTube TV?",
+          "a": "They expire 21 days after your membership ends. Watch what you want to keep before then.",
+          "source": "https://support.google.com/youtubetv/answer/7129668?hl=en&co=GENIE.Platform%3DiOS",
+          "quote": "Each recorded programs in your library will expire after 21 days."
+        },
+        {
+          "q": "Can I cancel and lose access right away?",
+          "a": "Yes, but you have to contact YouTube TV support. A normal cancel keeps access until the payment period ends.",
+          "source": "https://support.google.com/youtubetv/answer/7129668?hl=en&co=GENIE.Platform%3DiOS",
+          "quote": "If you'd like to cancel and remove access to YouTube TV right away, get in touch with our support team."
+        },
+        {
+          "q": "I pay through my phone or internet company. Can YouTube refund me?",
+          "a": "No. Your provider's refund rules apply, so ask them.",
+          "source": "https://support.google.com/youtubetv/answer/7298539?hl=en",
+          "quote": "YouTube cannot grant a refund. Your provider’s refund policies will apply."
+        }
+      ]
+    },
+    {
+      "id": "dropbox",
+      "checkedOn": "2026-11-13",
+      "after": {
+        "access": {
+          "text": "You keep your paid plan until the end of the billing cycle, then switch to free Dropbox Basic. No more charges.",
+          "source": "https://help.dropbox.com/plans/downgrade-dropbox-individual-plans",
+          "quote": "Your account will change to Dropbox Basic at the end of your current billing cycle (monthly or yearly) and you won’t be charged again."
+        },
+        "data": {
+          "text": "Basic has 2 GB. Over that, you may not be able to sync, upload or share, and Dropbox may delete files to get you under.",
+          "source": "https://help.dropbox.com/plans/downgrade-dropbox-individual-plans",
+          "quote": "Dropbox Basic includes 2 GB of storage space. If you exceed this storage quota, you may not be able to sync, upload, share, move, or preview files and folders. If your account remains over the limit, Dropbox may delete files you own to bring your account below the storage limit."
+        },
+        "refunds": {
+          "text": "In most cases Dropbox payments aren't refunded. In the EU, UK or Turkey, cancel within 14 days of buying for a refund.",
+          "source": "https://help.dropbox.com/plans/refund",
+          "quote": "In most cases, payments for Dropbox and Dropbox Dash subscriptions and team member licenses aren’t refundable. ... If you live in the EU, UK, or Turkey, you’re eligible for a refund if you cancel your Dropbox Plus, Family, Professional, or Essentials subscription within 14 days of purchase."
+        }
+      },
+      "verify": {
+        "text": "How to check it worked: look for an email called \"Dropbox Plan will not renew\". On dropbox.com, Billing shows \"Plan downgrade scheduled\".",
+        "source": "https://help.dropbox.com/plans/downgrade-dropbox-individual-plans",
+        "quote": "you’ll receive an email confirmation with the subject line \"Dropbox Plan will not renew\" from no-reply@dropbox.com. ... You should see a notification titled \"Plan downgrade scheduled.\""
+      },
+      "pause": null,
+      "googlePlay": {
+        "steps": [
+          "On your Android device, go to subscriptions in Google Play.",
+          "Select Dropbox.",
+          "Tap Cancel subscription.",
+          "Follow the instructions."
+        ],
+        "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+        "serviceSource": "https://help.dropbox.com/plans/cancel-mobile",
+        "serviceQuote": "Tap Cancel plan at the bottom of the screen. This will take you to your subscription in Google Play.",
+        "serviceNote": "Dropbox's own Android steps: Dropbox app → Account → Manage your subscription → How to cancel → Cancel plan, which opens Google Play."
+      },
+      "faq": [
+        {
+          "q": "Will I lose my files if I cancel Dropbox?",
+          "a": "Not straight away. Over 2 GB, syncing and uploads may stop. Stay over the limit and Dropbox may delete files you own.",
+          "source": "https://help.dropbox.com/plans/downgrade-dropbox-individual-plans",
+          "quote": "If your account remains over the limit, Dropbox may delete files you own to bring your account below the storage limit."
+        },
+        {
+          "q": "Does deleting the Dropbox app cancel it?",
+          "a": "No. It doesn't cancel your plan or delete your account.",
+          "source": "https://help.dropbox.com/plans/downgrade-dropbox-individual-plans",
+          "quote": "Deleting the Dropbox app from your computer or phone doesn’t cancel your Dropbox plan or delete your Dropbox account."
+        },
+        {
+          "q": "I don't see a Cancel plan button.",
+          "a": "You probably bought it on your phone. Cancel through your phone's app store instead.",
+          "source": "https://help.dropbox.com/plans/downgrade-dropbox-individual-plans",
+          "quote": "If you don’t see Cancel plan, you may have purchased Dropbox on your mobile device. If so, you’ll need to cancel your plan from the app store on your device."
+        }
+      ]
+    },
+    {
+      "id": "linkedin-premium",
+      "checkedOn": "2026-11-13",
+      "after": {
+        "access": {
+          "text": "You keep Premium until the end of your billing cycle. Cancel a free trial and Premium stops right away.",
+          "source": "https://www.linkedin.com/help/linkedin/answer/a545578",
+          "quote": "If you cancel a paid Premium subscription, your plan will remain active until the end of your current billing cycle. You’ll continue to have access to Premium features until the plan expires. If you cancel a Premium free trial, the trial will end immediately, and Premium access will stop right away."
+        },
+        "data": {
+          "text": "You go back to a free account and keep your profile, connections and data. Unused InMail credits are lost.",
+          "source": "https://www.linkedin.com/help/linkedin/answer/a551618",
+          "quote": "After you cancel LinkedIn Premium, you’ll return to a Basic (free) account and retain your profile, connections, and other data. ... InMail Message credits that you’ve accumulated (they can’t be credited back)"
+        },
+        "refunds": {
+          "text": "Premium may be refundable within 7 days of the charge if you haven't used it. Bought in the iPhone app? Only Apple can refund.",
+          "source": "https://www.linkedin.com/help/linkedin/answer/a1337140",
+          "quote": "LinkedIn Premium subscriptions, such as Premium Career, Premium Business, Premium All-in-One, Premium Company Page, LinkedIn Learning, Recruiter Lite, and Sales Navigator may be refundable within 7 days from the date the subscription is charged without Premium usage. ... All iOS refunds must be issued by Apple."
+        }
+      },
+      "verify": null,
+      "pause": {
+        "text": "Not sure? You can downgrade to a cheaper Premium plan instead. That's on the LinkedIn desktop site only.",
+        "source": "https://www.linkedin.com/help/linkedin/answer/a551618",
+        "quote": "You can downgrade your Premium subscription from your existing plan and choose a plan that better suits your needs. This feature is available on the LinkedIn desktop website only."
+      },
+      "googlePlay": {
+        "steps": [
+          "On your Android device, go to subscriptions in Google Play.",
+          "Select LinkedIn.",
+          "Tap Cancel subscription.",
+          "Follow the instructions."
+        ],
+        "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+        "serviceSource": "https://www.linkedin.com/help/linkedin/answer/a545578",
+        "serviceQuote": "LinkedIn Premium subscription purchased on an Android device via Google Play Store can be cancelled using the LinkedIn desktop site, LinkedIn mobile app, Google Play desktop or the Google Play mobile app."
+      },
+      "faq": [
+        {
+          "q": "When should I cancel LinkedIn Premium?",
+          "a": "At least one day before your next billing date, or you'll pay for another cycle.",
+          "source": "https://www.linkedin.com/help/linkedin/answer/a545578",
+          "quote": "To avoid getting charged for another billing cycle, you need to cancel your plan at least one day before your next scheduled billing date."
+        },
+        {
+          "q": "What happens if I cancel my free trial?",
+          "a": "Premium stops right away, and you can't start another free trial for at least 12 months.",
+          "source": "https://www.linkedin.com/help/linkedin/answer/a551618",
+          "quote": "If you cancel a free Premium trial, you won't be eligible to sign up for another free trial for at least 12 months."
+        },
+        {
+          "q": "If I come back, do I get my old discount?",
+          "a": "No. Cancel a promotion or a plan that's no longer sold and that price is gone.",
+          "source": "https://www.linkedin.com/help/linkedin/answer/a551618",
+          "quote": "If you cancel a promotion or a plan that is no longer offered, you will lose your discounted price."
+        }
+      ]
+    },
+    {
+      "id": "snapchat-plus",
+      "checkedOn": "2026-11-13",
+      "after": {
+        "access": {
+          "text": "Subscribed on the web in the US? You keep Snapchat+ until the end of the period you already paid for.",
+          "source": "https://help.snapchat.com/hc/en-us/articles/8098573674516-How-do-I-request-a-refund-for-a-Snapchat-or-Memories-subscription",
+          "quote": "You keep access to Snapchat+ features until the end of the billing period you already paid for."
+        },
+        "data": null,
+        "refunds": {
+          "text": "Paid through Apple or Google? Ask them, Snapchat can't refund it. On the web in the US, there's no refund for unused time.",
+          "source": "https://help.snapchat.com/hc/en-us/articles/8098573674516-How-do-I-request-a-refund-for-a-Snapchat-or-Memories-subscription",
+          "quote": "Snapchat Support will not be able to assist you with refunds for subscriptions purchased through the Apple App Store. ... Refunds are not provided for the unused portion of a month or year."
+        }
+      },
+      "verify": null,
+      "pause": null,
+      "googlePlay": {
+        "steps": [
+          "On your Android device, go to subscriptions in Google Play.",
+          "Select Snapchat.",
+          "Tap Cancel subscription.",
+          "Follow the instructions."
+        ],
+        "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+        "serviceSource": "https://help.snapchat.com/hc/en-us/articles/8098571884948-How-do-I-cancel-my-subscription-to-Snapchat-or-Memories",
+        "serviceQuote": "For Android: Cancel through the Google Play Store."
+      },
+      "faq": [
+        {
+          "q": "When should I cancel a Snapchat+ free trial?",
+          "a": "At least 24 hours before it ends. Cancel on the last day and Apple renews it automatically.",
+          "source": "https://help.snapchat.com/hc/en-us/articles/8098571884948-How-do-I-cancel-my-subscription-to-Snapchat-or-Memories",
+          "quote": "iOS users must cancel subscriptions 24 hours before a trial period ends in order to avoid being charged. If you cancel on the last day of the trial, Apple will automatically renew your subscription."
+        },
+        {
+          "q": "Can I get a refund for Snapchat+?",
+          "a": "If you signed up in the app, ask Apple or Google. Snapchat says refunds are handled by whoever sold you the subscription.",
+          "source": "https://help.snapchat.com/hc/en-us/articles/8098571884948-How-do-I-cancel-my-subscription-to-Snapchat-or-Memories",
+          "quote": "Remember, refunds are handled by the party you purchased the subscription from. If that was Apple or Google, please contact them directly for refund requests."
+        },
+        {
+          "q": "I'm in Europe or the UK and subscribed on the web.",
+          "a": "Cancel within 14 days of a charge for a prorated refund. You lose Snapchat+ features straight away.",
+          "source": "https://help.snapchat.com/hc/en-us/articles/8098573674516-How-do-I-request-a-refund-for-a-Snapchat-or-Memories-subscription",
+          "quote": "If you cancel your web subscription within the first 14 days after being charged, you will receive a pro-rated refund within 7–10 business days, and you will lose access to Snapchat+ features."
+        }
+      ]
+    },
+    {
+      "id": "strava",
+      "checkedOn": "2026-11-13",
+      "after": {
+        "access": {
+          "text": "You keep subscription features until the end of your current term.",
+          "source": "https://support.strava.com/en-us/articles/15401936-how-do-i-cancel-my-subscription",
+          "quote": "You'll retain access to subscription features until the end of your current subscription term."
+        },
+        "data": {
+          "text": "Your activities and data stay. You only lose the subscription features.",
+          "source": "https://support.strava.com/en-us/articles/15401936-how-do-i-cancel-my-subscription",
+          "quote": "Canceling your subscription does not delete any of your uploaded activities or data. You'll only lose access to subscription features."
+        },
+        "refunds": {
+          "text": "Bought on strava.com? You may get a full refund within 14 days of buying. After that, no. App Store buys: Apple decides.",
+          "source": "https://support.strava.com/en-us/articles/15401936-how-do-i-cancel-my-subscription",
+          "quote": "You may be eligible for a full refund within 14 days of purchase. After 14 days, Strava subscriptions are non-refundable. ... Refunds are handled entirely by Apple, not Strava."
+        }
+      },
+      "verify": {
+        "text": "How to check it worked: your subscription end date shows on the subscription management page.",
+        "source": "https://support.strava.com/en-us/articles/15401936-how-do-i-cancel-my-subscription",
+        "quote": "You can view your subscription end date on the subscription management page."
+      },
+      "pause": null,
+      "googlePlay": {
+        "steps": [
+          "On your Android device, go to subscriptions in Google Play.",
+          "Select Strava.",
+          "Tap Cancel subscription.",
+          "Follow the instructions."
+        ],
+        "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+        "serviceSource": "https://support.strava.com/en-us/articles/15401936-how-do-i-cancel-my-subscription",
+        "serviceQuote": "Tapping Manage Your Subscription opens Google Play. The Strava app does not have its own cancel button, so you cancel in Google Play."
+      },
+      "faq": [
+        {
+          "q": "Will I lose my activities if I cancel Strava?",
+          "a": "No. Your uploaded activities and data stay. You just lose the subscription features.",
+          "source": "https://support.strava.com/en-us/articles/15401936-how-do-i-cancel-my-subscription",
+          "quote": "Canceling your subscription does not delete any of your uploaded activities or data."
+        },
+        {
+          "q": "When do I need to cancel Strava by?",
+          "a": "At least 24 hours before your renewal date, or it renews automatically.",
+          "source": "https://support.strava.com/en-us/articles/15401936-how-do-i-cancel-my-subscription",
+          "quote": "Your Strava subscription will automatically renew unless you cancel at least 24 hours before your renewal date."
+        },
+        {
+          "q": "It just renewed. Does cancelling refund me?",
+          "a": "No, cancelling alone doesn't start a refund. If you paid on strava.com, ask Strava support within 14 days of purchase.",
+          "source": "https://support.strava.com/en-us/articles/15401936-how-do-i-cancel-my-subscription",
+          "quote": "If your subscription was recently renewed, canceling your subscription does not initiate a refund. ... Reach out to our Support team to request a refund within 14 days of purchase."
+        }
+      ]
+    },
+    {
+      "id": "apple-arcade",
+      "checkedOn": "2026-11-13",
+      "after": {
+        "access": null,
+        "data": {
+          "text": "Apple says if you cancel, you can't play any Arcade games, even downloaded ones. Resubscribe and your game progress comes back.",
+          "source": "https://support.apple.com/guide/iphone/subscribe-to-apple-arcade-iphc49263025/ios",
+          "quote": "If you cancel your subscription, you can’t play any Apple Arcade games, even if you downloaded them to your device. You can resubscribe to play Apple Arcade games again and regain access to your gameplay data."
+        },
+        "refunds": {
+          "text": "Apple says some purchases might be eligible for a refund. You ask at reportaproblem.apple.com.",
+          "source": "https://support.apple.com/en-us/118223",
+          "quote": "Some purchases from the App Store, iTunes Store, Apple Books, or other Apple services might be eligible for a refund."
+        }
+      },
+      "verify": {
+        "text": "How to check it worked: in Settings → your name → Subscriptions, tap Apple Arcade. No Cancel button, or a red expiry message, means it's already cancelled.",
+        "source": "https://support.apple.com/en-us/118428",
+        "quote": "If there is no Cancel button or you see an expiration message in red text, the subscription is already canceled."
+      },
+      "pause": null,
+      "googlePlay": null,
+      "faq": [
+        {
+          "q": "Will my game progress be saved if I cancel?",
+          "a": "If you resubscribe, you get your gameplay data back. Apple warns that if you wait too long, some of it may not be supported.",
+          "source": "https://support.apple.com/guide/iphone/subscribe-to-apple-arcade-iphc49263025/ios",
+          "quote": "If you wait too long, some of your gameplay data may not be supported after you resubscribe."
+        },
+        {
+          "q": "Cancelling a free trial?",
+          "a": "Apple says to cancel at least 24 hours before the trial ends.",
+          "source": "https://support.apple.com/en-us/118428",
+          "quote": "If you signed up for a trial subscription and you don't want to renew it, cancel it at least 24 hours before the trial ends."
+        },
+        {
+          "q": "I can't find Apple Arcade in my subscriptions.",
+          "a": "It may be part of Apple One. Apple's steps say to tap Apple Arcade or Apple One in Subscriptions.",
+          "source": "https://support.apple.com/guide/iphone/subscribe-to-apple-arcade-iphc49263025/ios",
+          "quote": "Tap Apple Arcade or Apple One, then follow the onscreen instructions."
+        }
+      ]
+    },
+    {
+      "id": "siriusxm",
+      "checkedOn": "2026-11-13",
+      "after": {
+        "access": {
+          "text": "Billed by SiriusXM? Your cancel takes effect at the end of your current billing cycle, with no refund for the part-used period.",
+          "source": "https://www.siriusxm.com/customer-agreement",
+          "quote": "Your cancellation will become effective at the end of your current Subscription Period (i.e., billing cycle), and no refunds or credits will be given for any partial period, except as provided below or as required by law."
+        },
+        "data": null,
+        "refunds": {
+          "text": "Billed by SiriusXM: prorated refund within 7 days of buying a monthly plan, or 30 days of buying or renewing a longer plan.",
+          "source": "https://www.siriusxm.com/help/refund-policy-change",
+          "quote": "We will gladly provide a prorated refund within seven (7) days of your initial purchase. Renewal charges on monthly billed plans are not eligible for a refund. ... we will gladly provide a prorated refund within thirty (30) days of your initial purchase and each renewal charge."
+        }
+      },
+      "verify": null,
+      "pause": null,
+      "googlePlay": {
+        "steps": [
+          "On your Android device, go to subscriptions in Google Play.",
+          "Select SiriusXM.",
+          "Tap Cancel subscription.",
+          "Follow the instructions."
+        ],
+        "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+        "serviceSource": "https://www.siriusxm.com/help/manage-or-cancel-service",
+        "serviceQuote": "Subscriptions purchased through the SiriusXM app on your Android device, including Android TV, or the Fish Mapping App are billed through Google Play."
+      },
+      "faq": [
+        {
+          "q": "Does deleting the SiriusXM app cancel it?",
+          "a": "No. Uninstalling the app doesn't cancel your subscription.",
+          "source": "https://www.siriusxm.com/help/manage-or-cancel-service",
+          "quote": "Uninstalling the SiriusXM app or Fish Mapping app will not cancel your subscription."
+        },
+        {
+          "q": "When should I cancel SiriusXM?",
+          "a": "At least 24 hours before your renewal date, or you'll be renewed and charged.",
+          "source": "https://www.siriusxm.com/customer-agreement",
+          "quote": "You must cancel at least 24 hours before your upcoming renewal date to avoid being automatically renewed and charged for a new Subscription Period."
+        },
+        {
+          "q": "I bought it in the App Store. Do SiriusXM's refund rules apply?",
+          "a": "No. The store or company you bought through sets the refund rules.",
+          "source": "https://www.siriusxm.com/help/refund-policy-change",
+          "quote": "If you purchased a subscription through a third party like the App Store, Google Play, Roku or T-Mobile, the refund policy of the third party you purchased through applies"
+        }
+      ]
+    },
+    {
+      "id": "espn",
+      "checkedOn": "2026-11-13",
+      "after": {
+        "access": {
+          "text": "You keep ESPN until the end of your current billing cycle, and you won't be charged again.",
+          "source": "https://support.espn.com/hc/en-us/articles/40377550796308-Cancelling-Your-ESPN-Select-or-Unlimited-Subscription",
+          "quote": "You’ll continue to have access to it until the end of your current billing cycle, but you will not be charged moving forward."
+        },
+        "data": {
+          "text": "Your ESPN account isn't deleted. You can still log in and use the ESPN app without a subscription.",
+          "source": "https://support.espn.com/hc/en-us/articles/40377550796308-Cancelling-Your-ESPN-Select-or-Unlimited-Subscription",
+          "quote": "canceling your subscription will not delete your ESPN account — you can still log in using your ESPN credentials to experience the ESPN app without an ESPN subscription."
+        },
+        "refunds": {
+          "text": "ESPN doesn't refund or credit part-used billing periods.",
+          "source": "https://support.espn.com/hc/en-us/articles/40377550796308-Cancelling-Your-ESPN-Select-or-Unlimited-Subscription",
+          "quote": "We do not offer refunds or credits for partially used billing periods."
+        }
+      },
+      "verify": null,
+      "pause": null,
+      "googlePlay": {
+        "steps": [
+          "On your Android device, go to subscriptions in Google Play.",
+          "Select ESPN.",
+          "Tap Cancel subscription.",
+          "Follow the instructions."
+        ],
+        "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+        "serviceSource": "https://support.espn.com/hc/en-us/articles/40377550796308-Cancelling-Your-ESPN-Select-or-Unlimited-Subscription",
+        "serviceQuote": "If your ESPN subscription is billed through a third party, such as Apple, Google, Roku, etc., you must visit the third-party partner’s website to manage or review your subscription options.",
+        "serviceNote": "ESPN names Google as a possible biller but gives no Google Play steps of its own. These steps are Google's."
+      },
+      "faq": [
+        {
+          "q": "Do I get a refund if I cancel ESPN?",
+          "a": "No refunds or credits for a part-used billing period. You keep watching until it ends instead.",
+          "source": "https://support.espn.com/hc/en-us/articles/40377550796308-Cancelling-Your-ESPN-Select-or-Unlimited-Subscription",
+          "quote": "We do not offer refunds or credits for partially used billing periods."
+        },
+        {
+          "q": "Apple, Google or Roku bills me. Can I cancel on ESPN's site?",
+          "a": "No. ESPN says you manage it with that company instead.",
+          "source": "https://support.espn.com/hc/en-us/articles/40377550796308-Cancelling-Your-ESPN-Select-or-Unlimited-Subscription",
+          "quote": "If your ESPN subscription is billed through a third party, such as Apple, Google, Roku, etc., you must visit the third-party partner’s website to manage or review your subscription options."
+        },
+        {
+          "q": "Can I cancel ESPN in the app?",
+          "a": "ESPN's steps use a computer or your phone's web browser: Profile, then Account, then Manage Subscription.",
+          "source": "https://support.espn.com/hc/en-us/articles/40377550796308-Cancelling-Your-ESPN-Select-or-Unlimited-Subscription",
+          "quote": "Log in to your ESPN account through a computer or mobile browser"
+        }
+      ]
+    },
+    {
+      "id": "instacart",
+      "checkedOn": "2026-11-13",
+      "after": {
+        "access": {
+          "text": "Outside the refund window, you keep $0 delivery fees until the end of your billing period.",
+          "source": "https://www.instacart.com/help/section/107169420/423178048",
+          "quote": "If you cancel at any other time, you won't get a refund, but you can continue enjoying the $0 delivery fees through the end of your billing period."
+        },
+        "data": null,
+        "refunds": {
+          "text": "Yearly plan: full refund if you cancel within 5 days of paying and haven't ordered with Instacart+. Otherwise, no refund.",
+          "source": "https://www.instacart.com/help/section/107169420/423178048",
+          "quote": "For annual members, you may cancel your Instacart+ membership within the first 5 calendar days of your paid Instacart+ membership and get a refund of the Instacart+ membership fee you paid, but only if you haven't placed any orders using your Instacart+ membership."
+        }
+      },
+      "verify": {
+        "text": "How to check it worked: you'll see a confirmation message, then get an email. Can't find it? Check spam.",
+        "source": "https://www.instacart.com/help/section/107169420/423178048",
+        "quote": "You'll then see a confirmation message that you canceled your membership. ... You’ll get an email confirming your cancellation. If you can’t find this email, check your spam folder."
+      },
+      "pause": null,
+      "googlePlay": null,
+      "faq": [
+        {
+          "q": "Can I get a refund on Instacart+?",
+          "a": "Only on a yearly plan, within 5 days of paying, if you haven't placed an Instacart+ order. Otherwise you keep $0 delivery to the period's end.",
+          "source": "https://www.instacart.com/help/section/107169420/423178048",
+          "quote": "For annual members, you may cancel your Instacart+ membership within the first 5 calendar days of your paid Instacart+ membership and get a refund of the Instacart+ membership fee you paid, but only if you haven't placed any orders using your Instacart+ membership."
+        },
+        {
+          "q": "I was charged just before my trial ended.",
+          "a": "Instacart may charge up to 6 hours before a trial turns paid. It says those charges are refundable under its Instacart+ Terms.",
+          "source": "https://www.instacart.com/help/section/107169420/423178048",
+          "quote": "Charges may be applied up to 6 hours prior to renewal to a paid plan but are refundable per the Instacart+ Terms."
+        },
+        {
+          "q": "Where can I see when my membership ends?",
+          "a": "On the Instacart+ page in your account.",
+          "source": "https://www.instacart.com/help/section/107169420/423178048",
+          "quote": "On the Instacart+ page, you can see when your membership expires."
+        }
+      ]
+    }
+  ]
+}

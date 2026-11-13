@@ -200,7 +200,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
               <ul className="good">
                 {history.map((c) => (
                   <li key={`${c.country}-${c.plan}-${c.when}`}>
-                    <b>{formatDate(c.when)}</b>, {c.plan} in {inCountry(c.country)}: {formatMoney(c.oldPrice, c.currency, { country: c.country })} → {formatMoney(c.newPrice, c.currency, { country: c.country })} (+{Math.round(c.pct)}%).{' '}
+                    <b>{formatDate(c.when)}</b>, {c.plan} in {inCountry(c.country)}: {formatMoney(c.oldPrice, c.currency, { country: c.country })} → {formatMoney(c.newPrice, c.currency, { country: c.country })} ({c.pct < 0 ? '−' : '+'}{Math.round(Math.abs(c.pct))}%).{' '}
                     <a href={c.source} rel="noopener" className="src-a">
                       Source
                     </a>

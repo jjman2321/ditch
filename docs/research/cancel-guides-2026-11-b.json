@@ -1,0 +1,841 @@
+{
+ "checkedOn": "2026-11-13",
+ "services": [
+  {
+   "id": "amazon-prime",
+   "name": "Amazon Prime",
+   "url": "https://www.amazon.com/gp/primecentral",
+   "helpUrl": "https://www.amazon.com/gp/help/customer/display.html?nodeId=GTJQ7QZY7QL2HK4Y",
+   "steps": [
+    "Amazon app: tap Account, then Your Prime Membership",
+    "Tap Update, cancel and more",
+    "Tap Cancel membership and confirm every screen"
+   ],
+   "appleNote": false,
+   "source": "https://www.amazon.com/gp/help/customer/display.html?nodeId=GTJQ7QZY7QL2HK4Y",
+   "checkedOn": "2026-11-13",
+   "confidence": "medium",
+   "openIssues": [
+    "amazon.com help pages still return 503/403 to our tools (curl and WebFetch), so the button names above come only from search snippets of the official help page.",
+    "Amazon's own news site (aboutamazon.com, updated Jul 10, 2025) shows a different, older flow: Profile → Manage Prime Membership → Manage Membership → End Membership. One of the two is out of date. Check on a phone which one the app shows now.",
+    "amazon.com/gp/primecentral is the page Amazon's own article links for cancelling, but we couldn't load it to confirm it opens the cancel flow."
+   ],
+   "note": "Amazon shows several confirm screens with offers. Free trial button reportedly says End trial and benefits (snippet only). Google Play sign-ups cancel in Google Play.",
+   "app": "Amazon Shopping",
+   "company": "Amazon",
+   "answer": "Open Your Prime Membership in the Amazon app or at amazon.com/gp/primecentral, choose to cancel, and keep going past the offers until Amazon confirms it.",
+   "tips": [
+    "Amazon shows a few “are you sure?” screens with offers. Keep going until you see the confirmation."
+   ],
+   "partner": "Signed up through Google Play or another company? Cancel with them.",
+   "related": [
+    "prime-video",
+    "amazon-music",
+    "kindle-unlimited",
+    "walmart-plus"
+   ],
+   "quotes": [
+    {
+     "source": "https://www.aboutamazon.com/news/retail/how-to-cancel-amazon-prime-membership",
+     "quote": "Hover over the Manage Membership section at the top-right of the screen, then tap the End Membership button."
+    },
+    {
+     "source": "https://www.aboutamazon.com/news/retail/how-to-cancel-amazon-prime-membership",
+     "quote": "Scroll down and select Manage Prime Membership. Press on the Manage Membership drop-down menu, and press the Manage Membership button in that menu. Press on the End Membership button."
+    }
+   ]
+  },
+  {
+   "id": "chatgpt-plus",
+   "name": "ChatGPT",
+   "url": null,
+   "helpUrl": "https://help.openai.com/en/articles/7232927-canceling-your-chatgpt-subscription",
+   "steps": [
+    "Open chatgpt.com in Safari and sign in",
+    "Open your account menu, then Settings → Billing",
+    "Under Cancel plan, tap Cancel"
+   ],
+   "appleNote": true,
+   "source": "https://help.openai.com/en/articles/7232927-canceling-your-chatgpt-subscription",
+   "checkedOn": "2026-11-13",
+   "confidence": "medium",
+   "openIssues": [
+    "help.openai.com returns 403 (Cloudflare) to curl and WebFetch, so OpenAI's steps are from search snippets only (article now titled “Canceling your ChatGPT subscription”).",
+    "Snippet wording: “Open your account menu and select Settings. Select Billing. Under Cancel plan, select Cancel.” Not read on the page itself.",
+    "That iPhone-app sign-ups are billed by Apple and that deleting the account doesn't cancel an Apple subscription also come from snippets only. Apple's own cancel steps are confirmed (support.apple.com/en-us/118428)."
+   ],
+   "note": "If you subscribed in the iPhone app, Apple bills you. Deleting the app or account doesn't cancel an Apple subscription. Cancel at least 24h before renewal (snippet).",
+   "app": "ChatGPT",
+   "company": "OpenAI",
+   "answer": "Subscribed on the web? Sign in at chatgpt.com, open Settings → Billing and tap Cancel under Cancel plan. Subscribed in the iPhone app? Apple bills you, so cancel in iPhone Settings.",
+   "tips": [
+    "Cancel at least a day before it renews. You keep Plus until the end of the period you paid for."
+   ],
+   "partner": "Subscribed in the iPhone app? Apple bills you. Cancel in Settings → your name → Subscriptions.",
+   "related": [
+    "claude-pro",
+    "google-ai-pro",
+    "microsoft-365",
+    "canva-pro"
+   ],
+   "quotes": [
+    {
+     "source": "https://support.apple.com/en-us/118428",
+     "quote": "In Settings, tap your name. Tap Subscriptions. Tap the subscription. Tap Cancel Subscription."
+    }
+   ]
+  },
+  {
+   "id": "icloud",
+   "name": "iCloud+",
+   "url": null,
+   "helpUrl": "https://support.apple.com/en-us/108318",
+   "steps": [
+    "Open Settings and tap your name",
+    "Tap Subscriptions, then iCloud+",
+    "Tap Cancel Subscription"
+   ],
+   "appleNote": true,
+   "source": "https://support.apple.com/en-us/108318",
+   "checkedOn": "2026-11-13",
+   "confidence": "high",
+   "note": "Steps are for iOS 18.4 or later. iOS 18 to 18.3: Settings → your name → iCloud → Manage Plan → Downgrade Options, then pick a new plan. iOS 17 and earlier: iCloud → Manage Account Storage → Downgrade Options. No Apple device: Apple says use reportaproblem.apple.com (support.apple.com/en-us/121290). url set to null: Apple's iCloud+ page gives no web cancel link, and apps.apple.com/account/subscriptions wasn't on any page we read.",
+   "app": "Settings",
+   "company": "Apple",
+   "answer": "On your iPhone, open Settings, tap your name, then Subscriptions → iCloud+ → Cancel Subscription. It ends when your current billing period ends.",
+   "tips": [
+    "Using more than the free 5GB? Once it ends, iCloud stops syncing and backups won’t finish. Download or delete what you need first.",
+    "On iOS 18.3 or older: Settings → your name → iCloud → Manage Plan (iOS 17: Manage Account Storage) → Downgrade Options, then pick a smaller plan."
+   ],
+   "partner": "Pay for Apple One too? It already includes iCloud+ storage, so you can cancel the extra iCloud+ plan and keep using Apple One’s.",
+   "related": [
+    "apple-one",
+    "google-one",
+    "dropbox",
+    "apple-music"
+   ],
+   "quotes": [
+    {
+     "source": "https://support.apple.com/en-us/108318",
+     "quote": "iPhone with iOS 18.4 and later. Open the Settings app, then tap your name. Tap Subscriptions, then tap iCloud+ under Active. To cancel an iCloud+ plan, tap Cancel Subscription."
+    },
+    {
+     "source": "https://support.apple.com/en-us/108318",
+     "quote": "If you downgrade or cancel your iCloud+ plan, the change takes effect after your current subscription billing period ends."
+    },
+    {
+     "source": "https://support.apple.com/en-us/108318",
+     "quote": "If your iCloud storage exceeds your new storage plan capacity, iCloud won't sync or update your information, and iCloud backups won't complete."
+    },
+    {
+     "source": "https://support.apple.com/en-us/108318",
+     "quote": "If you pay for both Apple One and an iCloud+ plan, you can downgrade or cancel the iCloud+ plan and just use the iCloud+ plan included in Apple One."
+    }
+   ]
+  },
+  {
+   "id": "audible",
+   "name": "Audible",
+   "url": "https://www.audible.com/account/membership/cancel/benefits-reminder",
+   "helpUrl": null,
+   "steps": [
+    "Open audible.com in Safari and sign in",
+    "Tap the menu, then your name, then Membership details",
+    "Tap Cancel membership, then Confirm cancellation"
+   ],
+   "appleNote": true,
+   "source": "https://www.audible.com/help/article/cancel-membership",
+   "checkedOn": "2026-11-13",
+   "confidence": "high",
+   "note": "help.audible.com/s/article/cancel-membership now 301-redirects to audible.com/help/article/cancel-membership (JS page, read with a headless browser). The url is where that page's “Membership details” link goes. Apple- or Google-billed memberships can't be cancelled on the Audible site. Unused credits are lost at the end, except credits from an App Store or Google Play membership. Pause may be offered to keep credits.",
+   "app": "Audible",
+   "company": "Audible (Amazon)",
+   "answer": "Open audible.com in Safari, sign in, then go to your name → Membership details → Cancel membership → Confirm cancellation. Deleting the Audible app doesn’t cancel it.",
+   "tips": [
+    "Spend your credits first. Unused ones are lost when your last billing period ends (credits from an App Store membership don’t expire).",
+    "Want to keep your credits? Audible may let you pause instead."
+   ],
+   "partner": "Billed by Apple or Google? You can’t cancel on the Audible site. Cancel in iPhone Settings → your name → Subscriptions.",
+   "related": [
+    "kindle-unlimited",
+    "spotify",
+    "amazon-prime",
+    "amazon-music"
+   ],
+   "quotes": [
+    {
+     "source": "https://www.audible.com/help/article/cancel-membership",
+     "quote": "On mobile web: Select the main menu. Select your name. Select Membership details. Select Cancel membership. Select Confirm cancellation."
+    },
+    {
+     "source": "https://www.audible.com/help/article/cancel-membership",
+     "quote": "Note: Deleting the Audible app will not cancel a membership."
+    },
+    {
+     "source": "https://www.audible.com/help/article/cancel-membership",
+     "quote": "Audible memberships billed through Apple or Google cannot be canceled through the Audible site and must be canceled through the App Store or Google Play Store."
+    },
+    {
+     "source": "https://www.audible.com/help/article/cancel-membership",
+     "quote": "Credits received through an App Store membership or a Google Play Store membership do not expire and will remain in your account after cancellation."
+    }
+   ]
+  },
+  {
+   "id": "paramount-plus",
+   "name": "Paramount+",
+   "url": "https://www.paramountplus.com/account/",
+   "helpUrl": null,
+   "steps": [
+    "Open paramountplus.com/account in Safari and sign in",
+    "Tap Cancel Subscription",
+    "Follow the prompts to the end"
+   ],
+   "appleNote": true,
+   "source": "https://support.paramountplus.com/s/article/PI-How-do-I-cancel-my-subscription",
+   "checkedOn": "2026-11-13",
+   "confidence": "high",
+   "note": "Read on Paramount+'s International Help Center (support.paramountplus.com, updated May 12, 2026), rendered with a headless browser. The US help center (help.paramountplus.com) redirected us to the international one, so US-only wording wasn't seen; the website route is the same paramountplus.com/account page. Apple, Google, Amazon (Fire TV) or Roku billing: cancel there. No refund of fees paid; access runs to the end of the period.",
+   "app": "Paramount+",
+   "company": "Paramount Skydance",
+   "answer": "Open paramountplus.com/account in Safari, sign in, tap Cancel Subscription and follow the prompts. Signed up through Apple? Cancel in iPhone Settings instead.",
+   "tips": [
+    "You can keep watching until the period you paid for ends. Paramount+ doesn’t refund fees already paid."
+   ],
+   "partner": "Billed by Apple, Google, Amazon or Roku? Cancel with them.",
+   "related": [
+    "peacock",
+    "netflix",
+    "max",
+    "hulu"
+   ],
+   "quotes": [
+    {
+     "source": "https://support.paramountplus.com/s/article/PI-How-do-I-cancel-my-subscription",
+     "quote": "Go to your Paramount+ account page ( paramountplus.com/account ), click the Cancel Subscription link, then follow the online prompts."
+    },
+    {
+     "source": "https://support.paramountplus.com/s/article/PI-How-do-I-cancel-my-subscription",
+     "quote": "On your iPhone or iPad, open the Settings app. Tap your name. Tap Subscriptions. Tap Paramount+. Tap Cancel Subscription. If you don't see Cancel Subscription, the subscription is already canceled and won't renew. Tap Confirm."
+    },
+    {
+     "source": "https://support.paramountplus.com/s/article/PI-How-do-I-cancel-my-subscription",
+     "quote": "Once you have cancelled your subscription, you will still have access to Paramount+ until the cancellation takes effect and you will not be refunded for any fees you have paid."
+    }
+   ]
+  },
+  {
+   "id": "adobe-cc",
+   "name": "Adobe Creative Cloud",
+   "url": "https://account.adobe.com/plans",
+   "helpUrl": null,
+   "steps": [
+    "Open account.adobe.com/plans in Safari and sign in",
+    "Tap Manage plan, then Cancel your plan",
+    "Check the details, pick a reason, then tap Confirm cancellation"
+   ],
+   "appleNote": true,
+   "source": "https://helpx.adobe.com/account/individual/subscriptions-and-plans/renewals-and-cancellations/cancel-adobe-subscription.html",
+   "checkedOn": "2026-11-13",
+   "confidence": "high",
+   "note": "Help page last updated Jul 24, 2026. Bought through Apple, Google or Microsoft: cancel there. Annual plan paid monthly: after 14 days, a fee of 50% of the remaining contract (adobe-subscription-terms page). Each plan cancels separately. Can't cancel while a payment is processing or has a problem; wait 24h.",
+   "app": "Adobe Creative Cloud",
+   "company": "Adobe",
+   "answer": "Open account.adobe.com/plans in Safari, sign in, tap Manage plan → Cancel your plan, and go through to Confirm cancellation. On an annual plan paid monthly, cancelling after the first 14 days costs 50% of what’s left.",
+   "tips": [
+    "Cancel within 14 days of buying and most plans get a full refund.",
+    "Got more than one plan? Each one cancels separately.",
+    "Can’t cancel while a payment is processing or has a problem. Wait 24 hours and try again."
+   ],
+   "partner": "Bought it through Apple, Google or Microsoft? Cancel with them.",
+   "related": [
+    "canva-pro",
+    "microsoft-365",
+    "dropbox",
+    "google-one"
+   ],
+   "quotes": [
+    {
+     "source": "https://helpx.adobe.com/account/individual/subscriptions-and-plans/renewals-and-cancellations/cancel-adobe-subscription.html",
+     "quote": "In the Plans and payment window, select Manage plan for the plan you want to cancel."
+    },
+    {
+     "source": "https://helpx.adobe.com/account/individual/subscriptions-and-plans/renewals-and-cancellations/cancel-adobe-subscription.html",
+     "quote": "Select Cancel your plan."
+    },
+    {
+     "source": "https://helpx.adobe.com/account/individual/subscriptions-and-plans/renewals-and-cancellations/cancel-adobe-subscription.html",
+     "quote": "Check your plan details and then select Continue to cancel. Select the reason for cancellation, and then select Continue. Review the cancellation details and then select Confirm cancellation."
+    },
+    {
+     "source": "https://helpx.adobe.com/account/individual/subscriptions-and-plans/renewals-and-cancellations/cancel-adobe-subscription.html",
+     "quote": "For subscriptions purchased through third-party providers such as Apple, Google, or Microsoft, follow their specific cancellation process."
+    },
+    {
+     "source": "https://helpx.adobe.com/account/individual/terms-policies-and-regulations/adobe-subscription-terms.html",
+     "quote": "Note: After 14 days, a cancellation fee (early termination fee) of 50% of the remaining balance of the contract applies."
+    }
+   ]
+  },
+  {
+   "id": "duolingo",
+   "name": "Duolingo Super",
+   "url": null,
+   "helpUrl": "https://www.duolingo.com/help/cancel-my-super-duolingo-subscription",
+   "steps": [
+    "Duolingo app: tap the Super icon at the top",
+    "Tap Settings (the gear), then Manage subscription",
+    "Tap Cancel subscription and confirm in the App Store"
+   ],
+   "appleNote": true,
+   "source": "https://www.duolingo.com/help/cancel-my-super-duolingo-subscription",
+   "checkedOn": "2026-11-13",
+   "confidence": "high",
+   "note": "Help page is JS-rendered; read with a headless browser. Cancel the same way you signed up. Signed up in iPhone Settings: Apple's steps. Web sign-ups: duolingo.com → profile picture → Settings → Super Duolingo → Cancel subscription. No refunds or proration for past payments.",
+   "app": "Duolingo",
+   "company": "Duolingo",
+   "answer": "In the Duolingo app, tap the Super icon at the top, then the gear → Manage subscription → Cancel subscription, and confirm in the App Store. Deleting the app or your account doesn’t cancel it.",
+   "tips": [
+    "Your streak and progress stay. Super keeps working until the period you paid for ends.",
+    "Signed up on the website? Sign in at duolingo.com, tap your profile picture → Settings → Super Duolingo → Cancel subscription."
+   ],
+   "partner": "Subscribed through iPhone Settings instead of the app? Cancel there: Settings → your name → Subscriptions.",
+   "related": [
+    "calm",
+    "headspace",
+    "audible",
+    "spotify"
+   ],
+   "quotes": [
+    {
+     "source": "https://www.duolingo.com/help/cancel-my-super-duolingo-subscription",
+     "quote": "Open the Duolingo app. Tap the Super icon at the top of the home screen. Tap Settings (gear icon). Tap “Manage subscription”. Select “Cancel subscription” and proceed to cancel. Confirm cancellation through Google Play Store or App Store or Alipay"
+    },
+    {
+     "source": "https://www.duolingo.com/help/cancel-my-super-duolingo-subscription",
+     "quote": "Deleting the app and/or your account does not cancel your subscription."
+    },
+    {
+     "source": "https://www.duolingo.com/help/cancel-my-super-duolingo-subscription",
+     "quote": "Your streak and learning progress will not be affected."
+    }
+   ]
+  },
+  {
+   "id": "tinder",
+   "name": "Tinder",
+   "url": null,
+   "helpUrl": "https://www.help.tinder.com/hc/en-us/articles/115003554466-Cancel-your-subscription",
+   "steps": [
+    "Bought in the app? Settings → your name → Subscriptions",
+    "Else log in at tinder.com and open your profile",
+    "Tap Manage Payment Account, then Cancel Subscription"
+   ],
+   "appleNote": true,
+   "source": "https://www.help.tinder.com/hc/en-us/articles/115003554466-Cancel-your-subscription",
+   "checkedOn": "2026-11-13",
+   "confidence": "medium",
+   "openIssues": [
+    "help.tinder.com returns 403 (Cloudflare) to curl and WebFetch. Button names “Manage Payment Account” and “Cancel Subscription” are from search snippets only.",
+    "Tinder's Terms of Use (read live) only say: log in to the Website or App and go to the Account section. They confirm Apple/Google sign-ups must be cancelled with Apple/Google, even after deleting the account or app."
+   ],
+   "note": "Order number starting MK = Apple, GPA = Google, TNDR = Tinder (snippet). Deleting the app or account doesn't cancel. Cancelling keeps benefits to the end of the period.",
+   "app": "Tinder",
+   "company": "Match Group",
+   "answer": "Most iPhone sign-ups are billed by Apple: open Settings, tap your name → Subscriptions → Tinder → Cancel Subscription. Paid Tinder directly? Log in and cancel from your account.",
+   "tips": [
+    "Deleting the app or your Tinder account doesn’t cancel an Apple or Google subscription."
+   ],
+   "partner": "Bought in the iPhone app? Apple bills you, not Tinder. Cancel in iPhone Settings.",
+   "related": [
+    "hinge",
+    "bumble",
+    "snapchat-plus",
+    "spotify"
+   ],
+   "quotes": [
+    {
+     "source": "https://policies.tinder.com/terms/us/en",
+     "quote": "To cancel a subscription, log in to the Website or App and go to the Account section."
+    },
+    {
+     "source": "https://policies.tinder.com/terms/us/en",
+     "quote": "you must log in to your External Service Account and follow instructions to manage or cancel your subscription, even if you have otherwise deleted your account with us or if you have deleted the App from your device. For example, if you subscribed using your Apple ID, cancellation is handled by Apple, not Tinder."
+    },
+    {
+     "source": "https://support.apple.com/en-us/118428",
+     "quote": "In Settings, tap your name. Tap Subscriptions. Tap the subscription. Tap Cancel Subscription."
+    }
+   ]
+  },
+  {
+   "id": "canva-pro",
+   "name": "Canva Pro",
+   "url": null,
+   "helpUrl": "https://www.canva.com/help/cancel-canva-plan/",
+   "steps": [
+    "Open canva.com in Safari and sign in",
+    "Go to Settings, then Billing",
+    "Tap Cancel plan and confirm Cancel subscription"
+   ],
+   "appleNote": true,
+   "source": "https://www.canva.com/help/cancel-canva-plan/",
+   "checkedOn": "2026-11-13",
+   "confidence": "medium",
+   "openIssues": [
+    "canva.com/help and canva.com/policies return 403 to curl and WebFetch. Every step is from search snippets only.",
+    "Not confirmed: button names (Cancel plan, Cancel subscription), the pause offer, and that App Store purchases can't be cancelled in Canva."
+   ],
+   "note": "canva.com returned 403; from official snippets. App Store purchases can't be cancelled in Canva. Canva offers a 3-month pause instead. Designs stay on the free plan.",
+   "app": "Canva",
+   "company": "Canva",
+   "answer": "Sign in at canva.com, go to Settings → Billing, tap Cancel plan and confirm. Bought it in the iPhone app? Cancel in iPhone Settings.",
+   "tips": [
+    "Your designs stay on the free plan."
+   ],
+   "partner": "Bought it in the iPhone app? Apple bills you. Cancel in iPhone Settings → your name → Subscriptions.",
+   "related": [
+    "adobe-cc",
+    "microsoft-365",
+    "dropbox",
+    "google-one"
+   ],
+   "quotes": [
+    {
+     "source": "https://support.apple.com/en-us/118428",
+     "quote": "In Settings, tap your name. Tap Subscriptions. Tap the subscription. Tap Cancel Subscription."
+    }
+   ]
+  },
+  {
+   "id": "amazon-music",
+   "name": "Amazon Music Unlimited",
+   "url": null,
+   "helpUrl": "https://www.amazon.com/gp/help/customer/display.html?nodeId=GCRZL3F2UZMNP3T3",
+   "steps": [
+    "Open Amazon Music Settings on amazon.com in Safari",
+    "Find the Amazon Music Unlimited section",
+    "Tap Cancel under Subscription Renewal, then confirm"
+   ],
+   "appleNote": true,
+   "source": "https://www.amazon.com/gp/help/customer/display.html?nodeId=GCRZL3F2UZMNP3T3",
+   "checkedOn": "2026-11-13",
+   "confidence": "medium",
+   "openIssues": [
+    "amazon.com help (nodeId GCRZL3F2UZMNP3T3) and music.amazon.com help return 403/503 to our tools. Steps are from search snippets only.",
+    "No other official Amazon page we could read (aboutamazon.com) gives cancel steps for Music Unlimited.",
+    "Not confirmed: the Amazon Music Settings page address, the Cancel button under Subscription Renewal, the pause offer."
+   ],
+   "note": "amazon.com returned 503; from official snippets. Apple, Google or carrier billing: cancel there (Amazon can't). Monthly plans may offer pause.",
+   "app": "Amazon Music",
+   "company": "Amazon",
+   "answer": "Open your Amazon Music Settings on amazon.com in Safari, find Amazon Music Unlimited and tap Cancel under Subscription Renewal. Billed by Apple or your carrier? Cancel with them.",
+   "tips": [
+    "Monthly plans may offer a pause instead."
+   ],
+   "partner": "Billed by Apple, Google or your phone carrier? Amazon can’t cancel it. Cancel with them.",
+   "related": [
+    "spotify",
+    "apple-music",
+    "youtube-music",
+    "amazon-prime"
+   ],
+   "quotes": [
+    {
+     "source": "https://support.apple.com/en-us/118428",
+     "quote": "In Settings, tap your name. Tap Subscriptions. Tap the subscription. Tap Cancel Subscription."
+    }
+   ]
+  },
+  {
+   "id": "crunchyroll",
+   "name": "Crunchyroll",
+   "url": "https://www.crunchyroll.com/account/membership",
+   "helpUrl": null,
+   "steps": [
+    "Signed up in the app? Tap your profile → Membership → Manage, then cancel in the App Store",
+    "Signed up on the web? Open crunchyroll.com/account/membership in Safari and sign in",
+    "Tap Cancel Subscription, then No thanks, Finish Cancellation"
+   ],
+   "appleNote": true,
+   "source": "https://help.crunchyroll.com/article/how-do-i-cancel-my-membership",
+   "checkedOn": "2026-11-13",
+   "confidence": "high",
+   "note": "Crunchyroll moved its help center; the old Zendesk link now lands on the home page. New article read with a headless browser. Its Membership Info link goes to the url above. Web sign-ups can't cancel in the app; app sign-ups can't cancel on the website. Amazon, PlayStation, Roku or YouTube sign-ups cancel there.",
+   "app": "Crunchyroll",
+   "company": "Crunchyroll (Sony)",
+   "answer": "Signed up in the iPhone app? Tap your profile → Membership → Manage and cancel through the App Store. Signed up on the web? Go to crunchyroll.com/account/membership, tap Cancel Subscription, then No thanks, Finish Cancellation.",
+   "tips": [
+    "Deleting the app, logging out or removing your card doesn’t cancel it.",
+    "No cancel option? You may be signed in to another account, or a payment is still processing. Wait 24 hours and try again."
+   ],
+   "partner": "Signed up through Amazon, PlayStation, Roku or YouTube? Cancel with them. Crunchyroll support can’t do it for you.",
+   "related": [
+    "netflix",
+    "hulu",
+    "peacock",
+    "paramount-plus"
+   ],
+   "quotes": [
+    {
+     "source": "https://help.crunchyroll.com/article/how-do-i-cancel-my-membership",
+     "quote": "Click your profile picture in the top-right corner, then click Settings from the drop-down menu. Go to Membership Info → Cancel Subscription. Click No thanks, Finish Cancellation."
+    },
+    {
+     "source": "https://help.crunchyroll.com/article/how-do-i-cancel-my-membership",
+     "quote": "Tap your profile on the bottom right, then tap Membership. Tap Manage. Swipe to your current membership tier, then tap Cancel Subscription. Scroll down and tap Continue with Cancellation. Tap Crunchyroll to open your subscription. Tap Cancel subscription."
+    },
+    {
+     "source": "https://help.crunchyroll.com/article/how-do-i-cancel-my-membership",
+     "quote": "Deleting the app, logging out, or removing your payment method won’t cancel your subscription."
+    },
+    {
+     "source": "https://help.crunchyroll.com/article/why-don-t-i-see-an-option-to-cancel-in-the-crunchyroll-app",
+     "quote": "To cancel a Crunchyroll subscription linked to your Apple/Google account, open the Crunchyroll app and tap Account → Membership → Manage. This will take you to the App Store/Google Play, where you can cancel."
+    }
+   ]
+  },
+  {
+   "id": "walmart-plus",
+   "name": "Walmart+",
+   "url": null,
+   "helpUrl": "https://www.walmart.com/help/article/manage-walmart-membership/126c9a990a944c3abd8531de52a87440",
+   "steps": [
+    "Walmart app: tap Account, then Walmart+",
+    "Tap Manage membership, then Manage next to your plan",
+    "Tap Cancel next to Cancel membership and confirm"
+   ],
+   "appleNote": false,
+   "source": "https://www.walmart.com/help/article/manage-walmart-membership/126c9a990a944c3abd8531de52a87440",
+   "checkedOn": "2026-11-13",
+   "confidence": "medium",
+   "openIssues": [
+    "walmart.com help pages show a “Robot or human?” check to our tools. We didn't try to get around it. Every step is from search snippets only.",
+    "Not confirmed: Manage membership / Manage / Cancel button names, the Remind Me Later offer, the phone number, and that trials end right away."
+   ],
+   "note": "walmart.com showed a bot check, not bypassed; from official snippets. Expect a Remind Me Later offer first. Phone: 800-924-9206. Cancelling a trial ends benefits right away.",
+   "app": "Walmart",
+   "company": "Walmart",
+   "answer": "In the Walmart app, tap Account → Walmart+ → Manage membership, then Manage next to your plan and Cancel membership. Confirm on the next screen.",
+   "tips": [
+    "Expect a Remind Me Later offer first. Keep going to cancel."
+   ],
+   "related": [
+    "amazon-prime",
+    "costco",
+    "instacart",
+    "doordash"
+   ],
+   "quotes": []
+  },
+  {
+   "id": "hinge",
+   "name": "Hinge",
+   "url": null,
+   "helpUrl": "https://help.hinge.co/hc/en-us/articles/36311108859411-Adjusting-or-Canceling-Your-Subscription",
+   "steps": [
+    "Bought via Apple? Settings → your name → Subscriptions",
+    "Paid in Hinge? Open Hinge and tap the gear icon",
+    "Tap Cancel Subscription and follow the prompts"
+   ],
+   "appleNote": true,
+   "source": "https://help.hinge.co/hc/en-us/articles/36311108859411-Adjusting-or-Canceling-Your-Subscription",
+   "checkedOn": "2026-11-13",
+   "confidence": "medium",
+   "openIssues": [
+    "help.hinge.co returns 403 (Cloudflare) to curl and WebFetch. The in-app gear icon and Cancel Subscription button are from search snippets only.",
+    "Hinge's Terms of Use (read live) confirm the Apple route and say direct (Stripe) subscriptions cancel under Account Settings, but don't name the buttons."
+   ],
+   "note": "Most iPhone subs are Apple-billed. Hinge also sells direct via Stripe. Deleting your Hinge account ends a direct subscription right away with no refund.",
+   "app": "Hinge",
+   "company": "Match Group",
+   "answer": "Bought in the iPhone app? Open Settings, tap your name → Subscriptions → Hinge → Cancel Subscription. Paid Hinge directly? Cancel in the app’s Account Settings.",
+   "tips": [
+    "Deleting the app doesn’t cancel an Apple subscription."
+   ],
+   "partner": "Bought in the iPhone app? Apple bills you, not Hinge. Cancel in iPhone Settings.",
+   "related": [
+    "tinder",
+    "bumble",
+    "snapchat-plus",
+    "spotify"
+   ],
+   "quotes": [
+    {
+     "source": "https://hinge.co/terms",
+     "quote": "To cancel a purchase made with your Apple ID, go to Settings > [click on your Apple Account at the top of the page] > Subscriptions, then find your Hinge subscription and follow the instructions to cancel."
+    },
+    {
+     "source": "https://hinge.co/terms",
+     "quote": "To cancel a subscription, log in to the Website or App and go to the Account Settings section and follow the instructions to cancel."
+    }
+   ]
+  },
+  {
+   "id": "bumble",
+   "name": "Bumble",
+   "url": null,
+   "helpUrl": "https://support.bumble.com/hc/articles/28534541366045-Canceling-subscriptions",
+   "steps": [
+    "Bought via Apple? Settings → your name → Subscriptions",
+    "Paid by card or PayPal? Open Bumble, tap Profile",
+    "Tap Subscription details → Manage your subscription"
+   ],
+   "appleNote": true,
+   "source": "https://support.bumble.com/hc/articles/28534541366045-Canceling-subscriptions",
+   "checkedOn": "2026-11-13",
+   "confidence": "medium",
+   "openIssues": [
+    "support.bumble.com returns 403 (Cloudflare) to curl and WebFetch. “Subscription details” and “Manage your subscription” are from search snippets only.",
+    "Bumble's Terms (read live) only say direct subscriptions cancel “via the payment settings option under your profile”."
+   ],
+   "note": "Deleting the app or account doesn't cancel. Deleting your account ends the subscription right away with no refund.",
+   "app": "Bumble",
+   "company": "Bumble Inc.",
+   "answer": "Bought in the iPhone app? Open Settings, tap your name → Subscriptions → Bumble → Cancel Subscription. Paid Bumble by card or PayPal? Cancel from the payment settings in your Bumble profile.",
+   "tips": [
+    "Deleting the app or your account doesn’t cancel the subscription."
+   ],
+   "partner": "Bought in the iPhone app? Apple bills you, not Bumble. Cancel in iPhone Settings.",
+   "related": [
+    "tinder",
+    "hinge",
+    "snapchat-plus",
+    "spotify"
+   ],
+   "quotes": [
+    {
+     "source": "https://bumble.com/en-us/terms",
+     "quote": "If you purchased a subscription directly from Bumble, you may cancel or change your Payment Method via the payment settings option under your profile. If you purchased a subscription through a Third Party Store, such as the Apple App Store or the Google Play Store, you will need to access your account with that Third Party Store and follow instructions to change or cancel your subscription."
+    },
+    {
+     "source": "https://bumble.com/en-us/terms",
+     "quote": "Deleting your account or deleting the application from your device does not cancel your subscription."
+    },
+    {
+     "source": "https://support.apple.com/en-us/118428",
+     "quote": "In Settings, tap your name. Tap Subscriptions. Tap the subscription. Tap Cancel Subscription."
+    }
+   ]
+  },
+  {
+   "id": "kindle-unlimited",
+   "name": "Kindle+ (Kindle Unlimited)",
+   "url": "https://www.amazon.com/kindle-dbs/ku/ku-central",
+   "urlLabel": "Manage Kindle+",
+   "helpUrl": null,
+   "steps": [
+    "Open amazon.com/kindle-dbs/ku/ku-central in Safari and sign in",
+    "Tap Cancel Kindle+ Subscription"
+   ],
+   "appleNote": false,
+   "source": "https://www.aboutamazon.com/news/devices/what-is-kindle-unlimited",
+   "checkedOn": "2026-11-13",
+   "confidence": "high",
+   "note": "Kindle Unlimited was renamed Kindle+ (Amazon, Oct 22, 2026). amazon.com help still returns 503 to our tools, so the source is Amazon's own news site, updated Oct 22, 2026. Its “Manage your Kindle+ Subscription” link (amzn.to short link) resolves to the url above. amazon.com/kucentral and /kpcentral not confirmed. No refunds; access runs to the next billing date. Google Play route not confirmed this time.",
+   "app": "Kindle",
+   "company": "Amazon",
+   "answer": "Kindle Unlimited is now called Kindle+. Open Manage your Kindle+ Subscription on amazon.com in Safari, sign in and tap Cancel Kindle+ Subscription.",
+   "tips": [
+    "You keep reading until your next billing date, then your Kindle+ books go away. Amazon doesn’t refund fees already paid."
+   ],
+   "related": [
+    "audible",
+    "amazon-prime",
+    "amazon-music",
+    "nyt"
+   ],
+   "quotes": [
+    {
+     "source": "https://www.aboutamazon.com/news/devices/what-is-kindle-unlimited",
+     "quote": "You can cancel your Kindle+ subscription at any time. Just go to Manage your Kindle+ Subscription and select “Cancel Kindle+ Subscription.” Your subscription will remain active until your next billing date, after which you’ll lose access to your Kindle+ titles. If you cancel your subscription, you will not receive a refund of any subscription fees paid."
+    },
+    {
+     "source": "https://www.aboutamazon.com/news/devices/what-is-kindle-unlimited",
+     "quote": "UPDATE: This article was updated on October 22, 2026, to reflect that Kindle Unlimited has been renamed Kindle+."
+    }
+   ]
+  },
+  {
+   "id": "nyt",
+   "name": "New York Times",
+   "url": "https://www.nytimes.com/account/cancel",
+   "helpUrl": null,
+   "steps": [
+    "Open nytimes.com/account in Safari and sign in",
+    "Tap Subscription Overview",
+    "Tap Cancel your Subscription under Manage Subscription and follow the steps"
+   ],
+   "appleNote": true,
+   "source": "https://help.nytimes.com/hc/en-us/articles/360003499613-Cancel-Your-Subscription",
+   "checkedOn": "2026-11-13",
+   "confidence": "high",
+   "note": "help.nytimes.com loaded fine this time. The url is where the help page's Cancel Subscription button links. Also by phone (866-273-3612, US) or chat. Apple App Store or Google Play purchases: cancel with them. Athletic-billed: cancel in The Athletic's account settings.",
+   "app": "NYT",
+   "company": "The New York Times",
+   "answer": "Sign in at nytimes.com/account, tap Subscription Overview, then Cancel your Subscription under Manage Subscription. You can also call 866-273-3612 or cancel in chat.",
+   "tips": [
+    "Rather talk to someone? Call 866-273-3612 (US) or chat with Customer Care, 7am to 5pm ET weekdays and 7am to 2pm ET on weekends and holidays.",
+    "Billed through The Athletic? Cancel in your Athletic account settings."
+   ],
+   "partner": "Bought it through Apple or Google Play? Cancel with them. The Times can’t change it.",
+   "related": [
+    "kindle-unlimited",
+    "audible",
+    "spotify",
+    "linkedin-premium"
+   ],
+   "quotes": [
+    {
+     "source": "https://help.nytimes.com/hc/en-us/articles/360003499613-Cancel-Your-Subscription",
+     "quote": "Under your account, select Subscription Overview. Select Cancel your Subscription in the Manage Subscription section, and follow the instructions to cancel."
+    },
+    {
+     "source": "https://help.nytimes.com/hc/en-us/articles/360003499613-Cancel-Your-Subscription",
+     "quote": "Call us at 866-273-3612 if you are in the U.S."
+    },
+    {
+     "source": "https://help.nytimes.com/hc/en-us/articles/360003499613-Cancel-Your-Subscription",
+     "quote": "Note: If you purchased your subscription through a third-party (such as Google Play or Apple App Store), you will need to contact the third-party directly to cancel or make changes to your subscription."
+    }
+   ]
+  },
+  {
+   "id": "calm",
+   "name": "Calm",
+   "url": null,
+   "helpUrl": "https://support.calm.com/hc/en-us/articles/115002473607-How-to-Cancel-Your-Subscription-or-Free-Trial",
+   "steps": [
+    "Bought in the app? Settings → your name → Subscriptions",
+    "Bought on the web? Sign in at calm.com",
+    "Tap Settings → Manage Subscription → Cancel Subscription"
+   ],
+   "appleNote": true,
+   "source": "https://support.calm.com/hc/en-us/articles/115002473607-How-to-Cancel-Your-Subscription-or-Free-Trial",
+   "checkedOn": "2026-11-13",
+   "confidence": "medium",
+   "openIssues": [
+    "support.calm.com and calm.com/terms return 403 to curl and WebFetch. Web steps (Settings → Manage Subscription → Cancel Subscription) are from search snippets only.",
+    "Family-plan rule (admin cancels on the website) is from snippets only."
+   ],
+   "note": "support.calm.com returned 403; from official snippets. Family plans cancel only on the website by the admin.",
+   "app": "Calm",
+   "company": "Calm",
+   "answer": "Bought in the iPhone app? Open Settings, tap your name → Subscriptions → Calm → Cancel Subscription. Bought on calm.com? Sign in there and cancel under Manage Subscription.",
+   "tips": [
+    "On a Family plan? Only the plan admin can cancel, on the website."
+   ],
+   "partner": "Bought in the iPhone app? Apple bills you. Cancel in iPhone Settings.",
+   "related": [
+    "headspace",
+    "duolingo",
+    "strava",
+    "apple-fitness"
+   ],
+   "quotes": [
+    {
+     "source": "https://support.apple.com/en-us/118428",
+     "quote": "In Settings, tap your name. Tap Subscriptions. Tap the subscription. Tap Cancel Subscription."
+    }
+   ]
+  },
+  {
+   "id": "headspace",
+   "name": "Headspace",
+   "url": null,
+   "helpUrl": "https://help.headspace.com/hc/en-us/articles/115008364988-How-do-I-cancel-my-subscription",
+   "steps": [
+    "Bought in the app? Settings → your name → Subscriptions",
+    "Bought on the web? Sign in at headspace.com in Safari",
+    "Open subscription management and tap cancel"
+   ],
+   "appleNote": true,
+   "source": "https://help.headspace.com/hc/en-us/articles/115008364988-How-do-I-cancel-my-subscription",
+   "checkedOn": "2026-11-13",
+   "confidence": "medium",
+   "openIssues": [
+    "help.headspace.com returns 403 (Cloudflare) to curl and WebFetch. Web steps are from search snippets only.",
+    "Headspace's Terms (read live) confirm cancel any time, the email route (help@headspace.com) and that App Store subs cancel with Apple, but give no web button names."
+   ],
+   "note": "Web subs cancel in a browser, not the app. No refund for fees already paid; access runs to the end of the period.",
+   "app": "Headspace",
+   "company": "Headspace",
+   "answer": "Bought in the iPhone app? Open Settings, tap your name → Subscriptions → Headspace → Cancel Subscription. Bought on the web? Sign in at headspace.com in Safari and cancel there, or email help@headspace.com.",
+   "tips": [
+    "You keep access until the period you paid for ends. Headspace doesn’t refund fees already paid."
+   ],
+   "partner": "Bought in the iPhone app? Apple bills you. Cancel in iPhone Settings.",
+   "related": [
+    "calm",
+    "duolingo",
+    "strava",
+    "apple-fitness"
+   ],
+   "quotes": [
+    {
+     "source": "https://www.headspace.com/terms-and-conditions",
+     "quote": "Please make any such cancellation by visiting here or emailing help@headspace.com."
+    },
+    {
+     "source": "https://www.headspace.com/terms-and-conditions",
+     "quote": "If you purchased your Subscription through the Apple iTunes Store or our iPhone application, you must cancel your Subscription by canceling automatic renewal of paid In App Subscriptions by selecting Manage App Subscriptions in your iTunes Account settings and selecting the Subscription you want to modify."
+    },
+    {
+     "source": "https://www.headspace.com/terms-and-conditions",
+     "quote": "If you cancel, you are not entitled to a refund for the fees you already paid, but, subject to these Terms, you will continue to receive access to the Products until the end of your current subscription period."
+    },
+    {
+     "source": "https://support.apple.com/en-us/118428",
+     "quote": "In Settings, tap your name. Tap Subscriptions. Tap the subscription. Tap Cancel Subscription."
+    }
+   ]
+  },
+  {
+   "id": "apple-fitness",
+   "name": "Apple Fitness+",
+   "url": "https://account.apple.com/account/manage/section/subscriptions",
+   "helpUrl": null,
+   "steps": [
+    "Fitness app: tap Summary, then your profile picture",
+    "Tap your account name, then Apple Fitness+",
+    "Follow the steps to cancel"
+   ],
+   "appleNote": true,
+   "source": "https://support.apple.com/guide/fitness-plus/subscribe-to-apple-fitness-apdcd321df40/ios",
+   "checkedOn": "2026-11-13",
+   "confidence": "high",
+   "note": "Settings → your name → Subscriptions works too (support.apple.com/en-us/118428). url changed from apps.apple.com/account/subscriptions to the web cancel link on Apple's own cancel page (118428). Part of Apple One Premier: cancel or change Apple One instead.",
+   "app": "Fitness",
+   "company": "Apple",
+   "answer": "In the Fitness app, tap Summary, then your profile picture, your account name and Apple Fitness+, and follow the steps to cancel. Or go to Settings → your name → Subscriptions.",
+   "tips": [
+    "Get Fitness+ through Apple One Premier? Cancel or change Apple One instead."
+   ],
+   "partner": "Don’t see Fitness+ on its own? It may come with Apple One Premier. Change Apple One instead.",
+   "related": [
+    "apple-one",
+    "apple-music",
+    "apple-arcade",
+    "strava"
+   ],
+   "quotes": [
+    {
+     "source": "https://support.apple.com/guide/fitness-plus/subscribe-to-apple-fitness-apdcd321df40/ios",
+     "quote": "On iPhone: Go to the Fitness app, tap Summary, tap your profile picture in the top-right corner, tap [ account name ], then tap Apple Fitness+."
+    },
+    {
+     "source": "https://support.apple.com/guide/fitness-plus/subscribe-to-apple-fitness-apdcd321df40/ios",
+     "quote": "Follow the onscreen instructions to change or cancel your subscription."
+    },
+    {
+     "source": "https://support.apple.com/guide/fitness-plus/subscribe-to-apple-fitness-apdcd321df40/ios",
+     "quote": "If you subscribe to Apple Fitness+ as part of an Apple One Premier subscription and want to cancel your subscription, see the Apple Support article If you want to cancel a subscription from Apple."
+    },
+    {
+     "source": "https://support.apple.com/en-us/118428",
+     "quote": "In Settings, tap your name. Tap Subscriptions. Tap the subscription. Tap Cancel Subscription."
+    }
+   ]
+  }
+ ]
+}

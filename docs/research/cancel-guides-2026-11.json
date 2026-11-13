@@ -675,13 +675,13 @@
    "source": "https://help.uber.com/en/riders/article/how-can-i-cancel-my-uber-one-membership?nodeId=8f62fc7a-6cc9-4ac7-a59a-3f5627bf616c",
    "checkedOn": "2026-11-10",
    "confidence": "high",
-   "note": "Cancel at least 48 hours before renewal (US); inside that window you must contact support. Three confirm screens.",
+   "note": "Three confirm screens. Uber’s US terms: you’re charged up to 24 hours before renewal; cancel after that charge but before the renewal day and Uber refunds that charge.",
    "app": "Uber",
    "company": "Uber",
    "appleBilling": false,
-   "answer": "In the Uber app, tap Account → Uber One → Manage Membership → End Membership. Pick a reason, tap Continue twice, then End Membership. Uber says to do it at least 48 hours before it renews.",
+   "answer": "In the Uber app, tap Account → Uber One → Manage Membership → End Membership. Pick a reason, tap Continue twice, then End Membership.",
    "tips": [
-    "Cancel at least 48 hours before it renews. You’ll see a few confirmation screens."
+    "You’ll see a few confirmation screens before it ends."
    ],
    "partner": "Got Uber One through another company’s perk? Cancel with that company.",
    "related": [

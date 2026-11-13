@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 import { priceHubServices, publishedGuides, slugOf } from '@/lib/data';
 import { COMPANY } from '@/lib/site';
+import { TOOLS } from '@/lib/tools';
 
 /** Dark footer card: link columns that help people (and search engines) reach every guide, plus the giant wordmark. */
 export function SiteFooter() {
@@ -28,6 +29,14 @@ export function SiteFooter() {
               </Link>
             ))}
             <Link href="/prices">All prices →</Link>
+          </nav>
+          <nav aria-label="Free tools">
+            <p className="ttl">Free tools</p>
+            {TOOLS.map((t) => (
+              <Link key={t.slug} href={`/${t.slug}`}>
+                {t.short}
+              </Link>
+            ))}
           </nav>
           <nav aria-label="Ditch">
             <p className="ttl">Ditch</p>

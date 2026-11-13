@@ -15,6 +15,7 @@ export const APP_STORE_ID: string | null = null;
 export const NAV = [
   { href: '/cancel', label: 'Cancel guides' },
   { href: '/prices', label: 'Prices' },
+  { href: '/tools', label: 'Free tools' },
   { href: '/#pricing', label: 'Pricing' },
   { href: '/support', label: 'Support' },
 ];

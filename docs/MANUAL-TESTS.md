@@ -403,3 +403,13 @@ Why: an app feels premium when the bad moments are handled well, not only the ha
 - [ ] Open a cancel guide and tap the side card's "Join the waitlist": it scrolls to the box on the same page, it doesn't jump to the home page.
 - [ ] Hover the hero headline on a laptop: the logo rotation pauses.
 - [ ] On an iPad, tap the footer links and the "On this page" links: each is easy to hit.
+
+## W2. Free tools (ditchsubs.app/tools)
+- [ ] /tools lists 10 tools; "Free tools" is in the top menu and the footer.
+- [ ] Charge finder (/charges/apple-com-bill): type 9.99 → iCloud+ 2 TB, Apple Fitness+ and others; switch country to UK and type 11.99 → Disney+, Apple Music. Says "possible matches", never "this is".
+- [ ] Free trial: start Jan 31, 1 month → ends Feb 28; Apple → cancel by Feb 27. "Add 2 reminders" downloads a calendar file; open it on iPhone and see 2 all-day events.
+- [ ] Apple One: Music + TV + Arcade + 50 GB in the US → Apple One Individual is $13.01 a month less.
+- [ ] Monthly vs yearly, Family split, Compare, Cost per hour: pick a country and a service, numbers change.
+- [ ] Refund helper: Apple + "forgot to cancel" → reportaproblem.apple.com steps.
+- [ ] Spreadsheet: download, open in Numbers or Google Sheets; prices filled in for your country.
+- [ ] Turn on airplane mode after a page loads: tools still work (nothing is sent).

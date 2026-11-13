@@ -53,6 +53,18 @@ export type CancelGuide = {
   related?: string[];
   /** Button text when the link isn't a cancel page (e.g. Costco's auto-renew page). */
   urlLabel?: string;
+  /** Officially sourced extra sections (docs/research/guide-depth-*.json). Every fact has its source. */
+  depth?: GuideDepth;
+};
+
+export type Sourced = { text: string; source: string; quote?: string };
+export type GuideDepth = {
+  checkedOn?: string;
+  after?: { access?: Sourced | null; data?: Sourced | null; refunds?: Sourced | null } | null;
+  verify?: Sourced | null;
+  pause?: Sourced | null;
+  googlePlay?: { steps: string[]; source: string } | null;
+  faq?: { q: string; a: string; source: string }[];
 };
 
 export const SERVICES = servicesJson as Service[];
@@ -105,8 +117,9 @@ export function defaultPlan(row: PriceRow): Plan {
 }
 
 /** Price hubs: services with verified prices in at least 6 countries, most popular first. */
+/** Price pages: services with verified prices in 6+ countries, or a verified US price (owner, Nov 13: US-only pages too). */
 export function priceHubServices(): Service[] {
-  return SERVICES.filter((s) => verifiedPrices(s.id).length >= 6).sort((a, b) => (a.rank ?? 999) - (b.rank ?? 999));
+  return SERVICES.filter((s) => { const v = verifiedPrices(s.id); return v.length >= 6 || v.some((r) => r.country === 'US'); }).sort((a, b) => (a.rank ?? 999) - (b.rank ?? 999));
 }
 
 /** Gate 3: high-confidence guides only, until the owner has checked the medium ones on a phone. */
@@ -201,3 +214,20 @@ export function neighbours<T extends { id: string }>(list: T[], id: string, n = 
 
 /** True when a price row was read from Apple's in-app price list (what you pay if you subscribe in the iPhone app). */
 export const isAppStorePrice = (r: PriceRow) => /apps\.apple\.com/.test(r.source);
+
+/**
+ * Web addresses that match how people search (owner, Nov 13). The data keeps the app's ids; only the site's
+ * URLs change. Old addresses forward permanently (custom-worker.ts).
+ */
+export const SLUG: Record<string, string> = { max: 'hbo-max', 'ps-plus': 'playstation-plus', 'nintendo-online': 'nintendo-switch-online', doordash: 'dashpass', now: 'now-tv', nyt: 'new-york-times' };
+const ID_BY_SLUG = Object.fromEntries(Object.entries(SLUG).map(([id, slug]) => [slug, id]));
+export const slugOf = (id: string) => SLUG[id] ?? id;
+/** The service id for a URL slug. Old ids that now have a new slug return null, so they never render twice. */
+export const idOf = (slug: string): string | null => ID_BY_SLUG[slug] ?? (SLUG[slug] ? null : slug);
+
+/** "in 17 countries" or "in the US" (one country). */
+export function inWhere(rows: { country: string }[]): string {
+  if (rows.length !== 1) return `in ${rows.length} countries`;
+  const c = rows[0].country;
+  return c === 'US' ? 'in the US' : c === 'GB' ? 'in the UK' : `in ${COUNTRY[c]?.name ?? c}`;
+}

@@ -10,7 +10,7 @@ function inkOn(hex: string) {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.179 ? '#16140F' : '#fff';
 }
 
-export type IndexItem = { id: string; name: string; aliases: string[]; category: string; meta: string; logo: boolean; color: string; mono: string };
+export type IndexItem = { id: string; slug: string; name: string; aliases: string[]; category: string; meta: string; logo: boolean; color: string; mono: string };
 
 const norm = (s: string) => s.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]/g, '');
 
@@ -58,7 +58,7 @@ export function ServiceIndex({ items, base, noun }: { items: IndexItem[]; base: 
       {shown.length ? (
         <div className="grid-cards">
           {shown.map((i) => (
-            <Link key={i.id} className="svc" href={`${base}/${i.id}`}>
+            <Link key={i.id} className="svc" href={`${base}/${i.slug}`}>
               {i.logo ? (
                 <img className="logo" src={`/logos/${i.id}.png`} alt="" width={40} height={40} loading="lazy" />
               ) : (

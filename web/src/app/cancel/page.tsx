@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 import { ServiceIndex, type IndexItem } from '@/components/ServiceIndex';
-import { formatDate, hasLogo, publishedGuides, serviceById } from '@/lib/data';
+import { formatDate, hasLogo, publishedGuides, serviceById, slugOf } from '@/lib/data';
 import { SITE } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -14,14 +14,14 @@ export default function CancelIndex() {
   const guides = publishedGuides();
   const items: IndexItem[] = guides.map((g) => {
     const s = serviceById(g.id);
-    return { id: g.id, name: g.name, aliases: s?.aliases ?? [], category: s?.category ?? 'Other', meta: `Checked ${formatDate(g.checkedOn)}`, logo: hasLogo(g.id), color: s?.color ?? '#6B6559', mono: s?.mono ?? g.name[0] };
+    return { id: g.id, slug: slugOf(g.id), name: g.name, aliases: s?.aliases ?? [], category: s?.category ?? 'Other', meta: `Checked ${formatDate(g.checkedOn)}`, logo: hasLogo(g.id), color: s?.color ?? '#6B6559', mono: s?.mono ?? g.name[0] };
   });
   const ld = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: 'Cancel guides',
     url: `${SITE}/cancel`,
-    mainEntity: { '@type': 'ItemList', numberOfItems: items.length, itemListElement: items.map((x, i) => ({ '@type': 'ListItem', position: i + 1, name: `How to cancel ${x.name}`, url: `${SITE}/cancel/${x.id}` })) },
+    mainEntity: { '@type': 'ItemList', numberOfItems: items.length, itemListElement: items.map((x, i) => ({ '@type': 'ListItem', position: i + 1, name: `How to cancel ${x.name}`, url: `${SITE}/cancel/${slugOf(x.id)}` })) },
   };
   return (
     <div className="wrap index-head">

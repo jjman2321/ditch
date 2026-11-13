@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 import { ServiceIndex, type IndexItem } from '@/components/ServiceIndex';
-import { COUNTRIES, hasLogo, priceHubServices, verifiedPrices } from '@/lib/data';
+import { COUNTRIES, hasLogo, priceHubServices, verifiedPrices, slugOf } from '@/lib/data';
 import { SITE } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -12,13 +12,13 @@ export const metadata: Metadata = {
 
 export default function PricesIndex() {
   const hubs = priceHubServices();
-  const items: IndexItem[] = hubs.map((s) => ({ id: s.id, name: s.name, aliases: s.aliases ?? [], category: s.category, meta: `${verifiedPrices(s.id).length} countries`, logo: hasLogo(s.id), color: s.color ?? '#6B6559', mono: s.mono ?? s.name[0] }));
+  const items: IndexItem[] = hubs.map((s) => ({ id: s.id, slug: slugOf(s.id), name: s.name, aliases: s.aliases ?? [], category: s.category, meta: verifiedPrices(s.id).length === 1 ? 'US prices' : `${verifiedPrices(s.id).length} countries`, logo: hasLogo(s.id), color: s.color ?? '#6B6559', mono: s.mono ?? s.name[0] }));
   const ld = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: 'Subscription prices',
     url: `${SITE}/prices`,
-    mainEntity: { '@type': 'ItemList', numberOfItems: items.length, itemListElement: items.map((x, i) => ({ '@type': 'ListItem', position: i + 1, name: `${x.name} prices`, url: `${SITE}/prices/${x.id}` })) },
+    mainEntity: { '@type': 'ItemList', numberOfItems: items.length, itemListElement: items.map((x, i) => ({ '@type': 'ListItem', position: i + 1, name: `${x.name} prices`, url: `${SITE}/prices/${slugOf(x.id)}` })) },
   };
   return (
     <div className="wrap index-head">

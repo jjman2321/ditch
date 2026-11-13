@@ -46,6 +46,9 @@ async function noindexOnTestHost(url: URL, res: Promise<Response>) {
 
 const CANONICAL_HOST = "ditchsubs.app";
 
+/** Old guide and price addresses forward to the names people search for (keep in sync with SLUG in src/lib/data.ts). */
+const MOVED: Record<string, string> = { max: "hbo-max", "ps-plus": "playstation-plus", "nintendo-online": "nintendo-switch-online", doordash: "dashpass", now: "now-tv", nyt: "new-york-times" };
+
 const worker = {
   async fetch(req: Request, env: unknown, ctx: unknown) {
     const url = new URL(req.url);
@@ -59,6 +62,8 @@ const worker = {
 
 async function route(req: Request, url: URL, env: unknown, ctx: unknown): Promise<Response> {
   const path = clean(url.pathname);
+  const moved = /^\/(cancel|prices)\/([a-z0-9-]+)$/.exec(path);
+  if (moved && MOVED[moved[2]]) return Response.redirect(`${url.origin}/${moved[1]}/${MOVED[moved[2]]}`, 301);
   if ((req.method === "GET" || req.method === "HEAD") && isPage(path)) {
     const set = await knownPaths(url.origin, env, ctx);
     if (set && !set.has(path) && !ALLOW.has(path)) {

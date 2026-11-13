@@ -31,6 +31,13 @@ const mena = latest('prices-mena-');
 prices.prices = [...prices.prices, ...mena.prices];
 prices.about.countries = { ...prices.about.countries, ...(mena.about.countries ?? {}) };
 const cancel = latest('cancel-guides-');
+// Deeper, officially sourced sections for the top guides (after cancelling, refunds, check it worked, pause, Google Play, FAQ).
+const hasDepth = readdirSync(join(APP, 'docs/research')).some((n) => n.startsWith('guide-depth-') && n.endsWith('.json'));
+const guideDepth = hasDepth ? latest('guide-depth-') : { guides: [] };
+for (const g of cancel.services) {
+  const d = guideDepth.guides.find((x) => x.id === g.id);
+  if (d) g.depth = d;
+}
 
 const logos = [];
 for (const s of services) {

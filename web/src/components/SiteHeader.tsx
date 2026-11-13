@@ -1,4 +1,4 @@
-import { priceHubServices, publishedGuides, serviceById } from '@/lib/data';
+import { priceHubServices, publishedGuides, serviceById, slugOf } from '@/lib/data';
 
 import { HeaderBar, type SearchItem } from './HeaderBar';
 
@@ -10,7 +10,7 @@ export function SiteHeader() {
   const items: SearchItem[] = ids
     .map((id) => {
       const s = serviceById(id);
-      return { id, name: s?.name ?? id, aliases: s?.aliases ?? [], guide: guides.has(id), prices: hubs.has(id), rank: s?.rank ?? 999 };
+      return { id, slug: slugOf(id), name: s?.name ?? id, aliases: s?.aliases ?? [], guide: guides.has(id), prices: hubs.has(id), rank: s?.rank ?? 999 };
     })
     .sort((a, b) => a.rank - b.rank);
   return <HeaderBar items={items} />;

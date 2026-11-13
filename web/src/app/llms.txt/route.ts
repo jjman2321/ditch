@@ -1,4 +1,4 @@
-import { COUNTRIES, formatDate, priceHubServices, publishedGuides, siteCounts } from '@/lib/data';
+import { COUNTRIES, formatDate, priceHubServices, publishedGuides, siteCounts, slugOf } from '@/lib/data';
 import { APP_STORE_ID, PRO, SITE } from '@/lib/site';
 
 // A plain map of the site for AI assistants (llms.txt). Cheap to keep; facts only.
@@ -11,10 +11,10 @@ export function GET() {
 This site publishes hand-checked subscription prices for ${c.services} services in up to ${c.countries} countries (${COUNTRIES.map((x) => x.name).join(', ')}) and ${c.guides} cancel guides. Every price and guide shows the date it was checked and links to the official page. Last price check: ${formatDate(c.checked)}.
 
 ## Key pages\n- [Home](${SITE}/)\n- [All cancel guides](${SITE}/cancel)\n- [All prices](${SITE}/prices)\n- [How we check](${SITE}/how-we-check)\n\n## Cancel guides
-${publishedGuides().map((g) => `- [How to cancel ${g.name}](${SITE}/cancel/${g.id})`).join('\n')}
+${publishedGuides().map((g) => `- [How to cancel ${g.name}](${SITE}/cancel/${slugOf(g.id)})`).join('\n')}
 
 ## Prices
-${priceHubServices().map((s) => `- [${s.name} prices by country](${SITE}/prices/${s.id})`).join('\n')}
+${priceHubServices().map((s) => `- [${s.name} prices by country](${SITE}/prices/${slugOf(s.id)})`).join('\n')}
 
 ## About
 - [How we check prices and guides](${SITE}/how-we-check)

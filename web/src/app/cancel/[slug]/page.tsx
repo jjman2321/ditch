@@ -4,10 +4,8 @@ import { notFound } from 'next/navigation';
 
 import { EmailBox } from '@/components/EmailBox';
 import { Logo } from '@/components/Logo';
-import { Notif } from '@/components/Notif';
 import { PriceTable } from '@/components/PriceTable';
-import { APPLE_SOURCE, APPLE_STEPS, defaultPlan, formatDate, freshness, guideById, host, neighbours, priceFor, priceHubServices, pubDates, publicNotes, publishedGuides, serviceById } from '@/lib/data';
-import { formatMoney } from '@/lib/money';
+import { APPLE_SOURCE, APPLE_STEPS, formatDate, freshness, guideById, host, neighbours, priceFor, priceHubServices, pubDates, publicNotes, publishedGuides, serviceById, idOf, slugOf } from '@/lib/data';
 import { AUTHOR, COMPANY, SITE, SUPPORT_EMAIL } from '@/lib/site';
 
 function H2({ id, children }: { id: string; children: React.ReactNode }) {
@@ -22,7 +20,7 @@ function H2({ id, children }: { id: string; children: React.ReactNode }) {
 }
 
 export function generateStaticParams() {
-  return publishedGuides().map((g) => ({ slug: g.id }));
+  return publishedGuides().map((g) => ({ slug: slugOf(g.id) }));
 }
 
 function shortUrl(url: string) {
@@ -39,14 +37,15 @@ function answer(g: { answer?: string; steps: string[]; name: string; checkedOn: 
 
 export async function generateMetadata({ params }: PageProps<'/cancel/[slug]'>): Promise<Metadata> {
   const { slug } = await params;
-  const g = guideById(slug);
+  const id = idOf(slug);
+  const g = id ? guideById(id) : undefined;
   if (!g) return {};
   const desc = answer(g);
   return {
     title: `How to cancel ${g.name} in ${g.checkedOn.slice(0, 4)}: official steps`,
     description: desc.length > 158 ? `${desc.slice(0, 155).replace(/\s+\S*$/, '')}…` : desc,
-    alternates: { canonical: `/cancel/${g.id}` },
-    openGraph: { title: `How to cancel ${g.name}`, url: `/cancel/${g.id}`, type: 'article', siteName: 'Ditch: Subscription Tracker', locale: 'en_US', images: [{ url: '/og/cancel.png', width: 1200, height: 630, alt: 'How to cancel any subscription' }] },
+    alternates: { canonical: `/cancel/${slugOf(g.id)}` },
+    openGraph: { title: `How to cancel ${g.name}`, url: `/cancel/${slugOf(g.id)}`, type: 'article', siteName: 'Ditch: Subscription Tracker', locale: 'en_US', images: [{ url: '/og/cancel.png', width: 1200, height: 630, alt: 'How to cancel any subscription' }] },
     twitter: { card: 'summary_large_image', images: ['/og/cancel.png'] },
     robots: freshness(g.checkedOn) === 'expired' ? { index: false } : undefined,
   };
@@ -54,7 +53,8 @@ export async function generateMetadata({ params }: PageProps<'/cancel/[slug]'>):
 
 export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'>) {
   const { slug } = await params;
-  const g = guideById(slug);
+  const id = idOf(slug);
+  const g = id ? guideById(id) : undefined;
   if (!g) notFound();
   const s = serviceById(g.id);
   const notes = publicNotes(g.note);
@@ -64,7 +64,6 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
   const company = g.company ?? g.name;
   const fresh = freshness(g.checkedOn);
   const us = priceFor(g.id, 'US');
-  const usPlan = us ? defaultPlan(us) : null;
   const sameCat = publishedGuides().filter((x) => serviceById(x.id)?.category === s?.category);
   const picked = (g.related ?? []).map((id) => guideById(id)).filter((x): x is NonNullable<typeof x> => Boolean(x));
   const related = picked.length ? picked.slice(0, 4) : neighbours(sameCat, g.id, 4);
@@ -75,12 +74,25 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
   const showApple = !appleOnly && g.appleBilling !== false;
   const year = g.checkedOn.slice(0, 4);
 
+  const d = g.depth;
+  const after = d?.after ? [d.after.access, d.after.data, d.after.refunds].filter((x): x is NonNullable<typeof x> => Boolean(x)) : [];
+  const faq = d?.faq ?? [];
   const toc = [
     { id: 'direct', label: appleOnly ? 'Cancel on iPhone' : `Cancel with ${g.name}` },
     ...(showApple ? [{ id: 'apple', label: 'If Apple bills you' }] : []),
+    ...(d?.googlePlay ? [{ id: 'google', label: 'If Google Play bills you' }] : []),
     { id: 'partner', label: 'No cancel button?' },
+    ...(d?.verify ? [{ id: 'check', label: 'Check it worked' }] : []),
+    ...(after.length ? [{ id: 'after', label: 'After you cancel' }] : []),
+    ...(d?.pause ? [{ id: 'pause', label: 'Not sure yet?' }] : []),
+    ...(faq.length ? [{ id: 'faq', label: 'Questions' }] : []),
     ...(us ? [{ id: 'price', label: `What ${g.name} costs` }] : []),
   ];
+  const src = (u: string) => (
+    <a className="src" href={u} rel="noopener">
+      {host(u)}
+    </a>
+  );
 
   const ld = [
     {
@@ -91,7 +103,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
       ...pubDates(g.checkedOn),
       author: { '@type': 'Person', name: AUTHOR.name, url: `${SITE}${AUTHOR.url}` },
       publisher: { '@type': 'Organization', name: COMPANY, url: SITE },
-      mainEntityOfPage: `${SITE}/cancel/${g.id}`,
+      mainEntityOfPage: `${SITE}/cancel/${slugOf(g.id)}`,
       citation: [g.source, ...(appleOnly || !g.appleNote ? [] : [APPLE_SOURCE])],
       about: { '@type': 'Thing', name: g.name },
     },
@@ -101,13 +113,14 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: SITE },
         { '@type': 'ListItem', position: 2, name: 'Cancel guides', item: `${SITE}/cancel` },
-        { '@type': 'ListItem', position: 3, name: g.name, item: `${SITE}/cancel/${g.id}` },
+        { '@type': 'ListItem', position: 3, name: g.name, item: `${SITE}/cancel/${slugOf(g.id)}` },
       ],
     },
+    ...(faq.length ? [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }] : []),
   ];
 
   return (
-    <div className="wrap">
+    <div className="wrap guide">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
       <nav className="crumbs" aria-label="Breadcrumb">
         <Link href="/" prefetch={false}>Home</Link>
@@ -118,61 +131,44 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
       </nav>
       <div className="art">
         <article>
-          <div className="title-row">
-            <Logo id={g.id} size={48} />
-            {s?.category ? <span className="pill">{s.category}</span> : null}
-          </div>
-          <h1>How to cancel {g.name}</h1>
-          <div className="metarow">
-            <span className="pill ok">
-              Steps checked <time dateTime={g.checkedOn}>{formatDate(g.checkedOn)}</time>
-            </span>
-            <span>
-              Source: <a href={g.source} rel="noopener">{host(g.source)}</a> · By <Link href={AUTHOR.url}>{AUTHOR.name}</Link>
-            </span>
-          </div>
+          <header className="g-head">
+            <Logo id={g.id} size={56} />
+            <h1>How to cancel {g.name}</h1>
+            <p className="g-meta">
+              Checked <time dateTime={g.checkedOn}>{formatDate(g.checkedOn)}</time> on {src(g.source)} · By <Link href={AUTHOR.url}>{AUTHOR.name}</Link>
+            </p>
+          </header>
           {fresh !== 'fresh' ? <p className="stale">Last checked {formatDate(g.checkedOn)}. {g.name} may have changed its steps since. We re-check every 90 days.</p> : null}
 
-          <div className="answer">
-            <span className="lbl">Short answer</span>
-            <p>{ans}</p>
-            <div className="acts">
-              {g.url ? (
-                <a className="btn" href={g.url} rel="noopener">
-                  {appleOnly ? 'Open your Apple subscriptions ↗' : (g.urlLabel ?? `Open ${g.name}’s cancel page ↗`)}
-                </a>
-              ) : g.helpUrl ? (
-                <a className="btn" href={g.helpUrl} rel="noopener">
-                  Open {company}’s help page ↗
-                </a>
-              ) : (
-                <a className="btn" href="#direct">
-                  Jump to the steps ↓
-                </a>
-              )}
-              <a className="btn ghost" href="#partner">
-                No cancel button?
+          <p className="g-lead">{g.answer ?? `${g.steps.join('. ')}.`}</p>
+          <div className="g-acts">
+            {g.url ? (
+              <a className="btn" href={g.url} rel="noopener">
+                {appleOnly ? 'Open your Apple subscriptions ↗' : (g.urlLabel ?? `Open ${g.name}’s cancel page ↗`)}
               </a>
-            </div>
-            {g.url ? <p className="url">{appleOnly ? 'Opens your subscriptions in the App Store' : `${shortUrl(g.url)} · opens ${company}’s site`}</p> : null}
+            ) : g.helpUrl ? (
+              <a className="btn" href={g.helpUrl} rel="noopener">
+                Open {company}’s help page ↗
+              </a>
+            ) : (
+              <a className="btn" href="#direct">
+                Jump to the steps ↓
+              </a>
+            )}
+            {g.url ? <span className="g-url">{appleOnly ? 'Opens your subscriptions in the App Store' : `${shortUrl(g.url)} · ${company}’s site`}</span> : null}
           </div>
 
-          <h2 id="how" style={{ marginTop: 48 }}>
-            How do you pay for {g.name}?
-          </h2>
-          <nav className="how" aria-label="How you pay">
-            <a href="#direct">{appleOnly ? 'Apple (iPhone)' : `${g.name} directly`}</a>
-            {showApple ? <a href="#apple">Apple (signed up on iPhone)</a> : null}
-            <a href="#partner">Another company bills you</a>
-          </nav>
-          {showApple ? (
-            <p className="meta" style={{ marginTop: 10 }}>
-              Not sure? Check your bank statement: <b>APPLE.COM/BILL</b> means Apple bills you.
-            </p>
-          ) : null}
+          <div className="g-who">
+            <b>Who bills you?</b>
+            <a href="#direct">{appleOnly ? 'Apple' : g.name}</a>
+            {showApple ? <a href="#apple">Apple</a> : null}
+            {d?.googlePlay ? <a href="#google">Google Play</a> : null}
+            <a href="#partner">Another company</a>
+            {showApple ? <span className="g-hint">On your bank statement, APPLE.COM/BILL means Apple bills you.</span> : null}
+          </div>
 
           <H2 id="ready">Have this ready</H2>
-          <ul className="ticks" style={{ marginTop: 8 }}>
+          <ul className="ticks">
             <li>
               {appleOnly ? 'Your Apple Account sign-in' : `The email you use for ${g.name}`}
               <span>{appleOnly ? 'The one your iPhone is signed in with.' : `Not sure which? Search your inbox for “${g.name}” receipts.`}</span>
@@ -208,67 +204,118 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
                     ? `Signed up through Apple? Cancel on your iPhone:`
                     : `${g.name} doesn’t mention Apple billing, but if you see APPLE.COM/BILL on your statement, cancel on your iPhone:`}
               </p>
-              <ol className="olist" style={{ marginTop: 14 }}>
+              <ol className="olist">
                 {APPLE_STEPS.map((st) => (
                   <li key={st}>{st}</li>
                 ))}
               </ol>
-              <p className="meta" style={{ marginTop: 10 }}>
-                From <a href={APPLE_SOURCE} rel="noopener">Apple Support</a>.
-              </p>
+              <p className="g-src">From {src(APPLE_SOURCE)}</p>
             </>
           )}
+
+          {d?.googlePlay ? (
+            <>
+              <H2 id="google">If Google Play bills you</H2>
+              <ol className="olist">
+                {d.googlePlay.steps.map((st) => (
+                  <li key={st}>{st}</li>
+                ))}
+              </ol>
+              <p className="g-src">From {src(d.googlePlay.source)}</p>
+            </>
+          ) : null}
 
           <H2 id="partner">No cancel button?</H2>
           <p>{partnerText ?? `Then ${company} probably isn’t billing you directly. Look for the company named on your bank statement and cancel with them.`}</p>
 
-          <div className="appcard" id="remind" data-has-cta>
-            <div>
-              <h2 className="h3" style={{ margin: 0 }}>
-                Keeping {g.name} for now?
-              </h2>
-              <p>Ditch reminds you 3 days and 1 day before it renews, so you decide in time, not after the charge. You still cancel on {company}’s own page.</p>
-              <EmailBox source={`cancel-${g.id}`} compact />
-            </div>
-            {usPlan ? <Notif text={`${g.name} renews in 3 days. ${formatMoney(usPlan.amountMinor, 'USD')}. Still using it?`} /> : null}
-          </div>
+          {d?.verify ? (
+            <>
+              <H2 id="check">How to check it worked</H2>
+              <p>
+                {d.verify.text} <span className="g-src">From {src(d.verify.source)}</span>
+              </p>
+            </>
+          ) : null}
+
+          {after.length ? (
+            <>
+              <H2 id="after">What happens after you cancel</H2>
+              <ul className="g-list">
+                {after.map((x) => (
+                  <li key={x.text}>
+                    {x.text} <span className="g-src">From {src(x.source)}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+
+          {d?.pause ? (
+            <>
+              <H2 id="pause">Not sure yet?</H2>
+              <p>
+                {d.pause.text} <span className="g-src">From {src(d.pause.source)}</span>
+              </p>
+            </>
+          ) : null}
+
+          {faq.length ? (
+            <>
+              <H2 id="faq">Questions</H2>
+              <div className="g-faq">
+                {faq.map((f) => (
+                  <div key={f.q}>
+                    <h3>{f.q}</h3>
+                    <p>
+                      {f.a} <span className="g-src">From {src(f.source)}</span>
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : null}
 
           {us ? (
             <>
               <H2 id="price">What {g.name} costs</H2>
               <PriceTable serviceId={g.id} countries={['US']} caption={`${g.name} prices in the US`} />
               {hasHub ? (
-                <p className="meta" style={{ marginTop: 10 }}>
-                  <Link href={`/prices/${g.id}`}>{g.name} prices in every country we check →</Link>
+                <p className="g-src">
+                  <Link href={`/prices/${slugOf(g.id)}`}>{g.name} prices in every country we check →</Link>
                 </p>
               ) : null}
             </>
           ) : null}
 
-          <div className="feedback">
-            <b>Did this work?</b>
-            <a className="btn sm ghost" href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${g.name} guide: it worked`)}`}>
-              Yes, it worked
-            </a>
-            <a className="btn sm ghost" href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${g.name} guide: something changed`)}&body=${encodeURIComponent('What did you see instead?\n\n')}`}>
-              No, something changed
-            </a>
-            <span className="meta">This opens your email app. We don’t track clicks.</span>
-          </div>
+          <section className="appcard" id="remind" aria-labelledby="remind-h" data-has-cta>
+            <h2 id="remind-h" className="h3">
+              Keeping {g.name} for now?
+            </h2>
+            <p>Ditch reminds you 3 days and 1 day before it renews, so you decide before the charge, not after. You still cancel on {company}’s own page.</p>
+            <EmailBox source={`cancel-${g.id}`} bare />
+          </section>
 
-          <h2 id="more">Cancel something else</h2>
-          <div className="related">
+          <p className="g-feedback">
+            <b>Did this work?</b> <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${g.name} guide: it worked`)}`}>Yes, it worked</a>
+            {' · '}
+            <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${g.name} guide: something changed`)}&body=${encodeURIComponent('What did you see instead?\n\n')}`}>No, something changed</a>
+            <span className="g-hint">Opens your email app. We don’t track clicks.</span>
+          </p>
+
+          <h2 id="more" className="g-more-h">Cancel something else</h2>
+          <ul className="g-related">
             {[...related, ...more].map((r) => (
-              <Link key={r.id} href={`/cancel/${r.id}`}>
-                <Logo id={r.id} size={36} />
-                Cancel {r.name}
-              </Link>
+              <li key={r.id}>
+                <Link href={`/cancel/${slugOf(r.id)}`}>
+                  <Logo id={r.id} size={28} />
+                  Cancel {r.name}
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
 
           <p className="disc">
-            Checked by hand on {formatDate(g.checkedOn)} from <a href={g.source} rel="noopener">{host(g.source)}</a>. {g.name} is a trademark of its owner. Ditch isn’t affiliated with or endorsed by {g.name}.{' '}
-            <Link href="/how-we-check">How we check guides</Link>. <span className="nw">© {year} {COMPANY}.</span>
+            {g.name} is a trademark of its owner. Ditch isn’t affiliated with or endorsed by {g.name}. <Link href="/how-we-check">How we check guides</Link>. <span className="nw">© {year} {COMPANY}.</span>
           </p>
         </article>
         <aside>
@@ -280,13 +327,9 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
               </a>
             ))}
           </nav>
-          <div className="side-card">
-            <p className="h3">Get a reminder before {g.name} renews</p>
-            <p>3 days and 1 day before each charge. Free on 3 subscriptions.</p>
-            <a className="btn block sm" href="#remind">
-              Join the waitlist
-            </a>
-          </div>
+          <a className="side-cta" href="#remind">
+            Get a reminder before {g.name} renews →
+          </a>
         </aside>
       </div>
     </div>

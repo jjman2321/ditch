@@ -7,7 +7,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { NAV } from '@/lib/site';
 
-export type SearchItem = { id: string; name: string; aliases: string[]; guide: boolean; prices: boolean; rank: number };
+export type SearchItem = { id: string; slug: string; name: string; aliases: string[]; guide: boolean; prices: boolean; rank: number };
 
 /** Keeps Tab inside a dialog, locks page scroll, and returns focus to whatever opened it. */
 function useDialog(ref: React.RefObject<HTMLElement | null>, onClose: () => void) {
@@ -149,8 +149,8 @@ function SearchDialog({ items, onClose }: { items: SearchItem[]; onClose: () => 
     const n = norm(q);
     const list = n ? items.filter((i) => [i.name, ...i.aliases].some((a) => norm(a).includes(n))) : items.slice(0, 8);
     return list.slice(0, 12).flatMap((i) => [
-      ...(i.guide ? [{ key: `${i.id}-c`, id: i.id, label: `Cancel ${i.name}`, href: `/cancel/${i.id}`, kind: 'Cancel guide' }] : []),
-      ...(i.prices ? [{ key: `${i.id}-p`, id: i.id, label: `${i.name} prices`, href: `/prices/${i.id}`, kind: 'Prices' }] : []),
+      ...(i.guide ? [{ key: `${i.id}-c`, id: i.id, label: `Cancel ${i.name}`, href: `/cancel/${i.slug}`, kind: 'Cancel guide' }] : []),
+      ...(i.prices ? [{ key: `${i.id}-p`, id: i.id, label: `${i.name} prices`, href: `/prices/${i.slug}`, kind: 'Prices' }] : []),
     ]);
   }, [q, items]);
 

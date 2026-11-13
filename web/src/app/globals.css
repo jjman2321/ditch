@@ -724,3 +724,87 @@ input::placeholder { color: var(--mute); opacity: 1; }
 h1, h2, h3 { overflow-wrap: break-word; }
 @media (max-width: 340px) { .index-head .d-h1 { font-size: 34px; } }
 @media (max-width: 340px) { .hero .d-h1 { font-size: 38px; } }
+
+/* Guide article (Nov 13 redesign): typographic, almost no boxes. After Codecademy/Mintlify articles and the NYT cancel page. */
+.guide .crumbs { padding-top: 28px; }
+.guide .art { padding-top: 24px; grid-template-columns: minmax(0, 1fr) 240px; gap: 80px; }
+.guide .art article > * { max-width: 680px; }
+.g-head { display: grid; gap: 18px; }
+.g-head .logo, .g-head .mono { width: 56px; height: 56px; border-radius: 14px; }
+.guide .g-head h1 { margin-top: 0; max-width: 16ch; }
+.g-meta { font-size: 15px; color: var(--mute); }
+.g-meta a { color: var(--mute); }
+.g-lead { font-size: 21px; line-height: 1.5; margin-top: 32px; color: var(--ink); }
+.g-acts { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin-top: 24px; }
+.g-url { font-size: 14px; color: var(--mute); }
+.g-who { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--rule); font-size: 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 0 6px; }
+.g-who b { margin-right: 4px; }
+.g-who a { display: inline-flex; align-items: center; min-height: 44px; }
+.g-hint { flex-basis: 100%; font-size: 14px; color: var(--mute); }
+.g-src { font-size: 14px; color: var(--mute); }
+.g-src a, .src { color: var(--mute); }
+.art p > .g-src, .art li > .g-src { margin-left: 4px; white-space: nowrap; }
+.art .olist + .g-src, .art .tbl-wrap + .g-src { margin-top: 12px; }
+.guide .art h2 { margin-top: 64px; }
+.guide .art h2 + * { margin-top: 16px; }
+.g-list { list-style: disc; padding-left: 22px; }
+.g-list li { margin-top: 10px; font-size: 18px; line-height: 1.5; }
+.g-faq h3 { font-family: var(--f-widebold); font-weight: 400; font-size: 18px; line-height: 1.3; margin-top: 28px; }
+.g-faq > div:first-child h3 { margin-top: 0; }
+.g-faq p { margin-top: 6px; }
+.guide .appcard { display: block; margin-top: 72px; padding: 32px; }
+.guide .appcard .h3 { font-size: 24px; }
+.guide .appcard p { max-width: 52ch; }
+.guide .appcard .email-wrap { margin-top: 20px; max-width: 520px; }
+.g-feedback { margin-top: 40px; font-size: 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 0 8px; }
+.g-feedback a { display: inline-flex; align-items: center; min-height: 44px; }
+.g-feedback .g-hint { flex-basis: 100%; }
+.guide .art h2.g-more-h { margin-top: 56px; }
+.g-related { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 32px; }
+.g-related li { border-top: 1px solid var(--rule); }
+.g-related a { display: flex; align-items: center; gap: 12px; min-height: 56px; text-decoration: none; font-weight: 600; color: var(--ink); }
+.g-related a:hover { text-decoration: underline; }
+.g-related .logo, .g-related .mono { width: 28px; height: 28px; border-radius: 7px; }
+.guide .disc { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--rule); }
+.side-cta { display: inline-flex; align-items: center; min-height: 44px; margin-top: 20px; font-weight: 700; font-size: 15px; color: var(--ink); }
+@media (max-width: 1023px) { .guide .art { grid-template-columns: minmax(0, 1fr); gap: 0; } }
+@media (max-width: 639px) {
+  .guide .crumbs { padding-top: 16px; }
+  .g-lead { font-size: 19px; margin-top: 24px; }
+  .g-acts .btn { width: 100%; }
+  .guide .art h2 { margin-top: 48px; }
+  .g-related { grid-template-columns: minmax(0, 1fr); }
+  .guide .appcard { padding: 24px 20px; margin-top: 56px; }
+}
+.g-who { gap: 0 18px; }
+.g-who b { margin-right: 0; }
+@media (max-width: 639px) { .g-who b { flex-basis: 100%; } }
+.hero .eyebrow { color: var(--sunfg2); margin-bottom: 14px; }
+
+/* Price page (Nov 13): your country first, then a compact country list. */
+.ycp { margin-top: 36px; background: var(--white); border-radius: var(--r-l); box-shadow: inset 0 0 0 1.5px var(--rule); padding: 28px 28px 22px; }
+.ycp-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.guide .art .ycp h2 { margin: 0; font-size: 22px; }
+.ycp-sel select { min-height: 44px; border-radius: 999px; border: 1.5px solid var(--rule); background: var(--cream) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2316140F' stroke-width='1.8'/%3E%3C/svg%3E") right 16px center/12px no-repeat; padding: 0 40px 0 16px; font: 600 15px var(--body); color: var(--ink); appearance: none; cursor: pointer; }
+.ycp-one { font-weight: 600; color: var(--fg2); }
+.ycp-plans { list-style: none; padding: 0; margin-top: 16px; }
+.ycp-plans li { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "n p" "n y"; align-items: center; column-gap: 16px; padding: 14px 0; border-top: 1px solid var(--hair); }
+.ycp-plans .n { grid-area: n; font-weight: 600; font-size: 17px; }
+.ycp-plans .p { grid-area: p; font-family: var(--f-display); font-size: 26px; letter-spacing: -.02em; text-align: right; }
+.ycp-plans .p small { font: 600 14px var(--body); color: var(--fg2); letter-spacing: 0; margin-left: 2px; }
+.ycp-plans .y { grid-area: y; font-size: 14px; color: var(--mute); text-align: right; }
+.ycp-meta { font-size: 13px; color: var(--mute); margin-top: 10px; }
+.ycp-meta a { color: var(--mute); }
+.ctbl { margin-top: 16px; border-top: 1px solid var(--rule); }
+.ctr { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--rule); scroll-margin-top: 88px; }
+.cc b { display: block; font-size: 16px; }
+.cc small { font-size: 13px; color: var(--mute); }
+.cp { display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 15px; color: var(--fg2); align-items: baseline; }
+.cp b { color: var(--ink); font-weight: 700; }
+@media (max-width: 639px) {
+  .ycp { padding: 22px 18px 18px; margin-top: 28px; }
+  .ycp-plans .p { font-size: 22px; }
+  .ctr { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .cc { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .cc b { display: inline; }
+}

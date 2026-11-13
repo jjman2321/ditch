@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
 
-import { publishedGuides } from '@/lib/data';
+import { publishedGuides, slugOf } from '@/lib/data';
 
 export const metadata = { title: 'Page not found', robots: { index: false } };
 
@@ -15,7 +15,7 @@ export default function NotFound() {
         {publishedGuides()
           .slice(0, 6)
           .map((g) => (
-            <Link key={g.id} href={`/cancel/${g.id}`}>
+            <Link key={g.id} href={`/cancel/${slugOf(g.id)}`}>
               Cancel {g.name}
             </Link>
           ))}

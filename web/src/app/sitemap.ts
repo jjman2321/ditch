@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 
-import { freshness, priceHubServices, publishedGuides, verifiedPrices } from '@/lib/data';
+import { freshness, priceHubServices, publishedGuides, verifiedPrices, slugOf } from '@/lib/data';
 import { SITE } from '@/lib/site';
 
 const SITE_UPDATED = '2026-11-12';
@@ -13,8 +13,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: SITE, lastModified: SITE_UPDATED, priority: 1 },
     { url: `${SITE}/cancel`, lastModified: SITE_UPDATED, priority: 0.9 },
     { url: `${SITE}/prices`, lastModified: SITE_UPDATED, priority: 0.9 },
-    ...guides.map((g) => ({ url: `${SITE}/cancel/${g.id}`, lastModified: g.checkedOn, priority: 0.8 })),
-    ...hubs.map((s) => ({ url: `${SITE}/prices/${s.id}`, lastModified: verifiedPrices(s.id).map((r) => r.checked).sort().pop(), priority: 0.8 })),
+    ...guides.map((g) => ({ url: `${SITE}/cancel/${slugOf(g.id)}`, lastModified: g.checkedOn, priority: 0.8 })),
+    ...hubs.map((s) => ({ url: `${SITE}/prices/${slugOf(s.id)}`, lastModified: verifiedPrices(s.id).map((r) => r.checked).sort().pop(), priority: 0.8 })),
     ...['/how-we-check', '/about', '/support', '/privacy', '/terms'].map((p) => ({ url: `${SITE}${p}`, lastModified: SITE_UPDATED, priority: 0.4 })),
   ];
 }

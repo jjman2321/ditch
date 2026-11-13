@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { priceHubServices, publishedGuides } from '@/lib/data';
+import { priceHubServices, publishedGuides, slugOf } from '@/lib/data';
 import { COMPANY } from '@/lib/site';
 
 /** Dark footer card: link columns that help people (and search engines) reach every guide, plus the giant wordmark. */
@@ -14,7 +14,7 @@ export function SiteFooter() {
           <nav aria-label="Cancel guides">
             <p className="ttl">Cancel guides</p>
             {guides.map((g) => (
-              <Link key={g.id} href={`/cancel/${g.id}`}>
+              <Link key={g.id} href={`/cancel/${slugOf(g.id)}`}>
                 Cancel {g.name}
               </Link>
             ))}
@@ -23,7 +23,7 @@ export function SiteFooter() {
           <nav aria-label="Prices">
             <p className="ttl">Prices</p>
             {hubs.map((s) => (
-              <Link key={s.id} href={`/prices/${s.id}`}>
+              <Link key={s.id} href={`/prices/${slugOf(s.id)}`}>
                 {s.name} prices
               </Link>
             ))}

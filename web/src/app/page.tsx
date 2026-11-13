@@ -98,6 +98,7 @@ export default function Home() {
         <div className="wrap grid">
           <div className="copy">
             {/* Screen readers and Google read "Ditch it before it renews." (the App Store subtitle). The logos are visual only. */}
+            <p className="eyebrow">Free iPhone app · Coming soon</p>
             <h1 id="hero-h" className="d-h1">
               Ditch{' '}
               <span className="slot" aria-hidden="true">

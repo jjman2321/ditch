@@ -21,7 +21,7 @@ const GROUPS: Group[] = [
   { id: 'charges', title: 'Check a charge', sub: 'What’s that charge on your statement?', items: [t('charges'), h('apple-com-bill'), h('google'), h('amazon')] },
   { id: 'costs', title: 'Know what you pay', sub: 'Add it all up.', items: [t('tools/subscription-cost-calculator'), t('tools/cost-per-hour'), t('tools/subscription-spreadsheet')] },
   { id: 'before', title: 'Before you pay', sub: 'Pick the cheaper way in.', items: [t('tools/free-trial-calculator'), t('tools/monthly-vs-yearly'), s('amazon-prime-monthly-vs-yearly'), t('tools/apple-one-calculator'), s('disney-hulu-bundle-calculator')] },
-  { id: 'share', title: 'Share a plan', sub: 'What each person pays.', items: [s('spotify-family-split'), s('apple-music-family-split'), s('youtube-premium-family-split'), s('microsoft-365-family-split'), s('netflix-cost-per-person'), t('tools/family-plan-split')] },
+  { id: 'share', title: 'Share a plan', sub: 'What each person pays.', items: [s('spotify-family-split'), s('apple-music-family-split'), s('microsoft-365-family-split'), s('netflix-cost-per-person'), t('tools/family-plan-split')] },
   { id: 'compare', title: 'Compare', sub: 'Two services, plan by plan.', items: [s('spotify-vs-apple-music'), s('chatgpt-plus-vs-claude-pro'), s('netflix-vs-disney-plus'), s('netflix-vs-hbo-max'), t('tools/compare-prices')] },
   { id: 'refund', title: 'Get money back', sub: 'Charged after you meant to cancel?', items: [t('tools/refund-helper')] },
 ];
@@ -41,7 +41,7 @@ export default function Tools() {
       <header className="v4-hero solo">
         <div>
           <h1>Free subscription tools</h1>
-          <p className="lead">{all.length} free tools built on prices we check by hand in 17 countries. They run in your browser.</p>
+          <p className="lead">{all.length} free tools built on prices from each service’s own page, in 17 countries. They run in your browser.</p>
         </div>
       </header>
       <ToolHub groups={GROUPS}>

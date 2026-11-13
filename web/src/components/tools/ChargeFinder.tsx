@@ -32,13 +32,18 @@ function ChargeFinderInner({ points, countries, biller: start = 'any' }: { point
   const c = country ?? guessed;
   const inCountry = points.filter((p) => p.c === c);
   const cur = inCountry[0]?.cur ?? 'USD';
-  const typed = parseFloat(amount.replace(/[^0-9.,]/g, '').replace(',', '.'));
+  // "1,299.00" and "1.299,00" are 1299; "9,99" is 9.99. A minus sign isn't an amount.
+  const raw = amount.replace(/[^0-9.,-]/g, '');
+  const norm = /-/.test(raw) ? '' : /[.,]\d{1,2}$/.test(raw) ? raw.slice(0, -3).replace(/[.,]/g, '') + raw.slice(-3).replace(',', '.') : raw.replace(/[.,]/g, '');
+  const typed = norm ? parseFloat(norm.replace(/^(\d*)[.,](\d{1,2})$/, '$1.$2')) : NaN;
   const minor = Number.isFinite(typed) ? Math.round(typed * minorPerMajor(cur)) : NaN;
   const pool = inCountry.filter((p) => biller === 'any' || p.b === biller);
   const exact = Number.isFinite(minor) ? pool.filter((p) => p.a === minor) : [];
   // US and Canada prices are before sales tax, so the bank shows a bit more. Up to 15% on top counts as "with tax".
   const withTax = Number.isFinite(minor) && TAXED.has(c) ? pool.filter((p) => !exact.includes(p) && minor > p.a && minor <= Math.round(p.a * 1.15)).sort((a, b) => b.a - a.a) : [];
-  const shown = [...exact, ...withTax].slice(0, 12);
+  const seen = new Set<string>();
+  const all = [...exact, ...withTax].filter((p) => { const k = `${p.s}|${p.p}|${p.a}`; if (seen.has(k)) return false; seen.add(k); return true; });
+  const shown = all.slice(0, 12);
   return (
     <div>
       <div className="ins">
@@ -73,7 +78,7 @@ function ChargeFinderInner({ points, countries, biller: start = 'any' }: { point
         ) : shown.length ? (
           <>
             <p className="say">
-              <b>{shown.length === 1 ? '1 possible match' : `${shown.length} possible matches`}</b> for {formatMoney(minor, cur, { country: c })} on our checked price list.
+              <b>{all.length === 1 ? '1 possible match' : `${all.length} possible matches`}</b> for {formatMoney(minor, cur, { country: c })} on our checked price list.
             </p>
             <ul className="hits">
               {shown.map((p) => (
@@ -93,6 +98,10 @@ function ChargeFinderInner({ points, countries, biller: start = 'any' }: { point
                 </li>
               ))}
             </ul>
+            {all.length > shown.length ? <p className="muted">Showing the first {shown.length}. Pick who charged you to narrow it down.</p> : null}
+            <p className="say">
+              Found it? Cancel it from the link, or <Link href="/tools/refund-helper">ask for a refund</Link> if you didn’t mean to pay.
+            </p>
             <p className="note-l">These are possible matches, not a diagnosis. Only {biller === 'apple' ? 'Apple' : biller === 'google' ? 'Google' : biller === 'amazon' ? 'Amazon' : 'the company that charged you'} can tell you for sure. See below for where to check.</p>
           </>
         ) : (

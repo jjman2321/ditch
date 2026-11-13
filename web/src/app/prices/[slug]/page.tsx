@@ -5,7 +5,9 @@ import { notFound } from 'next/navigation';
 import { EmailBox } from '@/components/EmailBox';
 import { YourCountryPrices, type CountryPrices } from '@/components/YourCountryPrices';
 import { Logo } from '@/components/Logo';
-import { COUNTRIES, COUNTRY, dateRange, defaultPlan, formatDate, host, guideById, isAppStorePrice, neighbours, priceHubServices, pubDates, serviceById, verifiedPrices, type PriceRow, idOf, inWhere, slugOf } from '@/lib/data';
+import { ToolCard } from '@/components/ToolCard';
+import { toolsFor } from '@/lib/tools';
+import { COUNTRIES, COUNTRY, dateRange, inCountry, defaultPlan, formatDate, host, guideById, isAppStorePrice, neighbours, priceHubServices, pubDates, serviceById, verifiedPrices, type PriceRow, idOf, inWhere, slugOf } from '@/lib/data';
 import { formatMoney, monthlyMinor } from '@/lib/money';
 import { COMPANY, SITE, SUPPORT_EMAIL } from '@/lib/site';
 
@@ -27,23 +29,29 @@ function range(r: PriceRow) {
 }
 
 function cheapest(r: PriceRow) {
-  return [...r.plans].sort((a, b) => monthlyMinor(a.amountMinor, a.cycle) - monthlyMinor(b.amountMinor, b.cycle))[0];
+  const open = r.plans.filter((p) => !/student/i.test(p.name));
+  return [...(open.length ? open : r.plans)].sort((a, b) => monthlyMinor(a.amountMinor, a.cycle) - monthlyMinor(b.amountMinor, b.cycle))[0];
 }
 
 function summary(name: string, rows: PriceRow[]) {
   const pick = ['US', 'GB'].map((c) => rows.find((r) => r.country === c)).filter(Boolean) as PriceRow[];
   const use = pick.length ? pick : rows.slice(0, 2);
-  const parts = use.map((r) => `${range(r)} in ${r.country === 'US' ? 'the US' : r.country === 'GB' ? 'the UK' : COUNTRY[r.country].name}`);
+  const parts = use.map((r) => `${range(r)} in ${inCountry(r.country)}`);
   return `${name} costs ${parts.join(' and ')}.`;
 }
 
 /** "Netflix price 2026: from $8.99/mo in the US". The answer in the title, from the cheapest monthly plan we list. */
 function titleFor(name: string, year: string, rows: PriceRow[]) {
   const r = rows.find((x) => x.country === 'US') ?? rows.find((x) => x.country === 'GB');
-  const monthly = r?.plans.filter((p) => p.cycle === 'monthly').sort((a, b) => a.amountMinor - b.amountMinor)[0];
+  const all = r?.plans.filter((p) => p.cycle === 'monthly' && !/student/i.test(p.name)).sort((a, b) => a.amountMinor - b.amountMinor) ?? [];
+  // "Google AI Pro" is a tier: quote the Pro plan, not the cheaper Plus plan sold on the same page.
+  const tier = name.split(' ').pop()!.toLowerCase();
+  const named = ['pro', 'plus', 'premium', 'max', 'ultra'].includes(tier) ? all.filter((p) => p.name.toLowerCase().split(/\s+/).includes(tier)) : [];
+  const monthly = named[0] ?? all[0];
   if (!r || !monthly) return `${name} price ${year} ${inWhere(rows)}`;
   const where = r.country === 'US' ? 'the US' : 'the UK';
-  return `${name} price ${year}: from ${formatMoney(monthly.amountMinor, r.currency, { country: r.country })}/mo in ${where}`;
+  const amt = formatMoney(monthly.amountMinor, r.currency, { country: r.country });
+  return named[0] ? `${name} price ${year}: ${amt}/mo in ${where}` : `${name} price ${year}: from ${amt}/mo in ${where}`;
 }
 
 export async function generateMetadata({ params }: PageProps<'/prices/[slug]'>): Promise<Metadata> {
@@ -175,7 +183,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
                     const p = cheapest(r);
                     return (
                       <li key={r.country}>
-                        {s.name} price in {r.country === 'US' ? 'the US' : r.country === 'GB' ? 'the UK' : COUNTRY[r.country].name}: {p.name}, {formatMoney(p.amountMinor, r.currency, { country: r.country, whole: true })} {p.cycle === 'monthly' ? 'a month' : p.cycle === 'yearly' ? 'a year' : 'every 3 months'}.
+                        {s.name} price in {inCountry(r.country)}: {p.name}, {formatMoney(p.amountMinor, r.currency, { country: r.country, whole: true })} {p.cycle === 'monthly' ? 'a month' : p.cycle === 'yearly' ? 'a year' : 'every 3 months'}.
                       </li>
                     );
                   })}
@@ -242,16 +250,19 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
         <section className="v4-sec" aria-labelledby="more">
           <h2 id="more">Related</h2>
           <div className="tgrid">
+            {toolsFor(s.id).slice(0, 2).map((t) => (
+              <ToolCard key={t.href} item={t} />
+            ))}
             {guide ? (
               <Link className="tcard" href={`/cancel/${slugOf(s.id)}`}>
                 <Logo id={s.id} size={44} />
                 <span>
                   <b>How to cancel {s.name}</b>
-                  <small>Step by step, checked by hand</small>
+                  <small>Official steps, dated</small>
                 </span>
               </Link>
             ) : null}
-            {others.map((o) => (
+            {others.slice(0, Math.max(2, 5 - toolsFor(s.id).slice(0, 2).length)).map((o) => (
               <Link key={o.id} className="tcard" href={`/prices/${slugOf(o.id)}`}>
                 <Logo id={o.id} size={44} />
                 <span>

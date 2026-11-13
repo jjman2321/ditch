@@ -7,7 +7,7 @@ const SRC = { apple: ['https://support.apple.com/102396', 'https://support.apple
 
 export const HUBS: Record<string, { biller: Biller; title: string; meta: string; lead: string; name: string; desc: string }> = {
   'apple-com-bill': { biller: 'apple', name: 'Apple', desc: 'App Store and Apple subscription charges, by amount.', title: 'APPLE.COM/BILL charge finder', meta: 'What is APPLE.COM/BILL? Find the charge by amount', lead: 'APPLE.COM/BILL is how Apple shows App Store and subscription charges. Type the amount to see what it could be.' },
-  google: { biller: 'google', name: 'Google', desc: 'Google One, YouTube and Google AI charges, by amount.', title: 'Google charge finder', meta: 'Google charge on your statement: find it by amount', lead: 'Google bills for Google One, YouTube Premium, YouTube TV and Google AI. Type the amount to see what it could be.' },
+  google: { biller: 'google', name: 'Google', desc: 'Google Play and Google subscription charges, by amount.', title: 'Google charge finder', meta: 'Google charge on your statement: find it by amount', lead: 'Google Play and Google subscriptions show up as Google on your statement. Type the amount to see what it could be.' },
   amazon: { biller: 'amazon', name: 'Amazon', desc: 'Prime and Amazon Music charges, by amount.', title: 'Amazon charge finder', meta: 'Amazon subscription charge: find it by amount', lead: 'Amazon bills for Prime and Amazon Music. Type the amount to see what it could be.' },
 };
 
@@ -37,10 +37,10 @@ export function ChargesBody({ hub }: { hub: string | null }) {
       slug={hub ? `charges/${hub}` : 'charges'}
       title={h?.title ?? 'Subscription charge finder'}
       lead={h?.lead ?? 'Found a charge you don’t recognise? Type the amount and see which subscriptions cost exactly that.'}
-      cta="Know every charge before it happens"
+      cta="Next time, know 3 days before"
       how={HOW[biller]}
       good={[
-        'Matches come from prices we check by hand. Only the company that billed you can confirm it.',
+        'Matches come from prices we read on each service’s own page. Only the company that billed you can confirm it.',
         'US and Canada prices are before sales tax, so your bank shows a bit more. The tool allows for that.',
         'Nothing you type leaves your browser.',
       ]}

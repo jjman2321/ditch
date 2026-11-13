@@ -6,7 +6,7 @@ import { countryList } from '@/lib/tools';
 
 export const metadata: Metadata = {
   title: 'Subscription price comparison: two services side by side',
-  description: 'Compare two subscriptions plan by plan, in your country, from prices checked by hand.',
+  description: 'Compare two subscriptions plan by plan, in your country, from each service’s own prices.',
   alternates: { canonical: '/tools/compare-prices' },
 };
 

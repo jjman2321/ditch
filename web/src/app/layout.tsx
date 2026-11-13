@@ -16,7 +16,7 @@ const wordmark = localFont({ src: '../fonts/ArchivoDitch-Wordmark.woff2', variab
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
-  title: { default: `${BRAND} for iPhone`, template: '%s | ditchsubs' },
+  title: { default: `${BRAND} for iPhone`, template: '%s | Ditch' },
   description: 'Track every subscription in one list and get a reminder 3 days and 1 day before each charge. Free to track. No bank login, no account.',
   applicationName: 'Ditch',
   authors: [{ name: 'Aribo', url: '/about' }],

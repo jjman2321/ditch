@@ -35,8 +35,8 @@ function AppleOneInner({ points, countries }: { points: Pt[]; countries: { code:
   const separate = lines.reduce((t, l) => t + (l.a ?? 0), 0);
   const tiers = [
     { id: 'Individual', ok: !n.family && !n.fitness && !n.news && (n.storage === '' || n.storage === '50 GB'), what: 'Music, TV, Arcade, iCloud+ 50 GB. Just you.' },
-    { id: 'Family', ok: !n.fitness && !n.news && n.storage !== '2 TB', what: 'Music, TV, Arcade, iCloud+ 200 GB. Share with up to 5 people.' },
-    { id: 'Premier', ok: true, what: 'Everything in Family, plus Fitness+, News+ and iCloud+ 2 TB. Share with up to 5 people.' },
+    { id: 'Family', ok: !n.fitness && !n.news && n.storage !== '2 TB', what: 'Music, TV, Arcade, iCloud+ 200 GB. Share with up to 5 others.' },
+    { id: 'Premier', ok: true, what: 'Everything in Family, plus Fitness+, News+ and iCloud+ 2 TB. Share with up to 5 others.' },
   ].map((t) => ({ ...t, a: find(points, c, 'apple-one', t.id)?.a ?? null }));
   const best = tiers.filter((t) => t.ok && t.a !== null).sort((a, b) => a.a! - b.a!)[0];
   const tog = (k: keyof Need) => setN({ ...n, [k]: !n[k] });
@@ -110,7 +110,7 @@ function AppleOneInner({ points, countries }: { points: Pt[]; countries: { code:
               </p>
             ) : null}
             {missing.length ? <p className="note-l">Not sold or not checked in this country: {missing.join(', ')}.</p> : null}
-            <p className="note-l">Monthly prices from Apple, checked by hand. Apple One plans from apple.com/apple-one.</p>
+            <p className="note-l">Monthly prices from Apple’s own pages. Apple One plans from apple.com/apple-one.</p>
           </>
         )}
       </div>

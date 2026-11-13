@@ -24,7 +24,7 @@ const FAQ = [
   { q: 'Is Ditch free?', a: 'Yes. Tracking is free forever: your full list, your totals and the calendar, with no card and no account. Reminders are free on 3 subscriptions you pick. Pro adds reminders on all of them.' },
   { q: 'Why pay for a subscription tracker?', a: `Fair question. Pro is ${PRO.yearly} a year, about ${PRO.yearlyPerMonth} a month. In a 2025 CNET survey, Americans said they spend ${STATS.wasted.text} on ${STATS.wasted.on}. Rather not subscribe? Lifetime is ${PRO.lifetime}, once.` },
   { q: 'What’s the difference between Pro and Lifetime?', a: `Nothing in the app. Pro renews (${PRO.yearly} a year or ${PRO.monthly} a month). Lifetime is ${PRO.lifetime} once and never renews.` },
-  { q: 'Can Ditch cancel subscriptions for me?', a: 'No. No app can do that honestly without your passwords. Ditch reminds you before each charge and opens the official cancel page, with the steps.' },
+  { q: 'Can Ditch cancel subscriptions for me?', a: 'No. Ditch can’t, and it won’t pretend to. Ditch reminds you before each charge and opens the official cancel page, with the steps.' },
   { q: 'Do I need to link my bank?', a: 'No. You add what you pay for: tap the logos or type a name, and the price fills in for your country. Ditch never reads your bank or your email.' },
   { q: 'Do reminders work when the app is closed?', a: 'Yes. Reminders are set on your iPhone, so they arrive even when Ditch is closed. Opening it now and then keeps them topped up.' },
   { q: 'Can it remind me before a free trial ends?', a: 'Yes. Add the trial and its end date, and Ditch reminds you 3 days and 1 day before it turns into a charge.' },
@@ -162,7 +162,7 @@ export default function Home() {
             <h2 id="calc-h" className="h2">
               See what your subscriptions cost in a year
             </h2>
-            <p className="lead">Tap the ones you pay for. Prices fill in for your country, checked by hand.</p>
+            <p className="lead">Tap the ones you pay for. Prices fill in for your country, from each service’s own page.</p>
           </div>
           <div className="sec-body">
             <Calculator services={calc} countries={calcCountries} />
@@ -247,7 +247,7 @@ export default function Home() {
           </div>
           <div className="big-notif" aria-hidden data-reveal>
             <Notif text={`Netflix renews in 3 days. ${formatMoney(nfPlan.amountMinor, 'USD')}. Still watching?`} />
-            <Notif text={`Your Disney+ trial ends tomorrow. Then ${formatMoney(defaultPlan(priceFor('disney-plus', 'US')!).amountMinor, 'USD')} a month.`} when="9:00" />
+            <Notif text={`Your Spotify Premium trial ends tomorrow. Then ${formatMoney(defaultPlan(priceFor('spotify', 'US')!).amountMinor, 'USD')} a month.`} when="9:00" />
             <span className="next">Next reminder: Netflix · Fri 9:00</span>
           </div>
         </div>
@@ -268,7 +268,7 @@ export default function Home() {
                 Official links only<span>The service’s own cancel or help page, never a lookalike.</span>
               </li>
               <li>
-                Steps checked by hand<span>With the date we last checked them.</span>
+                Steps from official pages<span>With the date we last checked them.</span>
               </li>
             </ul>
             <p style={{ marginTop: 20 }}>

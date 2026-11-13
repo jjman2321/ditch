@@ -1344,3 +1344,37 @@ img.tv, .tv .logo { width: 44px; height: 44px; border-radius: 12px; }
 .pricepage .qa-card .big-s { font: 400 30px/1 var(--f-display); letter-spacing: -.02em; display: block; margin-bottom: 4px; }
 .pricepage .ctbl { margin-top: 0; }
 .pricepage .g-src { margin-top: 14px; font-size: 13.5px; color: var(--mute); }
+.v4 .tk .f { grid-template-columns: minmax(0, 1fr); min-width: 0; }
+.v4 .seg.fill { min-width: 0; }
+.v4 .seg.fill.col { flex-direction: column; }
+.v4 .seg.fill.col button { flex: none; justify-content: flex-start; text-align: left; padding: 0 14px; white-space: normal; }
+.v4 h1, .v4 h2 { overflow-wrap: break-word; }
+@media (max-width: 360px) { .v4 h1 { font-size: 30px; } }
+.v4 .tbl-scroll { overflow-x: auto; }
+.v4 .ttable.wide-t th:first-child, .v4 .ttable.wide-t td:first-child { width: auto; }
+.v4 .ttable.wide-t tbody th { text-align: left; font-weight: 600; padding: 12px 16px 12px 0; border-bottom: 1px solid var(--hair); white-space: nowrap; }
+.v4 .ttable.wide-t td.r { text-align: right; padding-left: 16px; color: var(--ink); white-space: nowrap; }
+.v4 .ttable.wide-t th.r { text-align: right; }
+.v4 .g-src { margin-top: 14px; font-size: 13.5px; color: var(--mute); }
+@media (max-width: 760px) { .v4 .ttable.wide-t td.r { white-space: normal; } .v4 .ttable.wide-t { font-size: 14px; } }
+/* audit v4 fixes (Nov 13) */
+/* focus stays visible inside the ink answer panel */
+.v4 .tk:not(.wide) .result :focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
+/* field and option edges reach 3:1 (WCAG 1.4.11) */
+.v4 .tk select, .v4 .tk input[type="number"], .v4 .tk input[type="date"], .v4 .tk input[type="text"], .v4 .stepper { border-color: #968D7E; box-shadow: none; border: 1.5px solid #968D7E; background-color: var(--cream); }
+.v4 .tk .seg:not(.fill) button { border-color: #968D7E; }
+.v4 .seg.fill { box-shadow: inset 0 0 0 1.5px #968D7E; }
+.v4 .seg.fill button[aria-pressed="true"] { box-shadow: 0 0 0 1.5px var(--ink); font-weight: 700; }
+/* the tool keeps its space while prices load, so the page doesn't jump */
+.v4 .tk .loading { min-height: 420px; display: grid; place-items: center; background: var(--white); border-radius: var(--v4-r); box-shadow: inset 0 0 0 1.5px var(--hair); margin: 0; }
+.v4 .tk.wide .loading { box-shadow: none; }
+@media (max-width: 760px) { .v4 .tk .loading { min-height: 560px; } }
+/* one focus ring on the tools search */
+.search-pill input:focus-visible { outline: none; }
+.search-pill:focus-within { outline: 3px solid var(--ink); outline-offset: 2px; }
+.v4 .hits .amt a { min-width: 44px; justify-content: flex-end; }
+.js .card.step[data-reveal], .js .card.step[data-reveal].is-in { transform: none !important; }
+@media (pointer: coarse) { .guide4 .toc4 a { min-height: 44px; } }
+.v4 .steps3 b, .v4 .good b, .v4 .faq2 p, .v4 .lead { overflow-wrap: anywhere; }
+@media (max-width: 340px) { .v4 .seg.fill { flex-direction: column; } .v4 .seg.fill button { flex: none; } }
+.tcard .logo, .tcard img.tv { flex: none; }

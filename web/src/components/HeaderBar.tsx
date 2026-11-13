@@ -217,7 +217,7 @@ function SearchDialog({ items, onClose }: { items: SearchItem[]; onClose: () => 
               No guide for <b>“{q}”</b> yet.
             </p>
             <p className="meta" style={{ marginTop: 8 }}>
-              <a href={`mailto:support@ditchsubs.app?subject=${encodeURIComponent(`Guide request: ${q}`)}`}>Ask for it</a> and we’ll check it by hand.
+              <a href={`mailto:support@ditchsubs.app?subject=${encodeURIComponent(`Guide request: ${q}`)}`}>Ask for it</a> and we’ll look into it.
             </p>
           </div>
         )}

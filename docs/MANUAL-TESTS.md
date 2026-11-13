@@ -417,3 +417,15 @@ Why: an app feels premium when the bad moments are handled well, not only the ha
 - [ ] Service tools: open /tools/spotify-family-split → Premium Family $21.99 picked, 4 people → $5.50 each. Open /tools/chatgpt-plus-vs-claude-pro → both plans listed side by side.
 - [ ] Each tool page: short heading, one line under it, the tool, then How it works, Good to know, 3 questions, one Sources line. No strap line above the heading.
 - [ ] Every example line reads right ("Claude Pro is $20.00", not "Claude Pro Pro").
+
+### W3. New look (v4, Nov 13): check on iPhone and on a laptop
+- [ ] /tools: search box at the top, 3 big cards (What's this charge?, Free trial deadline, What you pay in a year), then groups with real logos. Type "spotify" → only Spotify tools; type "zzz" → "Nothing for…" with a "see every tool" link that brings everything back.
+- [ ] /tools/spotify-family-split: choices in a white box, answer in a black box with a big yellow number. Family is picked first. Tap − and + : stops at 2 and 6. Pick Duo: max 2 people. "$X a year each" for 4 people is $65.97 (not $66.00).
+- [ ] /tools/microsoft-365-family-split: compares with Personal ("$67.49 less each year"), not Premium.
+- [ ] /tools/netflix-vs-hbo-max: one table, both logos on top, the cheaper price in a yellow pill. Tap "A year": numbers switch to yearly. Under it: a by-country table.
+- [ ] /charges/apple-com-bill: type 9.99 → count matches the list ("Showing the first 12" if more). Type 1,299.00 → reads as 1299. Type -5 → "doesn't look like an amount".
+- [ ] /cancel/netflix on a laptop: yellow "On Netflix's website" box and "On this page" stay on the right while you scroll. On iPhone: 3 cards for how you pay, then steps.
+- [ ] /prices/netflix: same layout; Related shows Netflix tools first.
+- [ ] Every tool's yellow box says "Free for 3 subscriptions, Pro covers the rest."
+- [ ] Tab through /tools/spotify-family-split with a keyboard: the focus ring is yellow inside the black answer box.
+- [ ] /tools/youtube-premium-family-split is gone from the site (parked until US prices are checked).

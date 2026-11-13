@@ -4,6 +4,8 @@ import { notFound } from 'next/navigation';
 
 import { EmailBox } from '@/components/EmailBox';
 import { Logo } from '@/components/Logo';
+import { ToolCard } from '@/components/ToolCard';
+import { toolsFor } from '@/lib/tools';
 import { PriceTable } from '@/components/PriceTable';
 import { ReadyChips } from '@/components/GuideVisuals';
 import { APPLE_SOURCE, formatDate, freshness, guideById, neighbours, priceFor, priceHubServices, pubDates, publicNotes, publishedGuides, serviceById, idOf, slugOf } from '@/lib/data';
@@ -96,7 +98,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
   ];
 
   const ways = [
-    { id: 'direct', icon: <Logo id={g.id} size={44} />, title: appleOnly ? 'On your iPhone' : `On ${g.name}’s website`, line: g.steps.slice(1).map((x) => x.replace(/^Tap /, '')).join(' → ') || g.steps[0], primary: true },
+    { id: 'direct', icon: <Logo id={g.id} size={40} />, title: appleOnly ? 'On your iPhone' : `On ${g.name}’s website`, line: g.steps.slice(1).map((x) => x.replace(/^Tap /, '')).join(' → ') || g.steps[0], primary: true },
     ...(showApple ? [{ id: 'apple', icon: <AppleMark />, title: 'Through Apple', line: 'Your statement says APPLE.COM/BILL. Cancel in iPhone Settings.', primary: false }] : []),
     ...(d?.googlePlay ? [{ id: 'google', icon: <PlayMark />, title: 'Through Google Play', line: 'Google Play → Subscriptions → ' + g.name + ' → Cancel.', primary: false }] : []),
     { id: 'partner', icon: <BarsMark />, title: 'Your phone or TV company', line: 'No cancel option? Someone else bills you. Cancel with them.', primary: false },
@@ -315,12 +317,15 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
       <section className="v4-sec" aria-labelledby="more">
         <h2 id="more">Cancel something else</h2>
         <div className="tgrid">
-          {[...related, ...more].map((r) => (
+          {toolsFor(g.id).slice(0, 2).map((t) => (
+            <ToolCard key={t.href} item={t} />
+          ))}
+          {[...related, ...more].slice(0, 6 - toolsFor(g.id).slice(0, 2).length).map((r) => (
             <Link key={r.id} className="tcard" href={`/cancel/${slugOf(r.id)}`}>
               <Logo id={r.id} size={44} />
               <span>
                 <b>Cancel {r.name}</b>
-                <small>Step by step, checked by hand</small>
+                <small>Official steps, dated</small>
               </span>
             </Link>
           ))}

@@ -5,7 +5,7 @@ import { formatDate, hasLogo, publishedGuides, serviceById, slugOf } from '@/lib
 import { SITE } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'How to cancel any subscription: guides checked by hand',
+  title: 'How to cancel any subscription: official steps, dated',
   description: 'Official cancel links and steps for Netflix, Spotify, Disney+, YouTube Premium and more, split by how you pay. Each guide shows the date we checked it.',
   alternates: { canonical: '/cancel' },
 };
@@ -30,7 +30,7 @@ export default function CancelIndex() {
         <div>
           <h1>How to cancel a subscription</h1>
           <p className="lead">
-        Step-by-step cancel guides for {guides.length} services, checked by hand on each service’s own pages. Each one starts with how you pay, because that decides where you cancel.
+        Step-by-step cancel guides for {guides.length} services, taken from each service’s own help pages, with the date we checked. Each one starts with how you pay, because that decides where you cancel.
           </p>
         </div>
       </header>

@@ -22,7 +22,7 @@ const QA = [
   { q: 'How do I restore Pro on a new iPhone?', a: ['Sign in with the same Apple Account, open Ditch → Settings → Ditch Pro → Restore purchases.'] },
   { q: 'How do I cancel Ditch Pro?', a: ['iPhone Settings → your name → Subscriptions → Ditch → Cancel Subscription. Cancel at least 24 hours before it renews. Nothing you added gets deleted; reminders go back to 3.'] },
   { q: 'Will I lose my list if I change phones?', a: ['Your list lives on your iPhone. Before you switch, use Settings → Your data → Export as spreadsheet (CSV) to save a copy. iCloud backup is coming to Pro.'] },
-  { q: 'A cancel guide or price is wrong', a: [`Email ${SUPPORT_EMAIL} with the service and what you saw. We re-check it by hand and update the page.`] },
+  { q: 'A cancel guide or price is wrong', a: [`Email ${SUPPORT_EMAIL} with the service and what you saw. We re-check it on the service’s own page and update the page.`] },
   { q: 'Can I get a refund?', a: ['Apple handles all payments, so refunds go through Apple: reportaproblem.apple.com.'] },
 ];
 

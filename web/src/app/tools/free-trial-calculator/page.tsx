@@ -12,10 +12,11 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <ToolPage
+      checked={[]}
       slug="tools/free-trial-calculator"
       title="Free trial calculator"
       lead="The day your trial turns into a charge, and the day to cancel by."
-      cta="Get a reminder before every trial ends"
+      cta="Never miss a trial end"
       how={['Pick the day the trial started.', 'Pick how long it lasts.', 'Add 2 reminders to your calendar: 3 days and 1 day before.']}
       good={['Started in an iPhone app? Apple says to cancel at least 24 hours before the trial ends.', 'A 1-month trial from Jan 31 ends Feb 28, because February is shorter.']}
       sources={['https://support.apple.com/en-us/118428']}

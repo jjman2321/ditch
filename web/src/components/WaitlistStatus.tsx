@@ -18,7 +18,7 @@ export function WaitlistConfirmed() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/duck.webp" alt="" width={200} height={117} loading="lazy" style={{ margin: '0 auto 8px' }} />
         <h1>You’re on the list.</h1>
-        <p className="lead" style={{ marginTop: 16, maxWidth: '34rem' }}>One email when Ditch is on the App Store. While you wait, see what your subscriptions cost.</p>
+        <p className="lead" style={{ marginTop: 16, maxWidth: '34rem' }}>One email the day Ditch is out. While you wait, see what your subscriptions cost.</p>
         <div style={{ marginTop: 28, display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
           <Link className="btn" href="/#calc-h">
             Try the calculator

@@ -2,7 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 /** Ink or white letters, whichever reads better on the brand colour (WCAG relative luminance). */
 function inkOn(hex: string) {
@@ -17,6 +17,8 @@ const norm = (s: string) => s.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]
 /** Search + category chips + cards. Every card is in the HTML already; typing only hides cards (no requests). */
 export function ServiceIndex({ items, base, noun }: { items: IndexItem[]; base: string; noun: string }) {
   const [q, setQ] = useState('');
+  const box = useRef<HTMLInputElement>(null);
+  const clear = () => { setQ(''); box.current?.focus(); };
   const [cat, setCat] = useState<string | null>(null);
   const cats = useMemo(() => {
     const m = new Map<string, number>();
@@ -24,7 +26,7 @@ export function ServiceIndex({ items, base, noun }: { items: IndexItem[]; base: 
     return [...m.entries()].sort((a, b) => b[1] - a[1]);
   }, [items]);
   const n = norm(q);
-  const shown = items.filter((i) => (!cat || i.category === cat) && (!n || [i.name, ...i.aliases].some((a) => norm(a).includes(n))));
+  const shown = items.filter((i) => (n ? [i.name, ...i.aliases].some((a) => norm(a).includes(n)) : !cat || i.category === cat));
 
   return (
     <>
@@ -33,9 +35,9 @@ export function ServiceIndex({ items, base, noun }: { items: IndexItem[]; base: 
           <circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" strokeWidth="2" />
           <path d="M13 13l5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
         </svg>
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={`Search ${items.length} ${noun}`} aria-label={`Search ${noun}`} />
+        <input ref={box} value={q} onChange={(e) => setQ(e.target.value)} placeholder={`Search ${items.length} ${noun}`} aria-label={`Search ${noun}`} />
         {q ? (
-          <button className="iconbtn" type="button" aria-label="Clear search" onClick={() => setQ('')}>
+          <button className="iconbtn" type="button" aria-label="Clear search" onClick={clear}>
             <svg width="14" height="14" viewBox="0 0 18 18" aria-hidden>
               <path d="M3 3l12 12M15 3L3 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
@@ -53,7 +55,7 @@ export function ServiceIndex({ items, base, noun }: { items: IndexItem[]; base: 
         ))}
       </div>
       <p className="sr" aria-live="polite">
-        {shown.length} {noun}
+        {shown.length} {shown.length === 1 ? noun.replace(/s$/, '') : noun}
       </p>
       {shown.length ? (
         <div className="grid-cards">
@@ -80,8 +82,8 @@ export function ServiceIndex({ items, base, noun }: { items: IndexItem[]; base: 
             Nothing for <b>“{q}”</b> yet.
           </p>
           <p className="meta" style={{ marginTop: 8 }}>
-            <a href={`mailto:support@ditchsubs.app?subject=${encodeURIComponent(`Please add: ${q}`)}`}>Ask for it</a> and we’ll check it by hand ·{' '}
-            <button type="button" className="btn sm ghost" style={{ marginLeft: 8 }} onClick={() => setQ('')}>
+            <a href={`mailto:support@ditchsubs.app?subject=${encodeURIComponent(`Please add: ${q}`)}`}>Ask for it</a> and we’ll look into it ·{' '}
+            <button type="button" className="btn sm ghost" style={{ marginLeft: 8 }} onClick={clear}>
               Clear search
             </button>
           </p>

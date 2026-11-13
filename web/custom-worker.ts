@@ -63,7 +63,12 @@ const worker = {
 async function route(req: Request, url: URL, env: unknown, ctx: unknown): Promise<Response> {
   const path = clean(url.pathname);
   const moved = /^\/(cancel|prices)\/([a-z0-9-]+)$/.exec(path);
-  if (moved && MOVED[moved[2]]) return Response.redirect(`${url.origin}/${moved[1]}/${MOVED[moved[2]]}`, 301);
+  if (moved && MOVED[moved[2]]) {
+    const to = `/${moved[1]}/${MOVED[moved[2]]}`;
+    const known = await knownPaths(url.origin, env, ctx);
+    // Only forward when the new page exists; otherwise fall through to the normal 404.
+    if (!known || known.has(to)) return Response.redirect(`${url.origin}${to}`, 301);
+  }
   if ((req.method === "GET" || req.method === "HEAD") && isPage(path)) {
     const set = await knownPaths(url.origin, env, ctx);
     if (set && !set.has(path) && !ALLOW.has(path)) {

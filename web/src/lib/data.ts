@@ -242,3 +242,6 @@ export function inWhere(rows: { country: string }[]): string {
   const c = rows[0].country;
   return c === 'US' ? 'in the US' : c === 'GB' ? 'in the UK' : `in ${COUNTRY[c]?.name ?? c}`;
 }
+
+/** "in the US", "in the UK", "in the Netherlands", "in the United Arab Emirates", "in Canada". */
+export const inCountry = (code: string) => code === 'US' ? 'the US' : code === 'GB' ? 'the UK' : ['NL', 'AE'].includes(code) ? `the ${COUNTRY[code]?.name ?? code}` : COUNTRY[code]?.name ?? code;

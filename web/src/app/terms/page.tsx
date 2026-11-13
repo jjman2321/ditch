@@ -18,7 +18,7 @@ export default function Terms() {
         { t: 'The app uses Apple’s standard license', d: 'Apple’s Licensed Application End User License Agreement applies to Ditch.' },
         { t: 'Pro renews until you cancel', d: `Yearly ${PRO.yearly} after a ${PRO.trialDays}-day free trial, or monthly ${PRO.monthly}. Cancel anytime in iPhone Settings.` },
         { t: 'Lifetime is Pro, once', d: `${PRO.lifetime} one time. It covers Ditch Pro. It doesn’t include separate future products.` },
-        { t: 'Guides and prices are information', d: 'We check them by hand, but services change. Their own pages are always right.' },
+        { t: 'Guides and prices are information', d: 'We read them on each service’s own pages, but services change. Their own pages are always right.' },
       ]}
     >
       <h2 id="license">1. The app</h2>
@@ -40,7 +40,7 @@ export default function Terms() {
 
       <h2 id="info">3. Cancel guides and prices</h2>
       <p>
-        Guides and prices on this site and in the app are checked by hand on each service’s own pages, with the date shown. Services can change their steps or prices at any time. Ditch can’t cancel anything for you, and we aren’t responsible for charges made by other companies. If something looks wrong, tell us at <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
+        Guides and prices on this site and in the app are read from each service’s own pages, with the date shown. Services can change their steps or prices at any time. Ditch can’t cancel anything for you, and we aren’t responsible for charges made by other companies. If something looks wrong, tell us at <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
       </p>
       <p>Service names and logos belong to their owners and are used only to identify the services. Ditch isn’t affiliated with or endorsed by any of them.</p>
 

@@ -19,10 +19,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
 const localToday = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
 const noop = () => () => {};
 const nice = (s: string) => { const d = parse(s); return `${DAYS[d.getUTCDay()]}, ${MONTHS[d.getUTCMonth()]} ${d.getUTCDate()}, ${d.getUTCFullYear()}`; };
+/** iCalendar text: escape \\ ; , and new lines (RFC 5545). */
+const esc = (t: string) => t.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
 const LENGTHS = [{ id: '3d', label: '3 days', d: 3 }, { id: '7d', label: '7 days', d: 7 }, { id: '14d', label: '14 days', d: 14 }, { id: '30d', label: '30 days', d: 30 }, { id: '1m', label: '1 month', m: 1 }, { id: '3m', label: '3 months', m: 3 }];
 
 function ics(name: string, ends: string) {
-  const ev = (day: string, title: string, uid: string) => ['BEGIN:VEVENT', `UID:${uid}@ditchsubs.app`, `DTSTAMP:${iso(new Date()).replace(/-/g, '')}T000000Z`, `DTSTART;VALUE=DATE:${day.replace(/-/g, '')}`, `DTEND;VALUE=DATE:${add(day, 1).replace(/-/g, '')}`, `SUMMARY:${title}`, 'BEGIN:VALARM', 'ACTION:DISPLAY', `DESCRIPTION:${title}`, 'TRIGGER:PT9H', 'END:VALARM', 'END:VEVENT'];
+  const ev = (day: string, title: string, uid: string) => ['BEGIN:VEVENT', `UID:${uid}@ditchsubs.app`, `DTSTAMP:${iso(new Date()).replace(/-/g, '')}T000000Z`, `DTSTART;VALUE=DATE:${day.replace(/-/g, '')}`, `DTEND;VALUE=DATE:${add(day, 1).replace(/-/g, '')}`, `SUMMARY:${esc(title)}`, 'BEGIN:VALARM', 'ACTION:DISPLAY', `DESCRIPTION:${esc(title)}`, 'TRIGGER:PT9H', 'END:VALARM', 'END:VEVENT'];
   const label = name.trim() || 'Free trial';
   const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Ditch//Free trial//EN', ...ev(add(ends, -3), `${label} trial ends in 3 days`, `t3-${ends}`), ...ev(add(ends, -1), `${label} trial ends tomorrow. Cancel today if you don't want it.`, `t1-${ends}`), 'END:VCALENDAR'];
   return lines.join('\r\n');
@@ -37,7 +39,7 @@ export function TrialCalc() {
   const [biller, setBiller] = useState<'apple' | 'other'>('apple');
   const [name, setName] = useState('');
   const L = LENGTHS.find((x) => x.id === len);
-  const days = len === 'custom' ? parseInt(custom, 10) : undefined;
+  const days = len === 'custom' ? Math.min(366, parseInt(custom, 10)) : undefined;
   const ends = !start ? '' : L?.m ? addMonths(start, L.m) : L?.d ? add(start, L.d) : Number.isFinite(days) && days! > 0 ? add(start, days!) : '';
   const cancelBy = ends ? add(ends, -1) : '';
   const download = () => {

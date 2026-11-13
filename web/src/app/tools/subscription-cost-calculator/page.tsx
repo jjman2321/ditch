@@ -23,7 +23,7 @@ export default function Page() {
       title="Subscription cost calculator"
       lead="Tap what you pay for. See what it all costs a month and a year."
       how={['Pick your country.', 'Tap each subscription you pay for.', 'Read your yearly total. Different currencies are never added together.']}
-      good={[<>Netflix Standard, Spotify Premium and ChatGPT Plus come to <b>{formatMoney(total, 'USD')} a year</b> in the US, before tax.</>, 'Prices are each service’s usual plan, checked by hand with the date shown.']}
+      good={[<>Netflix Standard, Spotify Premium and ChatGPT Plus come to <b>{formatMoney(total, 'USD')} a year</b> in the US, before tax.</>, 'Prices are each service’s usual plan, from its own page, with the date shown.']}
       faq={[
         { q: 'How do I work out what I spend on subscriptions?', a: 'Monthly price × 12, weekly × 52, every 3 months × 4, yearly as charged. Add them up per currency.' },
         { q: 'Are these prices right for my country?', a: 'They’re the usual plan in each country, from each service’s own pages. Your plan may differ.' },

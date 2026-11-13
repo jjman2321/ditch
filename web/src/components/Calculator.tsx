@@ -101,10 +101,10 @@ export function Calculator({ services, countries, initial = ['netflix', 'spotify
             </div>
           ) : null}
         </div>
-        <p className="calc-cta">Ditch reminds you before each of these renews. Free iPhone app, coming soon.</p>
+        <p className="calc-cta">{chosen.length > 3 ? `Ditch reminds you before these renew: 3 free, all ${chosen.length} with Pro. iPhone app, coming soon.` : 'Ditch reminds you before each of these renews, free. iPhone app, coming soon.'}</p>
         <EmailBox source="calculator" bare />
         <p className="note">
-          {c.name} prices, usual plan, checked by hand ({c.checked}). This runs in your browser. We don’t see what you tap.
+          {c.name} prices, usual plan, from each service’s own page ({c.checked}). This runs in your browser. We don’t see what you tap.
         </p>
       </div>
     </div>

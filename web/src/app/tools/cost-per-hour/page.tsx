@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <ToolPage
+      cta="Not worth it? Ditch it before it renews"
       slug="tools/cost-per-hour"
       title='Cost per hour calculator'
       lead='What a subscription costs for each hour you use it.'

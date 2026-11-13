@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import { EmailBox } from './EmailBox';
 import { ToolCard, allToolItems, visualOf } from './ToolCard';
+import { dateRange, priceHubServices, verifiedPrices } from '@/lib/data';
 import { SITE } from '@/lib/site';
 
 /**
@@ -24,6 +25,7 @@ export function ToolPage({
   extra,
   wide = false,
   raw = false,
+  checked,
 }: {
   slug: string;
   title: string;
@@ -39,7 +41,10 @@ export function ToolPage({
   wide?: boolean;
   /** The tool brings its own layout (the home page calculator). */
   raw?: boolean;
+  /** Dates the prices behind this tool were read, e.g. ['2026-11-09', '2026-11-12']. Defaults to every price page. */
+  checked?: string[];
 }) {
+  const dates = checked ?? priceHubServices().flatMap((x) => verifiedPrices(x.id).map((r) => r.checked));
   const mine = visualOf(slug).logos ?? [];
   const others = allToolItems()
     .filter((t) => t.href !== `/${slug}`)
@@ -113,9 +118,10 @@ export function ToolPage({
           </div>
         </section>
       ) : null}
-      {sources.length ? (
+      {sources.length || dates.length ? (
         <p className="srcline">
-          Sources:{' '}
+          {dates.length ? <>Prices checked {dateRange(dates)}. </> : null}
+          {sources.length ? 'Sources: ' : ''}
           {sources.map((u, i) => (
             <span key={u}>
               {i ? ' · ' : ''}
@@ -129,8 +135,8 @@ export function ToolPage({
       <section className="v4-cta" aria-labelledby="tool-cta-h" data-has-cta>
         <img src="/duck.webp" alt="" width={96} height={56} className="duck" />
         <div>
-          <h2 id="tool-cta-h">{cta ?? 'Get a reminder before every charge'}</h2>
-          <p>3 days and 1 day before each renewal. Free iPhone app, coming soon.</p>
+          <h2 id="tool-cta-h">{cta ?? 'Get a reminder before it renews'}</h2>
+          <p>3 days and 1 day before. Free for 3 subscriptions, Pro covers the rest. iPhone app, coming soon.</p>
         </div>
         <EmailBox source={`tool-${slug.split('/').pop()}`} bare />
       </section>

@@ -12,6 +12,8 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <ToolPage
+      cta="Next time, know 3 days before"
+      checked={[]}
       wide
       slug="tools/refund-helper"
       title="Subscription refund helper"

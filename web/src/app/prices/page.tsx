@@ -5,7 +5,7 @@ import { COUNTRIES, hasLogo, priceHubServices, verifiedPrices, slugOf } from '@/
 import { SITE } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: `Subscription prices in ${COUNTRIES.length} countries, checked by hand`,
+  title: `Subscription prices in ${COUNTRIES.length} countries, from official pages`,
   description: 'What Netflix, Spotify, Disney+, ChatGPT and more cost in the US, UK, Canada, Australia, Europe, India and the Middle East. Every plan, local money, dated.',
   alternates: { canonical: '/prices' },
 };
@@ -27,7 +27,7 @@ export default function PricesIndex() {
         <div>
           <h1>Subscription prices by country</h1>
           <p className="lead">
-        What {hubs.length} subscriptions cost in up to {COUNTRIES.length} countries, in local money. Checked by hand, with the date and the page we read.
+        What {hubs.length} subscriptions cost in up to {COUNTRIES.length} countries, in local money. Read from each service’s own page, with the date and the page we read.
           </p>
         </div>
       </header>

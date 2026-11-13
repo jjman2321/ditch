@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { ToolCard, ToolIcon, type CardItem } from './ToolCard';
 
@@ -9,6 +9,7 @@ export type Group = { id: string; title: string; sub: string; items: CardItem[] 
 /** The /tools list: search box + jump chips, then each group as a heading and cards. All cards are in the HTML; search only hides. */
 export function ToolHub({ groups, children }: { groups: Group[]; children?: React.ReactNode }) {
   const [q, setQ] = useState('');
+  const box = useRef<HTMLInputElement>(null);
   const words = q.toLowerCase().split(/\s+/).filter(Boolean);
   const hit = (x: CardItem) => words.every((w) => `${x.name} ${x.desc}`.toLowerCase().includes(w));
   const shown = groups.map((g) => ({ ...g, items: g.items.filter(hit) })).filter((g) => g.items.length);
@@ -19,10 +20,10 @@ export function ToolHub({ groups, children }: { groups: Group[]; children?: Reac
         <label className="search-pill">
           <ToolIcon name="search" />
           <span className="sr">Search the free tools</span>
-          <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search, like “Spotify” or “trial”" autoComplete="off" enterKeyHint="search" />
+          <input ref={box} type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search, like “Spotify” or “trial”" autoComplete="off" enterKeyHint="search" />
         </label>
         <p className="sr" aria-live="polite">
-          {q ? `${count} tools found` : ''}
+          {q ? `${count} ${count === 1 ? 'tool' : 'tools'} found` : ''}
         </p>
         {q ? null : (
           <nav className="chips-row" aria-label="Jump to a group">
@@ -52,7 +53,7 @@ export function ToolHub({ groups, children }: { groups: Group[]; children?: Reac
       ) : (
         <p className="hub-none">
           Nothing for “{q}” yet. Try a service name, like Netflix, or{' '}
-          <button type="button" className="linkish" onClick={() => setQ('')}>
+          <button type="button" className="linkish" onClick={() => { setQ(''); box.current?.focus(); }}>
             see every tool
           </button>
           .

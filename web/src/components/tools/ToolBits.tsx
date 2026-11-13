@@ -52,5 +52,5 @@ export function usePoints(): Pt[] | null {
 }
 
 export function Loading() {
-  return <p className="muted" style={{ color: 'var(--mute)' }}>Loading prices…</p>;
+  return <p className="muted loading" style={{ color: 'var(--mute)' }}>Loading prices…</p>;
 }

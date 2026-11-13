@@ -7,7 +7,7 @@ import { STATS, SUPPORT_EMAIL } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'How we check prices and cancel guides',
-  description: 'Every price and cancel step on Ditch is read by hand from the service’s own page, with the date. What verified means, how often we re-check, and what we don’t do.',
+  description: 'Every price and cancel step on Ditch is read from the service’s own page, with the date. What verified means, how often we re-check, and what we don’t do.',
   alternates: { canonical: '/how-we-check' },
 };
 
@@ -63,7 +63,7 @@ export default function HowWeCheck() {
 
       <h2 id="corrections">Corrections</h2>
       <p>
-        Seen a different price or a step that changed? Email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>. We re-check by hand and fix the page. See <Link href="/prices">all prices</Link> and <Link href="/cancel">all guides</Link>.
+        Seen a different price or a step that changed? Email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>. We re-check the service’s own page and fix ours. See <Link href="/prices">all prices</Link> and <Link href="/cancel">all guides</Link>.
       </p>
     </Doc>
   );

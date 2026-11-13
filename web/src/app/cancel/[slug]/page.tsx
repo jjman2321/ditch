@@ -54,8 +54,8 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
   const us = priceFor(g.id, 'US');
   const sameCat = publishedGuides().filter((x) => serviceById(x.id)?.category === s?.category);
   const picked = (g.related ?? []).map((id) => guideById(id)).filter((x): x is NonNullable<typeof x> => Boolean(x));
-  const related = picked.length ? picked.slice(0, 4) : neighbours(sameCat, g.id, 4);
-  const more = related.length < 4 ? publishedGuides().filter((x) => x.id !== g.id && !related.includes(x)).slice(0, 4 - related.length) : [];
+  const related = picked.length ? picked.slice(0, 6) : neighbours(sameCat, g.id, 6);
+  const more = related.length < 6 ? publishedGuides().filter((x) => x.id !== g.id && !related.includes(x)).slice(0, 6 - related.length) : [];
   const appleOnly = g.url?.startsWith('https://apps.apple.com');
   const hasHub = priceHubServices().some((x) => x.id === g.id);
   const ans = answer(g);
@@ -99,186 +99,235 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
     { id: 'direct', icon: <Logo id={g.id} size={44} />, title: appleOnly ? 'On your iPhone' : `On ${g.name}’s website`, line: g.steps.slice(1).map((x) => x.replace(/^Tap /, '')).join(' → ') || g.steps[0], primary: true },
     ...(showApple ? [{ id: 'apple', icon: <AppleMark />, title: 'Through Apple', line: 'Your statement says APPLE.COM/BILL. Cancel in iPhone Settings.', primary: false }] : []),
     ...(d?.googlePlay ? [{ id: 'google', icon: <PlayMark />, title: 'Through Google Play', line: 'Google Play → Subscriptions → ' + g.name + ' → Cancel.', primary: false }] : []),
-    { id: 'partner', icon: <BarsMark />, title: 'Through your phone or TV company', line: 'No cancel option? Someone else bills you. Cancel with them.', primary: false },
+    { id: 'partner', icon: <BarsMark />, title: 'Your phone or TV company', line: 'No cancel option? Someone else bills you. Cancel with them.', primary: false },
   ];
   const mainHref = g.url ?? g.helpUrl ?? '#direct';
   const mainLabel = appleOnly ? 'Open Subscriptions ↗' : g.url ? (g.urlLabel ?? (g.name.length > 12 ? 'Open the cancel page ↗' : `Open ${g.name}’s page ↗`)) : g.helpUrl ? 'Open the help page ↗' : 'See the steps ↓';
 
+  const toc = [
+    { id: 'direct', label: appleOnly ? 'On your iPhone' : 'On the website' },
+    ...(showApple ? [{ id: 'apple', label: 'If Apple bills you' }] : []),
+    ...(d?.googlePlay ? [{ id: 'google', label: 'On Android' }] : []),
+    { id: 'partner', label: 'No cancel button?' },
+    ...(d?.verify ? [{ id: 'check', label: 'Check you cancelled' }] : []),
+    ...(after.length ? [{ id: 'after', label: 'What happens after' }] : []),
+    ...(d?.pause ? [{ id: 'pause', label: 'Pause instead' }] : []),
+    ...(faq.length ? [{ id: 'faq', label: 'Questions' }] : []),
+    ...(us ? [{ id: 'price', label: `What ${g.name} costs` }] : []),
+  ];
+  const quick = g.answer ?? `${g.steps.join('. ')}.`;
+
   return (
-    <div className="wrap gv3">
+    <div className="wrap gv3 v4 guide4">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
-      <article className="gv3-col">
-        <nav className="crumbs" aria-label="Breadcrumb">
-          <Link href="/cancel">Cancel guides</Link>
-          <span aria-hidden>›</span>
-          <span aria-current="page">{g.name}</span>
-        </nav>
-        <div className="kick">
-          <Logo id={g.id} size={40} />
-          <span>
-            Checked <time dateTime={g.checkedOn}>{formatDate(g.checkedOn)}</time>
-          </span>
-        </div>
-        <h1>How to cancel {g.name}</h1>
-        <p className="sub">{g.answer ?? `${g.steps.join('. ')}.`}</p>
-        {fresh !== 'fresh' ? <p className="stale">Last checked {formatDate(g.checkedOn)}. {g.name} may have changed its steps since. We re-check every 90 days.</p> : null}
-
-        <h2 id="ways" className="ways-h">Pick how you pay</h2>
-        <ul className="ways">
-          {ways.map((w) => (
-            <li key={w.id}>
-              <span className="ic">{w.icon}</span>
-              <div>
-                <h3>{w.title}</h3>
-                <p>{w.line}</p>
-              </div>
-              {w.primary ? (
-                <a className="btn" href={mainHref} rel={mainHref.startsWith('http') ? 'noopener' : undefined}>
-                  {mainLabel}
-                </a>
-              ) : (
-                <a className="btn ghost" href={`#${w.id}`}>
-                  Show me how ↓
-                </a>
-              )}
-            </li>
-          ))}
-        </ul>
-
-        <h2 id="ready">Have this ready</h2>
-        <ReadyChips email={appleOnly ? 'Your Apple Account sign-in' : `The email you use for ${g.name}`} />
-
-        <h2 id="direct">{appleOnly ? `Cancel ${g.name} on your iPhone` : `How to cancel ${g.name} on the website`}</h2>
-        <ol className="st">
-          {g.steps.map((st) => (
-            <li key={st}>
-              <span>{keys(st)}</span>
-            </li>
-          ))}
-        </ol>
-        {otherNotes.length ? (
-          <div className="callout">
-            <span className="lbl">Good to know</span>
-            {otherNotes.map((n) => (
-              <p key={n}>{n}</p>
-            ))}
+      <nav className="crumbs" aria-label="Breadcrumb">
+        <Link href="/cancel">Cancel guides</Link>
+        <span aria-hidden>›</span>
+        <span aria-current="page">{g.name}</span>
+      </nav>
+      <div className="g4">
+        <article className="g4-main">
+          <div className="kick">
+            <Logo id={g.id} size={40} />
+            <span>
+              Checked <time dateTime={g.checkedOn}>{formatDate(g.checkedOn)}</time>
+            </span>
           </div>
-        ) : null}
+          <h1>How to cancel {g.name}</h1>
+          <p className="lead">{quick}</p>
+          {fresh !== 'fresh' ? <p className="stale">Last checked {formatDate(g.checkedOn)}. {g.name} may have changed its steps since. We re-check every 90 days.</p> : null}
 
-        {showApple ? (
-          <>
-            <h2 id="apple">How to cancel {g.name} if Apple bills you</h2>
-            <p className="lead-s">
-              {g.appleNote ? `If you signed up in the ${app} iPhone app, Apple bills you, and ${company} can’t cancel it for you.` : `Signed up in the iPhone app? Then Apple may bill you. Your statement says APPLE.COM/BILL.`}
-            </p>
-            <ol className="st">
-              <li>
-                <span>Open <kbd>Settings</kbd> on your iPhone.</span>
+          <h2 id="ways" className="sr">Pick how you pay</h2>
+          <ul className={`ways4 n${ways.length}`}>
+            {ways.map((w) => (
+              <li key={w.id} className={w.primary ? 'on' : undefined}>
+                <span className="w-top">
+                  <span className="ic">{w.icon}</span>
+                  <h3>{w.title}</h3>
+                </span>
+                <p>{w.line}</p>
+                {w.primary ? (
+                  <a className="btn" href={mainHref} rel={mainHref.startsWith('http') ? 'noopener' : undefined}>
+                    {mainLabel}
+                  </a>
+                ) : (
+                  <a className="w-go" href={`#${w.id}`}>
+                    Show me how <span aria-hidden>↓</span>
+                  </a>
+                )}
               </li>
-              <li>
-                <span>Tap your name, then <kbd>Subscriptions</kbd>.</span>
-              </li>
-              <li>
-                <span>Tap {g.name}, then <kbd>Cancel Subscription</kbd>.</span>
-              </li>
-            </ol>
-          </>
-        ) : null}
+            ))}
+          </ul>
 
-        {d?.googlePlay ? (
-          <>
-            <h2 id="google">How to cancel {g.name} on Android (Google Play)</h2>
+          <section className="v4-sec" aria-labelledby="ready">
+            <h2 id="ready">Have this ready</h2>
+            <ReadyChips email={appleOnly ? 'Your Apple Account sign-in' : `The email you use for ${g.name}`} />
+          </section>
+
+          <section className="v4-sec" aria-labelledby="direct">
+            <h2 id="direct">{appleOnly ? `Cancel ${g.name} on your iPhone` : `How to cancel ${g.name} on the website`}</h2>
             <ol className="st">
-              {d.googlePlay.steps.map((st) => (
+              {g.steps.map((st) => (
                 <li key={st}>
                   <span>{keys(st)}</span>
                 </li>
               ))}
             </ol>
-          </>
-        ) : null}
-
-        <h2 id="partner">No cancel button? Your phone or TV company may bill you</h2>
-        <p className="lead-s">{partnerText ?? `Then ${company} probably isn’t billing you directly. Look for the company named on your bank statement and cancel with them.`}</p>
-
-        {d?.verify ? (
-          <>
-            <h2 id="check">How to check you cancelled {g.name}</h2>
-            <p className="lead-s">{cap(d.verify.text.replace(/^How to check it worked:\s*/i, ''))}</p>
-          </>
-        ) : null}
-
-        {after.length ? (
-          <>
-            <h2 id="after">What happens after you cancel {g.name}</h2>
-            <dl className="after">
-              {after.map((x) => (
-                <div key={x.label}>
-                  <dt>{x.label}</dt>
-                  <dd>{x.text}</dd>
-                </div>
-              ))}
-            </dl>
-          </>
-        ) : null}
-
-        {d?.pause ? (
-          <>
-            <h2 id="pause">Not sure yet? Pause instead</h2>
-            <p className="lead-s">{d.pause.text}</p>
-          </>
-        ) : null}
-
-        {faq.length ? (
-          <>
-            <h2 id="faq">{g.name} cancellation questions</h2>
-            <div className="qa">
-              {faq.map((f) => (
-                <div key={f.q}>
-                  <h3>{f.q}</h3>
-                  <p>{f.a}</p>
-                </div>
-              ))}
-            </div>
-          </>
-        ) : null}
-
-        {us ? (
-          <>
-            <h2 id="price">What {g.name} costs</h2>
-            <PriceTable serviceId={g.id} countries={['US']} caption={`${g.name} prices in the US`} />
-            {hasHub ? (
-              <p className="src">
-                <Link href={`/prices/${slugOf(g.id)}`}>{g.name} prices in every country we check →</Link>
-              </p>
+            {otherNotes.length ? (
+              <div className="tip">
+                {otherNotes.map((n) => (
+                  <p key={n}>{n}</p>
+                ))}
+              </div>
             ) : null}
-          </>
-        ) : null}
+          </section>
 
-        <section className="cta" id="remind" aria-labelledby="remind-h" data-has-cta>
+          {showApple ? (
+            <section className="v4-sec" aria-labelledby="apple">
+              <h2 id="apple">How to cancel {g.name} if Apple bills you</h2>
+              <p className="lead-s">
+                {g.appleNote ? `If you signed up in the ${app} iPhone app, Apple bills you, and ${company} can’t cancel it for you.` : `Signed up in the iPhone app? Then Apple may bill you. Your statement says APPLE.COM/BILL.`}
+              </p>
+              <ol className="st">
+                <li>
+                  <span>Open <kbd>Settings</kbd> on your iPhone.</span>
+                </li>
+                <li>
+                  <span>Tap your name, then <kbd>Subscriptions</kbd>.</span>
+                </li>
+                <li>
+                  <span>Tap {g.name}, then <kbd>Cancel Subscription</kbd>.</span>
+                </li>
+              </ol>
+            </section>
+          ) : null}
+
+          {d?.googlePlay ? (
+            <section className="v4-sec" aria-labelledby="google">
+              <h2 id="google">How to cancel {g.name} on Android (Google Play)</h2>
+              <ol className="st">
+                {d.googlePlay.steps.map((st) => (
+                  <li key={st}>
+                    <span>{keys(st)}</span>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          ) : null}
+
+          <section className="v4-sec" aria-labelledby="partner">
+            <h2 id="partner">No cancel button? Your phone or TV company may bill you</h2>
+            <p className="lead-s">{partnerText ?? `Then ${company} probably isn’t billing you directly. Look for the company named on your bank statement and cancel with them.`}</p>
+          </section>
+
+          {d?.verify ? (
+            <section className="v4-sec" aria-labelledby="check">
+              <h2 id="check">How to check you cancelled {g.name}</h2>
+              <p className="lead-s">{cap(d.verify.text.replace(/^How to check it worked:\s*/i, ''))}</p>
+            </section>
+          ) : null}
+
+          {after.length ? (
+            <section className="v4-sec" aria-labelledby="after">
+              <h2 id="after">What happens after you cancel {g.name}</h2>
+              <dl className="after">
+                {after.map((x) => (
+                  <div key={x.label}>
+                    <dt>{x.label}</dt>
+                    <dd>{x.text}</dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
+          ) : null}
+
+          {d?.pause ? (
+            <section className="v4-sec" aria-labelledby="pause">
+              <h2 id="pause">Not sure yet? Pause instead</h2>
+              <p className="lead-s">{d.pause.text}</p>
+            </section>
+          ) : null}
+
+          {faq.length ? (
+            <section className="v4-sec" aria-labelledby="faq">
+              <h2 id="faq">{g.name} cancellation questions</h2>
+              <div className="qa">
+                {faq.map((f) => (
+                  <div key={f.q}>
+                    <h3>{f.q}</h3>
+                    <p>{f.a}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ) : null}
+
+          {us ? (
+            <section className="v4-sec" aria-labelledby="price">
+              <h2 id="price">What {g.name} costs</h2>
+              <PriceTable serviceId={g.id} countries={['US']} caption={`${g.name} prices in the US`} />
+              {hasHub ? (
+                <p className="src">
+                  <Link href={`/prices/${slugOf(g.id)}`}>{g.name} prices in every country we check →</Link>
+                </p>
+              ) : null}
+            </section>
+          ) : null}
+
+          <p className="g-feedback">
+            <b>Did this work?</b> <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${g.name} guide: it worked`)}`}>Yes, it worked</a>
+            {' · '}
+            <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${g.name} guide: something changed`)}&body=${encodeURIComponent('What did you see instead?\n\n')}`}>No, something changed</a>
+          </p>
+        </article>
+
+        <aside className="g4-side" aria-label="Quick answer">
+          <div className="g4-stick">
+            <div className="qa-card">
+              <p className="k">{ways[0].title}</p>
+              <p>{ways[0].line}</p>
+              <a className="btn" href={mainHref} rel={mainHref.startsWith('http') ? 'noopener' : undefined}>
+                {mainLabel}
+              </a>
+            </div>
+            <nav className="toc4" aria-label="On this page">
+              <p className="k">On this page</p>
+              {toc.map((x) => (
+                <a key={x.id} href={`#${x.id}`}>
+                  {x.label}
+                </a>
+              ))}
+            </nav>
+          </div>
+        </aside>
+      </div>
+
+      <section className="v4-cta" id="remind" aria-labelledby="remind-h" data-has-cta>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/duck.webp" alt="" width={96} height={56} className="duck" />
+        <div>
           <h2 id="remind-h">Keeping {g.name} for now?</h2>
           <p>Ditch reminds you 3 days and 1 day before it renews, so you decide before the charge.</p>
-          <EmailBox source={`cancel-${g.id}`} bare />
-        </section>
+        </div>
+        <EmailBox source={`cancel-${g.id}`} bare />
+      </section>
 
-        <p className="g-feedback">
-          <b>Did this work?</b> <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${g.name} guide: it worked`)}`}>Yes, it worked</a>
-          {' · '}
-          <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${g.name} guide: something changed`)}&body=${encodeURIComponent('What did you see instead?\n\n')}`}>No, something changed</a>
-        </p>
-
+      <section className="v4-sec" aria-labelledby="more">
         <h2 id="more">Cancel something else</h2>
-        <ul className="g-related">
+        <div className="tgrid">
           {[...related, ...more].map((r) => (
-            <li key={r.id}>
-              <Link href={`/cancel/${slugOf(r.id)}`}>
-                <Logo id={r.id} size={28} />
-                Cancel {r.name}
-              </Link>
-            </li>
+            <Link key={r.id} className="tcard" href={`/cancel/${slugOf(r.id)}`}>
+              <Logo id={r.id} size={44} />
+              <span>
+                <b>Cancel {r.name}</b>
+                <small>Step by step, checked by hand</small>
+              </span>
+            </Link>
           ))}
-        </ul>
+        </div>
+      </section>
 
+      <section className="g4-foot" aria-labelledby="sources">
         <h2 id="sources" className="srcs-h">Sources</h2>
         <ul className="srcs">
           {[...new Set([g.source, ...(showApple ? [APPLE_SOURCE] : []), ...(d?.googlePlay ? [d.googlePlay.source] : []), ...(d?.verify ? [d.verify.source] : []), ...after.map((x) => x.source), ...(d?.pause ? [d.pause.source] : []), ...faq.map((f) => f.source)])].map((u) => (
@@ -289,11 +338,10 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
             </li>
           ))}
         </ul>
-
         <p className="disc">
           {g.name} is a trademark of its owner. Ditch isn’t affiliated with or endorsed by {g.name}. <Link href="/how-we-check">How we check guides</Link>. <span className="nw">© {year} {COMPANY}.</span>
         </p>
-      </article>
+      </section>
     </div>
   );
 }

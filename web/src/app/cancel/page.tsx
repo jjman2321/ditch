@@ -24,12 +24,16 @@ export default function CancelIndex() {
     mainEntity: { '@type': 'ItemList', numberOfItems: items.length, itemListElement: items.map((x, i) => ({ '@type': 'ListItem', position: i + 1, name: `How to cancel ${x.name}`, url: `${SITE}/cancel/${slugOf(x.id)}` })) },
   };
   return (
-    <div className="wrap index-head">
+    <div className="wrap v4 index-head idx4">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
-      <h1 className="d-h1">How to cancel a subscription</h1>
-      <p className="lead" style={{ marginTop: 20, maxWidth: '34rem' }}>
+      <header className="v4-hero solo">
+        <div>
+          <h1>How to cancel a subscription</h1>
+          <p className="lead">
         Step-by-step cancel guides for {guides.length} services, checked by hand on each service’s own pages. Each one starts with how you pay, because that decides where you cancel.
-      </p>
+          </p>
+        </div>
+      </header>
       <ServiceIndex items={items} base="/cancel" noun="guides" />
     </div>
   );

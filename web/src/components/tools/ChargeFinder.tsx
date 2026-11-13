@@ -41,6 +41,7 @@ function ChargeFinderInner({ points, countries, biller: start = 'any' }: { point
   const shown = [...exact, ...withTax].slice(0, 12);
   return (
     <div>
+      <div className="ins">
       <div className="row">
         <label className="f">
           Amount on your statement
@@ -60,9 +61,13 @@ function ChargeFinderInner({ points, countries, biller: start = 'any' }: { point
           </div>
         </div>
       </div>
+      </div>
       <div className="result" aria-live="polite">
         {!amount ? (
-          <p className="muted">Type an amount like 9.99 to see what it could be.</p>
+          <>
+            <p className="k">Possible matches</p>
+            <p className="say">Type the amount from your statement, like 9.99. We’ll show every subscription on our checked list that costs exactly that.</p>
+          </>
         ) : !Number.isFinite(minor) ? (
           <p className="say">That doesn’t look like an amount. Try something like 9.99.</p>
         ) : shown.length ? (

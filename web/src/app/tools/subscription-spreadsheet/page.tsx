@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <ToolPage
+      wide
       slug="tools/subscription-spreadsheet"
       title='Subscription tracker spreadsheet'
       lead='A free spreadsheet with your subscriptions and prices filled in.'

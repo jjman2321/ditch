@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <ToolPage
+      wide
       slug="tools/refund-helper"
       title="Subscription refund helper"
       lead="Forgot to cancel? Find the official place to ask for a refund."

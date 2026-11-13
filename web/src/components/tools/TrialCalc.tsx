@@ -46,6 +46,7 @@ export function TrialCalc() {
   };
   return (
     <div>
+      <div className="ins">
       <div className="row">
         <label className="f">
           Trial started
@@ -80,6 +81,7 @@ export function TrialCalc() {
             <button type="button" aria-pressed={biller === 'other'} onClick={() => setBiller('other')}>On a website or Android</button>
           </div>
         </div>
+      </div>
       </div>
       <div className="result" aria-live="polite">
         {ends ? (

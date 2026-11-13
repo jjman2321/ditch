@@ -65,3 +65,14 @@ export function allPoints(): Pt[] {
 export const countryList = () => COUNTRIES.map((c) => ({ code: c.code, name: c.name, short: c.short }));
 export const countryName = (code: string) => COUNTRY[code]?.name ?? code;
 export const serviceName = (id: string) => serviceById(id)?.name ?? id;
+
+/** "Claude Pro" + "Pro (monthly)" → "Claude Pro"; "Google AI Pro" + "Google AI Plus" → "Google AI Plus"; else "Netflix Standard". */
+export const planLabel = (n: string, plan: string) => {
+  const pl = plan.replace(/\s*\((monthly|a month)\)/i, '').trim();
+  const a = n.toLowerCase(), b = pl.toLowerCase();
+  if (b.startsWith(a)) return pl;
+  if (a.endsWith(b)) return n;
+  const first = a.split(' ')[0];
+  if (b.startsWith(first + ' ')) return pl;
+  return `${n} ${pl}`;
+};

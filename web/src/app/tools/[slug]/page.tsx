@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { ToolPage } from '@/components/ToolPage';
 import { Compare, DisneyBundle, FamilySplit, MonthlyYearly } from '@/components/tools/PlanTools';
 import { formatMoney } from '@/lib/money';
-import { allPoints, countryList, countryName, SERVICE_TOOLS, type Pt } from '@/lib/tools';
+import { allPoints, countryList, countryName, planLabel, SERVICE_TOOLS, type Pt } from '@/lib/tools';
 
 export function generateStaticParams() {
   return SERVICE_TOOLS.map((t) => ({ slug: t.slug }));
@@ -19,13 +19,7 @@ export async function generateMetadata({ params }: PageProps<'/tools/[slug]'>): 
 }
 
 const m = (p: Pt, a = p.a) => formatMoney(a, p.cur, { country: p.c });
-/** "Claude Pro" + "Pro (monthly)" → "Claude Pro"; "Disney+" + "Disney+ (With Ads)" → "Disney+ (With Ads)". */
-const label = (p: Pt) => {
-  const plan = p.p.replace(/\s*\(monthly\)/i, '').trim();
-  if (plan.toLowerCase().startsWith(p.n.toLowerCase())) return plan;
-  if (p.n.toLowerCase().endsWith(plan.toLowerCase())) return p.n;
-  return `${p.n} ${plan}`;
-};
+const label = (p: Pt) => planLabel(p.n, p.p);
 
 /** One sentence from real prices, so the page answers the search even before anyone taps. */
 function example(t: (typeof SERVICE_TOOLS)[number], pts: Pt[]): string | null {
@@ -67,14 +61,14 @@ export default async function Page({ params }: PageProps<'/tools/[slug]'>) {
   const ex = example(t, pts);
   const how =
     t.kind === 'split' ? ['Pick your country and the plan.', 'Pick how many people share it.', 'See what each person pays.'] :
-    t.kind === 'vs' ? ['Pick your country.', 'See every plan side by side.', 'Swap either service if you like.'] :
+    t.kind === 'vs' ? ['Pick your country.', 'See the cheapest, usual and top plan of each, side by side.', 'Switch to “A year” to see the yearly cost.'] :
     t.kind === 'myr' ? ['Pick your country.', 'See 12 months of monthly next to yearly.'] :
     ['Pick with ads or without.', 'See both services next to the bundle.'];
   const good = ex ? [ex] : [];
   const countries = countryList();
   return (
-    <ToolPage slug={`tools/${t.slug}`} title={t.name} lead={t.desc} how={how} good={good} faq={t.faq} sources={t.sources}>
-      {t.kind === 'split' ? <FamilySplit countries={countries} only={t.s} all={t.s === 'netflix'} /> : t.kind === 'vs' ? <Compare countries={countries} first={t.a} second={t.b} /> : t.kind === 'myr' ? <MonthlyYearly countries={countries} only={t.s} /> : <DisneyBundle />}
+    <ToolPage slug={`tools/${t.slug}`} title={t.name} lead={t.desc} how={how} good={good} faq={t.faq} sources={t.sources} wide={t.kind === 'vs'}>
+      {t.kind === 'split' ? <FamilySplit countries={countries} only={t.s} all={t.s === 'netflix'} /> : t.kind === 'vs' ? <Compare countries={countries} first={t.a} second={t.b} fixed /> : t.kind === 'myr' ? <MonthlyYearly countries={countries} only={t.s} /> : <DisneyBundle />}
     </ToolPage>
   );
 }

@@ -1,7 +1,7 @@
 import { ChargeFinder } from './ChargeFinder';
 import { ToolPage } from '@/components/ToolPage';
 import { CYCLE_WORD, formatMoney } from '@/lib/money';
-import { allPoints, countryList, type Biller, type Pt } from '@/lib/tools';
+import { allPoints, countryList, planLabel, type Biller, type Pt } from '@/lib/tools';
 
 const SRC = { apple: ['https://support.apple.com/102396', 'https://support.apple.com/118223'], google: ['https://support.google.com/googleplay/answer/2850369'], amazon: [] as string[] };
 
@@ -52,7 +52,7 @@ export function ChargesBody({ hub }: { hub: string | null }) {
         { q: 'Why doesn’t the amount match exactly?', a: 'Tax may be added, or it may be a one-off purchase rather than a subscription.' },
       ]}
       extra={
-        <>
+        <section className="v4-sec" aria-labelledby="amounts">
           <h2 id="amounts">{h ? `${h.name} charges by amount (US)` : 'Common charges by amount (US)'}</h2>
           <table className="ttable">
             <thead>
@@ -67,12 +67,12 @@ export function ChargesBody({ hub }: { hub: string | null }) {
                   <td>
                     <b className="num">{formatMoney(a, 'USD')}</b>
                   </td>
-                  <td>{ps.map((p) => `${p.n} ${p.p} (${CYCLE_WORD[p.cy]})`).join(' · ')}</td>
+                  <td>{ps.map((p) => `${planLabel(p.n, p.p)} (${CYCLE_WORD[p.cy]})`).join(' · ')}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </>
+        </section>
       }
     >
       <ChargeFinder countries={countryList()} biller={biller} />

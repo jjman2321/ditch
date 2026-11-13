@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function About() {
   const ld = { '@context': 'https://schema.org', '@type': 'AboutPage', name: 'About Ditch', url: `${SITE}/about`, mainEntity: { '@type': 'Person', name: 'Aribo', jobTitle: 'Maker of Ditch', worksFor: { '@type': 'Organization', name: COMPANY } } };
   return (
-    <div className="wrap doc">
+    <div className="wrap doc v4">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
       <p className="effective">A note from the maker</p>
       <h1>Why Ditch exists</h1>

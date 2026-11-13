@@ -18,6 +18,7 @@ export function RefundHelper() {
   ];
   return (
     <div>
+      <div className="ins">
       <div className="f">
         <span style={{ fontWeight: 700, fontSize: 15 }}>1. Who charged you?</span>
         <div className="seg" role="group" aria-label="Who charged you">
@@ -34,6 +35,7 @@ export function RefundHelper() {
           <button type="button" aria-pressed={mine === true} onClick={() => setMine(true)}>Yes, I forgot to cancel</button>
           <button type="button" aria-pressed={mine === false} onClick={() => setMine(false)}>No, I don’t recognise it</button>
         </div>
+      </div>
       </div>
       <div className="result" aria-live="polite">
         {!who || mine === null ? (

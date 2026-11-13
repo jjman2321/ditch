@@ -43,6 +43,7 @@ function AppleOneInner({ points, countries }: { points: Pt[]; countries: { code:
   const m = (a: number) => formatMoney(a, cur, { country: c });
   return (
     <div>
+      <div className="ins">
       <div className="row">
         <CountrySelect value={c} onChange={setCountry} countries={have} />
         <div className="f">
@@ -76,6 +77,7 @@ function AppleOneInner({ points, countries }: { points: Pt[]; countries: { code:
             ))}
           </div>
         </div>
+      </div>
       </div>
       <div className="result" aria-live="polite">
         {!lines.length ? (

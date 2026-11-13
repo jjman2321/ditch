@@ -21,12 +21,16 @@ export default function PricesIndex() {
     mainEntity: { '@type': 'ItemList', numberOfItems: items.length, itemListElement: items.map((x, i) => ({ '@type': 'ListItem', position: i + 1, name: `${x.name} prices`, url: `${SITE}/prices/${slugOf(x.id)}` })) },
   };
   return (
-    <div className="wrap index-head">
+    <div className="wrap v4 index-head idx4">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
-      <h1 className="d-h1">Subscription prices by country</h1>
-      <p className="lead" style={{ marginTop: 20, maxWidth: '34rem' }}>
+      <header className="v4-hero solo">
+        <div>
+          <h1>Subscription prices by country</h1>
+          <p className="lead">
         What {hubs.length} subscriptions cost in up to {COUNTRIES.length} countries, in local money. Checked by hand, with the date and the page we read.
-      </p>
+          </p>
+        </div>
+      </header>
       <ServiceIndex items={items} base="/prices" noun="services" />
     </div>
   );

@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable @next/next/no-img-element */
 
 import { useState } from 'react';
 
@@ -55,9 +56,11 @@ function MonthlyYearlyInner({ points, countries, only }: { points: Pt[]; countri
   const ps = s ? pairs(c, s) : [];
   return (
     <div>
+      <div className="ins">
       <div className="row">
         <CountrySelect value={c} onChange={setC} countries={countries.filter((x) => okSvc(x.code).length)} />
         {only ? null : <ServiceSelect value={s ?? ''} onChange={setSvc} list={list} />}
+      </div>
       </div>
       <div className="result" aria-live="polite">
         {ps.map(({ y, m }) => {
@@ -110,7 +113,7 @@ function FamilySplitInner({ points, countries, only, all }: { points: Pt[]; coun
   const list = okSvc(c);
   const [svc, setSvc] = useState<string | null>(null);
   const s = list.some((x) => x.s === svc) ? svc! : prefer(list, ['spotify', 'youtube-premium', 'apple-music']);
-  const plans = points.filter((p) => p.c === c && p.s === s && fam(p));
+  const plans = points.filter((p) => p.c === c && p.s === s && fam(p)).sort((x, y) => Number(/duo/i.test(x.p)) - Number(/duo/i.test(y.p)) || y.a - x.a);
   const [planName, setPlan] = useState<string | null>(null);
   const plan = plans.find((p) => p.p === planName) ?? plans.find((p) => /family|premium/i.test(p.p) && !/duo/i.test(p.p)) ?? plans[0];
   const solo = all ? undefined : points.filter((p) => p.c === c && p.s === s && !fam(p) && !/student/i.test(p.p) && p.cy === plan?.cy).sort((a, b) => b.a - a.a)[0];
@@ -118,14 +121,28 @@ function FamilySplitInner({ points, countries, only, all }: { points: Pt[]; coun
   const [people, setPeople] = useState(4);
   const n = Math.min(people, maxPeople);
   const each = plan ? Math.round(plan.a / n) : 0;
+  const per = plan?.cy === 'monthly' ? 'a month' : plan?.cy === 'yearly' ? 'a year' : CYCLE_WORD[plan?.cy ?? 'monthly'];
+  const yearEach = plan ? yearlyMinor(each, plan.cy) : 0;
   return (
     <div>
+      <div className="ins">
       <div className="row">
         <CountrySelect value={c} onChange={setC} countries={countries.filter((x) => okSvc(x.code).length)} />
         {only ? null : <ServiceSelect value={s ?? ''} onChange={(v) => { setSvc(v); setPlan(null); }} list={list} />}
       </div>
-      <div className="row">
-        {plans.length > 1 ? (
+      {plans.length > 1 && plans.length <= 3 ? (
+        <div className="f">
+          <span className="lbl">Plan</span>
+          <div className="seg fill" role="group" aria-label="Plan">
+            {plans.map((p) => (
+              <button key={p.p} type="button" aria-pressed={p.p === plan?.p} onClick={() => setPlan(p.p)}>
+                {p.p.replace(/^premium\s+/i, '')} · {money(p.a, p)}
+              </button>
+            ))}
+          </div>
+        </div>
+      ) : plans.length > 3 ? (
+        <div className="row">
           <label className="f">
             Plan
             <select value={plan?.p} onChange={(e) => setPlan(e.target.value)}>
@@ -136,31 +153,37 @@ function FamilySplitInner({ points, countries, only, all }: { points: Pt[]; coun
               ))}
             </select>
           </label>
-        ) : null}
-        <label className="f">
-          People sharing
-          <select value={n} onChange={(e) => setPeople(parseInt(e.target.value, 10))}>
-            {Array.from({ length: maxPeople - 1 }, (_, i) => i + 2).map((k) => (
-              <option key={k} value={k}>
-                {k} people
-              </option>
-            ))}
-          </select>
-        </label>
+        </div>
+      ) : null}
+      <div className="f">
+        <span className="lbl" id="people-l">People sharing</span>
+        <div className="stepper" role="group" aria-labelledby="people-l">
+          <button type="button" onClick={() => setPeople(Math.max(2, n - 1))} disabled={n <= 2} aria-label="One person fewer">−</button>
+          <output aria-live="polite">{n} people</output>
+          <button type="button" onClick={() => setPeople(Math.min(maxPeople, n + 1))} disabled={n >= maxPeople} aria-label="One more person">+</button>
+        </div>
+      </div>
       </div>
       {plan ? (
         <div className="result" aria-live="polite">
-          <p className="muted">
-            {plan.n} {plan.p} is {money(plan.a, plan)} {CYCLE_WORD[plan.cy]}. Split {n} ways:
-          </p>
+          <p className="k">Each person pays</p>
           <p className="big num">
-            {money(each, plan)} <span style={{ fontSize: '.45em', letterSpacing: 0 }}>each, {CYCLE_WORD[plan.cy]}</span>
+            {money(each, plan)} <span className="unit">{per}</span>
           </p>
-          {solo ? (
-            <p className="say">
-              On their own, each person would pay {money(solo.a, solo)} for {solo.p}. Sharing is <b>{money(solo.a - each, plan)} less each {plan.cy === 'monthly' ? 'month' : 'year'}</b>
-              {plan.cy === 'monthly' ? `, or ${money((solo.a - each) * 12, plan)} a year` : ''}.
-            </p>
+          <p className="muted">
+            {plan.cy === 'monthly' ? `${money(yearEach, plan)} a year each · ` : ''}
+            {plan.n} {plan.p} is {money(plan.a, plan)} {per}
+          </p>
+          {solo && solo.a > each ? (
+            <>
+              <div className="bars" aria-hidden>
+                <div><span>On their own</span><i style={{ width: '100%' }} /><b className="num">{money(solo.a, solo)}</b></div>
+                <div><span>Shared</span><i className="s" style={{ width: `${Math.max(8, Math.round((each / solo.a) * 100))}%` }} /><b className="num">{money(each, plan)}</b></div>
+              </div>
+              <p className="say">
+                <b>{money(solo.a - each, plan)} less</b> each {plan.cy === 'monthly' ? 'month' : 'year'} than {solo.p} on your own{plan.cy === 'monthly' ? `, or ${money((solo.a - each) * 12, plan)} a year` : ''}.
+              </p>
+            </>
           ) : null}
           <p className="note-l">{all ? `${plan.n} accounts are for one household.` : 'Family plans usually need everyone at the same address.'} Check {plan.n}’s own rules.</p>
         </div>
@@ -170,55 +193,110 @@ function FamilySplitInner({ points, countries, only, all }: { points: Pt[]; coun
 }
 
 /* ---------- Compare two services ---------- */
-export function Compare({ countries, first, second }: { countries: C; first?: string; second?: string }) {
+export function Compare({ countries, first, second, fixed }: { countries: C; first?: string; second?: string; fixed?: boolean }) {
   const loaded = usePoints();
   if (!loaded) return <Loading />;
-  return <CompareInner points={loaded} countries={countries} first={first} second={second} />;
+  return <CompareInner points={loaded} countries={countries} first={first} second={second} fixed={fixed} />;
 }
 
-function CompareInner({ points, countries, first = 'netflix', second = 'disney-plus' }: { points: Pt[]; countries: C; first?: string; second?: string }) {
+function CompareInner({ points, countries, first = 'netflix', second = 'disney-plus', fixed = false }: { points: Pt[]; countries: C; first?: string; second?: string; fixed?: boolean }) {
   const [c, setC] = useCountryPick(countries, (code) => points.some((p) => p.c === code && p.s === first) && points.some((p) => p.c === code && p.s === second));
   const list = services(points.filter((p) => p.c === c));
   const [a, setA] = useState<string | null>(null);
   const [b, setB] = useState<string | null>(null);
+  const [yr, setYr] = useState(false);
   const A = list.some((x) => x.s === a) ? a! : list.find((x) => x.s === first)?.s ?? list[0]?.s;
   const B = list.some((x) => x.s === b) ? b! : list.find((x) => x.s === second && x.s !== A)?.s ?? list.find((x) => x.s !== A)?.s;
-  const col = (s?: string) => points.filter((p) => p.c === c && p.s === s).sort((x, y) => monthlyMinor(x.a, x.cy) - monthlyMinor(y.a, y.cy));
-  const ca = col(A);
-  const cb = col(B);
-  const cheapest = (ps: Pt[]) => ps[0];
+  const col = (sv?: string) => points.filter((p) => p.c === c && p.s === sv && !/student/i.test(p.p));
+  const mo = (p: Pt) => monthlyMinor(p.a, p.cy);
+  const rowsOf = (ps: Pt[]) => {
+    const byMo = [...ps].sort((x, y) => mo(x) - mo(y));
+    const monthly = byMo.filter((p) => p.cy === 'monthly');
+    return {
+      cheap: byMo[0],
+      usual: ps.find((p) => p.d) ?? monthly[Math.floor((monthly.length - 1) / 2)] ?? byMo[0],
+      top: monthly[monthly.length - 1] ?? byMo[byMo.length - 1],
+      yearly: byMo.find((p) => p.cy === 'yearly'),
+    };
+  };
+  const ra = rowsOf(col(A));
+  const rb = rowsOf(col(B));
+  const same = ra.cheap && rb.cheap && ra.cheap.cur === rb.cheap.cur;
+  const show = (p?: Pt) => (p ? (yr ? yearlyMinor(p.a, p.cy) : Math.round(mo(p))) : undefined);
+  const ROWS: { key: keyof ReturnType<typeof rowsOf>; label: string; none: string }[] = [
+    { key: 'cheap', label: 'Cheapest plan', none: 'Not checked' },
+    { key: 'usual', label: 'The usual plan', none: 'Not checked' },
+    { key: 'top', label: 'Top plan', none: 'Not checked' },
+    { key: 'yearly', label: 'Pay once a year', none: 'No yearly plan' },
+  ];
+  const name = (sv?: string) => list.find((x) => x.s === sv)?.n ?? '';
+  const cell = (p: Pt | undefined, other: Pt | undefined, none: string, judge = true) => {
+    if (!p) return <td className="v no">{none}</td>;
+    const v = show(p)!, o = show(other);
+    const win = judge && same && o !== undefined && v < o;
+    return (
+      <td className={`v${win ? ' win' : ''}`}>
+        <b className="num">{money(v, p)}</b> <span className="per">{yr ? '/yr' : '/mo'}</span>
+        {win ? <span className="sr"> (less)</span> : null}
+        <small>
+          {p.p}
+          {p.cy === 'yearly' && !yr ? ` · billed ${money(p.a, p)} a year` : p.cy === 'monthly' && yr ? ` · ${money(p.a, p)} a month` : ''}
+        </small>
+      </td>
+    );
+  };
+  const hasLogo = (sv?: string) => points.find((p) => p.s === sv)?.l;
   return (
     <div>
-      <div className="row">
+      <div className="ins">
+      <div className="row bar">
         <CountrySelect value={c} onChange={setC} countries={countries.filter((x) => points.some((p) => p.c === x.code && p.s === first) && points.some((p) => p.c === x.code && p.s === second))} />
-      </div>
-      <div className="row">
-        <ServiceSelect value={A ?? ''} onChange={setA} list={list} label="First" />
-        <ServiceSelect value={B ?? ''} onChange={setB} list={list} label="Second" />
-      </div>
-      <div className="result" aria-live="polite">
-        <div className="cards2">
-          {[ca, cb].map((ps, i) => (
-            <div key={i}>
-              <b>{ps[0]?.n}</b>
-              {ps.map((p) => (
-                <p key={p.p} style={{ display: 'flex', justifyContent: 'space-between', gap: 12, marginTop: 8, fontSize: 15 }}>
-                  <span>{p.p}</span>
-                  <b className="num" style={{ display: 'inline' }}>
-                    {money(p.a, p)}
-                    <span style={{ fontWeight: 400, color: 'var(--mute)' }}>{p.cy === 'monthly' ? '/mo' : p.cy === 'yearly' ? '/yr' : ''}</span>
-                  </b>
-                </p>
-              ))}
-              {ps[0] ? <small>A year on the cheapest plan: {money(yearlyMinor(ps[0].a, ps[0].cy), ps[0])}</small> : null}
-            </div>
-          ))}
+        {fixed ? null : (
+          <>
+            <ServiceSelect value={A ?? ''} onChange={setA} list={list} label="First" />
+            <ServiceSelect value={B ?? ''} onChange={setB} list={list} label="Second" />
+          </>
+        )}
+        <div className="f">
+          <span className="lbl">Show prices</span>
+          <div className="seg fill" role="group" aria-label="Show prices">
+            <button type="button" aria-pressed={!yr} onClick={() => setYr(false)}>A month</button>
+            <button type="button" aria-pressed={yr} onClick={() => setYr(true)}>A year</button>
+          </div>
         </div>
-        {cheapest(ca) && cheapest(cb) && ca[0].cur === cb[0].cur ? (
+      </div>
+      </div>
+      <div className="result vs" aria-live="polite">
+        <table className="vst">
+          <caption className="sr">{name(A)} and {name(B)} prices in {countries.find((x) => x.code === c)?.name}, {yr ? 'a year' : 'a month'}</caption>
+          <thead>
+            <tr>
+              <td />
+              {[A, B].map((sv, i) => (
+                <th key={i} scope="col">
+                  {hasLogo(sv) ? <img className="logo" src={`/logos/${sv}.png`} alt="" width={44} height={44} /> : null}
+                  <span>{name(sv)}</span>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {ROWS.map((r) => (
+              <tr key={r.key}>
+                <th scope="row">{r.label}</th>
+                {cell(ra[r.key], rb[r.key], r.none, r.key !== 'top')}
+                {cell(rb[r.key], ra[r.key], r.none, r.key !== 'top')}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {same && ra.cheap && rb.cheap ? (
           <p className="say">
-            Cheapest way in: <b>{ca[0].n} {money(monthlyMinor(ca[0].a, ca[0].cy), ca[0])}</b> vs <b>{cb[0].n} {money(monthlyMinor(cb[0].a, cb[0].cy), cb[0])}</b> a month.
+            Cheapest way in: <b>{name(A)} {money(Math.round(mo(ra.cheap)), ra.cheap)}</b> or <b>{name(B)} {money(Math.round(mo(rb.cheap)), rb.cheap)}</b> a month.{' '}
+            {ra.yearly || rb.yearly ? 'Yearly plans are shown as a month so you can compare.' : ''}
           </p>
         ) : null}
+        <p className="note-l">Student plans aren’t included. Prices are each company’s own, checked by hand.</p>
       </div>
     </div>
   );
@@ -246,6 +324,7 @@ function CostPerHourInner({ points, countries }: { points: Pt[]; countries: C })
   const perHour = h > 0 ? perMonth / hoursMonth : NaN;
   return (
     <div>
+      <div className="ins">
       <div className="row">
         <CountrySelect value={c} onChange={setC} countries={countries} />
         <ServiceSelect value={s ?? ''} onChange={(v) => { setSvc(v); setPlan(null); }} list={list} />
@@ -265,6 +344,7 @@ function CostPerHourInner({ points, countries }: { points: Pt[]; countries: C })
           Hours you use it a week
           <input type="number" inputMode="decimal" min={0} step={0.5} value={hours} onChange={(e) => setHours(e.target.value)} />
         </label>
+      </div>
       </div>
       {plan ? (
         <div className="result" aria-live="polite">
@@ -317,6 +397,7 @@ function SpreadsheetInner({ points, countries }: { points: Pt[]; countries: C })
   const toggle = (s: string) => setPicked(picked.includes(s) ? picked.filter((x) => x !== s) : [...picked, s]);
   return (
     <div>
+      <div className="ins">
       <div className="row">
         <CountrySelect value={c} onChange={setC} countries={countries} />
       </div>
@@ -327,6 +408,7 @@ function SpreadsheetInner({ points, countries }: { points: Pt[]; countries: C })
             {x.n}
           </button>
         ))}
+      </div>
       </div>
       <div className="result">
         <p className="say">
@@ -356,9 +438,11 @@ export function DisneyBundle() {
   const both = d.a + h.a;
   return (
     <div>
+      <div className="ins">
       <div className="seg" role="group" aria-label="Ads">
         <button type="button" aria-pressed={ads} onClick={() => setAds(true)}>With ads</button>
         <button type="button" aria-pressed={!ads} onClick={() => setAds(false)}>No ads</button>
+      </div>
       </div>
       <div className="result" aria-live="polite">
         <div className="cards2">

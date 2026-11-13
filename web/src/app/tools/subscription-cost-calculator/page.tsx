@@ -18,6 +18,7 @@ export default function Page() {
   const total = ex.reduce((t, p) => t + yearlyMinor(p.amountMinor, p.cycle), 0);
   return (
     <ToolPage
+      raw
       slug="tools/subscription-cost-calculator"
       title="Subscription cost calculator"
       lead="Tap what you pay for. See what it all costs a month and a year."

@@ -78,7 +78,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
   if (rows.some((r) => ['AE', 'SA', 'EG'].includes(r.country))) notes.push({ c: 'Middle East', n: 'Some services don’t say whether VAT is included. Where Apple bills you, its prices include VAT.' });
   const taxNote = rows.some((r) => ['US', 'CA'].includes(r.country)) ? ` ${rows.some((r) => r.country === 'CA') ? 'US and Canada prices are' : 'US prices are'} before sales tax.` : '';
   const ans = `${summary(s.name, rows)}${appShare > 0.5 ? ' These are iPhone app prices.' : ''}${taxNote} Checked ${dateRange(rows.map((r) => r.checked))}.`;
-  const others = neighbours(priceHubServices().filter((x) => x.category === s.category), s.id, 4);
+  const others = neighbours(priceHubServices().filter((x) => x.category === s.category), s.id, 5);
 
   const ld = [
     {
@@ -106,138 +106,169 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
   const cards: CountryPrices[] = rows.map((r) => ({ country: r.country, name: COUNTRY[r.country].name, tax: COUNTRY[r.country].tax, currency: r.currency, checked: formatDate(r.checked), source: r.source, sourceLabel: isAppStorePrice(r) ? 'App Store' : host(r.source), appStore: isAppStorePrice(r), plans: r.plans.map((p) => ({ id: p.id, name: p.name, amountMinor: p.amountMinor, cycle: p.cycle })) }));
   const many = rows.length > 1;
 
+  const home = rows.find((r) => r.country === 'US') ?? rows[0];
+  const homeCheap = home ? cheapest(home) : undefined;
+  const toc = [
+    { id: 'ycp-h', label: 'Your country' },
+    ...(many ? [{ id: 'all', label: 'Price by country' }, { id: 'cheapest', label: 'Cheapest plan in each country' }] : []),
+    ...(notes.length ? [{ id: 'notes', label: 'Good to know' }] : []),
+    ...(guide || others.length ? [{ id: 'more', label: 'Related' }] : []),
+  ];
+
   return (
-    <div className="wrap guide">
+    <div className="wrap guide gv3 v4 guide4 pricepage">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
       <nav className="crumbs" aria-label="Breadcrumb">
-        <Link href="/" prefetch={false}>Home</Link>
-        <span aria-hidden>›</span>
         <Link href="/prices">Prices</Link>
         <span aria-hidden>›</span>
         <span aria-current="page">{s.name}</span>
       </nav>
-      <div className="art">
-        <article>
-          <header className="g-head">
-            <Logo id={s.id} size={56} />
-            <h1>
-              {s.name} price {latest.slice(0, 4)}
-            </h1>
-            <p className="g-meta">
-              Checked <time dateTime={latest}>{dateRange(rows.map((r) => r.checked))}</time> {appShare > 0.5 ? '· App Store prices' : ''}
-            </p>
-          </header>
-          <p className="g-lead">{ans.replace(/ Checked [^.]*\.$/, '')}</p>
+      <div className="g4">
+        <article className="g4-main">
+          <div className="kick">
+            <Logo id={s.id} size={40} />
+            <span>
+              Checked <time dateTime={latest}>{dateRange(rows.map((r) => r.checked))}</time>
+              {appShare > 0.5 ? ' · App Store prices' : ''}
+            </span>
+          </div>
+          <h1>
+            {s.name} price {latest.slice(0, 4)}
+          </h1>
+          <p className="lead">{ans.replace(/ Checked [^.]*\.$/, '')}</p>
 
           <YourCountryPrices service={s.name} rows={cards} />
 
           {many ? (
             <>
-              <h2 id="all">{s.name} price by country</h2>
-              <div className="ctbl" role="table" aria-label={`${s.name} plans by country`}>
-                {rows.map((r) => (
-                  <div className="ctr" role="row" id={COUNTRY[r.country].slug} key={r.country}>
-                    <div className="cc" role="rowheader">
-                      <b>{COUNTRY[r.country].name}</b>
-                      <small>
-                        {isAppStorePrice(r) ? 'iPhone app · ' : ''}
-                        {COUNTRY[r.country].tax}
-                      </small>
+              <section className="v4-sec" aria-labelledby="all">
+                <h2 id="all">{s.name} price by country</h2>
+                <div className="ctbl" role="table" aria-label={`${s.name} plans by country`}>
+                  {rows.map((r) => (
+                    <div className="ctr" role="row" id={COUNTRY[r.country].slug} key={r.country}>
+                      <div className="cc" role="rowheader">
+                        <b>{COUNTRY[r.country].name}</b>
+                        <small>
+                          {isAppStorePrice(r) ? 'iPhone app · ' : ''}
+                          {COUNTRY[r.country].tax}
+                        </small>
+                      </div>
+                      <div className="cp" role="cell">
+                        {r.plans.map((p) => (
+                          <span key={p.id}>
+                            {p.name} <b className="num">{formatMoney(p.amountMinor, r.currency, { country: r.country })}{p.cycle === 'monthly' ? '/mo' : p.cycle === 'yearly' ? '/yr' : p.cycle === 'quarterly' ? '/qtr' : '/wk'}</b>
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                    <div className="cp" role="cell">
-                      {r.plans.map((p) => (
-                        <span key={p.id}>
-                          {p.name} <b className="num">{formatMoney(p.amountMinor, r.currency, { country: r.country })}{p.cycle === 'monthly' ? '/mo' : p.cycle === 'yearly' ? '/yr' : p.cycle === 'quarterly' ? '/qtr' : '/wk'}</b>
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <p className="g-src">
-                Each country’s own money; we never add different currencies together. <Link href="/how-we-check">How we check prices</Link>.
-              </p>
+                  ))}
+                </div>
+                <p className="g-src">
+                  Each country’s own money; we never add different currencies together. <Link href="/how-we-check">How we check prices</Link>.
+                </p>
+              </section>
 
-              <h2 id="cheapest">The cheapest {s.name} plan in each country</h2>
-              <ul className="g-list">
-                {rows.map((r) => {
-                  const p = cheapest(r);
-                  return (
-                    <li key={r.country}>
-                      {s.name} price in {r.country === 'US' ? 'the US' : r.country === 'GB' ? 'the UK' : COUNTRY[r.country].name}: {p.name}, {formatMoney(p.amountMinor, r.currency, { country: r.country, whole: true })} {p.cycle === 'monthly' ? 'a month' : p.cycle === 'yearly' ? 'a year' : 'every 3 months'}.
-                    </li>
-                  );
-                })}
-              </ul>
+              <section className="v4-sec" aria-labelledby="cheapest">
+                <h2 id="cheapest">The cheapest {s.name} plan in each country</h2>
+                <ul className="good">
+                  {rows.map((r) => {
+                    const p = cheapest(r);
+                    return (
+                      <li key={r.country}>
+                        {s.name} price in {r.country === 'US' ? 'the US' : r.country === 'GB' ? 'the UK' : COUNTRY[r.country].name}: {p.name}, {formatMoney(p.amountMinor, r.currency, { country: r.country, whole: true })} {p.cycle === 'monthly' ? 'a month' : p.cycle === 'yearly' ? 'a year' : 'every 3 months'}.
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
             </>
           ) : null}
 
           {notes.length ? (
-            <>
+            <section className="v4-sec" aria-labelledby="notes">
               <h2 id="notes">Good to know</h2>
-              {notes.map((x) => (
-                <p key={x.c + x.n}>
-                  <b>{x.c}:</b> {x.n}
-                </p>
-              ))}
-            </>
-          ) : null}
-
-          <section className="appcard" id="remind" aria-labelledby="remind-h" data-has-cta>
-            <h2 id="remind-h" className="h3">
-              Paying for {s.name}?
-            </h2>
-            <p>Ditch reminds you 3 days and 1 day before it renews, so you can decide before you pay.</p>
-            <EmailBox source={`prices-${s.id}`} bare />
-          </section>
-
-          <p className="g-feedback">
-            <b>Spotted a different price?</b> <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${s.name} price changed`)}&body=${encodeURIComponent('Country:\nPlan:\nPrice you saw:\nWhere:\n')}`}>Tell us</a>
-            <span className="g-hint">Opens your email app.</span>
-          </p>
-
-          {guide || others.length ? (
-            <>
-              <h2 id="more" className="g-more-h">Related</h2>
-              <ul className="g-related">
-                {guide ? (
-                  <li>
-                    <Link href={`/cancel/${slugOf(s.id)}`}>
-                      <Logo id={s.id} size={28} />
-                      How to cancel {s.name}
-                    </Link>
-                  </li>
-                ) : null}
-                {others.map((o) => (
-                  <li key={o.id}>
-                    <Link href={`/prices/${slugOf(o.id)}`}>
-                      <Logo id={o.id} size={28} />
-                      {o.name} prices
-                    </Link>
+              <ul className="good">
+                {notes.map((x) => (
+                  <li key={x.c + x.n}>
+                    <b>{x.c}:</b> {x.n}
                   </li>
                 ))}
               </ul>
-            </>
+            </section>
           ) : null}
 
-          <p className="disc">
-            {s.name} is a trademark of its owner. Ditch isn’t affiliated with or endorsed by {s.name}. Prices can change at any time; the service’s own page is always right. © {latest.slice(0, 4)} {COMPANY}.
+          <p className="g-feedback">
+            <b>Spotted a different price?</b> <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${s.name} price changed`)}&body=${encodeURIComponent('Country:\nPlan:\nPrice you saw:\nWhere:\n')}`}>Tell us</a>
+            <span className="g-hint"> Opens your email app.</span>
           </p>
         </article>
-        <aside>
-          <nav className="side-toc" aria-label="On this page">
-            <p className="ttl">On this page</p>
-            <a href="#ycp-h">Your country</a>
-            {many ? <a href="#all">Price by country</a> : null}
-            {many ? <a href="#cheapest">Cheapest plan per country</a> : null}
-            {notes.length ? <a href="#notes">Good to know</a> : null}
-            {guide ? <a href="#more">How to cancel</a> : null}
-          </nav>
-          <a className="side-cta" href="#remind">
-            Get a reminder before {s.name} renews →
-          </a>
+
+        <aside className="g4-side" aria-label="Summary">
+          <div className="g4-stick">
+            {homeCheap && home ? (
+              <div className="qa-card">
+                <p className="k">Cheapest in {home.country === 'US' ? 'the US' : COUNTRY[home.country].name}</p>
+                <p>
+                  <b className="num big-s">{formatMoney(homeCheap.amountMinor, home.currency, { country: home.country })}</b> {homeCheap.cycle === 'monthly' ? 'a month' : homeCheap.cycle === 'yearly' ? 'a year' : 'every 3 months'} for {homeCheap.name}.
+                </p>
+                <a className="btn" href="#remind">
+                  Get a reminder before it renews
+                </a>
+              </div>
+            ) : null}
+            <nav className="toc4" aria-label="On this page">
+              <p className="k">On this page</p>
+              {toc.map((x) => (
+                <a key={x.id} href={`#${x.id}`}>
+                  {x.label}
+                </a>
+              ))}
+            </nav>
+          </div>
         </aside>
       </div>
+
+      <section className="v4-cta" id="remind" aria-labelledby="remind-h" data-has-cta>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/duck.webp" alt="" width={96} height={56} className="duck" />
+        <div>
+          <h2 id="remind-h">Paying for {s.name}?</h2>
+          <p>Ditch reminds you 3 days and 1 day before it renews, so you can decide before you pay.</p>
+        </div>
+        <EmailBox source={`prices-${s.id}`} bare />
+      </section>
+
+      {guide || others.length ? (
+        <section className="v4-sec" aria-labelledby="more">
+          <h2 id="more">Related</h2>
+          <div className="tgrid">
+            {guide ? (
+              <Link className="tcard" href={`/cancel/${slugOf(s.id)}`}>
+                <Logo id={s.id} size={44} />
+                <span>
+                  <b>How to cancel {s.name}</b>
+                  <small>Step by step, checked by hand</small>
+                </span>
+              </Link>
+            ) : null}
+            {others.map((o) => (
+              <Link key={o.id} className="tcard" href={`/prices/${slugOf(o.id)}`}>
+                <Logo id={o.id} size={44} />
+                <span>
+                  <b>{o.name} prices</b>
+                  <small>Every plan, every country we check</small>
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      <section className="g4-foot">
+        <p className="disc">
+          {s.name} is a trademark of its owner. Ditch isn’t affiliated with or endorsed by {s.name}. Prices can change at any time; the service’s own page is always right. © {latest.slice(0, 4)} {COMPANY}.
+        </p>
+      </section>
     </div>
   );
 }

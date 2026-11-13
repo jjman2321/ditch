@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <ToolPage
+      wide
       slug="tools/compare-prices"
       title='Subscription price comparison'
       lead='Two services side by side, plan by plan.'

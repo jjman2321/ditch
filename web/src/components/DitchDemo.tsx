@@ -1,9 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 
 /**
- * The app's Ditched screen (src/app/ditch/[id].tsx), without the stamp (owner, Nov 12): the duck peeks over the
- * subscription row, then the yearly number. When scrolled into view the duck pops up once and the number fades in
- * (it never moves). Reduce Motion: shown finished. `small` is the step-card version.
+ * The app's ditch moment as a web card (no phone, no stamp). When scrolled into view it plays once:
+ * the hold ring fills, "Hold to ditch" turns into a "Ditched" tag, the logo goes grey, the duck pops up
+ * over the row, then the yearly number fades in (it never moves). Reduce Motion: shown finished.
+ * `small` is the step-card version (finished, no number).
  */
 export function DitchDemo({ name, meta, yearly, logo, small = false }: { name: string; meta: string; yearly?: string; logo: string; small?: boolean }) {
   return (
@@ -16,6 +17,20 @@ export function DitchDemo({ name, meta, yearly, logo, small = false }: { name: s
             <b>{name}</b>
             <span className="num">{meta}</span>
           </div>
+          {small ? (
+            <span className="dd-tag on">Ditched</span>
+          ) : (
+            <span className="dd-act">
+              <span className="dd-hold">
+                <svg viewBox="0 0 28 28" width="28" height="28">
+                  <circle cx="14" cy="14" r="11" className="track" />
+                  <circle cx="14" cy="14" r="11" className="ring" />
+                </svg>
+                Hold to ditch
+              </span>
+              <span className="dd-tag">Ditched</span>
+            </span>
+          )}
         </div>
       </div>
       {yearly ? (

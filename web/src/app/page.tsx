@@ -5,8 +5,7 @@ import { Calculator, type CalcService } from '@/components/Calculator';
 import { EmailBox } from '@/components/EmailBox';
 import { Notif } from '@/components/Notif';
 import { DitchDemo } from '@/components/DitchDemo';
-import { DitchedPhone, PaywallPhone } from '@/components/AppScreens';
-import { BUILD_DAY, COUNTRIES, defaultPlan, formatDate, hasLogo, priceFor, serviceById, verifiedPrices } from '@/lib/data';
+import { COUNTRIES, defaultPlan, formatDate, hasLogo, priceFor, serviceById, verifiedPrices } from '@/lib/data';
 import { formatMoney } from '@/lib/money';
 import { BRAND, COMPANY, PRO, PRO_MINOR, SITE } from '@/lib/site';
 
@@ -20,6 +19,21 @@ const HERO_ROTATION = [
   { id: 'disney-plus', name: 'Disney+' },
   { id: 'amazon-prime', name: 'Prime' },
 ];
+
+const PLAN_ROWS: [string, string, string][] = [
+  ['Track every subscription', '✓', '✓'],
+  ['Totals, calendar and cancel guides', '✓', '✓'],
+  ['Subscriptions with reminders', '3', 'All'],
+  ['Pick reminder days', '–', '✓'],
+  ['Nudge if you miss one', '–', '✓'],
+];
+
+/** A table cell: ticks and dashes get words for screen readers. */
+function cell(v: string) {
+  if (v === '✓') return (<><span aria-hidden>✓</span><span className="sr">Yes</span></>);
+  if (v === '–') return (<><span aria-hidden>–</span><span className="sr">No</span></>);
+  return v;
+}
 
 const FAQ = [
   { q: 'Is Ditch free?', a: 'Yes. Tracking is free forever: your full list, your totals and the calendar, with no card and no account. Reminders are free on 3 subscriptions you pick. Pro adds reminders on all of them.' },
@@ -62,7 +76,6 @@ export default function Home() {
   const nfPlan = defaultPlan(nf);
   // Only say "less than two months of Netflix" while it's true for the US price we show.
   const cheaperThanNetflix = nfPlan.cycle === 'monthly' && nfPlan.amountMinor * 2 > PRO_MINOR.yearly;
-  const trialEnd = new Date(Date.parse(BUILD_DAY) + PRO.trialDays * 86_400_000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
   const yearlySave = Math.floor((1 - PRO_MINOR.yearly / (PRO_MINOR.monthly * 12)) * 100);
 
   const org = { '@id': `${SITE}/#org` };
@@ -212,7 +225,7 @@ export default function Home() {
               <h3 className="h3">Cancel what you don’t use</h3>
               <p>Hold to ditch. Ditch opens the official cancel page and shows you the steps.</p>
               <div className="shot" style={{ paddingTop: 0 }}>
-                <DitchDemo small name="Netflix" meta={`Ditched · ${formatMoney(nfPlan.amountMinor, 'USD')} a month`} logo="/logos/netflix.png" />
+                <DitchDemo small name="Netflix" meta={`${formatMoney(nfPlan.amountMinor, 'USD')}/mo`} logo="/logos/netflix.png" />
               </div>
             </div>
           </div>
@@ -221,7 +234,7 @@ export default function Home() {
 
       {/* 3b. The ditch moment, with context */}
       <section className="sec" style={{ paddingTop: 0 }} aria-labelledby="dd-h">
-        <div className="wrap ditch-grid">
+        <div className="wrap split">
           <div>
             <h2 id="dd-h" className="h2">
               Cancel it and see what you won’t pay
@@ -241,7 +254,7 @@ export default function Home() {
               <Link href="/cancel">Browse all cancel guides →</Link>
             </p>
           </div>
-          <DitchedPhone name="Netflix" logo="/logos/netflix.png" meta={`Cancel by Nov 17 · ${formatMoney(nfPlan.amountMinor, 'USD')}/mo`} yearly={formatMoney(nfPlan.amountMinor * 12, 'USD')} />
+          <DitchDemo name="Netflix" logo="/logos/netflix.png" meta={`${nfPlan.name} · ${formatMoney(nfPlan.amountMinor, 'USD')}/mo`} yearly={formatMoney(nfPlan.amountMinor * 12, 'USD')} />
         </div>
       </section>
 
@@ -275,55 +288,65 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. Price + lifetime: clean list beside the app's paywall in the phone */}
+      {/* 6. Price + lifetime: three plan tiles like native paywalls, then what Free and Pro include */}
       <section id="pricing" className="sec" style={{ paddingTop: 0 }} aria-labelledby="price-h" data-has-cta>
-        <div className="wrap pricing-grid">
-          <div>
+        <div className="wrap">
+          <div className="price-head">
             <h2 id="price-h" className="h2">
               {cheaperThanNetflix ? 'Pro costs less than two months of Netflix.' : `Free to track. Pro for about ${PRO.yearlyPerMonth} a month.`}
             </h2>
-            <p className="lead" style={{ marginTop: 20 }}>
-              Tracking is free forever. Pro puts reminders on every subscription. Rather not subscribe? Pay once.
-            </p>
-            <ul className="plan-list">
-              <li>
-                <span className="nm">
-                  Free<small>Track everything. Reminders on 3.</small>
-                </span>
-                <span className="pr num">$0</span>
-              </li>
-              <li>
-                <span className="nm">
-                  Pro yearly<span className="tag">{PRO.trialDays} days free</span>
-                  <small>About {PRO.yearlyPerMonth} a month. Reminders on everything.</small>
-                </span>
-                <span className="pr num">
-                  {PRO.yearly}
-                  <small>/yr</small>
-                </span>
-              </li>
-              <li>
-                <span className="nm">
-                  Pro monthly<small>Same as yearly, no free trial.</small>
-                </span>
-                <span className="pr num">
-                  {PRO.monthly}
-                  <small>/mo</small>
-                </span>
-              </li>
-              <li>
-                <span className="nm">
-                  Lifetime<small>Everything in Pro. Pay once, never renews.</small>
-                </span>
-                <span className="pr num">{PRO.lifetime}</span>
-              </li>
-            </ul>
+            <p className="lead">Tracking is free forever. Pro puts reminders on every subscription. Rather not subscribe? Pay once.</p>
+          </div>
+          <div className="ptiles" data-reveal>
+            <div className="ptile" style={{ ['--i' as string]: 1 }}>
+              <p className="k">Monthly</p>
+              <p className="amt num">{PRO.monthly}</p>
+              <p className="s">a month</p>
+            </div>
+            <div className="ptile hi" style={{ ['--i' as string]: 0 }}>
+              <span className="badge">SAVE {yearlySave}%</span>
+              <p className="k">Yearly</p>
+              <p className="amt num">{PRO.yearly}</p>
+              <p className="s">a year, about {PRO.yearlyPerMonth} a month</p>
+              <span className="trial">{PRO.trialDays} days free</span>
+            </div>
+            <div className="ptile life" style={{ ['--i' as string]: 2 }}>
+              <p className="k">Lifetime</p>
+              <p className="amt num">{PRO.lifetime}</p>
+              <p className="s">once, never renews</p>
+            </div>
+          </div>
+          <div className="cmp-card">
+            <table>
+              <caption className="sr">What Free and Pro include</caption>
+              <thead>
+                <tr>
+                  <th scope="col">
+                    <span className="sr">Feature</span>
+                  </th>
+                  <th scope="col">FREE</th>
+                  <th scope="col" className="pc">
+                    PRO
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {PLAN_ROWS.map(([label, free, pro]) => (
+                  <tr key={label}>
+                    <td>{label}</td>
+                    <td className={free === '–' ? 'no' : 'num'}>{cell(free)}</td>
+                    <td className="pc">{cell(pro)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="price-cta">
             <Link className="btn" href="/#join" prefetch={false}>
               Join the waitlist
             </Link>
             <p className="price-line">US prices. Your App Store shows your price before you pay. Cancel anytime in iPhone Settings.</p>
           </div>
-          <PaywallPhone yearly={PRO.yearly} perMonth={PRO.yearlyPerMonth} monthly={PRO.monthly} lifetime={PRO.lifetime} trialDays={PRO.trialDays} save={yearlySave} startDay={trialEnd} />
         </div>
       </section>
 

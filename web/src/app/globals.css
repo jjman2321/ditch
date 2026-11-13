@@ -543,115 +543,92 @@ img { display: block; max-width: 100%; }
 @keyframes fade { to { opacity: 1; } }
 
 /* the ditch moment, like the app's Ditched screen: duck peeks over the row, then the yearly number */
-.ditch-demo { background: var(--sun); border-radius: var(--r-l); padding: 56px 32px 48px; display: grid; justify-items: center; text-align: center; gap: 28px; overflow: hidden; }
-.dd-stack { width: 100%; max-width: 420px; display: grid; justify-items: start; }
-.dd-duck { width: 150px; height: auto; margin: 0 0 -18px 24px; position: relative; z-index: 0; }
-.dd-row { position: relative; z-index: 1; width: 100%; display: flex; align-items: center; gap: 14px; text-align: left; padding: 16px 18px; background: var(--white); border-radius: 20px; box-shadow: 0 2px 0 rgba(22, 20, 15, .08), 0 12px 28px -12px rgba(22, 20, 15, .3); }
-.dd-row .logo { width: 48px; height: 48px; border-radius: 12px; }
+.ditch-demo { background: var(--sun); border-radius: var(--r-l); padding: 72px 40px 56px; display: grid; justify-items: center; text-align: center; gap: 32px; overflow: hidden; }
+.dd-stack { position: relative; width: 100%; max-width: 440px; }
+.dd-duck { position: absolute; left: 22px; top: -64px; width: 120px; height: auto; z-index: 0; }
+.dd-row { position: relative; z-index: 1; width: 100%; display: flex; align-items: center; gap: 14px; text-align: left; padding: 16px 16px 16px 18px; background: var(--white); border-radius: 20px; box-shadow: 0 2px 0 rgba(22, 20, 15, .08), 0 16px 32px -14px rgba(22, 20, 15, .35); }
+.dd-row .logo { width: 48px; height: 48px; border-radius: 12px; transition: filter .3s; }
 .dd-name { flex: 1; min-width: 0; }
-.dd-name b { display: block; font-size: 19px; }
-.dd-name span { font-size: 15px; color: var(--fg2); }
+.dd-name b { display: block; font-size: 18px; }
+.dd-name span { font-size: 14px; color: var(--fg2); }
+.dd-act { display: grid; justify-items: end; }
+.dd-act > * { grid-area: 1 / 1; }
+.dd-hold { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 14px; white-space: nowrap; visibility: hidden; }
+.dd-hold .track { fill: none; stroke: var(--hair); stroke-width: 3.5; }
+.dd-hold .ring { fill: none; stroke: var(--ink); stroke-width: 3.5; stroke-linecap: round; transform: rotate(-90deg); transform-origin: 14px 14px; stroke-dasharray: 70; stroke-dashoffset: 0; }
+.dd-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--ink); color: var(--sun); border-radius: 999px; padding: 6px 12px 6px 8px; font: 400 12px var(--f-widebold); letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+.dd-tag::before { content: "✓"; width: 16px; height: 16px; border-radius: 99px; background: var(--bill); color: #fff; display: grid; place-items: center; font: 800 10px var(--body); letter-spacing: 0; }
 .dd-year { font-family: var(--f-display); font-size: clamp(2.75rem, 1.6rem + 3.2vw, 4rem); line-height: 1; letter-spacing: -.03em; }
 .dd-year span { display: block; font-family: var(--f-wide); font-size: .4em; letter-spacing: -.01em; margin-top: 10px; }
-.ditch-demo.sm { padding: 18px 0 0; background: none; border-radius: 0; gap: 0; width: 100%; }
-.ditch-demo.sm .dd-stack { max-width: 280px; }
-.ditch-demo.sm .dd-duck { width: 110px; margin: 0 0 -14px 18px; }
-.ditch-demo.sm .dd-row { border-radius: 18px 18px 0 0; padding: 12px 14px 18px; }
+.ditch-demo .dd-row .logo { filter: grayscale(1); opacity: .75; }
+.ditch-demo.sm { padding: 64px 0 0; background: none; border-radius: 0; gap: 0; width: 100%; overflow: visible; }
+.ditch-demo.sm .dd-stack { max-width: 300px; margin: 0 auto; }
+.ditch-demo.sm .dd-duck { width: 96px; top: -52px; left: 18px; }
+.ditch-demo.sm .dd-row { border-radius: 18px 18px 0 0; padding: 12px 12px 18px 14px; gap: 10px; }
 .ditch-demo.sm .dd-row .logo { width: 36px; height: 36px; border-radius: 9px; }
-.ditch-demo.sm .dd-name b { font-size: 16px; }
-.ditch-demo.sm .dd-name span { font-size: 13px; }
+.ditch-demo.sm .dd-name b { font-size: 15px; }
+.ditch-demo.sm .dd-name span { font-size: 12px; }
 @media (prefers-reduced-motion: no-preference) {
   .js .ditch-demo[data-reveal] { opacity: 1 !important; transform: none !important; }
+  .js .ditch-demo[data-reveal] .dd-hold { visibility: visible; }
+  .js .ditch-demo[data-reveal] .ring { stroke-dashoffset: 70; }
+  .js .ditch-demo[data-reveal] .dd-tag { opacity: 0; transform: scale(.6); }
+  .js .ditch-demo[data-reveal] .dd-row .logo { filter: none; opacity: 1; }
   .js .ditch-demo[data-reveal] .dd-duck { transform: translateY(70%); }
   .js .ditch-demo[data-reveal] .dd-year { opacity: 0; }
-  .js .ditch-demo.is-in .dd-duck { transform: none; transition: transform .5s cubic-bezier(.3, 1.4, .5, 1) .25s; }
-  .js .ditch-demo.is-in .dd-year { opacity: 1; transition: opacity .3s ease-out .7s; }
+  .js .ditch-demo.is-in .ring { stroke-dashoffset: 0; transition: stroke-dashoffset 1s linear .4s; }
+  .js .ditch-demo.is-in .dd-hold { opacity: 0; transition: opacity .15s 1.4s; }
+  .js .ditch-demo.is-in .dd-tag { opacity: 1; transform: none; transition: opacity .2s 1.45s, transform .35s cubic-bezier(.3, 1.6, .5, 1) 1.45s; }
+  .js .ditch-demo.is-in .dd-row .logo { filter: grayscale(1); opacity: .75; transition: filter .4s 1.45s, opacity .4s 1.45s; }
+  .js .ditch-demo.is-in .dd-duck { transform: none; transition: transform .55s cubic-bezier(.3, 1.45, .5, 1) 1.6s; }
+  .js .ditch-demo.is-in .dd-year { opacity: 1; transition: opacity .4s ease-out 1.95s; }
 }
+@media (max-width: 480px) { .ditch-demo { padding: 64px 16px 40px; } .dd-hold { font-size: 0; gap: 0; } }
 
-/* App screens drawn inside a phone (pricing + ditch moment). Same frame as the hero phone. */
-.device { position: relative; width: 320px; height: 664px; margin: 0 auto; border-radius: 54px; background: var(--ink); padding: 11px; box-shadow: 0 40px 80px -32px rgba(22, 20, 15, .45), 0 0 0 1px rgba(22, 20, 15, .06); }
-.dv-scr { position: relative; width: 100%; height: 100%; border-radius: 43px; overflow: hidden; background: var(--cream); color: var(--ink); font-family: var(--body); text-align: left; }
-.dv-bar { position: absolute; top: 16px; left: 28px; right: 24px; display: flex; justify-content: space-between; font: 600 14px var(--body); z-index: 3; }
-.dv-icons { display: inline-flex; gap: 4px; align-items: center; }
-.dv-icons i { display: block; width: 15px; height: 9px; border-radius: 2px; background: var(--ink); }
-.dv-icons i:last-child { width: 22px; height: 10px; border-radius: 3px; border: 1.5px solid var(--ink); background: linear-gradient(90deg, var(--ink) 72%, transparent 72%); background-clip: content-box; padding: 1px; }
-.dv-island { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 96px; height: 28px; border-radius: 99px; background: #000; z-index: 3; }
-.dv-duck { position: absolute; width: 104px; height: auto; z-index: 0; }
-
-/* paywall screen */
-.dv-pay .pw-sun { background: var(--sun); height: 226px; padding: 56px 18px 0; position: relative; }
-.pw-head { display: flex; justify-content: space-between; align-items: center; }
-.pw-word { font-family: var(--f-wordmark); font-size: 20px; display: inline-flex; align-items: center; gap: 6px; }
-.pw-word em { font: 700 10px var(--body); font-style: normal; border: 1.5px solid var(--ink); border-radius: 99px; padding: 1px 6px; }
-.pw-x { width: 28px; height: 28px; border-radius: 99px; background: rgba(22, 20, 15, .1); display: grid; place-items: center; font-size: 18px; line-height: 1; }
-.pw-h { font-family: var(--f-display); font-size: 21px; line-height: 1.04; letter-spacing: -.02em; margin-top: 16px; max-width: 176px; position: relative; z-index: 1; }
-.dv-pay .dv-duck { right: 18px; bottom: 22px; width: 96px; }
-.pw-tbl { position: relative; z-index: 1; margin: -24px 14px 0; background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 6px 18px -8px rgba(22, 20, 15, .3); font-size: 11.5px; }
-.pw-tbl .tr { display: grid; grid-template-columns: 1fr 40px 62px; align-items: center; min-height: 28px; border-top: 1px solid var(--hair); }
-.pw-tbl .tr > span { text-align: center; font-weight: 700; padding: 5px 0; }
-.pw-tbl .tr > span:first-child { text-align: left; font-weight: 400; padding-left: 12px; line-height: 1.2; }
-.pw-tbl .th { border-top: 0; min-height: 26px; }
-.pw-tbl .th > span { font: 400 9px var(--f-widebold); letter-spacing: .12em; color: var(--mute); }
-.pw-tbl .th .pc { color: var(--ink); }
-.pw-tbl .pc { background: #FFF3C4; align-self: stretch; display: grid; place-items: center; }
-.pw-tbl .no { color: #B8AF9C; font-weight: 400 !important; }
-.pw-rows { padding: 6px 14px 0; }
-.pw-row { position: relative; display: flex; align-items: center; gap: 9px; background: #fff; border-radius: 13px; padding: 9px 12px; margin-top: 8px; box-shadow: inset 0 0 0 1px var(--rule); }
-.pw-row.on { box-shadow: inset 0 0 0 2px var(--ink); margin-top: 14px; }
-.pw-row .rad { width: 18px; height: 18px; border-radius: 99px; box-shadow: inset 0 0 0 1.5px #B8AF9C; flex: none; }
-.pw-row .rad.on { background: var(--ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 10.5l3 3 6-7' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px; box-shadow: none; }
-.pw-row .nm { flex: 1; font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 6px; }
-.pw-row .chip { background: var(--sun); border-radius: 6px; padding: 2px 6px; font-size: 10px; }
-.pw-row .pr { text-align: right; line-height: 1.15; }
-.pw-row .pr b { display: block; font-size: 14px; }
-.pw-row .pr small { font-size: 10.5px; color: var(--fg2); }
-.pw-row .badge { position: absolute; left: 30px; top: -8px; background: var(--ink); color: #fff; border-radius: 99px; font-size: 8.5px; font-weight: 800; letter-spacing: .06em; padding: 2px 7px; }
-.pw-cta { margin-top: 14px; height: 40px; border-radius: 99px; background: var(--ink); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 14px; }
-.pw-fine { margin-top: 8px; font-size: 10.5px; color: var(--fg2); text-align: center; }
-.pw-fine b { color: var(--ink); }
-
-/* ditched screen */
-.dv-ditched .dv-scr { background: var(--sun); display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 16px; }
-.dt-top { width: 100%; display: flex; justify-content: space-between; font-weight: 700; font-size: 14px; margin-top: 58px; }
-.dt-stack { position: relative; width: 100%; margin-top: 96px; }
-.dv-ditched .dv-duck { left: 14px; top: -60px; }
-.dt-row { position: relative; z-index: 1; display: flex; align-items: center; gap: 10px; background: #fff; border-radius: 16px; padding: 12px; text-align: left; box-shadow: 0 8px 20px -10px rgba(22, 20, 15, .35); }
-.dt-row img { width: 40px; height: 40px; border-radius: 10px; }
-.dt-row b { display: block; font-size: 16px; }
-.dt-row small { display: block; font-size: 12px; line-height: 1.3; color: var(--fg2); margin-top: 2px; }
-.dt-num { font-family: var(--f-display); font-size: 52px; letter-spacing: -.03em; line-height: 1; margin-top: 64px; }
-.dt-sub { font-family: var(--f-wide); font-size: 15px; line-height: 1.15; margin-top: 8px; max-width: 220px; }
-.dt-btns { margin-top: auto; margin-bottom: 26px; width: 100%; display: grid; gap: 8px; }
-.dt-btns span { height: 42px; border-radius: 99px; display: grid; place-items: center; font-weight: 700; font-size: 14px; }
-.dt-btns .b1 { background: var(--ink); color: var(--sun); }
-.dt-btns .b2 { box-shadow: inset 0 0 0 1.5px var(--ink); }
-.dt-btns small { font-size: 10.5px; color: var(--sunfg2); margin-top: 2px; }
-
-/* motion: the phone rises in (Reveal), then parts fade in one by one and the duck pops up once. Prices only fade. */
+/* pricing: three plan tiles like native paywalls (yearly in the middle, raised, badge), then Free vs Pro */
+.price-head { text-align: center; max-width: 720px; margin: 0 auto; }
+.price-head .lead { margin: 20px auto 0; }
+.ptiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; max-width: 880px; margin: 64px auto 0; align-items: end; }
+.ptile { position: relative; background: var(--white); border-radius: 24px; padding: 28px 24px 26px; text-align: center; box-shadow: inset 0 0 0 1.5px var(--rule); }
+.ptile .k { font: 400 13px var(--f-widebold); letter-spacing: .12em; text-transform: uppercase; color: var(--fg2); }
+.ptile .amt { font-family: var(--f-display); font-size: clamp(2rem, 1.3rem + 1.8vw, 2.75rem); letter-spacing: -.03em; line-height: 1; margin-top: 14px; }
+.ptile .s { font-size: 15px; color: var(--fg2); margin-top: 10px; line-height: 1.4; }
+.ptile.hi { background: var(--sun); box-shadow: inset 0 0 0 3px var(--ink); padding-top: 44px; padding-bottom: 34px; }
+.ptile.hi .k, .ptile.hi .s { color: var(--sunfg2); }
+.ptile .badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--sun); border-radius: 999px; padding: 6px 14px; font: 400 12px var(--f-widebold); letter-spacing: .1em; white-space: nowrap; }
+.ptile .trial { display: inline-block; margin-top: 14px; background: var(--white); border-radius: 999px; padding: 5px 12px; font-size: 14px; font-weight: 700; }
+.ptile.life .once { display: inline-block; margin-top: 14px; background: var(--chip); border-radius: 999px; padding: 5px 12px; font-size: 14px; font-weight: 700; }
+.cmp-card { max-width: 880px; margin: 24px auto 0; background: var(--white); border-radius: 24px; box-shadow: inset 0 0 0 1.5px var(--rule); overflow: hidden; }
+.cmp-card table { width: 100%; border-collapse: collapse; font-size: 16px; }
+.cmp-card th { font: 400 13px var(--f-widebold); letter-spacing: .12em; color: var(--mute); padding: 18px 0 12px; text-align: center; width: 140px; }
+.cmp-card th.pc { color: var(--ink); }
+.cmp-card th:first-child, .cmp-card td:first-child { text-align: left; padding-left: 28px; width: auto; }
+.cmp-card td { border-top: 1px solid var(--hair); padding: 14px 0; text-align: center; font-weight: 700; }
+.cmp-card td:first-child { font-weight: 400; }
+.cmp-card .pc { background: #FFF3C4; }
+.cmp-card .no { color: #B8AF9C; font-weight: 400; }
+.price-cta { text-align: center; margin-top: 36px; }
+.price-cta .price-line { margin-top: 14px; }
 @media (prefers-reduced-motion: no-preference) {
-  .js .device .st { opacity: 0; }
-  .js .device .dv-duck { transform: translateY(60%); }
-  .js .device.is-in .st { opacity: 1; transition: opacity .4s ease-out calc(.35s + var(--s, 0) * .14s); }
-  .js .device.is-in .dv-duck { transform: none; transition: transform .55s cubic-bezier(.3, 1.4, .5, 1) .5s; }
+  .js .ptile .badge { opacity: 0; transform: translateX(-50%) scale(.6); }
+  .js .ptiles.is-in .ptile .badge { opacity: 1; transform: translateX(-50%) scale(1); transition: opacity .2s .55s, transform .4s cubic-bezier(.3, 1.6, .5, 1) .55s; }
+  .js .ptiles[data-reveal] { opacity: 1 !important; transform: none !important; }
+  .js .ptiles[data-reveal] .ptile { opacity: 0; }
+  .js .ptiles.is-in .ptile { opacity: 1; transition: opacity .45s ease-out calc(var(--i, 0) * .12s); }
 }
-
-/* pricing section: words + clean price list on the left, the paywall phone on the right */
-.pricing-grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 64px; align-items: center; }
-.plan-list { list-style: none; padding: 0; margin: 36px 0 0; border-top: 1px solid var(--rule); }
-.plan-list li { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--rule); }
-.plan-list .nm { font-weight: 700; font-size: 18px; }
-.plan-list .nm small { display: block; font-weight: 400; font-size: 15px; color: var(--fg2); margin-top: 2px; }
-.plan-list .pr { font-family: var(--f-display); font-size: 30px; letter-spacing: -.02em; white-space: nowrap; }
-.plan-list .pr small { font-family: var(--body); font-size: 15px; font-weight: 600; letter-spacing: 0; color: var(--fg2); }
-.plan-list .tag { display: inline-block; background: var(--sun); border-radius: 6px; padding: 1px 7px; font-size: 13px; font-weight: 700; margin-left: 6px; vertical-align: 2px; }
-.pricing-grid .btn { margin-top: 32px; }
-.pricing-grid .price-line { margin-top: 16px; }
-.ditch-grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 64px; align-items: center; }
-@media (max-width: 960px) {
-  .pricing-grid, .ditch-grid { grid-template-columns: minmax(0, 1fr); gap: 48px; }
-  .device { zoom: .9; }
+@media (max-width: 720px) {
+  .ptiles { gap: 8px; margin-top: 48px; }
+  .ptile { padding: 20px 8px 18px; border-radius: 18px; }
+  .ptile.hi { padding-top: 32px; padding-bottom: 24px; }
+  .ptile .k { font-size: 11px; letter-spacing: .08em; }
+  .ptile .amt { font-size: 26px; margin-top: 10px; }
+  .ptile .s { font-size: 13px; }
+  .ptile .trial, .ptile.life .once { font-size: 12px; padding: 4px 8px; }
+  .ptile .badge { font-size: 10px; padding: 5px 10px; top: -12px; }
+  .cmp-card th { width: 72px; font-size: 11px; }
+  .cmp-card th:first-child, .cmp-card td:first-child { padding-left: 16px; }
+  .cmp-card table { font-size: 15px; }
 }
-@media (max-width: 400px) { .device { zoom: .82; } .plan-list .pr { font-size: 26px; } }
 
 /* calculator taps */
 @media (prefers-reduced-motion: no-preference) {
@@ -674,3 +651,9 @@ img { display: block; max-width: 100%; }
 
 /* Long web addresses in guides wrap instead of pushing the page sideways on small phones. */
 .art, .answer, .side-card { overflow-wrap: anywhere; }
+@media (max-width: 480px) {
+  .ptiles { gap: 6px; }
+  .ptile { padding: 18px 4px 16px; }
+  .ptile .amt { font-size: clamp(1.125rem, 5.4vw, 1.5rem); letter-spacing: -.02em; }
+  .ptile .s { font-size: 12px; }
+}

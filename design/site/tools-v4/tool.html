@@ -1,0 +1,56 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="base.css"><style>
+.hero{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end}
+.hero .big{width:112px;height:112px;border-radius:26px;box-shadow:0 12px 32px rgba(22,20,15,.12)}
+.calc{display:grid;grid-template-columns:1.05fr 1fr;gap:20px;margin-top:40px;align-items:stretch}
+.in{background:#fff;border:1px solid var(--hair);border-radius:28px;padding:28px;display:grid;gap:22px}
+.step{display:flex;align-items:center;justify-content:space-between;height:52px;border:1px solid var(--rule);border-radius:14px;padding:0 6px}
+.step b{font-size:18px}.step span{width:40px;height:40px;border-radius:10px;background:var(--chip);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600}
+.out{background:var(--ink);color:#fff;border-radius:28px;padding:32px;display:flex;flex-direction:column}
+.out .k{font-size:14px;color:#BDB6A6;font-weight:600;letter-spacing:.02em}
+.out .money{font-size:96px;line-height:.95;color:var(--sun);margin-top:10px}
+.out .money small{font-family:WideB;font-size:20px;color:#fff;letter-spacing:0;margin-left:6px}
+.out .yr{color:#BDB6A6;margin-top:8px}
+.bars{margin-top:auto;padding-top:28px;border-top:1px solid #2E2A22;display:grid;gap:12px}
+.bar{display:grid;grid-template-columns:110px 1fr auto;gap:12px;align-items:center;font-size:14.5px}
+.bar i{display:block;height:12px;border-radius:6px;background:#3A352B}.bar i.s{background:var(--sun)}
+.out .note{margin-top:18px;font-size:15px}.out .note b{color:var(--sun)}
+@media (max-width:700px){.hero{grid-template-columns:1fr}.hero .big{display:none}.calc{grid-template-columns:1fr;margin-top:24px;gap:12px}.in{padding:18px;gap:16px;border-radius:22px}.out{padding:22px;border-radius:22px}.out .money{font-size:72px;white-space:nowrap}.out .money small{display:inline-block;font-size:16px}.bar{grid-template-columns:90px 1fr auto}.crumbs{margin:12px 0 14px}}
+</style></head><body>
+<header class="top"><span class="wm">ditch</span><nav class="n"><span>Cancel guides</span><span>Prices</span><b>Free tools</b><span>Pricing</span></nav><span class="btn">Join the waitlist</span></header>
+<main class="wrap">
+<div class="crumbs"><u>Free tools</u> › Spotify Family split</div>
+<div class="hero"><div><h1>Spotify Family split calculator</h1><p class="lead">What each person pays on Spotify Premium Family or Duo.</p></div><img class="big" src="../../../web/public/logos/spotify.png" alt=""></div>
+<section class="calc">
+ <div class="in">
+  <div><label class="l">Country</label><div class="sel">🇺🇸&nbsp; United States</div></div>
+  <div><label class="l">Plan</label><div class="seg"><span class="on">Family · $21.99</span><span>Duo · $18.99</span></div></div>
+  <div><label class="l">People sharing</label><div class="step"><span>−</span><b class="num">4 people</b><span>+</span></div></div>
+ </div>
+ <div class="out">
+  <div class="k">EACH PERSON PAYS</div>
+  <div class="money">$5.50<small>a month</small></div>
+  <div class="yr num">$66.00 a year each · $263.88 for the plan</div>
+  <div class="bars">
+   <div class="bar"><span>On their own</span><i style="width:100%"></i><b class="num">$12.99</b></div>
+   <div class="bar"><span>Shared</span><i class="s" style="width:42%"></i><b class="num">$5.50</b></div>
+  </div>
+  <p class="note"><b>$7.49 less</b> each, every month. Everyone needs to live at the same address.</p>
+ </div>
+</section>
+<section class="sec"><h2>How it works</h2><div class="steps3">
+ <div><i>1</i><p><b>Pick your country.</b> Prices are Spotify's own, checked Nov 10.</p></div>
+ <div><i>2</i><p><b>Pick Family or Duo</b> and how many people share it.</p></div>
+ <div><i>3</i><p><b>See each share</b> next to paying for Premium alone.</p></div></div></section>
+<section class="sec"><h2>Questions</h2><div class="faq2">
+ <div><h3>How many people can be on Spotify Family?</h3><p>Up to 6 accounts, all at the same address. Duo is for 2.</p></div>
+ <div><h3>Is Spotify Family worth it?</h3><p>Once 2 or more people would pay for Premium anyway, each share costs less than Premium Individual.</p></div>
+ <div><h3>Can I split Spotify Family with friends?</h3><p>Spotify's rules say everyone on the plan lives at the same address.</p></div>
+ <div><h3>Who pays for Spotify Family?</h3><p>One person, the plan manager. Splitting the cost is up to you.</p></div>
+</div><p class="src">Sources: <u>spotify.com/us/premium</u> · <u>support.spotify.com</u></p></section>
+<section class="cta"><img src="../../../web/public/duck.png" alt=""><div><h2>Get a reminder before every charge</h2><p>3 days and 1 day before each renewal. Free iPhone app, coming soon.</p></div><div class="form"><span>you@email.com</span><span class="btn">Join the waitlist</span></div></section>
+<section class="sec"><h2>More free tools</h2><div class="more">
+ <div class="tcard"><img class="logo" src="../../../web/public/logos/apple-music.png" width="44"><div><h3>Apple Music Family split</h3><p>What each person pays</p></div></div>
+ <div class="tcard"><div class="pair"><img class="logo" src="../../../web/public/logos/spotify.png" width="36"><img class="logo" src="../../../web/public/logos/apple-music.png" width="36"></div><div><h3>Spotify vs Apple Music</h3><p>Every plan side by side</p></div></div>
+ <div class="tcard"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3 3-5 6-5s6 2 6 5M15 14.5c3 0 6 1.5 6 4.5"/></svg></div><div><h3>Family plan split</h3><p>Any service, any plan</p></div></div>
+</div></section>
+</main><footer class="f"></footer></body></html>

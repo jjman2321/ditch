@@ -1,0 +1,44 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="stylesheet" href="base.css"><style>
+.hero{padding:40px 0 8px;max-width:760px}
+.search{margin-top:28px;height:60px;background:#fff;border:1px solid var(--rule);border-radius:999px;display:flex;align-items:center;gap:12px;padding:0 22px;color:var(--mute);font-size:17px;max-width:560px}
+.search svg{width:22px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.chips span{height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--rule);display:flex;align-items:center;font-size:14.5px;font-weight:600;background:#fff}
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+.fc{background:var(--sun);border-radius:28px;padding:26px;min-height:220px;display:flex;flex-direction:column}
+.fc .ic{width:52px;height:52px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center}.fc .ic svg{width:26px}
+.fc h3{font-family:Wide;font-size:22px;margin-top:auto;line-height:1.1}.fc p{color:#4B4220;margin-top:6px;font-size:15px}
+.fc.ink{background:var(--ink);color:#fff}.fc.ink p{color:#BDB6A6}.fc.ink .ic{background:var(--sun)}
+.grp{margin-top:72px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+.grp .h p{color:var(--mute);margin-top:6px}
+.grp .more{margin-top:0;grid-template-columns:repeat(2,1fr)}
+@media (max-width:700px){.hero{padding-top:20px}.search{height:52px;margin-top:20px}.feat{grid-template-columns:1fr;margin-top:28px;gap:10px}.fc{min-height:0;padding:20px;flex-direction:row;gap:14px;align-items:center;border-radius:22px}.fc h3{margin:0;font-size:18px}.fc .ic{flex:none;width:44px;height:44px}.grp{grid-template-columns:1fr;gap:14px;margin-top:48px}.grp .more{grid-template-columns:1fr;gap:8px}.chips{flex-wrap:nowrap;overflow-x:auto;margin-right:-16px}.chips span{white-space:nowrap;flex:none}.search{font-size:15px;white-space:nowrap;overflow:hidden}}
+</style></head><body>
+<header class="top"><span class="wm">ditch</span><nav class="n"><span>Cancel guides</span><span>Prices</span><b>Free tools</b><span>Pricing</span></nav><span class="btn">Join the waitlist</span></header>
+<main class="wrap">
+<div class="hero"><h1>Free subscription tools</h1><p class="lead">21 calculators built on prices we check by hand in 17 countries. They run in your browser.</p>
+<div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/></svg>Search tools, like “Spotify” or “trial”</div>
+<div class="chips"><span>Check a charge</span><span>Know what you pay</span><span>Before you pay</span><span>Share a plan</span><span>Compare</span><span>Get money back</span></div></div>
+<section class="feat">
+ <a class="fc ink"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/></svg></div><div><h3>What's this charge?</h3><p>Type the amount on your statement.</p></div></a>
+ <a class="fc"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></div><div><h3>Free trial deadline</h3><p>The day it charges, and the day to cancel by.</p></div></a>
+ <a class="fc"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h3M13 12h3M8 16h3M13 16h3"/></svg></div><div><h3>Subscription cost calculator</h3><p>Tap what you pay. See the year.</p></div></a>
+</section>
+<section class="grp"><div class="h"><h2>Share a plan</h2><p>What each person pays.</p></div><div class="more">
+<a class="tcard"><img class="logo" src="../../../web/public/logos/spotify.png" width="44"><div><h3>Spotify Family split</h3><p>Family or Duo, per person</p></div></a>
+<a class="tcard"><img class="logo" src="../../../web/public/logos/apple-music.png" width="44"><div><h3>Apple Music Family split</h3><p>Up to 6 people</p></div></a>
+<a class="tcard"><img class="logo" src="../../../web/public/logos/youtube-premium.png" width="44"><div><h3>YouTube Premium Family split</h3><p>You + 5 at home</p></div></a>
+<a class="tcard"><img class="logo" src="../../../web/public/logos/microsoft-365.png" width="44"><div><h3>Microsoft 365 Family split</h3><p>Up to 6 people</p></div></a>
+<a class="tcard"><img class="logo" src="../../../web/public/logos/netflix.png" width="44"><div><h3>Netflix cost per person</h3><p>Standard or Premium</p></div></a>
+<a class="tcard"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3 3-5 6-5s6 2 6 5M15 14.5c3 0 6 1.5 6 4.5"/></svg></div><div><h3>Family plan split</h3><p>Any service, any plan</p></div></a>
+</div></section>
+<section class="grp"><div class="h"><h2>Compare</h2><p>Two services, every plan.</p></div><div class="more">
+<a class="tcard"><div class="pair"><img class="logo" src="../../../web/public/logos/spotify.png" width="36"><img class="logo" src="../../../web/public/logos/apple-music.png" width="36"></div><div><h3>Spotify vs Apple Music</h3><p>Every plan side by side</p></div></a>
+<a class="tcard"><div class="pair"><img class="logo" src="../../../web/public/logos/chatgpt-plus.png" width="36"><img class="logo" src="../../../web/public/logos/claude-pro.png" width="36"></div><div><h3>ChatGPT Plus vs Claude Pro</h3><p>Monthly and yearly</p></div></a>
+<a class="tcard"><div class="pair"><img class="logo" src="../../../web/public/logos/netflix.png" width="36"><img class="logo" src="../../../web/public/logos/disney-plus.png" width="36"></div><div><h3>Netflix vs Disney+</h3><p>With and without ads</p></div></a>
+<a class="tcard"><div class="pair"><img class="logo" src="../../../web/public/logos/netflix.png" width="36"><img class="logo" src="../../../web/public/logos/max.png" width="36"></div><div><h3>Netflix vs HBO Max</h3><p>Every plan side by side</p></div></a>
+<a class="tcard"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2"><path d="M4 8h14l-3-3M20 16H6l3 3"/></svg></div><div><h3>Compare any two</h3><p>Pick both services</p></div></a>
+</div></section>
+<section class="grp"><div class="h"><h2>Get money back</h2><p>Charged after you meant to cancel.</p></div><div class="more">
+<a class="tcard"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/></svg></div><div><h3>Refund helper</h3><p>Apple, Google, Amazon or the company</p></div></a>
+</div></section>
+</main><footer class="f"></footer></body></html>

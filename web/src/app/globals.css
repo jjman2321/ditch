@@ -909,3 +909,68 @@ h1, h2, h3 { overflow-wrap: break-word; }
   .tline .dot { left: -28px; top: 2px; }
 }
 .guide .g-faq summary h3 { flex: 1; max-width: none; }
+
+/* Guide v3 (owner pick B + A, Nov 13): pick how you pay, then full steps. One centred column. */
+.gv3-col { max-width: 720px; margin: 0 auto; padding: 40px 0 0; }
+.gv3 .crumbs { padding-top: 0; }
+.gv3 .kick { display: flex; align-items: center; gap: 12px; margin-top: 24px; }
+.gv3 .kick .logo, .gv3 .kick .mono { width: 40px; height: 40px; border-radius: 10px; }
+.gv3 .kick span { font: 400 13px var(--f-widebold); letter-spacing: .1em; text-transform: uppercase; color: var(--mute); }
+.gv3 h1 { font-family: var(--f-display); font-weight: 400; font-size: clamp(2.5rem, 1.4rem + 3.4vw, 3.75rem); line-height: 1; letter-spacing: -.03em; margin-top: 16px; }
+.gv3 .sub { font-size: 20px; line-height: 1.5; color: var(--fg2); margin-top: 20px; max-width: 40ch; }
+.gv3 h2 { font-family: var(--f-widebold); font-weight: 400; font-size: clamp(1.3rem, 1.1rem + .6vw, 1.6rem); line-height: 1.2; margin-top: 64px; scroll-margin-top: 88px; }
+.gv3 h2.ways-h { margin-top: 40px; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--mute); }
+.gv3 .ways { list-style: none; padding: 0; margin-top: 12px; border-top: 1px solid var(--rule); }
+.gv3 .ways li { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 18px; align-items: center; padding: 22px 0; border-bottom: 1px solid var(--rule); }
+.gv3 .ways .ic { width: 44px; height: 44px; border-radius: 11px; display: grid; place-items: center; background: var(--white); box-shadow: inset 0 0 0 1.5px var(--rule); color: var(--ink); overflow: hidden; }
+.gv3 .ways .ic .logo, .gv3 .ways .ic .mono { width: 44px; height: 44px; border-radius: 11px; }
+.gv3 .ways h3 { font-family: var(--f-widebold); font-weight: 400; font-size: 18px; line-height: 1.25; }
+.gv3 .ways p { font-size: 15px; color: var(--fg2); margin-top: 4px; }
+.gv3 .ways .btn { min-height: 48px; padding: 0 20px; font-size: 15px; white-space: nowrap; }
+.gv3 .src { font-size: 13px; color: var(--mute); margin-top: 12px; }
+.gv3 .src a { color: var(--mute); }
+.gv3 h2 + * { margin-top: 16px; }
+.gv3 .lead-s { font-size: 18px; line-height: 1.6; }
+.gv3 kbd { font: 600 .92em var(--body); background: var(--white); border-radius: 7px; padding: 2px 8px; box-shadow: inset 0 0 0 1.5px var(--rule), 0 1.5px 0 var(--rule); white-space: nowrap; }
+.gv3 ol.st { counter-reset: s; list-style: none; padding: 0; }
+.gv3 ol.st li { counter-increment: s; display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 16px; padding: 9px 0; font-size: 18px; line-height: 1.55; position: relative; }
+.gv3 ol.st li::before { content: counter(s); width: 32px; height: 32px; border-radius: 99px; background: var(--ink); color: var(--sun); font: 800 15px/32px var(--body); text-align: center; }
+.gv3 ol.st li:not(:last-child)::after { content: ""; position: absolute; left: 15px; top: 46px; bottom: -6px; width: 2px; background: var(--rule); }
+.gv3 .callout { margin-top: 24px; }
+.gv3 .after { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 28px; }
+.gv3 .after b { display: block; font-family: var(--f-display); font-weight: 400; font-size: 24px; letter-spacing: -.02em; line-height: 1.1; }
+.gv3 .after p { font-size: 16px; color: var(--fg2); margin-top: 8px; }
+.gv3 .after p.src { margin-top: 6px; }
+.gv3 .qa > div { padding: 18px 0; border-top: 1px solid var(--rule); }
+.gv3 .qa > div:last-child { border-bottom: 1px solid var(--rule); }
+.gv3 .qa h3 { font-family: var(--f-widebold); font-weight: 400; font-size: 18px; line-height: 1.3; }
+.gv3 .qa p { margin-top: 6px; font-size: 17px; }
+.gv3 .qa p.src { font-size: 13px; }
+.gv3 .cta { margin-top: 80px; background: var(--sun); border-radius: var(--r-l); padding: 36px; }
+.gv3 .cta h2 { margin: 0; font-family: var(--f-wide); font-size: 24px; text-transform: none; letter-spacing: 0; color: var(--ink); }
+.gv3 .cta p { color: var(--sunfg2); margin-top: 6px; }
+.gv3 .cta .email-wrap { margin-top: 20px; max-width: 480px; }
+.gv3 .g-feedback { margin-top: 32px; }
+.gv3 .disc { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--mute); }
+.gv3 .tbl-wrap { margin-top: 8px; }
+@media (max-width: 639px) {
+  .gv3-col { padding-top: 20px; }
+  .gv3 .sub { font-size: 18px; }
+  .gv3 h2 { margin-top: 48px; }
+  .gv3 .ways li { grid-template-columns: 40px minmax(0, 1fr); gap: 14px; padding: 20px 0; }
+  .gv3 .ways .ic, .gv3 .ways .ic .logo, .gv3 .ways .ic .mono { width: 40px; height: 40px; }
+  .gv3 .ways .btn { grid-column: 1 / -1; width: 100%; }
+  .gv3 ol.st li { font-size: 17px; }
+  .gv3 .cta { padding: 26px 20px; margin-top: 56px; }
+}
+/* After you cancel: plain two-column list. Sources: one list at the end (owner, Nov 13). */
+.gv3 dl.after { display: block; margin-top: 16px; border-top: 1px solid var(--rule); }
+.gv3 dl.after > div { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--rule); }
+.gv3 dl.after dt { font-weight: 700; font-size: 16px; }
+.gv3 dl.after dd { margin: 0; font-size: 17px; line-height: 1.55; }
+.gv3 h2.srcs-h { font-size: 15px; margin-top: 56px; }
+.gv3 .srcs { list-style: none; padding: 0; margin-top: 8px; display: grid; gap: 2px; }
+.gv3 .srcs a { display: inline-flex; align-items: center; min-height: 32px; font-size: 13px; color: var(--mute); overflow-wrap: anywhere; }
+.gv3 ol.st b { overflow-wrap: anywhere; }
+@media (max-width: 639px) { .gv3 dl.after > div { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
+@media (pointer: coarse) { .gv3 .srcs a { min-height: 44px; } }

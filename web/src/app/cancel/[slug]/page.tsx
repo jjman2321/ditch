@@ -5,30 +5,15 @@ import { notFound } from 'next/navigation';
 import { EmailBox } from '@/components/EmailBox';
 import { Logo } from '@/components/Logo';
 import { PriceTable } from '@/components/PriceTable';
-import { AfterTimeline, ApplePath, ReadyChips, StatementDiagram } from '@/components/GuideVisuals';
-import { APPLE_SOURCE, formatDate, freshness, guideById, neighbours, priceFor, priceHubServices, pubDates, publicNotes, publishedGuides, serviceById, idOf, shortHost, slugOf } from '@/lib/data';
+import { ReadyChips } from '@/components/GuideVisuals';
+import { APPLE_SOURCE, formatDate, freshness, guideById, neighbours, priceFor, priceHubServices, pubDates, publicNotes, publishedGuides, serviceById, idOf, slugOf } from '@/lib/data';
 import { COMPANY, SITE, SUPPORT_EMAIL } from '@/lib/site';
 
-function H2({ id, children }: { id: string; children: React.ReactNode }) {
-  return (
-    <h2 id={id}>
-      {children}
-      <a className="anchor" href={`#${id}`} aria-label="Link to this section">
-        #
-      </a>
-    </h2>
-  );
-}
 
 export function generateStaticParams() {
   return publishedGuides().map((g) => ({ slug: slugOf(g.id) }));
 }
 
-function shortUrl(url: string) {
-  const u = new URL(url);
-  const path = u.pathname.replace(/\/$/, '');
-  return `${u.hostname.replace(/^www\./, '')}${path.length > 28 ? '/…' : path}`;
-}
 
 /** The short answer: hand-written per guide, plus where and when it was checked (for people and AI answers). */
 function answer(g: { answer?: string; steps: string[]; name: string; checkedOn: string; source: string }) {
@@ -79,27 +64,11 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
 
   const d = g.depth;
   const after = [
-    ...(d?.after?.access ? [{ label: 'Until your next bill', ...d.after.access }] : []),
-    ...(d?.after?.data ? [{ label: 'What stays', ...d.after.data }] : []),
+    ...(d?.after?.access ? [{ label: 'Your access', ...d.after.access }] : []),
+    ...(d?.after?.data ? [{ label: 'Your stuff', ...d.after.data }] : []),
     ...(d?.after?.refunds ? [{ label: 'Refunds', ...d.after.refunds }] : []),
   ];
   const faq = d?.faq ?? [];
-  const toc = [
-    { id: 'direct', label: appleOnly ? 'Cancel on iPhone' : `Cancel with ${g.name}` },
-    ...(showApple ? [{ id: 'apple', label: 'If Apple bills you' }] : []),
-    ...(d?.googlePlay ? [{ id: 'google', label: 'If Google Play bills you' }] : []),
-    { id: 'partner', label: 'No cancel button?' },
-    ...(d?.verify ? [{ id: 'check', label: 'Check it worked' }] : []),
-    ...(after.length ? [{ id: 'after', label: 'After you cancel' }] : []),
-    ...(d?.pause ? [{ id: 'pause', label: 'Not sure yet?' }] : []),
-    ...(faq.length ? [{ id: 'faq', label: 'Questions' }] : []),
-    ...(us ? [{ id: 'price', label: `What ${g.name} costs` }] : []),
-  ];
-  const src = (u: string) => (
-    <a className="src" href={u} rel="noopener">
-      {shortHost(u)}
-    </a>
-  );
 
   const ld = [
     {
@@ -126,197 +95,249 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
     ...(faq.length ? [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }] : []),
   ];
 
+  const ways = [
+    { id: 'direct', icon: <Logo id={g.id} size={44} />, title: appleOnly ? 'On your iPhone' : `On ${g.name}’s website`, line: g.steps.slice(1).map((x) => x.replace(/^Tap /, '')).join(' → ') || g.steps[0], primary: true },
+    ...(showApple ? [{ id: 'apple', icon: <AppleMark />, title: 'Through Apple', line: 'Your statement says APPLE.COM/BILL. Cancel in iPhone Settings.', primary: false }] : []),
+    ...(d?.googlePlay ? [{ id: 'google', icon: <PlayMark />, title: 'Through Google Play', line: 'Google Play → Subscriptions → ' + g.name + ' → Cancel.', primary: false }] : []),
+    { id: 'partner', icon: <BarsMark />, title: 'Through your phone or TV company', line: 'No cancel option? Someone else bills you. Cancel with them.', primary: false },
+  ];
+  const mainHref = g.url ?? g.helpUrl ?? '#direct';
+  const mainLabel = appleOnly ? 'Open Subscriptions ↗' : g.url ? (g.urlLabel ?? (g.name.length > 12 ? 'Open the cancel page ↗' : `Open ${g.name}’s page ↗`)) : g.helpUrl ? 'Open the help page ↗' : 'See the steps ↓';
+
   return (
-    <div className="wrap guide">
+    <div className="wrap gv3">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
-      <nav className="crumbs" aria-label="Breadcrumb">
-        <Link href="/" prefetch={false}>Home</Link>
-        <span aria-hidden>›</span>
-        <Link href="/cancel">Cancel guides</Link>
-        <span aria-hidden>›</span>
-        <span aria-current="page">{g.name}</span>
-      </nav>
-      <div className="art">
-        <article>
-          <header className="g-head">
-            <Logo id={g.id} size={56} />
-            <h1>How to cancel {g.name}</h1>
-            <p className="g-meta">
-              Checked <time dateTime={g.checkedOn}>{formatDate(g.checkedOn)}</time> · {d?.sourceLabel ? <a className="src" href={g.source} rel="noopener">{d.sourceLabel}</a> : src(g.source)}
-            </p>
-          </header>
-          {fresh !== 'fresh' ? <p className="stale">Last checked {formatDate(g.checkedOn)}. {g.name} may have changed its steps since. We re-check every 90 days.</p> : null}
+      <article className="gv3-col">
+        <nav className="crumbs" aria-label="Breadcrumb">
+          <Link href="/cancel">Cancel guides</Link>
+          <span aria-hidden>›</span>
+          <span aria-current="page">{g.name}</span>
+        </nav>
+        <div className="kick">
+          <Logo id={g.id} size={40} />
+          <span>
+            Checked <time dateTime={g.checkedOn}>{formatDate(g.checkedOn)}</time>
+          </span>
+        </div>
+        <h1>How to cancel {g.name}</h1>
+        <p className="sub">{g.answer ?? `${g.steps.join('. ')}.`}</p>
+        {fresh !== 'fresh' ? <p className="stale">Last checked {formatDate(g.checkedOn)}. {g.name} may have changed its steps since. We re-check every 90 days.</p> : null}
 
-          <p className="g-lead">{g.answer ?? `${g.steps.join('. ')}.`}</p>
-          <div className="g-acts">
-            {g.url ? (
-              <a className="btn" href={g.url} rel="noopener">
-                {appleOnly ? 'Open your Apple subscriptions ↗' : (g.urlLabel ?? (g.name.length > 14 ? 'Open the cancel page ↗' : `Open ${g.name}’s cancel page ↗`))}
-              </a>
-            ) : g.helpUrl ? (
-              <a className="btn" href={g.helpUrl} rel="noopener">
-                Open {company}’s help page ↗
-              </a>
-            ) : (
-              <a className="btn" href="#direct">
-                Jump to the steps ↓
-              </a>
-            )}
-            {g.url ? <span className="g-url">{appleOnly ? 'Opens the App Store' : shortUrl(g.url)}</span> : null}
-          </div>
+        <h2 id="ways" className="ways-h">Pick how you pay</h2>
+        <ul className="ways">
+          {ways.map((w) => (
+            <li key={w.id}>
+              <span className="ic">{w.icon}</span>
+              <div>
+                <h3>{w.title}</h3>
+                <p>{w.line}</p>
+              </div>
+              {w.primary ? (
+                <a className="btn" href={mainHref} rel={mainHref.startsWith('http') ? 'noopener' : undefined}>
+                  {mainLabel}
+                </a>
+              ) : (
+                <a className="btn ghost" href={`#${w.id}`}>
+                  Show me how ↓
+                </a>
+              )}
+            </li>
+          ))}
+        </ul>
 
-          <StatementDiagram name={g.name} apple={showApple} google={Boolean(d?.googlePlay)} appleOnly={appleOnly} />
+        <h2 id="ready">Have this ready</h2>
+        <ReadyChips email={appleOnly ? 'Your Apple Account sign-in' : `The email you use for ${g.name}`} />
 
-          <H2 id="ready">Have this ready</H2>
-          <ReadyChips email={appleOnly ? 'Your Apple Account sign-in' : `The email you use for ${g.name}`} />
-
-          <H2 id="direct">{appleOnly ? 'Cancel on your iPhone' : `Cancel with ${g.name}`}</H2>
-          <ol className="olist">
-            {g.steps.map((st) => (
-              <li key={st}>{st}</li>
+        <h2 id="direct">{appleOnly ? `Cancel ${g.name} on your iPhone` : `How to cancel ${g.name} on the website`}</h2>
+        <ol className="st">
+          {g.steps.map((st) => (
+            <li key={st}>
+              <span>{keys(st)}</span>
+            </li>
+          ))}
+        </ol>
+        {otherNotes.length ? (
+          <div className="callout">
+            <span className="lbl">Good to know</span>
+            {otherNotes.map((n) => (
+              <p key={n}>{n}</p>
             ))}
-          </ol>
-          {otherNotes.length ? (
-            <div className="callout">
-              <span className="lbl">Good to know</span>
-              {otherNotes.map((n) => (
-                <p key={n}>{n}</p>
+          </div>
+        ) : null}
+
+        {showApple ? (
+          <>
+            <h2 id="apple">How to cancel {g.name} if Apple bills you</h2>
+            <p className="lead-s">
+              {g.appleNote ? `If you signed up in the ${app} iPhone app, Apple bills you, and ${company} can’t cancel it for you.` : `Signed up in the iPhone app? Then Apple may bill you. Your statement says APPLE.COM/BILL.`}
+            </p>
+            <ol className="st">
+              <li>
+                <span>Open <kbd>Settings</kbd> on your iPhone.</span>
+              </li>
+              <li>
+                <span>Tap your name, then <kbd>Subscriptions</kbd>.</span>
+              </li>
+              <li>
+                <span>Tap {g.name}, then <kbd>Cancel Subscription</kbd>.</span>
+              </li>
+            </ol>
+          </>
+        ) : null}
+
+        {d?.googlePlay ? (
+          <>
+            <h2 id="google">How to cancel {g.name} on Android (Google Play)</h2>
+            <ol className="st">
+              {d.googlePlay.steps.map((st) => (
+                <li key={st}>
+                  <span>{keys(st)}</span>
+                </li>
+              ))}
+            </ol>
+          </>
+        ) : null}
+
+        <h2 id="partner">No cancel button? Your phone or TV company may bill you</h2>
+        <p className="lead-s">{partnerText ?? `Then ${company} probably isn’t billing you directly. Look for the company named on your bank statement and cancel with them.`}</p>
+
+        {d?.verify ? (
+          <>
+            <h2 id="check">How to check you cancelled {g.name}</h2>
+            <p className="lead-s">{cap(d.verify.text.replace(/^How to check it worked:\s*/i, ''))}</p>
+          </>
+        ) : null}
+
+        {after.length ? (
+          <>
+            <h2 id="after">What happens after you cancel {g.name}</h2>
+            <dl className="after">
+              {after.map((x) => (
+                <div key={x.label}>
+                  <dt>{x.label}</dt>
+                  <dd>{x.text}</dd>
+                </div>
+              ))}
+            </dl>
+          </>
+        ) : null}
+
+        {d?.pause ? (
+          <>
+            <h2 id="pause">Not sure yet? Pause instead</h2>
+            <p className="lead-s">{d.pause.text}</p>
+          </>
+        ) : null}
+
+        {faq.length ? (
+          <>
+            <h2 id="faq">{g.name} cancellation questions</h2>
+            <div className="qa">
+              {faq.map((f) => (
+                <div key={f.q}>
+                  <h3>{f.q}</h3>
+                  <p>{f.a}</p>
+                </div>
               ))}
             </div>
-          ) : null}
+          </>
+        ) : null}
 
-          {!showApple ? null : (
-            <>
-              <H2 id="apple">If Apple bills you</H2>
-              <p>
-                {g.appleNote
-                  ? `If you signed up in the ${app} iPhone app, Apple bills you, and ${company} can’t cancel it for you. Cancel on your iPhone:`
-                  : notes.some((n) => /apple/i.test(n))
-                    ? `Signed up through Apple? Cancel on your iPhone:`
-                    : `${g.name} doesn’t mention Apple billing, but if you see APPLE.COM/BILL on your statement, cancel on your iPhone:`}
+        {us ? (
+          <>
+            <h2 id="price">What {g.name} costs</h2>
+            <PriceTable serviceId={g.id} countries={['US']} caption={`${g.name} prices in the US`} />
+            {hasHub ? (
+              <p className="src">
+                <Link href={`/prices/${slugOf(g.id)}`}>{g.name} prices in every country we check →</Link>
               </p>
-              <ApplePath name={g.name} />
-              <p className="g-src">From {src(APPLE_SOURCE)}</p>
-            </>
-          )}
+            ) : null}
+          </>
+        ) : null}
 
-          {d?.googlePlay ? (
-            <>
-              <H2 id="google">If Google Play bills you</H2>
-              <ol className="olist">
-                {d.googlePlay.steps.map((st) => (
-                  <li key={st}>{st}</li>
-                ))}
-              </ol>
-              <p className="g-src">From {src(d.googlePlay.source)}</p>
-            </>
-          ) : null}
+        <section className="cta" id="remind" aria-labelledby="remind-h" data-has-cta>
+          <h2 id="remind-h">Keeping {g.name} for now?</h2>
+          <p>Ditch reminds you 3 days and 1 day before it renews, so you decide before the charge.</p>
+          <EmailBox source={`cancel-${g.id}`} bare />
+        </section>
 
-          <H2 id="partner">No cancel button?</H2>
-          <p>{partnerText ?? `Then ${company} probably isn’t billing you directly. Look for the company named on your bank statement and cancel with them.`}</p>
+        <p className="g-feedback">
+          <b>Did this work?</b> <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${g.name} guide: it worked`)}`}>Yes, it worked</a>
+          {' · '}
+          <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${g.name} guide: something changed`)}&body=${encodeURIComponent('What did you see instead?\n\n')}`}>No, something changed</a>
+        </p>
 
-          {d?.verify ? (
-            <>
-              <H2 id="check">How to check it worked</H2>
-              <p>
-                {cap(d.verify.text.replace(/^How to check it worked:\s*/i, ''))} <span className="g-src">From {src(d.verify.source)}</span>
-              </p>
-            </>
-          ) : null}
+        <h2 id="more">Cancel something else</h2>
+        <ul className="g-related">
+          {[...related, ...more].map((r) => (
+            <li key={r.id}>
+              <Link href={`/cancel/${slugOf(r.id)}`}>
+                <Logo id={r.id} size={28} />
+                Cancel {r.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
 
-          {after.length ? (
-            <>
-              <H2 id="after">What happens after you cancel</H2>
-              <AfterTimeline items={after} src={src} />
-            </>
-          ) : null}
-
-          {d?.pause ? (
-            <>
-              <H2 id="pause">Not sure yet?</H2>
-              <p>
-                {d.pause.text} <span className="g-src">From {src(d.pause.source)}</span>
-              </p>
-            </>
-          ) : null}
-
-          {faq.length ? (
-            <>
-              <H2 id="faq">Questions</H2>
-              <div className="g-faq">
-                {faq.map((f, n) => (
-                  <details key={f.q} open={n === 0}>
-                    <summary>
-                      <h3>{f.q}</h3>
-                      <span className="pm" aria-hidden />
-                    </summary>
-                    <p>
-                      {f.a}
-                      <span className="g-src">From {src(f.source)}</span>
-                    </p>
-                  </details>
-                ))}
-              </div>
-            </>
-          ) : null}
-
-          {us ? (
-            <>
-              <H2 id="price">What {g.name} costs</H2>
-              <PriceTable serviceId={g.id} countries={['US']} caption={`${g.name} prices in the US`} />
-              {hasHub ? (
-                <p className="g-src">
-                  <Link href={`/prices/${slugOf(g.id)}`}>{g.name} prices in every country we check →</Link>
-                </p>
-              ) : null}
-            </>
-          ) : null}
-
-          <section className="appcard" id="remind" aria-labelledby="remind-h" data-has-cta>
-            <h2 id="remind-h" className="h3">
-              Keeping {g.name} for now?
-            </h2>
-            <p>Ditch reminds you 3 days and 1 day before it renews, so you decide before the charge, not after. You still cancel on {company}’s own page.</p>
-            <EmailBox source={`cancel-${g.id}`} bare />
-          </section>
-
-          <p className="g-feedback">
-            <b>Did this work?</b> <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${g.name} guide: it worked`)}`}>Yes, it worked</a>
-            {' · '}
-            <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${g.name} guide: something changed`)}&body=${encodeURIComponent('What did you see instead?\n\n')}`}>No, something changed</a>
-            <span className="g-hint">Opens your email app.</span>
-          </p>
-
-          <h2 id="more" className="g-more-h">Cancel something else</h2>
-          <ul className="g-related">
-            {[...related, ...more].map((r) => (
-              <li key={r.id}>
-                <Link href={`/cancel/${slugOf(r.id)}`}>
-                  <Logo id={r.id} size={28} />
-                  Cancel {r.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-
-          <p className="disc">
-            {g.name} is a trademark of its owner. Ditch isn’t affiliated with or endorsed by {g.name}. <Link href="/how-we-check">How we check guides</Link>. <span className="nw">© {year} {COMPANY}.</span>
-          </p>
-        </article>
-        <aside>
-          <nav className="side-toc" aria-label="On this page">
-            <p className="ttl">On this page</p>
-            {toc.map((t) => (
-              <a key={t.id} href={`#${t.id}`}>
-                {t.label}
+        <h2 id="sources" className="srcs-h">Sources</h2>
+        <ul className="srcs">
+          {[...new Set([g.source, ...(showApple ? [APPLE_SOURCE] : []), ...(d?.googlePlay ? [d.googlePlay.source] : []), ...(d?.verify ? [d.verify.source] : []), ...after.map((x) => x.source), ...(d?.pause ? [d.pause.source] : []), ...faq.map((f) => f.source)])].map((u) => (
+            <li key={u}>
+              <a href={u} rel="noopener">
+                {u.replace(/^https?:\/\/(www\.)?/, '')}
               </a>
-            ))}
-          </nav>
-          <a className="side-cta" href="#remind">
-            Get a reminder before {g.name} renews →
-          </a>
-        </aside>
-      </div>
+            </li>
+          ))}
+        </ul>
+
+        <p className="disc">
+          {g.name} is a trademark of its owner. Ditch isn’t affiliated with or endorsed by {g.name}. <Link href="/how-we-check">How we check guides</Link>. <span className="nw">© {year} {COMPANY}.</span>
+        </p>
+      </article>
     </div>
+  );
+}
+
+/** "Tap Manage your plan" → Tap [Manage your plan]; web addresses in bold. Same words, easier to scan. */
+function keys(step: string): React.ReactNode {
+  const parts: React.ReactNode[] = [];
+  const re = /(\b[a-z0-9-]+(?:\.[a-z0-9-]+)*\.(?:com|net|tv|co|app|org)(?:\/[^\s,]*)?)|((?:Tap|tap|then|select|Select|choose|Choose) )((?:[A-Z][\w’'+-]*)(?: (?:[A-Z][\w’'+-]*|(?:your|the|my|plan|subscription|membership|account)\b))*)/g;
+  let last = 0;
+  let m: RegExpExecArray | null;
+  let k = 0;
+  while ((m = re.exec(step))) {
+    if (m.index > last) parts.push(step.slice(last, m.index));
+    if (m[1]) parts.push(<b key={k++}>{m[1]}</b>);
+    else {
+      parts.push(m[2]);
+      const label = m[3];
+      parts.push(<kbd key={k++}>{label}</kbd>);
+      parts.push(m[3].slice(label.length));
+    }
+    last = m.index + m[0].length;
+  }
+  if (last < step.length) parts.push(step.slice(last));
+  return parts;
+}
+
+function AppleMark() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden>
+      <path d="M16.5 12.6c0-2.4 2-3.5 2-3.6-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.2-2.8.9-3.5.9-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.6s-2.5-1-2.5-3.7zM14.2 5.6c.6-.8 1.1-1.8 1-2.9-.9 0-2.1.6-2.7 1.4-.6.7-1.1 1.8-1 2.8 1 .1 2.1-.5 2.7-1.3z" fill="currentColor" />
+    </svg>
+  );
+}
+function PlayMark() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden>
+      <path d="M5 3.5v17l14-8.5z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+    </svg>
+  );
+}
+function BarsMark() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden>
+      <path d="M4 18h2M9 18v-4M14 18v-8M19 18V6" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
+    </svg>
   );
 }

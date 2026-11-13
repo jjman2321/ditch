@@ -614,6 +614,7 @@ img { display: block; max-width: 100%; }
 .pc-opt .amt { font-size: 46px; margin-top: 10px; }
 .pc-opt .per { font-size: 14px; margin-top: 6px; }
 .pc-badge { position: absolute; top: -12px; left: 20px; background: var(--ink); color: var(--sun); border-radius: 999px; padding: 5px 11px; font: 400 11px var(--f-widebold); letter-spacing: .1em; white-space: nowrap; }
+.pc-save { position: absolute; top: -12px; right: 20px; background: var(--bill); color: var(--ink); border-radius: 999px; padding: 5px 11px; font: 400 11px var(--f-widebold); letter-spacing: .1em; white-space: nowrap; }
 .pc-pro ul { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 24px; }
 .pc-life { grid-column: 1 / -1; background: var(--ink); color: var(--white); border-radius: var(--r-l); padding: 28px 36px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 32px; }
 .pc-life .amt { font-family: var(--f-display); font-size: 56px; letter-spacing: -.035em; line-height: 1; color: var(--sun); }
@@ -631,8 +632,8 @@ img { display: block; max-width: 100%; }
   .js .pg.is-in > .pc-life { transition-delay: .2s; }
   .js .pg[data-reveal] .pc-duck { transform: translateY(60%); }
   .js .pg.is-in .pc-duck { transform: none; transition: transform .55s cubic-bezier(.3, 1.45, .5, 1) .45s; }
-  .js .pg[data-reveal] .pc-badge { opacity: 0; transform: scale(.6); }
-  .js .pg.is-in .pc-badge { opacity: 1; transform: none; transition: opacity .2s .6s, transform .4s cubic-bezier(.3, 1.6, .5, 1) .6s; }
+  .js .pg[data-reveal] .pc-badge, .js .pg[data-reveal] .pc-save { opacity: 0; transform: scale(.6); }
+  .js .pg.is-in .pc-badge, .js .pg.is-in .pc-save { opacity: 1; transform: none; transition: opacity .2s .6s, transform .4s cubic-bezier(.3, 1.6, .5, 1) .6s; }
 }
 @media (max-width: 960px) {
   .pg { grid-template-columns: minmax(0, 1fr); margin-top: 96px; gap: 16px; }
@@ -652,6 +653,7 @@ img { display: block; max-width: 100%; }
   .pc-opt .per { grid-area: per; font-size: 14px; margin-top: 4px; }
   .pc-opt + .pc-opt { padding-top: 16px; }
   .pc-badge { left: 16px; font-size: 10px; padding: 4px 9px; top: -11px; }
+  .pc-save { right: 16px; font-size: 10px; padding: 4px 9px; top: -11px; }
   .pc-opts .pc-opt.on { margin-top: 6px; }
   .pc-pro ul { grid-template-columns: minmax(0, 1fr); margin-top: 18px; }
   .pc-card li { padding: 10px 0 10px 30px; font-size: 15px; }

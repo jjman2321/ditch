@@ -305,10 +305,11 @@ export default function Home() {
               <div className="pc-opts">
                 <div className="pc-opt on">
                   <span className="pc-badge">{PRO.trialDays} DAYS FREE</span>
+                  <span className="pc-save">SAVE {yearlySave}%</span>
                   <p className="k">Yearly</p>
                   <p className="amt num">{PRO.yearly}</p>
                   <p className="per">
-                    {PRO.yearlyPerMonth} a month · save {yearlySave}%
+                    {PRO.yearlyPerMonth} a month
                   </p>
                 </div>
                 <div className="pc-opt">

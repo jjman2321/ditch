@@ -28,7 +28,71 @@
     "max",
     "hulu",
     "prime-video"
-   ]
+   ],
+   "depth": {
+    "id": "netflix",
+    "checkedOn": "2026-11-13",
+    "after": {
+     "access": {
+      "text": "You can keep watching until the end of the billing period you paid for.",
+      "source": "https://help.netflix.com/en/node/407",
+      "quote": "If you cancel with time left in your billing period, you can use Netflix until the end of the billing period."
+     },
+     "data": {
+      "text": "Netflix keeps your viewing activity, ratings, account details and game saves for 24 months after your account closes, so it's all there if you come back.",
+      "source": "https://help.netflix.com/en/node/407",
+      "quote": "We keep your Viewing Activity for 24 months after your account closes"
+     },
+     "refunds": {
+      "text": "Netflix's terms say payments aren't refunded, and there's no refund or credit for a part-used month.",
+      "source": "https://help.netflix.com/legal/termsofuse",
+      "quote": "Payments are nonrefundable and there are no refunds or credits for partially used subscription periods."
+     }
+    },
+    "verify": {
+     "text": "How to check it worked: Netflix emails you a confirmation. Your Payment History shows the date your account closes.",
+     "source": "https://help.netflix.com/en/node/407",
+     "quote": "A confirmation email will be sent to the email on the account. ... To see when your account will close, check your Payment History."
+    },
+    "pause": {
+     "text": "Just want a break? Netflix lets you pause for 1 month at a time, up to 3 months in total. You can't watch while paused. Not on the Basic plan or some payment methods, like gift cards and some partners.",
+     "source": "https://help.netflix.com/en/node/407",
+     "quote": "On your next billing date, you will not be charged and your membership will be paused for 1 month. ... Accounts can only be paused for a total of 3 months."
+    },
+    "googlePlay": null,
+    "faq": [
+     {
+      "q": "Does deleting the Netflix app cancel it?",
+      "a": "No. Netflix says signing out or deleting the app doesn't cancel your account. You have to finish the cancel steps.",
+      "source": "https://help.netflix.com/en/node/407",
+      "quote": "Signing out of your account or deleting the Netflix app doesn't cancel your account."
+     },
+     {
+      "q": "Do I get a refund if I cancel Netflix?",
+      "a": "Netflix's terms say no refunds or credits for part of a month. You keep watching until the period ends instead.",
+      "source": "https://help.netflix.com/legal/termsofuse",
+      "quote": "Payments are nonrefundable and there are no refunds or credits for partially used subscription periods."
+     },
+     {
+      "q": "Why was I charged after cancelling Netflix?",
+      "a": "Netflix says you, or someone using your account, may have restarted it by accident.",
+      "source": "https://help.netflix.com/en/node/124418",
+      "quote": "you or someone who was using your account may have accidentally restarted it"
+     },
+     {
+      "q": "I pay for Netflix through Apple. How do I cancel?",
+      "a": "Check Membership and Billing on your Netflix account. If there's no cancel option there, you cancel through Apple in iPhone Settings.",
+      "source": "https://help.netflix.com/node/25097",
+      "quote": "If you don't see the option to cancel on your Netflix Account, you must cancel your Netflix subscription through Apple."
+     },
+     {
+      "q": "If I come back later, are my profiles still there?",
+      "a": "Yes, if you restart within 24 months. Netflix keeps your viewing activity, ratings and game saves for that long.",
+      "source": "https://help.netflix.com/en/node/407",
+      "quote": "We keep your Viewing Activity for 24 months after your account closes"
+     }
+    ]
+   }
   },
   {
    "id": "amazon-prime",
@@ -73,7 +137,71 @@
     "youtube-music",
     "siriusxm",
     "netflix"
-   ]
+   ],
+   "depth": {
+    "id": "spotify",
+    "checkedOn": "2026-11-13",
+    "after": {
+     "access": {
+      "text": "You keep Premium until your next billing date, then your account switches to free. Cancel during a $0 free trial and you go to free straight away.",
+      "source": "https://support.spotify.com/us/article/cancel-premium/",
+      "quote": "Your Premium stays until your next billing date, then your account switches to free. ... If you cancel during a zero-priced free trial period, your account will switch over to our free service immediately."
+     },
+     "data": {
+      "text": "Your playlists and your music library stay. You can still log in and listen with ads.",
+      "source": "https://support.spotify.com/us/article/cancel-premium/",
+      "quote": "You keep your playlists and saved music when your account is free."
+     },
+     "refunds": {
+      "text": "Spotify's refund page says you cancel and keep what you paid for: Premium runs to the end of the billing period. Paid through a partner? Ask them.",
+      "source": "https://support.spotify.com/us/article/refund-policy/",
+      "quote": "If you don't want Premium anymore, you can cancel any time and keep what you paid for."
+     }
+    },
+    "verify": {
+     "text": "How to check it worked: on your account page, look at Payment under Your plan. A date when you switch to Spotify Free means it worked. A next payment date means it didn't, so try again and get to the confirmation message.",
+     "source": "https://support.spotify.com/us/article/canceled-but-still-charged/",
+     "quote": "Date when your account will switch to Spotify free"
+    },
+    "pause": null,
+    "googlePlay": {
+     "steps": [
+      "On your Android device, go to subscriptions in Google Play.",
+      "Select Spotify.",
+      "Tap Cancel subscription.",
+      "Follow the instructions."
+     ],
+     "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+     "serviceSource": "https://support.spotify.com/us/article/google-play-help/",
+     "serviceQuote": "You can use Google Play to pay for Spotify."
+    },
+    "faq": [
+     {
+      "q": "What happens to my playlists if I cancel Spotify Premium?",
+      "a": "They stay. You keep your playlists and your music library on the free plan.",
+      "source": "https://support.spotify.com/us/article/cancel-premium/",
+      "quote": "You keep your playlists and saved music when your account is free."
+     },
+     {
+      "q": "What if I cancel during the free trial?",
+      "a": "You drop to free right away, and Spotify says a $0 trial can't be started again.",
+      "source": "https://support.spotify.com/us/article/cancel-premium/",
+      "quote": "Zero-priced free trials can't be reactivated."
+     },
+     {
+      "q": "Why am I still being charged after cancelling?",
+      "a": "You may have cancelled just after a payment went through, and you won't be charged again. Or you may be signed in to a different Spotify account from the one that pays.",
+      "source": "https://support.spotify.com/us/article/canceled-but-still-charged/",
+      "quote": "You likely cancelled just after your payment was processed, but you won't be charged again."
+     },
+     {
+      "q": "I'm on a Family or Duo plan. Can I cancel?",
+      "a": "Only the plan manager can. Members need to ask the manager.",
+      "source": "https://support.spotify.com/us/article/cancel-premium/",
+      "quote": "Reach out to the plan manager to cancel or update the payment method."
+     }
+    ]
+   }
   },
   {
    "id": "youtube-premium",
@@ -102,7 +230,67 @@
     "youtube-tv",
     "google-one",
     "spotify"
-   ]
+   ],
+   "depth": {
+    "id": "youtube-premium",
+    "checkedOn": "2026-11-13",
+    "after": {
+     "access": {
+      "text": "Your Premium perks keep working until the end of the billing period. You won't be charged again unless you sign up again.",
+      "source": "https://support.google.com/youtube/answer/6308278?co=GENIE.Platform%3DiOS",
+      "quote": "Your YouTube paid member benefits will continue until the end of the billing period."
+     },
+     "data": null,
+     "refunds": null
+    },
+    "verify": {
+     "text": "How to check it worked: open youtube.com/paid_memberships and look at your membership.",
+     "source": "https://support.google.com/youtube/answer/6308278?co=GENIE.Platform%3DDesktop&hl=en",
+     "quote": "You can confirm by checking the paid membership section of your account on youtube.com/paid_memberships."
+    },
+    "pause": {
+     "text": "Not sure? If Google bills you monthly, you can pause for 1 to 6 months at youtube.com/paid_memberships instead. You aren't charged while paused. Not for yearly plans or if Apple bills you.",
+     "source": "https://support.google.com/youtubemusic/answer/11950175?hl=en",
+     "quote": "You can choose the length of this paused state, from 1 to 6 months. ... Annual plans cannot be paused. ... Pausing and resuming your paid membership is not available to users who are billed through Apple."
+    },
+    "googlePlay": {
+     "steps": [
+      "On your Android device, go to subscriptions in Google Play.",
+      "Select YouTube Premium.",
+      "Tap Cancel subscription.",
+      "Follow the instructions."
+     ],
+     "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+     "serviceSource": "https://support.google.com/youtube/answer/6308278?co=GENIE.Platform%3DDesktop&hl=en",
+     "serviceQuote": "If you signed up on Google Play billing, learn how to cancel your membership here."
+    },
+    "faq": [
+     {
+      "q": "Can I cancel YouTube Premium on my iPhone?",
+      "a": "Only if Apple bills you, through Manage Apple Subscriptions. If Google bills you, Google says to cancel on a non-iOS device, like a computer.",
+      "source": "https://support.google.com/youtube/answer/6308278?co=GENIE.Platform%3DiOS",
+      "quote": "iOS users who are billed through Google must cancel using a non-iOS device (for example, a computer)."
+     },
+     {
+      "q": "Do I lose Premium straight away?",
+      "a": "No. Your perks last until the end of the billing period.",
+      "source": "https://support.google.com/youtube/answer/6308278?co=GENIE.Platform%3DiOS",
+      "quote": "Your YouTube paid member benefits will continue until the end of the billing period."
+     },
+     {
+      "q": "Can I pause YouTube Premium instead?",
+      "a": "Yes, for 1 to 6 months, if Google bills you monthly. Your downloads are kept, but you can't use them until you resume.",
+      "source": "https://support.google.com/youtubemusic/answer/11950175?hl=en",
+      "quote": "any videos or music you've downloaded will be retained."
+     },
+     {
+      "q": "Will I be charged again after cancelling?",
+      "a": "No, not unless you sign up again.",
+      "source": "https://support.google.com/youtube/answer/6308278?co=GENIE.Platform%3DiOS",
+      "quote": "When you cancel your membership, you won't be charged again unless you re-subscribe."
+     }
+    ]
+   }
   },
   {
    "id": "disney-plus",
@@ -131,7 +319,54 @@
     "espn",
     "netflix",
     "max"
-   ]
+   ],
+   "depth": {
+    "id": "disney-plus",
+    "checkedOn": "2026-11-13",
+    "sourceLabel": "Disney+, Hulu and ESPN Subscriber Agreement (updated Oct 22, 2026)",
+    "after": {
+     "access": {
+      "text": "Your plan keeps going until the end of the current term, then stops.",
+      "source": "https://www.hulu.com/subscriber_agreement",
+      "quote": "CANCELLATION WILL TAKE EFFECT AT THE END OF THE CURRENT SUBSCRIPTION TERM,"
+     },
+     "data": null,
+     "refunds": {
+      "text": "Disney doesn't refund or credit part-used months.",
+      "source": "https://www.hulu.com/subscriber_agreement",
+      "quote": "WE DO NOT REFUND OR CREDIT FOR PARTIALLY USED SUBSCRIPTION TERMS AND/OR BILLING PERIODS"
+     }
+    },
+    "verify": null,
+    "pause": null,
+    "googlePlay": null,
+    "faq": [
+     {
+      "q": "When do I need to cancel Disney+ by?",
+      "a": "Before 11:59pm Eastern on the day before your term ends. That stops the next charge.",
+      "source": "https://www.hulu.com/subscriber_agreement",
+      "quote": "YOU MUST CANCEL YOUR SUBSCRIPTION PRIOR TO 11:59 P.M. EASTERN TIME ON THE DAY BEFORE YOUR SUBSCRIPTION TERM ENDS"
+     },
+     {
+      "q": "Do I get a refund if I cancel Disney+?",
+      "a": "Not for a part-used month. You keep watching until the term ends.",
+      "source": "https://www.hulu.com/subscriber_agreement",
+      "quote": "WE DO NOT REFUND OR CREDIT FOR PARTIALLY USED SUBSCRIPTION TERMS AND/OR BILLING PERIODS"
+     },
+     {
+      "q": "I signed up in an app store. How do I cancel?",
+      "a": "Follow that store's cancel steps. Disney says your billing is with them, not with Disney.",
+      "source": "https://www.hulu.com/subscriber_agreement",
+      "quote": "To cancel a subscription to the Service(s) obtained via a third party, please follow the cancellation instructions set out by the applicable third party."
+     },
+     {
+      "q": "What if I'm on a free trial or promo?",
+      "a": "You can cancel any time before it ends. Disney says cancelling a trial or promo may end it right away.",
+      "source": "https://www.hulu.com/subscriber_agreement",
+      "quote": "IF YOU ARE SUBSCRIBED THROUGH A FREE TRIAL, PROMOTIONAL CODE OR OTHER CREDIT, CANCELLATION MAY BE EFFECTIVE IMMEDIATELY."
+     }
+    ]
+   }
   },
   {
    "id": "chatgpt-plus",
@@ -176,7 +411,49 @@
     "disney-plus",
     "max",
     "peacock"
-   ]
+   ],
+   "depth": {
+    "id": "prime-video",
+    "checkedOn": "2026-11-13",
+    "after": {
+     "access": null,
+     "data": null,
+     "refunds": {
+      "text": "Prime Video's terms: cancel a Prime Video-only plan within 3 business days of signing up (or of a trial turning paid) and you get your fee back, minus the value of what you used. Later than that, you only get it back if nothing was watched since the last charge.",
+      "source": "https://www.primevideo.com/help?nodeId=202095490",
+      "quote": "If you cancel at any other time, we will refund your full membership fee only if Digital Content available as part of your video-only membership has not been accessed through your account since your latest membership charge."
+     }
+    },
+    "verify": null,
+    "pause": null,
+    "googlePlay": null,
+    "faq": [
+     {
+      "q": "Does cancelling Prime Video cancel Amazon Prime?",
+      "a": "End Subscription is for a Prime Video-only plan. If Prime Video came with Amazon Prime, you cancel Prime itself: under Prime Membership, pick Edit on Amazon.",
+      "source": "https://www.primevideo.com/help?nodeId=GWGDSNXVPJ93UW5V",
+      "quote": "For a Prime Video-only subscription, select End Subscription."
+     },
+     {
+      "q": "How do I cancel a channel I added in Prime Video?",
+      "a": "Go to Account & Settings, then Subscriptions, find the channel and pick Cancel (it may say Withdraw). Your end date shows on the confirmation screen.",
+      "source": "https://www.primevideo.com/help?nodeId=G3BQ95AL4WZLV9ZG",
+      "quote": "Your subscription end date displays on the confirmation screen."
+     },
+     {
+      "q": "My channel is billed through Apple. Is there a deadline?",
+      "a": "Yes. Cancel at least 24 hours before it renews, or you may be charged.",
+      "source": "https://www.primevideo.com/help?nodeId=G3BQ95AL4WZLV9ZG",
+      "quote": "If you pay for your Prime Video add-on subscription through Apple, any subscription cancellations must be done at least 24 hours before your subscription is due to renew"
+     },
+     {
+      "q": "Do I get a refund when I cancel a channel?",
+      "a": "No. Amazon says cancelling a channel doesn't refund earlier charges.",
+      "source": "https://www.primevideo.com/help?nodeId=G3BQ95AL4WZLV9ZG",
+      "quote": "Canceling a subscription doesn't generate a refund for any previous subscription charges."
+     }
+    ]
+   }
   },
   {
    "id": "icloud",
@@ -221,7 +498,68 @@
     "apple-tv",
     "apple-arcade",
     "spotify"
-   ]
+   ],
+   "depth": {
+    "id": "apple-music",
+    "checkedOn": "2026-11-13",
+    "after": {
+     "access": null,
+     "data": {
+      "text": "Once it ends, Apple Music catalog songs stop playing, and so do playlists made from catalog music. Sync Library turns off. Music you had before you subscribed stays.",
+      "source": "https://support.apple.com/en-us/118399",
+      "quote": "After your subscription to Apple Music expires, you'll no longer be able to play songs from the Apple Music catalog."
+     },
+     "refunds": {
+      "text": "Apple says some purchases might be eligible for a refund. You ask at reportaproblem.apple.com.",
+      "source": "https://support.apple.com/en-us/118223",
+      "quote": "Some purchases from the App Store, iTunes Store, Apple Books, or other Apple services might be eligible for a refund."
+     }
+    },
+    "verify": {
+     "text": "How to check it worked: in Settings → your name → Subscriptions, tap Apple Music. No Cancel button, or a red expiry message, means it's already cancelled.",
+     "source": "https://support.apple.com/en-us/118428",
+     "quote": "If there is no Cancel button or you see an expiration message in red text, the subscription is already canceled."
+    },
+    "pause": null,
+    "googlePlay": {
+     "steps": [
+      "On your Android device, go to subscriptions in Google Play.",
+      "Select Apple Music.",
+      "Tap Cancel subscription.",
+      "Follow the instructions."
+     ],
+     "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+     "serviceSource": "https://support.apple.com/en-us/118399",
+     "serviceQuote": "If you pay for Apple Music through Google Play, you can cancel your subscription only in the Apple Music app ... or at play.google.com",
+     "serviceNote": "Apple says a Google Play-billed plan can only be cancelled in the Apple Music app on Android or on the Google Play website."
+    },
+    "faq": [
+     {
+      "q": "What happens to my library if I cancel Apple Music?",
+      "a": "Catalog songs and playlists built from them stop playing when it ends. Music you had before you subscribed stays.",
+      "source": "https://support.apple.com/en-us/118399",
+      "quote": "Any music and playlists you had on your device before you subscribed to Apple Music will still be available."
+     },
+     {
+      "q": "Can I cancel Apple Music on the web?",
+      "a": "Yes. At music.apple.com, open your account, then Settings, then Manage under Subscriptions, and Cancel Subscription.",
+      "source": "https://support.apple.com/en-us/118399",
+      "quote": "Cancel Subscription"
+     },
+     {
+      "q": "Cancelling a free trial?",
+      "a": "Apple says to cancel at least 24 hours before the trial ends.",
+      "source": "https://support.apple.com/en-us/118428",
+      "quote": "If you signed up for a trial subscription and you don't want to renew it, cancel it at least 24 hours before the trial ends."
+     },
+     {
+      "q": "I can't find Apple Music in my subscriptions.",
+      "a": "Sign in with the Apple Account shown on the receipt. If a family member pays, they have to cancel it.",
+      "source": "https://support.apple.com/en-us/118428",
+      "quote": "Sign in to the Apple Account that appears on the receipt to cancel the subscription."
+     }
+    ]
+   }
   },
   {
    "id": "max",
@@ -250,7 +588,76 @@
     "hulu",
     "disney-plus",
     "peacock"
-   ]
+   ],
+   "depth": {
+    "id": "max",
+    "checkedOn": "2026-11-13",
+    "after": {
+     "access": {
+      "text": "You can keep watching until your plan runs out at the end of the billing period.",
+      "source": "https://help.hbomax.com/us/Answer/Detail/000002526",
+      "quote": "You can stream until your subscription expires at the end of your billing period."
+     },
+     "data": {
+      "text": "Restart later with the same account and your profiles, My List and watch history come back.",
+      "source": "https://help.hbomax.com/us/Answer/Detail/000002527",
+      "quote": "(this way you'll have your profiles, My List, and watch history)"
+     },
+     "refunds": {
+      "text": "HBO Max doesn't refund plans it bills directly. Two exceptions it names: the Extra Member add-on gets a prorated refund for days left, and New York residents may get a prorated refund if they cancel within 14 days of their first bill after a price rise. Billed by someone else? Their refund rules apply.",
+      "source": "https://help.hbomax.com/us/Answer/Detail/000002522",
+      "quote": "There is a no refund policy for subscriptions billed through HBO Max."
+     }
+    },
+    "verify": {
+     "text": "How to check it worked: after you confirm, HBO Max shows your expiration date. Write it down. Billed by Apple? Apple emails you a confirmation.",
+     "source": "https://help.hbomax.com/us/Answer/Detail/000002526",
+     "quote": "take note of your expiration date"
+    },
+    "pause": null,
+    "googlePlay": {
+     "steps": [
+      "On your Android device, go to subscriptions in Google Play.",
+      "Select HBO Max.",
+      "Tap Cancel subscription.",
+      "Follow the instructions."
+     ],
+     "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+     "serviceSource": "https://help.hbomax.com/us/Answer/Detail/000002526",
+     "serviceQuote": "On the Android phone or tablet, open the Play Store app.",
+     "serviceNote": "HBO Max's own page lists Google Play as a biller and gives the same steps (Play Store app → profile icon → Payments & subscriptions → Subscriptions → HBO Max → Cancel subscription)."
+    },
+    "billers": {
+     "text": "HBO Max's page names these billers: Amazon Appstore, Apple, Google Play, Roku, Samsung TV, Xumo, AT&T, Cox, DIRECTV, DoorDash, Hulu, Optimum, Prime Video Channels, Sling TV, Spectrum, Verizon, Xfinity, YouTube, YouTube Primetime Channels.",
+     "source": "https://help.hbomax.com/us/Answer/Detail/000002526"
+    },
+    "faq": [
+     {
+      "q": "Does deleting the HBO Max app cancel it?",
+      "a": "No. You still need to cancel your subscription.",
+      "source": "https://help.hbomax.com/us/Answer/Detail/000002526",
+      "quote": "Deleting the HBO Max app does not cancel your subscription."
+     },
+     {
+      "q": "When should I cancel HBO Max?",
+      "a": "Before your next billing date, so you aren't charged again.",
+      "source": "https://help.hbomax.com/us/Answer/Detail/000002526",
+      "quote": "Cancel your subscription before your next billing date to avoid further charges."
+     },
+     {
+      "q": "Can I get a refund from HBO Max?",
+      "a": "Not for plans HBO Max bills directly, with two exceptions: the Extra Member add-on, and New York residents after a price rise. Billed by Apple, Google or someone else? Ask them.",
+      "source": "https://help.hbomax.com/us/Answer/Detail/000002522",
+      "quote": "Refund policies vary by billing provider."
+     },
+     {
+      "q": "Who bills me for HBO Max?",
+      "a": "Open the Subscription page on hbomax.com. It names who bills you at the top of the screen.",
+      "source": "https://help.hbomax.com/us/Answer/Detail/000002526",
+      "quote": "Find who your subscription is billed through (top of screen)."
+     }
+    ]
+   }
   },
   {
    "id": "apple-tv",
@@ -279,7 +686,64 @@
     "apple-music",
     "apple-arcade",
     "netflix"
-   ]
+   ],
+   "depth": {
+    "id": "apple-tv",
+    "checkedOn": "2026-11-13",
+    "after": {
+     "access": null,
+     "data": null,
+     "refunds": {
+      "text": "Apple says some purchases might be eligible for a refund. You ask at reportaproblem.apple.com.",
+      "source": "https://support.apple.com/en-us/118223",
+      "quote": "Some purchases from the App Store, iTunes Store, Apple Books, or other Apple services might be eligible for a refund."
+     }
+    },
+    "verify": {
+     "text": "How to check it worked: in Settings → your name → Subscriptions, tap Apple TV. No Cancel button, or a red expiry message, means it's already cancelled.",
+     "source": "https://support.apple.com/en-us/118428",
+     "quote": "If there is no Cancel button or you see an expiration message in red text, the subscription is already canceled."
+    },
+    "pause": null,
+    "googlePlay": {
+     "steps": [
+      "On your Android device, go to subscriptions in Google Play.",
+      "Select Apple TV.",
+      "Tap Cancel subscription.",
+      "Follow the instructions."
+     ],
+     "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+     "serviceSource": "https://support.apple.com/en-us/118398",
+     "serviceQuote": "you can cancel your subscription only in the Apple TV app on your Android device or at play.google.com.",
+     "serviceNote": "Apple says a Google Play-billed plan can only be cancelled in the Apple TV app on Android or on the Google Play website."
+    },
+    "faq": [
+     {
+      "q": "Can I cancel Apple TV on the web?",
+      "a": "Yes. At tv.apple.com, sign in, choose Settings, scroll to Subscriptions, choose Manage, then Cancel Subscription.",
+      "source": "https://support.apple.com/en-us/118398",
+      "quote": "Scroll to Subscriptions and choose Manage."
+     },
+     {
+      "q": "I pay for Apple TV through Amazon.",
+      "a": "Then you can only cancel through Amazon.",
+      "source": "https://support.apple.com/en-us/118398",
+      "quote": "If you pay for Apple TV through Amazon, you can cancel your subscription only through Amazon."
+     },
+     {
+      "q": "Cancelling a free trial?",
+      "a": "Apple says to cancel at least 24 hours before the trial ends.",
+      "source": "https://support.apple.com/en-us/118428",
+      "quote": "If you signed up for a trial subscription and you don't want to renew it, cancel it at least 24 hours before the trial ends."
+     },
+     {
+      "q": "I can't find Apple TV in my subscriptions.",
+      "a": "Sign in with the Apple Account shown on the receipt. If another company bills you, cancel with them.",
+      "source": "https://support.apple.com/en-us/118428",
+      "quote": "To cancel the subscription, contact the company that bills you for the subscription."
+     }
+    ]
+   }
   },
   {
    "id": "hulu",
@@ -308,7 +772,62 @@
     "espn",
     "netflix",
     "peacock"
-   ]
+   ],
+   "depth": {
+    "id": "hulu",
+    "checkedOn": "2026-11-13",
+    "sourceLabel": "Disney+, Hulu and ESPN Subscriber Agreement (updated Oct 22, 2026)",
+    "after": {
+     "access": {
+      "text": "Your plan keeps going until the end of the current term, then stops.",
+      "source": "https://www.hulu.com/subscriber_agreement",
+      "quote": "CANCELLATION WILL TAKE EFFECT AT THE END OF THE CURRENT SUBSCRIPTION TERM,"
+     },
+     "data": {
+      "text": "On Hulu + Live TV, you may lose your cloud DVR recordings once the plan ends, even if you come back later.",
+      "source": "https://www.hulu.com/subscriber_agreement",
+      "quote": "you may lose access to previously-made recordings, even if your subscription or that access resumes or is reinstated."
+     },
+     "refunds": {
+      "text": "Hulu doesn't refund or credit part-used months.",
+      "source": "https://www.hulu.com/subscriber_agreement",
+      "quote": "WE DO NOT REFUND OR CREDIT FOR PARTIALLY USED SUBSCRIPTION TERMS AND/OR BILLING PERIODS"
+     }
+    },
+    "verify": null,
+    "pause": {
+     "text": "Hulu's terms say it may offer you a pause. If you take one, billing starts again on its own when the pause ends, unless you cancel first.",
+     "source": "https://www.hulu.com/subscriber_agreement",
+     "quote": "We may also offer you the ability to pause your subscription. ... If you do not cancel before the end of the pause period, billing will resume automatically."
+    },
+    "googlePlay": null,
+    "faq": [
+     {
+      "q": "When do I need to cancel Hulu by?",
+      "a": "Before 11:59pm Eastern on the day before your term ends. That stops the next charge.",
+      "source": "https://www.hulu.com/subscriber_agreement",
+      "quote": "YOU MUST CANCEL YOUR SUBSCRIPTION PRIOR TO 11:59 P.M. EASTERN TIME ON THE DAY BEFORE YOUR SUBSCRIPTION TERM ENDS"
+     },
+     {
+      "q": "Do I get a refund if I cancel Hulu?",
+      "a": "Not for a part-used month. You keep watching until the term ends.",
+      "source": "https://www.hulu.com/subscriber_agreement",
+      "quote": "WE DO NOT REFUND OR CREDIT FOR PARTIALLY USED SUBSCRIPTION TERMS AND/OR BILLING PERIODS"
+     },
+     {
+      "q": "I pay for Hulu through an app store. How do I cancel?",
+      "a": "Follow that store's cancel steps. Hulu says your billing is with them.",
+      "source": "https://www.hulu.com/subscriber_agreement",
+      "quote": "To cancel a subscription to the Service(s) obtained via a third party, please follow the cancellation instructions set out by the applicable third party."
+     },
+     {
+      "q": "What if I'm on a free trial?",
+      "a": "You can cancel any time before it ends. Hulu says cancelling a trial or promo may end it right away.",
+      "source": "https://www.hulu.com/subscriber_agreement",
+      "quote": "IF YOU ARE SUBSCRIBED THROUGH A FREE TRIAL, PROMOTIONAL CODE OR OTHER CREDIT, CANCELLATION MAY BE EFFECTIVE IMMEDIATELY."
+     }
+    ]
+   }
   },
   {
    "id": "google-one",
@@ -368,7 +887,75 @@
     "google-one",
     "dropbox",
     "claude-pro"
-   ]
+   ],
+   "depth": {
+    "id": "microsoft-365",
+    "checkedOn": "2026-11-13",
+    "after": {
+     "access": {
+      "text": "You can keep using Microsoft 365 until the subscription runs out.",
+      "source": "https://support.microsoft.com/en-us/accounts-billing/subscriptions/cancel-your-microsoft-subscription",
+      "quote": "you can continue to use the product until the subscription expires."
+     },
+     "data": {
+      "text": "When it ends, your cloud storage drops to 5GB. If you're over that, you can't upload, edit or sync new files to OneDrive, and after 6 months Microsoft may delete your OneDrive files. On Family or Premium, everyone you share with drops too.",
+      "source": "https://support.microsoft.com/en-us/office/cancel-a-microsoft-subscription-46e2634c-c64b-4c65-94b9-2cc9c960e91b",
+      "quote": "After 6 months, we may delete your OneDrive and all files within it."
+     },
+     "refunds": {
+      "text": "Not every cancellation gets a refund. Microsoft says you may get a prorated refund in Canada, Israel, Korea and Turkey, and on longer renewed plans in Denmark, Finland, Germany, the Netherlands, Poland and Portugal. Bought in the iPhone app? Ask Apple.",
+      "source": "https://support.microsoft.com/en-us/accounts-billing/subscriptions/cancel-your-microsoft-subscription",
+      "quote": "you may be entitled to a prorated refund"
+     }
+    },
+    "verify": {
+     "text": "How to check it worked: on account.microsoft.com/services, a Turn on recurring billing button means it's already set to end on the date shown. You won't be charged after that.",
+     "source": "https://support.microsoft.com/en-us/office/cancel-a-microsoft-subscription-46e2634c-c64b-4c65-94b9-2cc9c960e91b",
+     "quote": "your subscription is already set to expire on the date shown, and you won't be charged after this date."
+    },
+    "pause": {
+     "text": "Not sure? Microsoft says you can switch to another plan instead, which could be cheaper.",
+     "source": "https://support.microsoft.com/en-us/office/cancel-a-microsoft-subscription-46e2634c-c64b-4c65-94b9-2cc9c960e91b",
+     "quote": "This may include details of alternative subscriptions, which could be cheaper."
+    },
+    "googlePlay": {
+     "steps": [
+      "On your Android device, go to subscriptions in Google Play.",
+      "Select Microsoft 365.",
+      "Tap Cancel subscription.",
+      "Follow the instructions."
+     ],
+     "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+     "serviceSource": "https://support.microsoft.com/en-us/office/cancel-a-microsoft-subscription-46e2634c-c64b-4c65-94b9-2cc9c960e91b",
+     "serviceQuote": "If you purchased a Microsoft 365 subscription from Google Play or the Apple App Store, contact their customer support fo..."
+    },
+    "faq": [
+     {
+      "q": "What happens to my files if I cancel Microsoft 365?",
+      "a": "Storage drops to 5GB. Over that, OneDrive stops taking new files, and after 6 months Microsoft may delete them. Move what you need first.",
+      "source": "https://support.microsoft.com/en-us/office/cancel-a-microsoft-subscription-46e2634c-c64b-4c65-94b9-2cc9c960e91b",
+      "quote": "You won't be able to upload, edit, or sync new files (such as Camera Roll) to your OneDrive."
+     },
+     {
+      "q": "I bought it in the iPhone app. Can Microsoft cancel it?",
+      "a": "No. Bought through the App Store or Google Play? Cancel or ask for a refund with them.",
+      "source": "https://support.microsoft.com/en-us/office/cancel-a-microsoft-subscription-46e2634c-c64b-4c65-94b9-2cc9c960e91b",
+      "quote": "For Apple App Store purchases, request a refund from Apple support."
+     },
+     {
+      "q": "I see Turn on recurring billing. Is it cancelled?",
+      "a": "Yes. It's set to end on the date shown and you won't be charged after that. Nothing more to do.",
+      "source": "https://support.microsoft.com/en-us/office/cancel-a-microsoft-subscription-46e2634c-c64b-4c65-94b9-2cc9c960e91b",
+      "quote": "No further action is required - you can continue to use the subscription until it expires."
+     },
+     {
+      "q": "Does cancelling Family affect the people I share with?",
+      "a": "Yes. Their storage drops too.",
+      "source": "https://support.microsoft.com/en-us/office/cancel-a-microsoft-subscription-46e2634c-c64b-4c65-94b9-2cc9c960e91b",
+      "quote": "If you cancel a Microsoft 365 Family or Microsoft 365 Premium subscription, all the people you shared your subscription with will also have their storage allowances reduced."
+     }
+    ]
+   }
   },
   {
    "id": "xbox-game-pass",
@@ -398,7 +985,57 @@
     "nintendo-online",
     "microsoft-365",
     "apple-arcade"
-   ]
+   ],
+   "depth": {
+    "id": "xbox-game-pass",
+    "checkedOn": "2026-11-13",
+    "after": {
+     "access": {
+      "text": "You keep playing Game Pass games until your membership runs out (or a game leaves the library).",
+      "source": "https://www.xbox.com/en-US/xbox-game-pass",
+      "quote": "Game Pass subscribers enjoy access to games in the library until either the subscription is canceled/expires,"
+     },
+     "data": null,
+     "refunds": {
+      "text": "Forgot to turn off recurring billing? In the US, Xbox says you can get your most recent renewal charge back if you cancel within 30 days of that payment. Once per Microsoft account, per subscription.",
+      "source": "https://www.xbox.com/en-US/xbox-game-pass",
+      "quote": "before your payment was processed, you're still entitled to a refund of your most recent recurring billing charge ... if you cancel your subscription within 30 days after payment."
+     }
+    },
+    "verify": {
+     "text": "How to check it worked: on account.microsoft.com/services, a Turn on recurring billing button means Game Pass is already set to end on the date shown. You won't be charged after that.",
+     "source": "https://support.microsoft.com/en-us/accounts-billing/subscriptions/cancel-your-microsoft-subscription",
+     "quote": "this means your subscription is already set to expire on the date shown"
+    },
+    "pause": null,
+    "googlePlay": null,
+    "faq": [
+     {
+      "q": "How do I stop Game Pass charging me?",
+      "a": "Cancel in your Microsoft account or on your Xbox console before the next billing date.",
+      "source": "https://www.xbox.com/en-US/xbox-game-pass",
+      "quote": "To stop being charged, cancel your subscription in your Microsoft account or on your XBOX console, before the next billing date."
+     },
+     {
+      "q": "Can I get a refund on Game Pass?",
+      "a": "For the latest renewal, yes, if you cancel within 30 days of being charged. That works once per account, per subscription.",
+      "source": "https://www.xbox.com/en-US/xbox-game-pass",
+      "quote": "This refund right is limited to one time per Microsoft account, per subscription product."
+     },
+     {
+      "q": "Do I lose my games straight away?",
+      "a": "No. You keep access to library games until the membership runs out.",
+      "source": "https://www.xbox.com/en-US/xbox-game-pass",
+      "quote": "Game Pass subscribers enjoy access to games in the library until either the subscription is canceled/expires,"
+     },
+     {
+      "q": "I see Turn on recurring billing. Is it cancelled?",
+      "a": "Yes. It's set to end on the date shown and you won't be charged after that.",
+      "source": "https://support.microsoft.com/en-us/accounts-billing/subscriptions/cancel-your-microsoft-subscription",
+      "quote": "you won't be automatically charged after this date."
+     }
+    ]
+   }
   },
   {
    "id": "ps-plus",
@@ -490,7 +1127,67 @@
     "hulu",
     "max",
     "prime-video"
-   ]
+   ],
+   "depth": {
+    "id": "peacock",
+    "checkedOn": "2026-11-13",
+    "after": {
+     "access": {
+      "text": "You keep watching until the end of your current term. It won't renew after that.",
+      "source": "https://www.peacocktv.com/terms",
+      "quote": "IF YOU CANCEL, YOU WILL STILL HAVE ACCESS TO EACH SERVICE TIER THROUGH THE END OF ITS APPLICABLE SUBSCRIPTION TERM"
+     },
+     "data": null,
+     "refunds": {
+      "text": "Peacock doesn't give refunds or credits, unless the law requires it.",
+      "source": "https://www.peacocktv.com/help/article/cancellation",
+      "quote": "No refunds or credits will be issued, unless required by law."
+     }
+    },
+    "verify": {
+     "text": "How to check it worked: Peacock sends a confirmation email. It can take a few hours to arrive.",
+     "source": "https://www.peacocktv.com/help/article/cancellation",
+     "quote": "receive a confirmation email, which may take a few hours."
+    },
+    "pause": null,
+    "googlePlay": {
+     "steps": [
+      "On your Android device, go to subscriptions in Google Play.",
+      "Select Peacock.",
+      "Tap Cancel subscription.",
+      "Follow the instructions."
+     ],
+     "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+     "serviceSource": "https://www.peacocktv.com/help/article/cancellation",
+     "serviceQuote": "If you subscribed through a third party (e.g., Apple, Google, Roku, Amazon, etc.)"
+    },
+    "faq": [
+     {
+      "q": "Does cancelling Peacock end my add-ons too?",
+      "a": "Yes. Cancel All Subscriptions ends your base plan and its add-ons. To drop only an add-on, use Remove Add-On.",
+      "source": "https://www.peacocktv.com/help/article/cancellation",
+      "quote": "Select Cancel All Subscriptions to cancel all subscriptions."
+     },
+     {
+      "q": "I can't log in. Can I still cancel?",
+      "a": "Yes. Peacock lets you cancel by chat from its cancellation help page.",
+      "source": "https://www.peacocktv.com/help/article/cancellation",
+      "quote": "If you cannot log in to cancel, you can cancel via chat by clicking here."
+     },
+     {
+      "q": "Do I get a refund if I cancel Peacock?",
+      "a": "No refunds or credits, unless the law requires one. You keep watching until the term ends.",
+      "source": "https://www.peacocktv.com/help/article/cancellation",
+      "quote": "No refunds or credits will be issued, unless required by law."
+     },
+     {
+      "q": "I pay through Apple, Google, Roku or Amazon.",
+      "a": "Then you cancel with them. Peacock says your billing is with that company, not Peacock.",
+      "source": "https://www.peacocktv.com/terms",
+      "quote": "Your billing relationship will be directly with the applicable third party, not with Peacock,"
+     }
+    ]
+   }
   },
   {
    "id": "duolingo",

@@ -62,8 +62,8 @@ export function YourCountryPrices({ service, rows }: { service: string; rows: Co
         ))}
       </ul>
       <p className="ycp-meta">
-        {r.appStore ? 'iPhone app price · ' : ''}
-        {r.tax} · checked {r.checked} ·{' '}
+        {r.appStore ? 'iPhone app · ' : ''}
+        {r.tax} · {r.checked} ·{' '}
         <a href={r.source} rel="noopener">
           {r.sourceLabel}
         </a>

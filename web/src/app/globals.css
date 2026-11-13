@@ -743,7 +743,7 @@ h1, h2, h3 { overflow-wrap: break-word; }
 .g-hint { flex-basis: 100%; font-size: 14px; color: var(--mute); }
 .g-src { font-size: 14px; color: var(--mute); }
 .g-src a, .src { color: var(--mute); }
-.art p > .g-src, .art li > .g-src { margin-left: 4px; white-space: nowrap; }
+.art p > .g-src, .art li > .g-src { display: block; margin-top: 4px; }
 .art .olist + .g-src, .art .tbl-wrap + .g-src { margin-top: 12px; }
 .guide .art h2 { margin-top: 64px; }
 .guide .art h2 + * { margin-top: 16px; }
@@ -808,3 +808,104 @@ h1, h2, h3 { overflow-wrap: break-word; }
   .cc { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
   .cc b { display: inline; }
 }
+
+/* Article polish (owner Nov 13: spacing still off). One centred column + menu, fewer lines, one rhythm. */
+.guide .art { grid-template-columns: minmax(0, 700px) 220px; justify-content: space-between; gap: 64px; max-width: 1040px; margin: 0 auto; }
+.guide .crumbs { max-width: 1040px; margin: 0 auto; }
+.guide .art article > * { max-width: none; }
+.guide .g-head { gap: 16px; }
+.guide .g-head .logo, .guide .g-head .mono { width: 48px; height: 48px; border-radius: 12px; }
+.guide .g-lead { margin-top: 28px; }
+.guide .g-acts { margin-top: 20px; }
+.guide .g-who { margin-top: 28px; }
+.guide .art h2 { margin-top: 56px; }
+.guide .art h2 + * { margin-top: 14px; }
+/* steps and ticks: no divider lines, just the number/tick and space */
+.guide .olist li { border: 0; padding: 8px 0 8px 46px; }
+.guide .olist li:last-child { border: 0; }
+.guide .olist li::before { top: 6px; }
+.guide .ticks li { border: 0; padding: 8px 0 8px 40px; }
+.guide .ticks li::before { top: 8px; }
+.guide .callout { margin-top: 24px; }
+.guide .g-faq > div + div h3 { margin-top: 24px; }
+.guide .appcard { margin-top: 64px; }
+.guide .disc { margin-top: 40px; }
+.guide .side-toc a { padding-top: 6px; padding-bottom: 6px; }
+@media (max-width: 1023px) { .guide .art { grid-template-columns: minmax(0, 1fr); max-width: 700px; } .guide .crumbs { max-width: 700px; } }
+@media (max-width: 639px) { .guide .art h2 { margin-top: 44px; } }
+@media (max-width: 340px) { .guide .g-head h1 { font-size: 32px; } }
+.guide .art { grid-template-columns: minmax(0, 760px) 240px; max-width: none; margin: 0; }
+.guide .crumbs { max-width: none; margin: 0; }
+.guide .art p + .olist, .guide .art p + ul { margin-top: 12px; }
+@media (max-width: 1023px) { .guide .art { grid-template-columns: minmax(0, 1fr); max-width: 760px; } }
+.ycp-top { justify-content: flex-start; gap: 8px 12px; }
+/* Phone polish (owner Nov 13): no lines wrapping for no reason. */
+@media (max-width: 639px) {
+  .g-url { display: none; }
+  .g-who { gap: 0 14px; font-size: 15px; }
+  .g-meta { font-size: 14px; }
+  .g-feedback { font-size: 15px; gap: 0 10px; }
+  .ycp-plans .n { font-size: 16px; }
+  .cp { gap: 2px 14px; font-size: 14px; }
+  .ctr { padding: 12px 0; }
+}
+@media (max-width: 639px) {
+  .cp { display: grid; gap: 4px; }
+  .cp span { display: flex; justify-content: space-between; gap: 12px; }
+}
+.btn { text-align: center; }
+
+/* Guide diagrams (Nov 13): show, don't tell. */
+.stmt { margin-top: 32px; }
+.stmt figcaption { font-size: 16px; color: var(--fg2); }
+.stmt figcaption b { color: var(--ink); margin-right: 6px; }
+.stmt ul { list-style: none; padding: 0; margin-top: 12px; background: var(--white); border-radius: 18px; box-shadow: inset 0 0 0 1.5px var(--rule); overflow: hidden; }
+.stmt li + li { border-top: 1px dashed var(--rule); }
+.stmt a { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 12px; min-height: 52px; padding: 8px 18px; text-decoration: none; color: var(--ink); }
+.stmt a:hover { background: #FFFBEA; }
+.stmt .ln { font: 600 14px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .02em; overflow-wrap: anywhere; }
+.stmt .ln.plain { font: 400 15px var(--body); color: var(--fg2); letter-spacing: 0; }
+.stmt .arrow { color: var(--mute); }
+.stmt .who { font-weight: 700; font-size: 14px; background: var(--sun); border-radius: 999px; padding: 4px 12px; white-space: nowrap; }
+.ready { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.ready li { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: var(--white); border-radius: 16px; box-shadow: inset 0 0 0 1.5px var(--rule); }
+.ready svg { flex: none; color: var(--ink); }
+.ready b { display: block; font-size: 15px; line-height: 1.3; }
+.ready small { display: block; font-size: 13px; color: var(--mute); margin-top: 2px; }
+/* steps: a connected stepper */
+.guide .olist li { position: relative; }
+.guide .olist li:not(:last-child)::after { content: ""; position: absolute; left: 15px; top: 40px; bottom: -6px; width: 2px; background: var(--rule); }
+/* iPhone tap path */
+.tap-path { list-style: none; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 6px; }
+.tap-path li { display: inline-flex; align-items: center; gap: 6px; background: var(--white); border-radius: 10px; padding: 8px 12px; font-size: 15px; font-weight: 600; box-shadow: inset 0 0 0 1.5px var(--rule); }
+.tap-path li:not(:last-child)::after { content: "›"; margin-left: 8px; margin-right: -4px; color: var(--mute); font-weight: 400; }
+.tap-path li.last { background: var(--ink); color: #FF8A8A; box-shadow: none; }
+/* timeline */
+.tline { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 24px; position: relative; }
+.tline li { position: relative; padding-top: 28px; }
+.tline li::before { content: ""; position: absolute; top: 7px; left: 0; right: -24px; height: 2px; background: var(--rule); }
+.tline li:last-child::before { right: 0; }
+.tline .dot { position: absolute; top: 0; left: 0; width: 16px; height: 16px; border-radius: 99px; background: var(--sun); box-shadow: inset 0 0 0 2px var(--ink); }
+.tline b { display: block; font-size: 15px; }
+.tline p { font-size: 15px; line-height: 1.5; margin-top: 6px; color: var(--fg2); }
+/* questions as tap-to-open */
+.g-faq details { border-top: 1px solid var(--rule); }
+.g-faq details:last-child { border-bottom: 1px solid var(--rule); }
+.g-faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 60px; padding: 10px 0; }
+.g-faq summary::-webkit-details-marker { display: none; }
+.guide .g-faq h3 { margin: 0; font-size: 17px; }
+.g-faq summary .pm { width: 20px; height: 20px; flex: none; position: relative; }
+.g-faq summary .pm::before, .g-faq summary .pm::after { content: ""; position: absolute; left: 2px; right: 2px; top: 9px; height: 2px; background: var(--ink); border-radius: 2px; }
+.g-faq summary .pm::after { transform: rotate(90deg); transition: transform var(--t-base) var(--ease); }
+.g-faq details[open] summary .pm::after { transform: rotate(0); }
+.g-faq details p { margin: 0 0 16px; font-size: 16px; }
+@media (max-width: 639px) {
+  .ready { grid-template-columns: minmax(0, 1fr); }
+  .stmt a { padding: 8px 14px; gap: 8px; }
+  .tline { grid-template-columns: minmax(0, 1fr); gap: 20px; padding-left: 28px; }
+  .tline li { padding-top: 0; }
+  .tline li::before { top: 16px; bottom: -28px; left: -21px; right: auto; width: 2px; height: auto; }
+  .tline li:last-child::before { display: none; }
+  .tline .dot { left: -28px; top: 2px; }
+}
+.guide .g-faq summary h3 { flex: 1; max-width: none; }

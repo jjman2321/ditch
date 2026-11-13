@@ -60,6 +60,8 @@ export type CancelGuide = {
 export type Sourced = { text: string; source: string; quote?: string };
 export type GuideDepth = {
   checkedOn?: string;
+  /** Name for the source when its address would mislead (Disney+ facts live on hulu.com). */
+  sourceLabel?: string;
   after?: { access?: Sourced | null; data?: Sourced | null; refunds?: Sourced | null } | null;
   verify?: Sourced | null;
   pause?: Sourced | null;
@@ -155,6 +157,15 @@ export function freshness(d: string, today?: string): 'fresh' | 'stale' | 'expir
 }
 
 /** Short, readable host for a source link: "help.netflix.com". */
+/** A short source name for tight lines: "en-americas-support.nintendo.com" → "nintendo.com". Short hosts stay as they are. */
+export function shortHost(url: string): string {
+  const h = host(url);
+  if (h.length <= 22) return h;
+  const parts = h.split('.');
+  const two = parts.slice(-2).join('.');
+  return /^(co|com|org|net)\.[a-z]{2}$/.test(two) ? parts.slice(-3).join('.') : two;
+}
+
 export function host(url: string): string {
   try {
     return new URL(url).hostname.replace(/^www\./, '');

@@ -5,8 +5,9 @@ import { notFound } from 'next/navigation';
 import { EmailBox } from '@/components/EmailBox';
 import { Logo } from '@/components/Logo';
 import { PriceTable } from '@/components/PriceTable';
-import { APPLE_SOURCE, APPLE_STEPS, formatDate, freshness, guideById, host, neighbours, priceFor, priceHubServices, pubDates, publicNotes, publishedGuides, serviceById, idOf, slugOf } from '@/lib/data';
-import { AUTHOR, COMPANY, SITE, SUPPORT_EMAIL } from '@/lib/site';
+import { AfterTimeline, ApplePath, ReadyChips, StatementDiagram } from '@/components/GuideVisuals';
+import { APPLE_SOURCE, formatDate, freshness, guideById, neighbours, priceFor, priceHubServices, pubDates, publicNotes, publishedGuides, serviceById, idOf, shortHost, slugOf } from '@/lib/data';
+import { COMPANY, SITE, SUPPORT_EMAIL } from '@/lib/site';
 
 function H2({ id, children }: { id: string; children: React.ReactNode }) {
   return (
@@ -34,6 +35,8 @@ function answer(g: { answer?: string; steps: string[]; name: string; checkedOn: 
   const base = g.answer ?? `${g.steps.join('. ')}.`;
   return `${base} Checked ${formatDate(g.checkedOn)}.`;
 }
+
+const cap = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
 
 export async function generateMetadata({ params }: PageProps<'/cancel/[slug]'>): Promise<Metadata> {
   const { slug } = await params;
@@ -75,7 +78,11 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
   const year = g.checkedOn.slice(0, 4);
 
   const d = g.depth;
-  const after = d?.after ? [d.after.access, d.after.data, d.after.refunds].filter((x): x is NonNullable<typeof x> => Boolean(x)) : [];
+  const after = [
+    ...(d?.after?.access ? [{ label: 'Until your next bill', ...d.after.access }] : []),
+    ...(d?.after?.data ? [{ label: 'What stays', ...d.after.data }] : []),
+    ...(d?.after?.refunds ? [{ label: 'Refunds', ...d.after.refunds }] : []),
+  ];
   const faq = d?.faq ?? [];
   const toc = [
     { id: 'direct', label: appleOnly ? 'Cancel on iPhone' : `Cancel with ${g.name}` },
@@ -90,7 +97,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
   ];
   const src = (u: string) => (
     <a className="src" href={u} rel="noopener">
-      {host(u)}
+      {shortHost(u)}
     </a>
   );
 
@@ -101,7 +108,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
       headline: `How to cancel ${g.name}`,
       description: ans,
       ...pubDates(g.checkedOn),
-      author: { '@type': 'Person', name: AUTHOR.name, url: `${SITE}${AUTHOR.url}` },
+      author: { '@type': 'Organization', '@id': `${SITE}/#org`, name: COMPANY, url: SITE },
       publisher: { '@type': 'Organization', name: COMPANY, url: SITE },
       mainEntityOfPage: `${SITE}/cancel/${slugOf(g.id)}`,
       citation: [g.source, ...(appleOnly || !g.appleNote ? [] : [APPLE_SOURCE])],
@@ -135,7 +142,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
             <Logo id={g.id} size={56} />
             <h1>How to cancel {g.name}</h1>
             <p className="g-meta">
-              Checked <time dateTime={g.checkedOn}>{formatDate(g.checkedOn)}</time> on {src(g.source)} · By <Link href={AUTHOR.url}>{AUTHOR.name}</Link>
+              Checked <time dateTime={g.checkedOn}>{formatDate(g.checkedOn)}</time> · {d?.sourceLabel ? <a className="src" href={g.source} rel="noopener">{d.sourceLabel}</a> : src(g.source)}
             </p>
           </header>
           {fresh !== 'fresh' ? <p className="stale">Last checked {formatDate(g.checkedOn)}. {g.name} may have changed its steps since. We re-check every 90 days.</p> : null}
@@ -144,7 +151,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
           <div className="g-acts">
             {g.url ? (
               <a className="btn" href={g.url} rel="noopener">
-                {appleOnly ? 'Open your Apple subscriptions ↗' : (g.urlLabel ?? `Open ${g.name}’s cancel page ↗`)}
+                {appleOnly ? 'Open your Apple subscriptions ↗' : (g.urlLabel ?? (g.name.length > 14 ? 'Open the cancel page ↗' : `Open ${g.name}’s cancel page ↗`))}
               </a>
             ) : g.helpUrl ? (
               <a className="btn" href={g.helpUrl} rel="noopener">
@@ -155,29 +162,13 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
                 Jump to the steps ↓
               </a>
             )}
-            {g.url ? <span className="g-url">{appleOnly ? 'Opens your subscriptions in the App Store' : `${shortUrl(g.url)} · ${company}’s site`}</span> : null}
+            {g.url ? <span className="g-url">{appleOnly ? 'Opens the App Store' : shortUrl(g.url)}</span> : null}
           </div>
 
-          <div className="g-who">
-            <b>Who bills you?</b>
-            <a href="#direct">{appleOnly ? 'Apple' : g.name}</a>
-            {showApple ? <a href="#apple">Apple</a> : null}
-            {d?.googlePlay ? <a href="#google">Google Play</a> : null}
-            <a href="#partner">Another company</a>
-            {showApple ? <span className="g-hint">On your bank statement, APPLE.COM/BILL means Apple bills you.</span> : null}
-          </div>
+          <StatementDiagram name={g.name} apple={showApple} google={Boolean(d?.googlePlay)} appleOnly={appleOnly} />
 
           <H2 id="ready">Have this ready</H2>
-          <ul className="ticks">
-            <li>
-              {appleOnly ? 'Your Apple Account sign-in' : `The email you use for ${g.name}`}
-              <span>{appleOnly ? 'The one your iPhone is signed in with.' : `Not sure which? Search your inbox for “${g.name}” receipts.`}</span>
-            </li>
-            <li>
-              The last 4 digits of the card it charges
-              <span>Handy if you have more than one account.</span>
-            </li>
-          </ul>
+          <ReadyChips email={appleOnly ? 'Your Apple Account sign-in' : `The email you use for ${g.name}`} />
 
           <H2 id="direct">{appleOnly ? 'Cancel on your iPhone' : `Cancel with ${g.name}`}</H2>
           <ol className="olist">
@@ -204,11 +195,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
                     ? `Signed up through Apple? Cancel on your iPhone:`
                     : `${g.name} doesn’t mention Apple billing, but if you see APPLE.COM/BILL on your statement, cancel on your iPhone:`}
               </p>
-              <ol className="olist">
-                {APPLE_STEPS.map((st) => (
-                  <li key={st}>{st}</li>
-                ))}
-              </ol>
+              <ApplePath name={g.name} />
               <p className="g-src">From {src(APPLE_SOURCE)}</p>
             </>
           )}
@@ -232,7 +219,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
             <>
               <H2 id="check">How to check it worked</H2>
               <p>
-                {d.verify.text} <span className="g-src">From {src(d.verify.source)}</span>
+                {cap(d.verify.text.replace(/^How to check it worked:\s*/i, ''))} <span className="g-src">From {src(d.verify.source)}</span>
               </p>
             </>
           ) : null}
@@ -240,13 +227,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
           {after.length ? (
             <>
               <H2 id="after">What happens after you cancel</H2>
-              <ul className="g-list">
-                {after.map((x) => (
-                  <li key={x.text}>
-                    {x.text} <span className="g-src">From {src(x.source)}</span>
-                  </li>
-                ))}
-              </ul>
+              <AfterTimeline items={after} src={src} />
             </>
           ) : null}
 
@@ -263,13 +244,17 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
             <>
               <H2 id="faq">Questions</H2>
               <div className="g-faq">
-                {faq.map((f) => (
-                  <div key={f.q}>
-                    <h3>{f.q}</h3>
+                {faq.map((f, n) => (
+                  <details key={f.q} open={n === 0}>
+                    <summary>
+                      <h3>{f.q}</h3>
+                      <span className="pm" aria-hidden />
+                    </summary>
                     <p>
-                      {f.a} <span className="g-src">From {src(f.source)}</span>
+                      {f.a}
+                      <span className="g-src">From {src(f.source)}</span>
                     </p>
-                  </div>
+                  </details>
                 ))}
               </div>
             </>
@@ -299,7 +284,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
             <b>Did this work?</b> <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${g.name} guide: it worked`)}`}>Yes, it worked</a>
             {' · '}
             <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${g.name} guide: something changed`)}&body=${encodeURIComponent('What did you see instead?\n\n')}`}>No, something changed</a>
-            <span className="g-hint">Opens your email app. We don’t track clicks.</span>
+            <span className="g-hint">Opens your email app.</span>
           </p>
 
           <h2 id="more" className="g-more-h">Cancel something else</h2>

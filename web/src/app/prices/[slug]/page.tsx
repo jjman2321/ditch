@@ -7,7 +7,7 @@ import { YourCountryPrices, type CountryPrices } from '@/components/YourCountryP
 import { Logo } from '@/components/Logo';
 import { COUNTRIES, COUNTRY, dateRange, defaultPlan, formatDate, host, guideById, isAppStorePrice, neighbours, priceHubServices, pubDates, serviceById, verifiedPrices, type PriceRow, idOf, inWhere, slugOf } from '@/lib/data';
 import { formatMoney, monthlyMinor } from '@/lib/money';
-import { AUTHOR, COMPANY, SITE, SUPPORT_EMAIL } from '@/lib/site';
+import { COMPANY, SITE, SUPPORT_EMAIL } from '@/lib/site';
 
 export function generateStaticParams() {
   return priceHubServices().map((s) => ({ slug: slugOf(s.id) }));
@@ -87,7 +87,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
       headline: `${s.name} prices ${inWhere(rows)}`,
       description: ans,
       ...pubDates(latest),
-      author: { '@type': 'Person', name: AUTHOR.name, url: `${SITE}${AUTHOR.url}` },
+      author: { '@type': 'Organization', '@id': `${SITE}/#org`, name: COMPANY, url: SITE },
       publisher: { '@type': 'Organization', name: COMPANY, url: SITE },
       mainEntityOfPage: `${SITE}/prices/${slugOf(s.id)}`,
       citation: [...new Set(rows.map((r) => r.source))],
@@ -124,10 +124,10 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
               {s.name} price {latest.slice(0, 4)}
             </h1>
             <p className="g-meta">
-              Checked <time dateTime={latest}>{dateRange(rows.map((r) => r.checked))}</time> {appShare > 0.5 ? 'from Apple’s in-app price list' : `on ${s.name}’s own pages`} · By <Link href={AUTHOR.url}>{AUTHOR.name}</Link>
+              Checked <time dateTime={latest}>{dateRange(rows.map((r) => r.checked))}</time> {appShare > 0.5 ? '· App Store prices' : ''}
             </p>
           </header>
-          <p className="g-lead">{ans}</p>
+          <p className="g-lead">{ans.replace(/ Checked [^.]*\.$/, '')}</p>
 
           <YourCountryPrices service={s.name} rows={cards} />
 
@@ -193,7 +193,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
 
           <p className="g-feedback">
             <b>Spotted a different price?</b> <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${s.name} price changed`)}&body=${encodeURIComponent('Country:\nPlan:\nPrice you saw:\nWhere:\n')}`}>Tell us</a>
-            <span className="g-hint">Opens your email app. We re-check it by hand.</span>
+            <span className="g-hint">Opens your email app.</span>
           </p>
 
           {guide || others.length ? (

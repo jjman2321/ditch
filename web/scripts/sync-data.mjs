@@ -30,14 +30,30 @@ const prices = latest('prices-20');
 const mena = latest('prices-mena-');
 prices.prices = [...prices.prices, ...mena.prices];
 prices.about.countries = { ...prices.about.countries, ...(mena.about.countries ?? {}) };
-const cancel = latest('cancel-guides-');
-// Deeper, officially sourced sections for the top guides (after cancelling, refunds, check it worked, pause, Google Play, FAQ).
-const hasDepth = readdirSync(join(APP, 'docs/research')).some((n) => n.startsWith('guide-depth-') && n.endsWith('.json'));
-const guideDepth = hasDepth ? latest('guide-depth-') : { guides: [] };
+// Cancel guides: every cancel-guides-*.json, oldest first; a later file's guide replaces the same id (e.g. the "-b" re-check).
+const all = (prefix) => readdirSync(join(APP, 'docs/research')).filter((n) => n.startsWith(prefix) && n.endsWith('.json')).sort().map((f) => JSON.parse(readFileSync(join(APP, 'docs/research', f), 'utf8')));
+const cancelFiles = all('cancel-guides-');
+const cancel = cancelFiles[0];
+for (const f of cancelFiles.slice(1)) {
+  for (const g of f.services ?? []) {
+    const i = cancel.services.findIndex((x) => x.id === g.id);
+    if (i >= 0) cancel.services[i] = { ...cancel.services[i], ...g };
+    else cancel.services.push(g);
+  }
+}
+// Deeper, officially sourced sections (after cancelling, refunds, check it worked, pause, Google Play, FAQ), from every guide-depth-*.json.
+const depthById = new Map();
+for (const f of all('guide-depth-')) {
+  const list = Array.isArray(f.guides) ? f.guides : Object.entries(f.guides ?? {}).map(([id, d]) => ({ id, ...d }));
+  for (const d of list) depthById.set(d.id, d);
+}
 for (const g of cancel.services) {
-  const d = guideDepth.guides.find((x) => x.id === g.id);
+  const d = depthById.get(g.id);
   if (d) g.depth = d;
 }
+// Price rises with sources (for /price-changes). Optional until the research lands.
+const changeFiles = all('price-changes-');
+const priceChanges = changeFiles.length ? changeFiles[changeFiles.length - 1] : { checkedOn: null, changes: [] };
 
 const logos = [];
 for (const s of services) {
@@ -53,6 +69,7 @@ w('services', services);
 w('prices', prices);
 w('cancel', cancel);
 w('logos', logos);
+w('price-changes', priceChanges);
 // The build's date, for the stale/expired gates (pages are built ahead of time, so 'today' is the build day).
 w('build', { today: new Date().toISOString().slice(0, 10) });
 console.log(`synced ${services.length} services, ${prices.prices.length} price rows, ${cancel.services.length} cancel guides, ${logos.length} logos`);

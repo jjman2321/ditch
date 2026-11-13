@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { priceHubServices, publishedGuides, slugOf } from '@/lib/data';
+import { priceChanges, priceHubServices, publishedGuides, slugOf } from '@/lib/data';
 import { COMPANY } from '@/lib/site';
 import { TOOLS } from '@/lib/tools';
 
@@ -28,6 +28,7 @@ export function SiteFooter() {
                 {s.name} prices
               </Link>
             ))}
+            {priceChanges().length ? <Link href="/price-changes">Price increases</Link> : null}
             <Link href="/prices">All prices →</Link>
           </nav>
           <nav aria-label="Free tools">

@@ -7,7 +7,7 @@ import { YourCountryPrices, type CountryPrices } from '@/components/YourCountryP
 import { Logo } from '@/components/Logo';
 import { ToolCard } from '@/components/ToolCard';
 import { toolsFor } from '@/lib/tools';
-import { COUNTRIES, COUNTRY, dateRange, inCountry, defaultPlan, formatDate, host, guideById, isAppStorePrice, neighbours, priceHubServices, pubDates, serviceById, verifiedPrices, type PriceRow, idOf, inWhere, slugOf } from '@/lib/data';
+import { COUNTRIES, COUNTRY, dateRange, inCountry, priceChanges, defaultPlan, formatDate, host, guideById, isAppStorePrice, neighbours, priceHubServices, pubDates, serviceById, verifiedPrices, type PriceRow, idOf, inWhere, slugOf } from '@/lib/data';
 import { formatMoney, monthlyMinor } from '@/lib/money';
 import { COMPANY, SITE, SUPPORT_EMAIL } from '@/lib/site';
 
@@ -114,11 +114,13 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
   const cards: CountryPrices[] = rows.map((r) => ({ country: r.country, name: COUNTRY[r.country].name, tax: COUNTRY[r.country].tax, currency: r.currency, checked: formatDate(r.checked), source: r.source, sourceLabel: isAppStorePrice(r) ? 'App Store' : host(r.source), appStore: isAppStorePrice(r), plans: r.plans.map((p) => ({ id: p.id, name: p.name, amountMinor: p.amountMinor, cycle: p.cycle })) }));
   const many = rows.length > 1;
 
+  const history = priceChanges().filter((c) => c.serviceId === s.id);
   const home = rows.find((r) => r.country === 'US') ?? rows[0];
   const homeCheap = home ? cheapest(home) : undefined;
   const toc = [
     { id: 'ycp-h', label: 'Your country' },
     ...(many ? [{ id: 'all', label: 'Price by country' }, { id: 'cheapest', label: 'Cheapest plan in each country' }] : []),
+    ...(history.length ? [{ id: 'history', label: 'Price history' }] : []),
     ...(notes.length ? [{ id: 'notes', label: 'Good to know' }] : []),
     ...(guide || others.length ? [{ id: 'more', label: 'Related' }] : []),
   ];
@@ -190,6 +192,25 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
                 </ul>
               </section>
             </>
+          ) : null}
+
+          {history.length ? (
+            <section className="v4-sec" aria-labelledby="history">
+              <h2 id="history">{s.name} price history</h2>
+              <ul className="good">
+                {history.map((c) => (
+                  <li key={`${c.country}-${c.plan}-${c.when}`}>
+                    <b>{formatDate(c.when)}</b>, {c.plan} in {inCountry(c.country)}: {formatMoney(c.oldPrice, c.currency, { country: c.country })} → {formatMoney(c.newPrice, c.currency, { country: c.country })} (+{Math.round(c.pct)}%).{' '}
+                    <a href={c.source} rel="noopener" className="src-a">
+                      Source
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <p className="g-src">
+                <Link href="/price-changes">Every subscription price increase →</Link>
+              </p>
+            </section>
           ) : null}
 
           {notes.length ? (

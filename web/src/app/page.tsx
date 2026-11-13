@@ -39,7 +39,7 @@ const FAQ = [
 export const metadata = {
   alternates: { canonical: '/' },
   title: { absolute: 'Ditch: Subscription Tracker for iPhone | Ditch it before it renews' },
-  description: 'Track every subscription in one list and get a reminder 3 days before each charge. No bank login, no account. Free to track, for iPhone.',
+  description: 'Track every subscription free and get a reminder 3 days before a charge. No bank login, no account. For iPhone.',
 };
 
 export default function Home() {
@@ -114,7 +114,7 @@ export default function Home() {
               <br />
               before it renews.
             </h1>
-            <p className="lead">Track every subscription in one list and get a reminder 3 days before each charge. No bank login, no account.</p>
+            <p className="lead">Track every subscription free. Get a reminder 3 days before a charge.</p>
             <div id="join">
               <EmailBox source="home-hero" bare cta="Join the waitlist" />
             </div>

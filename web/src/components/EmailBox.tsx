@@ -6,14 +6,13 @@ import { useId, useState } from 'react';
 type State = 'idle' | 'sending' | 'done' | 'already' | 'unsent' | 'closed' | 'error';
 
 /**
- * The waitlist box. One email field, an unticked Price Hike Report option, and a plain promise line.
+ * The waitlist box. One email field and a plain promise line (owner, Nov 13: no Price Hike Report option).
  * Posts to /api/subscribe (D1 + Resend double opt-in). Never claims it saved when it didn't.
  */
-export function EmailBox({ source, cta = 'Join the waitlist', onCream = false, compact = false, bare = false }: { source: string; cta?: string; onCream?: boolean; compact?: boolean; bare?: boolean }) {
+export function EmailBox({ source, cta = 'Join the waitlist', onCream = false, bare = false }: { source: string; cta?: string; onCream?: boolean; compact?: boolean; bare?: boolean }) {
   const id = useId();
   const [state, setState] = useState<State>('idle');
   const [email, setEmail] = useState('');
-  const [report, setReport] = useState(false);
   const [invalid, setInvalid] = useState<false | 'empty' | 'typo'>(false);
 
   async function submit(e?: React.FormEvent) {
@@ -22,7 +21,7 @@ export function EmailBox({ source, cta = 'Join the waitlist', onCream = false, c
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) return setInvalid('typo');
     setState('sending');
     try {
-      const res = await fetch('/api/subscribe', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email, source, report }) });
+      const res = await fetch('/api/subscribe', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email, source }) });
       const data = (await res.json().catch(() => ({}))) as { error?: string; confirmed?: boolean; sent?: boolean };
       if (res.ok) return setState(data.confirmed ? 'already' : data.sent ? 'done' : 'unsent');
       if (data.error === 'invalid-email') {
@@ -107,12 +106,6 @@ export function EmailBox({ source, cta = 'Join the waitlist', onCream = false, c
           Something went wrong. Try again in a minute.
         </p>
       ) : null}
-      {compact || bare ? null : (
-        <label className="opt">
-          <input type="checkbox" checked={report} onChange={(e) => setReport(e.target.checked)} />
-          Also send me the monthly Price Hike Report
-        </label>
-      )}
       {bare ? null : (
         <p id={`${id}-fine`} className="fine">
           We’ll send a confirm link, then one email the day Ditch is out. Unsubscribe anytime. <a href="/privacy">Privacy policy</a>

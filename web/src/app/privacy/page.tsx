@@ -46,9 +46,9 @@ export default function Privacy() {
       </p>
       <p>The “What do you pay for?” calculator runs in your browser. What you tap isn’t sent anywhere.</p>
 
-      <h2 id="waitlist">3. The waitlist and the Price Hike Report</h2>
+      <h2 id="waitlist">3. The waitlist</h2>
       <p>
-        If you join the waitlist, we store your email address, the page you signed up on, whether you ticked the Price Hike Report, and when you confirmed. It’s kept in our Cloudflare database and in Resend, the service that sends our emails. We use it only to email you when Ditch launches and, if you asked, the monthly report.
+        If you join the waitlist, we store your email address, the page you signed up on, and when you confirmed. It’s kept in our Cloudflare database and in Resend, the service that sends our emails. We use it only to email you when Ditch launches.
       </p>
       <p>
         Every email has an unsubscribe link. To delete your address completely, email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> and we’ll remove it within 30 days.

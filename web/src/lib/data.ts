@@ -5,6 +5,7 @@
 import cancelJson from '@/data/cancel.json';
 import logosJson from '@/data/logos.json';
 import pricesJson from '@/data/prices.json';
+import priceChangesJson from '@/data/price-changes.json';
 import buildJson from '@/data/build.json';
 import servicesJson from '@/data/services.json';
 
@@ -245,3 +246,31 @@ export function inWhere(rows: { country: string }[]): string {
 
 /** "in the US", "in the UK", "in the Netherlands", "in the United Arab Emirates", "in Canada". */
 export const inCountry = (code: string) => code === 'US' ? 'the US' : code === 'GB' ? 'the UK' : ['NL', 'AE'].includes(code) ? `the ${COUNTRY[code]?.name ?? code}` : COUNTRY[code]?.name ?? code;
+
+/* ---------- Price changes (/price-changes) ---------- */
+
+export type PriceChange = {
+  serviceId: string;
+  country: string;
+  plan: string;
+  oldPrice: number;
+  newPrice: number;
+  currency: string;
+  cycle: Cycle;
+  announcedOn?: string | null;
+  effectiveNew?: string | null;
+  effectiveExisting?: string | null;
+  source: string;
+  sourceType: 'official' | 'press';
+  quote?: string;
+  notes?: string;
+};
+/** Sourced price rises, newest first, for services we know. `when` is the first date we have; `pct` is the rise in %. */
+export function priceChanges() {
+  const raw = ((priceChangesJson as { changes?: PriceChange[] }).changes ?? []).filter((c) => c.newPrice > c.oldPrice && c.source && serviceById(c.serviceId) && COUNTRY[c.country]);
+  return raw
+    .map((c) => ({ ...c, name: serviceById(c.serviceId)!.name, when: (c.effectiveNew ?? c.announcedOn ?? c.effectiveExisting ?? '') as string, pct: ((c.newPrice - c.oldPrice) / c.oldPrice) * 100 }))
+    .filter((c) => c.when)
+    .sort((a, b) => b.when.localeCompare(a.when) || a.name.localeCompare(b.name));
+}
+export const priceChangesChecked = () => (priceChangesJson as { checkedOn?: string | null }).checkedOn ?? null;

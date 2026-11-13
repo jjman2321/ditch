@@ -5,7 +5,7 @@ const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 /** Waitlist sign-up. Saves to D1, then emails a confirm link through Resend (double opt-in). */
 export async function POST(req: Request) {
-  let body: { email?: unknown; source?: unknown; report?: unknown };
+  let body: { email?: unknown; source?: unknown };
   try {
     body = await req.json();
   } catch {
@@ -13,7 +13,8 @@ export async function POST(req: Request) {
   }
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
   const source = typeof body.source === 'string' ? body.source.slice(0, 200) : null;
-  const report = body.report === true ? 1 : 0;
+  // The Price Hike Report option was dropped (owner, Nov 13). The column stays so old rows keep their value.
+  const report = 0;
   if (!EMAIL.test(email) || email.length > 254) return Response.json({ ok: false, error: 'invalid-email' }, { status: 400 });
 
   const { DB, RESEND_API_KEY, EMAIL_FROM } = await env();
@@ -40,7 +41,7 @@ export async function POST(req: Request) {
         from: EMAIL_FROM ?? 'Ditch <hello@ditchsubs.app>',
         to: email,
         subject: 'Confirm your spot on the Ditch waitlist',
-        text: `Tap to confirm: ${link}\n\nOne email when Ditch is on the App Store${report ? ', plus the monthly Price Hike Report' : ''}. Unsubscribe anytime.\n\nDidn't sign up? Ignore this and nothing happens.\n\nDitch · Grasp Labs LLC`,
+        text: `Tap to confirm: ${link}\n\nOne email the day Ditch is out. Unsubscribe anytime.\n\nDidn't sign up? Ignore this and nothing happens.\n\nDitch · Grasp Labs LLC`,
       }),
     }).catch(() => null);
     sent = Boolean(r?.ok);

@@ -708,3 +708,10 @@ img { display: block; max-width: 100%; }
 @media (max-width: 380px) { .dd-row { flex-wrap: wrap; } .dd-name span { white-space: normal; } .dd-act { flex-basis: 100%; justify-items: start; padding-left: 50px; } }
 .calc-cta { font-weight: 700; font-size: 16px; margin-top: 20px; }
 .receipt .email-wrap { margin-top: 12px; }
+/* a11y round 2 */
+.pc-life :focus-visible { outline-color: var(--sun); }
+input::placeholder { color: var(--mute); opacity: 1; }
+@media (max-width: 860px) { html:has(.cstrip) { scroll-padding-top: 136px; } }
+@media (min-width: 640px) and (max-width: 860px) { body:has(.cstrip) .tbl thead th { top: 120px; } }
+.pc-life .t .lh { display: block; font-family: var(--f-wide); font-size: 22px; line-height: 1.2; }
+@media (max-width: 520px) { .pc-life .t .lh { font-size: 20px; } }

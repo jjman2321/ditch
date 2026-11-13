@@ -104,7 +104,7 @@ export default function Home() {
                 <span className="reel">
                   {HERO_ROTATION.map((r, i) => (
                     <span className="chip" key={i} data-n={r.name} style={{ ['--d' as string]: `${i * 2 - 0.4}s` }}>
-                      <img src={`/logos/${r.id}.png`} alt="" width={64} height={64} />
+                      <img src={`/logos/${r.id}.png`} alt="" width={64} height={64} fetchPriority={i === 0 ? undefined : 'low'} />
                     </span>
                   ))}
                 </span>
@@ -336,10 +336,10 @@ export default function Home() {
             </div>
             <div className="pc-life">
               <p className="amt num">{PRO.lifetime}</p>
-              <p className="t">
-                <b>Lifetime. Pay once.</b>
+              <div className="t">
+                <h3 className="lh">Lifetime. Pay once.</h3>
                 <span>Everything in Pro, and it never renews. For people who are done with subscriptions.</span>
-              </p>
+              </div>
               <Link className="btn" href="/#join" prefetch={false}>
                 Join the waitlist
               </Link>

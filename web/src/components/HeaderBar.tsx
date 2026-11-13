@@ -18,7 +18,7 @@ function useDialog(ref: React.RefObject<HTMLElement | null>, onClose: () => void
     const key = (e: KeyboardEvent) => {
       if (e.key === 'Escape') return onClose();
       if (e.key !== 'Tab' || !ref.current) return;
-      const f = Array.from(ref.current.querySelectorAll<HTMLElement>('a[href], button, input, [tabindex="0"]')).filter((x) => !x.hasAttribute('disabled'));
+      const f = Array.from(ref.current.querySelectorAll<HTMLElement>('a[href], button, input, [tabindex="0"]')).filter((x) => !x.hasAttribute('disabled') && x.tabIndex >= 0);
       if (!f.length) return;
       const first = f[0];
       const last = f[f.length - 1];
@@ -106,13 +106,18 @@ export function HeaderBar({ items }: { items: SearchItem[] }) {
 
 function MenuSheet({ onClose }: { onClose: () => void }) {
   const box = useRef<HTMLDivElement>(null);
+  const close = useRef<HTMLButtonElement>(null);
   useDialog(box, onClose);
+  // Focus the close button after useDialog has noted what opened the sheet, so Esc returns focus there.
+  useEffect(() => {
+    close.current?.focus();
+  }, []);
   return (
     <div className="sheet" id="menu-sheet" role="dialog" aria-modal="true" aria-label="Menu" onClick={onClose}>
       <div className="in" ref={box} onClick={(e) => e.stopPropagation()}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 56 }}>
           <span className="wordmark">ditch</span>
-          <button className="iconbtn" type="button" aria-label="Close menu" onClick={onClose} autoFocus>
+          <button ref={close} className="iconbtn" type="button" aria-label="Close menu" onClick={onClose}>
             <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden>
               <path d="M3 3l12 12M15 3L3 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>

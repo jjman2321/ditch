@@ -64,7 +64,7 @@ export function Calculator({ services, countries, initial = ['netflix', 'spotify
       </div>
       <div className="receipt">
         <p className="sr" aria-live="polite">
-          {chosen.length} picked. {totals.map(([cur, minor]) => formatMoney(Math.round(minor / minorPerMajor(cur)) * minorPerMajor(cur), cur, { country, whole: true })).join(' and ')} a year.
+          {chosen.length ? `${chosen.length} picked. ${totals.map(([cur, minor]) => formatMoney(Math.round(minor / minorPerMajor(cur)) * minorPerMajor(cur), cur, { country, whole: true })).join(' and ')} a year.` : 'Nothing picked yet.'}
         </p>
         <b>{chosen.length ? 'That’s' : 'Tap a few to see'}</b>
         {totals.length ? (

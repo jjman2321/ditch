@@ -5,23 +5,33 @@ import { useSearchParams } from 'next/navigation';
 
 import { EmailBox } from './EmailBox';
 
-/** Reads ?status= in the browser, so the page itself stays static. */
+/** Old links with ?status= still work; new confirm links go to /waitlist/confirmed and /waitlist/invalid (static). */
 export function WaitlistStatus() {
   const status = useSearchParams().get('status');
-  if (status === 'confirmed') {
-    return (
+  if (status === 'confirmed') return <WaitlistConfirmed />;
+  return <WaitlistJoin invalid={status === 'invalid'} />;
+}
+
+export function WaitlistConfirmed() {
+  return (
       <>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/duck.webp" alt="" width={200} height={117} loading="lazy" style={{ margin: '0 auto 8px' }} />
         <h1>You’re on the list.</h1>
         <p className="lead" style={{ marginTop: 16, maxWidth: '34rem' }}>One email when Ditch is on the App Store. While you wait, see what your subscriptions cost.</p>
-        <Link className="btn" href="/#calc-h" style={{ marginTop: 28 }}>
-          Try the calculator
-        </Link>
+        <div style={{ marginTop: 28, display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
+          <Link className="btn" href="/#calc-h">
+            Try the calculator
+          </Link>
+          <Link className="btn ghost" href="/cancel">
+            Browse cancel guides
+          </Link>
+        </div>
       </>
-    );
-  }
-  const invalid = status === 'invalid';
+  );
+}
+
+export function WaitlistJoin({ invalid = false }: { invalid?: boolean }) {
   return (
     <>
       <h1>{invalid ? 'That link didn’t work.' : 'Join the waitlist'}</h1>

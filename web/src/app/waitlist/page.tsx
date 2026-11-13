@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: 'Waitlist', robots: { index: false },
 export default function Waitlist() {
   return (
     <div className="wrap doc" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <Suspense fallback={<h1>Join the waitlist</h1>}>
+      <Suspense fallback={<div style={{ minHeight: 320 }} aria-hidden />}>
         <WaitlistStatus />
       </Suspense>
     </div>

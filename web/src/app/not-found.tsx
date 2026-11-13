@@ -3,6 +3,8 @@ import Link from 'next/link';
 
 import { publishedGuides } from '@/lib/data';
 
+export const metadata = { title: 'Page not found', robots: { index: false } };
+
 export default function NotFound() {
   return (
     <div className="wrap doc" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

@@ -4,6 +4,12 @@
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 
+/** Ink or white letters, whichever reads better on the brand colour (WCAG relative luminance). */
+function inkOn(hex: string) {
+  const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.179 ? '#16140F' : '#fff';
+}
+
 export type IndexItem = { id: string; name: string; aliases: string[]; category: string; meta: string; logo: boolean; color: string; mono: string };
 
 const norm = (s: string) => s.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]/g, '');
@@ -56,7 +62,7 @@ export function ServiceIndex({ items, base, noun }: { items: IndexItem[]; base: 
               {i.logo ? (
                 <img className="logo" src={`/logos/${i.id}.png`} alt="" width={40} height={40} loading="lazy" />
               ) : (
-                <span className="mono" style={{ width: 40, height: 40, background: i.color }}>
+                <span className="mono" aria-hidden style={{ width: 40, height: 40, background: i.color, color: inkOn(i.color) }}>
                   {i.mono}
                 </span>
               )}

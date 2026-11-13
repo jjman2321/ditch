@@ -61,6 +61,7 @@ _Update this at the end of every session._
 - 🗄️ Retired: raccoon poses and Seedance loops in `design/premium-white/anim/` (kept for reference, not used).
 
 ## Next
+- **Launch growth plan (DECISIONS #53, owner yes Nov 13):** painkiller keywords in the ASO keyword field and screenshots; rating ask right after the first test reminder works (#38 updated); a free Lifetime weekend on AppAdvice 2–4 weeks after launch (check Apple's mechanics first). App work comes after the site.
 - **Later (owner, Nov 12):** polish the app's Ditched screen to match the site: duck instead of the stamp. Also open: change "you'll be saving $647 a year" to "$647 a year you won't pay" (waiting on owner).
 - **Only you can do this (blocks submission):** put ditchsubs.app/terms, /privacy and /support live over HTTPS. The domain is still a parking page. Check each on your iPhone.
 - **Only you can do this (5 min):** New York Times blocks our research tools. On help.nytimes.com, find "cancel subscription" and send me the link and steps. Also: is Kindle Unlimited now called "Kindle+" in the US Amazon app?

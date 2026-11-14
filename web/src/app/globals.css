@@ -1800,13 +1800,18 @@ td.num, .r.num, .tbl td:not(:first-child), .vs-t td { white-space: nowrap; }
    pages without one (Cancel guides, Prices, Free tools, info pages) start the heading at the same 64px.
    Hub search boxes and chip rows share one size and one gap. */
 .index-head { padding-top: 0; }
-.v4-hero.solo { margin-top: 64px; }
+.v4-hero.solo { margin-top: 49px; }
 .crumbs + .v4-hero.solo { margin-top: 8px; }
 .crumbs + .v4-hero.solo h1 { margin-top: 0; }
-.doc { padding-top: 64px; }
+.doc { padding-top: 49px; }
 .big-search, .hubpage .hub-search { margin-top: 32px; }
 .big-search, .hub-search .search-pill { max-width: 640px; }
 .search-in.big-search { min-height: 60px; border: 0; box-shadow: inset 0 0 0 1.5px var(--rule); padding: 0 10px 0 22px; }
 .index-head .chips, .hub-search .chips-row { margin-top: 16px; }
 .hub-search .search-pill { min-height: 60px; }
 .index-head .grid-cards, .hubpage .feat { margin-top: 32px; }
+/* owner, Nov 14: everything 15px higher. Breadcrumb pages: the breadcrumb loses its top padding (12px) and the block under it 3px. */
+.v4 .crumbs { padding-top: 0; }
+.crumbs + .v4-hero, .crumbs + .v4-hero.solo, .crumbs + .g5-hero { margin-top: 5px; }
+/* the floating logos sit in front of the phone; on iPad landscape they overlapped its edge and hid behind it */
+.hero .float { z-index: 3; }

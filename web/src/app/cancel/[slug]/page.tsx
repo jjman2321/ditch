@@ -263,9 +263,6 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
         <div className="g5-hero-tx">
           <div className="kick">
             <Logo id={g.id} size={40} />
-            <span>
-              Checked <time dateTime={g.checkedOn}>{formatDate(g.checkedOn)}</time>
-            </span>
           </div>
           <h1>How to cancel {g.name}</h1>
           <p className="lead">{withPhones(quick)}</p>
@@ -397,7 +394,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
           ))}
         </ul>
         <p className="disc">
-          {g.name} is a trademark of its owner. Ditch isn’t affiliated with or endorsed by {g.name}. <Link href="/how-we-check">How we check guides</Link>. <span className="nw">© {year} {COMPANY}.</span>
+          Checked <time dateTime={g.checkedOn}>{formatDate(g.checkedOn)}</time> on {g.name}’s own pages. {g.name} is a trademark of its owner. Ditch isn’t affiliated with or endorsed by {g.name}. <Link href="/how-we-check">How we check guides</Link>. <span className="nw">© {year} {COMPANY}.</span>
         </p>
       </section>
     </div>

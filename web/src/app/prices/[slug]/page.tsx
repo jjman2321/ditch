@@ -196,10 +196,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
         <div className="g5-hero-tx">
           <div className="kick">
             <Logo id={s.id} size={40} />
-            <span>
-              Checked <time dateTime={latest}>{dateRange(rows.map((r) => r.checked))}</time>
-              {appShare > 0.5 ? ' · App Store prices' : ''}
-            </span>
+            {appShare > 0.5 ? <span>App Store prices</span> : null}
           </div>
           <h1>
             {s.name} price {latest.slice(0, 4)}
@@ -328,7 +325,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
 
       <section className="g4-foot">
         <p className="disc">
-          {s.name} is a trademark of its owner. Ditch isn’t affiliated with or endorsed by {s.name}. Prices can change at any time; the service’s own page is always right. © {latest.slice(0, 4)} {COMPANY}.
+          Prices checked <time dateTime={latest}>{dateRange(rows.map((r) => r.checked))}</time> from official pages. {s.name} is a trademark of its owner. Ditch isn’t affiliated with or endorsed by {s.name}. Prices can change at any time; the service’s own page is always right. © {latest.slice(0, 4)} {COMPANY}.
         </p>
       </section>
     </div>

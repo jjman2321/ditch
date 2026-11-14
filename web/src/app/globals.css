@@ -1409,3 +1409,18 @@ img.tv, .tv .logo { width: 44px; height: 44px; border-radius: 12px; }
 @media (pointer: coarse) { .pchg .ch-when a { display: inline-flex; align-items: center; min-height: 44px; } }
 .pchg .ch-pct.down { background: #DDF2E3; color: #135C2B; }
 @media (max-width: 400px) { .v4 kbd { white-space: normal; } }
+
+/* Hero rotation never looks frozen (owner, Nov 14): with Reduce Motion on, logos cross-fade in place (no movement)
+   instead of standing still on Netflix. Fades are fine under Reduce Motion; sliding isn't. */
+@keyframes chipfade { 0% { opacity: 0; } 4% { opacity: 1; } 20% { opacity: 1; } 24% { opacity: 0; } 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .chip, .chip:not(:first-child) { visibility: visible; opacity: 0; animation: chipfade 10s linear var(--d, 0s) infinite both !important; animation-duration: 10s !important; }
+}
+/* App Store + Google Play badges (official artwork, never restyled) */
+.app-badges { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.app-badges .row { display: flex; align-items: center; gap: 10px; }
+.app-badges a { display: inline-flex; align-items: center; min-height: 44px; border-radius: 10px; }
+.app-badges a:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.app-badges img { height: 44px; width: auto; display: block; }
+.app-badges img.gp { height: 64px; margin: -10px -9px; } /* Google's PNG has its own clear space around the badge */
+.app-badges .note { font: 400 12px var(--f-widebold); letter-spacing: .08em; text-transform: uppercase; color: var(--fg2); }

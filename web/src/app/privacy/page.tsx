@@ -48,7 +48,7 @@ export default function Privacy() {
 
       <h2 id="waitlist">3. The waitlist</h2>
       <p>
-        If you join the waitlist, we store your email address, the page you signed up on, and when you confirmed. It’s kept in our Cloudflare database and in Resend, the service that sends our emails. We use it only to email you when Ditch launches.
+        If you join the waitlist, we store your email address, the page you signed up on, and the date. It’s kept in our Cloudflare database. We use it only to email you once, when Ditch launches.
       </p>
       <p>
         Every email has an unsubscribe link. To delete your address completely, email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> and we’ll remove it within 30 days.

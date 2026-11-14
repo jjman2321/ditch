@@ -3,11 +3,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { useId, useState } from 'react';
 
-type State = 'idle' | 'sending' | 'done' | 'already' | 'unsent' | 'closed' | 'error';
+type State = 'idle' | 'sending' | 'done' | 'already' | 'closed' | 'error';
 
 /**
  * The waitlist box. One email field and a plain promise line (owner, Nov 13: no Price Hike Report option).
- * Posts to /api/subscribe (D1 + Resend double opt-in). Never claims it saved when it didn't.
+ * Posts to /api/subscribe (saved to D1; no emails for now). Never claims it saved when it didn’t.
  */
 export function EmailBox({ source, cta = 'Join the waitlist', onCream = false, bare = false }: { source: string; cta?: string; onCream?: boolean; compact?: boolean; bare?: boolean }) {
   const id = useId();
@@ -22,8 +22,8 @@ export function EmailBox({ source, cta = 'Join the waitlist', onCream = false, b
     setState('sending');
     try {
       const res = await fetch('/api/subscribe', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email, source }) });
-      const data = (await res.json().catch(() => ({}))) as { error?: string; confirmed?: boolean; sent?: boolean };
-      if (res.ok) return setState(data.confirmed ? 'already' : data.sent ? 'done' : 'unsent');
+      const data = (await res.json().catch(() => ({}))) as { error?: string; already?: boolean };
+      if (res.ok) return setState(data.already ? 'already' : 'done');
       if (data.error === 'invalid-email') {
         setInvalid('typo');
         return setState('idle');
@@ -41,25 +41,17 @@ export function EmailBox({ source, cta = 'Join the waitlist', onCream = false, b
         <div>
           {state === 'done' ? (
             <>
-              <b>Check your inbox.</b>
+              <b>You’re on the list.</b>
               <p className="small" style={{ color: 'var(--fg2)' }}>
-                We sent a link to <b>{email}</b>. Tap it to confirm your spot.
+                We’ll email <b>{email}</b> once, the day Ditch is out.
               </p>
-              <p className="small" style={{ color: 'var(--fg2)', marginTop: 4 }}>Not there in a minute? Check Spam or Promotions.</p>
             </>
           ) : state === 'already' ? (
             <>
               <b>You’re already on the list.</b>
               <p className="small" style={{ color: 'var(--fg2)' }}>We’ll email {email} the day Ditch is out.</p>
             </>
-          ) : state === 'unsent' ? (
-            <>
-              <b>Almost there.</b>
-              <p className="small" style={{ color: 'var(--fg2)' }}>Our confirm email didn’t send.</p>
-              <button type="button" className="linkbtn" onClick={() => submit()}>
-                Send it again
-              </button>
-            </>
+
           ) : (
             <>
               <b>Sign-ups aren’t open yet.</b>
@@ -108,7 +100,7 @@ export function EmailBox({ source, cta = 'Join the waitlist', onCream = false, b
       ) : null}
       {bare ? null : (
         <p id={`${id}-fine`} className="fine">
-          We’ll send a confirm link, then one email the day Ditch is out. Unsubscribe anytime. <a href="/privacy">Privacy policy</a>
+          One email the day Ditch is out. Nothing else. <a href="/privacy">Privacy policy</a>
         </p>
       )}
     </form>

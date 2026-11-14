@@ -6,8 +6,9 @@ import { EmailBox } from '@/components/EmailBox';
 import { YourCountryPrices, type CountryPrices } from '@/components/YourCountryPrices';
 import { Logo } from '@/components/Logo';
 import { ToolCard } from '@/components/ToolCard';
-import { toolsFor } from '@/lib/tools';
+import { planLabel, toolsFor } from '@/lib/tools';
 import { PriceGrid, type GridCol, type GridRow } from '@/components/PriceGrid';
+import { priceText } from '@/lib/priceText';
 import { COUNTRIES, COUNTRY, dateRange, inCountry, priceChanges, defaultPlan, formatDate, host, guideById, isAppStorePrice, neighbours, priceHubServices, pubDates, serviceById, verifiedPrices, type PriceRow, idOf, inWhere, slugOf } from '@/lib/data';
 import { formatMoney, monthlyMinor } from '@/lib/money';
 import { COMPANY, SITE, SUPPORT_EMAIL, fitDesc, pageTitle } from '@/lib/site';
@@ -182,6 +183,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
   const grid = buildGrid(s.name, rows);
 
   const history = priceChanges().filter((c) => c.serviceId === s.id);
+  const text = priceText(s.name, rows, history.map((c) => ({ plan: planLabel(c.name, c.plan), country: c.country, oldPrice: c.oldPrice, newPrice: c.newPrice, currency: c.currency, when: c.when })));
   return (
     <div className="wrap guide gv3 v4 guide4 g5 pricepage">
       <JsonLd data={ld} />
@@ -227,6 +229,21 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
           <p className="g-src">
             We never add different currencies together. <Link href="/how-we-check">How we check prices</Link>.
           </p>
+        </section>
+      ) : null}
+
+      {text.faq.length ? (
+        <section className="v4-sec p5-text" aria-labelledby="faq">
+          <JsonLd data={{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: text.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }} />
+          <h2 id="faq">{s.name} prices: questions</h2>
+          <div className="faq2">
+            {text.faq.map((f) => (
+              <div key={f.q}>
+                <h3>{f.q}</h3>
+                <p>{f.a}</p>
+              </div>
+            ))}
+          </div>
         </section>
       ) : null}
 

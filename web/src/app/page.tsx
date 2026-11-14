@@ -2,6 +2,7 @@
 import Link from 'next/link';
 
 import { Calculator, type CalcService } from '@/components/Calculator';
+import { AppBadges } from '@/components/AppBadges';
 import { EmailBox } from '@/components/EmailBox';
 import { Notif } from '@/components/Notif';
 import { DitchDemo } from '@/components/DitchDemo';
@@ -104,7 +105,7 @@ export default function Home() {
               <span className="slot" aria-hidden="true">
                 <span className="reel">
                   {HERO_ROTATION.map((r, i) => (
-                    <span className="chip" key={i} data-n={r.name} style={{ ['--d' as string]: `${i * 2 - 0.4}s` }}>
+                    <span className="chip" key={i} data-n={r.name} style={{ ['--d' as string]: `${i * 3 - 0.6}s` }}>
                       <img src={`/logos/${r.id}.png`} alt="" width={64} height={64} fetchPriority={i === 0 ? undefined : 'low'} />
                     </span>
                   ))}
@@ -118,10 +119,7 @@ export default function Home() {
             <div id="join">
               <EmailBox source="home-hero" bare cta="Join the waitlist" />
             </div>
-            <div className="hero-notifs" aria-hidden>
-              <Notif text={`Netflix renews in 3 days. ${formatMoney(nfPlan.amountMinor, 'USD')}. Still watching?`} />
-              <Notif when="Tue" text={`Spotify renews in 3 days. ${formatMoney(defaultPlan(priceFor('spotify', 'US')!).amountMinor, 'USD')}.`} />
-            </div>
+            <AppBadges className="hero-badges" />
           </div>
           <div className="stage" aria-hidden>
             <img className="float" fetchPriority="low" src="/logos/netflix.png" alt="" style={{ left: '4%', top: 70, transform: 'rotate(-6deg)' }} />
@@ -154,6 +152,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
 
       {/* 2. The number */}
       <section className="sec" aria-labelledby="calc-h" data-has-cta>
@@ -408,6 +407,7 @@ export default function Home() {
           </h2>
           <p className="lead">Be the first to know when it’s out.</p>
           <EmailBox source="home-final" bare cta="Join the waitlist" />
+          <AppBadges className="final-badges" />
         </div>
       </section>
 

@@ -1,5 +1,7 @@
 import Link from 'next/link';
 
+import { AppBadges } from './AppBadges';
+
 import { priceChanges, priceHubServices, publishedGuides, slugOf } from '@/lib/data';
 import { COMPANY } from '@/lib/site';
 import { TOOLS } from '@/lib/tools';
@@ -54,6 +56,7 @@ export function SiteFooter() {
             <a href="mailto:support@ditchsubs.app">support@ditchsubs.app</a>
           </nav>
         </div>
+        <AppBadges className="ftr-badges" />
         <div className="giant" aria-hidden>
           <svg viewBox="0 0 1000 250" preserveAspectRatio="xMidYMid meet">
             <text x="0" y="214" textLength="1000" lengthAdjust="spacingAndGlyphs" fill="#FFCC2E" style={{ fontFamily: 'var(--f-wordmark)', fontSize: 300 }}>
@@ -65,7 +68,7 @@ export function SiteFooter() {
           <span>
             © 2026 {COMPANY}
           </span>
-          <span>Not affiliated with any service shown. Names and logos belong to their owners.</span>
+          <span>Not affiliated with any service shown. Names and logos belong to their owners. App Store is a service mark of Apple Inc. Google Play is a trademark of Google LLC.</span>
         </div>
       </div>
     </footer>

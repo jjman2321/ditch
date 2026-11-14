@@ -7,7 +7,8 @@ import { Logo } from '@/components/Logo';
 import { ToolCard } from '@/components/ToolCard';
 import { toolsFor } from '@/lib/tools';
 import { PriceTable } from '@/components/PriceTable';
-import { ReadyChips } from '@/components/GuideVisuals';
+import { PayTabs, type PayTab } from '@/components/guide/PayTabs';
+import { StepArt, stepUrl, tapLabel } from '@/components/guide/StepArt';
 import { APPLE_SOURCE, formatDate, freshness, guideById, neighbours, priceFor, priceHubServices, pubDates, publicNotes, publishedGuides, serviceById, idOf, slugOf } from '@/lib/data';
 import { COMPANY, SITE, SUPPORT_EMAIL } from '@/lib/site';
 
@@ -58,7 +59,8 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
   const picked = (g.related ?? []).map((id) => guideById(id)).filter((x): x is NonNullable<typeof x> => Boolean(x));
   const related = picked.length ? picked.slice(0, 6) : neighbours(sameCat, g.id, 6);
   const more = related.length < 6 ? publishedGuides().filter((x) => x.id !== g.id && !related.includes(x)).slice(0, 6 - related.length) : [];
-  const appleOnly = g.url?.startsWith('https://apps.apple.com');
+  // Apple's own services (iCloud+, Apple One, Apple Music…) are always cancelled in iPhone Settings.
+  const appleOnly = /^https:\/\/(apps|account)\.apple\.com/.test(g.url ?? '') || g.id === 'icloud' || g.id.startsWith('apple-');
   const hasHub = priceHubServices().some((x) => x.id === g.id);
   const ans = answer(g);
   const showApple = !appleOnly && g.appleBilling !== false;
@@ -97,38 +99,141 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
     ...(faq.length ? [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }] : []),
   ];
 
-  const ways = [
-    { id: 'direct', icon: <Logo id={g.id} size={40} />, title: appleOnly ? 'On your iPhone' : `On ${g.name}’s website`, line: g.steps.slice(1).map((x) => x.replace(/^Tap /, '')).join(' → ') || g.steps[0], primary: true },
-    ...(showApple ? [{ id: 'apple', icon: <AppleMark />, title: 'Through Apple', line: 'Your statement says APPLE.COM/BILL. Cancel in iPhone Settings.', primary: false }] : []),
-    ...(d?.googlePlay ? [{ id: 'google', icon: <PlayMark />, title: 'Through Google Play', line: 'Google Play → Subscriptions → ' + g.name + ' → Cancel.', primary: false }] : []),
-    { id: 'partner', icon: <BarsMark />, title: 'Your phone or TV company', line: 'No cancel option? Someone else bills you. Cancel with them.', primary: false },
-  ];
-  const mainHref = g.url ?? g.helpUrl ?? '#direct';
-  const mainLabel = appleOnly ? 'Open Subscriptions ↗' : g.url ? (g.urlLabel ?? (g.name.length > 12 ? 'Open the cancel page ↗' : `Open ${g.name}’s page ↗`)) : g.helpUrl ? 'Open the help page ↗' : 'See the steps ↓';
-
-  const toc = [
-    { id: 'direct', label: appleOnly ? 'On your iPhone' : 'On the website' },
-    ...(showApple ? [{ id: 'apple', label: 'If Apple bills you' }] : []),
-    ...(d?.googlePlay ? [{ id: 'google', label: 'On Android' }] : []),
-    { id: 'partner', label: 'No cancel button?' },
-    ...(d?.verify ? [{ id: 'check', label: 'Check you cancelled' }] : []),
-    ...(after.length ? [{ id: 'after', label: 'What happens after' }] : []),
-    ...(d?.pause ? [{ id: 'pause', label: 'Pause instead' }] : []),
-    ...(faq.length ? [{ id: 'faq', label: 'Questions' }] : []),
-    ...(us ? [{ id: 'price', label: `What ${g.name} costs` }] : []),
-  ];
   const quick = g.answer ?? `${g.steps.join('. ')}.`;
+  const host = g.url ? g.url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0] : undefined;
+  const mainHref = g.url ?? g.helpUrl ?? '#how';
+  const mainLabel = appleOnly ? (g.url ? 'Open Subscriptions ↗' : 'See the steps ↓') : g.url ? (g.urlLabel ?? (g.name.length > 12 ? 'Open the cancel page ↗' : `Open ${g.name}’s page ↗`)) : g.helpUrl ? 'Open the help page ↗' : 'See the steps ↓';
+  // Is the main path a website or the service's own app?
+  const webish = /safari|website|browser|\.(com|net|tv|co|org)\b|sign in at/i.test(g.steps[0] ?? '');
+  const mainWhere = appleOnly ? 'phone' : webish ? 'web' : 'app';
+  const brand = { serviceId: g.id, name: g.name, color: s?.color };
+  const finalLabel = [...g.steps].reverse().map(tapLabel).find(Boolean) ?? null;
+
+  const stepCards = (steps: { text: React.ReactNode; art: React.ReactNode }[]) => (
+    <ol className="g5-steps">
+      {steps.map((st, i) => (
+        <li key={i}>
+          {st.art}
+          <div className="g5-st-tx">
+            <span className="g5-n" aria-hidden>
+              {i + 1}
+            </span>
+            <p>{st.text}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  );
+  const tabs: PayTab[] = [
+    {
+      id: 'direct',
+      label: mainWhere === 'phone' ? 'On your iPhone' : mainWhere === 'app' ? `In the ${app} app` : 'Website',
+      hint: appleOnly ? 'Apple bills it' : `You pay ${g.name}`,
+      icon: <Logo id={g.id} size={28} />,
+      content: (
+        <>
+          <h2 className="g5-panel-h">{mainWhere === 'phone' ? `How to cancel ${g.name} on your iPhone` : mainWhere === 'app' ? `How to cancel ${g.name} in the ${app} app` : `How to cancel ${g.name} on the website`}</h2>
+          {stepCards(g.steps.map((st) => ({ text: keys(st), art: <StepArt kind={mainWhere === 'web' ? 'web' : 'phone'} {...brand} label={tapLabel(st)} url={stepUrl(st) ?? host} title={mainWhere === 'app' ? `${app} app` : undefined} /> })))}
+          {otherNotes.length ? (
+            <div className="tip">
+              {otherNotes.map((n) => (
+                <p key={n}>{n}</p>
+              ))}
+            </div>
+          ) : null}
+          {mainHref.startsWith('http') ? (
+            <a className="btn g5-panel-btn" href={mainHref} rel="noopener">
+              {mainLabel}
+            </a>
+          ) : null}
+        </>
+      ),
+    },
+    ...(showApple
+      ? [
+          {
+            id: 'apple',
+            label: 'iPhone (Apple)',
+            hint: 'APPLE.COM/BILL',
+            icon: <PhoneMark />,
+            content: (
+              <>
+                <h2 className="g5-panel-h">How to cancel {g.name} if Apple bills you</h2>
+                <p className="lead-s">
+                  {g.appleNote ? `If you signed up in the ${app} iPhone app, Apple bills you, and ${company} can’t cancel it for you.` : `Signed up in the iPhone app? Then Apple may bill you. Your statement says APPLE.COM/BILL.`}
+                </p>
+                {stepCards([
+                  { text: <>Open <kbd>Settings</kbd> on your iPhone.</>, art: <StepArt kind="phone" {...brand} title="Home Screen" label="Settings" rows={['Settings', 'App Store', g.name]} /> },
+                  { text: <>Tap your name, then <kbd>Subscriptions</kbd>.</>, art: <StepArt kind="phone" {...brand} title="Settings" label="Subscriptions" rows={['Your name', 'Subscriptions', 'Sign Out']} /> },
+                  { text: <>Tap {g.name}, then <kbd>Cancel Subscription</kbd>.</>, art: <StepArt kind="phone" {...brand} title="Subscriptions" label="Cancel Subscription" rows={[g.name, 'Cancel Subscription']} /> },
+                ])}
+              </>
+            ),
+          },
+        ]
+      : []),
+    ...(d?.googlePlay
+      ? [
+          {
+            id: 'google',
+            label: 'Google Play',
+            hint: 'Android',
+            icon: <PlayMark />,
+            content: (
+              <>
+                <h2 className="g5-panel-h">How to cancel {g.name} on Android (Google Play)</h2>
+                {stepCards(d.googlePlay.steps.map((st) => ({ text: keys(st), art: <StepArt kind="phone" {...brand} title="Google Play" label={tapLabel(st)} rows={tapLabel(st) ? ['Payments & subscriptions', 'Subscriptions', g.name].filter((r) => r !== tapLabel(st)).slice(0, 2) : []} /> })))}
+              </>
+            ),
+          },
+        ]
+      : []),
+    {
+      id: 'partner',
+      label: 'Other ways',
+      hint: 'Phone, store or another company',
+      icon: <BarsMark />,
+      content: (
+        <>
+          <h2 className="g5-panel-h">Other ways to cancel {g.name}</h2>
+          <div className="g5-partner">
+            <p className="lead-s">{partnerText ?? `Then ${company} probably isn’t billing you directly. Look for the company named on your bank statement and cancel with them.`}</p>
+            {!partnerText || /phone|tv|internet|carrier|bundle|partner/i.test(partnerText) ? (
+            <div className="g5-bill" aria-hidden>
+              <span className="g5-bill-h">Your bill</span>
+              <span className="g5-bill-r">
+                Internet <i />
+              </span>
+              <span className="g5-bill-r hit">
+                {g.name} <i />
+              </span>
+              <span className="g5-bill-r">
+                Phone line <i />
+              </span>
+            </div>
+            ) : null}
+          </div>
+        </>
+      ),
+    },
+  ];
+
+  const facts = [
+    ...(d?.verify ? [{ k: 'check', icon: '✓', label: 'Check it worked', text: cap(d.verify.text.replace(/^How to check it worked:\s*/i, '')) }] : []),
+    ...after.map((x) => ({ k: x.label, icon: x.label === 'Your access' ? '◷' : x.label === 'Refunds' ? '↺' : '▤', label: x.label, text: x.text })),
+  ];
 
   return (
-    <div className="wrap gv3 v4 guide4">
+    <div className="wrap gv3 v4 guide4 g5">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
       <nav className="crumbs" aria-label="Breadcrumb">
         <Link href="/cancel">Cancel guides</Link>
         <span aria-hidden>›</span>
         <span aria-current="page">{g.name}</span>
       </nav>
-      <div className="g4">
-        <article className="g4-main">
+
+      <header className="g5-hero">
+        <div className="g5-hero-tx">
           <div className="kick">
             <Logo id={g.id} size={40} />
             <span>
@@ -138,121 +243,58 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
           <h1>How to cancel {g.name}</h1>
           <p className="lead">{quick}</p>
           {fresh !== 'fresh' ? <p className="stale">Last checked {formatDate(g.checkedOn)}. {g.name} may have changed its steps since. We re-check every 90 days.</p> : null}
-
-          <h2 id="ways" className="sr">Pick how you pay</h2>
-          <ul className={`ways4 n${ways.length}`}>
-            {ways.map((w) => (
-              <li key={w.id} className={w.primary ? 'on' : undefined}>
-                <span className="w-top">
-                  <span className="ic">{w.icon}</span>
-                  <h3>{w.title}</h3>
-                </span>
-                <p>{w.line}</p>
-                {w.primary ? (
-                  <a className="btn" href={mainHref} rel={mainHref.startsWith('http') ? 'noopener' : undefined}>
-                    {mainLabel}
-                  </a>
-                ) : (
-                  <a className="w-go" href={`#${w.id}`}>
-                    Show me how <span aria-hidden>↓</span>
-                  </a>
-                )}
-              </li>
-            ))}
-          </ul>
-
-          <section className="v4-sec" aria-labelledby="ready">
-            <h2 id="ready">Have this ready</h2>
-            <ReadyChips email={appleOnly ? 'Your Apple Account sign-in' : `The email you use for ${g.name}`} />
-          </section>
-
-          <section className="v4-sec" aria-labelledby="direct">
-            <h2 id="direct">{appleOnly ? `Cancel ${g.name} on your iPhone` : `How to cancel ${g.name} on the website`}</h2>
-            <ol className="st">
-              {g.steps.map((st) => (
-                <li key={st}>
-                  <span>{keys(st)}</span>
-                </li>
-              ))}
-            </ol>
-            {otherNotes.length ? (
-              <div className="tip">
-                {otherNotes.map((n) => (
-                  <p key={n}>{n}</p>
-                ))}
-              </div>
+          <div className="g5-cta-row">
+            <a className="btn" href={mainHref} rel={mainHref.startsWith('http') ? 'noopener' : undefined}>
+              {mainLabel}
+            </a>
+            {mainHref !== '#how' ? (
+              <a className="btn ghost" href="#how">
+                See the steps ↓
+              </a>
             ) : null}
-          </section>
+          </div>
+        </div>
+        <div className="g5-hero-art" aria-hidden>
+          <div className="g5-hero-card">
+            <StepArt kind={mainWhere === 'web' ? 'web' : 'phone'} {...brand} label={finalLabel} url={g.url ? g.url.replace(/^https?:\/\/(www\.)?/, '') : host} title={mainWhere === 'web' ? 'Membership' : undefined} />
+          </div>
+        </div>
+      </header>
 
-          {showApple ? (
-            <section className="v4-sec" aria-labelledby="apple">
-              <h2 id="apple">How to cancel {g.name} if Apple bills you</h2>
-              <p className="lead-s">
-                {g.appleNote ? `If you signed up in the ${app} iPhone app, Apple bills you, and ${company} can’t cancel it for you.` : `Signed up in the iPhone app? Then Apple may bill you. Your statement says APPLE.COM/BILL.`}
-              </p>
-              <ol className="st">
-                <li>
-                  <span>Open <kbd>Settings</kbd> on your iPhone.</span>
-                </li>
-                <li>
-                  <span>Tap your name, then <kbd>Subscriptions</kbd>.</span>
-                </li>
-                <li>
-                  <span>Tap {g.name}, then <kbd>Cancel Subscription</kbd>.</span>
-                </li>
-              </ol>
-            </section>
-          ) : null}
+      <section className="v4-sec" id="how" aria-labelledby="how-h">
+        <h2 id="how-h">How do you pay for {g.name}?</h2>
+        <p className="g5-sub">Where you cancel depends on who bills you. Pick one.</p>
+        <PayTabs tabs={tabs} />
+      </section>
 
-          {d?.googlePlay ? (
-            <section className="v4-sec" aria-labelledby="google">
-              <h2 id="google">How to cancel {g.name} on Android (Google Play)</h2>
-              <ol className="st">
-                {d.googlePlay.steps.map((st) => (
-                  <li key={st}>
-                    <span>{keys(st)}</span>
-                  </li>
-                ))}
-              </ol>
-            </section>
-          ) : null}
+      {facts.length ? (
+        <section className="v4-sec" aria-labelledby="after">
+          <h2 id="after">After you cancel {g.name}</h2>
+          <div className="g5-facts">
+            {facts.map((f) => (
+              <div key={f.k} id={f.k === 'check' ? 'check' : undefined}>
+                <span className="g5-f-ic" aria-hidden>
+                  {f.icon}
+                </span>
+                <h3>{f.label}</h3>
+                <p>{f.text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
-          <section className="v4-sec" aria-labelledby="partner">
-            <h2 id="partner">No cancel button? Your phone or TV company may bill you</h2>
-            <p className="lead-s">{partnerText ?? `Then ${company} probably isn’t billing you directly. Look for the company named on your bank statement and cancel with them.`}</p>
-          </section>
-
-          {d?.verify ? (
-            <section className="v4-sec" aria-labelledby="check">
-              <h2 id="check">How to check you cancelled {g.name}</h2>
-              <p className="lead-s">{cap(d.verify.text.replace(/^How to check it worked:\s*/i, ''))}</p>
-            </section>
-          ) : null}
-
-          {after.length ? (
-            <section className="v4-sec" aria-labelledby="after">
-              <h2 id="after">What happens after you cancel {g.name}</h2>
-              <dl className="after">
-                {after.map((x) => (
-                  <div key={x.label}>
-                    <dt>{x.label}</dt>
-                    <dd>{x.text}</dd>
-                  </div>
-                ))}
-              </dl>
-            </section>
-          ) : null}
-
+      {d?.pause || faq.length ? (
+        <section className="v4-sec g5-two" aria-label="More help">
           {d?.pause ? (
-            <section className="v4-sec" aria-labelledby="pause">
-              <h2 id="pause">Not sure yet? Pause instead</h2>
-              <p className="lead-s">{d.pause.text}</p>
-            </section>
+            <div id="pause" className="g5-pause">
+              <h2>{/downgrad|smaller plan|switch to|cheaper plan|lower plan/i.test(d.pause.text) ? 'Not sure yet? Downgrade instead' : 'Not sure yet? Pause instead'}</h2>
+              <p>{d.pause.text}</p>
+            </div>
           ) : null}
-
           {faq.length ? (
-            <section className="v4-sec" aria-labelledby="faq">
-              <h2 id="faq">{g.name} cancellation questions</h2>
+            <div id="faq">
+              <h2>{g.name} cancellation questions</h2>
               <div className="qa">
                 {faq.map((f) => (
                   <div key={f.q}>
@@ -261,48 +303,28 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
                   </div>
                 ))}
               </div>
-            </section>
-          ) : null}
-
-          {us ? (
-            <section className="v4-sec" aria-labelledby="price">
-              <h2 id="price">What {g.name} costs</h2>
-              <PriceTable serviceId={g.id} countries={['US']} caption={`${g.name} prices in the US`} />
-              {hasHub ? (
-                <p className="src">
-                  <Link href={`/prices/${slugOf(g.id)}`}>{g.name} prices in every country we check →</Link>
-                </p>
-              ) : null}
-            </section>
-          ) : null}
-
-          <p className="g-feedback">
-            <b>Did this work?</b> <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${g.name} guide: it worked`)}`}>Yes, it worked</a>
-            {' · '}
-            <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${g.name} guide: something changed`)}&body=${encodeURIComponent('What did you see instead?\n\n')}`}>No, something changed</a>
-          </p>
-        </article>
-
-        <aside className="g4-side" aria-label="Quick answer">
-          <div className="g4-stick">
-            <div className="qa-card">
-              <p className="k">{ways[0].title}</p>
-              <p>{ways[0].line}</p>
-              <a className="btn" href={mainHref} rel={mainHref.startsWith('http') ? 'noopener' : undefined}>
-                {mainLabel}
-              </a>
             </div>
-            <nav className="toc4" aria-label="On this page">
-              <p className="k">On this page</p>
-              {toc.map((x) => (
-                <a key={x.id} href={`#${x.id}`}>
-                  {x.label}
-                </a>
-              ))}
-            </nav>
-          </div>
-        </aside>
-      </div>
+          ) : null}
+        </section>
+      ) : null}
+
+      {us ? (
+        <section className="v4-sec" aria-labelledby="price">
+          <h2 id="price">What {g.name} costs</h2>
+          <PriceTable serviceId={g.id} countries={['US']} caption={`${g.name} prices in the US`} />
+          {hasHub ? (
+            <p className="src">
+              <Link href={`/prices/${slugOf(g.id)}`}>{g.name} prices in every country we check →</Link>
+            </p>
+          ) : null}
+        </section>
+      ) : null}
+
+      <p className="g-feedback">
+        <b>Did this work?</b> <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${g.name} guide: it worked`)}`}>Yes, it worked</a>
+        {' · '}
+        <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${g.name} guide: something changed`)}&body=${encodeURIComponent('What did you see instead?\n\n')}`}>No, something changed</a>
+      </p>
 
       <section className="v4-cta" id="remind" aria-labelledby="remind-h" data-has-cta>
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -315,7 +337,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
       </section>
 
       <section className="v4-sec" aria-labelledby="more">
-        <h2 id="more">Cancel something else</h2>
+        <h2 id="more">Related guides and tools</h2>
         <div className="tgrid">
           {toolsFor(g.id).slice(0, 2).map((t) => (
             <ToolCard key={t.href} item={t} />
@@ -373,10 +395,12 @@ function keys(step: string): React.ReactNode {
   return parts;
 }
 
-function AppleMark() {
+/** A plain phone outline (Apple doesn't allow its logo on other websites). */
+function PhoneMark() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden>
-      <path d="M16.5 12.6c0-2.4 2-3.5 2-3.6-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.2-2.8.9-3.5.9-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.6s-2.5-1-2.5-3.7zM14.2 5.6c.6-.8 1.1-1.8 1-2.9-.9 0-2.1.6-2.7 1.4-.6.7-1.1 1.8-1 2.8 1 .1 2.1-.5 2.7-1.3z" fill="currentColor" />
+    <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden>
+      <rect x="6.5" y="2.5" width="11" height="19" rx="2.6" fill="none" stroke="currentColor" strokeWidth="2" />
+      <path d="M10.5 18.5h3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }

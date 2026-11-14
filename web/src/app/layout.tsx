@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 
 import { Reveal } from '@/components/Reveal';
+import { JoinFocus } from '@/components/JoinFocus';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { BRAND, COMPANY, SITE } from '@/lib/site';
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         <SiteHeader />
         <main id="main" tabIndex={-1}>{children}</main>
         <SiteFooter />
+        <JoinFocus />
         <Reveal />
       </body>
     </html>

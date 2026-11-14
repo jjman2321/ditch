@@ -50,7 +50,7 @@ function ChargeFinderInner({ points, countries, biller: start = 'any' }: { point
       <div className="row">
         <label className="f">
           Amount on your statement
-          <input type="text" inputMode="decimal" placeholder="9.99" value={amount} onChange={(e) => setAmount(e.target.value)} />
+          <input type="text" inputMode="decimal" placeholder="e.g. 9.99" value={amount} onChange={(e) => setAmount(e.target.value)} />
         </label>
         <CountrySelect value={c} onChange={setCountry} countries={countries} />
       </div>

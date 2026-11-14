@@ -7,7 +7,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { NAV } from '@/lib/site';
 
-export type SearchItem = { id: string; slug: string; name: string; aliases: string[]; guide: boolean; prices: boolean; rank: number };
+export type SearchItem = { id: string; slug: string; name: string; aliases: string[]; guide: boolean; prices: boolean; rank: number; logo: boolean };
+export type PageItem = { key: string; label: string; href: string; words: string };
 
 /** Keeps Tab inside a dialog, locks page scroll, and returns focus to whatever opened it. */
 function useDialog(ref: React.RefObject<HTMLElement | null>, onClose: () => void) {
@@ -36,7 +37,7 @@ function useDialog(ref: React.RefObject<HTMLElement | null>, onClose: () => void
 
 const norm = (s: string) => s.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]/g, '');
 
-export function HeaderBar({ items }: { items: SearchItem[] }) {
+export function HeaderBar({ items, pages = [] }: { items: SearchItem[]; pages?: PageItem[] }) {
   const path = usePathname();
   const onSun = path === '/';
   const [scrolled, setScrolled] = useState(false);
@@ -99,7 +100,7 @@ export function HeaderBar({ items }: { items: SearchItem[] }) {
         </button>
       </div>
       {menu ? <MenuSheet onClose={() => setMenu(false)} /> : null}
-      {search ? <SearchDialog items={items} onClose={() => setSearch(false)} /> : null}
+      {search ? <SearchDialog items={items} pages={pages} onClose={() => setSearch(false)} /> : null}
     </header>
   );
 }
@@ -138,7 +139,7 @@ function MenuSheet({ onClose }: { onClose: () => void }) {
   );
 }
 
-function SearchDialog({ items, onClose }: { items: SearchItem[]; onClose: () => void }) {
+function SearchDialog({ items, pages, onClose }: { items: SearchItem[]; pages: PageItem[]; onClose: () => void }) {
   const [q, setQ] = useState('');
   const [sel, setSel] = useState(0);
   const input = useRef<HTMLInputElement>(null);
@@ -151,15 +152,21 @@ function SearchDialog({ items, onClose }: { items: SearchItem[]; onClose: () => 
     return list.slice(0, 12).flatMap((i) => [
       ...(i.guide ? [{ key: `${i.id}-c`, id: i.id, label: `Cancel ${i.name}`, href: `/cancel/${i.slug}`, kind: 'Cancel guide' }] : []),
       ...(i.prices ? [{ key: `${i.id}-p`, id: i.id, label: `${i.name} prices`, href: `/prices/${i.slug}`, kind: 'Prices' }] : []),
-    ]);
+    ]).map((r) => ({ ...r, logo: items.find((x) => x.id === r.id)?.logo ?? false }));
   }, [q, items]);
+  const pageHits = useMemo(() => {
+    const words = norm(q).split(/\s+/).filter(Boolean);
+    if (!words.length) return [];
+    return pages.filter((p) => words.every((w) => norm(p.words).includes(w))).slice(0, 6);
+  }, [q, pages]);
+  const all = useMemo(() => [...results, ...pageHits.map((p) => ({ key: p.key, id: '', label: p.label, href: p.href, kind: p.href.startsWith('/charges') ? 'Charge finder' : p.href === '/price-changes' ? 'Prices' : 'Free tool', logo: false }))], [results, pageHits]);
 
   useEffect(() => {
     input.current?.focus();
   }, []);
   useEffect(() => {
-    if (results[sel]) document.getElementById(`sr-${results[sel].key}`)?.scrollIntoView({ block: 'nearest' });
-  }, [sel, results]);
+    if (all[sel]) document.getElementById(`sr-${all[sel].key}`)?.scrollIntoView({ block: 'nearest' });
+  }, [sel, all]);
 
   return (
     <div className="search-dlg" role="dialog" aria-modal="true" aria-label="Search" onClick={onClose}>
@@ -177,11 +184,11 @@ function SearchDialog({ items, onClose }: { items: SearchItem[]; onClose: () => 
               setSel(0);
             }}
             onKeyDown={(e) => {
-              if (e.key === 'ArrowDown') { e.preventDefault(); setSel((s) => Math.min(s + 1, results.length - 1)); }
+              if (e.key === 'ArrowDown') { e.preventDefault(); setSel((s) => Math.min(s + 1, all.length - 1)); }
               if (e.key === 'ArrowUp') { e.preventDefault(); setSel((s) => Math.max(s - 1, 0)); }
-              if (e.key === 'Enter' && results[sel]) {
+              if (e.key === 'Enter' && all[sel]) {
                 onClose();
-                router.push(results[sel].href);
+                router.push(all[sel].href);
               }
             }}
             placeholder="Netflix, Spotify, ChatGPT…"
@@ -189,7 +196,7 @@ function SearchDialog({ items, onClose }: { items: SearchItem[]; onClose: () => 
             role="combobox"
             aria-expanded="true"
             aria-controls="search-results"
-            aria-activedescendant={results[sel] ? `sr-${results[sel].key}` : undefined}
+            aria-activedescendant={all[sel] ? `sr-${all[sel].key}` : undefined}
           />
           <button className="iconbtn" type="button" aria-label="Close search" onClick={onClose}>
             <svg width="16" height="16" viewBox="0 0 18 18" aria-hidden>
@@ -197,13 +204,13 @@ function SearchDialog({ items, onClose }: { items: SearchItem[]; onClose: () => 
             </svg>
           </button>
         </div>
-        <p className="sr" aria-live="polite">{results.length} results</p>
-        {results.length ? (
+        <p className="sr" aria-live="polite">{all.length} results</p>
+        {all.length ? (
           <ul className="search-res" id="search-results" role="listbox" aria-label="Results">
-            {results.map((r, i) => (
+            {all.map((r, i) => (
               <li key={r.key} role="option" id={`sr-${r.key}`} aria-selected={i === sel} className={i === sel ? 'sel' : undefined}>
                 <Link href={r.href} tabIndex={-1} onClick={onClose}>
-                  <img className="logo" src={`/logos/${r.id}.png`} alt="" width={32} height={32} onError={(e) => ((e.target as HTMLImageElement).style.visibility = 'hidden')} />
+                  {r.logo ? <img className="logo" src={`/logos/${r.id}.png`} alt="" width={32} height={32} /> : <span className="logo sr-mono" aria-hidden>{r.label.replace(/^Cancel /, '').slice(0, 1)}</span>}
                   {r.label}
                   <small>{r.kind}</small>
                 </Link>
@@ -214,7 +221,7 @@ function SearchDialog({ items, onClose }: { items: SearchItem[]; onClose: () => 
           <div className="empty">
             <img src="/duck.webp" alt="" width={140} height={82} loading="lazy" />
             <p>
-              No guide for <b>“{q}”</b> yet.
+              Nothing for <b>“{q}”</b> yet.
             </p>
             <p className="meta" style={{ marginTop: 8 }}>
               <a href={`mailto:support@ditchsubs.app?subject=${encodeURIComponent(`Guide request: ${q}`)}`}>Ask for it</a> and we’ll look into it.

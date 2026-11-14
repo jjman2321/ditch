@@ -10,10 +10,10 @@
   --ease-out: cubic-bezier(.215, .61, .355, 1); --ease: cubic-bezier(.4, 0, .2, 1); --ease-reveal: cubic-bezier(.16, 1, .3, 1);
   --t-fast: 120ms; --t-base: 180ms;
   --pad: 40px; --max: 1280px;
-  --sec: 128px; --sec-tight: 96px; --sec-moment: 192px;
+  --sec: 96px; --sec-tight: 72px; --sec-moment: 128px;
 }
 @media (max-width: 1023px) { :root { --pad: 32px; } }
-@media (max-width: 639px) { :root { --pad: 20px; --sec: 80px; --sec-tight: 64px; --sec-moment: 120px; } }
+@media (max-width: 639px) { :root { --pad: 20px; --sec: 64px; --sec-tight: 52px; --sec-moment: 88px; } }
 
 html { -webkit-text-size-adjust: 100%; scroll-padding-top: 88px; }
 @media all { html { scroll-behavior: smooth; } }
@@ -716,7 +716,7 @@ input::placeholder { color: var(--mute); opacity: 1; }
 .pc-life .t .lh { display: block; font-family: var(--f-wide); font-size: 22px; line-height: 1.2; }
 @media (max-width: 520px) { .pc-life .t .lh { font-size: 20px; } }
 /* hero rotation pauses while hovered or focused (owner Nov 13: keep the loop, no button) */
-.hero h1:hover .chip, .hero h1:focus-within .chip { animation-play-state: paused; }
+/* owner, Nov 14: the rotation never pauses */
 /* touch screens (tablets, phones sideways): every link and button gets a 44pt target */
 @media (pointer: coarse), (hover: none) { .ftr a, .side-toc a { min-height: 44px; } .side-toc a { display: flex; align-items: center; padding-top: 0; padding-bottom: 0; } }
 .ftr a { overflow-wrap: anywhere; }
@@ -1219,15 +1219,15 @@ img.tv, .tv .logo { width: 44px; height: 44px; border-radius: 12px; }
 .fc.ink { background: var(--ink); color: var(--white); }
 .fc.ink .fc-ic { background: var(--sun); color: var(--ink); }
 .fc.ink small { color: #BDB6A6; }
-.grp { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 40px; margin-top: 72px; scroll-margin-top: 88px; }
-.grp h2 { scroll-margin-top: 88px; }
+.tgroup { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 40px; margin-top: 72px; scroll-margin-top: 88px; }
+.tgroup h2 { scroll-margin-top: 88px; }
 .grp-h p { color: var(--mute); margin-top: 8px; font-size: 16px; }
 .hub-none { margin-top: 40px; font-size: 17px; }
 .linkish { border: 0; background: none; padding: 0; font: inherit; color: var(--ink); text-decoration: underline; cursor: pointer; min-height: 44px; }
 
 @media (max-width: 1023px) {
   .tgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .grp { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .tgroup { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .v4-cta { grid-template-columns: auto minmax(0, 1fr); }
   .v4-cta .email-wrap { grid-column: 1 / -1; }
 }
@@ -1260,7 +1260,7 @@ img.tv, .tv .logo { width: 44px; height: 44px; border-radius: 12px; }
   .fc-ic { width: 44px; height: 44px; flex: none; }
   .fc b { font-size: 18px; }
   .fc small { margin-top: 4px; font-size: 14.5px; }
-  .grp { margin-top: 48px; }
+  .tgroup { margin-top: 48px; }
   .chips-row { flex-wrap: nowrap; overflow-x: auto; margin-right: -16px; padding-right: 16px; scrollbar-width: none; }
   .chips-row::-webkit-scrollbar { display: none; }
   .search-pill { min-height: 54px; padding: 0 18px; }
@@ -1432,3 +1432,217 @@ img.tv, .tv .logo { width: 44px; height: 44px; border-radius: 12px; }
 .email .btn { margin: 0 !important; align-self: center; }
 .email input[type=email] { align-self: stretch; min-height: 52px; height: auto; }
 @media (max-width: 639px) { .email { align-items: stretch; } .email .btn { align-self: stretch; } }
+
+/* ======================================================================
+   Cancel guide v5 (owner, Nov 14: "why is it a column? use graphics in our style").
+   Hero: answer left, drawn cancel screen right. How you pay = tabs. Steps = cards with a drawing each.
+   ====================================================================== */
+.g5 .g5-hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 56px; align-items: center; margin-top: 8px; padding: 40px 48px; border-radius: 32px; background: var(--sun); position: relative; overflow: hidden; }
+.g5 .g5-hero::after { content: ""; position: absolute; right: -80px; bottom: -120px; width: 360px; height: 360px; border-radius: 50%; background: rgba(255, 255, 255, .22); pointer-events: none; }
+.g5 .g5-hero .kick span { color: var(--sunfg2); }
+.g5 .g5-hero h1 { margin-top: 14px; }
+.g5 .g5-hero .lead { color: var(--sunfg2); max-width: 40ch; }
+.g5 .g5-cta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.g5 .g5-cta-row .btn.ghost { background: transparent; box-shadow: inset 0 0 0 2px var(--ink); color: var(--ink); }
+.g5 .g5-hero-art { position: relative; z-index: 1; display: grid; justify-items: center; }
+.g5 .g5-hero-card { width: min(100%, 380px); transform: rotate(-2deg); animation: g5float 6s ease-in-out infinite; }
+.g5 .g5-hero-card .sa { box-shadow: 0 24px 48px -16px rgba(22, 20, 15, .35); }
+.g5 .g5-hero-card .sa-web .sa-body { padding: 26px 24px 30px; gap: 14px; }
+.g5 .g5-hero-card .sa-btn { font-size: 17px; padding: 14px 20px; }
+.g5 .g5-hero-badge { position: absolute; left: 4%; bottom: -6px; transform: rotate(3deg); background: var(--ink); color: var(--sun); font: 400 13px var(--f-widebold); letter-spacing: .04em; padding: 8px 14px; border-radius: 999px; }
+@keyframes g5float { 0%, 100% { transform: rotate(-2deg) translateY(0); } 50% { transform: rotate(-1deg) translateY(-8px); } }
+
+.g5 .g5-sub { color: var(--fg2); margin-top: 8px; }
+/* tabs */
+.paytabs { margin-top: 20px; }
+.pt-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+.pt-list button { display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 12px 14px; border: 0; border-radius: 18px; background: var(--white); box-shadow: inset 0 0 0 1.5px var(--hair); text-align: left; cursor: pointer; color: var(--ink); font: inherit; transition: box-shadow var(--t-fast) var(--ease), transform var(--t-fast) var(--ease); }
+.pt-list button:hover { box-shadow: inset 0 0 0 2px var(--ink); }
+.pt-list button.on { background: var(--ink); color: var(--white); box-shadow: none; }
+.pt-list button:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.pt-list button:active { transform: scale(.98); }
+.pt-ic { flex: none; width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--chip); color: var(--ink); overflow: hidden; }
+.pt-ic .logo, .pt-ic .mono { width: 36px; height: 36px; border-radius: 10px; }
+.pt-list button.on .pt-ic { background: var(--sun); }
+.pt-tx b { display: block; font: 400 15px/1.2 var(--f-widebold); }
+.pt-tx small { display: block; font-size: 12.5px; color: var(--mute); margin-top: 2px; }
+.pt-list button.on .pt-tx small { color: #BDB6A6; }
+.pt-panel { display: none; margin-top: 24px; scroll-margin-top: 96px; }
+.pt-panel.on { display: block; animation: g5in .35s cubic-bezier(.22, 1, .36, 1) both; }
+.pt-panel:focus-visible { outline: 3px solid var(--ink); outline-offset: 6px; border-radius: 12px; }
+@keyframes g5in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.g5 .g5-panel-h { font-size: clamp(1.25rem, 1.1rem + .5vw, 1.5rem); }
+.g5 .pt-panel .lead-s { margin-top: 10px; }
+/* step cards */
+.g5-steps { list-style: none; padding: 0; margin-top: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.g5-steps li { display: flex; flex-direction: column; gap: 14px; background: var(--white); border-radius: 22px; box-shadow: inset 0 0 0 1.5px var(--hair); padding: 14px 14px 18px; animation: g5in .45s cubic-bezier(.22, 1, .36, 1) both; }
+.g5-steps li:nth-child(2) { animation-delay: .08s; }
+.g5-steps li:nth-child(3) { animation-delay: .16s; }
+.g5-steps li:nth-child(4) { animation-delay: .24s; }
+.g5-st-tx { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 12px; align-items: start; padding: 0 4px; }
+.g5-n { width: 30px; height: 30px; border-radius: 99px; background: var(--ink); color: var(--sun); display: grid; place-items: center; font: 400 14px var(--f-widebold); }
+.g5-st-tx p { font-size: 16px; line-height: 1.5; }
+.g5 .g5-panel-btn { margin-top: 18px; }
+.g5 .tip { margin-top: 16px; }
+.g5 .g5-ready { margin-top: 28px; }
+/* the drawings */
+.sa { border-radius: 16px; background: var(--cream); box-shadow: inset 0 0 0 1.5px var(--rule); overflow: hidden; }
+.sa-web .sa-bar { display: flex; align-items: center; gap: 5px; padding: 9px 12px; background: var(--white); border-bottom: 1.5px solid var(--rule); }
+.sa-web .sa-bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--rule); }
+.sa-url { margin-left: 8px; font-size: 11px; color: var(--mute); background: var(--cream); border-radius: 6px; padding: 2px 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70%; }
+.sa-body { display: flex; flex-direction: column; gap: 9px; padding: 16px 16px 18px; }
+.sa-head { display: flex; align-items: center; gap: 8px; }
+.sa-head .logo, .sa-head .mono { width: 22px; height: 22px; border-radius: 6px; }
+.sa-head b { height: 9px; width: 40%; border-radius: 5px; background: var(--ink); opacity: .85; }
+.sa-line { display: block; height: 8px; border-radius: 5px; background: var(--rule); }
+.sa-line.w80 { width: 80%; } .sa-line.w70 { width: 70%; } .sa-line.w60 { width: 60%; } .sa-line.w40 { width: 40%; }
+.sa-btn { position: relative; align-self: flex-start; margin-top: 4px; background: var(--sun); color: var(--ink); font-weight: 700; font-size: 13.5px; padding: 9px 14px; border-radius: 10px; box-shadow: inset 0 0 0 1.5px var(--ink); max-width: 100%; }
+.sa-tap { position: absolute; right: -8px; bottom: -8px; width: 22px; height: 22px; border-radius: 50%; background: rgba(22, 20, 15, .85); box-shadow: 0 0 0 0 rgba(22, 20, 15, .35); animation: g5tap 1.8s ease-out infinite; }
+@keyframes g5tap { 0% { box-shadow: 0 0 0 0 rgba(22, 20, 15, .35); transform: scale(.9); } 40% { transform: scale(1); } 70% { box-shadow: 0 0 0 12px rgba(22, 20, 15, 0); } 100% { box-shadow: 0 0 0 0 rgba(22, 20, 15, 0); transform: scale(.9); } }
+.sa-phone { width: 76%; margin: 0 auto; border-radius: 26px; background: var(--white); box-shadow: inset 0 0 0 2px var(--ink); padding: 8px 10px 16px; }
+.sa-notch { width: 34%; height: 6px; border-radius: 6px; background: var(--ink); margin: 2px auto 10px; }
+.sa-phone .sa-body { padding: 4px 4px 0; gap: 6px; }
+.sa-row { position: relative; display: flex; align-items: center; gap: 8px; min-height: 30px; padding: 0 10px; border-radius: 9px; background: var(--cream); font-size: 12.5px; font-weight: 600; }
+.sa-row em { margin-left: auto; font-style: normal; color: var(--mute); }
+.sa-row.hit { background: var(--sun); box-shadow: inset 0 0 0 1.5px var(--ink); }
+.sa-row .logo, .sa-row .mono { width: 16px; height: 16px; border-radius: 4px; }
+.sa-row .sa-tap { right: 8px; bottom: 4px; width: 18px; height: 18px; }
+/* after-cancel facts */
+.g5-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 20px; }
+.g5-facts > div { background: var(--white); border-radius: 22px; box-shadow: inset 0 0 0 1.5px var(--hair); padding: 22px; scroll-margin-top: 96px; }
+.g5-f-ic { width: 40px; height: 40px; border-radius: 12px; background: #FFF1C2; display: grid; place-items: center; font-size: 20px; font-weight: 700; margin-bottom: 14px; }
+.g5-facts h3 { font-size: 17px; }
+.g5-facts p { margin-top: 8px; color: var(--fg2); font-size: 15.5px; line-height: 1.55; }
+/* pause + questions side by side */
+.g5-two { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 32px; align-items: start; }
+.g5-two h2 { font-size: clamp(1.3rem, 1.1rem + .6vw, 1.6rem); }
+.g5-pause { background: #FFF1C2; border-radius: 24px; padding: 26px; scroll-margin-top: 96px; }
+.g5-pause p { margin-top: 10px; font-size: 16.5px; line-height: 1.55; }
+.g5 #faq { scroll-margin-top: 96px; }
+.g5 #faq .qa { margin-top: 12px; }
+/* partner bill drawing */
+.g5-partner { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 28px; align-items: center; margin-top: 12px; }
+.g5-bill { display: grid; gap: 8px; background: var(--white); border-radius: 20px; box-shadow: inset 0 0 0 1.5px var(--hair); padding: 18px; transform: rotate(1.5deg); }
+.g5-bill-h { font: 400 12px var(--f-widebold); letter-spacing: .1em; text-transform: uppercase; color: var(--mute); }
+.g5-bill-r { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 10px; background: var(--cream); font-weight: 600; font-size: 14px; }
+.g5-bill-r i { width: 46px; height: 8px; border-radius: 5px; background: var(--rule); }
+.g5-bill-r.hit { background: var(--sun); box-shadow: inset 0 0 0 1.5px var(--ink); }
+.g5 .g-feedback { margin-top: 48px; }
+@media (max-width: 1023px) {
+  .g5 .g5-hero { grid-template-columns: minmax(0, 1fr); gap: 28px; padding: 32px; }
+  .g5 .g5-hero-art { max-width: 380px; }
+  .g5-two { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 760px) {
+  .g5 .g5-hero { padding: 24px 20px 28px; border-radius: 24px; margin-left: -4px; margin-right: -4px; }
+  .g5 .g5-hero-art { display: none; }
+  .g5 .g5-cta-row .btn { flex: 1 1 100%; }
+  .pt-list { display: flex; overflow-x: auto; margin-right: -16px; padding-right: 16px; scrollbar-width: none; }
+  .pt-list::-webkit-scrollbar { display: none; }
+  .pt-list button { flex: none; min-width: 168px; }
+  .g5-steps { grid-template-columns: minmax(0, 1fr); }
+  .g5-partner { grid-template-columns: minmax(0, 1fr); }
+  .g5-bill { max-width: 300px; }
+}
+.g5 .g5-hero > * { position: relative; z-index: 1; }
+.g5 .g5-hero::after { z-index: 0; }
+.g5 .g5-hero-card { width: min(100%, 420px); }
+.pt-panel { margin-top: 28px; }
+@media (max-width: 760px) {
+  .g5 .g5-hero::after { display: none; }
+  .g5-steps li { flex-direction: row; align-items: center; gap: 12px; padding: 12px; }
+  .g5-steps li .sa { flex: 0 0 44%; }
+  .g5-steps li .sa-web .sa-bar { padding: 6px 8px; }
+  .g5-steps li .sa-url { display: none; }
+  .g5-steps li .sa-body { padding: 10px 10px 12px; gap: 6px; }
+  .g5-steps li .sa-btn { font-size: 11.5px; padding: 6px 9px; }
+  .g5-steps li .sa-phone { width: 44%; flex: 0 0 44%; }
+  .g5-st-tx { grid-template-columns: minmax(0, 1fr); gap: 6px; padding: 0; }
+  .g5-st-tx p { font-size: 15px; }
+}
+
+/* Home motion (owner, Nov 14: "0 animations"). Load: copy and phone rise in, one after another. Logos around the phone bob.
+   A band of real logos slides under the hero. Prices never move: the notification cards arrive with the phone and stay put. */
+.hero .copy > * { animation: heroIn .7s cubic-bezier(.22, 1, .36, 1) both; }
+.hero .copy > :nth-child(2) { animation-delay: .08s; }
+.hero .copy > :nth-child(3) { animation-delay: .16s; }
+.hero .copy > :nth-child(4) { animation-delay: .24s; }
+.hero .copy > :nth-child(5) { animation-delay: .32s; }
+.hero .copy > :nth-child(6) { animation-delay: .40s; }
+.hero .phone { animation: heroIn .9s cubic-bezier(.22, 1, .36, 1) .2s both; }
+.hero .duck { animation: duckPeek .8s cubic-bezier(.34, 1.56, .64, 1) .9s both; }
+@keyframes heroIn { from { opacity: 0; translate: 0 18px; } to { opacity: 1; translate: 0 0; } }
+@keyframes duckPeek { from { opacity: 0; translate: 0 40px; } to { opacity: 1; translate: 0 0; } }
+.hero .float { animation: bob 5s ease-in-out infinite, heroIn .8s cubic-bezier(.22, 1, .36, 1) both; }
+.hero .float:nth-of-type(2) { animation-delay: -1.2s, .3s; animation-duration: 6s, .8s; }
+.hero .float:nth-of-type(3) { animation-delay: -2.4s, .4s; animation-duration: 5.5s, .8s; }
+.hero .float:nth-of-type(4) { animation-delay: -3.6s, .5s; animation-duration: 6.5s, .8s; }
+@keyframes bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -10px; } }
+.hero .float { animation: bob 5s ease-in-out infinite; }
+.hero .float:nth-of-type(2) { animation-duration: 6s; animation-delay: -1.2s; }
+.hero .float:nth-of-type(3) { animation-duration: 5.5s; animation-delay: -2.4s; }
+.hero .float:nth-of-type(4) { animation-duration: 6.5s; animation-delay: -3.6s; }
+.hero-badges { margin-top: 20px; }
+.hero-badges .note, .final-badges .note { color: var(--sunfg2); }
+.final-badges { justify-content: center; margin-top: 20px; }
+.hero .eyebrow { text-transform: none; letter-spacing: .02em; }
+/* logo band */
+.mq { overflow: hidden; background: var(--ink); padding: 18px 0; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.mq-track { display: flex; width: max-content; animation: mq 50s linear infinite; }
+.mq:hover .mq-track { animation-play-state: paused; }
+.mq-row { list-style: none; display: flex; gap: 28px; padding: 0 14px; margin: 0; }
+.mq-row li { display: flex; align-items: center; gap: 10px; color: var(--white); font: 400 15px var(--f-widebold); white-space: nowrap; }
+.mq-row img { width: 36px; height: 36px; border-radius: 9px; }
+@keyframes mq { to { transform: translateX(-50%); } }
+/* buttons feel pressed */
+.btn:active, .tcard:active, .fc:active { transform: scale(.98); }
+.ftr-badges { margin-top: 40px; }
+.ftr-badges .note { color: #BDB6A6; }
+.ftr .app-badges a:focus-visible { outline-color: var(--sun); }
+
+/* Hero rotation v2 (owner, Nov 14): 3s per name (was 2s), never pauses, softer easing, and the chip is tall enough
+   for letters that drop below the line (the "y" in Spotify was clipped). */
+.slot { padding: .04em .06em .14em 0; margin: -.04em -.06em -.14em 0; }
+.chip { height: 1.1em; padding-bottom: .04em; }
+.chip, .chip:not(:first-child) { animation: chip2 15s cubic-bezier(.45, 0, .2, 1) var(--d, 0s) infinite both !important; animation-duration: 15s !important; }
+@keyframes chip2 {
+  0% { opacity: 0; transform: translateY(1.2em); }
+  4% { opacity: 1; transform: translateY(0); }
+  20% { opacity: 1; transform: translateY(0); }
+  24% { opacity: 0; transform: translateY(-1.2em); }
+  100% { opacity: 0; transform: translateY(-1.2em); }
+}
+.search-res .sr-mono { display: grid; place-items: center; background: var(--chip); color: var(--ink); font-weight: 800; font-size: 14px; }
+/* QA fixes (Nov 14) */
+.sheet { background: rgba(22, 20, 15, .45); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); }
+.ftr a[href^="mailto:"] { overflow-wrap: anywhere; white-space: normal; }
+@media (max-width: 639px) {
+  /* the phone footer was ~1,300px of links: keep the first 5 of each list plus "All …" */
+  .ftr .cols nav a:nth-of-type(n+6):not(:last-of-type) { display: none; }
+}
+/* Service-specific drawings (owner, Nov 14): brand colour strip with the service's logo and name */
+.sa-top { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: var(--brand); color: var(--on-brand); }
+.sa-top .logo, .sa-top .mono { width: 22px; height: 22px; border-radius: 6px; box-shadow: 0 0 0 1.5px rgba(255, 255, 255, .6); }
+.sa-top b { font: 400 13px var(--f-widebold); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sa-top span { margin-left: auto; font-size: 11px; font-weight: 600; opacity: .85; white-space: nowrap; }
+.sa-web .sa-body { padding: 14px 14px 16px; }
+.sa-ptop { display: flex; align-items: center; gap: 7px; margin: 0 4px 8px; padding: 7px 9px; border-radius: 10px; background: var(--brand); color: var(--on-brand); }
+.sa-ptop .logo, .sa-ptop .mono { width: 18px; height: 18px; border-radius: 5px; box-shadow: 0 0 0 1.5px rgba(255, 255, 255, .6); }
+.sa-ptop b { font: 400 12px var(--f-widebold); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sa-url { max-width: 82%; }
+.g5 .g5-hero-card .sa-top { padding: 14px 18px; }
+.g5 .g5-hero-card .sa-top b { font-size: 16px; }
+.g5 .g5-hero-card .sa-top .logo, .g5 .g5-hero-card .sa-top .mono { width: 30px; height: 30px; border-radius: 8px; }
+.g5 .g5-hero-card .sa-web .sa-body { padding: 22px 22px 26px; gap: 12px; }
+/* tabs on phones: scroll inside the row, never widen the page */
+@media (max-width: 760px) {
+  .pt-list { margin-right: 0; padding-right: 0; max-width: 100%; }
+  .pt-list button { min-width: 150px; }
+  .pt-tx small { white-space: nowrap; }
+}
+/* tighter rhythm between sections (owner: "what's this huge space?") */
+.v4 { --v4-sec: 72px; }
+@media (max-width: 760px) { .v4 { --v4-sec: 48px; } }
+.js [data-reveal]:not(.stamp) { transform: translateY(10px); transition-duration: .45s; }
+.g5-st-tx b, .g5-st-tx p, .g5 .tip p, .g5-facts p { overflow-wrap: anywhere; }
+.g5 .g5-cta-row .btn, .g5 .g5-panel-btn { white-space: normal; text-align: center; height: auto; min-height: 48px; padding-top: 10px; padding-bottom: 10px; }

@@ -38,7 +38,7 @@ export function ToolHub({ groups, children }: { groups: Group[]; children?: Reac
       {q ? null : children}
       {shown.length ? (
         shown.map((g) => (
-          <section key={g.id} className="grp" aria-labelledby={g.id}>
+          <section key={g.id} className="tgroup" aria-labelledby={g.id}>
             <div className="grp-h">
               <h2 id={g.id}>{g.title}</h2>
               <p>{g.sub}</p>

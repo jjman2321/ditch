@@ -438,6 +438,13 @@ Why: an app feels premium when the bad moments are handled well, not only the ha
 - [ ] /cancel/google-one: "What happens after", "How to check", "Pause instead" and 3 questions, each fact matching Google's own page.
 - [ ] Footer → Prices column has "Price increases".
 
+### W6. Google titles and price-page questions (Nov 14, evening)
+- [ ] Share or bookmark a few pages and check the tab title: home says "Free subscription tracker app for iPhone | Ditch"; /cancel/spotify says "How to cancel Spotify (2026): web, iPhone, Android"; /prices/netflix says "Netflix prices 2026: every plan, from $8.99/mo (US)". The full before/after list is in docs/website/titles-2026-11-14.md.
+- [ ] /prices/netflix, under the country table: "Netflix prices: questions" with 3 answers (a month, other countries, the UK). Nothing repeats the price history list below it.
+- [ ] /prices/claude-pro: a "cheaper if you pay yearly?" answer with the real difference ($40.00, 17%).
+- [ ] Home pricing heading reads "Pro costs less than the subscription you forgot about."
+- [ ] From any page, tap the ditch logo: you land at the top of the home page.
+
 ### W5. Price table, tool cards, big numbers, SEO (Nov 14)
 - [ ] /tools/spotify-family-split, pick **Egypt**: the yellow number reads "EGP 34.75" on one line; "a month" sits next to it or neatly under it. Try Saudi Arabia, India, Qatar too. Same on the iPhone.
 - [ ] /prices/spotify: "Spotify price by country" is one table. Countries down the left (they stay put when you swipe sideways on the iPhone), plans across the top, the cheapest price in each row on a yellow pill, "–" where a plan isn't sold. Your own country has a dark "YOU" tag.

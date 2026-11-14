@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import { Calculator, type CalcService } from '@/components/Calculator';
 import { AppBadges } from '@/components/AppBadges';
+import { ScrollStory } from '@/components/ScrollStory';
 import { EmailBox } from '@/components/EmailBox';
 import { Notif } from '@/components/Notif';
 import { DitchDemo } from '@/components/DitchDemo';
@@ -60,8 +61,6 @@ export default function Home() {
   });
   const nf = priceFor('netflix', 'US')!;
   const nfPlan = defaultPlan(nf);
-  // Only say "less than two months of Netflix" while it's true for the US price we show.
-  const cheaperThanNetflix = nfPlan.cycle === 'monthly' && nfPlan.amountMinor * 2 > PRO_MINOR.yearly;
   const yearlySave = Math.floor((1 - PRO_MINOR.yearly / (PRO_MINOR.monthly * 12)) * 100);
 
   const org = { '@id': `${SITE}/#org` };
@@ -116,7 +115,7 @@ export default function Home() {
               before it renews.
             </h1>
             <p className="lead">Track every subscription free. Get a reminder 3 days before a charge.</p>
-            <div id="join">
+            <div id="join-form">
               <EmailBox source="home-hero" bare cta="Join the waitlist" />
             </div>
             <AppBadges className="hero-badges" />
@@ -177,12 +176,13 @@ export default function Home() {
               How it works: add it, get reminded, <span className="nw">ditch it</span>
             </h2>
           </div>
-          <div className="sec-body steps">
-            <div className="card step" data-reveal style={{ ['--i' as string]: 0 }}>
-              <span className="n">1</span>
-              <h3 className="h3">Add your subscriptions</h3>
-              <p>Tap Netflix, Spotify, ChatGPT and the rest. The price fills in. Anything else, type it in.</p>
-              <div className="shot">
+          <div className="sec-body">
+            <ScrollStory
+              steps={[
+                {
+                  title: 'Add your subscriptions',
+                  body: 'Tap Netflix, Spotify, ChatGPT and the rest. The price fills in for your country. Anything else, type it in.',
+                  screen: (
                 <div className="mini-list" aria-hidden>
                   {['netflix', 'spotify', 'chatgpt-plus'].map((id) => {
                     const p = defaultPlan(priceFor(id, 'US')!);
@@ -195,29 +195,29 @@ export default function Home() {
                     );
                   })}
                 </div>
-              </div>
-            </div>
-            <div className="card step" data-reveal style={{ ['--i' as string]: 1 }}>
-              <span className="n">2</span>
-              <h3 className="h3">Get reminded before you pay</h3>
-              <p>A reminder 3 days and 1 day before each charge, at 9:00. Free trials too.</p>
-              <div className="shot">
+                  ),
+                },
+                {
+                  title: 'Get reminded before you pay',
+                  body: 'A reminder 3 days and 1 day before each charge, at 9:00. Free trials too.',
+                  screen: (
                 <Notif text={`Spotify renews tomorrow. ${formatMoney(defaultPlan(priceFor('spotify', 'US')!).amountMinor, 'USD')}.`} when="9:00" />
-              </div>
-            </div>
-            <div className="card step" data-reveal style={{ ['--i' as string]: 2 }}>
-              <span className="n">3</span>
-              <h3 className="h3">Cancel what you don’t use</h3>
-              <p>Hold to ditch, then cancel on the service’s own page with the steps right there.</p>
-              <div className="shot">
+                  ),
+                },
+                {
+                  title: 'Cancel what you don’t use',
+                  body: 'Hold to ditch, then cancel on the service’s own page with the steps right there.',
+                  screen: (
                 <div className="cpage" aria-hidden>
                   <span className="bar">netflix.com/cancelplan</span>
                   <p className="t">Cancel your membership?</p>
                   <p className="s">Your plan ends on Nov 18.</p>
                   <span className="b">Finish cancellation</span>
                 </div>
-              </div>
-            </div>
+                  ),
+                },
+              ]}
+            />
           </div>
         </div>
       </section>
@@ -230,7 +230,7 @@ export default function Home() {
               Reminders that actually arrive
             </h2>
             <p className="lead" style={{ marginTop: 20 }}>
-              We read 5,535 App Store reviews of subscription trackers. About 125 said reminders never came, came late or were wrong. Ditch sets every reminder on your iPhone and shows you the next one, so you know it’s set.
+              In 5,535 reviews of other trackers, about 125 said reminders never came. Ditch shows your next one, so you know it’s set.
             </p>
             <ul className="ticks">
               <li>
@@ -257,7 +257,7 @@ export default function Home() {
         <div className="wrap split">
           <div>
             <h2 id="dd-h" className="h2">
-              Cancel it and see what you won’t pay
+              Hold to ditch. See what you won’t pay this year.
             </h2>
             <p className="lead" style={{ marginTop: 20 }}>
               Once you’ve cancelled, Ditch shows what it would have cost you in a year.
@@ -283,7 +283,7 @@ export default function Home() {
         <div className="wrap">
           <div className="price-head">
             <h2 id="price-h" className="h2">
-              {cheaperThanNetflix ? 'Pro costs less than two months of Netflix.' : `Free to track. Pro for about ${PRO.yearlyPerMonth} a month.`}
+              {`Pro is ${PRO.yearlyPerMonth} a month, billed yearly.`}
             </h2>
             <p className="lead">Tracking is free forever. Pro puts reminders on every subscription. Rather not subscribe? Pay once.</p>
           </div>

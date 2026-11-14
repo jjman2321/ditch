@@ -43,7 +43,7 @@ export function EmailBox({ source, cta = 'Join the waitlist', onCream = false, b
             <>
               <b>You’re on the list.</b>
               <p className="small" style={{ color: 'var(--fg2)' }}>
-                We’ll email <b>{email}</b> once, the day Ditch is out.
+                We’ll email <b>{email}</b> the day Ditch is out.
               </p>
             </>
           ) : state === 'already' ? (

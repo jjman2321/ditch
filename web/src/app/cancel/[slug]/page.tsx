@@ -7,6 +7,7 @@ import { Logo } from '@/components/Logo';
 import { ToolCard } from '@/components/ToolCard';
 import { toolsFor } from '@/lib/tools';
 import { PriceTable } from '@/components/PriceTable';
+import { GuideFeedback } from '@/components/guide/GuideFeedback';
 import { PayTabs, type PayTab } from '@/components/guide/PayTabs';
 import { StepArt, stepUrl, tapLabel } from '@/components/guide/StepArt';
 import { APPLE_SOURCE, formatDate, freshness, guideById, neighbours, priceFor, priceHubServices, pubDates, publicNotes, publishedGuides, serviceById, idOf, slugOf } from '@/lib/data';
@@ -137,7 +138,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
           {otherNotes.length ? (
             <div className="tip">
               {otherNotes.map((n) => (
-                <p key={n}>{n}</p>
+                <p key={n}>{withPhones(n)}</p>
               ))}
             </div>
           ) : null}
@@ -241,7 +242,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
             </span>
           </div>
           <h1>How to cancel {g.name}</h1>
-          <p className="lead">{quick}</p>
+          <p className="lead">{withPhones(quick)}</p>
           {fresh !== 'fresh' ? <p className="stale">Last checked {formatDate(g.checkedOn)}. {g.name} may have changed its steps since. We re-check every 90 days.</p> : null}
           <div className="g5-cta-row">
             <a className="btn" href={mainHref} rel={mainHref.startsWith('http') ? 'noopener' : undefined}>
@@ -260,6 +261,14 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
           </div>
         </div>
       </header>
+
+      <nav className="g5-jump" aria-label="On this page">
+        <a href="#how">Steps</a>
+        {facts.length ? <a href="#after">After you cancel</a> : null}
+        {d?.pause ? <a href="#pause">{/downgrad|smaller plan|switch to|cheaper plan|lower plan/i.test(d.pause.text) ? 'Downgrade' : 'Pause'}</a> : null}
+        {faq.length ? <a href="#faq">Questions</a> : null}
+        {us ? <a href="#price">Price</a> : null}
+      </nav>
 
       <section className="v4-sec" id="how" aria-labelledby="how-h">
         <h2 id="how-h">How do you pay for {g.name}?</h2>
@@ -299,7 +308,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
                 {faq.map((f) => (
                   <div key={f.q}>
                     <h3>{f.q}</h3>
-                    <p>{f.a}</p>
+                    <p>{withPhones(f.a)}</p>
                   </div>
                 ))}
               </div>
@@ -320,11 +329,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
         </section>
       ) : null}
 
-      <p className="g-feedback">
-        <b>Did this work?</b> <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${g.name} guide: it worked`)}`}>Yes, it worked</a>
-        {' · '}
-        <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${g.name} guide: something changed`)}&body=${encodeURIComponent('What did you see instead?\n\n')}`}>No, something changed</a>
-      </p>
+      <GuideFeedback name={g.name} email={SUPPORT_EMAIL} />
 
       <section className="v4-cta" id="remind" aria-labelledby="remind-h" data-has-cta>
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -371,6 +376,13 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
       </section>
     </div>
   );
+}
+
+
+/** US-style phone numbers in guide text become tap-to-call links (QA: Costco's number wasn't tappable). */
+function withPhones(text: string): React.ReactNode {
+  const parts = text.split(/(\b1-\d{3}-\d{3}-\d{4}\b)/);
+  return parts.map((t, i) => (i % 2 ? <a key={i} className="nw" href={`tel:+${t.replace(/-/g, '')}`}>{t}</a> : t));
 }
 
 /** "Tap Manage your plan" → Tap [Manage your plan]; web addresses in bold. Same words, easier to scan. */

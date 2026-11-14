@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 export function StickyCta() {
   const [show, setShow] = useState(false);
   useEffect(() => {
-    const hero = document.getElementById('join');
+    const hero = document.getElementById('join-form');
     const others = Array.from(document.querySelectorAll('[data-has-cta]'));
     if (!hero) return;
     const visible = new Map<Element, boolean>();

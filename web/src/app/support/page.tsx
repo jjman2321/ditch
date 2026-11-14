@@ -28,7 +28,7 @@ const QA = [
 
 export default function Support() {
   return (
-    <Doc title="Support">
+    <Doc title="Support" kind="support">
       <p className="lead" style={{ marginTop: 16 }}>
         Email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>. We read every message and usually reply within a day.
       </p>

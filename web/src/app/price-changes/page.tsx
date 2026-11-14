@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
+import { ChangeFilter } from '@/components/ChangeFilter';
 import { EmailBox } from '@/components/EmailBox';
 import { Logo } from '@/components/Logo';
-import { COUNTRY, formatDate, guideById, inCountry, priceChanges, priceChangesChecked, priceHubServices, slugOf } from '@/lib/data';
+import { COUNTRY, formatDate, guideById, hasLogo, inCountry, priceChanges, priceChangesChecked, priceHubServices, slugOf } from '@/lib/data';
 import { formatMoney } from '@/lib/money';
 import { planLabel } from '@/lib/tools';
 import { SITE } from '@/lib/site';
@@ -85,6 +86,8 @@ export default function PriceChanges() {
             </div>
           </div>
 
+          <ChangeFilter services={services.map((id) => ({ id, name: all.find((c) => c.serviceId === id)!.name, n: all.filter((c) => c.serviceId === id).length, logo: hasLogo(id) })).sort((a, b) => b.n - a.n)} />
+
           {months.map((m) => (
             <section key={m} className="v4-sec ch-month" aria-labelledby={`m-${m}`}>
               <h2 id={`m-${m}`}>{monthName(m)}</h2>
@@ -92,7 +95,7 @@ export default function PriceChanges() {
                 {all
                   .filter((c) => monthKey(c.when) === m)
                   .map((c) => (
-                    <li key={`${c.serviceId}-${c.country}-${c.plan}-${c.when}`} id={`${slugOf(c.serviceId)}-${c.country.toLowerCase()}-${c.when}`}>
+                    <li key={`${c.serviceId}-${c.country}-${c.plan}-${c.when}`} data-s={c.serviceId} id={`${slugOf(c.serviceId)}-${c.country.toLowerCase()}-${c.when}`}>
                       <Logo id={c.serviceId} size={44} />
                       <div className="ch-main">
                         <h3>

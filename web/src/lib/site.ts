@@ -17,7 +17,6 @@ export const NAV = [
   { href: '/prices', label: 'Prices' },
   { href: '/tools', label: 'Free tools' },
   { href: '/#pricing', label: 'Pricing' },
-  { href: '/support', label: 'Support' },
 ];
 
 /** Sourced stats we're allowed to quote (CLAUDE.md rule 5: no unsourced claims). */

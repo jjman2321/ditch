@@ -4,6 +4,7 @@
 import { useState } from 'react';
 
 import { EmailBox } from './EmailBox';
+import { useCountry } from './tools/ToolBits';
 
 import { formatMoney, minorPerMajor, yearlyMinor, type Cycle } from '@/lib/money';
 
@@ -17,7 +18,10 @@ export type CalcCountry = { code: string; name: string; checked: string };
  * and the total changes instantly: no counting animation next to money. Runs entirely in the browser.
  */
 export function Calculator({ services, countries, initial = ['netflix', 'spotify', 'chatgpt-plus', 'amazon-prime', 'disney-plus', 'apple-music'] }: { services: CalcService[]; countries: CalcCountry[]; initial?: string[] }) {
-  const [country, setCountry] = useState('US');
+  // Your country, guessed from the browser's time zone (never sent anywhere); US until the page has loaded.
+  const guessed = useCountry();
+  const [pickedCountry, setCountry] = useState<string | null>(null);
+  const country = pickedCountry ?? (countries.some((x) => x.code === guessed) ? guessed : 'US');
   const [picked, setPicked] = useState<string[]>(initial);
   const available = services.filter((s) => s.prices[country]);
   const chosen = available.filter((s) => picked.includes(s.id));
@@ -100,7 +104,7 @@ export function Calculator({ services, countries, initial = ['netflix', 'spotify
             </div>
           ) : null}
         </div>
-        <p className="calc-cta">{chosen.length > 3 ? `Get a reminder before each one renews. 3 free, all ${chosen.length} with Pro.` : 'Get a reminder before each one renews, free.'}</p>
+        <p className="calc-cta">Get a reminder before each one renews.</p>
         <EmailBox source="calculator" bare />
       </div>
     </div>

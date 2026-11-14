@@ -1,5 +1,6 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
 /**
@@ -8,10 +9,11 @@ import { useEffect } from 'react';
  * the email field.
  */
 export function JoinFocus() {
+  const path = usePathname();
   useEffect(() => {
     const go = () => {
       if (location.hash !== '#join') return;
-      const form = document.getElementById('join');
+      const form = document.getElementById('join-form');
       if (!form) return;
       const section = form.closest('section') ?? form;
       const header = document.querySelector('header')?.getBoundingClientRect().height ?? 0;
@@ -24,19 +26,22 @@ export function JoinFocus() {
       const a = (e.target as Element | null)?.closest?.('a[href$="#join"]') as HTMLAnchorElement | null;
       if (!a) return;
       const url = new URL(a.href, location.href);
-      if (url.pathname !== location.pathname || !document.getElementById('join')) return;
+      if (url.pathname !== location.pathname || !document.getElementById('join-form')) return;
       e.preventDefault();
       if (location.hash !== '#join') history.replaceState(null, '', '#join');
       go();
     };
+    // Arriving from another page: run after the page has painted (and again in case fonts/images shifted it).
     const t = window.setTimeout(go, 60);
+    const t2 = window.setTimeout(go, 400);
     window.addEventListener('hashchange', go);
     document.addEventListener('click', onClick, true);
     return () => {
       window.clearTimeout(t);
+      window.clearTimeout(t2);
       window.removeEventListener('hashchange', go);
       document.removeEventListener('click', onClick, true);
     };
-  }, []);
+  }, [path]);
   return null;
 }

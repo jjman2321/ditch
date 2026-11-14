@@ -1648,3 +1648,91 @@ img.tv, .tv .logo { width: 44px; height: 44px; border-radius: 12px; }
 .g5 .g5-cta-row .btn, .g5 .g5-panel-btn { white-space: normal; text-align: center; height: auto; min-height: 48px; padding-top: 10px; padding-bottom: 10px; }
 @media (max-width: 760px) { .g5-steps .sa-top b, .g5-steps .sa-top span, .g5-steps .sa-ptop b { display: none; } }
 @media (max-width: 1200px) { .g5 .g5-hero-card { width: min(90%, 380px); } }
+
+/* Price page v5 (Nov 14): yellow hero with your country's prices beside it; countries as cards across the full width */
+.pricepage .p5-hero { align-items: start; }
+.pricepage .p5-your .ycp { margin: 0; box-shadow: 0 24px 48px -20px rgba(22, 20, 15, .35); }
+.ctry-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-top: 20px; }
+.ctry { background: var(--white); border-radius: 20px; box-shadow: inset 0 0 0 1.5px var(--hair); padding: 18px 18px 14px; scroll-margin-top: 96px; }
+.ctry h3 { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; font-size: 16px; }
+.ctry h3 small { font: 600 12px var(--body); color: var(--mute); white-space: nowrap; }
+.ctry ul { list-style: none; padding: 0; margin-top: 10px; }
+.ctry li { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 8px 0; border-top: 1px solid var(--hair); font-size: 15px; }
+.ctry li span { color: var(--fg2); min-width: 0; }
+.ctry li em { font-style: normal; font: 600 11px var(--body); letter-spacing: .02em; background: var(--sun); color: var(--ink); border-radius: 6px; padding: 2px 6px; margin-left: 6px; white-space: nowrap; }
+.ctry li b { font-weight: 700; white-space: nowrap; }
+.ctry li b small { font-weight: 400; color: var(--mute); font-size: 12.5px; margin-left: 1px; }
+.pricepage .g5-two .good li { font-size: 15.5px; }
+@media (max-width: 760px) { .ctry-grid { grid-template-columns: minmax(0, 1fr); } .pricepage .p5-your { margin-top: 4px; } }
+
+/* Home scroll story (Nov 14): laptop = steps scroll past a phone that stays put; its screen cross-fades per step.
+   Money never slides: screens only fade. Phone = stacked cards with their own picture. */
+.story { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 64px; align-items: start; }
+.story-steps { list-style: none; padding: 0; margin: 0; }
+.story-steps li { min-height: 62vh; display: flex; flex-direction: column; justify-content: center; padding: 24px 0; opacity: .35; transition: opacity .4s var(--ease); }
+.story-steps li.on { opacity: 1; }
+.story-steps .n { width: 40px; height: 40px; border-radius: 99px; background: var(--ink); color: var(--sun); display: grid; place-items: center; font: 400 17px var(--f-widebold); }
+.story-steps h3 { margin-top: 18px; font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.25rem); }
+.story-steps p { margin-top: 12px; font-size: 18px; line-height: 1.55; color: var(--fg2); max-width: 36ch; }
+.story-shot-m { display: none; }
+.story-side { position: sticky; top: calc(50vh - 290px); }
+.story-phone { position: relative; width: 300px; height: 580px; margin: 0 auto; border-radius: 46px; background: var(--ink); padding: 14px; box-shadow: 0 40px 80px -30px rgba(22, 20, 15, .45); }
+.story-notch { position: absolute; top: 22px; left: 50%; translate: -50% 0; width: 92px; height: 24px; border-radius: 14px; background: #000; z-index: 2; }
+.story-screen { position: absolute; inset: 14px; border-radius: 34px; background: var(--cream); display: grid; place-items: center; padding: 64px 18px 40px; opacity: 0; transition: opacity .45s var(--ease); }
+.story-screen.on { opacity: 1; }
+.story-screen > * { width: 100%; }
+.story-screen .notif { position: static; }
+.story-dots { position: absolute; bottom: 26px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; z-index: 2; }
+.story-dots i { width: 7px; height: 7px; border-radius: 9px; background: var(--rule); transition: width .3s var(--ease), background .3s; }
+.story-dots i.on { width: 20px; background: var(--ink); }
+@media (max-width: 1023px) {
+  .story { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .story-side { display: none; }
+  .story-steps { display: grid; gap: 14px; }
+  .story-steps li { min-height: 0; opacity: 1; background: var(--white); border-radius: var(--r-l); box-shadow: inset 0 0 0 1.5px var(--hair); padding: 22px; }
+  .story-steps h3 { margin-top: 12px; font-size: 22px; }
+  .story-steps p { font-size: 16px; }
+  .story-shot-m { display: block; margin-top: 16px; background: var(--cream); border-radius: 18px; padding: 16px; }
+}
+.ch-filter { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 32px; position: sticky; top: 64px; z-index: 5; background: var(--cream); padding: 10px 0; }
+.ch-filter button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 0; border-radius: 999px; background: var(--white); box-shadow: inset 0 0 0 1.5px var(--rule); font: 600 14px var(--body); color: var(--ink); cursor: pointer; white-space: nowrap; }
+.ch-filter button img { width: 20px; height: 20px; border-radius: 5px; }
+.ch-filter button .c { color: var(--mute); font-weight: 600; font-size: 12.5px; }
+.ch-filter button[aria-pressed="true"] { background: var(--ink); color: var(--white); box-shadow: none; }
+.ch-filter button[aria-pressed="true"] .c { color: #BDB6A6; }
+.ch-filter button:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+@media (max-width: 760px) { .ch-filter { flex-wrap: nowrap; overflow-x: auto; top: 56px; scrollbar-width: none; } .ch-filter::-webkit-scrollbar { display: none; } }
+.g5-jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.g5-jump a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px; border-radius: 999px; background: var(--white); box-shadow: inset 0 0 0 1.5px var(--rule); font-weight: 600; font-size: 14px; color: var(--ink); text-decoration: none; white-space: nowrap; }
+.g5-jump a:hover { box-shadow: inset 0 0 0 2px var(--ink); }
+@media (pointer: coarse) { .g5-jump a { min-height: 44px; } }
+@media (max-width: 760px) { .g5-jump { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; } .g5-jump::-webkit-scrollbar { display: none; } }
+.gfb { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.gfb button { min-height: 44px; padding: 0 16px; border: 0; border-radius: 999px; background: var(--white); box-shadow: inset 0 0 0 1.5px var(--rule); font: 600 14.5px var(--body); color: var(--ink); cursor: pointer; }
+.gfb button:hover { box-shadow: inset 0 0 0 2px var(--ink); }
+.g5 #how, .g5 #after, .g5 #price { scroll-margin-top: 80px; }
+/* scroll story: inactive steps go grey (still 4.5:1), not see-through */
+.story-steps li { opacity: 1; }
+.story-steps li:not(.on) h3, .story-steps li:not(.on) p { color: var(--mute); }
+.story-steps li:not(.on) .n { background: var(--rule); color: var(--mute); }
+.story-steps li h3, .story-steps li p, .story-steps li .n { transition: color .35s var(--ease), background .35s var(--ease); }
+@media (max-width: 1023px) { .story-steps li:not(.on) h3 { color: var(--ink); } .story-steps li:not(.on) p { color: var(--fg2); } .story-steps li:not(.on) .n { background: var(--ink); color: var(--sun); } }
+/* hero spacing (owner, Nov 14): same gap above the form and its success message; badges sit a clear step below */
+.hero #join { margin-top: 32px; }
+.hero #join .email-wrap { margin-top: 0; }
+.hero .email-ok { padding: 18px 22px; }
+.email-ok:focus { outline: none; }
+.hero-badges { margin-top: 24px; }
+@media (max-width: 639px) { .hero #join { margin-top: 24px; } .hero-badges { margin-top: 18px; } }
+
+/* Info pages (Support, About, Privacy, Terms, How we check): one centred reading column (owner, Nov 14: "why is it thrown to the left") */
+.wrap.doc { max-width: calc(760px + 2 * var(--pad)); margin-left: auto; margin-right: auto; padding-bottom: 32px; }
+.doc .prose { max-width: none; }
+.doc .short { max-width: none; }
+/* Support: each question is a card */
+.doc.support .prose > .lead { background: var(--sun); border-radius: 22px; padding: 22px 24px; font-size: 18px; color: var(--ink); margin-top: 24px !important; }
+.doc.support .prose > section { background: var(--white); border-radius: 22px; box-shadow: inset 0 0 0 1.5px var(--hair); padding: 22px 24px; margin-top: 12px; }
+.doc.support .prose > section h2 { margin-top: 0; font-size: 19px; }
+.doc.support .prose > section ul, .doc.support .prose > section p { margin-top: 10px; }
+@media (max-width: 639px) { .doc.support .prose > section, .doc.support .prose > .lead { padding: 18px; } }
+.doc.support .prose > .lead { max-width: none; }

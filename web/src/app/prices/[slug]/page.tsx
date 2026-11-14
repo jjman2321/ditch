@@ -115,26 +115,16 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
   const many = rows.length > 1;
 
   const history = priceChanges().filter((c) => c.serviceId === s.id);
-  const home = rows.find((r) => r.country === 'US') ?? rows[0];
-  const homeCheap = home ? cheapest(home) : undefined;
-  const toc = [
-    { id: 'ycp-h', label: 'Your country' },
-    ...(many ? [{ id: 'all', label: 'Price by country' }, { id: 'cheapest', label: 'Cheapest plan in each country' }] : []),
-    ...(history.length ? [{ id: 'history', label: 'Price history' }] : []),
-    ...(notes.length ? [{ id: 'notes', label: 'Good to know' }] : []),
-    ...(guide || others.length ? [{ id: 'more', label: 'Related' }] : []),
-  ];
-
   return (
-    <div className="wrap guide gv3 v4 guide4 pricepage">
+    <div className="wrap guide gv3 v4 guide4 g5 pricepage">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
       <nav className="crumbs" aria-label="Breadcrumb">
         <Link href="/prices">Prices</Link>
         <span aria-hidden>›</span>
         <span aria-current="page">{s.name}</span>
       </nav>
-      <div className="g4">
-        <article className="g4-main">
+      <header className="g5-hero p5-hero">
+        <div className="g5-hero-tx">
           <div className="kick">
             <Logo id={s.id} size={40} />
             <span>
@@ -146,61 +136,72 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
             {s.name} price {latest.slice(0, 4)}
           </h1>
           <p className="lead">{ans.replace(/ Checked [^.]*\.$/, '')}</p>
-
+          <div className="g5-cta-row">
+            {many ? (
+              <a className="btn" href="#all">
+                Every country ↓
+              </a>
+            ) : null}
+            <a className={many ? 'btn ghost' : 'btn'} href="#remind">
+              Get a reminder before it renews
+            </a>
+          </div>
+        </div>
+        <div className="p5-your">
           <YourCountryPrices service={s.name} rows={cards} />
+        </div>
+      </header>
 
-          {many ? (
-            <>
-              <section className="v4-sec" aria-labelledby="all">
-                <h2 id="all">{s.name} price by country</h2>
-                <div className="ctbl" role="table" aria-label={`${s.name} plans by country`}>
-                  {rows.map((r) => (
-                    <div className="ctr" role="row" id={COUNTRY[r.country].slug} key={r.country}>
-                      <div className="cc" role="rowheader">
-                        <b>{COUNTRY[r.country].name}</b>
-                        <small>
-                          {isAppStorePrice(r) ? 'iPhone app · ' : ''}
-                          {COUNTRY[r.country].tax}
-                        </small>
-                      </div>
-                      <div className="cp" role="cell">
-                        {r.plans.map((p) => (
-                          <span key={p.id}>
-                            {p.name} <b className="num">{formatMoney(p.amountMinor, r.currency, { country: r.country })}{p.cycle === 'monthly' ? '/mo' : p.cycle === 'yearly' ? '/yr' : p.cycle === 'quarterly' ? '/qtr' : '/wk'}</b>
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <p className="g-src">
-                  Each country’s own money; we never add different currencies together. <Link href="/how-we-check">How we check prices</Link>.
-                </p>
-              </section>
-
-              <section className="v4-sec" aria-labelledby="cheapest">
-                <h2 id="cheapest">The cheapest {s.name} plan in each country</h2>
-                <ul className="good">
-                  {rows.map((r) => {
-                    const p = cheapest(r);
-                    return (
-                      <li key={r.country}>
-                        {s.name} price in {inCountry(r.country)}: {p.name}, {formatMoney(p.amountMinor, r.currency, { country: r.country, whole: true })} {p.cycle === 'monthly' ? 'a month' : p.cycle === 'yearly' ? 'a year' : 'every 3 months'}.
+      {many ? (
+        <section className="v4-sec" aria-labelledby="all">
+          <h2 id="all">{s.name} price by country</h2>
+          <p className="g5-sub">Each country’s own money, before or including tax as marked. The cheapest plan in each country is marked.</p>
+          <div className="ctry-grid">
+            {rows.map((r) => {
+              const low = cheapest(r);
+              return (
+                <article className="ctry" id={COUNTRY[r.country].slug} key={r.country}>
+                  <h3>
+                    {COUNTRY[r.country].name}
+                    <small>
+                      {isAppStorePrice(r) ? 'iPhone app · ' : ''}
+                      {COUNTRY[r.country].tax}
+                    </small>
+                  </h3>
+                  <ul>
+                    {r.plans.map((p) => (
+                      <li key={p.id} className={p.id === low.id ? 'low' : undefined}>
+                        <span>
+                          {p.name}
+                          {p.id === low.id ? <em>Cheapest</em> : null}
+                        </span>
+                        <b className="num">
+                          {formatMoney(p.amountMinor, r.currency, { country: r.country })}
+                          <small>{p.cycle === 'monthly' ? '/mo' : p.cycle === 'yearly' ? '/yr' : p.cycle === 'quarterly' ? '/qtr' : '/wk'}</small>
+                        </b>
                       </li>
-                    );
-                  })}
-                </ul>
-              </section>
-            </>
-          ) : null}
+                    ))}
+                  </ul>
+                </article>
+              );
+            })}
+          </div>
+          <p className="g-src">
+            We never add different currencies together. <Link href="/how-we-check">How we check prices</Link>.
+          </p>
+        </section>
+      ) : null}
 
+      {history.length || notes.length ? (
+        <section className="v4-sec g5-two" aria-label={`${s.name} price history and notes`}>
           {history.length ? (
-            <section className="v4-sec" aria-labelledby="history">
-              <h2 id="history">{s.name} price history</h2>
+            <div id="history">
+              <h2>{s.name} price history</h2>
               <ul className="good">
                 {history.map((c) => (
                   <li key={`${c.country}-${c.plan}-${c.when}`}>
-                    <b>{formatDate(c.when)}</b>, {c.plan} in {inCountry(c.country)}: {formatMoney(c.oldPrice, c.currency, { country: c.country })} → {formatMoney(c.newPrice, c.currency, { country: c.country })} ({c.pct < 0 ? '−' : '+'}{Math.round(Math.abs(c.pct))}%).{' '}
+                    <b>{formatDate(c.when)}</b>, {c.plan} in {inCountry(c.country)}: {formatMoney(c.oldPrice, c.currency, { country: c.country })} → {formatMoney(c.newPrice, c.currency, { country: c.country })} ({c.pct < 0 ? '−' : '+'}
+                    {Math.round(Math.abs(c.pct))}%).{' '}
                     <a href={c.source} rel="noopener" className="src-a">
                       Source
                     </a>
@@ -210,12 +211,11 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
               <p className="g-src">
                 <Link href="/price-changes">Every subscription price increase →</Link>
               </p>
-            </section>
+            </div>
           ) : null}
-
           {notes.length ? (
-            <section className="v4-sec" aria-labelledby="notes">
-              <h2 id="notes">Good to know</h2>
+            <div id="notes" className="g5-pause">
+              <h2>Good to know</h2>
               <ul className="good">
                 {notes.map((x) => (
                   <li key={x.c + x.n}>
@@ -223,39 +223,14 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
                   </li>
                 ))}
               </ul>
-            </section>
+            </div>
           ) : null}
+        </section>
+      ) : null}
 
-          <p className="g-feedback">
-            <b>Spotted a different price?</b> <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${s.name} price changed`)}&body=${encodeURIComponent('Country:\nPlan:\nPrice you saw:\nWhere:\n')}`}>Tell us</a>
-            <span className="g-hint"> Opens your email app.</span>
-          </p>
-        </article>
-
-        <aside className="g4-side" aria-label="Summary">
-          <div className="g4-stick">
-            {homeCheap && home ? (
-              <div className="qa-card">
-                <p className="k">Cheapest in {home.country === 'US' ? 'the US' : COUNTRY[home.country].name}</p>
-                <p>
-                  <b className="num big-s">{formatMoney(homeCheap.amountMinor, home.currency, { country: home.country })}</b> {homeCheap.cycle === 'monthly' ? 'a month' : homeCheap.cycle === 'yearly' ? 'a year' : 'every 3 months'} for {homeCheap.name}.
-                </p>
-                <a className="btn" href="#remind">
-                  Get a reminder before it renews
-                </a>
-              </div>
-            ) : null}
-            <nav className="toc4" aria-label="On this page">
-              <p className="k">On this page</p>
-              {toc.map((x) => (
-                <a key={x.id} href={`#${x.id}`}>
-                  {x.label}
-                </a>
-              ))}
-            </nav>
-          </div>
-        </aside>
-      </div>
+      <p className="g-feedback">
+        <b>Spotted a different price?</b> <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${s.name} price changed`)}&body=${encodeURIComponent('Country:\nPlan:\nPrice you saw:\nWhere:\n')}`}>Tell us</a>
+      </p>
 
       <section className="v4-cta" id="remind" aria-labelledby="remind-h" data-has-cta>
         {/* eslint-disable-next-line @next/next/no-img-element */}

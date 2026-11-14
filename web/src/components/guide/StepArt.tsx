@@ -37,7 +37,6 @@ export function StepArt({ kind, serviceId, name, color, label, url, rows, title 
         <div className="sa-top">
           <Logo id={serviceId} size={22} />
           <b>{name}</b>
-          <span>{title ?? 'Account'}</span>
         </div>
         <div className="sa-body">
           <span className="sa-line w80" />

@@ -12,7 +12,7 @@ export type CalcService = { id: string; name: string; logo: boolean; prices: Rec
 export type CalcCountry = { code: string; name: string; checked: string };
 
 /**
- * "What do you pay for?" Tap services, see the real yearly total from our hand-checked prices.
+ * "What do you pay for?" Tap services, see the real yearly total from each service’s own prices.
  * Uses each service's usual plan (not the cheapest), never adds different currencies (one total per currency),
  * and the total changes instantly: no counting animation next to money. Runs entirely in the browser.
  */
@@ -21,7 +21,6 @@ export function Calculator({ services, countries, initial = ['netflix', 'spotify
   const [picked, setPicked] = useState<string[]>(initial);
   const available = services.filter((s) => s.prices[country]);
   const chosen = available.filter((s) => picked.includes(s.id));
-  const c = countries.find((x) => x.code === country)!;
 
   const by = new Map<string, number>();
   for (const s of chosen) {
@@ -101,11 +100,8 @@ export function Calculator({ services, countries, initial = ['netflix', 'spotify
             </div>
           ) : null}
         </div>
-        <p className="calc-cta">{chosen.length > 3 ? `Ditch reminds you before these renew: 3 free, all ${chosen.length} with Pro. iPhone app, coming soon.` : 'Ditch reminds you before each of these renews, free. iPhone app, coming soon.'}</p>
+        <p className="calc-cta">{chosen.length > 3 ? `Get a reminder before each one renews. 3 free, all ${chosen.length} with Pro.` : 'Get a reminder before each one renews, free.'}</p>
         <EmailBox source="calculator" bare />
-        <p className="note">
-          {c.name} prices, usual plan, from each service’s own page ({c.checked}). This runs in your browser. We don’t see what you tap.
-        </p>
       </div>
     </div>
   );

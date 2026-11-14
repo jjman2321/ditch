@@ -284,7 +284,7 @@ export default function Home() {
         <div className="wrap">
           <div className="price-head">
             <h2 id="price-h" className="h2">
-              Pro costs less than the subscription you forgot about.
+              Less than a coffee a month. Remembers the renewals you’d forget.
             </h2>
             <p className="lead">Tracking is free forever. Pro puts reminders on every subscription. Rather not subscribe? Pay once.</p>
           </div>

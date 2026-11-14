@@ -1793,3 +1793,20 @@ td.num, .r.num, .tbl td:not(:first-child), .vs-t td { white-space: nowrap; }
 .v4 .v4-sec > h2 + .ttable, .v4 .v4-sec > h2 + .tbl-scroll, .v4 .v4-sec > h2 + .tbl-wrap { margin-top: 24px; }
 /* the table caption sat on the card's top edge with no padding; the heading above already names the table, so it is for screen readers only */
 .tbl-wrap .tbl caption { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* ---------- One page-top rhythm (owner, Nov 14: "spacing not consistent") ----------
+   Every page starts its first line of text at the same height under the header:
+   pages with a breadcrumb start with the breadcrumb, then the heading 8px below its block;
+   pages without one (Cancel guides, Prices, Free tools, info pages) start the heading at the same 64px.
+   Hub search boxes and chip rows share one size and one gap. */
+.index-head { padding-top: 0; }
+.v4-hero.solo { margin-top: 64px; }
+.crumbs + .v4-hero.solo { margin-top: 8px; }
+.crumbs + .v4-hero.solo h1 { margin-top: 0; }
+.doc { padding-top: 64px; }
+.big-search, .hubpage .hub-search { margin-top: 32px; }
+.big-search, .hub-search .search-pill { max-width: 640px; }
+.search-in.big-search { min-height: 60px; border: 0; box-shadow: inset 0 0 0 1.5px var(--rule); padding: 0 10px 0 22px; }
+.index-head .chips, .hub-search .chips-row { margin-top: 16px; }
+.hub-search .search-pill { min-height: 60px; }
+.index-head .grid-cards, .hubpage .feat { margin-top: 32px; }

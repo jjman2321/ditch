@@ -72,7 +72,7 @@ export function Calculator({ services, countries, initial = ['netflix', 'spotify
         <b>{chosen.length ? 'That’s' : 'Tap a few to see'}</b>
         {totals.length ? (
           totals.map(([cur, minor]) => (
-            <div key={cur} className="d-money" style={{ marginTop: 8 }}>
+            <div key={cur} className="d-money fit" style={{ marginTop: 8, '--n': Math.max(formatMoney(Math.round(minor / minorPerMajor(cur)) * minorPerMajor(cur), cur, { country, whole: true }).length, 4) } as React.CSSProperties}>
               {formatMoney(Math.round(minor / minorPerMajor(cur)) * minorPerMajor(cur), cur, { country, whole: true })}
             </div>
           ))

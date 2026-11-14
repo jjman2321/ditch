@@ -284,7 +284,7 @@ export default function Home() {
         <div className="wrap">
           <div className="price-head">
             <h2 id="price-h" className="h2">
-              {`Pro is ${PRO.yearlyPerMonth} a month, billed yearly.`}
+              {`Pro is ${PRO.yearlyPerMonth} a month, billed yearly. Less than one coffee a month.`}
             </h2>
             <p className="lead">Tracking is free forever. Pro puts reminders on every subscription. Rather not subscribe? Pay once.</p>
           </div>

@@ -570,13 +570,13 @@ img { display: block; max-width: 100%; }
 .ditch-demo.sm .dd-name b { font-size: 15px; }
 .ditch-demo.sm .dd-name span { font-size: 12px; }
 @media all {
-  .js .ditch-demo[data-reveal] { opacity: 1 !important; transform: none !important; }
-  .js .ditch-demo[data-reveal] .dd-hold { visibility: visible; }
-  .js .ditch-demo[data-reveal] .ring { stroke-dashoffset: 70; }
-  .js .ditch-demo[data-reveal] .dd-tag { opacity: 0; transform: scale(.6); }
-  .js .ditch-demo[data-reveal] .dd-row .logo { filter: none; opacity: 1; }
-  .js .ditch-demo[data-reveal] .dd-duck { transform: translateY(70%); }
-  .js .ditch-demo[data-reveal] .dd-year { opacity: 0; }
+  .js .ditch-demo[data-play] { opacity: 1 !important; transform: none !important; }
+  .js .ditch-demo[data-play] .dd-hold { visibility: visible; }
+  .js .ditch-demo[data-play] .ring { stroke-dashoffset: 70; }
+  .js .ditch-demo[data-play] .dd-tag { opacity: 0; transform: scale(.6); }
+  .js .ditch-demo[data-play] .dd-row .logo { filter: none; opacity: 1; }
+  .js .ditch-demo[data-play] .dd-duck { transform: translateY(70%); }
+  .js .ditch-demo[data-play] .dd-year { opacity: 0; }
   .js .ditch-demo.is-in .ring { stroke-dashoffset: 0; transition: stroke-dashoffset .75s linear .25s; }
   .js .ditch-demo.is-in .dd-hold { opacity: 0; transition: opacity .15s 1s; }
   .js .ditch-demo.is-in .dd-tag { opacity: 1; transform: none; transition: opacity .2s 1.05s, transform .35s cubic-bezier(.3, 1.6, .5, 1) 1.05s; }
@@ -1032,7 +1032,7 @@ h1, h2, h3 { overflow-wrap: break-word; }
 @media (max-width: 430px) { .tool h1 { font-size: clamp(1.75rem, 7.4vw, 2.25rem); } }
 .tool .hits .amt a { display: inline-flex; align-items: center; min-height: 44px; }
 @media (max-width: 480px) { .tool .btn-row .btn { white-space: normal; width: 100%; text-align: center; } }
-@media (max-width: 400px) { .gv3 kbd { white-space: normal; } .tool .ttable { font-size: 14px; } .tool .ttable td { overflow-wrap: anywhere; } }
+@media (max-width: 400px) { .gv3 kbd { white-space: normal; } .tool .ttable { font-size: 14px; } .tool .ttable td { overflow-wrap: normal; } }
 @media (max-width: 340px) { .tool h1 { font-size: 24px; } .tool .seg button { padding: 0 12px; font-size: 14px; } }
 /* Tool template v2 (AnkiDecks-style, Nov 13) */
 .tool .sub { max-width: 44ch; }
@@ -1364,6 +1364,7 @@ img.tv, .tv .logo { width: 44px; height: 44px; border-radius: 12px; }
 .v4 .seg.fill { min-width: 0; }
 .v4 .seg.fill.col { flex-direction: column; }
 .v4 .seg.fill.col button { flex: none; justify-content: flex-start; text-align: left; padding: 0 14px; white-space: normal; }
+.v4 .seg.fill.col button:has(> small) { align-items: flex-start; justify-content: center; padding: 8px 14px; }
 .v4 h1, .v4 h2 { overflow-wrap: break-word; }
 @media (max-width: 360px) { .v4 h1 { font-size: 30px; } }
 .v4 .tbl-scroll { overflow-x: auto; }
@@ -1372,7 +1373,7 @@ img.tv, .tv .logo { width: 44px; height: 44px; border-radius: 12px; }
 .v4 .ttable.wide-t td.r { text-align: right; padding-left: 16px; color: var(--ink); white-space: nowrap; }
 .v4 .ttable.wide-t th.r { text-align: right; }
 .v4 .g-src { margin-top: 14px; font-size: 13.5px; color: var(--mute); }
-@media (max-width: 760px) { .v4 .ttable.wide-t td.r { white-space: normal; } .v4 .ttable.wide-t { font-size: 14px; } }
+@media (max-width: 760px) { .v4 .ttable.wide-t td.r { white-space: nowrap; } .v4 .ttable.wide-t { font-size: 14px; } }
 /* audit v4 fixes (Nov 13) */
 /* focus stays visible inside the ink answer panel */
 .v4 .tk:not(.wide) .result :focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
@@ -1760,12 +1761,12 @@ img.tv, .tv .logo { width: 44px; height: 44px; border-radius: 12px; }
 .story-steps li h3, .story-steps li p, .story-steps li .n { transition: color .35s var(--ease), background .35s var(--ease); }
 @media (max-width: 1023px) { .story-steps li:not(.on) h3 { color: var(--ink); } .story-steps li:not(.on) p { color: var(--fg2); } .story-steps li:not(.on) .n { background: var(--ink); color: var(--sun); } }
 /* hero spacing (owner, Nov 14): same gap above the form and its success message; badges sit a clear step below */
-.hero #join { margin-top: 32px; }
-.hero #join .email-wrap { margin-top: 0; }
+.hero #join-form { margin-top: 32px; }
+.hero #join-form .email-wrap { margin-top: 0; }
 .hero .email-ok { padding: 18px 22px; }
 .email-ok:focus { outline: none; }
 .hero-badges { margin-top: 24px; }
-@media (max-width: 639px) { .hero #join { margin-top: 24px; } .hero-badges { margin-top: 18px; } }
+@media (max-width: 639px) { .hero #join-form { margin-top: 24px; } .hero-badges { margin-top: 18px; } }
 
 /* Info pages (Support, About, Privacy, Terms, How we check): one centred reading column (owner, Nov 14: "why is it thrown to the left") */
 .wrap.doc { max-width: calc(760px + 2 * var(--pad)); margin-left: auto; margin-right: auto; padding-bottom: 32px; }
@@ -1782,3 +1783,11 @@ img.tv, .tv .logo { width: 44px; height: 44px; border-radius: 12px; }
 .doc .prose .note-soon { margin-top: 20px; padding: 14px 18px; border-radius: 14px; background: var(--white); box-shadow: inset 0 0 0 1.5px var(--hair); font-size: 15.5px; color: var(--fg2); }
 /* prices in tables never break mid-number; the table scrolls instead */
 td.num, .r.num, .tbl td:not(:first-child), .vs-t td { white-space: nowrap; }
+/* hidden screen-reader text inside a sideways-scrolling table must stay inside it (it was widening the page at 320px) */
+.pg-scroll, .tbl-scroll, .tbl-wrap { position: relative; }
+
+/* home calculator total: one line, shrinks to fit the yellow card in any currency ("EGP 17,616" was running off the card) */
+.receipt { container-type: inline-size; }
+.receipt .d-money.fit { white-space: nowrap; font-size: min(clamp(3rem, 1.6rem + 3vw, 4.5rem), calc(100cqi / (var(--n) * .74))); }
+/* a table straight under a section heading gets the same gap as any other block (it sat on the heading) */
+.v4 .v4-sec > h2 + .ttable, .v4 .v4-sec > h2 + .tbl-scroll, .v4 .v4-sec > h2 + .tbl-wrap { margin-top: 24px; }

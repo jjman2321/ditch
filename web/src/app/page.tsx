@@ -231,7 +231,7 @@ export default function Home() {
               Reminders that actually arrive
             </h2>
             <p className="lead" style={{ marginTop: 20 }}>
-              In 5,535 reviews of other trackers, about 125 said reminders never came. Ditch shows your next one, so you know it’s set.
+              In our own research, 38% said a tracker’s reminders never came. Ditch shows your next one, so you know it’s set.
             </p>
             <ul className="ticks">
               <li>

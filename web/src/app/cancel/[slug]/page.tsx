@@ -11,7 +11,8 @@ import { GuideFeedback } from '@/components/guide/GuideFeedback';
 import { PayTabs, type PayTab } from '@/components/guide/PayTabs';
 import { StepArt, stepUrl, tapLabel } from '@/components/guide/StepArt';
 import { APPLE_SOURCE, formatDate, freshness, guideById, neighbours, priceFor, priceHubServices, pubDates, publicNotes, publishedGuides, serviceById, idOf, slugOf } from '@/lib/data';
-import { COMPANY, SITE, SUPPORT_EMAIL } from '@/lib/site';
+import { COMPANY, SITE, SUPPORT_EMAIL, pageTitle } from '@/lib/site';
+import { JsonLd } from '@/components/JsonLd';
 
 
 export function generateStaticParams() {
@@ -27,6 +28,12 @@ function answer(g: { answer?: string; steps: string[]; name: string; checkedOn: 
 
 const cap = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
 
+/** "How to cancel X in 2026: official steps", dropping the tail when the name is long (titles stay within 60). */
+function guideTitle(name: string, year: string) {
+  const full = `How to cancel ${name} in ${year}: official steps`;
+  return pageTitle(full.length <= 60 ? full : `How to cancel ${name} in ${year}`);
+}
+
 export async function generateMetadata({ params }: PageProps<'/cancel/[slug]'>): Promise<Metadata> {
   const { slug } = await params;
   const id = idOf(slug);
@@ -34,7 +41,7 @@ export async function generateMetadata({ params }: PageProps<'/cancel/[slug]'>):
   if (!g) return {};
   const desc = answer(g);
   return {
-    title: `How to cancel ${g.name} in ${g.checkedOn.slice(0, 4)}: official steps`,
+    title: guideTitle(g.name, g.checkedOn.slice(0, 4)),
     description: desc.length > 158 ? `${desc.slice(0, 155).replace(/\s+\S*$/, '')}…` : desc,
     alternates: { canonical: `/cancel/${slugOf(g.id)}` },
     openGraph: { title: `How to cancel ${g.name}`, url: `/cancel/${slugOf(g.id)}`, type: 'article', siteName: 'Ditch: Subscription Tracker', locale: 'en_US', images: [{ url: '/og/cancel.png', width: 1200, height: 630, alt: 'How to cancel any subscription' }] },
@@ -73,7 +80,13 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
     ...(d?.after?.data ? [{ label: 'Your stuff', ...d.after.data }] : []),
     ...(d?.after?.refunds ? [{ label: 'Refunds', ...d.after.refunds }] : []),
   ];
-  const faq = d?.faq ?? [];
+  // Questions the page already answers in its own section are left out, so nothing reads twice.
+  const faq = (d?.faq ?? []).filter(
+    (f) =>
+      !(d?.after?.refunds && /\brefund/i.test(f.q)) &&
+      !(showApple && /\b(through|via|by) apple\b|apple bills/i.test(f.q)) &&
+      !(d?.after?.data && /\b(profiles?|playlists?|library|data|stuff|come back)\b/i.test(f.q)),
+  );
 
   const ld = [
     {
@@ -226,7 +239,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
 
   return (
     <div className="wrap gv3 v4 guide4 g5">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+      <JsonLd data={ld} />
       <nav className="crumbs" aria-label="Breadcrumb">
         <Link href="/cancel">Cancel guides</Link>
         <span aria-hidden>›</span>

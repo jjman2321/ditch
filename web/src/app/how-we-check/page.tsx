@@ -3,12 +3,13 @@ import Link from 'next/link';
 
 import { Doc } from '@/components/Doc';
 import { COUNTRIES, formatDate, siteCounts } from '@/lib/data';
-import { STATS, SUPPORT_EMAIL } from '@/lib/site';
+import { JsonLd } from '@/components/JsonLd';
+import { SITE, STATS, SUPPORT_EMAIL, pageTitle, og } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'How we check prices and cancel guides',
+  title: pageTitle('How we check prices and cancel guides'),
   description: 'Every price and cancel step on Ditch is read from the service’s own page, with the date. What verified means, how often we re-check, and what we don’t do.',
-  alternates: { canonical: '/how-we-check' },
+  alternates: { canonical: '/how-we-check' }, openGraph: og('/how-we-check'),
 };
 
 export default function HowWeCheck() {
@@ -22,6 +23,7 @@ export default function HowWeCheck() {
         { t: 'Only what we could confirm', d: 'If we couldn’t read a price or a step from an official page, it isn’t on the site.' },
       ]}
     >
+      <JsonLd data={{ '@context': 'https://schema.org', '@type': 'AboutPage', name: 'How we check prices and cancel guides', url: `${SITE}/how-we-check`, dateModified: c.checked, publisher: { '@id': `${SITE}/#org` }, about: 'How Ditch checks subscription prices and cancel steps against official pages' }} />
       <h2 id="numbers">Where things stand</h2>
       <p>
         {c.services} services with checked prices in up to {c.countries} countries ({c.plans.toLocaleString('en-US')} plan prices), and {c.guides} cancel guides. Last price check: {formatDate(c.checked)}.
@@ -29,12 +31,12 @@ export default function HowWeCheck() {
       <p>Countries: {COUNTRIES.map((x) => x.name).join(', ')}.</p>
 
       <h2 id="method">How a price gets on the site</h2>
-      <ul>
-        <li><b>1. Read it at the source.</b> We open the service’s own page for that country, or Apple’s in-app price list when that’s where you’d pay, and record each plan we list, its price and how often it bills.</li>
-        <li><b>2. Write down where and when.</b> The exact page and the date go next to the price.</li>
-        <li><b>3. Keep the country’s own money.</b> Prices stay in the currency you’re charged in. We never add different currencies together.</li>
-        <li><b>4. Re-check.</b> At least every 90 days. After 90 days a page says the price may have changed; after 180 days it’s hidden from search until we check again.</li>
-      </ul>
+      <ol>
+        <li><b>Read it at the source.</b> We open the service’s own page for that country, or Apple’s in-app price list when that’s where you’d pay, and record each plan we list, its price and how often it bills.</li>
+        <li><b>Write down where and when.</b> The exact page and the date go next to the price.</li>
+        <li><b>Keep the country’s own money.</b> Prices stay in the currency you’re charged in. We never add different currencies together.</li>
+        <li><b>Re-check.</b> At least every 90 days. After 90 days a page says the price may have changed; after 180 days it’s hidden from search until we check again.</li>
+      </ol>
 
       <h2 id="status">What the labels mean</h2>
       <ul>

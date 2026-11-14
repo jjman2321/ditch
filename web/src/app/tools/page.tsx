@@ -4,13 +4,14 @@ import Link from 'next/link';
 import { ToolIcon } from '@/components/ToolCard';
 import { ToolHub, type Group } from '@/components/ToolHub';
 import { HUBS } from '@/components/tools/ChargesBody';
-import { SITE } from '@/lib/site';
+import { SITE, pageTitle, og } from '@/lib/site';
 import { SERVICE_TOOLS, TOOLS } from '@/lib/tools';
+import { JsonLd } from '@/components/JsonLd';
 
 export const metadata: Metadata = {
-  title: 'Free subscription tools: calculators and charge finder',
+  title: pageTitle('Free subscription tools: calculators and charge finder'),
   description: 'Free tools for what you pay for: find an unknown charge, see your yearly total, catch a free trial, split a family plan and compare prices.',
-  alternates: { canonical: '/tools' },
+  alternates: { canonical: '/tools' }, openGraph: og('/tools'),
 };
 
 const t = (slug: string) => { const x = TOOLS.find((y) => y.slug === slug)!; return { href: `/${x.slug}`, name: x.name, desc: x.desc }; };
@@ -32,12 +33,18 @@ const FEATURED = [
   { href: '/tools/subscription-cost-calculator', icon: 'sum', name: 'What you pay in a year', desc: 'Tap what you pay for. See the total.' },
 ];
 
+const Arrow = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M5 12h14M13 6l6 6-6 6" />
+  </svg>
+);
+
 export default function Tools() {
   const all = GROUPS.flatMap((g) => g.items);
   const ld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Free subscription tools', url: `${SITE}/tools`, mainEntity: { '@type': 'ItemList', itemListElement: all.map((x, i) => ({ '@type': 'ListItem', position: i + 1, name: x.name, url: `${SITE}${x.href}` })) } };
   return (
     <div className="wrap v4 tool hubpage">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+      <JsonLd data={ld} />
       <header className="v4-hero solo">
         <div>
           <h1>Free subscription tools</h1>
@@ -48,12 +55,20 @@ export default function Tools() {
         <div className="feat">
           {FEATURED.map((f) => (
             <Link key={f.href} href={f.href} className={`fc${f.ink ? ' ink' : ''}`}>
-              <span className="fc-ic" aria-hidden>
-                <ToolIcon name={f.icon} />
+              <span className="fc-top" aria-hidden>
+                <span className="fc-ic">
+                  <ToolIcon name={f.icon} />
+                </span>
+                <span className="fc-go">
+                  <Arrow />
+                </span>
               </span>
               <span>
                 <b>{f.name}</b>
                 <small>{f.desc}</small>
+                <span className="fc-open" aria-hidden>
+                  Open the tool
+                </span>
               </span>
             </Link>
           ))}

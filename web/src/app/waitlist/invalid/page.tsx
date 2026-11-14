@@ -1,8 +1,9 @@
+import { og } from '@/lib/site';
 import type { Metadata } from 'next';
 
 import { WaitlistJoin } from '@/components/WaitlistStatus';
 
-export const metadata: Metadata = { title: 'That link didn’t work', robots: { index: false }, alternates: { canonical: '/waitlist' } };
+export const metadata: Metadata = { title: 'That link didn’t work', robots: { index: false }, alternates: { canonical: '/waitlist' }, openGraph: og('/waitlist') };
 
 /** Where the confirm link lands (api/confirm). Static, so it shows the right thing with or without JavaScript. */
 export default function Page() {

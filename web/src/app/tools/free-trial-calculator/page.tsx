@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
 
+import { pageTitle, og } from '@/lib/site';
+
 import { ToolPage } from '@/components/ToolPage';
 import { TrialCalc } from '@/components/tools/TrialCalc';
 
 export const metadata: Metadata = {
-  title: 'Free trial calculator: when it charges and when to cancel',
+  title: pageTitle('Free trial calculator: when it charges and when to cancel'),
   description: 'Find the day your free trial turns into a charge and the day to cancel by, with Apple’s 24-hour rule. Add two reminders to your calendar.',
-  alternates: { canonical: '/tools/free-trial-calculator' },
+  alternates: { canonical: '/tools/free-trial-calculator' }, openGraph: og('/tools/free-trial-calculator'),
 };
 
 export default function Page() {

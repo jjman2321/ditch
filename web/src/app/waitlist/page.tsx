@@ -1,9 +1,10 @@
+import { og } from '@/lib/site';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
 import { WaitlistStatus } from '@/components/WaitlistStatus';
 
-export const metadata: Metadata = { title: 'Waitlist', robots: { index: false }, alternates: { canonical: '/waitlist' } };
+export const metadata: Metadata = { title: 'Waitlist', robots: { index: false }, alternates: { canonical: '/waitlist' }, openGraph: og('/waitlist') };
 
 export default function Waitlist() {
   return (

@@ -2,12 +2,13 @@ import type { Metadata } from 'next';
 
 import { ServiceIndex, type IndexItem } from '@/components/ServiceIndex';
 import { COUNTRIES, hasLogo, priceHubServices, verifiedPrices, slugOf } from '@/lib/data';
-import { SITE } from '@/lib/site';
+import { SITE, pageTitle, og } from '@/lib/site';
+import { JsonLd } from '@/components/JsonLd';
 
 export const metadata: Metadata = {
-  title: `Subscription prices in ${COUNTRIES.length} countries, from official pages`,
+  title: pageTitle(`Subscription prices in ${COUNTRIES.length} countries, from official pages`),
   description: 'What Netflix, Spotify, Disney+, ChatGPT and more cost in the US, UK, Canada, Australia, Europe, India and the Middle East. Every plan, local money, dated.',
-  alternates: { canonical: '/prices' },
+  alternates: { canonical: '/prices' }, openGraph: og('/prices', 'prices'),
 };
 
 export default function PricesIndex() {
@@ -22,7 +23,7 @@ export default function PricesIndex() {
   };
   return (
     <div className="wrap v4 index-head idx4">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+      <JsonLd data={ld} />
       <header className="v4-hero solo">
         <div>
           <h1>Subscription prices by country</h1>

@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 
+import { pageTitle, og } from '@/lib/site';
+
 import { Calculator } from '@/components/Calculator';
 import { ToolPage } from '@/components/ToolPage';
 import { calcData } from '@/lib/calc';
@@ -7,9 +9,9 @@ import { defaultPlan, priceFor } from '@/lib/data';
 import { formatMoney, yearlyMinor } from '@/lib/money';
 
 export const metadata: Metadata = {
-  title: 'Subscription cost calculator: what you spend a month and a year',
+  title: pageTitle('Subscription cost calculator: your monthly and yearly total'),
   description: 'Tap the subscriptions you pay for and see the total a month and a year, with real prices for your country. Free, runs in your browser.',
-  alternates: { canonical: '/tools/subscription-cost-calculator' },
+  alternates: { canonical: '/tools/subscription-cost-calculator' }, openGraph: og('/tools/subscription-cost-calculator'),
 };
 
 export default function Page() {

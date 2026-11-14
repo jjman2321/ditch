@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 
 import { Doc } from '@/components/Doc';
-import { COMPANY, PRO, SUPPORT_EMAIL } from '@/lib/site';
+import { COMPANY, PRO, SUPPORT_EMAIL, pageTitle, og } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Terms',
+  title: pageTitle('Terms of use'),
   description: 'The terms for the Ditch app and ditchsubs.app: Apple’s standard license, how Pro renews and how to cancel it, and what the guides and prices are (and aren’t).',
-  alternates: { canonical: '/terms' },
+  alternates: { canonical: '/terms' }, openGraph: og('/terms'),
 };
 
 export default function Terms() {

@@ -5,6 +5,7 @@ import { EmailBox } from './EmailBox';
 import { ToolCard, allToolItems, visualOf } from './ToolCard';
 import { dateRange, priceHubServices, verifiedPrices } from '@/lib/data';
 import { SITE } from '@/lib/site';
+import { JsonLd } from '@/components/JsonLd';
 
 /**
  * One layout for every free tool (v4, Nov 13; mockups in design/site/tools-v4, after Upwork's calculators,
@@ -59,7 +60,7 @@ export function ToolPage({
   ];
   return (
     <div className="wrap v4 tool">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+      <JsonLd data={ld} />
       <nav className="crumbs" aria-label="Breadcrumb">
         <Link href="/tools">Free tools</Link>
         <span aria-hidden>›</span>

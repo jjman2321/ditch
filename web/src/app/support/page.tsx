@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 import { Doc } from '@/components/Doc';
-import { SUPPORT_EMAIL } from '@/lib/site';
+import { SUPPORT_EMAIL, pageTitle, og } from '@/lib/site';
+import { JsonLd } from '@/components/JsonLd';
 
 export const metadata: Metadata = {
-  title: 'Support',
+  title: pageTitle('Ditch app support and contact'),
   description: 'Help with Ditch: reminders not arriving, restoring Pro, cancelling Pro, moving to a new iPhone, and how to reach a person.',
-  alternates: { canonical: '/support' },
+  alternates: { canonical: '/support' }, openGraph: og('/support'),
 };
 
 const QA = [
@@ -32,6 +34,9 @@ export default function Support() {
       <p className="lead" style={{ marginTop: 16 }}>
         Email <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>. We read every message and usually reply within a day.
       </p>
+      <p className="note-soon">
+        Ditch isn’t on the App Store yet. The app answers below are ready for launch day. <Link href="/#join" prefetch={false}>Join the waitlist</Link> to hear when it’s out.
+      </p>
       {QA.map((x, i) => (
         <section key={x.q}>
           <h2 id={`q${i + 1}`}>{x.q}</h2>
@@ -53,10 +58,7 @@ export default function Support() {
           Email support
         </a>
       </div>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: QA.map((x) => ({ '@type': 'Question', name: x.q, acceptedAnswer: { '@type': 'Answer', text: x.a.join(' ') } })) }) }}
-      />
+      <JsonLd data={{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: QA.map((x) => ({ '@type': 'Question', name: x.q, acceptedAnswer: { '@type': 'Answer', text: x.a.join(' ') } })) }} />
     </Doc>
   );
 }

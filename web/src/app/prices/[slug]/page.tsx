@@ -7,9 +7,11 @@ import { YourCountryPrices, type CountryPrices } from '@/components/YourCountryP
 import { Logo } from '@/components/Logo';
 import { ToolCard } from '@/components/ToolCard';
 import { toolsFor } from '@/lib/tools';
+import { PriceGrid, type GridCol, type GridRow } from '@/components/PriceGrid';
 import { COUNTRIES, COUNTRY, dateRange, inCountry, priceChanges, defaultPlan, formatDate, host, guideById, isAppStorePrice, neighbours, priceHubServices, pubDates, serviceById, verifiedPrices, type PriceRow, idOf, inWhere, slugOf } from '@/lib/data';
 import { formatMoney, monthlyMinor } from '@/lib/money';
-import { COMPANY, SITE, SUPPORT_EMAIL } from '@/lib/site';
+import { COMPANY, SITE, SUPPORT_EMAIL, fitDesc, pageTitle } from '@/lib/site';
+import { JsonLd } from '@/components/JsonLd';
 
 export function generateStaticParams() {
   return priceHubServices().map((s) => ({ slug: slugOf(s.id) }));
@@ -26,6 +28,61 @@ function range(r: PriceRow) {
   const lo = monthly[0];
   const hi = monthly[monthly.length - 1];
   return lo === hi ? `${money(r, lo.amountMinor)} a month` : `${money(r, lo.amountMinor)} to ${money(r, hi.amountMinor)} a month`;
+}
+
+const CYCLE_WORDS = /\b(monthly|yearly|annual|billed|months?|years?|quarterly)\b/i;
+
+/** Plans as columns (same plan id in every country), countries as rows. Names lose cycle words; the column says the cycle. */
+function buildGrid(service: string, rows: PriceRow[]): { cols: GridCol[]; rows: GridRow[] } {
+  const seen = new Map<string, { cy: string; names: Map<string, number> }>();
+  for (const r of rows)
+    for (const p of r.plans) {
+      const e = seen.get(p.id) ?? { cy: p.cycle, names: new Map() };
+      e.names.set(p.name, (e.names.get(p.name) ?? 0) + 1);
+      seen.set(p.id, e);
+    }
+  const brand = service.replace(/\s*\(.*\)/, '');
+  const esc = brand.replace(/[.*+?^$()|[\]\\{}]/g, '\\$&');
+  const clean = (n: string) =>
+    n
+      .replace(new RegExp('^' + esc + '\\s+', 'i'), '')
+      .replace(/\s*\(([^)]*)\)/g, (_m, inner: string) => {
+        const rest = inner.split(',').map((x) => x.trim()).filter((x) => !CYCLE_WORDS.test(x));
+        return rest.length ? ` (${rest.join(', ')})` : '';
+      })
+      .replace(/^\((.*)\)$/, '$1')
+      .trim();
+  const cols: GridCol[] = [...seen].map(([id, e]) => {
+    const top = [...e.names].sort((a, b) => b[1] - a[1])[0][0];
+    const name = clean(top) || (e.cy === 'yearly' ? 'Yearly' : 'Monthly');
+    return { id, name, cy: e.cy };
+  });
+  return {
+    cols,
+    rows: rows.map((r) => {
+      const low = cheapest(r);
+      return {
+        country: r.country,
+        name: COUNTRY[r.country].name,
+        slug: COUNTRY[r.country].slug,
+        note: `${r.currency} · ${isAppStorePrice(r) ? 'iPhone app, ' : ''}${COUNTRY[r.country].tax}`,
+        cells: cols.map((c) => {
+          const p = r.plans.find((x) => x.id === c.id);
+          return p ? formatMoney(p.amountMinor, r.currency, { country: r.country }) : null;
+        }),
+        low: cols.findIndex((c) => c.id === low.id),
+        // cheapest within each billing cycle, for when the table shows one cycle at a time
+        lowBy: Object.fromEntries(
+          [...new Set(cols.map((c) => c.cy))].map((cy) => {
+            const inCy = r.plans.filter((p) => p.cycle === cy);
+            const open = inCy.filter((p) => !/student/i.test(p.name));
+            const best = [...(open.length ? open : inCy)].sort((a, b) => a.amountMinor - b.amountMinor)[0];
+            return [cy, best ? cols.findIndex((c) => c.id === best.id) : -1];
+          }),
+        ),
+      };
+    }),
+  };
 }
 
 function cheapest(r: PriceRow) {
@@ -62,8 +119,8 @@ export async function generateMetadata({ params }: PageProps<'/prices/[slug]'>):
   if (!s || !priceHubServices().some((x) => x.id === s.id)) return {};
   const latest = rows.map((r) => r.checked).sort().pop()!;
   return {
-    title: titleFor(s.name, latest.slice(0, 4), rows),
-    description: `${summary(s.name, rows)} Main plans ${inWhere(rows)}, checked ${dateRange(rows.map((r) => r.checked))}.`,
+    title: pageTitle(titleFor(s.name, latest.slice(0, 4), rows)),
+    description: fitDesc(`${summary(s.name, rows)} Main plans ${inWhere(rows)}, checked ${dateRange(rows.map((r) => r.checked))}.`, `Every price from ${s.name}’s own page.`, guideById(s.id) ? `Plus how to cancel ${s.name}.` : ''),
     alternates: { canonical: `/prices/${slugOf(s.id)}` },
     openGraph: { title: `${s.name} prices ${inWhere(rows)}`, url: `/prices/${slugOf(s.id)}`, type: 'article', siteName: 'Ditch: Subscription Tracker', locale: 'en_US', images: [{ url: '/og/prices.png', width: 1200, height: 630, alt: `Subscription prices in ${COUNTRIES.length} countries` }] },
     twitter: { card: 'summary_large_image', images: ['/og/prices.png'] },
@@ -113,11 +170,12 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
 
   const cards: CountryPrices[] = rows.map((r) => ({ country: r.country, name: COUNTRY[r.country].name, tax: COUNTRY[r.country].tax, currency: r.currency, checked: formatDate(r.checked), source: r.source, sourceLabel: isAppStorePrice(r) ? 'App Store' : host(r.source), appStore: isAppStorePrice(r), plans: r.plans.map((p) => ({ id: p.id, name: p.name, amountMinor: p.amountMinor, cycle: p.cycle })) }));
   const many = rows.length > 1;
+  const grid = buildGrid(s.name, rows);
 
   const history = priceChanges().filter((c) => c.serviceId === s.id);
   return (
     <div className="wrap guide gv3 v4 guide4 g5 pricepage">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+      <JsonLd data={ld} />
       <nav className="crumbs" aria-label="Breadcrumb">
         <Link href="/prices">Prices</Link>
         <span aria-hidden>›</span>
@@ -155,37 +213,8 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
       {many ? (
         <section className="v4-sec" aria-labelledby="all">
           <h2 id="all">{s.name} price by country</h2>
-          <p className="g5-sub">Each country’s own money, before or including tax as marked. The cheapest plan in each country is marked.</p>
-          <div className="ctry-grid">
-            {rows.map((r) => {
-              const low = cheapest(r);
-              return (
-                <article className="ctry" id={COUNTRY[r.country].slug} key={r.country}>
-                  <h3>
-                    {COUNTRY[r.country].name}
-                    <small>
-                      {isAppStorePrice(r) ? 'iPhone app · ' : ''}
-                      {COUNTRY[r.country].tax}
-                    </small>
-                  </h3>
-                  <ul>
-                    {r.plans.map((p) => (
-                      <li key={p.id} className={p.id === low.id ? 'low' : undefined}>
-                        <span>
-                          {p.name}
-                          {p.id === low.id ? <em>Cheapest</em> : null}
-                        </span>
-                        <b className="num">
-                          {formatMoney(p.amountMinor, r.currency, { country: r.country })}
-                          <small>{p.cycle === 'monthly' ? '/mo' : p.cycle === 'yearly' ? '/yr' : p.cycle === 'quarterly' ? '/qtr' : '/wk'}</small>
-                        </b>
-                      </li>
-                    ))}
-                  </ul>
-                </article>
-              );
-            })}
-          </div>
+          <p className="g5-sub">Each country in its own money, before or including tax as marked. Prices never get converted.</p>
+          <PriceGrid service={s.name} cols={grid.cols} rows={grid.rows} />
           <p className="g-src">
             We never add different currencies together. <Link href="/how-we-check">How we check prices</Link>.
           </p>

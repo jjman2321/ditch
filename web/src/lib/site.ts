@@ -1,5 +1,20 @@
 export const SITE = 'https://ditchsubs.app';
 export const BRAND = 'Ditch: Subscription Tracker';
+
+/** Open Graph for a page: its own og:url plus the site defaults (a page's openGraph replaces the layout's, so this carries them). */
+export const og = (path: string, image: 'home' | 'cancel' | 'prices' = 'home') => ({
+  url: path,
+  siteName: 'Ditch: Subscription Tracker',
+  type: 'website' as const,
+  locale: 'en_US',
+  images: [{ url: `/og/${image}.png`, width: 1200, height: 630, alt: 'Ditch: Subscription Tracker. Ditch it before it renews.' }],
+});
+
+/** Meta descriptions: the first sentence always, then each extra sentence only while the whole stays within 160 characters. */
+export const fitDesc = (first: string, ...more: string[]) => more.filter(Boolean).reduce((acc, p) => (acc.length + 1 + p.length <= 160 ? `${acc} ${p}` : acc), first);
+
+/** Search titles stay within 60 characters: add " | Ditch" only when it fits, otherwise the title stands alone. */
+export const pageTitle = (s: string): string | { absolute: string } => (s.length + 8 <= 60 ? s : { absolute: s });
 export const SUPPORT_EMAIL = 'support@ditchsubs.app';
 export const AUTHOR = { name: 'Aribo', url: '/about' };
 export const COMPANY = 'Grasp Labs LLC';

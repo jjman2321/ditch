@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
 
+import { pageTitle, og } from '@/lib/site';
+
 import { ToolPage } from '@/components/ToolPage';
 import { Compare } from '@/components/tools/PlanTools';
 import { countryList } from '@/lib/tools';
 
 export const metadata: Metadata = {
-  title: 'Subscription price comparison: two services side by side',
-  description: 'Compare two subscriptions plan by plan, in your country, from each service’s own prices.',
-  alternates: { canonical: '/tools/compare-prices' },
+  title: pageTitle('Subscription price comparison: two services side by side'),
+  description: 'Compare two subscriptions plan by plan, in your country, from each service’s own prices. Netflix, Spotify, Disney+, ChatGPT and more, in 17 countries.',
+  alternates: { canonical: '/tools/compare-prices' }, openGraph: og('/tools/compare-prices'),
 };
 
 export default function Page() {

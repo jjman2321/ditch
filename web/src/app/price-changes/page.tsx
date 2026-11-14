@@ -7,14 +7,15 @@ import { Logo } from '@/components/Logo';
 import { COUNTRY, formatDate, guideById, hasLogo, inCountry, priceChanges, priceChangesChecked, priceHubServices, slugOf } from '@/lib/data';
 import { formatMoney } from '@/lib/money';
 import { planLabel } from '@/lib/tools';
-import { SITE } from '@/lib/site';
+import { SITE, pageTitle, og } from '@/lib/site';
+import { JsonLd } from '@/components/JsonLd';
 
 const YEAR = new Date().getFullYear();
 
 export const metadata: Metadata = {
-  title: `Subscription price increases ${YEAR}: every rise, dated`,
+  title: pageTitle(`Subscription price increases ${YEAR}: every rise, dated`),
   description: 'Netflix, Spotify, Disney+, YouTube and more: every subscription price rise we could confirm since 2024, with the old and new price, the date and the source.',
-  alternates: { canonical: '/price-changes' },
+  alternates: { canonical: '/price-changes' }, openGraph: og('/price-changes', 'prices'),
 };
 
 const per = (cy: string) => (cy === 'yearly' ? 'a year' : cy === 'quarterly' ? 'every 3 months' : cy === 'weekly' ? 'a week' : 'a month');
@@ -50,7 +51,7 @@ export default function PriceChanges() {
 
   return (
     <div className="wrap v4 gv3 guide4 pchg">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+      <JsonLd data={ld} />
       <nav className="crumbs" aria-label="Breadcrumb">
         <Link href="/prices">Prices</Link>
         <span aria-hidden>›</span>

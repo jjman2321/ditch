@@ -9,7 +9,8 @@ import { Notif } from '@/components/Notif';
 import { DitchDemo } from '@/components/DitchDemo';
 import { COUNTRIES, defaultPlan, formatDate, hasLogo, priceFor, serviceById, verifiedPrices } from '@/lib/data';
 import { formatMoney } from '@/lib/money';
-import { BRAND, COMPANY, PRO, PRO_MINOR, SITE, STATS } from '@/lib/site';
+import { BRAND, COMPANY, PRO, PRO_MINOR, SITE, STATS, og } from '@/lib/site';
+import { JsonLd } from '@/components/JsonLd';
 
 const CALC_IDS = ['netflix', 'spotify', 'chatgpt-plus', 'amazon-prime', 'disney-plus', 'apple-music', 'youtube-premium', 'youtube-music', 'max', 'xbox-game-pass', 'claude-pro', 'microsoft-365', 'hulu', 'ps-plus', 'paramount-plus', 'peacock', 'google-one', 'audible'];
 
@@ -39,8 +40,8 @@ const FAQ = [
 ];
 
 export const metadata = {
-  alternates: { canonical: '/' },
-  title: { absolute: 'Ditch: Subscription Tracker for iPhone | Ditch it before it renews' },
+  alternates: { canonical: '/' }, openGraph: og('/'),
+  title: { absolute: 'Subscription Tracker for iPhone: Ditch it before it renews' },
   description: 'Track every subscription free and get a reminder 3 days before a charge. No bank login, no account. For iPhone.',
 };
 
@@ -91,7 +92,7 @@ export default function Home() {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+      <JsonLd data={ld} />
 
       {/* 1. Hero */}
       <section className="hero" aria-labelledby="hero-h">
@@ -121,10 +122,10 @@ export default function Home() {
             <AppBadges className="hero-badges" />
           </div>
           <div className="stage" aria-hidden>
-            <img className="float" fetchPriority="low" src="/logos/netflix.png" alt="" style={{ left: '4%', top: 70, transform: 'rotate(-6deg)' }} />
-            <img className="float" fetchPriority="low" src="/logos/spotify.png" alt="" style={{ right: '2%', top: 36, transform: 'rotate(6deg)' }} />
-            <img className="float" fetchPriority="low" src="/logos/chatgpt-plus.png" alt="" style={{ left: '0%', top: 300, transform: 'rotate(4deg)' }} />
-            <img className="float" fetchPriority="low" src="/logos/disney-plus.png" alt="" style={{ right: '0%', top: 268, transform: 'rotate(-5deg)' }} />
+            <img className="float" width={64} height={64} fetchPriority="low" src="/logos/netflix.png" alt="" style={{ left: '4%', top: 70, transform: 'rotate(-6deg)' }} />
+            <img className="float" width={64} height={64} fetchPriority="low" src="/logos/spotify.png" alt="" style={{ right: '2%', top: 36, transform: 'rotate(6deg)' }} />
+            <img className="float" width={64} height={64} fetchPriority="low" src="/logos/chatgpt-plus.png" alt="" style={{ left: '0%', top: 300, transform: 'rotate(4deg)' }} />
+            <img className="float" width={64} height={64} fetchPriority="low" src="/logos/disney-plus.png" alt="" style={{ right: '0%', top: 268, transform: 'rotate(-5deg)' }} />
             <div className="phone">
               <div className="scr">
                 <div className="sbar">
@@ -188,7 +189,7 @@ export default function Home() {
                     const p = defaultPlan(priceFor(id, 'US')!);
                     return (
                       <div className="r" key={id}>
-                        <img src={`/logos/${id}.png`} alt="" />
+                        <img src={`/logos/${id}.png`} alt="" width={28} height={28} loading="lazy" />
                         {serviceById(id)!.name}
                         <span className="num">{formatMoney(p.amountMinor, 'USD')}</span>
                       </div>
@@ -394,10 +395,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: FAQ.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }) }}
-      />
+      <JsonLd data={{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: FAQ.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }} />
 
       {/* 8. Final */}
       <section className="wrap" aria-labelledby="final-h" data-has-cta>

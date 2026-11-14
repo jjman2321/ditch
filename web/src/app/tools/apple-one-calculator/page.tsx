@@ -1,14 +1,16 @@
 import type { Metadata } from 'next';
 
+import { pageTitle, og } from '@/lib/site';
+
 import { ToolPage } from '@/components/ToolPage';
 import { AppleOne } from '@/components/tools/AppleOne';
 import { formatMoney } from '@/lib/money';
 import { allPoints, countryList } from '@/lib/tools';
 
 export const metadata: Metadata = {
-  title: 'Apple One calculator: is Apple One worth it for you?',
+  title: pageTitle('Apple One calculator: is Apple One worth it for you?'),
   description: 'Tick the Apple services you’d pay for anyway. See whether Apple One Individual, Family or Premier costs less, in your country.',
-  alternates: { canonical: '/tools/apple-one-calculator' },
+  alternates: { canonical: '/tools/apple-one-calculator' }, openGraph: og('/tools/apple-one-calculator'),
 };
 
 export default function Page() {

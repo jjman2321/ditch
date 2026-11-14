@@ -54,3 +54,15 @@ export function usePoints(): Pt[] | null {
 export function Loading() {
   return <p className="muted loading" style={{ color: 'var(--mute)' }}>Loading prices…</p>;
 }
+
+/**
+ * A big money figure that never breaks mid-number ("EGP 34.7 / 5") and shrinks to fit its panel.
+ * --n is the character count; CSS sizes the font so n characters fit the panel width (container units).
+ */
+export function Amt({ children }: { children: string }) {
+  return (
+    <span className="amt" style={{ '--n': Math.max(children.length, 4) } as React.CSSProperties}>
+      {children}
+    </span>
+  );
+}

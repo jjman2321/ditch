@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
 
+import { pageTitle, og } from '@/lib/site';
+
 import { ToolPage } from '@/components/ToolPage';
 import { MonthlyYearly } from '@/components/tools/PlanTools';
 import { countryList } from '@/lib/tools';
 
 export const metadata: Metadata = {
-  title: 'Monthly vs yearly calculator: is a yearly plan cheaper?',
+  title: pageTitle('Monthly vs yearly calculator: is a yearly plan cheaper?'),
   description: 'See what a yearly subscription costs next to 12 months of the monthly plan, for real services in your country.',
-  alternates: { canonical: '/tools/monthly-vs-yearly' },
+  alternates: { canonical: '/tools/monthly-vs-yearly' }, openGraph: og('/tools/monthly-vs-yearly'),
 };
 
 export default function Page() {

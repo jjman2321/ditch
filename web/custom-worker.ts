@@ -35,12 +35,17 @@ const ALLOW = new Set(["/waitlist", "/waitlist/confirmed", "/waitlist/invalid"])
 /** Only page addresses are checked. Files, Next internals and API routes pass straight through. */
 const isPage = (p: string) => !p.includes(".") && !/^\/(_next|api|cdn-cgi|_vercel)(\/|$)/.test(p);
 
-/** The *.workers.dev test address must never compete with the real domain in search. */
+/**
+ * Last touch on every response: HTTPS-only (HSTS) and two safe headers on the real domain,
+ * and noindex on the *.workers.dev test address so it never competes with the real domain in search.
+ */
 async function noindexOnTestHost(url: URL, res: Promise<Response>) {
   const r = await res;
-  if (!url.hostname.endsWith(".workers.dev")) return r;
   const headers = new Headers(r.headers);
-  headers.set("x-robots-tag", "noindex");
+  if (url.hostname.endsWith(".workers.dev")) headers.set("x-robots-tag", "noindex");
+  else headers.set("strict-transport-security", "max-age=31536000");
+  if (!headers.has("x-content-type-options")) headers.set("x-content-type-options", "nosniff");
+  if (!headers.has("referrer-policy")) headers.set("referrer-policy", "strict-origin-when-cross-origin");
   return new Response(r.body, { status: r.status, statusText: r.statusText, headers });
 }
 

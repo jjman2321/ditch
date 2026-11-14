@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
 
+import { pageTitle, og } from '@/lib/site';
+
 import { ToolPage } from '@/components/ToolPage';
 import { RefundHelper } from '@/components/tools/RefundHelper';
 
 export const metadata: Metadata = {
-  title: 'Subscription refund helper: where to ask for your money back',
+  title: pageTitle('Subscription refund helper: where to ask for your money back'),
   description: 'Forgot to cancel? Answer two questions and get the official place to ask Apple, Google, Amazon or the company for a refund.',
-  alternates: { canonical: '/tools/refund-helper' },
+  alternates: { canonical: '/tools/refund-helper' }, openGraph: og('/tools/refund-helper'),
 };
 
 export default function Page() {

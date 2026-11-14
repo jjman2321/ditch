@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { CYCLE_WORD, formatMoney, monthlyMinor, yearlyMinor } from '@/lib/money';
 import type { Pt } from '@/lib/tools';
 
-import { CountrySelect, Loading, useCountry, usePoints } from './ToolBits';
+import { Amt, CountrySelect, Loading, useCountry, usePoints } from './ToolBits';
 
 type C = { code: string; name: string }[];
 const base = (n: string) => n.replace(/\s*\((yearly|annual|monthly|year|month)\)\s*/gi, ' ').replace(/\b(yearly|annual|monthly)\b/gi, '').replace(/\s+/g, ' ').trim().toLowerCase();
@@ -140,7 +140,7 @@ function FamilySplitInner({ points, countries, only, all }: { points: Pt[]; coun
           <div className={`seg fill${plans.length > 2 || plans.some((p) => p.p.length > 14) ? ' col' : ''}`} role="group" aria-label="Plan">
             {plans.map((p) => (
               <button key={p.p} type="button" aria-pressed={p.p === plan?.p} onClick={() => setPlan(p.p)}>
-                {p.p.replace(/^premium\s+/i, '')} · {money(p.a, p)}
+                <span>{p.p.replace(/^premium\s+/i, '')}</span> <small className="num">{money(p.a, p)}</small>
               </button>
             ))}
           </div>
@@ -172,7 +172,7 @@ function FamilySplitInner({ points, countries, only, all }: { points: Pt[]; coun
         <div className="result" aria-live="polite">
           <p className="k">Each person pays</p>
           <p className="big num">
-            {money(each, plan)} <span className="unit">{per}</span>
+            <Amt>{money(each, plan)}</Amt> <span className="unit">{per}</span>
           </p>
           <p className="muted">
             {plan.cy === 'monthly' ? `${money(yearEach, plan)} a year each · ` : ''}
@@ -358,7 +358,7 @@ function CostPerHourInner({ points, countries }: { points: Pt[]; countries: C })
                 {plan.n} {plan.p} at {h} hours a week costs
               </p>
               <p className="big num">
-                {formatMoney(Math.round(perHour), plan.cur, { country: c })} <span style={{ fontSize: '.45em', letterSpacing: 0 }}>an hour</span>
+                <Amt>{formatMoney(Math.round(perHour), plan.cur, { country: c })}</Amt> <span className="unit">an hour</span>
               </p>
               <p className="say">
                 That’s {money(Math.round(perMonth), plan)} a month for about {hoursMonth < 10 ? hoursMonth.toFixed(1).replace('.0', '') : Math.round(hoursMonth)} hours.

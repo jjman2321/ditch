@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
 
+import { pageTitle, og } from '@/lib/site';
+
 import { ToolPage } from '@/components/ToolPage';
 import { FamilySplit } from '@/components/tools/PlanTools';
 import { countryList } from '@/lib/tools';
 
 export const metadata: Metadata = {
-  title: 'Family plan split calculator: what each person pays',
+  title: pageTitle('Family plan split calculator: what each person pays'),
   description: 'Split a family or duo plan and see what each person pays, next to paying alone. Spotify, Apple Music, YouTube and more.',
-  alternates: { canonical: '/tools/family-plan-split' },
+  alternates: { canonical: '/tools/family-plan-split' }, openGraph: og('/tools/family-plan-split'),
 };
 
 export default function Page() {

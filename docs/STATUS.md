@@ -5,6 +5,14 @@ _Update this at the end of every session._
 **Last updated:** Nov 10, 2026 · **Milestone:** M1, Phase 2 done, onboarding rebuilt to design v12 (DECISIONS #29)
 
 ## Where we are
+- ✅ **Website round, Nov 14** (live at ditchsubs.app):
+  - Big money figures in the tools never split mid-number (the "EGP 34.7 / 5" bug); they shrink to fit the panel. Prices in tables never wrap either.
+  - Price by country is now one comparison table (countries as rows, plans as columns, sticky country column, cheapest marked, your country tagged, a cycle switch for services with many plans). Inspired by the Craft, Tailscale and Replit compare tables on Mobbin.
+  - Tool cards look clickable (arrow buttons, "Open the tool", hover lift, › on every card).
+  - SEO pass with both skills (seo-aiseo audit script + rampstack on-page and AEO/GEO): every title within 60 characters, descriptions 140–160 where the data allows, one JSON-LD object per page (@graph), og:url on every page, HSTS and safe headers, no sitemap priority. The audit found 0 errors, no broken links, no orphan pages, and every search and AI bot gets a 200.
+  - New check, `deep.js`: every page at 9 widths (320–1920) plus every tool in every country, looking for split numbers or words, clipped text, small tap targets, heading skips, unsized images, overflow and console errors.
+  - Guide FAQs drop 25 questions that repeated sections on the same page. /support says the app isn't out yet.
+  - **Owner, when you can:** send the live URLs of the @ditchsubs social profiles (which platforms exist?) so they go in the site's Organization `sameAs` (helps Google and AI tools link the site to the brand).
 - ✅ Docs, decisions, spec. Expo SDK 58 app with money/date logic and 23 passing tests.
 - ✅ **Look locked: premium white, no mascot** (DECISIONS #4, #5). The raccoon is retired after research on our buyers (`docs/research/mascot-or-not.md`). Personality now comes from the DITCHED stamp, the total reveal, real logos and a dry, kind voice.
 - ✅ **Rewards rule:** no streaks, badges or points; only real money kept (DECISIONS #13).

@@ -2,12 +2,13 @@ import type { Metadata } from 'next';
 
 import { ServiceIndex, type IndexItem } from '@/components/ServiceIndex';
 import { formatDate, hasLogo, publishedGuides, serviceById, slugOf } from '@/lib/data';
-import { SITE } from '@/lib/site';
+import { SITE, pageTitle, og } from '@/lib/site';
+import { JsonLd } from '@/components/JsonLd';
 
 export const metadata: Metadata = {
-  title: 'How to cancel any subscription: official steps, dated',
+  title: pageTitle('How to cancel any subscription: official steps, dated'),
   description: 'Official cancel links and steps for Netflix, Spotify, Disney+, YouTube Premium and more, split by how you pay. Each guide shows the date we checked it.',
-  alternates: { canonical: '/cancel' },
+  alternates: { canonical: '/cancel' }, openGraph: og('/cancel', 'cancel'),
 };
 
 export default function CancelIndex() {
@@ -25,7 +26,7 @@ export default function CancelIndex() {
   };
   return (
     <div className="wrap v4 index-head idx4">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+      <JsonLd data={ld} />
       <header className="v4-hero solo">
         <div>
           <h1>How to cancel a subscription</h1>

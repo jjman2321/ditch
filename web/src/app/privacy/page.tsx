@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 
 import { Doc } from '@/components/Doc';
-import { COMPANY, SUPPORT_EMAIL } from '@/lib/site';
+import { COMPANY, SUPPORT_EMAIL, pageTitle, og } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Privacy',
+  title: pageTitle('Privacy policy'),
   description: 'Your list stays on your phone. No bank login, no account, no ads, no tracking. What the Ditch app, this website and the waitlist collect, and why.',
-  alternates: { canonical: '/privacy' },
+  alternates: { canonical: '/privacy' }, openGraph: og('/privacy'),
 };
 
 export default function Privacy() {

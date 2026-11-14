@@ -437,3 +437,13 @@ Why: an app feels premium when the bad moments are handled well, not only the ha
 - [ ] New guides open: /cancel/icloud, /cancel/adobe-cc, /cancel/crunchyroll, /cancel/kindle-unlimited (title says Kindle+), /cancel/nyt.
 - [ ] /cancel/google-one: "What happens after", "How to check", "Pause instead" and 3 questions, each fact matching Google's own page.
 - [ ] Footer → Prices column has "Price increases".
+
+### W5. Price table, tool cards, big numbers, SEO (Nov 14)
+- [ ] /tools/spotify-family-split, pick **Egypt**: the yellow number reads "EGP 34.75" on one line; "a month" sits next to it or neatly under it. Try Saudi Arabia, India, Qatar too. Same on the iPhone.
+- [ ] /prices/spotify: "Spotify price by country" is one table. Countries down the left (they stay put when you swipe sideways on the iPhone), plans across the top, the cheapest price in each row on a yellow pill, "–" where a plan isn't sold. Your own country has a dark "YOU" tag.
+- [ ] /prices/playstation-plus: a Monthly · 3 months · Yearly · All switch above the table. Each tap changes the columns; it fits on one line on the iPhone (swipe it if needed).
+- [ ] /tools: the three big cards have a round arrow in the corner and an "Open the tool" link; on a laptop they lift a little under the mouse. Every smaller card has a › on the right. The jump chips at the top have a ↓.
+- [ ] Browser tab titles fit: home says "Subscription Tracker for iPhone: Ditch it before it renews"; /cancel/kindle-unlimited says "How to cancel Kindle+ (Kindle Unlimited) in 2026".
+- [ ] /support starts with a small box: Ditch isn't on the App Store yet, with a waitlist link.
+- [ ] /how-we-check: the 4 steps show one number each (no "1. 1.").
+- [ ] /cancel/netflix: the Questions section no longer repeats the refund, Apple and "your stuff" answers that sit higher up the page.

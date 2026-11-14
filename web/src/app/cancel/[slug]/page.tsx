@@ -28,10 +28,23 @@ function answer(g: { answer?: string; steps: string[]; name: string; checkedOn: 
 
 const cap = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
 
-/** "How to cancel X in 2026: official steps", dropping the tail when the name is long (titles stay within 60). */
-function guideTitle(name: string, year: string) {
-  const full = `How to cancel ${name} in ${year}: official steps`;
-  return pageTitle(full.length <= 60 ? full : `How to cancel ${name} in ${year}`);
+/**
+ * Search title (owner, Nov 14: "10/10 Google titles"). People type "how to cancel X subscription", "…on iPhone",
+ * "…on phone" (Google autocomplete, Nov 14), so the title names the ways this guide covers: website, the app,
+ * iPhone (Apple billing), Android (Google Play). Names like "Kindle+ (Kindle Unlimited)" use the name people search.
+ * Falls back to shorter forms so it stays within 60 characters.
+ */
+function guideTitle(g: NonNullable<ReturnType<typeof guideById>>) {
+  const year = g.checkedOn.slice(0, 4);
+  const name = g.name.replace(/^.+?\s*\((.+)\)$/, '$1');
+  const appleOnly = /^https:\/\/(apps|account)\.apple\.com/.test(g.url ?? '') || g.id === 'icloud' || g.id.startsWith('apple-');
+  const webish = /safari|website|browser|\.(com|net|tv|co|org)\b|sign in at/i.test(g.steps[0] ?? '');
+  const ways = [appleOnly ? 'iPhone' : webish ? 'web' : 'app', ...(!appleOnly && g.appleBilling !== false ? ['iPhone'] : []), ...(g.depth?.googlePlay ? ['Android'] : [])];
+  const list = [...new Set(ways)];
+  const what = /costco|uber-one|dashpass|doordash|instacart|walmart|amazon-prime/.test(g.id) ? 'membership' : 'subscription';
+  // One way only: "How to cancel Costco membership (2026)" reads better than a one-word list.
+  const tries = [...(list.length > 1 ? [`How to cancel ${name} (${year}): ${list.join(', ')}`] : []), `How to cancel ${name} ${what} (${year})`, `How to cancel ${name} (${year})`];
+  return pageTitle(tries.find((t) => t.length <= 60) ?? tries[2]);
 }
 
 export async function generateMetadata({ params }: PageProps<'/cancel/[slug]'>): Promise<Metadata> {
@@ -41,7 +54,7 @@ export async function generateMetadata({ params }: PageProps<'/cancel/[slug]'>):
   if (!g) return {};
   const desc = answer(g);
   return {
-    title: guideTitle(g.name, g.checkedOn.slice(0, 4)),
+    title: guideTitle(g),
     description: desc.length > 158 ? `${desc.slice(0, 155).replace(/\s+\S*$/, '')}…` : desc,
     alternates: { canonical: `/cancel/${slugOf(g.id)}` },
     openGraph: { title: `How to cancel ${g.name}`, url: `/cancel/${slugOf(g.id)}`, type: 'article', siteName: 'Ditch: Subscription Tracker', locale: 'en_US', images: [{ url: '/og/cancel.png', width: 1200, height: 630, alt: 'How to cancel any subscription' }] },

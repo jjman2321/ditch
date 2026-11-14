@@ -6,7 +6,7 @@ import { SITE, pageTitle, og } from '@/lib/site';
 import { JsonLd } from '@/components/JsonLd';
 
 export const metadata: Metadata = {
-  title: pageTitle(`Subscription prices in ${COUNTRIES.length} countries, from official pages`),
+  title: pageTitle(`Subscription prices ${new Date().getFullYear()}: ${priceHubServices().length} services, ${COUNTRIES.length} countries`),
   description: 'What Netflix, Spotify, Disney+, ChatGPT and more cost in the US, UK, Canada, Australia, Europe, India and the Middle East. Every plan, local money, dated.',
   alternates: { canonical: '/prices' }, openGraph: og('/prices', 'prices'),
 };

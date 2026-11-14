@@ -105,10 +105,19 @@ function titleFor(name: string, year: string, rows: PriceRow[]) {
   const tier = name.split(' ').pop()!.toLowerCase();
   const named = ['pro', 'plus', 'premium', 'max', 'ultra'].includes(tier) ? all.filter((p) => p.name.toLowerCase().split(/\s+/).includes(tier)) : [];
   const monthly = named[0] ?? all[0];
-  if (!r || !monthly) return `${name} price ${year} ${inWhere(rows)}`;
-  const where = r.country === 'US' ? 'the US' : 'the UK';
+  // People search "X prices 2026", "X price plans", "X price per month" (Google autocomplete, Nov 14).
+  const fit = (...t: string[]) => { const ok = t.filter(Boolean); return ok.find((x) => x.length <= 60) ?? ok[ok.length - 1]; };
+  const n = rows.length;
+  if (!r || !monthly) {
+    const yr = r?.plans.filter((p) => p.cycle === 'yearly').sort((a, b) => a.amountMinor - b.amountMinor)[0];
+    if (r && yr) { const a = `${r.plans.length > 1 ? 'from ' : ''}${formatMoney(yr.amountMinor, r.currency, { country: r.country })}`; const w = r.country === 'US' ? 'US' : 'UK'; const more = n > 1 ? ` + ${n - 1} more countries` : ''; return fit(`${name} price ${year}: ${a} a year (${w})${more}`, `${name} price ${year}: ${a}/yr (${w})${more}`, `${name} price ${year}: ${a} a year (${w})`); }
+    return fit(`${name} prices ${year}: every plan in ${n} countries`, `${name} price ${year} ${inWhere(rows)}`);
+  }
+  const where = r.country === 'US' ? 'US' : 'UK';
   const amt = formatMoney(monthly.amountMinor, r.currency, { country: r.country });
-  return named[0] ? `${name} price ${year}: ${amt}/mo in ${where}` : `${name} price ${year}: from ${amt}/mo in ${where}`;
+  if (named[0]) return fit(n > 1 ? `${name} price ${year}: ${amt}/mo (${where}) + ${n - 1} more countries` : '', `${name} price ${year}: ${amt} a month (${where})`, `${name} price ${year}: ${amt}/mo (${where})`);
+  const many = r.plans.length > 1;
+  return many ? fit(`${name} prices ${year}: every plan, from ${amt}/mo (${where})`, `${name} prices ${year}: from ${amt}/mo (${where})`, `${name} price ${year}: from ${amt}/mo`) : fit(`${name} price ${year}: ${amt} a month (${where})${n > 1 ? ` + ${n - 1} more countries` : ''}`, `${name} price ${year}: ${amt}/mo (${where})`);
 }
 
 export async function generateMetadata({ params }: PageProps<'/prices/[slug]'>): Promise<Metadata> {

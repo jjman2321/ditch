@@ -6,7 +6,7 @@ import { ToolPage } from '@/components/ToolPage';
 import { RefundHelper } from '@/components/tools/RefundHelper';
 
 export const metadata: Metadata = {
-  title: pageTitle('Subscription refund helper: where to ask for your money back'),
+  title: pageTitle('How to get a subscription refund (Apple, Google, Amazon)'),
   description: 'Forgot to cancel? Answer two questions and get the official place to ask Apple, Google, Amazon or the company for a refund.',
   alternates: { canonical: '/tools/refund-helper' }, openGraph: og('/tools/refund-helper'),
 };

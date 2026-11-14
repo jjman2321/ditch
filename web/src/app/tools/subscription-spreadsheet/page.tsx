@@ -7,7 +7,7 @@ import { Spreadsheet } from '@/components/tools/PlanTools';
 import { countryList } from '@/lib/tools';
 
 export const metadata: Metadata = {
-  title: pageTitle('Free subscription tracker spreadsheet (Excel, Google Sheets)'),
+  title: pageTitle('Free subscription tracker template (Excel, Google Sheets)'),
   description: 'Download a free subscription tracker spreadsheet with prices for your country filled in. Opens in Excel, Numbers and Google Sheets.',
   alternates: { canonical: '/tools/subscription-spreadsheet' }, openGraph: og('/tools/subscription-spreadsheet'),
 };

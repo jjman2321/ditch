@@ -41,7 +41,7 @@ const FAQ = [
 
 export const metadata = {
   alternates: { canonical: '/' }, openGraph: og('/'),
-  title: { absolute: 'Subscription Tracker for iPhone: Ditch it before it renews' },
+  title: { absolute: 'Free subscription tracker app for iPhone | Ditch' },
   description: 'Track every subscription free and get a reminder 3 days before a charge. No bank login, no account. For iPhone.',
 };
 
@@ -231,7 +231,7 @@ export default function Home() {
               Reminders that actually arrive
             </h2>
             <p className="lead" style={{ marginTop: 20 }}>
-              In our own research, 38% said a tracker’s reminders never came. Ditch shows your next one, so you know it’s set.
+              In our research, 38% said other trackers’ reminders never came. Ditch shows your next one, so you know it’s set.
             </p>
             <ul className="ticks">
               <li>
@@ -284,7 +284,7 @@ export default function Home() {
         <div className="wrap">
           <div className="price-head">
             <h2 id="price-h" className="h2">
-              {`Pro is ${PRO.yearlyPerMonth} a month, billed yearly. Less than one coffee a month.`}
+              Pro costs less than the subscription you forgot about.
             </h2>
             <p className="lead">Tracking is free forever. Pro puts reminders on every subscription. Rather not subscribe? Pay once.</p>
           </div>

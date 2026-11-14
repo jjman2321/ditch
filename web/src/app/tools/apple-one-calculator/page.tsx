@@ -8,7 +8,7 @@ import { formatMoney } from '@/lib/money';
 import { allPoints, countryList } from '@/lib/tools';
 
 export const metadata: Metadata = {
-  title: pageTitle('Apple One calculator: is Apple One worth it for you?'),
+  title: pageTitle('Is Apple One worth it? Calculator for your Apple services'),
   description: 'Tick the Apple services you’d pay for anyway. See whether Apple One Individual, Family or Premier costs less, in your country.',
   alternates: { canonical: '/tools/apple-one-calculator' }, openGraph: og('/tools/apple-one-calculator'),
 };

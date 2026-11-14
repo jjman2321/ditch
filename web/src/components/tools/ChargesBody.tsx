@@ -6,9 +6,9 @@ import { allPoints, countryList, planLabel, type Biller, type Pt } from '@/lib/t
 const SRC = { apple: ['https://support.apple.com/102396', 'https://support.apple.com/118223'], google: ['https://support.google.com/googleplay/answer/2850369'], amazon: [] as string[] };
 
 export const HUBS: Record<string, { biller: Biller; title: string; meta: string; lead: string; name: string; desc: string }> = {
-  'apple-com-bill': { biller: 'apple', name: 'Apple', desc: 'App Store and Apple subscription charges, by amount.', title: 'APPLE.COM/BILL charge finder', meta: 'What is APPLE.COM/BILL? Find the charge by amount', lead: 'APPLE.COM/BILL is how Apple shows App Store and subscription charges. Type the amount to see what it could be.' },
-  google: { biller: 'google', name: 'Google', desc: 'Google Play and Google subscription charges, by amount.', title: 'Google charge finder', meta: 'Google charge on your statement: find it by amount', lead: 'Google Play and Google subscriptions show up as Google on your statement. Type the amount to see what it could be.' },
-  amazon: { biller: 'amazon', name: 'Amazon', desc: 'Prime and Amazon Music charges, by amount.', title: 'Amazon charge finder', meta: 'Amazon subscription charge: find it by amount', lead: 'Amazon bills for Prime and Amazon Music. Type the amount to see what it could be.' },
+  'apple-com-bill': { biller: 'apple', name: 'Apple', desc: 'App Store and Apple subscription charges, by amount.', title: 'APPLE.COM/BILL charge finder', meta: 'APPLE.COM/BILL charge on your statement: what is it?', lead: 'APPLE.COM/BILL is how Apple shows App Store and subscription charges. Type the amount to see what it could be.' },
+  google: { biller: 'google', name: 'Google', desc: 'Google Play and Google subscription charges, by amount.', title: 'Google charge finder', meta: 'Google charge on bank statement: find it by amount', lead: 'Google Play and Google subscriptions show up as Google on your statement. Type the amount to see what it could be.' },
+  amazon: { biller: 'amazon', name: 'Amazon', desc: 'Prime and Amazon Music charges, by amount.', title: 'Amazon charge finder', meta: 'Amazon charge on bank statement: find it by amount', lead: 'Amazon bills for Prime and Amazon Music. Type the amount to see what it could be.' },
 };
 
 const HOW: Record<Biller | 'any', React.ReactNode[]> = {

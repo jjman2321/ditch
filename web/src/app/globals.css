@@ -1646,3 +1646,5 @@ img.tv, .tv .logo { width: 44px; height: 44px; border-radius: 12px; }
 .js [data-reveal]:not(.stamp) { transform: translateY(10px); transition-duration: .45s; }
 .g5-st-tx b, .g5-st-tx p, .g5 .tip p, .g5-facts p { overflow-wrap: anywhere; }
 .g5 .g5-cta-row .btn, .g5 .g5-panel-btn { white-space: normal; text-align: center; height: auto; min-height: 48px; padding-top: 10px; padding-bottom: 10px; }
+@media (max-width: 760px) { .g5-steps .sa-top b, .g5-steps .sa-top span, .g5-steps .sa-ptop b { display: none; } }
+@media (max-width: 1200px) { .g5 .g5-hero-card { width: min(90%, 380px); } }

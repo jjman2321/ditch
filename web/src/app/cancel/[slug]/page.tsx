@@ -106,7 +106,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
   // Is the main path a website or the service's own app?
   const webish = /safari|website|browser|\.(com|net|tv|co|org)\b|sign in at/i.test(g.steps[0] ?? '');
   const mainWhere = appleOnly ? 'phone' : webish ? 'web' : 'app';
-  const brand = { serviceId: g.id, name: g.name, color: s?.color };
+  const brand = { serviceId: g.id, name: g.name.replace(/\s*\(.*\)/, ''), color: s?.color };
   const finalLabel = [...g.steps].reverse().map(tapLabel).find(Boolean) ?? null;
 
   const stepCards = (steps: { text: React.ReactNode; art: React.ReactNode }[]) => (

@@ -18,9 +18,9 @@ export const metadata: Metadata = {
  * AI first (most searched), then music, TV, storage, gaming, and plan vs plan inside one service.
  */
 const ORDER: { id: string; title: string; sub: string }[] = [
-  { id: 'ai', title: 'AI chat', sub: 'ChatGPT, Claude, Gemini, Perplexity, Grok and Copilot.' },
-  { id: 'music', title: 'Music', sub: 'Spotify, Apple Music, YouTube Music and more.' },
-  { id: 'tv', title: 'TV and video', sub: 'Netflix, Disney+, HBO Max, Hulu and more.' },
+  { id: 'ai', title: 'AI chat', sub: 'ChatGPT, Claude, Gemini, Perplexity and Copilot.' },
+  { id: 'music', title: 'Music', sub: 'Spotify, Apple Music, Amazon Music, TIDAL and Deezer.' },
+  { id: 'tv', title: 'TV and video', sub: 'Netflix, Disney+, HBO Max, Hulu, Peacock and more.' },
   { id: 'storage', title: 'Cloud storage', sub: 'iCloud+, Google One and Dropbox.' },
   { id: 'gaming', title: 'Gaming', sub: 'Game Pass and PlayStation Plus.' },
   { id: 'plans', title: 'Which plan?', sub: 'Two plans from the same service.' },

@@ -3,6 +3,8 @@ import Link from 'next/link';
 
 import { SERVICE_TOOLS, TOOLS } from '@/lib/tools';
 
+import { Logo } from './Logo';
+
 /** Line icons for tools that aren't about one service. 24px, ink stroke. */
 const ICON: Record<string, React.ReactNode> = {
   search: <><circle cx="11" cy="11" r="6.5" /><path d="M20 20l-4-4" /></>,
@@ -48,17 +50,18 @@ export const visualOf = (path: string) => VISUAL[path] ?? { icon: 'sum' };
 
 export function Visual({ path, size = 44 }: { path: string; size?: number }) {
   const v = visualOf(path);
+  // Services without a logo file (iCloud+, Apple One) get the brand-colour letter tile instead of a broken image.
   if (v.logos?.length === 2) {
     const s = Math.round(size * 0.82);
     return (
       <span className="tv pair" aria-hidden>
         {v.logos.map((id) => (
-          <img key={id} className="logo" src={`/logos/${id}.png`} alt="" width={s} height={s} loading="lazy" />
+          <Logo key={id} id={id} size={s} />
         ))}
       </span>
     );
   }
-  if (v.logos?.length) return <img className="logo tv" src={`/logos/${v.logos[0]}.png`} alt="" width={size} height={size} loading="lazy" aria-hidden />;
+  if (v.logos?.length) return <Logo id={v.logos[0]} size={size} className="tv" />;
   return (
     <span className="tv ic" aria-hidden>
       <ToolIcon name={v.icon!} />

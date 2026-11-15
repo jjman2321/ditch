@@ -1915,3 +1915,10 @@ main > :first-child, main > :first-child > :first-child { scroll-margin-top: 200
   .wyg-t tbody th { grid-column: 1 / -1; padding: 14px 0 4px; font-size: 14px; }
   .wyg-t tbody td { border-top: 0; padding: 0 0 14px; font-size: 14.5px; }
 }
+
+/* Letter tiles stand in for missing logo files (iCloud+, Apple One) in the same spots, same size and shape (Nov 15). */
+.hero-logos .mono { width: 104px; height: 104px; border-radius: 24px; box-shadow: 0 12px 32px -8px rgba(22, 20, 15, .25); font-size: 34px !important; }
+.hero-logos.n2 .mono { width: 84px !important; height: 84px !important; border-radius: 20px; }
+.hero-logos.n2 > * + * { margin-left: -14px; box-shadow: 0 0 0 4px var(--cream), 0 12px 32px -8px rgba(22, 20, 15, .25); }
+.tv.pair .mono { width: 36px !important; height: 36px !important; border-radius: 10px; font-size: 13px !important; }
+.tv.pair > * + * { margin-left: -10px; box-shadow: 0 0 0 2px var(--white); }

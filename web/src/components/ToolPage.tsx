@@ -2,6 +2,7 @@
 import Link from 'next/link';
 
 import { EmailBox } from './EmailBox';
+import { Logo } from './Logo';
 import { ToolCard, allToolItems, visualOf } from './ToolCard';
 import { dateRange, priceHubServices, verifiedPrices } from '@/lib/data';
 import { SITE } from '@/lib/site';
@@ -77,7 +78,7 @@ export function ToolPage({
         {mine.length ? (
           <div className={`hero-logos n${mine.length}`} aria-hidden>
             {mine.map((id) => (
-              <img key={id} className="logo" src={`/logos/${id}.png`} alt="" width={104} height={104} />
+              <Logo key={id} id={id} size={104} />
             ))}
           </div>
         ) : null}

@@ -6,11 +6,11 @@ import { EmailBox } from '@/components/EmailBox';
 import { YourCountryPrices, type CountryPrices } from '@/components/YourCountryPrices';
 import { Logo } from '@/components/Logo';
 import { ToolCard } from '@/components/ToolCard';
-import { planLabel, toolsFor } from '@/lib/tools';
+import { comparesFor, planLabel, toolsFor } from '@/lib/tools';
 import { PriceGrid, type GridCol, type GridRow } from '@/components/PriceGrid';
 import { priceText } from '@/lib/priceText';
-import { COUNTRIES, COUNTRY, dateRange, inCountry, priceChanges, defaultPlan, formatDate, host, guideById, isAppStorePrice, neighbours, priceHubServices, pubDates, serviceById, verifiedPrices, type PriceRow, idOf, inWhere, slugOf } from '@/lib/data';
-import { formatMoney, monthlyMinor } from '@/lib/money';
+import { COUNTRIES, COUNTRY, dateRange, inCountry, priceChanges, defaultPlan, formatDate, host, guideById, isAppStorePrice, isExtraPlan, neighbours, priceHubServices, pubDates, serviceById, verifiedPrices, type PriceRow, idOf, inWhere, slugOf } from '@/lib/data';
+import { CYCLE_WORD, formatMoney, monthlyMinor } from '@/lib/money';
 import { COMPANY, SITE, SUPPORT_EMAIL, fitDesc, pageTitle } from '@/lib/site';
 import { JsonLd } from '@/components/JsonLd';
 
@@ -108,11 +108,14 @@ function titleFor(name: string, year: string, rows: PriceRow[]) {
   return tries.find((t) => t.length + 8 <= 60) ?? tries[tries.length - 1];
 }
 
+/** The service's own plans (bundles and live TV are listed in their own section). */
+const core = (id: string) => verifiedPrices(id).map((r) => ({ ...r, plans: r.plans.filter((p) => !isExtraPlan(id, p)) })).filter((r) => r.plans.length);
+
 export async function generateMetadata({ params }: PageProps<'/prices/[slug]'>): Promise<Metadata> {
   const { slug } = await params;
   const id = idOf(slug) ?? '';
   const s = serviceById(id);
-  const rows = verifiedPrices(id);
+  const rows = core(id);
   if (!s || !priceHubServices().some((x) => x.id === s.id)) return {};
   const latest = rows.map((r) => r.checked).sort().pop()!;
   return {
@@ -128,8 +131,11 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
   const { slug } = await params;
   const id = idOf(slug) ?? '';
   const s = serviceById(id);
-  const rows = verifiedPrices(id);
+  const all = verifiedPrices(id);
   if (!s || !priceHubServices().some((x) => x.id === s.id)) notFound();
+  // Bundles and live TV get their own section; everything else on the page is about the service's own plans.
+  const rows = core(id);
+  const extras = all.map((r) => ({ r, plans: r.plans.filter((p) => isExtraPlan(id, p)) })).filter((x) => x.plans.length);
   const latest = rows.map((r) => r.checked).sort().pop()!;
   const guide = guideById(s.id);
   // Research notes stay in the data. The page says only what a reader needs.
@@ -139,7 +145,11 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
   if (appRows.length) notes.push({ c: 'iPhone app prices', n: appShare > 0.5 ? `Most prices here are what ${s.name} charges when you subscribe in its iPhone app, from Apple’s in-app price list. Prices on ${s.name}’s website can be different.` : `Rows marked “iPhone app price” are what you pay when you subscribe in the iPhone app. Prices on the website can be different.` });
   if (rows.some((r) => ['AE', 'SA', 'EG'].includes(r.country))) notes.push({ c: 'Middle East', n: 'Some services don’t say whether VAT is included. Where Apple bills you, its prices include VAT.' });
   const taxNote = rows.some((r) => ['US', 'CA'].includes(r.country)) ? ` ${rows.some((r) => r.country === 'CA') ? 'US and Canada prices are' : 'US prices are'} before sales tax.` : '';
-  const ans = `${summary(s.name, rows)}${appShare > 0.5 ? ' These are iPhone app prices.' : ''}${taxNote} Checked ${dateRange(rows.map((r) => r.checked))}.`;
+  // Say exactly which of the prices in the first sentence are App Store prices (Nov 15: US Claude is now from the website).
+  const lead = ['US', 'GB'].map((c) => rows.find((r) => r.country === c)).filter((r): r is PriceRow => Boolean(r));
+  const leadApp = lead.filter(isAppStorePrice);
+  const appLine = !lead.length ? (appShare > 0.5 ? ' These are iPhone app prices.' : '') : leadApp.length === lead.length ? ' These are iPhone app prices.' : leadApp.length ? ` ${leadApp.map((r) => (r.country === 'GB' ? 'UK' : r.country)).join(' and ')} prices are from the iPhone app.` : '';
+  const ans = `${summary(s.name, rows)}${appLine}${taxNote} Checked ${dateRange(rows.map((r) => r.checked))}.`;
   const others = neighbours(priceHubServices().filter((x) => x.category === s.category), s.id, 5);
 
   const ld = [
@@ -183,7 +193,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
         <div className="g5-hero-tx">
           <div className="kick">
             <Logo id={s.id} size={40} />
-            {appShare > 0.5 ? <span>App Store prices</span> : null}
+            {appShare > 0.5 && leadApp.length === lead.length ? <span>App Store prices</span> : null}
           </div>
           <h1>
             {s.name} price {latest.slice(0, 4)}
@@ -213,6 +223,36 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
           <p className="g-src">
             We never add different currencies together. <Link href="/how-we-check">How we check prices</Link>.
           </p>
+        </section>
+      ) : null}
+
+      {extras.length ? (
+        <section className="v4-sec" aria-labelledby="extras">
+          <h2 id="extras">{s.name} bundles{extras.some((x) => x.plans.some((p) => /live/i.test(p.id))) ? ' and live TV' : ''}</h2>
+          <p className="g5-sub">Plans that come with other services or live channels, from {s.name}’s own page.</p>
+          {extras.map(({ r, plans }) => (
+            <div key={r.country} className="tbl-scroll">
+              <table className="ttable wide-t">
+                <caption className="sr">{s.name} bundles in {COUNTRY[r.country].name}</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">{extras.length > 1 ? COUNTRY[r.country].name : 'Plan'}</th>
+                    <th scope="col" className="r">Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[...plans].sort((a, b) => monthlyMinor(a.amountMinor, a.cycle) - monthlyMinor(b.amountMinor, b.cycle)).map((p) => (
+                    <tr key={p.id}>
+                      <th scope="row">{p.name}</th>
+                      <td className="r num">
+                        {formatMoney(p.amountMinor, r.currency, { country: r.country })} {CYCLE_WORD[p.cycle]}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ))}
         </section>
       ) : null}
 
@@ -267,6 +307,19 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
         </section>
       ) : null}
 
+      {comparesFor(s.id).length ? (
+        <section className="v4-sec cmp-links" aria-labelledby="cmp-h">
+          <h2 id="cmp-h">Compare {s.name}</h2>
+          <nav className="chips-row" aria-label={`Compare ${s.name}`}>
+            {comparesFor(s.id).map((c) => (
+              <Link key={c.href} href={c.href}>
+                {c.name}
+              </Link>
+            ))}
+          </nav>
+        </section>
+      ) : null}
+
       <p className="g-feedback">
         <b>Spotted a different price?</b> <a href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(`${s.name} price changed`)}&body=${encodeURIComponent('Country:\nPlan:\nPrice you saw:\nWhere:\n')}`}>Tell us</a>
       </p>
@@ -285,7 +338,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
         <section className="v4-sec" aria-labelledby="more">
           <h2 id="more">Related</h2>
           <div className="tgrid">
-            {toolsFor(s.id).slice(0, 2).map((t) => (
+            {toolsFor(s.id, false).slice(0, 2).map((t) => (
               <ToolCard key={t.href} item={t} />
             ))}
             {guide ? (
@@ -297,7 +350,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
                 </span>
               </Link>
             ) : null}
-            {others.slice(0, Math.max(2, 5 - toolsFor(s.id).slice(0, 2).length)).map((o) => (
+            {others.slice(0, Math.max(2, 5 - toolsFor(s.id, false).slice(0, 2).length)).map((o) => (
               <Link key={o.id} className="tcard" href={`/prices/${slugOf(o.id)}`}>
                 <Logo id={o.id} size={44} />
                 <span>

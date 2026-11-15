@@ -24,7 +24,7 @@ const GROUPS: Group[] = [
   { id: 'costs', title: 'Know what you pay', sub: 'Add it all up.', items: [t('tools/subscription-cost-calculator'), t('tools/cost-per-hour'), t('tools/subscription-spreadsheet')] },
   { id: 'before', title: 'Before you pay', sub: 'Pick the cheaper way in.', items: [t('tools/free-trial-calculator'), t('tools/monthly-vs-yearly'), s('amazon-prime-monthly-vs-yearly'), t('tools/apple-one-calculator'), s('disney-hulu-bundle-calculator')] },
   { id: 'share', title: 'Share a plan', sub: 'What each person pays.', items: [s('spotify-family-split'), s('apple-music-family-split'), s('microsoft-365-family-split'), s('netflix-cost-per-person'), t('tools/family-plan-split')] },
-  { id: 'compare', title: 'Compare', sub: 'Two services, plan by plan.', items: [s('spotify-vs-apple-music'), s('chatgpt-plus-vs-claude-pro'), s('netflix-vs-disney-plus'), s('netflix-vs-hbo-max'), t('tools/compare-prices')] },
+  { id: 'compare', title: 'Compare', sub: 'Two services, plan by plan.', items: [s('chatgpt-plus-vs-claude-pro'), ...['chatgpt-vs-gemini', 'claude-pro-vs-max', 'spotify-vs-youtube-music', 'netflix-vs-hulu'].filter((x) => SERVICE_TOOLS.some((y) => y.slug === x)).map(s), s('spotify-vs-apple-music'), t('tools/compare-prices'), { href: '/compare', name: 'Every comparison', desc: `All ${SERVICE_TOOLS.filter((x) => x.kind === 'vs' || x.kind === 'tiers').length} side-by-sides: AI, music, TV, storage and gaming.` }] },
   { id: 'refund', title: 'Get money back', sub: 'Charged after you meant to cancel?', items: [t('tools/refund-helper')] },
 ];
 

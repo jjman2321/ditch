@@ -7,7 +7,7 @@ import { ToolCard, ToolIcon, type CardItem } from './ToolCard';
 export type Group = { id: string; title: string; sub: string; items: CardItem[] };
 
 /** The /tools list: search box + jump chips, then each group as a heading and cards. All cards are in the HTML; search only hides. */
-export function ToolHub({ groups, children }: { groups: Group[]; children?: React.ReactNode }) {
+export function ToolHub({ groups, children, noun = ['tool', 'tools'], placeholder = 'Search, like “Spotify” or “trial”' }: { groups: Group[]; children?: React.ReactNode; noun?: [string, string]; placeholder?: string }) {
   const [q, setQ] = useState('');
   const box = useRef<HTMLInputElement>(null);
   const words = q.toLowerCase().split(/\s+/).filter(Boolean);
@@ -19,11 +19,11 @@ export function ToolHub({ groups, children }: { groups: Group[]; children?: Reac
       <div className="hub-search">
         <label className="search-pill">
           <ToolIcon name="search" />
-          <span className="sr">Search the free tools</span>
-          <input ref={box} type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search, like “Spotify” or “trial”" autoComplete="off" enterKeyHint="search" />
+          <span className="sr">Search the {noun[1]}</span>
+          <input ref={box} type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder={placeholder} autoComplete="off" enterKeyHint="search" />
         </label>
         <p className="sr" aria-live="polite">
-          {q ? `${count} ${count === 1 ? 'tool' : 'tools'} found` : ''}
+          {q ? `${count} ${count === 1 ? noun[0] : noun[1]} found` : ''}
         </p>
         {q ? null : (
           <nav className="chips-row" aria-label="Jump to a group">
@@ -54,7 +54,7 @@ export function ToolHub({ groups, children }: { groups: Group[]; children?: Reac
         <p className="hub-none">
           Nothing for “{q}” yet. Try a service name, like Netflix, or{' '}
           <button type="button" className="linkish" onClick={() => { setQ(''); box.current?.focus(); }}>
-            see every tool
+            see every {noun[0]}
           </button>
           .
         </p>

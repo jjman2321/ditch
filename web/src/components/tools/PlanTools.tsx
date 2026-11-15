@@ -213,7 +213,7 @@ function CompareInner({ points, countries, first = 'netflix', second = 'disney-p
   const [yr, setYr] = useState(false);
   const A = list.some((x) => x.s === a) ? a! : list.find((x) => x.s === first)?.s ?? list[0]?.s;
   const B = list.some((x) => x.s === b) ? b! : list.find((x) => x.s === second && x.s !== A)?.s ?? list.find((x) => x.s !== A)?.s;
-  const col = (sv?: string) => points.filter((p) => p.c === c && p.s === sv && !/student|bundle/i.test(p.p));
+  const col = (sv?: string) => points.filter((p) => p.c === c && p.s === sv && !/student|bundle|live tv|tnt sports/i.test(p.p));
   const mo = (p: Pt) => monthlyMinor(p.a, p.cy);
   const rowsOf = (ps: Pt[]) => {
     const byMo = [...ps].sort((x, y) => mo(x) - mo(y));
@@ -300,7 +300,7 @@ function CompareInner({ points, countries, first = 'netflix', second = 'disney-p
             {ra.yearly || rb.yearly ? 'Yearly plans are shown as a month so you can compare.' : ''}
           </p>
         ) : null}
-        <p className="note-l">Student plans and bundles aren’t included. Prices are from each company’s own page.</p>
+        <p className="note-l">Student plans, bundles and live TV aren’t included. Prices are from each company’s own page.</p>
       </div>
     </div>
   );
@@ -437,7 +437,8 @@ export function DisneyBundle() {
   const us = (s: string, re: RegExp) => loaded.find((p) => p.c === 'US' && p.s === s && p.cy === 'monthly' && re.test(p.p));
   const d = us('disney-plus', ads ? /with ads/i : /premium \(no ads\)/i);
   const h = us('hulu', ads ? /^hulu \(with ads\)$/i : /premium \(no ads\)/i);
-  const b = us('disney-plus', ads ? /bundle \(with ads\)/i : /bundle premium/i);
+  // Only the plain Disney+, Hulu bundle (Nov 15: the ESPN and HBO Max bundles are listed too now).
+  const b = us('disney-plus', ads ? /^disney\+, hulu bundle( \(with ads\))?$/i : /^disney\+, hulu bundle premium( \(no ads\))?$/i);
   if (!d || !h || !b) return <p className="say">Bundle prices aren’t checked right now.</p>;
   const both = d.a + h.a;
   return (
@@ -452,16 +453,95 @@ export function DisneyBundle() {
         <div className="cards2">
           <div>
             <b>Disney+ and Hulu separately</b>
-            <p className="v num">{money(both, d)}<small style={{ display: 'inline', marginLeft: 4 }}>/mo</small></p>
-            <small>{money(d.a, d)} + {money(h.a, h)}</small>
+            <p className="v num"><Amt>{money(both, d)}</Amt></p>
+            <small>a month · {money(d.a, d)} + {money(h.a, h)}</small>
           </div>
           <div className="win">
             <b>{b.p}</b>
-            <p className="v num">{money(b.a, b)}<small style={{ display: 'inline', marginLeft: 4 }}>/mo</small></p>
-            <small>One subscription, both apps</small>
+            <p className="v num"><Amt>{money(b.a, b)}</Amt></p>
+            <small>a month · one subscription, both apps</small>
           </div>
         </div>
         <p className="say">The bundle is <b>{money(both - b.a, b)} a month less</b> than both, or {money((both - b.a) * 12, b)} a year. US prices, before tax.</p>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Plan vs plan, one service (Claude Pro vs Max, Netflix Standard vs Premium) ---------- */
+export type TierSide = { n: string; m: number; y?: number };
+export type TierRow = { c: string; name: string; cur: string; a: TierSide; b: TierSide };
+export function TierCompare({ rows, service }: { rows: TierRow[]; service: string }) {
+  const guessed = useCountry();
+  const [pick, setPick] = useState<string | null>(null);
+  const [yr, setYr] = useState(false);
+  const want = pick ?? guessed;
+  const r = rows.find((x) => x.c === want) ?? rows.find((x) => x.c === 'US') ?? rows[0];
+  const m = (a: number) => formatMoney(a, r.cur, { country: r.c });
+  const sides = [r.a, r.b];
+  const cell = (s: TierSide, kind: 'm' | 'y') => {
+    if (kind === 'y' && s.y === undefined) return <td className="v no">No yearly plan</td>;
+    const v = kind === 'm' ? (yr ? s.m * 12 : s.m) : yr ? s.y! : Math.round(s.y! / 12);
+    return (
+      <td className="v">
+        <b className="num">{m(v)}</b> <span className="per">{yr ? '/yr' : '/mo'}</span>
+        <small>{kind === 'm' ? (yr ? `${m(s.m)} a month, for 12 months` : 'Billed monthly') : yr ? 'Billed once a year' : `Billed ${m(s.y!)} a year`}</small>
+      </td>
+    );
+  };
+  const diff = r.b.m - r.a.m;
+  const [lo, hi] = diff >= 0 ? [r.a, r.b] : [r.b, r.a];
+  const gap = Math.abs(diff);
+  return (
+    <div>
+      <div className="ins">
+        <div className="row bar">
+          <CountrySelect value={r.c} onChange={setPick} countries={rows.map((x) => ({ code: x.c, name: x.name }))} />
+          <div className="f">
+            <span className="lbl">Show prices</span>
+            <div className="seg fill" role="group" aria-label="Show prices">
+              <button type="button" aria-pressed={!yr} onClick={() => setYr(false)}>A month</button>
+              <button type="button" aria-pressed={yr} onClick={() => setYr(true)}>A year</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="result vs" aria-live="polite">
+        <table className="vst">
+          <caption className="sr">{service}: {r.a.n} and {r.b.n} in {r.name}, {yr ? 'a year' : 'a month'}</caption>
+          <thead>
+            <tr>
+              <td />
+              {sides.map((s) => (
+                <th key={s.n} scope="col"><span>{s.n}</span></th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Pay monthly</th>
+              {cell(r.a, 'm')}
+              {cell(r.b, 'm')}
+            </tr>
+            {r.a.y !== undefined || r.b.y !== undefined ? (
+              <tr>
+                <th scope="row">Pay yearly</th>
+                {cell(r.a, 'y')}
+                {cell(r.b, 'y')}
+              </tr>
+            ) : null}
+          </tbody>
+        </table>
+        <p className="say">
+          {gap === 0 ? (
+            <>Both cost <b>{m(r.a.m)}</b> a month in {r.name}.</>
+          ) : (
+            <>
+              <b>{hi.n}</b> costs <b>{m(yr ? gap * 12 : gap)}</b> more {yr ? 'a year' : 'a month'} than {lo.n}, paid monthly.
+            </>
+          )}
+        </p>
+        <p className="note-l">Prices from {service}’s own page for each country.</p>
       </div>
     </div>
   );

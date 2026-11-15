@@ -1,0 +1,1595 @@
+{
+ "about": {
+  "what": "Every consumer tier sold today on the official US and UK pages for video and TV services (Section C, missing tiers). Same row format as docs/research/prices-2026-11.json.",
+  "checked": "2026-11-15",
+  "replaces": "US and GB rows in prices-2026-11.json for these services",
+  "services": [
+   "netflix",
+   "disney-plus",
+   "hulu",
+   "max",
+   "paramount-plus",
+   "peacock",
+   "apple-tv",
+   "amazon-prime",
+   "crunchyroll",
+   "dazn",
+   "espn",
+   "youtube-tv",
+   "sling-tv",
+   "fubo",
+   "philo",
+   "youtube-premium"
+  ],
+  "amounts": "amountMinor is in cents (USD) or pence (GBP). 1999 = 19.99. Regular price after any free trial or intro offer.",
+  "status": {
+   "verified": "Every plan listed was read today from the official page in 'source'.",
+   "partial": "Some plans read from an official page; others couldn't be read (see note). Don't ship without checking."
+  },
+  "taxes": "US prices exclude sales tax. UK prices include VAT.",
+  "ids": "Existing plan ids kept (names updated to today's official wording). New ids are listed in newPlanIds. Bundle ids are shared across disney-plus, hulu, espn and max rows (e.g. disney-hulu-hbo-max) so the same bundle lines up.",
+  "leftOut": "Add-ons (extra members, premium channels), pay-per-view, intro/saver offers, legacy plans no longer sold."
+ },
+ "prices": [
+  {
+   "serviceId": "netflix",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard with ads",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2699,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/us",
+   "checked": "2026-11-15",
+   "note": "No other plans sold. Extra member slots ($7.99 with ads / $9.99 without, per month) are add-ons, not plans. Excludes sales tax."
+  },
+  {
+   "serviceId": "netflix",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard with adverts",
+     "amountMinor": 799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1399,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2099,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/gb",
+   "checked": "2026-11-15",
+   "note": "No other plans sold. Extra member slots (£5.99 with adverts / £6.99 without, per month) are add-ons, not plans."
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Disney+ (With Ads)",
+     "amountMinor": 1249,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Disney+ Premium (No Ads)",
+     "amountMinor": 2149,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Disney+ Premium (No Ads, yearly)",
+     "amountMinor": 21499,
+     "cycle": "yearly"
+    },
+    {
+     "id": "bundle-ads",
+     "name": "Disney+, Hulu Bundle",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "bundle-premium",
+     "name": "Disney+, Hulu Bundle Premium",
+     "amountMinor": 2199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Disney+, Hulu Bundle (student)",
+     "amountMinor": 649,
+     "cycle": "monthly"
+    },
+    {
+     "id": "disney-hulu-espn-select",
+     "name": "Disney+, Hulu, ESPN Select Bundle",
+     "amountMinor": 2199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "disney-hulu-espn-select-premium",
+     "name": "Disney+, Hulu, ESPN Select Bundle Premium",
+     "amountMinor": 3299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "disney-hulu-espn-unlimited",
+     "name": "Disney+, Hulu, ESPN Unlimited Bundle",
+     "amountMinor": 3599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "disney-hulu-espn-unlimited-premium",
+     "name": "Disney+, Hulu, ESPN Unlimited Bundle Premium",
+     "amountMinor": 4499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "disney-hulu-hbo-max-ads",
+     "name": "Disney+, Hulu, HBO Max Bundle (With Ads)",
+     "amountMinor": 2199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "disney-hulu-hbo-max",
+     "name": "Disney+, Hulu, HBO Max Bundle (No Ads)",
+     "amountMinor": 3499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "live-tv",
+     "name": "Hulu + Live TV, Disney+ and ESPN Select",
+     "amountMinor": 9999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "live-tv-premium",
+     "name": "Hulu Premium + Live TV, Disney+ Premium and ESPN Select",
+     "amountMinor": 10999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "nfl-plus-bundle",
+     "name": "NFL+ Premium and the Disney+, Hulu, ESPN Unlimited Bundle",
+     "amountMinor": 4599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "nfl-plus-bundle-premium",
+     "name": "NFL+ Premium and the Disney+, Hulu, ESPN Unlimited Bundle Premium",
+     "amountMinor": 5499,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/en-us",
+   "checked": "2026-11-15",
+   "note": "All read from the page's plan cards and FAQ. Bundle prices are the regular monthly price after the 6-month price-lock offer ($11.99 / $19.99 for 6 months). Student price is for verified US college students, ad-supported Disney+, Hulu Bundle only (then $12.99). Same prices on help.hulu.com. ESPN Unlimited can also be added to a plan for $31.99/month (add-on, not listed). Excludes sales tax."
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard With Ads",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 11990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 15990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/en-gb",
+   "checked": "2026-11-15",
+   "note": "From the page's FAQ ('How much does Disney+ cost?'). No yearly option for Standard With Ads. The 6-month saver plans (£5.99 / £9.99 / £11.99 a month for a 6-month minimum term) are intro prices, so they're left out."
+  },
+  {
+   "serviceId": "hulu",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "with-ads",
+     "name": "Hulu (With Ads)",
+     "amountMinor": 1249,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "with-ads-yearly",
+     "name": "Hulu (With Ads, yearly)",
+     "amountMinor": 12499,
+     "cycle": "yearly"
+    },
+    {
+     "id": "no-ads",
+     "name": "Hulu Premium (No Ads)",
+     "amountMinor": 2149,
+     "cycle": "monthly"
+    },
+    {
+     "id": "bundle-ads",
+     "name": "Disney+, Hulu Bundle",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "bundle-premium",
+     "name": "Disney+, Hulu Bundle Premium",
+     "amountMinor": 2199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Disney+, Hulu Bundle (student)",
+     "amountMinor": 649,
+     "cycle": "monthly"
+    },
+    {
+     "id": "disney-hulu-espn-select",
+     "name": "Disney+, Hulu, ESPN Select Bundle",
+     "amountMinor": 2199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "disney-hulu-espn-select-premium",
+     "name": "Disney+, Hulu, ESPN Select Bundle Premium",
+     "amountMinor": 3299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "disney-hulu-espn-unlimited",
+     "name": "Disney+, Hulu, ESPN Unlimited Bundle",
+     "amountMinor": 3599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "disney-hulu-espn-unlimited-premium",
+     "name": "Disney+, Hulu, ESPN Unlimited Bundle Premium",
+     "amountMinor": 4499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "disney-hulu-hbo-max-ads",
+     "name": "Disney+, Hulu, HBO Max Bundle (With Ads)",
+     "amountMinor": 2199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "disney-hulu-hbo-max",
+     "name": "Disney+, Hulu, HBO Max Bundle (No Ads)",
+     "amountMinor": 3499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "live-tv",
+     "name": "Hulu + Live TV, Disney+, and ESPN Select",
+     "amountMinor": 9999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "live-tv-premium",
+     "name": "Hulu Premium + Live TV, Disney+ Premium, and ESPN Select",
+     "amountMinor": 10999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "live-tv-espanol",
+     "name": "Hulu + Live TV Español, Disney+",
+     "amountMinor": 2999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "live-tv-only",
+     "name": "Live TV Only",
+     "amountMinor": 9899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "live-tv-only-espanol",
+     "name": "Live TV Only Español",
+     "amountMinor": 2899,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
+   "checked": "2026-11-15",
+   "note": "Prices for new subscriptions as of Sep 23, 2026 (page says existing subscribers move to them on or after Oct 21, 2026). Student price ($6.49/month, ad-supported Disney+, Hulu Bundle, verified US college students) read on hulu.com/student. Left out: two legacy plans the page says are no longer sold ($27.99 and $94.99), and add-ons (Extra Member, ESPN, HBO Max, Cinemax, Paramount+, STARZ, Live TV add-ons). Excludes sales tax."
+  },
+  {
+   "serviceId": "max",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic-ads",
+     "name": "Basic with Ads",
+     "amountMinor": 1099,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1849,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "basic-ads-yearly",
+     "name": "Basic with Ads (yearly)",
+     "amountMinor": 10999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 18499,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 22999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "student",
+     "name": "Basic With Ads (student)",
+     "amountMinor": 549,
+     "cycle": "monthly"
+    },
+    {
+     "id": "disney-hulu-hbo-max-ads",
+     "name": "Disney+, Hulu, HBO Max Bundle (With Ads)",
+     "amountMinor": 2199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "disney-hulu-hbo-max",
+     "name": "Disney+, Hulu, HBO Max Bundle (No Ads)",
+     "amountMinor": 3499,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.hbomax.com/",
+   "checked": "2026-11-15",
+   "note": "Same plan prices on help.hbomax.com/us/Answer/Detail/000002547. Student price read on hbomax.com/student (Basic With Ads for verified US college students, direct billing only). The service is called HBO Max again; our catalog says 'Max'. Excludes sales tax."
+  },
+  {
+   "serviceId": "max",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic-ads",
+     "name": "Basic with Ads",
+     "amountMinor": 499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard-ads",
+     "name": "Standard with Ads",
+     "amountMinor": 599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "tnt-sports",
+     "name": "TNT Sports",
+     "amountMinor": 3099,
+     "cycle": "monthly"
+    },
+    {
+     "id": "tnt-sports-standard-ads",
+     "name": "TNT Sports + Standard with Ads",
+     "amountMinor": 3698,
+     "cycle": "monthly"
+    },
+    {
+     "id": "tnt-sports-standard",
+     "name": "TNT Sports + Standard",
+     "amountMinor": 4098,
+     "cycle": "monthly"
+    },
+    {
+     "id": "tnt-sports-premium",
+     "name": "TNT Sports + Premium",
+     "amountMinor": 4598,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.hbomax.com/gb-en/answer/detail/000002547",
+   "checked": "2026-11-15",
+   "note": "HBO Max launched in the UK in 2026; first GB row. Basic with Ads is listed on the help page but hbomax.com/gb only sells Standard with Ads and up (Basic with Ads comes through providers like Sky/NOW/BT/EE). TNT Sports plans are UK only. Left out: 12-month Saver plans for TNT Sports (£25.99 to £34.99 a month for a 12-month minimum term) and the £1/month Standard with Ads upgrade for provider customers. No yearly plans."
+  },
+  {
+   "serviceId": "paramount-plus",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Paramount+ Essential",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Paramount+ Essential (yearly)",
+     "amountMinor": 8999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium",
+     "name": "Paramount+ Premium",
+     "amountMinor": 1399,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Paramount+ Premium (yearly)",
+     "amountMinor": 13999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.paramountplus.com/account/signup/pickplan/",
+   "checked": "2026-11-15",
+   "note": "Monthly and Annual tabs both read. Premium is marked 'Most popular'. Excludes sales tax."
+  },
+  {
+   "serviceId": "paramount-plus",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic-ads",
+     "name": "Basic (with ads) Monthly",
+     "amountMinor": 599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium Monthly",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "basic-ads-yearly",
+     "name": "Basic (with ads) Annual",
+     "amountMinor": 5299,
+     "cycle": "yearly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard Annual",
+     "amountMinor": 8899,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium Annual",
+     "amountMinor": 11599,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/gb/app/id1340650234",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. paramountplus.com sends our US-based browser to the US site, so the UK website price couldn't be read. Left out a 'Paramount+ annual' item at £69.99 (no tier in the name, looks like an old plan)."
+  },
+  {
+   "serviceId": "peacock",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "select",
+     "name": "Select",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "select-yearly",
+     "name": "Select (yearly)",
+     "amountMinor": 8999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 12999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-plus",
+     "name": "Premium Plus",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-plus-yearly",
+     "name": "Premium Plus (yearly)",
+     "amountMinor": 19999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "apple-tv-bundle",
+     "name": "Apple TV and Peacock Premium",
+     "amountMinor": 1799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "apple-tv-bundle-plus",
+     "name": "Apple TV and Peacock Premium Plus",
+     "amountMinor": 2299,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.peacocktv.com/plans/all-monthly",
+   "checked": "2026-11-15",
+   "note": "Plans and Bundles tabs both read (the URL now opens /plans/base). Premium is marked 'Most popular'. Bundles are monthly only. Excludes sales tax."
+  },
+  {
+   "serviceId": "apple-tv",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple TV",
+     "amountMinor": 1499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "peacock-bundle",
+     "name": "Apple TV and Peacock Premium",
+     "amountMinor": 1799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "peacock-bundle-plus",
+     "name": "Apple TV and Peacock Premium Plus",
+     "amountMinor": 2299,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/apple-tv/",
+   "checked": "2026-11-15",
+   "note": "Apple's page says the Apple TV and Peacock bundle 'starts at $17.99/month'; the $22.99 Premium Plus version is read on peacocktv.com/plans (Bundles tab). No yearly plan. Apple TV is also inside Apple One (separate service) and free with Apple Music Student (not a separate plan)."
+  },
+  {
+   "serviceId": "apple-tv",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple TV",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/uk/apple-tv/",
+   "checked": "2026-11-15",
+   "note": "Only one plan sold. No yearly plan, no Peacock bundle in the UK. Also inside Apple One (separate service)."
+  },
+  {
+   "serviceId": "amazon-prime",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "prime",
+     "name": "Prime (monthly)",
+     "amountMinor": 1499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "prime-yearly",
+     "name": "Prime (yearly)",
+     "amountMinor": 13900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "student",
+     "name": "Prime for Young Adults (monthly)",
+     "amountMinor": 749,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student-yearly",
+     "name": "Prime for Young Adults (yearly)",
+     "amountMinor": 6900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "access",
+     "name": "Prime Access",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.aboutamazon.com/news/retail/prime-membership-cost-benefits",
+   "checked": "2026-11-15",
+   "note": "Amazon's own news site (updated Jul 14, 2025; still shows these fees today). Young adults (18-24) and college students pay $7.49/month or $69/year after a 6-month trial. Prime Access is for qualifying government assistance recipients ($6.99/month, also on aboutamazon.com/prime). amazon.com help pages block automated reads. Prime Video on its own isn't on this page, so it's left out. Excludes sales tax."
+  },
+  {
+   "serviceId": "amazon-prime",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "prime",
+     "name": "Prime (monthly)",
+     "amountMinor": 899,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "prime-yearly",
+     "name": "Prime (yearly)",
+     "amountMinor": 9500,
+     "cycle": "yearly"
+    },
+    {
+     "id": "student",
+     "name": "Prime Student / 18-24 (monthly)",
+     "amountMinor": 449,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student-yearly",
+     "name": "Prime Student / 18-24 (yearly)",
+     "amountMinor": 4749,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.aboutamazon.co.uk/news/retail/prime-membership-signup",
+   "checked": "2026-11-15",
+   "note": "Amazon UK's own news site (updated Jun 1, 2026). amazon.co.uk help pages blocked our browser today (403/503), so the old source couldn't be re-read. Students and 18-24-year-olds pay half after a 6-month trial. Prime Video on its own (£7.99/month) is listed on aboutamazon.co.uk's Prime Video article (updated Jul 2025) but left out here because it's a different product page."
+  },
+  {
+   "serviceId": "crunchyroll",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "fan",
+     "name": "Fan",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "mega-fan",
+     "name": "Mega Fan [Monthly]",
+     "amountMinor": 1399,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate-fan",
+     "name": "Ultimate Fan",
+     "amountMinor": 1799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "mega-fan-yearly",
+     "name": "Mega Fan [Annual]",
+     "amountMinor": 13999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "ultimate-fan-yearly",
+     "name": "Ultimate Fan Annual",
+     "amountMinor": 17999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "fan-manga",
+     "name": "Fan Manga Bundle",
+     "amountMinor": 1399,
+     "cycle": "monthly"
+    },
+    {
+     "id": "mega-fan-manga",
+     "name": "Mega Fan Manga Bundle",
+     "amountMinor": 1749,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/us/app/id329913454",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. crunchyroll.com/premium shows 'Something Went Wrong' to our browser. The App Store shows only 10 items; no Fan yearly plan is among them. Left out old-name items (Anime Membership $7.99, Monthly Premium+ Membership $11.99, Crunchyroll Premium Membership $99.99) because we can't tell which current tier they are."
+  },
+  {
+   "serviceId": "crunchyroll",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "fan",
+     "name": "Fan",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "mega-fan",
+     "name": "Mega Fan [Monthly]",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate-fan",
+     "name": "Ultimate Fan",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "mega-fan-yearly",
+     "name": "Mega Fan [Annual]",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "ultimate-fan-yearly",
+     "name": "Ultimate Fan Annual",
+     "amountMinor": 9999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "mega-fan-manga",
+     "name": "Mega Fan Manga Bundle",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/gb/app/id329913454",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. First GB row. crunchyroll.com/premium shows 'Something Went Wrong' to our browser. The App Store shows only 10 items; no Fan yearly plan is among them. Left out old-name items (Anime Membership £6.49, Monthly Premium+ Membership £8.99, Crunchyroll Premium Membership £59.99, All-Access Membership £8.99)."
+  },
+  {
+   "serviceId": "dazn",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly Flex",
+     "amountMinor": 3499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Annual, pay upfront",
+     "amountMinor": 24999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "yearly-instalments",
+     "name": "Annual, paid monthly (12 payments)",
+     "amountMinor": 2499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Ultimate Tier (monthly, 12 months)",
+     "amountMinor": 4499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate-yearly",
+     "name": "Ultimate Tier (yearly)",
+     "amountMinor": 44999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.dazn.com/en-US/news/football/what-is-dazn-how-to-watch-your-local-team-streaming-devices-usa/1xv838c19355a1f82817bmpxag",
+   "checked": "2026-11-15",
+   "note": "Read from DAZN's own article on dazn.com (updated Oct 29, 2026); dazn.com/welcome only shows a promo ($99.99 first year) and help.dazn.com blocks our browser. Monthly Flex and yearly match the App Store list (DAZN - Monthly Subscription $34.99, DAZN - Annual Subscription $249.99). The paid-monthly annual and Ultimate monthly prices are a 12-month contract billed monthly. Team season passes and PPVs left out."
+  },
+  {
+   "serviceId": "dazn",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "flex",
+     "name": "Monthly Flex",
+     "amountMinor": 2599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Annual, pay upfront",
+     "amountMinor": 11999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "yearly-instalments",
+     "name": "Annual, paid monthly (12 payments)",
+     "amountMinor": 1599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Ultimate Tier (monthly, 12 months)",
+     "amountMinor": 2499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate-yearly",
+     "name": "Ultimate Tier (yearly)",
+     "amountMinor": 24999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.dazn.com/en-GB/news/other/dazn-united-kingdom-cost-subscription-price-payment-methods-how-to-watch/rfq32edglt11znyl67htguhj",
+   "checked": "2026-11-15",
+   "note": "Read from DAZN's own UK cost article on dazn.com (updated Oct 5, 2026); help.dazn.com blocks our browser. Monthly Flex matches the App Store list (DAZN - Flexible pass £25.99). The paid-monthly annual and Ultimate monthly prices are a 12-month contract billed monthly. Sport-specific passes (NFL Game Pass, NHL, National League TV) and PPVs left out."
+  },
+  {
+   "serviceId": "espn",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "unlimited",
+     "name": "ESPN Unlimited",
+     "amountMinor": 3199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "select",
+     "name": "ESPN Select",
+     "amountMinor": 1399,
+     "cycle": "monthly"
+    },
+    {
+     "id": "disney-hulu-espn-unlimited",
+     "name": "Disney+, Hulu, and ESPN Unlimited Bundle",
+     "amountMinor": 3599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "disney-hulu-espn-select",
+     "name": "Disney+, Hulu, and ESPN Select Bundle",
+     "amountMinor": 2199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "nfl-plus-bundle",
+     "name": "Disney+, Hulu, ESPN Unlimited Bundle & NFL+ Premium",
+     "amountMinor": 4599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "espn-unlimited-nfl-plus",
+     "name": "ESPN Unlimited, NFL+ Premium Bundle",
+     "amountMinor": 4199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "fox-one-bundle",
+     "name": "ESPN, FOX One Bundle",
+     "amountMinor": 3999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://plus.espn.com/",
+   "checked": "2026-11-15",
+   "note": "Read from the page's 'Choose your plan' comparison (ESPN Select $13.99 is in the page's plan chart behind the drop-down) and 'Looking for more?' bundles. No yearly plan on the page today. MLB.TV seasonal pass left out. Premium (no-ads) versions of the Disney+/Hulu bundles are on help.hulu.com (see hulu/disney-plus rows). Excludes sales tax."
+  },
+  {
+   "serviceId": "youtube-tv",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "main",
+     "name": "YouTube TV",
+     "amountMinor": 8299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "sports-news",
+     "name": "Sports + News",
+     "amountMinor": 7199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "sports",
+     "name": "Sports Plan",
+     "amountMinor": 6499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "sports-entertainment",
+     "name": "Sports + Entertainment",
+     "amountMinor": 7199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "sports-news-family",
+     "name": "Sports + News + Family",
+     "amountMinor": 7799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "sports-entertainment-family",
+     "name": "Sports + Entertainment + Family",
+     "amountMinor": 7799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "entertainment",
+     "name": "Entertainment",
+     "amountMinor": 5499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "news-entertainment",
+     "name": "News + Entertainment",
+     "amountMinor": 6299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "news-entertainment-family",
+     "name": "News + Entertainment + Family",
+     "amountMinor": 6999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://tv.youtube.com/learn/explore-plans/",
+   "checked": "2026-11-15",
+   "note": "Regular prices from the page's footnote ('After promotional period ... Currently as follows'). Intro offers (e.g. Sports + News $49.99 for 5 months) left out. A Spanish Plan exists but its price isn't on this page, so it's left out. Add-ons (4K Plus, NFL Sunday Ticket, Entertainment Plus) left out."
+  },
+  {
+   "serviceId": "sling-tv",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "orange",
+     "name": "Orange",
+     "amountMinor": 4599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "blue",
+     "name": "Blue",
+     "amountMinor": 5499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "orange-blue",
+     "name": "Orange & Blue",
+     "amountMinor": 6999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essentials",
+     "name": "Essentials",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "select",
+     "name": "Select",
+     "amountMinor": 2999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essentials-select",
+     "name": "Essentials & Select",
+     "amountMinor": 4499,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.sling.com/",
+   "checked": "2026-11-15",
+   "note": "Read from the home page plan cards (Basic plans and Full plans). Lower first-month offer prices and Day/Week passes left out. Excludes taxes."
+  },
+  {
+   "serviceId": "fubo",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "core",
+     "name": "Pro",
+     "amountMinor": 8899,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "ultra",
+     "name": "Elite",
+     "amountMinor": 9899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "latino",
+     "name": "Latino",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.fubo.tv/welcome/plans",
+   "checked": "2026-11-15",
+   "note": "Fubo now calls the plans Pro ($88.99) and Elite ($98.99); same prices as the plans we stored as Core and Ultra, so the ids stay. Regular prices after the first-month discount. Regional sports fee ($3.99 to $16.99/month) may apply to Pro and Elite."
+  },
+  {
+   "serviceId": "philo",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Essential",
+     "amountMinor": 2500,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "bundle-plus",
+     "name": "Bundle+",
+     "amountMinor": 3300,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.philo.com/",
+   "checked": "2026-11-15",
+   "note": "Bundle+ adds HBO Max Basic with Ads, AMC+, discovery+ and more. Add-ons left out."
+  },
+  {
+   "serviceId": "youtube-premium",
+   "country": "US",
+   "currency": "USD",
+   "status": "partial",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "YouTube Premium",
+     "amountMinor": 2099,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "YouTube Premium Family",
+     "amountMinor": 3499,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/us/app/id1017492454",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. From the YouTube Music app's list. Apple-billed prices are higher than YouTube's web price. youtube.com/premium and youtube.com/premiumlite say 'not available in your country' to our cloud browser, so web prices, Student, Premium Lite and yearly plans couldn't be read. Check from a real US phone or browser before shipping."
+  },
+  {
+   "serviceId": "youtube-premium",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "partial",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "YouTube Premium",
+     "amountMinor": 1699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "YouTube Premium Family",
+     "amountMinor": 2599,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/gb/app/id1017492454",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. From the YouTube Music app's list. Apple-billed prices are higher than YouTube's web price. youtube.com/premium says 'not available in your country' to our cloud browser, so web prices, Student, Premium Lite and yearly plans couldn't be read. Check from a real UK phone or browser before shipping."
+  }
+ ],
+ "newPlanIds": [
+  {
+   "serviceId": "disney-plus",
+   "id": "student",
+   "name": "Disney+, Hulu Bundle (student)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "disney-plus",
+   "id": "disney-hulu-espn-select",
+   "name": "Disney+, Hulu, ESPN Select Bundle",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "disney-plus",
+   "id": "disney-hulu-espn-select-premium",
+   "name": "Disney+, Hulu, ESPN Select Bundle Premium",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "disney-plus",
+   "id": "disney-hulu-espn-unlimited",
+   "name": "Disney+, Hulu, ESPN Unlimited Bundle",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "disney-plus",
+   "id": "disney-hulu-espn-unlimited-premium",
+   "name": "Disney+, Hulu, ESPN Unlimited Bundle Premium",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "disney-plus",
+   "id": "disney-hulu-hbo-max-ads",
+   "name": "Disney+, Hulu, HBO Max Bundle (With Ads)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "disney-plus",
+   "id": "disney-hulu-hbo-max",
+   "name": "Disney+, Hulu, HBO Max Bundle (No Ads)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "disney-plus",
+   "id": "live-tv",
+   "name": "Hulu + Live TV, Disney+ and ESPN Select",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "disney-plus",
+   "id": "live-tv-premium",
+   "name": "Hulu Premium + Live TV, Disney+ Premium and ESPN Select",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "disney-plus",
+   "id": "nfl-plus-bundle",
+   "name": "NFL+ Premium and the Disney+, Hulu, ESPN Unlimited Bundle",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "disney-plus",
+   "id": "nfl-plus-bundle-premium",
+   "name": "NFL+ Premium and the Disney+, Hulu, ESPN Unlimited Bundle Premium",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "hulu",
+   "id": "student",
+   "name": "Disney+, Hulu Bundle (student)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "hulu",
+   "id": "disney-hulu-espn-select",
+   "name": "Disney+, Hulu, ESPN Select Bundle",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "hulu",
+   "id": "disney-hulu-espn-select-premium",
+   "name": "Disney+, Hulu, ESPN Select Bundle Premium",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "hulu",
+   "id": "disney-hulu-espn-unlimited",
+   "name": "Disney+, Hulu, ESPN Unlimited Bundle",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "hulu",
+   "id": "disney-hulu-espn-unlimited-premium",
+   "name": "Disney+, Hulu, ESPN Unlimited Bundle Premium",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "hulu",
+   "id": "disney-hulu-hbo-max-ads",
+   "name": "Disney+, Hulu, HBO Max Bundle (With Ads)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "hulu",
+   "id": "disney-hulu-hbo-max",
+   "name": "Disney+, Hulu, HBO Max Bundle (No Ads)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "hulu",
+   "id": "live-tv",
+   "name": "Hulu + Live TV, Disney+, and ESPN Select",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "hulu",
+   "id": "live-tv-premium",
+   "name": "Hulu Premium + Live TV, Disney+ Premium, and ESPN Select",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "hulu",
+   "id": "live-tv-espanol",
+   "name": "Hulu + Live TV Español, Disney+",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "hulu",
+   "id": "live-tv-only",
+   "name": "Live TV Only",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "hulu",
+   "id": "live-tv-only-espanol",
+   "name": "Live TV Only Español",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "max",
+   "id": "student",
+   "name": "Basic With Ads (student)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "max",
+   "id": "disney-hulu-hbo-max-ads",
+   "name": "Disney+, Hulu, HBO Max Bundle (With Ads)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "max",
+   "id": "disney-hulu-hbo-max",
+   "name": "Disney+, Hulu, HBO Max Bundle (No Ads)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "max",
+   "id": "standard-ads",
+   "name": "Standard with Ads",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "max",
+   "id": "tnt-sports",
+   "name": "TNT Sports",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "max",
+   "id": "tnt-sports-standard-ads",
+   "name": "TNT Sports + Standard with Ads",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "max",
+   "id": "tnt-sports-standard",
+   "name": "TNT Sports + Standard",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "max",
+   "id": "tnt-sports-premium",
+   "name": "TNT Sports + Premium",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "peacock",
+   "id": "apple-tv-bundle",
+   "name": "Apple TV and Peacock Premium",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "peacock",
+   "id": "apple-tv-bundle-plus",
+   "name": "Apple TV and Peacock Premium Plus",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "apple-tv",
+   "id": "peacock-bundle",
+   "name": "Apple TV and Peacock Premium",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "apple-tv",
+   "id": "peacock-bundle-plus",
+   "name": "Apple TV and Peacock Premium Plus",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "amazon-prime",
+   "id": "student",
+   "name": "Prime for Young Adults (monthly)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "amazon-prime",
+   "id": "student-yearly",
+   "name": "Prime for Young Adults (yearly)",
+   "cycle": "yearly"
+  },
+  {
+   "serviceId": "amazon-prime",
+   "id": "access",
+   "name": "Prime Access",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "crunchyroll",
+   "id": "mega-fan",
+   "name": "Mega Fan [Monthly]",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "crunchyroll",
+   "id": "ultimate-fan",
+   "name": "Ultimate Fan",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "crunchyroll",
+   "id": "mega-fan-yearly",
+   "name": "Mega Fan [Annual]",
+   "cycle": "yearly"
+  },
+  {
+   "serviceId": "crunchyroll",
+   "id": "ultimate-fan-yearly",
+   "name": "Ultimate Fan Annual",
+   "cycle": "yearly"
+  },
+  {
+   "serviceId": "crunchyroll",
+   "id": "fan-manga",
+   "name": "Fan Manga Bundle",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "crunchyroll",
+   "id": "mega-fan-manga",
+   "name": "Mega Fan Manga Bundle",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "dazn",
+   "id": "yearly-instalments",
+   "name": "Annual, paid monthly (12 payments)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "dazn",
+   "id": "ultimate",
+   "name": "Ultimate Tier (monthly, 12 months)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "dazn",
+   "id": "ultimate-yearly",
+   "name": "Ultimate Tier (yearly)",
+   "cycle": "yearly"
+  },
+  {
+   "serviceId": "espn",
+   "id": "select",
+   "name": "ESPN Select",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "espn",
+   "id": "disney-hulu-espn-unlimited",
+   "name": "Disney+, Hulu, and ESPN Unlimited Bundle",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "espn",
+   "id": "disney-hulu-espn-select",
+   "name": "Disney+, Hulu, and ESPN Select Bundle",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "espn",
+   "id": "nfl-plus-bundle",
+   "name": "Disney+, Hulu, ESPN Unlimited Bundle & NFL+ Premium",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "espn",
+   "id": "espn-unlimited-nfl-plus",
+   "name": "ESPN Unlimited, NFL+ Premium Bundle",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "espn",
+   "id": "fox-one-bundle",
+   "name": "ESPN, FOX One Bundle",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "youtube-tv",
+   "id": "sports",
+   "name": "Sports Plan",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "youtube-tv",
+   "id": "sports-entertainment",
+   "name": "Sports + Entertainment",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "youtube-tv",
+   "id": "sports-news-family",
+   "name": "Sports + News + Family",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "youtube-tv",
+   "id": "sports-entertainment-family",
+   "name": "Sports + Entertainment + Family",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "youtube-tv",
+   "id": "entertainment",
+   "name": "Entertainment",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "youtube-tv",
+   "id": "news-entertainment",
+   "name": "News + Entertainment",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "youtube-tv",
+   "id": "news-entertainment-family",
+   "name": "News + Entertainment + Family",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "sling-tv",
+   "id": "essentials-select",
+   "name": "Essentials & Select",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "philo",
+   "id": "bundle-plus",
+   "name": "Bundle+",
+   "cycle": "monthly"
+  }
+ ],
+ "notChecked": {
+  "youtube-premium": "Only partial rows. youtube.com/premium and youtube.com/premiumlite tell our cloud browser 'YouTube Premium is not available in your country'; the YouTube help page says to check youtube.com/premiumlite for the price. The App Store (YouTube Music app) lists only Apple-billed Individual and Family. Still to add from a real US/UK browser: web prices for individual and family, plus new ids student, lite (Premium Lite) and individual-yearly (if sold).",
+  "hulu": "GB: Hulu isn't sold in the UK (US only, per help.hulu.com).",
+  "peacock": "GB: Peacock isn't sold as its own service in the UK.",
+  "espn": "GB: ESPN streaming plans are US only.",
+  "youtube-tv": "GB: YouTube TV is US only.",
+  "sling-tv": "GB: Sling TV is US only.",
+  "fubo": "GB: Fubo isn't sold in the UK.",
+  "philo": "GB: Philo is US only."
+ }
+}

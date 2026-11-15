@@ -1,0 +1,1380 @@
+{
+ "about": {
+  "what": "Every consumer tier for 16 AI/productivity services, US and GB, read from official pricing pages or the App Store In-App Purchases list for that country. Same format as docs/research/prices-2026-11.json.",
+  "checked": "2026-11-15",
+  "replaces": "US and GB rows in prices-2026-11.json for these services",
+  "services": [
+   "claude-pro",
+   "chatgpt-plus",
+   "google-ai-pro",
+   "google-one",
+   "perplexity",
+   "grok",
+   "copilot-pro",
+   "microsoft-365",
+   "github-copilot",
+   "midjourney",
+   "notion",
+   "dropbox",
+   "canva-pro",
+   "grammarly",
+   "1password",
+   "proton"
+  ],
+  "amounts": "amountMinor is cents (USD) or pence (GBP). Regular price after any trial or first-year/first-month deal.",
+  "taxes": "US web prices exclude sales tax. UK prices and all App Store prices include VAT.",
+  "status": {
+   "verified": "Every plan in the row was read today from the official page in 'source' (or the pages listed in its note)."
+  },
+  "method": "Websites read with Playwright (chromium) from a US cloud IP, clicking monthly/yearly toggles. App Store lists read from apps.apple.com/{cc}/app/id{ID} (Apple shows at most 10 items). Where a website shows US$ to a UK browser locale (Canva, Notion, Dropbox, Proton, Claude), the GB row uses the App Store GB list.",
+  "rowsWithoutGB": "github-copilot and midjourney bill in US dollars everywhere; canva-pro and grammarly GB are in notChecked."
+ },
+ "prices": [
+  {
+   "serviceId": "claude-pro",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Pro (monthly)",
+     "amountMinor": 2000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 20000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Max",
+     "amountMinor": 10000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultra",
+     "name": "Ultra",
+     "amountMinor": 20000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://claude.com/pricing",
+   "checked": "2026-11-15",
+   "note": "Pro yearly is '$200 billed up front' ($17/month shown). Max = 5x Pro usage; Ultra = 10x Pro usage per week and no 5-hour limit. The page names the plan just 'Max' (no 'Max 5x' / 'Max 20x' any more; Ultra is the new top tier). Prices exclude tax. In the iPhone app Max is $124.99 and Ultra $249.99 (App Store US list)."
+  },
+  {
+   "serviceId": "claude-pro",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Pro (monthly)",
+     "amountMinor": 2000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 19999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Max",
+     "amountMinor": 11999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultra",
+     "name": "Ultra",
+     "amountMinor": 24999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/gb/app/id6473753684",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items. Names in the list: 'Claude Pro - Monthly', 'Claude Pro - Annual', 'Claude Max - Monthly', 'Claude Ultra - Monthly'. claude.com/pricing shows US dollars to our cloud browser, so the UK web price wasn't readable."
+  },
+  {
+   "serviceId": "chatgpt-plus",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "go",
+     "name": "Go",
+     "amountMinor": 800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus",
+     "name": "Plus",
+     "amountMinor": 1999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro-100",
+     "name": "Pro 100",
+     "amountMinor": 10000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "pro",
+     "name": "Pro 200",
+     "amountMinor": 20000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "pro-500",
+     "name": "Pro 500",
+     "amountMinor": 50000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/us/app/id6448311069",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items. Names in the list: 'ChatGPT Go', 'ChatGPT Plus', 'ChatGPT Pro 100', 'ChatGPT Pro 200', 'ChatGPT Pro 500'. Pro now comes in 3 monthly tiers (help.openai.com 'About ChatGPT Pro tiers': Pro 100 $100, Pro 200 $200, Pro 500 $500). The list also has a second 'ChatGPT Plus' at $200.00; left out because chatgpt.com/pricing says Plus is monthly only ('We offer monthly plans for Go, Plus and Business and annual plans for Business and Enterprise'), so we can't tell what it is. Business left out: chatgpt.com/pricing didn't load its prices for us."
+  },
+  {
+   "serviceId": "chatgpt-plus",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "go",
+     "name": "Go",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus",
+     "name": "Plus",
+     "amountMinor": 1999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro-100",
+     "name": "Pro 100",
+     "amountMinor": 8890,
+     "cycle": "monthly"
+    },
+    {
+     "id": "pro",
+     "name": "Pro 200",
+     "amountMinor": 20000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "pro-500",
+     "name": "Pro 500",
+     "amountMinor": 44499,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/gb/app/id6448311069",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items. Names in the list: 'ChatGPT Go', 'ChatGPT Plus', 'ChatGPT Pro 100', 'ChatGPT Pro 200', 'ChatGPT Pro 500'. Pro now comes in 3 monthly tiers (help.openai.com 'About ChatGPT Pro tiers': Pro 100 $100, Pro 200 $200, Pro 500 $500). The list also has a second 'ChatGPT Plus' at £200.00; left out because chatgpt.com/pricing says Plus is monthly only ('We offer monthly plans for Go, Plus and Business and annual plans for Business and Enterprise'), so we can't tell what it is. Business left out: chatgpt.com/pricing didn't load its prices for us."
+  },
+  {
+   "serviceId": "google-ai-pro",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Google AI Plus",
+     "amountMinor": 499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "pro",
+     "name": "Google AI Pro",
+     "amountMinor": 1999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro-yearly",
+     "name": "Google AI Pro (yearly)",
+     "amountMinor": 19999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "ultra-5x",
+     "name": "Google AI Ultra 5x",
+     "amountMinor": 9999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultra",
+     "name": "Google AI Ultra 20x",
+     "amountMinor": 19999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://one.google.com/about/google-ai-plans/",
+   "checked": "2026-11-15",
+   "note": "Plus 400 GB (or 2 TB), Pro 5 TB, Ultra 5x 20 TB, Ultra 20x 30 TB. Ultra now has two tiers; 'ultra' (used in MENA rows for 'Google AI Ultra (30 TB)') = Ultra 20x, Ultra 5x is new. Pro yearly ($199.99) is read from the page's savings calculator ('Annual ($199.99)'); the plan cards show monthly only. Plus yearly isn't on this page. Same prices in the App Store US list (Pro 5 TB $19.99, Plus 400 GB $4.99, Ultra 30 TB $199.99)."
+  },
+  {
+   "serviceId": "google-ai-pro",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Google AI Plus",
+     "amountMinor": 449,
+     "cycle": "monthly"
+    },
+    {
+     "id": "pro",
+     "name": "Google AI Pro",
+     "amountMinor": 1899,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "ultra-5x",
+     "name": "Google AI Ultra 5x",
+     "amountMinor": 7999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultra",
+     "name": "Google AI Ultra 20x",
+     "amountMinor": 18999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://one.google.com/about/google-ai-plans/?hl=en-GB&gl=GB",
+   "checked": "2026-11-15",
+   "note": "Page shows 'United Kingdom' and £ prices. Plus 400 GB (or 2 TB), Pro 5 TB, Ultra 5x 20 TB, Ultra 20x 30 TB. No yearly price on the UK page (the App Store GB list has 'Google AI Plus (400 GB)' at £44.99, likely yearly, not added). Same monthly prices in the App Store GB list."
+  },
+  {
+   "serviceId": "google-one",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "100gb",
+     "name": "100 GB",
+     "amountMinor": 199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "100gb-yearly",
+     "name": "100 GB (yearly)",
+     "amountMinor": 1999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb-yearly",
+     "name": "200 GB (yearly)",
+     "amountMinor": 2999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "ai-plus",
+     "name": "Google AI Plus (2 TB)",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/us/app/id1451784328",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items. Where one name has two prices, the lower is monthly and the one about 10x higher is yearly. one.google.com/about/plans shows only the free 15 GB tier to our cloud browser. No plain 2 TB storage plan is listed any more; 2 TB now comes as 'Google AI Plus (2 TB)'. Google AI Pro and Ultra (also Google One plans) are in the google-ai-pro rows."
+  },
+  {
+   "serviceId": "google-one",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "100gb",
+     "name": "100 GB Month",
+     "amountMinor": 179,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "100gb-yearly",
+     "name": "100 GB Annual",
+     "amountMinor": 1599,
+     "cycle": "yearly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB Month",
+     "amountMinor": 299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ai-plus",
+     "name": "Google AI Plus (2 TB)",
+     "amountMinor": 799,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/gb/app/id1451784328",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items. A 200 GB Annual plan isn't in Apple's 10-item list today, so it's missing here. Google AI Pro and Ultra are in the google-ai-pro rows."
+  },
+  {
+   "serviceId": "perplexity",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Perplexity Pro",
+     "amountMinor": 2000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro-yearly",
+     "name": "Perplexity Pro (yearly)",
+     "amountMinor": 20000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Perplexity Max",
+     "amountMinor": 20000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/us/app/id1668000334",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items. Where one name has two prices, the lower is monthly and the one 10x higher is yearly. perplexity.ai/pro blocks our browser (Cloudflare check). Max yearly is web-only ('Annual billing for Max is only available on perplexity.ai', help center), price not readable. Education Pro ($10/mo with SheerID, help center) is web-only and not in this row."
+  },
+  {
+   "serviceId": "perplexity",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Perplexity Pro",
+     "amountMinor": 2000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro-yearly",
+     "name": "Perplexity Pro (yearly)",
+     "amountMinor": 20000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Perplexity Max",
+     "amountMinor": 20000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/gb/app/id1668000334",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items. Where one name has two prices, the lower is monthly and the one 10x higher is yearly. perplexity.ai/pro blocks our browser (Cloudflare check). Max yearly is web-only ('Annual billing for Max is only available on perplexity.ai', help center), price not readable. Education Pro is web-only and not in this row."
+  },
+  {
+   "serviceId": "grok",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "lite",
+     "name": "SuperGrok Lite",
+     "amountMinor": 1000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "supergrok",
+     "name": "SuperGrok",
+     "amountMinor": 3000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "supergrok-yearly",
+     "name": "SuperGrok (yearly)",
+     "amountMinor": 30000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "supergrok-plus",
+     "name": "SuperGrok Plus",
+     "amountMinor": 10000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "heavy",
+     "name": "SuperGrok Heavy",
+     "amountMinor": 30000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/us/app/id6670324846",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items. Where one name has two prices, the lower is monthly and the one 10x higher is yearly. New since Nov 10: 'SuperGrok Plus'. grok.com/plans now shows a different web lineup (see notChecked 'grok:web'); this row keeps the App Store names so it lines up with other countries."
+  },
+  {
+   "serviceId": "grok",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "lite",
+     "name": "SuperGrok Lite",
+     "amountMinor": 1000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "supergrok",
+     "name": "SuperGrok",
+     "amountMinor": 3000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "supergrok-yearly",
+     "name": "SuperGrok (yearly)",
+     "amountMinor": 30000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "supergrok-plus",
+     "name": "SuperGrok Plus",
+     "amountMinor": 10000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "heavy",
+     "name": "SuperGrok Heavy",
+     "amountMinor": 30000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/gb/app/id6670324846",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items. Where one name has two prices, the lower is monthly and the one 10x higher is yearly. New since Nov 10: 'SuperGrok Plus'. grok.com/plans now shows a different web lineup (see notChecked 'grok:web'); this row keeps the App Store names so it lines up with other countries."
+  },
+  {
+   "serviceId": "copilot-pro",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Microsoft 365 Premium (monthly)",
+     "amountMinor": 1999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Microsoft 365 Premium (yearly)",
+     "amountMinor": 19999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q",
+   "checked": "2026-11-15",
+   "note": "Copilot Pro is no longer sold on its own: microsoft.com/en-us/store/b/copilotpro now redirects to Microsoft 365 Premium (for 1-6 people, extensive Copilot usage for the owner). Regular price; the page also shows a first-year/first-month discount ($139.99 first year, $13.99 first month) we ignore. Prices exclude tax."
+  },
+  {
+   "serviceId": "copilot-pro",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Microsoft 365 Premium (monthly)",
+     "amountMinor": 1899,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Microsoft 365 Premium (yearly)",
+     "amountMinor": 18999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.microsoft.com/en-gb/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q",
+   "checked": "2026-11-15",
+   "note": "Copilot Pro is no longer sold on its own: microsoft.com/en-gb/store/b/copilotpro now redirects to Microsoft 365 Premium (for 1-6 people, extensive Copilot usage for the owner). Regular price; the page also shows a first-year/first-month discount (£129.99 first year, £12.99 first month) we ignore."
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic-yearly",
+     "name": "Basic (yearly)",
+     "amountMinor": 1999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "basic-monthly",
+     "name": "Basic (monthly)",
+     "amountMinor": 199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 9999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 12999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 19999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/en-us/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-15",
+   "note": "Personal, Family and Premium from the compare page; Basic (100 GB, no AI) from microsoft.com/en-us/microsoft-365/basic. Regular prices; the pages also show limited-time first-year/first-month discounts on Personal and Premium, ignored. Family is for 1-6 people. Prices exclude tax."
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic-yearly",
+     "name": "Basic (yearly)",
+     "amountMinor": 1999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "basic-monthly",
+     "name": "Basic (monthly)",
+     "amountMinor": 199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 8499,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 849,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 10499,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 1049,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 18999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 1899,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/en-gb/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-15",
+   "note": "Personal, Family and Premium from the compare page; Basic (100 GB, no AI) from microsoft.com/en-gb/microsoft-365/basic. Regular prices; the pages also show limited-time first-year/first-month discounts on Personal and Premium, ignored. Family is for 1-6 people."
+  },
+  {
+   "serviceId": "github-copilot",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Pro",
+     "amountMinor": 1000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro-plus",
+     "name": "Pro+",
+     "amountMinor": 3900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "max",
+     "name": "Max",
+     "amountMinor": 10000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://github.com/features/copilot/plans",
+   "checked": "2026-11-15",
+   "note": "GitHub bills in US dollars everywhere, so only a US row. Max is new. Neither the plans page nor docs.github.com/en/copilot/get-started/plans lists a yearly price today. Free and Student are free; Business ($19/seat) and Enterprise ($39/seat) are org plans, left out."
+  },
+  {
+   "serviceId": "midjourney",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic",
+     "name": "Basic",
+     "amountMinor": 1000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 3000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro",
+     "name": "Pro",
+     "amountMinor": 6000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "mega",
+     "name": "Mega",
+     "amountMinor": 12000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "basic-yearly",
+     "name": "Basic (yearly)",
+     "amountMinor": 9600,
+     "cycle": "yearly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 28800,
+     "cycle": "yearly"
+    },
+    {
+     "id": "pro-yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 57600,
+     "cycle": "yearly"
+    },
+    {
+     "id": "mega-yearly",
+     "name": "Mega (yearly)",
+     "amountMinor": 115200,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://docs.midjourney.com/hc/en-us/articles/27870484040333-Comparing-Midjourney-Plans",
+   "checked": "2026-11-15",
+   "note": "Midjourney bills in US dollars everywhere, so only a US row. Yearly is paid up front (20% off)."
+  },
+  {
+   "serviceId": "notion",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Plus (billed monthly)",
+     "amountMinor": 1200,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Plus (billed yearly)",
+     "amountMinor": 12000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "business",
+     "name": "Business (billed monthly)",
+     "amountMinor": 2400,
+     "cycle": "monthly"
+    },
+    {
+     "id": "business-yearly",
+     "name": "Business (billed yearly)",
+     "amountMinor": 24000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.notion.com/pricing",
+   "checked": "2026-11-15",
+   "note": "Per member. Yearly shows as $10 (Plus) and $20 (Business) per member per month billed yearly, so $120 and $240 a year. Enterprise is contact-sales, left out. US prices exclude sales tax."
+  },
+  {
+   "serviceId": "notion",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Plus (monthly)",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Plus (yearly)",
+     "amountMinor": 11999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "business",
+     "name": "Business (monthly)",
+     "amountMinor": 2299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "business-yearly",
+     "name": "Business (yearly)",
+     "amountMinor": 22999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/gb/app/id1232780281",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items. Names: 'Notion – Plus Monthly', 'Notion – Plus Yearly', 'Notion Business' (£22.99 and £229.99: lower taken as monthly, 10x higher as yearly). notion.com/en-gb/pricing shows US$ prices to our cloud browser."
+  },
+  {
+   "serviceId": "dropbox",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Plus (billed monthly)",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Plus (billed yearly)",
+     "amountMinor": 11988,
+     "cycle": "yearly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard (billed monthly)",
+     "amountMinor": 1800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (billed yearly)",
+     "amountMinor": 18000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.dropbox.com/plans",
+   "checked": "2026-11-15",
+   "note": "Plus is for 1 person; Standard is per user, 'For 1 person or more'. Yearly shows as $9.99 (Plus) and $15 (Standard) per month billed yearly, so $119.88 and $180 a year. Advanced ($30 or $24/user/month) is 'For 3 people or more', left out. The website no longer lists Essentials, Professional, Simple or Family; the App Store US list still sells Simple ($6.99), Professional ($19.99) and Family ($19.99) monthly. US prices exclude sales tax."
+  },
+  {
+   "serviceId": "dropbox",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Plus (monthly)",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Plus (yearly)",
+     "amountMinor": 9599,
+     "cycle": "yearly"
+    },
+    {
+     "id": "professional",
+     "name": "Professional (monthly)",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/gb/app/id327630330",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items. 'Dropbox Simple – Monthly' shows two prices (£5.99 and £6.99), so Simple is left out. dropbox.com/en_GB/plans shows US$ prices to our cloud browser."
+  },
+  {
+   "serviceId": "canva-pro",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Canva Pro (monthly)",
+     "amountMinor": 1800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "pro-yearly",
+     "name": "Canva Pro (yearly)",
+     "amountMinor": 14400,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "business",
+     "name": "Canva Business (monthly)",
+     "amountMinor": 2500,
+     "cycle": "monthly"
+    },
+    {
+     "id": "business-yearly",
+     "name": "Canva Business (yearly)",
+     "amountMinor": 25000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.canva.com/pricing/",
+   "checked": "2026-11-15",
+   "note": "Pro is for one person; Business is per person ('Individuals and teams'; it replaced Canva Teams). Excludes sales tax."
+  },
+  {
+   "serviceId": "grammarly",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Pro (monthly)",
+     "amountMinor": 2999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "quarterly",
+     "name": "Pro (quarterly)",
+     "amountMinor": 5999,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 13999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "mobile",
+     "name": "Pro Mobile Only (monthly)",
+     "amountMinor": 1799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "mobile-yearly",
+     "name": "Pro Mobile Only (yearly)",
+     "amountMinor": 8399,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/us/app/id1158877342",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items. Names: 'Monthly Plan', 'Quarterly Plan', 'Annual Plan', 'Monthly Plan Mobile Only', 'Annual Plan Mobile Only'. grammarly.com/plans shows Pro at '$12 USD' with no billing period, so the website price wasn't usable."
+  },
+  {
+   "serviceId": "1password",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual (monthly)",
+     "amountMinor": 499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "individual-yearly",
+     "name": "Individual (yearly)",
+     "amountMinor": 4799,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Families (monthly)",
+     "amountMinor": 799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Families (yearly)",
+     "amountMinor": 7199,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/us/app/id1511601750",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items. 1password.com/pricing/personal sells yearly only (Individual $3.99/month, Families $5.99/month, billed yearly, regular price), so the App Store list is used to also cover monthly. Teams (a flat-price pack for small businesses) left out."
+  },
+  {
+   "serviceId": "1password",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual (monthly)",
+     "amountMinor": 499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "individual-yearly",
+     "name": "Individual (yearly)",
+     "amountMinor": 4999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Families (monthly)",
+     "amountMinor": 799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Families (yearly)",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/gb/app/id1511601750",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items. 1password.com/pricing/personal sells yearly only (US$ to our cloud browser, billed yearly, regular price), so the App Store list is used to also cover monthly. Teams (a flat-price pack for small businesses) left out."
+  },
+  {
+   "serviceId": "proton",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "mail-plus",
+     "name": "Mail Plus (monthly)",
+     "amountMinor": 499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "mail-plus-yearly",
+     "name": "Mail Plus (yearly)",
+     "amountMinor": 4788,
+     "cycle": "yearly"
+    },
+    {
+     "id": "pass-plus",
+     "name": "Pass Plus (monthly)",
+     "amountMinor": 499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "pass-plus-yearly",
+     "name": "Pass Plus (yearly)",
+     "amountMinor": 3588,
+     "cycle": "yearly"
+    },
+    {
+     "id": "pass-family",
+     "name": "Pass Family (monthly)",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "pass-family-yearly",
+     "name": "Pass Family (yearly)",
+     "amountMinor": 5988,
+     "cycle": "yearly"
+    },
+    {
+     "id": "vpn-plus",
+     "name": "VPN Plus (monthly)",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "vpn-plus-yearly",
+     "name": "VPN Plus (yearly)",
+     "amountMinor": 8388,
+     "cycle": "yearly"
+    },
+    {
+     "id": "drive-plus",
+     "name": "Drive Plus (monthly)",
+     "amountMinor": 499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "drive-plus-yearly",
+     "name": "Drive Plus (yearly)",
+     "amountMinor": 4788,
+     "cycle": "yearly"
+    },
+    {
+     "id": "unlimited",
+     "name": "Proton Unlimited (monthly)",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "unlimited-yearly",
+     "name": "Proton Unlimited (yearly)",
+     "amountMinor": 11988,
+     "cycle": "yearly"
+    },
+    {
+     "id": "duo",
+     "name": "Proton Duo (monthly)",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "duo-yearly",
+     "name": "Proton Duo (yearly)",
+     "amountMinor": 17988,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family",
+     "name": "Proton Family (monthly)",
+     "amountMinor": 2999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Proton Family (yearly)",
+     "amountMinor": 28788,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://proton.me/pricing",
+   "checked": "2026-11-15",
+   "note": "Read from Proton's own pricing pages: proton.me/mail/pricing (Mail Plus, Unlimited), proton.me/pass/pricing (Pass Plus, Pass Family), protonvpn.com/pricing (VPN Plus), proton.me/drive/pricing (Drive Plus 200 GB), proton.me/family (Duo, Family). Yearly = the regular renewal price ('then renews at $X every 12 months'), not the first-year deal. Drive Professional and business plans left out; Lumo Plus not checked. In the iPhone app prices differ (App Store US: Unlimited $14.99/month, $119.00/year; Mail Plus $5.99/month)."
+  },
+  {
+   "serviceId": "proton",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "mail-plus",
+     "name": "Mail Plus 1 month",
+     "amountMinor": 489,
+     "cycle": "monthly"
+    },
+    {
+     "id": "mail-plus-yearly",
+     "name": "Mail Plus 12 months",
+     "amountMinor": 3949,
+     "cycle": "yearly"
+    },
+    {
+     "id": "unlimited",
+     "name": "Unlimited 1 month",
+     "amountMinor": 1249,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "unlimited-yearly",
+     "name": "Unlimited 1 year",
+     "amountMinor": 9999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/gb/app/id979659905",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items. Proton Mail app (the source used to be the Proton Drive app; Unlimited prices are the same in both). proton.me only offers CHF, EUR or USD to our cloud browser, so UK web prices weren't readable. Pass, VPN, Duo and Family aren't in this list; see notChecked."
+  }
+ ],
+ "newPlanIds": [
+  {
+   "serviceId": "claude-pro",
+   "id": "ultra",
+   "name": "Ultra",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "chatgpt-plus",
+   "id": "pro-100",
+   "name": "Pro 100",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "chatgpt-plus",
+   "id": "pro-500",
+   "name": "Pro 500",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "google-ai-pro",
+   "id": "pro-yearly",
+   "name": "Google AI Pro (yearly)",
+   "cycle": "yearly"
+  },
+  {
+   "serviceId": "google-ai-pro",
+   "id": "ultra-5x",
+   "name": "Google AI Ultra 5x",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "grok",
+   "id": "supergrok-plus",
+   "name": "SuperGrok Plus",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "microsoft-365",
+   "id": "basic-yearly",
+   "name": "Basic (yearly)",
+   "cycle": "yearly"
+  },
+  {
+   "serviceId": "microsoft-365",
+   "id": "basic-monthly",
+   "name": "Basic (monthly)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "github-copilot",
+   "id": "max",
+   "name": "Max",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "midjourney",
+   "id": "pro-yearly",
+   "name": "Pro (yearly)",
+   "cycle": "yearly"
+  },
+  {
+   "serviceId": "midjourney",
+   "id": "mega-yearly",
+   "name": "Mega (yearly)",
+   "cycle": "yearly"
+  },
+  {
+   "serviceId": "dropbox",
+   "id": "standard",
+   "name": "Standard (billed monthly)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "dropbox",
+   "id": "standard-yearly",
+   "name": "Standard (billed yearly)",
+   "cycle": "yearly"
+  },
+  {
+   "serviceId": "canva-pro",
+   "id": "business",
+   "name": "Canva Business (monthly)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "canva-pro",
+   "id": "business-yearly",
+   "name": "Canva Business (yearly)",
+   "cycle": "yearly"
+  },
+  {
+   "serviceId": "grammarly",
+   "id": "mobile",
+   "name": "Pro Mobile Only (monthly)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "grammarly",
+   "id": "mobile-yearly",
+   "name": "Pro Mobile Only (yearly)",
+   "cycle": "yearly"
+  },
+  {
+   "serviceId": "proton",
+   "id": "mail-plus",
+   "name": "Mail Plus (monthly)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "proton",
+   "id": "mail-plus-yearly",
+   "name": "Mail Plus (yearly)",
+   "cycle": "yearly"
+  },
+  {
+   "serviceId": "proton",
+   "id": "pass-plus",
+   "name": "Pass Plus (monthly)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "proton",
+   "id": "pass-plus-yearly",
+   "name": "Pass Plus (yearly)",
+   "cycle": "yearly"
+  },
+  {
+   "serviceId": "proton",
+   "id": "pass-family",
+   "name": "Pass Family (monthly)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "proton",
+   "id": "pass-family-yearly",
+   "name": "Pass Family (yearly)",
+   "cycle": "yearly"
+  },
+  {
+   "serviceId": "proton",
+   "id": "vpn-plus",
+   "name": "VPN Plus (monthly)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "proton",
+   "id": "vpn-plus-yearly",
+   "name": "VPN Plus (yearly)",
+   "cycle": "yearly"
+  },
+  {
+   "serviceId": "proton",
+   "id": "drive-plus",
+   "name": "Drive Plus (monthly)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "proton",
+   "id": "drive-plus-yearly",
+   "name": "Drive Plus (yearly)",
+   "cycle": "yearly"
+  },
+  {
+   "serviceId": "proton",
+   "id": "duo",
+   "name": "Proton Duo (monthly)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "proton",
+   "id": "duo-yearly",
+   "name": "Proton Duo (yearly)",
+   "cycle": "yearly"
+  },
+  {
+   "serviceId": "proton",
+   "id": "family",
+   "name": "Proton Family (monthly)",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "proton",
+   "id": "family-yearly",
+   "name": "Proton Family (yearly)",
+   "cycle": "yearly"
+  }
+ ],
+ "notChecked": {
+  "canva-pro:GB": "No GB row. canva.com/en_gb/pricing shows US$ prices to our cloud browser (Canva picks currency from your IP). The App Store GB list is ambiguous: 'Canva Pro - Monthly' at £12.99, £13.00 and £13.00; 'Canva Pro - Yearly' at £99.99, £100.00 and £100.00; 'Canva Business - Monthly' £18.00; 'Canva Business - Yearly' £179.99. Needs a UK browser.",
+  "grammarly:GB": "No GB row. The App Store GB list has two prices for the same name: 'Monthly Plan' £27.99 and £25.99, 'Annual Plan' £124.99 and £121.99 ('Quarterly Plan' £54.99, 'Monthly Plan Mobile Only' £16.90, 'Annual Plan Mobile Only' £74.99). grammarly.com/plans shows '$12 USD' with no billing period.",
+  "grok:web": "grok.com/plans (US$, same for a UK browser locale) now sells a different lineup than the App Store: Plus $8/month or $80/year, Premium $30/month or $300/year, Super $100/month or $1,000/year, Ultra $200/month or $2,000/year (it bundles X Premium perks). The App Store US/GB lists still sell SuperGrok Lite, SuperGrok, SuperGrok Plus and SuperGrok Heavy. We kept the App Store names so ids line up across countries. Owner call: switch to the web lineup (new ids plus/premium/super/ultra) or keep the App Store one.",
+  "chatgpt-plus:business": "ChatGPT Business is per user on chatgpt.com/pricing, but the page's amounts never load in our cloud browser and the App Store doesn't sell it. Not added.",
+  "chatgpt-plus:plus-yearly": "The App Store US and GB lists show a second 'ChatGPT Plus' at $200.00 / £200.00. chatgpt.com/pricing says Plus is monthly only, so we left it out rather than guess it's yearly.",
+  "proton:GB": "GB row has Mail Plus and Unlimited only (Proton Mail App Store list). Seen in other Proton apps' GB lists but not added (different source): Pass Plus (12 months) £34.90 (Proton Pass app); VPN Plus £9.99 and £67.90 (Proton VPN app); Drive Plus 1 month £4.09, 1 year £39.49, Drive Plus 1 TB £7.99 / £79.00 (Proton Drive app). Duo and Family not seen in any GB list.",
+  "github-copilot:GB": "No GB row (GitHub bills in US dollars). FYI the App Store GB list sells Copilot Pro £10.00, Copilot Pro+ £39.99, Copilot Max £99.00 in the iPhone app.",
+  "midjourney:GB": "No GB row: Midjourney bills in US dollars everywhere.",
+  "perplexity:max-yearly": "Perplexity Max yearly is sold on perplexity.ai only (help center), and perplexity.ai/pro blocks our browser, so no price.",
+  "google-ai-pro:student": "Student offers (Google AI Pro free for 1 year in the US; AI Plus free for a year in the UK) are promos, not regular plans. Not added."
+ }
+}

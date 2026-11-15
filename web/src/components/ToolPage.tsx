@@ -24,6 +24,7 @@ export function ToolPage({
   sources = [],
   cta,
   extra,
+  facts,
   wide = false,
   raw = false,
   checked,
@@ -38,6 +39,8 @@ export function ToolPage({
   sources?: string[];
   cta?: string;
   extra?: React.ReactNode;
+  /** Comparison pages: the "What you get" table, right under the tool. */
+  facts?: React.ReactNode;
   /** The tool takes the full width (lists, pickers) instead of choices left / answer right. */
   wide?: boolean;
   /** The tool brings its own layout (the home page calculator). */
@@ -80,6 +83,7 @@ export function ToolPage({
         ) : null}
       </header>
       <div className={raw ? 'tk-raw' : `tk${wide ? ' wide' : ''}`}>{children}</div>
+      {facts}
       {how.length ? (
         <section className="v4-sec" aria-labelledby="how">
           <h2 id="how">How it works</h2>

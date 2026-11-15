@@ -36,6 +36,7 @@ const VISUAL: Record<string, { logos?: string[]; icon?: string }> = {
   'tools/monthly-vs-yearly': { icon: 'repeat' },
   'tools/family-plan-split': { icon: 'people' },
   'tools/compare-prices': { icon: 'swap' },
+  compare: { icon: 'swap' },
   'tools/cost-per-hour': { icon: 'clock' },
   'tools/refund-helper': { icon: 'back' },
   'tools/subscription-spreadsheet': { icon: 'grid' },

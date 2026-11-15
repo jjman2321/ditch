@@ -11,8 +11,11 @@ export function GET() {
 
 This site publishes subscription prices read from each service’s own page, dated, for ${c.services} services in up to ${c.countries} countries (${COUNTRIES.map((x) => x.name).join(', ')}) and ${c.guides} cancel guides. Every price and guide shows the date it was checked and links to the official page. Last price check: ${formatDate(c.checked)}.
 
-## Key pages\n- [Home](${SITE}/)\n- [All cancel guides](${SITE}/cancel)\n- [All prices](${SITE}/prices)\n- [All free tools](${SITE}/tools)\n${priceChanges().length ? `- [Subscription price increases](${SITE}/price-changes)\n` : ''}- [APPLE.COM/BILL charge finder](${SITE}/charges/apple-com-bill)\n- [Google charge finder](${SITE}/charges/google)\n- [Amazon charge finder](${SITE}/charges/amazon)\n- [How we check](${SITE}/how-we-check)\n\n## Free tools (run in the browser; nothing is sent)
-${[...TOOLS.map((t) => `- [${t.name}](${SITE}/${t.slug}): ${t.desc}`), ...SERVICE_TOOLS.map((t) => `- [${t.name}](${SITE}/tools/${t.slug}): ${t.desc}`)].join('\n')}
+## Key pages\n- [Home](${SITE}/)\n- [All cancel guides](${SITE}/cancel)\n- [All prices](${SITE}/prices)\n- [All free tools](${SITE}/tools)\n- [All comparisons](${SITE}/compare)\n${priceChanges().length ? `- [Subscription price increases](${SITE}/price-changes)\n` : ''}- [APPLE.COM/BILL charge finder](${SITE}/charges/apple-com-bill)\n- [Google charge finder](${SITE}/charges/google)\n- [Amazon charge finder](${SITE}/charges/amazon)\n- [How we check](${SITE}/how-we-check)\n\n## Free tools (run in the browser; nothing is sent)
+${[...TOOLS.map((t) => `- [${t.name}](${SITE}/${t.slug}): ${t.desc}`), ...SERVICE_TOOLS.filter((t) => t.kind !== 'vs' && t.kind !== 'tiers').map((t) => `- [${t.name}](${SITE}/tools/${t.slug}): ${t.desc}`)].join('\n')}
+
+## Comparisons (price by country + what each plan includes, from each company's own page)
+${SERVICE_TOOLS.filter((t) => t.kind === 'vs' || t.kind === 'tiers').map((t) => `- [${t.name}](${SITE}/tools/${t.slug})`).join('\n')}
 
 ## Cancel guides
 ${publishedGuides().map((g) => `- [How to cancel ${g.name}](${SITE}/cancel/${slugOf(g.id)})`).join('\n')}

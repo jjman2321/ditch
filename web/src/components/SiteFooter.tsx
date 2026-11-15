@@ -40,6 +40,7 @@ export function SiteFooter() {
                 {t.short}
               </Link>
             ))}
+            <Link href="/compare">Compare subscriptions →</Link>
           </nav>
           <nav aria-label="Ditch">
             <p className="ttl">Ditch</p>

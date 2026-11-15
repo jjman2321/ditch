@@ -123,6 +123,13 @@ const VERIFIED = new Map<string, PriceRow[]>();
 let HUBS: Service[] | null = null;
 let PUBLISHED: CancelGuide[] | null = null;
 
+/**
+ * Bundles and live TV (Nov 15: Disney+ and Hulu now list 13–17 plans). Price pages show them in their own section,
+ * so the main table and the "from $X" line stay about the service itself. Philo's own plan is called "Bundle+".
+ */
+const EXTRA_ID = /(^|-)(bundle|live-tv|nfl|fox-one|tnt)(-|$)|^disney-hulu/;
+export const isExtraPlan = (serviceId: string, p: { id: string; name: string }) => serviceId !== 'philo' && (EXTRA_ID.test(p.id) || /\bbundle\b|live tv|tnt sports/i.test(p.name));
+
 export function verifiedPrices(serviceId: string): PriceRow[] {
   const hit = VERIFIED.get(serviceId);
   if (hit) return hit;

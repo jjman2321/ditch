@@ -69,6 +69,10 @@ for (const g of cancel.services) {
 const changeFiles = all('price-changes-');
 const priceChanges = changeFiles.length ? changeFiles[changeFiles.length - 1] : { checkedOn: null, changes: [] };
 
+// Comparison pages (Nov 15): "What you get" facts from each service's own pages, every compare-*.json, later file wins per slug.
+const compare = new Map();
+for (const f of all('compare-')) for (const c of f.pairs ?? []) compare.set(c.slug, c);
+
 const logos = [];
 for (const s of services) {
   const src = join(APP, 'assets/logos', `${s.id}.png`);
@@ -84,6 +88,7 @@ w('prices', prices);
 w('cancel', cancel);
 w('logos', logos);
 w('price-changes', priceChanges);
+w('compare', [...compare.values()]);
 // The build's date, for the stale/expired gates (pages are built ahead of time, so 'today' is the build day).
 w('build', { today: new Date().toISOString().slice(0, 10) });
 console.log(`synced ${services.length} services, ${prices.prices.length} price rows, ${cancel.services.length} cancel guides, ${logos.length} logos`);

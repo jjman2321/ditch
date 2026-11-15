@@ -1898,3 +1898,20 @@ main > :first-child, main > :first-child > :first-child { scroll-margin-top: 200
   }
   @keyframes sdaIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 }
+
+/* "What you get" on comparison pages (Nov 15). A real table; on phones each row stacks: label, then the two answers side by side. */
+.wyg-t { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 15px; line-height: 1.45; table-layout: fixed; }
+.wyg-t thead th { text-align: left; padding: 0 12px 12px 0; vertical-align: bottom; font: 400 16px/1.25 var(--f-widebold); color: var(--ink); }
+.wyg-t thead th .logo, .wyg-t thead th .mono { display: flex; align-items: center; justify-content: center; margin-bottom: 8px; border-radius: 8px; }
+.wyg-t .wyg-blank { width: 28%; }
+.wyg-t tbody th { text-align: left; font-weight: 600; color: var(--ink); padding: 14px 12px 14px 0; vertical-align: top; border-top: 1px solid var(--hair); }
+.wyg-t tbody td { padding: 14px 12px 14px 0; vertical-align: top; border-top: 1px solid var(--hair); color: var(--body); overflow-wrap: break-word; }
+.wyg-t tbody td.na { color: var(--mute); font-style: italic; }
+@media (max-width: 620px) {
+  .wyg-t, .wyg-t thead, .wyg-t tbody { display: block; }
+  .wyg-t tr { display: grid; grid-template-columns: 1fr 1fr; column-gap: 14px; }
+  .wyg-t .wyg-blank { display: none; }
+  .wyg-t thead th { padding-bottom: 10px; font-size: 15px; }
+  .wyg-t tbody th { grid-column: 1 / -1; padding: 14px 0 4px; font-size: 14px; }
+  .wyg-t tbody td { border-top: 0; padding: 0 0 14px; font-size: 14.5px; }
+}

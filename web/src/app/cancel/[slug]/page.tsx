@@ -11,7 +11,7 @@ import { GuideFeedback } from '@/components/guide/GuideFeedback';
 import { PayTabs, type PayTab } from '@/components/guide/PayTabs';
 import { StepArt, stepUrl, tapLabel } from '@/components/guide/StepArt';
 import { APPLE_SOURCE, formatDate, freshness, guideById, neighbours, priceFor, priceHubServices, pubDates, publicNotes, publishedGuides, serviceById, idOf, slugOf } from '@/lib/data';
-import { COMPANY, SITE, SUPPORT_EMAIL, pageTitle } from '@/lib/site';
+import { COMPANY, SITE, SUPPORT_EMAIL, pageTitle, shareImage } from '@/lib/site';
 import { JsonLd } from '@/components/JsonLd';
 
 
@@ -48,8 +48,8 @@ export async function generateMetadata({ params }: PageProps<'/cancel/[slug]'>):
     title: guideTitle(g),
     description: desc.length > 158 ? `${desc.slice(0, 155).replace(/\s+\S*$/, '')}…` : desc,
     alternates: { canonical: `/cancel/${slugOf(g.id)}` },
-    openGraph: { title: `How to cancel ${g.name}`, url: `/cancel/${slugOf(g.id)}`, type: 'article', siteName: 'Ditch: Subscription Tracker', locale: 'en_US', images: [{ url: '/og/cancel.png', width: 1200, height: 630, alt: 'How to cancel any subscription' }] },
-    twitter: { card: 'summary_large_image', images: ['/og/cancel.png'] },
+    openGraph: { title: `How to cancel ${g.name}`, url: `/cancel/${slugOf(g.id)}`, type: 'article', siteName: 'Ditch: Subscription Tracker', locale: 'en_US', images: shareImage(`g/${slugOf(g.id)}`, `How to cancel ${g.name}`, 'cancel').images },
+    twitter: shareImage(`g/${slugOf(g.id)}`, `How to cancel ${g.name}`, 'cancel').twitter,
     robots: freshness(g.checkedOn) === 'expired' ? { index: false } : undefined,
   };
 }

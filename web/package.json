@@ -13,7 +13,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "preview": "npm run sync && opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy": "npm run sync && opennextjs-cloudflare build && opennextjs-cloudflare deploy"
+    "deploy": "npm run sync && opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "og": "npx -y tsx scripts/og-cards.ts > .og-cards.json && node scripts/og.mjs .og-cards.json"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.20.16",

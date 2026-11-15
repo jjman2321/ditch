@@ -7,7 +7,7 @@ import { WhatYouGet } from '@/components/WhatYouGet';
 import { formatMoney } from '@/lib/money';
 import { inCountry, serviceById, verifiedPrices } from '@/lib/data';
 import { allPoints, countryList, countryName, planLabel, SERVICE_TOOLS, yearlyPlanId, type Pt } from '@/lib/tools';
-import { fitDesc, pageTitle, og } from '@/lib/site';
+import { fitDesc, pageTitle, og, shareImage } from '@/lib/site';
 import { COUNTRIES } from '@/lib/data';
 
 export function generateStaticParams() {
@@ -20,7 +20,14 @@ export async function generateMetadata({ params }: PageProps<'/tools/[slug]'>): 
   const t = tool((await params).slug);
   if (!t) return {};
   const ex = example(t, allPoints());
-  return { title: pageTitle(t.meta), description: fitDesc(ex ?? t.desc, t.kind === 'vs' || t.kind === 'tiers' ? (t.facts?.length ? 'What each plan includes, from each company’s own page.' : 'Every plan side by side, for your country.') : `Free, with prices for ${COUNTRIES.length} countries.`, 'Prices come from each service’s own page.', 'Runs in your browser.'), alternates: { canonical: `/tools/${t.slug}` }, openGraph: og(`/tools/${t.slug}`) };
+  return { title: pageTitle(t.meta), description: fitDesc(ex ?? t.desc, t.kind === 'vs' || t.kind === 'tiers' ? (t.facts?.length ? 'What each plan includes, from each company’s own page.' : 'Every plan side by side, for your country.') : `Free, with prices for ${COUNTRIES.length} countries.`, 'Prices come from each service’s own page.', 'Runs in your browser.'), alternates: { canonical: `/tools/${t.slug}` }, ...pairShare(t) };
+}
+
+/** Comparisons get their own share card (logos + US prices); other tools use the site card. */
+function pairShare(t: (typeof SERVICE_TOOLS)[number]) {
+  if (t.kind !== 'vs' && t.kind !== 'tiers') return { openGraph: og(`/tools/${t.slug}`) };
+  const { images, twitter } = shareImage(`c/${t.slug}`, `${t.name}: price and what you get`, 'compare');
+  return { openGraph: { ...og(`/tools/${t.slug}`, 'compare'), images }, twitter };
 }
 
 const m = (p: Pt, a = p.a) => formatMoney(a, p.cur, { country: p.c });

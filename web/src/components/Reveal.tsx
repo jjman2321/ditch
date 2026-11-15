@@ -20,6 +20,8 @@ export function Reveal() {
     const groups = new Map<Element | null, number>();
     for (const el of auto) {
       if (el.hasAttribute('data-reveal')) continue;
+      // Hub pages (/tools, /compare) are lists to scan: they show at once, no fade (Nov 15).
+      if (el.closest('.hubpage')) continue;
       // On screen already: mark it shown first, so it never blinks out and back.
       if (el.getBoundingClientRect().top < vh * 0.95) el.classList.add('is-in');
       const n = groups.get(el.parentElement) ?? 0;
@@ -33,7 +35,11 @@ export function Reveal() {
     const sda = typeof CSS !== 'undefined' && CSS.supports('animation-timeline: view()');
     document.documentElement.classList.toggle('sda', sda);
     const special = '.stamp, .big-notif, .pg';
-    if (sda) document.querySelectorAll<HTMLElement>('[data-reveal]:not(.is-in)').forEach((e) => !e.matches(special) && e.classList.add('is-in'));
+    if (sda) {
+      document.querySelectorAll<HTMLElement>('[data-reveal]:not(.is-in)').forEach((e) => !e.matches(special) && e.classList.add('is-in'));
+      // Already on screen when the page opens: shown at once, never half-faded at the bottom edge (Nov 15, Lighthouse contrast).
+      document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((e) => e.getBoundingClientRect().top < vh && e.classList.add('sda-skip'));
+    }
     const els = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]:not(.is-in)'));
     if (!('IntersectionObserver' in window)) {
       els.forEach((e) => e.classList.add('is-in'));

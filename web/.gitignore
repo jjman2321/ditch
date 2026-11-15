@@ -50,3 +50,4 @@ next-env.d.ts
 /.wrangler/
 /web/
 /.next-preview/
+.og-cards.json

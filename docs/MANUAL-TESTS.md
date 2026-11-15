@@ -451,6 +451,8 @@ Why: an app feels premium when the bad moments are handled well, not only the ha
 - [ ] /prices/grok: US shows Plus $8, Premium $30, Super $100, Ultra $200 (and yearly). "Good to know" explains that other countries show the iPhone app's SuperGrok plans.
 - [ ] /tools/claude-vs-grok: the columns say Claude Pro and Grok Premium; "Is Claude Pro or Grok Premium cheaper?" says $20 vs $30.
 - [ ] /tools/grok-plus-vs-premium: "Grok Premium costs $22.00 more a month".
+- [ ] Paste ditchsubs.app/tools/claude-vs-gemini into iMessage or WhatsApp: the preview is a yellow card with the Claude and Gemini logos and both US prices. Try /prices/netflix and /cancel/netflix too.
+- [ ] Open /compare and /tools: cards show straight away (no fade). On a guide or price page, sections below still fade up as you scroll.
 
 ### W7. Phone top, menu and motion (Nov 15)
 - [ ] Home at the top: yellow header and a yellow bar above it. Scroll a little: header and bar turn cream.

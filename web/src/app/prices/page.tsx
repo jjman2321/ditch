@@ -8,7 +8,7 @@ import { JsonLd } from '@/components/JsonLd';
 export const metadata: Metadata = {
   title: pageTitle(`Subscription prices ${new Date().getFullYear()}: ${priceHubServices().length} services, ${COUNTRIES.length} countries`),
   description: 'What Netflix, Spotify, Disney+, ChatGPT and more cost in the US, UK, Canada, Australia, Europe, India and the Middle East. Every plan, local money, dated.',
-  alternates: { canonical: '/prices' }, openGraph: og('/prices', 'prices'),
+  alternates: { canonical: '/prices' }, twitter: { card: 'summary_large_image', images: ['/og/prices.jpg'] }, openGraph: og('/prices', 'prices'),
 };
 
 export default function PricesIndex() {

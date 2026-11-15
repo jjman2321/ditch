@@ -1897,6 +1897,7 @@ main > :first-child, main > :first-child > :first-child { scroll-margin-top: 200
     animation: sdaIn linear both; animation-timeline: view(); animation-range: cover 0px cover 160px;
   }
   @keyframes sdaIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  .sda [data-reveal].sda-skip { animation: none; opacity: 1; transform: none; }
 }
 
 /* "What you get" on comparison pages (Nov 15). A real table; on phones each row stacks: label, then the two answers side by side. */

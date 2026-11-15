@@ -33,3 +33,20 @@ describe('comparison pages quote current prices', () => {
     });
   }
 });
+
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+
+import OG from '@/data/og.json';
+import { priceHubServices, publishedGuides, slugOf } from './data';
+
+/** Every comparison, price page and guide has its own share image on disk (npm run og redraws them). */
+describe('share images', () => {
+  const want = [
+    ...SERVICE_TOOLS.filter((t) => t.kind === 'vs' || t.kind === 'tiers').map((t) => `c/${t.slug}`),
+    ...priceHubServices().map((s) => `p/${slugOf(s.id)}`),
+    ...publishedGuides().map((g) => `g/${slugOf(g.id)}`),
+  ];
+  it('every page has one', () => expect(want.filter((f) => !(OG as string[]).includes(f))).toEqual([]));
+  it('every listed image exists', () => expect((OG as string[]).filter((f) => !existsSync(join(__dirname, '../../public/og', `${f}.jpg`)))).toEqual([]));
+});

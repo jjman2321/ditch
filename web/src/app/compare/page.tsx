@@ -10,7 +10,8 @@ export const metadata: Metadata = {
   title: pageTitle('Subscription comparisons: price and plans'),
   description: 'ChatGPT vs Claude, Spotify vs Apple Music, Netflix vs Hulu, Claude Pro vs Max and more. Real prices and what each plan includes, from each company’s own page.',
   alternates: { canonical: '/compare' },
-  openGraph: og('/compare'),
+  openGraph: og('/compare', 'compare'),
+  twitter: { card: 'summary_large_image', images: ['/og/compare.jpg'] },
 };
 
 /**

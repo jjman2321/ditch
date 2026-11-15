@@ -15,7 +15,7 @@ const YEAR = new Date().getFullYear();
 export const metadata: Metadata = {
   title: pageTitle(`Subscription price increases ${YEAR}: every rise, dated`),
   description: 'Netflix, Spotify, Disney+, YouTube and more: every subscription price rise we could confirm since 2024, with the old and new price, the date and the source.',
-  alternates: { canonical: '/price-changes' }, openGraph: og('/price-changes', 'prices'),
+  alternates: { canonical: '/price-changes' }, twitter: { card: 'summary_large_image', images: ['/og/prices.jpg'] }, openGraph: og('/price-changes', 'prices'),
 };
 
 const per = (cy: string) => (cy === 'yearly' ? 'a year' : cy === 'quarterly' ? 'every 3 months' : cy === 'weekly' ? 'a week' : 'a month');

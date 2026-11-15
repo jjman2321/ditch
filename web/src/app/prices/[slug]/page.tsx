@@ -11,7 +11,7 @@ import { PriceGrid, type GridCol, type GridRow } from '@/components/PriceGrid';
 import { priceText } from '@/lib/priceText';
 import { COUNTRIES, COUNTRY, dateRange, inCountry, priceChanges, defaultPlan, formatDate, host, guideById, isAppStorePrice, isExtraPlan, neighbours, priceHubServices, pubDates, serviceById, verifiedPrices, type PriceRow, idOf, inWhere, slugOf } from '@/lib/data';
 import { CYCLE_WORD, formatMoney, monthlyMinor } from '@/lib/money';
-import { COMPANY, SITE, SUPPORT_EMAIL, fitDesc, pageTitle } from '@/lib/site';
+import { COMPANY, SITE, SUPPORT_EMAIL, fitDesc, pageTitle, shareImage } from '@/lib/site';
 import { JsonLd } from '@/components/JsonLd';
 
 export function generateStaticParams() {
@@ -118,12 +118,13 @@ export async function generateMetadata({ params }: PageProps<'/prices/[slug]'>):
   const rows = core(id);
   if (!s || !priceHubServices().some((x) => x.id === s.id)) return {};
   const latest = rows.map((r) => r.checked).sort().pop()!;
+  const share = shareImage(`p/${slugOf(s.id)}`, `${s.name} prices ${latest.slice(0, 4)}`, 'prices');
   return {
     title: pageTitle(titleFor(s.name, latest.slice(0, 4), rows)),
     description: fitDesc(`${summary(s.name, rows)} Main plans ${inWhere(rows)}, checked ${dateRange(rows.map((r) => r.checked))}.`, `Every price from ${s.name}’s own page.`, guideById(s.id) ? `Plus how to cancel ${s.name}.` : ''),
     alternates: { canonical: `/prices/${slugOf(s.id)}` },
-    openGraph: { title: `${s.name} prices ${inWhere(rows)}`, url: `/prices/${slugOf(s.id)}`, type: 'article', siteName: 'Ditch: Subscription Tracker', locale: 'en_US', images: [{ url: '/og/prices.png', width: 1200, height: 630, alt: `Subscription prices in ${COUNTRIES.length} countries` }] },
-    twitter: { card: 'summary_large_image', images: ['/og/prices.png'] },
+    openGraph: { title: `${s.name} prices ${inWhere(rows)}`, url: `/prices/${slugOf(s.id)}`, type: 'article', siteName: 'Ditch: Subscription Tracker', locale: 'en_US', images: share.images },
+    twitter: share.twitter,
   };
 }
 

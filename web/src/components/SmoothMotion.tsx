@@ -1,7 +1,10 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+
+/** Hash to glide to once the next page has rendered (a link like /#pricing clicked on another page). */
+let pending: string | null = null;
 
 /** Smallest page offset an anchor can land at: the pinned header plus a little air. */
 const headerGap = () => (document.querySelector('header')?.getBoundingClientRect().height ?? 0) + 16;
@@ -10,11 +13,16 @@ const headerGap = () => (document.querySelector('header')?.getBoundingClientRect
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
 
 /** Eased scroll to a page position. 450–900 ms depending on distance, so long jumps don't fly past (owner, Nov 15: "the scrolls were super fast"). */
+/** True while a glide is running or waiting to start, so ScrollTop doesn't pull the page back to the top. */
+let gliding = false;
+export const isGliding = () => gliding || pending !== null;
+
 export function smoothScrollTo(top: number) {
   const from = window.scrollY;
   const to = Math.max(0, Math.min(top, document.documentElement.scrollHeight - window.innerHeight));
   const dist = Math.abs(to - from);
   if (dist < 2) return;
+  gliding = true;
   const dur = Math.min(900, Math.max(450, dist * 0.35));
   const start = performance.now();
   document.documentElement.style.scrollBehavior = 'auto';
@@ -31,7 +39,9 @@ export function smoothScrollTo(top: number) {
     if (t < 1) requestAnimationFrame(step);
     else done();
   };
+  gliding = true;
   const done = () => {
+    gliding = false;
     document.documentElement.style.scrollBehavior = '';
     window.removeEventListener('wheel', cancel);
     window.removeEventListener('touchstart', cancel);
@@ -45,28 +55,56 @@ export function smoothScrollTo(top: number) {
  * - Looping animations (tap rings, the floating hero card, home floats, marquee) pause while off screen,
  *   so the phone only animates what you can see.
  */
+const glideTo = (hash: string) => {
+  const el = document.getElementById(decodeURIComponent(hash.slice(1)));
+  if (!el) return false;
+  const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+  smoothScrollTo(el.getBoundingClientRect().top + window.scrollY - Math.max(margin, headerGap()));
+  return true;
+};
+
 export function SmoothMotion() {
   const path = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
+    // Capture phase, so this runs before Next.js's own Link handling (which would jump instantly).
+    // preventDefault tells Next.js to leave the click alone; the link's own onClick (closing the menu) still runs.
     const onClick = (e: MouseEvent) => {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       const a = (e.target as Element | null)?.closest?.('a[href*="#"]') as HTMLAnchorElement | null;
       if (!a || a.target === '_blank') return;
       const url = new URL(a.href, location.href);
-      if (url.origin !== location.origin || url.pathname !== location.pathname || !url.hash || url.hash === '#join') return;
-      const el = document.getElementById(decodeURIComponent(url.hash.slice(1)));
-      if (!el) return;
+      if (url.origin !== location.origin || !url.hash || url.hash === '#join') return;
+      if (url.pathname === location.pathname) {
+        if (!document.getElementById(decodeURIComponent(url.hash.slice(1)))) return;
+        e.preventDefault();
+        history.pushState(null, '', url.hash);
+        glideTo(url.hash);
+        // Tabs and similar listen for the hash.
+        window.dispatchEvent(new HashChangeEvent('hashchange'));
+        return;
+      }
+      // Another page: open it at the top, then glide down to the section.
       e.preventDefault();
-      history.pushState(null, '', url.hash);
-      const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
-      smoothScrollTo(el.getBoundingClientRect().top + window.scrollY - Math.max(margin, headerGap()));
-      // Tabs and similar listen for the hash.
-      window.dispatchEvent(new HashChangeEvent('hashchange'));
+      pending = url.hash;
+      router.push(url.pathname + url.search, { scroll: false });
     };
-    document.addEventListener('click', onClick);
-    return () => document.removeEventListener('click', onClick);
-  }, []);
+    document.addEventListener('click', onClick, true);
+    return () => document.removeEventListener('click', onClick, true);
+  }, [router]);
+
+  // Arrived from a /page#section link: start at the top, then glide to the section once it has rendered.
+  useEffect(() => {
+    if (!pending) return;
+    const hash = pending;
+    window.scrollTo(0, 0);
+    const t = window.setTimeout(() => {
+      pending = null;
+      if (glideTo(hash)) history.replaceState(null, '', hash);
+    }, 180);
+    return () => window.clearTimeout(t);
+  }, [path]);
 
   useEffect(() => {
     if (!('IntersectionObserver' in window)) return;

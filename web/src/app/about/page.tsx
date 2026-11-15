@@ -5,8 +5,8 @@ import { COMPANY, SITE, SUPPORT_EMAIL, pageTitle, og } from '@/lib/site';
 import { JsonLd } from '@/components/JsonLd';
 
 export const metadata: Metadata = {
-  title: pageTitle('About Ditch and Grasp Labs'),
-  description: 'Ditch is made by Aribo, who built it to keep track of his own subscriptions. A small, independent app from Grasp Labs LLC.',
+  title: { absolute: 'About Ditch, the subscription tracker for iPhone' },
+  description: 'Ditch is made by Aribo, who built it to keep track of his own subscriptions. A small, independent iPhone app that reminds you before every charge.',
   alternates: { canonical: '/about' }, openGraph: og('/about'),
 };
 
@@ -28,7 +28,7 @@ export default function About() {
           Aribo
         </span>
         <p className="meta" style={{ marginTop: 24, fontSize: 14 }}>
-          Ditch is made by {COMPANY}. <Link href="/how-we-check">How we check prices and guides</Link>.
+          <Link href="/how-we-check">How we check prices and guides</Link>.
         </p>
       </div>
     </div>

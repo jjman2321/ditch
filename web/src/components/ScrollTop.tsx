@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
-import { smoothScrollTo } from './SmoothMotion';
+import { isGliding, smoothScrollTo } from './SmoothMotion';
 
 /**
  * A normal link to another page always opens it at the top (owner, Nov 14: the logo on another page landed
@@ -55,7 +55,7 @@ export function ScrollTop() {
     };
     window.addEventListener('wheel', stop, { passive: true, once: true });
     window.addEventListener('touchmove', stop, { passive: true, once: true });
-    const ts = [60, 160, 360].map((ms) => window.setTimeout(() => !moved && window.scrollY < 240 && top(), ms));
+    const ts = [60, 160, 360].map((ms) => window.setTimeout(() => !moved && !isGliding() && window.scrollY < 240 && top(), ms));
     return () => {
       ts.forEach(window.clearTimeout);
       window.removeEventListener('wheel', stop);

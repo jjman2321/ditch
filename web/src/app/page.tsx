@@ -70,7 +70,8 @@ export default function Home() {
       '@context': 'https://schema.org',
       '@type': 'Organization',
       '@id': `${SITE}/#org`,
-      name: COMPANY,
+      name: 'Ditch',
+      legalName: COMPANY,
       url: SITE,
       logo: `${SITE}/icon.png`,
       email: 'support@ditchsubs.app',
@@ -284,7 +285,7 @@ export default function Home() {
         <div className="wrap">
           <div className="price-head">
             <h2 id="price-h" className="h2">
-              Less than a coffee a month. Remembers the renewals you’d forget.
+              Less than a coffee a month. Remember the renewals you’d forget.
             </h2>
             <p className="lead">Tracking is free forever. Pro puts reminders on every subscription. Rather not subscribe? Pay once.</p>
           </div>

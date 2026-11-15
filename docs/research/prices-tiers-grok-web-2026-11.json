@@ -1,0 +1,116 @@
+{
+ "about": {
+  "checkedOn": "2026-11-15",
+  "replaces": "US grok row (App Store SuperGrok plans) with xAI's website plans",
+  "how": "Read x.ai/pricing (Monthly) and grok.com/plans (Monthly and Annual) in a browser on Nov 15. grok.com shows '50% off for 1 month, then $30/$100/$200 monthly'; the regular price is stored."
+ },
+ "prices": [
+  {
+   "serviceId": "grok",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "checked": "2026-11-15",
+   "source": "https://x.ai/pricing",
+   "note": "xAI's website plans (owner, Nov 15: show the website lineup). Regular prices from x.ai/pricing and grok.com/plans (Annual view); grok.com's first-month 50% offer is left out. Prices before tax. The iPhone app still sells SuperGrok plans; other countries in our table are App Store prices.",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Plus",
+     "amountMinor": 800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Plus (yearly)",
+     "amountMinor": 8000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 3000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 30000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "super",
+     "name": "Super",
+     "amountMinor": 10000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "super-yearly",
+     "name": "Super (yearly)",
+     "amountMinor": 100000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "ultra",
+     "name": "Ultra",
+     "amountMinor": 20000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultra-yearly",
+     "name": "Ultra (yearly)",
+     "amountMinor": 200000,
+     "cycle": "yearly"
+    }
+   ]
+  }
+ ],
+ "newPlanIds": [
+  {
+   "serviceId": "grok",
+   "id": "plus",
+   "name": "Plus",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "grok",
+   "id": "plus-yearly",
+   "name": "Plus (yearly)",
+   "cycle": "yearly"
+  },
+  {
+   "serviceId": "grok",
+   "id": "premium",
+   "name": "Premium",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "grok",
+   "id": "premium-yearly",
+   "name": "Premium (yearly)",
+   "cycle": "yearly"
+  },
+  {
+   "serviceId": "grok",
+   "id": "super",
+   "name": "Super",
+   "cycle": "monthly"
+  },
+  {
+   "serviceId": "grok",
+   "id": "super-yearly",
+   "name": "Super (yearly)",
+   "cycle": "yearly"
+  },
+  {
+   "serviceId": "grok",
+   "id": "ultra-yearly",
+   "name": "Ultra (yearly)",
+   "cycle": "yearly"
+  }
+ ],
+ "notChecked": {
+  "grok:GB": "grok.com shows US$ prices to a UK browser, so GB stays on the UK App Store list (SuperGrok plans)."
+ }
+}

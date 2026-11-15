@@ -56,11 +56,8 @@ const hasBoth = (p: Pair) =>
     ? Boolean(usRow(p.a)?.plans.some((x) => x.id === p.ap) && usRow(p.a)?.plans.some((x) => x.id === p.bp))
     : Boolean(usRow(p.a) && usRow(p.b));
 const pairTitle = (name: string) => `${name} 2026: price and what you get`;
-/**
- * Held for the owner (Nov 15): xAI's website now sells Plus/Premium/Super/Ultra while the iPhone app still sells
- * "SuperGrok", so these pages would show a SuperGrok price next to facts about Premium. Back once Grok's plans are settled.
- */
-const HELD = new Set(['chatgpt-vs-grok', 'claude-vs-grok', 'gemini-vs-grok', 'supergrok-vs-heavy']);
+/** Replaced (Nov 15): xAI's website no longer describes SuperGrok or Heavy; Grok Plus vs Premium and Premium vs Super took its place. */
+const HELD = new Set(['supergrok-vs-heavy']);
 for (const p of compareJson as Pair[]) {
   if (HELD.has(p.slug) || !serviceById(p.a) || !serviceById(p.b) || !hasBoth(p)) continue;
   const facts = (p.rows ?? []).filter((r) => r.label && (r.a || r.b));

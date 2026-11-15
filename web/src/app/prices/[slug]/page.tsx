@@ -143,6 +143,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
   const appShare = appRows.length / rows.length;
   const notes: { c: string; n: string }[] = [];
   if (appRows.length) notes.push({ c: 'iPhone app prices', n: appShare > 0.5 ? `Most prices here are what ${s.name} charges when you subscribe in its iPhone app, from Apple’s in-app price list. Prices on ${s.name}’s website can be different.` : `Rows marked “iPhone app price” are what you pay when you subscribe in the iPhone app. Prices on the website can be different.` });
+  if (s.id === 'grok') notes.push({ c: 'Two plan lists', n: 'US prices are xAI’s website plans: Plus, Premium, Super and Ultra. The iPhone app still sells SuperGrok plans, so the other countries show those.' });
   if (rows.some((r) => ['AE', 'SA', 'EG'].includes(r.country))) notes.push({ c: 'Middle East', n: 'Some services don’t say whether VAT is included. Where Apple bills you, its prices include VAT.' });
   const taxNote = rows.some((r) => ['US', 'CA'].includes(r.country)) ? ` ${rows.some((r) => r.country === 'CA') ? 'US and Canada prices are' : 'US prices are'} before sales tax.` : '';
   // Say exactly which of the prices in the first sentence are App Store prices (Nov 15: US Claude is now from the website).

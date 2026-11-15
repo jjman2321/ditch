@@ -448,6 +448,9 @@ Why: an app feels premium when the bad moments are handled well, not only the ha
 - [ ] /prices/netflix: near the bottom, "Compare Netflix" with pills (Netflix vs Hulu, Netflix Standard vs Premium…). Each opens.
 - [ ] /tools/disney-hulu-bundle-calculator on the iPhone: "$24.98" and "$12.99" sit on one line each, with "a month" underneath. The bundle is $12.99 (not $21.99).
 - [ ] Footer → Free tools → "Compare subscriptions →" opens /compare.
+- [ ] /prices/grok: US shows Plus $8, Premium $30, Super $100, Ultra $200 (and yearly). "Good to know" explains that other countries show the iPhone app's SuperGrok plans.
+- [ ] /tools/claude-vs-grok: the columns say Claude Pro and Grok Premium; "Is Claude Pro or Grok Premium cheaper?" says $20 vs $30.
+- [ ] /tools/grok-plus-vs-premium: "Grok Premium costs $22.00 more a month".
 
 ### W7. Phone top, menu and motion (Nov 15)
 - [ ] Home at the top: yellow header and a yellow bar above it. Scroll a little: header and bar turn cream.

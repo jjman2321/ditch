@@ -1,0 +1,165 @@
+{
+ "checkedOn": "2026-11-15",
+ "pairs": [
+  {
+   "slug": "grok-plus-vs-premium",
+   "kind": "tiers",
+   "a": "grok",
+   "b": "grok",
+   "ap": "plus",
+   "bp": "premium",
+   "name": "Grok Plus vs Premium",
+   "rows": [
+    {
+     "label": "Usage",
+     "a": "The Plus baseline (shared AI usage pool)",
+     "b": "4x more usage than Plus",
+     "sourceA": "https://x.ai/pricing",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Grok apps",
+     "a": "Grok Chat, Voice, Imagine and Build",
+     "b": "Everything in Plus",
+     "sourceA": "https://x.ai/pricing",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Models and speed",
+     "a": "Not stated",
+     "b": "Latest Grok models, faster Chat responses",
+     "sourceA": "https://x.ai/pricing",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Images and video",
+     "a": "Grok Imagine",
+     "b": "Make AI images and videos",
+     "sourceA": "https://x.ai/pricing",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Grok Bot and cloud agents",
+     "a": "No (Premium adds them)",
+     "b": "Grok Bot, cloud agents and automations",
+     "sourceA": "https://x.ai/pricing",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Coding",
+     "a": "Grok Build, Grok API access, Cursor",
+     "b": "Adds code hosting and AI code reviews",
+     "sourceA": "https://x.ai/pricing",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "On X",
+     "a": "Premium checkmark, fewer timeline ads",
+     "b": "Ad-free scrolling on most surfaces",
+     "sourceA": "https://x.ai/pricing",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Pay yearly",
+     "a": "$80 a year",
+     "b": "$300 a year",
+     "sourceA": "https://grok.com/plans",
+     "sourceB": "https://grok.com/plans"
+    }
+   ],
+   "faq": [
+    {
+     "q": "What is the difference between Grok Plus and Premium?",
+     "a": "Premium has 4x the usage of Plus and adds Grok Bot, the latest Grok models, image and video creation, cloud agents and code hosting, according to x.ai/pricing.",
+     "source": "https://x.ai/pricing"
+    },
+    {
+     "q": "How much is Grok Plus vs Premium?",
+     "a": "Plus is $8 a month or $80 a year. Premium is $30 a month or $300 a year, before tax.",
+     "source": "https://x.ai/pricing"
+    },
+    {
+     "q": "Do Grok Plus and Premium include X Premium?",
+     "a": "Both include X features. Plus has the Premium checkmark and fewer timeline ads; Premium adds ad-free scrolling on most of X.",
+     "source": "https://x.ai/pricing"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": []
+  },
+  {
+   "slug": "grok-premium-vs-super",
+   "kind": "tiers",
+   "a": "grok",
+   "b": "grok",
+   "ap": "premium",
+   "bp": "super",
+   "name": "Grok Premium vs Super",
+   "rows": [
+    {
+     "label": "Usage",
+     "a": "4x more usage than Plus",
+     "b": "15x more usage than Plus",
+     "sourceA": "https://x.ai/pricing",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Video",
+     "a": "Make AI images and videos",
+     "b": "Create 1080p, 15-second videos",
+     "sourceA": "https://x.ai/pricing",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Speed",
+     "a": "Faster Chat responses",
+     "b": "Lightning-fast replies",
+     "sourceA": "https://x.ai/pricing",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Busy times",
+     "a": "Not stated",
+     "b": "Priority access at peak times",
+     "sourceA": "https://x.ai/pricing",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Grok Bot, agents, code hosting",
+     "a": "Included",
+     "b": "Included (everything in Premium)",
+     "sourceA": "https://x.ai/pricing",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Pay yearly",
+     "a": "$300 a year",
+     "b": "$1,000 a year",
+     "sourceA": "https://grok.com/plans",
+     "sourceB": "https://grok.com/plans"
+    }
+   ],
+   "faq": [
+    {
+     "q": "How much more is Grok Super than Premium?",
+     "a": "Super is $100 a month and Premium is $30, so $70 a month more. Yearly it's $1,000 against $300.",
+     "source": "https://x.ai/pricing"
+    },
+    {
+     "q": "What does Grok Super add over Premium?",
+     "a": "xAI lists 15x Plus usage instead of 4x, 1080p 15-second videos, faster replies and priority access at peak times.",
+     "source": "https://x.ai/pricing"
+    },
+    {
+     "q": "Is SuperGrok the same as Grok Super?",
+     "a": "xAI doesn't say so. New website customers choose Plus, Premium, Super or Ultra, existing SuperGrok plans continue, and the iPhone app still sells SuperGrok.",
+     "source": "https://docs.x.ai/x-subscription/pricing"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "grok.com shows a first-month 50% offer on Premium and Super; regular prices are used."
+   ]
+  }
+ ]
+}

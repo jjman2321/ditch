@@ -15284,48 +15284,6 @@
   },
   {
    "serviceId": "grok",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "lite",
-     "name": "SuperGrok Lite",
-     "amountMinor": 1000,
-     "cycle": "monthly"
-    },
-    {
-     "id": "supergrok",
-     "name": "SuperGrok",
-     "amountMinor": 3000,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "supergrok-yearly",
-     "name": "SuperGrok (yearly)",
-     "amountMinor": 30000,
-     "cycle": "yearly"
-    },
-    {
-     "id": "supergrok-plus",
-     "name": "SuperGrok Plus",
-     "amountMinor": 10000,
-     "cycle": "monthly"
-    },
-    {
-     "id": "heavy",
-     "name": "SuperGrok Heavy",
-     "amountMinor": 30000,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://apps.apple.com/us/app/id6670324846",
-   "checked": "2026-11-15",
-   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items. Where one name has two prices, the lower is monthly and the one 10x higher is yearly. New since Nov 10: 'SuperGrok Plus'. grok.com/plans now shows a different web lineup (see notChecked 'grok:web'); this row keeps the App Store names so it lines up with other countries."
-  },
-  {
-   "serviceId": "grok",
    "country": "GB",
    "currency": "GBP",
    "status": "verified",
@@ -16055,6 +16013,66 @@
    "source": "https://apps.apple.com/gb/app/id979659905",
    "checked": "2026-11-15",
    "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items. Proton Mail app (the source used to be the Proton Drive app; Unlimited prices are the same in both). proton.me only offers CHF, EUR or USD to our cloud browser, so UK web prices weren't readable. Pass, VPN, Duo and Family aren't in this list; see notChecked."
+  },
+  {
+   "serviceId": "grok",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "checked": "2026-11-15",
+   "source": "https://x.ai/pricing",
+   "note": "xAI's website plans (owner, Nov 15: show the website lineup). Regular prices from x.ai/pricing and grok.com/plans (Annual view); grok.com's first-month 50% offer is left out. Prices before tax. The iPhone app still sells SuperGrok plans; other countries in our table are App Store prices.",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Plus",
+     "amountMinor": 800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Plus (yearly)",
+     "amountMinor": 8000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 3000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 30000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "super",
+     "name": "Super",
+     "amountMinor": 10000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "super-yearly",
+     "name": "Super (yearly)",
+     "amountMinor": 100000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "ultra",
+     "name": "Ultra",
+     "amountMinor": 20000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultra-yearly",
+     "name": "Ultra (yearly)",
+     "amountMinor": 200000,
+     "cycle": "yearly"
+    }
+   ]
   },
   {
    "serviceId": "spotify",

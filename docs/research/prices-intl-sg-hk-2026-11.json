@@ -805,7 +805,7 @@
    "serviceId": "xbox-game-pass",
    "country": "SG",
    "currency": "SGD",
-   "status": "verified",
+   "status": "unverified",
    "plans": [
     {
      "id": "essential",
@@ -835,7 +835,7 @@
    ],
    "source": "https://www.xbox.com/en-SG/xbox-game-pass",
    "checked": "2026-11-15",
-   "note": "Regular monthly price after the 14-day $1 intro offer. Read from the rendered page, which shows '$' with no currency code; the amounts don't match US dollar prices (US Ultimate is $29.99), so this is the Singapore-dollar price. The page doesn't mention GST."
+   "note": "Regular monthly price after the 14-day $1 intro offer. Read from the rendered page, which shows '$' with no currency code; the amounts don't match US dollar prices (US Ultimate is $29.99), so this is the Singapore-dollar price. The page doesn't mention GST. Held back by the site (Nov 15): the page shows \"$\" with no currency, so SGD was an inference, not read."
   },
   {
    "serviceId": "xbox-game-pass",

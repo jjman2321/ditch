@@ -1,0 +1,3299 @@
+{
+ "about": {
+  "what": "Per-country subscription prices for Sweden, Norway and Denmark, checked by hand-run scripts on official pricing pages and App Store In-App Purchase lists. Same format as docs/research/prices-2026-11.json and prices-mena-2026-11.json.",
+  "checked": "2026-11-15",
+  "amounts": "amountMinor is in the currency's minor unit (öre for SEK, øre for NOK and DKK). 14900 = 149.00 kr. Oura rows for SE and DK are in EUR cents because Oura bills EU members in euros. Prices are the regular price after any free trial or intro offer.",
+  "status": {
+   "verified": "Read today from the official page in 'source'.",
+   "partial": "Some plans read from the official page; others missing (see note).",
+   "unverified": "Read from an official list but the amount is ambiguous, or not read from an official page. Don't ship without checking."
+  },
+  "taxes": "Sweden, Norway and Denmark all have 25% VAT. Apple's iCloud+ table says taxes are included for all three; apple.com and App Store prices include VAT. Netflix's help page says taxes 'may be charged in addition' and doesn't say if VAT is included. Other service pages don't say either way.",
+  "serviceIds": "serviceId and plan ids match the shared plan reference (same plan = same id in every country). Plan names are the names shown on the local page or App Store list.",
+  "countries": {
+   "SE": "SEK",
+   "NO": "NOK",
+   "DK": "DKK"
+  },
+  "method": "Service pages read with curl or Playwright (chromium) from a US cloud IP using the country URL (e.g. spotify.com/se/premium, playstation.com/da-dk/ps-plus). App Store lists read from apps.apple.com/{cc}/app/id{ID}?l=en-GB (Apple shows at most 10 items). Pages that pick the country or currency from the visitor's IP (canva.com, primevideo.com) or that blocked the script (amazon.se, github.com, docs.midjourney.com) could not be read."
+ },
+ "prices": [
+  {
+   "serviceId": "netflix",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic",
+     "name": "Basic",
+     "amountMinor": 12900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 16900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 21900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/se",
+   "checked": "2026-11-15",
+   "note": "No ad tier in this country. Extra member: 65 SEK/month. The help page says taxes may be charged on top; it doesn't say whether the price includes VAT."
+  },
+  {
+   "serviceId": "netflix",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic",
+     "name": "Basic",
+     "amountMinor": 11900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 14900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 21900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/no",
+   "checked": "2026-11-15",
+   "note": "No ad tier in this country. Extra member: 49 NOK/month. The help page says taxes may be charged on top; it doesn't say whether the price includes VAT."
+  },
+  {
+   "serviceId": "netflix",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic",
+     "name": "Basic",
+     "amountMinor": 10900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 14900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 18900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/dk",
+   "checked": "2026-11-15",
+   "note": "No ad tier in this country. Extra member: 49 DKK/month. The help page says taxes may be charged on top; it doesn't say whether the price includes VAT."
+  },
+  {
+   "serviceId": "spotify",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 14900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 19900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 24900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/se/premium/",
+   "checked": "2026-11-15",
+   "note": "Regular price after the 1-month free trial. Premium Student: 70 kr/month (no plan id for it yet)."
+  },
+  {
+   "serviceId": "spotify",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 13900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 18900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 21900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/no/premium/",
+   "checked": "2026-11-15",
+   "note": "Regular price after the 1-month free trial. Premium Student: 75 kr/month (no plan id for it yet)."
+  },
+  {
+   "serviceId": "spotify",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 12900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 18900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 22900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/dk/premium/",
+   "checked": "2026-11-15",
+   "note": "Regular price after the 1-month free trial. Premium Student: 65 kr/month (no plan id for it yet)."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 1200,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 3900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 12900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 39900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 79900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-15",
+   "note": "Apple's iCloud+ price table, 'Sweden (SEK)' row. Footnote: taxes are included in all prices for this country."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 1200,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 3900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 12900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 39900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 79900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-15",
+   "note": "Apple's iCloud+ price table, 'Norway (NOK)' row. Footnote: taxes are included in all prices for this country."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 2500,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 8900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 26900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 54900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-15",
+   "note": "Apple's iCloud+ price table, 'Denmark (DKK)' row. Footnote: taxes are included in all prices for this country."
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 11900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 20900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 6900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/se/apple-music/",
+   "checked": "2026-11-15"
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 13900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 21900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 7500,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/no/apple-music/",
+   "checked": "2026-11-15"
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 11900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 19900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 6500,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/dk/apple-music/",
+   "checked": "2026-11-15"
+  },
+  {
+   "serviceId": "apple-tv",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple TV",
+     "amountMinor": 11900,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/se/apple-tv/",
+   "checked": "2026-11-15",
+   "note": "Regular price after the 7-day free trial."
+  },
+  {
+   "serviceId": "apple-tv",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple TV",
+     "amountMinor": 11900,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/no/apple-tv/",
+   "checked": "2026-11-15",
+   "note": "Regular price after the 7-day free trial."
+  },
+  {
+   "serviceId": "apple-tv",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple TV",
+     "amountMinor": 7900,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/dk/apple-tv/",
+   "checked": "2026-11-15",
+   "note": "Regular price after the 7-day free trial."
+  },
+  {
+   "serviceId": "apple-arcade",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 8900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 58900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/se/apple-arcade/",
+   "checked": "2026-11-15",
+   "note": "Monthly and yearly prices read from the FAQ on the page."
+  },
+  {
+   "serviceId": "apple-arcade",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 8900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 59900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/no/apple-arcade/",
+   "checked": "2026-11-15",
+   "note": "Monthly and yearly prices read from the FAQ on the page."
+  },
+  {
+   "serviceId": "apple-arcade",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 5900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 39900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/dk/apple-arcade/",
+   "checked": "2026-11-15",
+   "note": "Monthly and yearly prices read from the FAQ on the page."
+  },
+  {
+   "serviceId": "apple-one",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 21500,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 29500,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/se/apple-one/",
+   "checked": "2026-11-15",
+   "note": "Only Individual and Family are sold here; no Premier plan."
+  },
+  {
+   "serviceId": "apple-one",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 21900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 28900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/no/apple-one/",
+   "checked": "2026-11-15",
+   "note": "Only Individual and Family are sold here; no Premier plan."
+  },
+  {
+   "serviceId": "apple-one",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 17900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 25900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/dk/apple-one/",
+   "checked": "2026-11-15",
+   "note": "Only Individual and Family are sold here; no Premier plan."
+  },
+  {
+   "serviceId": "apple-fitness",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 10900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 89000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/se/apple-fitness-plus/",
+   "checked": "2026-11-15"
+  },
+  {
+   "serviceId": "apple-fitness",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 11900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 94900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/no/apple-fitness-plus/",
+   "checked": "2026-11-15"
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard med reklam",
+     "amountMinor": 8900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 12900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 17900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 129000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 179000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/sv-se",
+   "checked": "2026-11-15",
+   "note": "Regular no-commitment monthly prices. The page leads with lower prices that need a 6-month commitment (SE/NO 79/109/139 kr, DK 69/99/129 kr per month), which then roll to these prices. No Hulu bundle plans here; Hulu content is inside Disney+."
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard med reklame",
+     "amountMinor": 8900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 12900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 17900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 129000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 179000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/nb-no",
+   "checked": "2026-11-15",
+   "note": "Regular no-commitment monthly prices. The page leads with lower prices that need a 6-month commitment (SE/NO 79/109/139 kr, DK 69/99/129 kr per month), which then roll to these prices. No Hulu bundle plans here; Hulu content is inside Disney+."
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard med reklamer",
+     "amountMinor": 7900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 11900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 16900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 119000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 169000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/da-dk",
+   "checked": "2026-11-15",
+   "note": "Regular no-commitment monthly prices. The page leads with lower prices that need a 6-month commitment (SE/NO 79/109/139 kr, DK 69/99/129 kr per month), which then roll to these prices. No Hulu bundle plans here; Hulu content is inside Disney+."
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 119999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 11999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 155900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 15599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 254999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 25499,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/sv-se/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-15"
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 118900,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 12100,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 155900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 15500,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 258900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 25900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/nb-no/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-15"
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 78900,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 7899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 103900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 10399,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 168999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 16899,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/da-dk/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-15"
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-yearly",
+     "name": "Premium (12 months)",
+     "amountMinor": 162000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-quarterly",
+     "name": "Premium (3 months)",
+     "amountMinor": 56900,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium (1 month)",
+     "amountMinor": 20100,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 135000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 46900,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 16900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 76000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 28900,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 10500,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.playstation.com/sv-se/ps-plus/",
+   "checked": "2026-11-15",
+   "note": "No Deluxe tier in this country."
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-yearly",
+     "name": "Premium (12 months)",
+     "amountMinor": 179000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-quarterly",
+     "name": "Premium (3 months)",
+     "amountMinor": 64900,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium (1 month)",
+     "amountMinor": 21900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 148500,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 51900,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 17900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 84000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 31900,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 11500,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.playstation.com/no-no/ps-plus/",
+   "checked": "2026-11-15",
+   "note": "No Deluxe tier in this country."
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-yearly",
+     "name": "Premium (12 months)",
+     "amountMinor": 112500,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-quarterly",
+     "name": "Premium (3 months)",
+     "amountMinor": 40000,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium (1 month)",
+     "amountMinor": 14000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 94500,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 33500,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 11500,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 52000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 20500,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 7000,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.playstation.com/da-dk/ps-plus/",
+   "checked": "2026-11-15",
+   "note": "No Deluxe tier in this country."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Game Pass Essential",
+     "amountMinor": 9500,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Game Pass Premium",
+     "amountMinor": 14500,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Game Pass Ultimate",
+     "amountMinor": 21500,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pc",
+     "name": "PC Game Pass",
+     "amountMinor": 13500,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.xbox.com/sv-SE/xbox-game-pass",
+   "checked": "2026-11-15",
+   "note": "Regular monthly price after the 14-day 10 kr intro offer. The page labels PC Game Pass as the PC-only plan."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Game Pass Essential",
+     "amountMinor": 10500,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Game Pass Premium",
+     "amountMinor": 14900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Game Pass Ultimate",
+     "amountMinor": 20900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pc",
+     "name": "PC Game Pass",
+     "amountMinor": 13900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.xbox.com/nb-NO/xbox-game-pass",
+   "checked": "2026-11-15",
+   "note": "Regular monthly price after the 14-day 10 kr intro offer. The page labels PC Game Pass as the PC-only plan."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Game Pass Essential",
+     "amountMinor": 6500,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Game Pass Premium",
+     "amountMinor": 9900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Game Pass Ultimate",
+     "amountMinor": 14900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pc",
+     "name": "PC Game Pass",
+     "amountMinor": 8900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.xbox.com/da-DK/xbox-game-pass",
+   "checked": "2026-11-15",
+   "note": "Regular monthly price after the 14-day 10 kr intro offer. The page labels PC Game Pass as the PC-only plan."
+  },
+  {
+   "serviceId": "uber-one",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 5999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 59999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.uber.com/se/en/u/uber-one/",
+   "checked": "2026-11-15"
+  },
+  {
+   "serviceId": "uber-one",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 5900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 59000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.uber.com/dk/en/u/uber-one/",
+   "checked": "2026-11-15"
+  },
+  {
+   "serviceId": "oura",
+   "country": "SE",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://ouraring.com/membership",
+   "checked": "2026-11-15",
+   "note": "Oura bills EU members in euros, not kronor: the page lists '€5.99/month or €69.99/annually after tax for EU members'."
+  },
+  {
+   "serviceId": "oura",
+   "country": "DK",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://ouraring.com/membership",
+   "checked": "2026-11-15",
+   "note": "Oura bills EU members in euros, not kronor: the page lists '€5.99/month or €69.99/annually after tax for EU members'."
+  },
+  {
+   "serviceId": "chatgpt-plus",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "go",
+     "name": "ChatGPT Go",
+     "amountMinor": 8500,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus",
+     "name": "ChatGPT Plus",
+     "amountMinor": 24900,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id6448311069",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Pro is now sold in three sizes here (Pro 100, Pro 200, Pro 500), so it's left out until we decide which one maps to 'pro'."
+  },
+  {
+   "serviceId": "chatgpt-plus",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "go",
+     "name": "ChatGPT Go",
+     "amountMinor": 9900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus",
+     "name": "ChatGPT Plus",
+     "amountMinor": 24900,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id6448311069",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Pro is now sold in three sizes here (Pro 100, Pro 200, Pro 500), so it's left out until we decide which one maps to 'pro'."
+  },
+  {
+   "serviceId": "chatgpt-plus",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "go",
+     "name": "ChatGPT Go",
+     "amountMinor": 6400,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus",
+     "name": "ChatGPT Plus",
+     "amountMinor": 17900,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id6448311069",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Pro is now sold in three sizes here (Pro 100, Pro 200, Pro 500), so it's left out until we decide which one maps to 'pro'."
+  },
+  {
+   "serviceId": "claude-pro",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Claude Pro - Monthly",
+     "amountMinor": 24900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Claude Pro - Annual",
+     "amountMinor": 299500,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Claude Max - Monthly",
+     "amountMinor": 149500,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id6473753684",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. The list also has 'Claude Ultra - Monthly' (no plan id yet)."
+  },
+  {
+   "serviceId": "claude-pro",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Claude Pro - Monthly",
+     "amountMinor": 24900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Claude Pro - Annual",
+     "amountMinor": 299000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Claude Max - Monthly",
+     "amountMinor": 149000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id6473753684",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. The list also has 'Claude Ultra - Monthly' (no plan id yet)."
+  },
+  {
+   "serviceId": "claude-pro",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Claude Pro - Monthly",
+     "amountMinor": 17900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Claude Pro - Annual",
+     "amountMinor": 199900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Claude Max - Monthly",
+     "amountMinor": 99900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id6473753684",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. The list also has 'Claude Ultra - Monthly' (no plan id yet)."
+  },
+  {
+   "serviceId": "google-one",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "100gb",
+     "name": "100 GB Month",
+     "amountMinor": 1900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "100gb-yearly",
+     "name": "100 GB Annual",
+     "amountMinor": 20500,
+     "cycle": "yearly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB Month",
+     "amountMinor": 2900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ai-plus",
+     "name": "Google AI Plus (2 TB)",
+     "amountMinor": 9900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id1451784328",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. No 200 GB yearly price in the list (Apple shows at most 10 items)."
+  },
+  {
+   "serviceId": "google-one",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "100gb",
+     "name": "100 GB Month",
+     "amountMinor": 2400,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "100gb-yearly",
+     "name": "100 GB Annual",
+     "amountMinor": 23900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB Month",
+     "amountMinor": 3400,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ai-plus",
+     "name": "Google AI Plus (2 TB)",
+     "amountMinor": 12500,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id1451784328",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. No 200 GB yearly price in the list (Apple shows at most 10 items)."
+  },
+  {
+   "serviceId": "google-one",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "100gb",
+     "name": "100 GB Month",
+     "amountMinor": 1700,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "100gb-yearly",
+     "name": "100 GB Annual",
+     "amountMinor": 16900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB Month",
+     "amountMinor": 2500,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ai-plus",
+     "name": "Google AI Plus (2 TB)",
+     "amountMinor": 7900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id1451784328",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. No 200 GB yearly price in the list (Apple shows at most 10 items)."
+  },
+  {
+   "serviceId": "google-ai-pro",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Google AI Pro (5 TB)",
+     "amountMinor": 25500,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus",
+     "name": "Google AI Plus (400 GB)",
+     "amountMinor": 5500,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id6477489729",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Some names in this list don't say the period; those plans are monthly."
+  },
+  {
+   "serviceId": "google-ai-pro",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Google AI Pro (5 TB)",
+     "amountMinor": 25900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus",
+     "name": "Google AI Plus (400 GB)",
+     "amountMinor": 6400,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id6477489729",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Some names in this list don't say the period; those plans are monthly. The list also has Google AI Ultra (30 TB) at 2,599 kr."
+  },
+  {
+   "serviceId": "google-ai-pro",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Google AI Pro (5 TB)",
+     "amountMinor": 16900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus",
+     "name": "Google AI Plus (400 GB)",
+     "amountMinor": 4000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Google AI Plus (400 GB), yearly",
+     "amountMinor": 40000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id6477489729",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Some names in this list don't say the period; those plans are monthly. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one about 10x higher as yearly."
+  },
+  {
+   "serviceId": "perplexity",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Perplexity Pro",
+     "amountMinor": 24900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro-yearly",
+     "name": "Perplexity Pro (yearly)",
+     "amountMinor": 249500,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Perplexity Max",
+     "amountMinor": 249500,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id1668000334",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one about 10x higher as yearly."
+  },
+  {
+   "serviceId": "perplexity",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Perplexity Pro",
+     "amountMinor": 24900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro-yearly",
+     "name": "Perplexity Pro (yearly)",
+     "amountMinor": 249000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Perplexity Max",
+     "amountMinor": 249000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id1668000334",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one about 10x higher as yearly."
+  },
+  {
+   "serviceId": "perplexity",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Perplexity Pro",
+     "amountMinor": 17900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro-yearly",
+     "name": "Perplexity Pro (yearly)",
+     "amountMinor": 179900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Perplexity Max",
+     "amountMinor": 179900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id1668000334",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one about 10x higher as yearly."
+  },
+  {
+   "serviceId": "grok",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "lite",
+     "name": "SuperGrok Lite",
+     "amountMinor": 12900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "supergrok",
+     "name": "SuperGrok",
+     "amountMinor": 39900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "supergrok-yearly",
+     "name": "SuperGrok (yearly)",
+     "amountMinor": 399500,
+     "cycle": "yearly"
+    },
+    {
+     "id": "heavy",
+     "name": "SuperGrok Heavy",
+     "amountMinor": 399500,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id6670324846",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one about 10x higher as yearly. The list also has 'SuperGrok Plus' (no plan id yet)."
+  },
+  {
+   "serviceId": "grok",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "lite",
+     "name": "SuperGrok Lite",
+     "amountMinor": 12900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "supergrok",
+     "name": "SuperGrok",
+     "amountMinor": 39900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "supergrok-yearly",
+     "name": "SuperGrok (yearly)",
+     "amountMinor": 399000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "heavy",
+     "name": "SuperGrok Heavy",
+     "amountMinor": 399000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id6670324846",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one about 10x higher as yearly. The list also has 'SuperGrok Plus' (no plan id yet)."
+  },
+  {
+   "serviceId": "grok",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "lite",
+     "name": "SuperGrok Lite",
+     "amountMinor": 8900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "supergrok",
+     "name": "SuperGrok",
+     "amountMinor": 24900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "supergrok-yearly",
+     "name": "SuperGrok (yearly)",
+     "amountMinor": 249900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "heavy",
+     "name": "SuperGrok Heavy",
+     "amountMinor": 249900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id6670324846",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one about 10x higher as yearly. The list also has 'SuperGrok Plus' (no plan id yet)."
+  },
+  {
+   "serviceId": "copilot-pro",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Microsoft 365 Premium Monthly",
+     "amountMinor": 24900,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id541164041",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. No yearly Premium price in the list (Apple shows at most 10 items)."
+  },
+  {
+   "serviceId": "copilot-pro",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Microsoft 365 Premium Monthly",
+     "amountMinor": 25900,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id541164041",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. No yearly Premium price in the list (Apple shows at most 10 items)."
+  },
+  {
+   "serviceId": "copilot-pro",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Microsoft 365 Premium Monthly",
+     "amountMinor": 16900,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id541164041",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. No yearly Premium price in the list (Apple shows at most 10 items)."
+  },
+  {
+   "serviceId": "notion",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Notion – Plus Monthly",
+     "amountMinor": 14900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Notion – Plus Yearly",
+     "amountMinor": 149500,
+     "cycle": "yearly"
+    },
+    {
+     "id": "business",
+     "name": "Notion Business (monthly)",
+     "amountMinor": 29900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "business-yearly",
+     "name": "Notion Business (yearly)",
+     "amountMinor": 299500,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id1232780281",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one about 10x higher as yearly."
+  },
+  {
+   "serviceId": "notion",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Notion – Plus Monthly",
+     "amountMinor": 14900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Notion – Plus Yearly",
+     "amountMinor": 149000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "business",
+     "name": "Notion Business (monthly)",
+     "amountMinor": 29900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "business-yearly",
+     "name": "Notion Business (yearly)",
+     "amountMinor": 299000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id1232780281",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one about 10x higher as yearly."
+  },
+  {
+   "serviceId": "notion",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Notion – Plus Monthly",
+     "amountMinor": 9900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Notion – Plus Yearly",
+     "amountMinor": 99900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "business",
+     "name": "Notion Business (monthly)",
+     "amountMinor": 19900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "business-yearly",
+     "name": "Notion Business (yearly)",
+     "amountMinor": 199900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id1232780281",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one about 10x higher as yearly."
+  },
+  {
+   "serviceId": "dropbox",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Dropbox Plus - Monthly",
+     "amountMinor": 13900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Dropbox Plus - Annual",
+     "amountMinor": 139500,
+     "cycle": "yearly"
+    },
+    {
+     "id": "simple",
+     "name": "Dropbox Simple – Monthly",
+     "amountMinor": 9900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "professional",
+     "name": "Dropbox Professional - Monthly",
+     "amountMinor": 20500,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id327630330",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT."
+  },
+  {
+   "serviceId": "dropbox",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Dropbox Plus - Monthly",
+     "amountMinor": 12900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Dropbox Plus - Annual",
+     "amountMinor": 129000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "professional",
+     "name": "Dropbox Professional - Monthly",
+     "amountMinor": 19900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id327630330",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Simple left out: the list shows it at two prices (99 kr and 89 kr)."
+  },
+  {
+   "serviceId": "dropbox",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Dropbox Plus - Monthly",
+     "amountMinor": 9900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Dropbox Plus - Annual",
+     "amountMinor": 99900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "simple",
+     "name": "Dropbox Simple – Monthly",
+     "amountMinor": 5900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "professional",
+     "name": "Dropbox Professional - Monthly",
+     "amountMinor": 15900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id327630330",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT."
+  },
+  {
+   "serviceId": "strava",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "unverified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Strava Subscription (monthly)",
+     "amountMinor": 9900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "yearly",
+     "name": "Strava Subscription (yearly)",
+     "amountMinor": 69900,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id426826309",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one about 10x higher as yearly. A separate '1 Month' item at 79 kr is also listed (likely an older product), so the monthly price is not certain."
+  },
+  {
+   "serviceId": "strava",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "unverified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Strava Subscription (monthly)",
+     "amountMinor": 9900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "yearly",
+     "name": "Strava Subscription (yearly)",
+     "amountMinor": 79900,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id426826309",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one about 10x higher as yearly. A separate '1 Month' item at 79 kr is also listed (likely an older product), so the monthly price is not certain."
+  },
+  {
+   "serviceId": "strava",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "unverified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Strava Subscription (monthly)",
+     "amountMinor": 6900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "yearly",
+     "name": "Strava Subscription (yearly)",
+     "amountMinor": 49900,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id426826309",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one about 10x higher as yearly. A separate '1 Month' item at 49 kr is also listed (likely an older product), so the monthly price is not certain."
+  },
+  {
+   "serviceId": "headspace",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly Subscription",
+     "amountMinor": 13900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Annual Subscription",
+     "amountMinor": 99500,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id493145008",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT."
+  },
+  {
+   "serviceId": "headspace",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly Subscription",
+     "amountMinor": 13900,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id493145008",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Yearly left out: 'Annual Subscription' shows two prices (999 kr and 739 kr)."
+  },
+  {
+   "serviceId": "headspace",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly Subscription",
+     "amountMinor": 9900,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id493145008",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Yearly left out: 'Annual Subscription' shows two prices (749 kr and 549 kr)."
+  },
+  {
+   "serviceId": "snapchat-plus",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Snapchat+ Monthly Plan",
+     "amountMinor": 4500,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id447188370",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. One extra 'Snapchat+ (Monthly Plan)' item is listed at 55 kr; the price here is the 'Snapchat+ Monthly Plan' item and most other monthly items."
+  },
+  {
+   "serviceId": "snapchat-plus",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Snapchat+ Monthly Plan",
+     "amountMinor": 4400,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id447188370",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. One extra 'Snapchat+ (Monthly Plan)' item is listed at 54 kr; the price here is the 'Snapchat+ Monthly Plan' item and most other monthly items."
+  },
+  {
+   "serviceId": "snapchat-plus",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Snapchat+ Monthly Plan",
+     "amountMinor": 3500,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id447188370",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT."
+  },
+  {
+   "serviceId": "discord-nitro",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "nitro",
+     "name": "Nitro Monthly",
+     "amountMinor": 10500,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "basic",
+     "name": "Nitro Basic Monthly",
+     "amountMinor": 3500,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id985746746",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. The list also has one-off 'Nitro (1 Month)' and 'Nitro Basic (1 Month)' items at higher prices; the monthly subscription items are used here."
+  },
+  {
+   "serviceId": "discord-nitro",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "nitro",
+     "name": "Nitro Monthly",
+     "amountMinor": 10900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "basic",
+     "name": "Nitro Basic Monthly",
+     "amountMinor": 3500,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id985746746",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. The list also has one-off 'Nitro (1 Month)' and 'Nitro Basic (1 Month)' items at higher prices; the monthly subscription items are used here."
+  },
+  {
+   "serviceId": "discord-nitro",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "nitro",
+     "name": "Nitro Monthly",
+     "amountMinor": 7500,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "basic",
+     "name": "Nitro Basic Monthly",
+     "amountMinor": 2500,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id985746746",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. The list also has one-off 'Nitro (1 Month)' and 'Nitro Basic (1 Month)' items at higher prices; the monthly subscription items are used here."
+  },
+  {
+   "serviceId": "1password",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "1Password Individual Monthly",
+     "amountMinor": 6900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "individual-yearly",
+     "name": "1Password Individual Annual",
+     "amountMinor": 59900,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "1Password Family Monthly",
+     "amountMinor": 9900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "1Password Family Annual",
+     "amountMinor": 99900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id1511601750",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT."
+  },
+  {
+   "serviceId": "1password",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "1Password Individual Monthly",
+     "amountMinor": 5900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "individual-yearly",
+     "name": "1Password Individual Annual",
+     "amountMinor": 59900,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "1Password Family Monthly",
+     "amountMinor": 9900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "1Password Family Annual",
+     "amountMinor": 99900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id1511601750",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT."
+  },
+  {
+   "serviceId": "1password",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "1Password Individual Monthly",
+     "amountMinor": 3900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "individual-yearly",
+     "name": "1Password Individual Annual",
+     "amountMinor": 39900,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "1Password Family Monthly",
+     "amountMinor": 6900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "1Password Family Annual",
+     "amountMinor": 59900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id1511601750",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT."
+  },
+  {
+   "serviceId": "deezer",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Deezer Premium",
+     "amountMinor": 14900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Deezer Family",
+     "amountMinor": 23900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id292738169",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Some names in this list don't say the period; those plans are monthly."
+  },
+  {
+   "serviceId": "deezer",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Deezer Premium",
+     "amountMinor": 15900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Deezer Family",
+     "amountMinor": 23900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id292738169",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Some names in this list don't say the period; those plans are monthly. The list also has Deezer Duo at 199 kr (no plan id yet)."
+  },
+  {
+   "serviceId": "tidal",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "TIDAL Individual",
+     "amountMinor": 16500,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "TIDAL Family",
+     "amountMinor": 30500,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id913943275",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Some names in this list don't say the period; those plans are monthly."
+  },
+  {
+   "serviceId": "tidal",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "TIDAL Individual",
+     "amountMinor": 17500,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "TIDAL Family",
+     "amountMinor": 29900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id913943275",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Some names in this list don't say the period; those plans are monthly."
+  },
+  {
+   "serviceId": "tidal",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "TIDAL Individual",
+     "amountMinor": 15500,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "TIDAL Family",
+     "amountMinor": 27000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id913943275",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Some names in this list don't say the period; those plans are monthly."
+  },
+  {
+   "serviceId": "nyt",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "all-access",
+     "name": "All Access - Monthly",
+     "amountMinor": 14900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "games",
+     "name": "Games - Monthly",
+     "amountMinor": 2000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id284862083",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. No All Access yearly price in the list (Apple shows at most 10 items)."
+  },
+  {
+   "serviceId": "nyt",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "all-access",
+     "name": "All Access - Monthly",
+     "amountMinor": 14900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "all-access-yearly",
+     "name": "All Access - Annual",
+     "amountMinor": 99900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id284862083",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT."
+  },
+  {
+   "serviceId": "nyt",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "all-access",
+     "name": "All Access - Monthly",
+     "amountMinor": 9900,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id284862083",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Yearly left out: 'All Access - Annual' shows two prices (999 kr and 799 kr)."
+  },
+  {
+   "serviceId": "roblox",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-1000",
+     "name": "Roblox Premium 1000 One Month",
+     "amountMinor": 12900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-2200",
+     "name": "Roblox Premium 2200 One Month",
+     "amountMinor": 24900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id431946152",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Premium 450 left out: the list has two items for it at different prices ('Roblox Premium 450' and 'Roblox Premium 450 One Month')."
+  },
+  {
+   "serviceId": "roblox",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-1000",
+     "name": "Roblox Premium 1000 One Month",
+     "amountMinor": 12900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-2200",
+     "name": "Roblox Premium 2200 One Month",
+     "amountMinor": 24900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id431946152",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Premium 450 left out: the list has two items for it at different prices ('Roblox Premium 450' and 'Roblox Premium 450 One Month')."
+  },
+  {
+   "serviceId": "roblox",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-1000",
+     "name": "Roblox Premium 1000 One Month",
+     "amountMinor": 8900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-2200",
+     "name": "Roblox Premium 2200 One Month",
+     "amountMinor": 17900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id431946152",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Premium 450 left out: the list has two items for it at different prices ('Roblox Premium 450' and 'Roblox Premium 450 One Month')."
+  },
+  {
+   "serviceId": "crunchyroll",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "fan",
+     "name": "Fan",
+     "amountMinor": 8500,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id329913454",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Some names in this list don't say the period; those plans are monthly."
+  },
+  {
+   "serviceId": "crunchyroll",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "fan",
+     "name": "Fan",
+     "amountMinor": 7900,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id329913454",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Some names in this list don't say the period; those plans are monthly."
+  },
+  {
+   "serviceId": "crunchyroll",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "fan",
+     "name": "Fan",
+     "amountMinor": 6500,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id329913454",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Some names in this list don't say the period; those plans are monthly."
+  },
+  {
+   "serviceId": "dazn",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "DAZN - Månadsabonnemang",
+     "amountMinor": 21000,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id1129523589",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. No yearly price in the list (Apple shows at most 10 items; most are pay-per-view events)."
+  },
+  {
+   "serviceId": "dazn",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "DAZN - Månedlig abonnement",
+     "amountMinor": 22500,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "DAZN - Årlig abonnement",
+     "amountMinor": 105000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id1129523589",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT."
+  },
+  {
+   "serviceId": "dazn",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "DAZN - Månedligt Abonnement",
+     "amountMinor": 14000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "DAZN - årligt abonnement",
+     "amountMinor": 69500,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id1129523589",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT."
+  },
+  {
+   "serviceId": "babbel",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "all-yearly",
+     "name": "All Languages – 12-month plan",
+     "amountMinor": 120000,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id829587759",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT."
+  },
+  {
+   "serviceId": "babbel",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "all-yearly",
+     "name": "All Languages – 12-month plan",
+     "amountMinor": 104900,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id829587759",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT."
+  },
+  {
+   "serviceId": "babbel",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "all-yearly",
+     "name": "All Languages – 12-month plan",
+     "amountMinor": 74000,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id829587759",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT."
+  },
+  {
+   "serviceId": "masterclass",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "MasterClass Individual",
+     "amountMinor": 149500,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "MasterClass Duo",
+     "amountMinor": 229500,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family",
+     "name": "MasterClass Family",
+     "amountMinor": 299500,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id1273867416",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. These names don't say the period; MasterClass plans are yearly."
+  },
+  {
+   "serviceId": "masterclass",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "MasterClass Individual",
+     "amountMinor": 149000,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "MasterClass Duo",
+     "amountMinor": 229000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family",
+     "name": "MasterClass Family",
+     "amountMinor": 299000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id1273867416",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. These names don't say the period; MasterClass plans are yearly."
+  },
+  {
+   "serviceId": "masterclass",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "MasterClass Individual",
+     "amountMinor": 99900,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "MasterClass Duo",
+     "amountMinor": 149900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family",
+     "name": "MasterClass Family",
+     "amountMinor": 199900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id1273867416",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. These names don't say the period; MasterClass plans are yearly."
+  },
+  {
+   "serviceId": "proton",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "unlimited",
+     "name": "Proton Unlimited 1 month",
+     "amountMinor": 12900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "unlimited-yearly",
+     "name": "Proton Unlimited 1 year",
+     "amountMinor": 119900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id1509667851",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT."
+  },
+  {
+   "serviceId": "proton",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "unlimited",
+     "name": "Proton Unlimited 1 month",
+     "amountMinor": 15900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "unlimited-yearly",
+     "name": "Proton Unlimited 1 year",
+     "amountMinor": 127000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id1509667851",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT."
+  },
+  {
+   "serviceId": "proton",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "unlimited",
+     "name": "Proton Unlimited 1 month",
+     "amountMinor": 10500,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "unlimited-yearly",
+     "name": "Proton Unlimited 1 year",
+     "amountMinor": 95900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id1509667851",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT."
+  },
+  {
+   "serviceId": "economist",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Premium Monthly",
+     "amountMinor": 39900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "annual",
+     "name": "Premium Annual",
+     "amountMinor": 369000,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id1239397626",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT."
+  },
+  {
+   "serviceId": "economist",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Premium Monthly",
+     "amountMinor": 39900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "annual",
+     "name": "Premium Annual",
+     "amountMinor": 339000,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id1239397626",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT."
+  },
+  {
+   "serviceId": "economist",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Premium Monthly",
+     "amountMinor": 29900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "annual",
+     "name": "Premium Annual",
+     "amountMinor": 299000,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id1239397626",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT."
+  },
+  {
+   "serviceId": "max",
+   "country": "SE",
+   "currency": "SEK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic-ads",
+     "name": "Basic with Ads",
+     "amountMinor": 8900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 14900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 18900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "basic-ads-yearly",
+     "name": "Basic with Ads (yearly)",
+     "amountMinor": 89000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 149000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 189000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/se/app/id1666653815",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one about 10x higher as yearly. The list also has 'Premium & Sports' at 259 kr/month (no plan id yet) and a 'Legacy Standard' plan for old subscribers."
+  },
+  {
+   "serviceId": "max",
+   "country": "NO",
+   "currency": "NOK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic-ads",
+     "name": "Basic with Ads",
+     "amountMinor": 8900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 14900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 18900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/no/app/id1666653815",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Some names in this list don't say the period; those plans are monthly. The list also has 'Premium & Sports' at 239 kr/month (no plan id yet). The only yearly item is 'Legacy Standard' (old subscribers)."
+  },
+  {
+   "serviceId": "max",
+   "country": "DK",
+   "currency": "DKK",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic-ads",
+     "name": "Basic with Ads",
+     "amountMinor": 7900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 12900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 16900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/dk/app/id1666653815",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store prices include 25% VAT. Some names in this list don't say the period; those plans are monthly. The list also has 'Premium & Sports' at 209 kr/month (no plan id yet). The only yearly item is 'Legacy Standard' (old subscribers)."
+  }
+ ],
+ "notChecked": {
+  "apple-news": "Apple News+ isn't sold in Sweden, Norway or Denmark: apple.com/se, /no and /dk/apple-news/ all return 404.",
+  "apple-fitness": "DK: not sold in Denmark. apple.com/dk/apple-fitness-plus/ returns 404, and the country list on the Swedish and Norwegian Fitness+ pages doesn't include Denmark.",
+  "amazon-prime": "SE: amazon.se returned 503 to our script for every Prime and help page, so no price was read. NO, DK: there's no Amazon store with Prime for these countries.",
+  "prime-video": "Standalone Prime Video in NO/DK is sold on primevideo.com, which picks the country from the visitor's IP, and the App Store page shows no In-App Purchases list. Not checked.",
+  "amazon-music": "SE: amazon.se blocked (503); the App Store list shows 'Individual' at two prices (115 kr and 119 kr) with no hint which is the Prime price. NO, DK: the Amazon Music app isn't on these App Stores (404).",
+  "audible": "No Audible store for Sweden, Norway or Denmark. The App Store list only shows other countries' plans priced in kronor (e.g. 'UK Premium Monthly', 'US Premium Monthly', 'DE - Audible iOS Monthly'), so there's no clear local price.",
+  "canva-pro": "canva.com/pricing shows US$ to our cloud browser (picks currency from IP). The App Store list shows 'Canva Pro - Monthly' at several prices (SE 119/120/150 kr, NO 109/200 kr, DK 85/110 kr) and 'Canva Pro - Yearly' at several too. No clear price.",
+  "nintendo-online": "nintendo.se, nintendo.no and nintendo.dk Switch Online pages describe the memberships but show no prices (the nintendo.com/<lang>-<cc> URLs used elsewhere don't exist for these countries). Prices are only shown in the eShop.",
+  "oura": "NO: the membership page has no Norway or EEA row. Norway isn't in the EU, so it most likely falls under 'rest of world' ($6.99 USD/month or $79.00 USD/year), but the page doesn't say so outright.",
+  "uber-one": "NO: uber.com/no/en/u/uber-one/ says 'we can't find your page'. Uber One doesn't seem to be offered in Norway.",
+  "deezer": "DK: the App Store list shows Premium at 145 kr and 135 kr and Family at 209 kr and 229 kr, under the same names. No clear price. (SE and NO rows are in prices.)",
+  "dropbox": "NO: Simple left out of the row (two prices, 99 kr and 89 kr).",
+  "headspace": "NO, DK: yearly left out of the rows (two 'Annual Subscription' prices).",
+  "myfitnesspal": "App Store lists show several yearly prices under similar names (SE: Yearly Premium 949 and 519 kr, Annual Premium 995 kr; NO: 879/549/899 kr; DK: 679/389 kr). No clear yearly price.",
+  "grammarly": "App Store lists show two prices under 'Monthly Plan' and 'Annual Plan' in each country (e.g. SE 339/315 kr monthly, 1,649/1,479 kr yearly). No clear price.",
+  "peloton": "The Peloton app isn't on the Swedish, Norwegian or Danish App Store (404). Peloton doesn't sell in these countries.",
+  "paramount-plus": "The Paramount+ app isn't on the Swedish, Norwegian or Danish App Store (404). Not sold in these countries.",
+  "roblox": "Premium 450 left out of every row: two items with different prices (SE 65/69 kr, NO 70/59 kr, DK 45/39 kr).",
+  "chatgpt-plus": "Pro left out: sold here as Pro 100 / Pro 200 / Pro 500 (SE 1,120 / 2,495 / 5,599 kr). Decide which maps to 'pro' first.",
+  "github-copilot": "Not checked: github.com returned 403 to our script today. GitHub sells Copilot in US dollars everywhere, so a Nordic row would only repeat the USD price.",
+  "midjourney": "Not checked: docs.midjourney.com returned 403 to our script today. Midjourney sells in US dollars everywhere."
+ }
+}

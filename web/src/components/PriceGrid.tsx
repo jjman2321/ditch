@@ -131,7 +131,7 @@ export function PriceGrid({
                           <span className="sr"> {CY_SHORT[cols[i].cy]}</span>
                         </>
                       ) : (
-                        <span className="pg-na" aria-label="Not sold here">
+                        <span className="pg-na" aria-label="Not listed">
                           –
                         </span>
                       )}
@@ -148,6 +148,7 @@ export function PriceGrid({
         {split && cy !== "all"
           ? `Cheapest ${({ monthly: "monthly", quarterly: "3-month", yearly: "yearly", weekly: "weekly" } as Record<string, string>)[cy] ?? cy} plan in that country`
           : "Cheapest plan in that country, counted per month"}
+        <span> · – not sold there, or not on the page we checked</span>
         {shown.length > 3 ? (
           <span className="pg-swipe"> · Swipe the table for more plans</span>
         ) : null}

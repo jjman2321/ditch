@@ -438,6 +438,17 @@ Why: an app feels premium when the bad moments are handled well, not only the ha
 - [ ] /cancel/google-one: "What happens after", "How to check", "Pause instead" and 3 questions, each fact matching Google's own page.
 - [ ] Footer → Prices column has "Price increases".
 
+### W8. Comparison pages and every tier (Nov 15, late)
+- [ ] Open ditchsubs.app/compare: groups AI chat, Music, TV and video, Cloud storage, Gaming, Which plan?. Type "claude" in the search: only Claude pages stay.
+- [ ] /tools/claude-vs-gemini: the first line says both US prices. The price box works (switch country, switch A month / A year). Under it, "What you get": logos, then rows like Usage, Models, Deep research. On the iPhone each row shows the label on top and the two answers side by side. "Not stated" is grey and italic.
+- [ ] /tools/claude-pro-vs-max: the box shows Pro and Max with "Pay monthly" and "Pay yearly". Under it: "Max costs $80.00 more a month". Switch the country to the UK. "What Max adds" table under it.
+- [ ] /tools/netflix-standard-vs-premium: the country table at the bottom has Standard, Premium and Gap columns and fits (swipe on the iPhone).
+- [ ] /prices/disney-plus: the top card shows 3 plans only. Scroll: "Disney+ bundles and live TV" lists the ESPN, HBO Max and Live TV bundles with prices. Same on /prices/hulu.
+- [ ] /prices/claude-pro: plans include Max ($100) and Ultra ($200). The intro says UK prices are from the iPhone app (not the US ones).
+- [ ] /prices/netflix: near the bottom, "Compare Netflix" with pills (Netflix vs Hulu, Netflix Standard vs Premium…). Each opens.
+- [ ] /tools/disney-hulu-bundle-calculator on the iPhone: "$24.98" and "$12.99" sit on one line each, with "a month" underneath. The bundle is $12.99 (not $21.99).
+- [ ] Footer → Free tools → "Compare subscriptions →" opens /compare.
+
 ### W7. Phone top, menu and motion (Nov 15)
 - [ ] Home at the top: yellow header and a yellow bar above it. Scroll a little: header and bar turn cream.
 - [ ] Open the menu at the top of home: the menu is yellow, no strip. Open it on /tools: cream all the way up. Lines turn into an X in the same spot, links slide in; closing plays it backwards.

@@ -2,9 +2,15 @@
 
 _Update this at the end of every session._
 
-**Last updated:** Nov 10, 2026 · **Milestone:** M1, Phase 2 done, onboarding rebuilt to design v12 (DECISIONS #29)
+**Last updated:** Nov 15, 2026 · **Milestone:** M1, Phase 2 done, onboarding rebuilt to design v12 (DECISIONS #29)
 
 ## Where we are
+- ✅ **Nov 15 (late): 38 comparison pages and every tier.**
+  - /compare hub plus 34 new comparison pages, and the 4 old ones rebuilt: AI (ChatGPT, Claude, Gemini, Perplexity, Copilot), music, TV, cloud storage, gaming, and plan vs plan (Claude Pro vs Max, ChatGPT Plus vs Pro and vs Go, Gemini Pro vs Ultra, Perplexity Pro vs Max, Netflix Standard vs Premium, Game Pass Premium vs Ultimate, PS Plus Extra vs Premium, Spotify Duo vs Family, Apple One Family vs Premier, Disney+ With Ads vs Premium). Pairs come from Google autocomplete.
+  - Each page: price answer first, live price tool, a sourced "What you get" table ("Not stated" when the official page doesn't say), computed "Good to know", price by country, 3 searched questions. A test fails the build if a price quoted in an answer stops matching our checked prices.
+  - Full US/UK tiers for AI, video, music, gaming, Apple and more (Claude Max and Ultra, ChatGPT Pro 100/200/500, Gemini Ultra 5x/20x, Disney+/Hulu bundles, Spotify Student, Deezer website prices…). Price pages put bundles and live TV in their own section.
+  - **Held for the owner:** 4 Grok pages (xAI's website sells Plus/Premium/Super/Ultra, the iPhone app still sells SuperGrok: pick which to show). 3 YouTube pages wait for a US YouTube Premium price (the website blocks our cloud browser). Duolingo prices: the App Store list doesn't say which price is which plan.
+  - Data notes: Deezer US moved to website prices ($11.99, was the $14.99 App Store price). Audible's top US plan now uses id `premium` like the other countries. Prime Video Ultra ($4.99) is quoted from Amazon's news page but isn't in the price table yet.
 - ✅ **Nov 15 (live): 29 countries and 59 cancel guides.**
   - 12 new countries, each price read from official pages or the App Store for that country: Switzerland, Austria, Sweden, Norway, Denmark, Portugal, Singapore, Hong Kong, Japan, South Korea, Brazil, Türkiye. 1,021 price rows in total; anything unclear stays out (for example Xbox Singapore, whose currency we couldn't read).
   - 19 new guides: subscriptions on iPhone and on Android (Google Play), an updated Claude guide, Perplexity, Copilot Pro, GitHub Copilot, Notion, Grammarly, 1Password, Proton, Telegram Premium, Deezer, TIDAL, Sling TV, Fubo, Philo, Oura, MyFitnessPal, Babbel and Apple News+.

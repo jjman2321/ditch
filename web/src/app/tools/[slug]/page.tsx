@@ -44,6 +44,14 @@ function tierRows(t: (typeof SERVICE_TOOLS)[number]): TierRow[] {
   }).sort((x, y) => (x.c === 'US' ? -1 : y.c === 'US' ? 1 : x.name.localeCompare(y.name)));
 }
 
+/** Column names on "What you get": AI facts are about one plan (ChatGPT Plus, Microsoft 365 Premium), TV and music facts about the whole service. */
+function headName(t: (typeof SERVICE_TOOLS)[number], svc: string, plan?: string): string {
+  const name = serviceById(svc)?.name ?? svc;
+  if (t.group !== 'ai' || !plan) return name;
+  const p = verifiedPrices(svc).find((r) => r.country === 'US')?.plans.find((x) => x.id === plan);
+  return p ? planLabel(name, p.name) : name;
+}
+
 /** "Good to know" on comparison pages, worked out from our checked prices only (never opinions). */
 function pairFacts(t: (typeof SERVICE_TOOLS)[number], pts: Pt[]): string[] {
   const out: string[] = [];
@@ -140,7 +148,9 @@ function byCountry(t: (typeof SERVICE_TOOLS)[number], pts: Pt[]): { title: strin
     const tr = tierRows(t);
     if (tr.length < 2) return null;
     const f = (r: TierRow, a: number) => formatMoney(a, r.cur, { country: r.c });
-    return { title: `${tr[0].a.n} vs ${tr[0].b.n} by country`, head: ['Country', tr[0].a.n, tr[0].b.n, 'Difference'], rows: tr.map((r) => [r.name, f(r, r.a.m), f(r, r.b.m), f(r, Math.abs(r.b.m - r.a.m))]) };
+    const svc = serviceById(t.s!)?.name ?? '';
+    const short = (n: string) => n.replace(new RegExp(`^${svc.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s+`, 'i'), '') || n;
+    return { title: `${tr[0].a.n} vs ${tr[0].b.n} by country`, head: ['Country', short(tr[0].a.n), short(tr[0].b.n), 'Gap'], rows: tr.map((r) => [r.name, f(r, r.a.m), f(r, r.b.m), f(r, Math.abs(r.b.m - r.a.m))]) };
   }
   if (t.kind === 'myr' && t.s) {
     const rows = codes.flatMap((c) => {
@@ -167,7 +177,9 @@ export default async function Page({ params }: PageProps<'/tools/[slug]'>) {
   const ids = [t.s, t.a, t.b, ...(t.kind === 'bundle' ? ['disney-plus', 'hulu'] : [])].filter((x): x is string => Boolean(x));
   const rows = ids.flatMap((id) => verifiedPrices(id));
   const us = ids.map((id) => verifiedPrices(id).find((r) => r.country === 'US')?.source).filter((x): x is string => Boolean(x));
-  const sources = [...new Set([...(t.sources ?? []), ...us])];
+  // One link per page: the same URL with or without a trailing slash, a #fragment or spaces counts once.
+  const norm = (u: string) => u.trim().replace(/#.*$/, '').replace(/\/$/, '').replace(/^http:/, 'https:');
+  const sources = [...new Map([...(t.sources ?? []), ...us].map((u) => [norm(u).replace(/^https:\/\/www\./, 'https://'), norm(u)])).values()];
   const lead = (t.kind === 'vs' || t.kind === 'tiers') && ex ? ex : t.desc;
   const good = ex && lead !== ex ? [ex] : t.kind === 'vs' || t.kind === 'tiers' ? pairFacts(t, pts) : [];
   const countries = countryList();
@@ -182,7 +194,7 @@ export default async function Page({ params }: PageProps<'/tools/[slug]'>) {
   const extra = tbl ? (
     <section className="v4-sec" aria-labelledby="by-country">
       <h2 id="by-country">{tbl.title}</h2>
-      <div className="tbl-scroll">
+      <div className="tbl-scroll" role="region" aria-label={tbl.title} tabIndex={0}>
         <table className="ttable wide-t">
           <thead>
             <tr>
@@ -207,7 +219,7 @@ export default async function Page({ params }: PageProps<'/tools/[slug]'>) {
   ) : null;
   const tr = t.kind === 'tiers' ? tierRows(t)[0] : undefined;
   const heads: [{ name: string; logo?: string }, { name: string; logo?: string }] | null =
-    t.kind === 'tiers' && tr ? [{ name: tr.a.n }, { name: tr.b.n }] : t.a && t.b ? [{ name: serviceById(t.a)?.name ?? t.a, logo: t.a }, { name: serviceById(t.b)?.name ?? t.b, logo: t.b }] : null;
+    t.kind === 'tiers' && tr ? [{ name: tr.a.n }, { name: tr.b.n }] : t.a && t.b ? [{ name: headName(t, t.a, t.ap), logo: t.a }, { name: headName(t, t.b, t.bp), logo: t.b }] : null;
   const facts = t.facts?.length && heads ? (
     <WhatYouGet
       title={t.kind === 'tiers' ? `What ${tr!.b.n} adds` : 'What you get'}

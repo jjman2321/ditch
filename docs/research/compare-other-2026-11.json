@@ -1,0 +1,2100 @@
+{
+ "checkedOn": "2026-11-15",
+ "pairs": [
+  {
+   "slug": "spotify-vs-apple-music",
+   "kind": "vs",
+   "a": "spotify",
+   "b": "apple-music",
+   "ap": "individual",
+   "bp": "individual",
+   "name": "Spotify vs Apple Music",
+   "rows": [
+    {
+     "label": "Catalogue",
+     "a": "Over 100 million tracks",
+     "b": "Over 100 million songs",
+     "sourceA": "https://newsroom.spotify.com/company-info/",
+     "sourceB": "https://www.apple.com/apple-music/"
+    },
+    {
+     "label": "Sound quality",
+     "a": "Lossless up to 24-bit/44.1 kHz",
+     "b": "Lossless, Hi-Res Lossless up to 192kHz, Dolby Atmos",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://www.apple.com/apple-music/"
+    },
+    {
+     "label": "Ads",
+     "a": "Ad-free music listening",
+     "b": "Zero ads",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://www.apple.com/apple-music/"
+    },
+    {
+     "label": "Offline listening",
+     "a": "Download thousands of songs",
+     "b": "Download for offline listening",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://www.apple.com/apple-music/"
+    },
+    {
+     "label": "Audiobooks",
+     "a": "15 hours/month from the subscriber catalog",
+     "b": "Not included (no podcasts or audiobooks in app)",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://www.apple.com/apple-music/"
+    },
+    {
+     "label": "Family plan",
+     "a": "Premium Family: up to 6 accounts, same address",
+     "b": "Family: share with up to five other people",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://www.apple.com/apple-music/"
+    },
+    {
+     "label": "Student plan",
+     "a": "Premium Student, includes access to Hulu",
+     "b": "Student plan, includes Apple TV",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://www.apple.com/apple-music/"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Spotify or Apple Music cheaper?",
+     "a": "In the US, Spotify Premium Individual is $12.99 a month and Apple Music Individual is $11.99. Both student plans are $6.99 a month.",
+     "source": "docs/research/prices-2026-11.json (US) · https://www.spotify.com/us/premium/ · https://www.apple.com/apple-music/"
+    },
+    {
+     "q": "Spotify vs Apple Music sound quality?",
+     "a": "Spotify Premium streams lossless up to 24-bit/44.1 kHz. Apple Music has lossless plus Hi-Res Lossless up to 192kHz (needs external gear like a USB DAC) and Dolby Atmos.",
+     "source": "https://www.spotify.com/us/premium/ · https://www.apple.com/apple-music/"
+    },
+    {
+     "q": "Spotify vs Apple Music family plan?",
+     "a": "Spotify Premium Family is up to 6 accounts at the same address for $21.99 a month. Apple Music Family lets up to six people share for $19.99 a month.",
+     "source": "docs/research/prices-2026-11.json (US) · https://www.spotify.com/us/premium/ · https://www.apple.com/apple-music/"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": []
+  },
+  {
+   "slug": "spotify-vs-youtube-music",
+   "kind": "vs",
+   "a": "spotify",
+   "b": "youtube-premium",
+   "ap": "individual",
+   "bp": "individual",
+   "name": "Spotify vs YouTube Music",
+   "rows": [
+    {
+     "label": "Catalogue",
+     "a": "Over 100 million tracks",
+     "b": "Millions of songs, plus remixes, covers, DJ sets",
+     "sourceA": "https://newsroom.spotify.com/company-info/",
+     "sourceB": "https://support.google.com/youtube/answer/6308116"
+    },
+    {
+     "label": "Sound quality",
+     "a": "Lossless up to 24-bit/44.1 kHz",
+     "b": "Audio at 256 kbps on music videos and Art Tracks",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://support.google.com/youtube/answer/6308116"
+    },
+    {
+     "label": "Ads",
+     "a": "Ad-free music listening",
+     "b": "No ads in YouTube Music or on YouTube videos",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://support.google.com/youtube/answer/6308116"
+    },
+    {
+     "label": "Offline and background",
+     "a": "Download thousands of songs",
+     "b": "Downloads and background play",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://support.google.com/youtube/answer/6308116"
+    },
+    {
+     "label": "Also included",
+     "a": "Audiobooks 15 h/month, 1.4k Peloton classes",
+     "b": "Ad-free YouTube, 1080p Premium, Jump ahead",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://support.google.com/youtube/answer/6308116"
+    },
+    {
+     "label": "Family plan",
+     "a": "Up to 6 accounts at the same address",
+     "b": "Share with up to 5 others in your household",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://support.google.com/youtube/answer/12156000"
+    },
+    {
+     "label": "Yearly option",
+     "a": "Not stated",
+     "b": "Prepaid annual plan, individual only",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://support.google.com/youtube/answer/11417260"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is YouTube Music Premium included in YouTube Premium?",
+     "a": "Yes. Google's help page says the YouTube Music app is included with YouTube Premium, with music ad-free, offline and in the background.",
+     "source": "https://support.google.com/youtube/answer/6308116"
+    },
+    {
+     "q": "Spotify vs YouTube Music sound quality?",
+     "a": "Spotify Premium streams lossless up to 24-bit/44.1 kHz. YouTube Premium plays music videos and Art Tracks at up to 256 kbps.",
+     "source": "https://www.spotify.com/us/premium/ · https://support.google.com/youtube/answer/6308116"
+    },
+    {
+     "q": "Spotify vs YouTube Music family plan?",
+     "a": "Spotify Premium Family covers up to 6 accounts at one address for $21.99 a month. A YouTube family plan lets you share with up to 5 other family members in your household.",
+     "source": "docs/research/prices-2026-11.json (US) · https://www.spotify.com/us/premium/ · https://support.google.com/youtube/answer/12156000"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "YouTube Premium US prices in prices-2026-11.json are 'unverified' (youtube.com/premium says 'not available in your country' from our network), so no YouTube price is quoted here.",
+    "YouTube's own pages give no song count; only 'millions of songs'."
+   ]
+  },
+  {
+   "slug": "spotify-vs-amazon-music",
+   "kind": "vs",
+   "a": "spotify",
+   "b": "amazon-music",
+   "ap": "individual",
+   "bp": "individual",
+   "name": "Spotify vs Amazon Music",
+   "rows": [
+    {
+     "label": "Catalogue",
+     "a": "Over 100 million tracks",
+     "b": "100 million songs",
+     "sourceA": "https://newsroom.spotify.com/company-info/",
+     "sourceB": "https://www.amazon.com/music/unlimited"
+    },
+    {
+     "label": "Sound quality",
+     "a": "Lossless up to 24-bit/44.1 kHz",
+     "b": "HD and Spatial Audio",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://www.amazon.com/music/unlimited"
+    },
+    {
+     "label": "Ads",
+     "a": "Ad-free music listening",
+     "b": "Ad-free and on demand",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://www.amazon.com/music/unlimited"
+    },
+    {
+     "label": "Offline listening",
+     "a": "Download thousands of songs",
+     "b": "Listen offline",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://apps.apple.com/us/app/id510855668"
+    },
+    {
+     "label": "Audiobooks",
+     "a": "15 hours/month from the subscriber catalog",
+     "b": "One Audible audiobook each month",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://www.amazon.com/music/unlimited"
+    },
+    {
+     "label": "Family plan",
+     "a": "Up to 6 accounts at the same address",
+     "b": "Family plan sold; size not stated",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://apps.apple.com/us/app/id510855668"
+    },
+    {
+     "label": "Prime discount",
+     "a": "Not stated",
+     "b": "$11.99/mo for Prime members (vs $12.99)",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://www.amazon.com/music/unlimited"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Amazon Music Unlimited cheaper than Spotify?",
+     "a": "Amazon Music Unlimited is $12.99 a month, or $11.99 for Prime members. Spotify Premium Individual is $12.99 a month.",
+     "source": "docs/research/prices-2026-11.json (US) · https://www.amazon.com/music/unlimited · https://www.spotify.com/us/premium/"
+    },
+    {
+     "q": "Spotify vs Amazon Music audiobooks?",
+     "a": "Spotify Premium includes 15 hours a month from its audiobooks subscriber catalog. Amazon Music Unlimited includes one audiobook from Audible each month.",
+     "source": "https://www.spotify.com/us/premium/ · https://www.amazon.com/music/unlimited"
+    },
+    {
+     "q": "Spotify vs Amazon Music sound quality?",
+     "a": "Spotify Premium has lossless up to 24-bit/44.1 kHz. Amazon says Unlimited gives you HD and Spatial Audio.",
+     "source": "https://www.spotify.com/us/premium/ · https://www.amazon.com/music/unlimited"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "Amazon's Music Unlimited family-plan help page (amazon.com/gp/help) blocked our requests, so the number of family members isn't confirmed."
+   ]
+  },
+  {
+   "slug": "spotify-vs-tidal",
+   "kind": "vs",
+   "a": "spotify",
+   "b": "tidal",
+   "ap": "individual",
+   "bp": "individual",
+   "name": "Spotify vs Tidal",
+   "rows": [
+    {
+     "label": "Catalogue",
+     "a": "Over 100 million tracks",
+     "b": "Over 180 million songs",
+     "sourceA": "https://newsroom.spotify.com/company-info/",
+     "sourceB": "https://apps.apple.com/us/app/id913943275"
+    },
+    {
+     "label": "Sound quality",
+     "a": "Lossless up to 24-bit/44.1 kHz",
+     "b": "HiRes lossless up to 24-bit, 192 kHz, Dolby Atmos",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://apps.apple.com/us/app/id913943275"
+    },
+    {
+     "label": "Ads",
+     "a": "Ad-free music listening",
+     "b": "Ad-free listening, unlimited skips",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://apps.apple.com/us/app/id913943275"
+    },
+    {
+     "label": "Offline listening",
+     "a": "Download thousands of songs",
+     "b": "Offline mode",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://apps.apple.com/us/app/id913943275"
+    },
+    {
+     "label": "Audiobooks",
+     "a": "15 hours/month from the subscriber catalog",
+     "b": "Not stated",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://apps.apple.com/us/app/id913943275"
+    },
+    {
+     "label": "Family plan",
+     "a": "Up to 6 accounts at the same address",
+     "b": "TIDAL Family plan sold; size not stated",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://apps.apple.com/us/app/id913943275"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Spotify vs Tidal sound quality?",
+     "a": "Spotify Premium streams lossless up to 24-bit/44.1 kHz. Tidal says all plans include HiRes lossless up to 24-bit, 192 kHz and Dolby Atmos.",
+     "source": "https://www.spotify.com/us/premium/ · https://apps.apple.com/us/app/id913943275"
+    },
+    {
+     "q": "Is Tidal more expensive than Spotify?",
+     "a": "In the US, Tidal Individual is $15.49 a month in the App Store and Spotify Premium Individual is $12.99 a month.",
+     "source": "docs/research/prices-2026-11.json (US) · https://apps.apple.com/us/app/id913943275 · https://www.spotify.com/us/premium/"
+    },
+    {
+     "q": "Spotify vs Tidal family plan?",
+     "a": "Spotify Premium Family is $21.99 a month for up to 6 accounts at one address. Tidal Family is $26.99 a month in the App Store.",
+     "source": "docs/research/prices-2026-11.json (US) · https://apps.apple.com/us/app/id913943275 · https://www.spotify.com/us/premium/"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "tidal.com (pricing, home, support) returned 403 to every request, so Tidal facts come from its own US App Store description (official, written by Tidal).",
+    "Tidal family-plan size not stated in the App Store listing."
+   ]
+  },
+  {
+   "slug": "spotify-vs-deezer",
+   "kind": "vs",
+   "a": "spotify",
+   "b": "deezer",
+   "ap": "individual",
+   "bp": "premium",
+   "name": "Spotify vs Deezer",
+   "rows": [
+    {
+     "label": "Catalogue",
+     "a": "Over 100 million tracks",
+     "b": "Over 120 million tracks",
+     "sourceA": "https://newsroom.spotify.com/company-info/",
+     "sourceB": "https://www.deezer.com/us/offers"
+    },
+    {
+     "label": "Sound quality",
+     "a": "Lossless up to 24-bit/44.1 kHz",
+     "b": "HiFi up to 24-bit / 192 kHz",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://apps.apple.com/us/app/id292738169"
+    },
+    {
+     "label": "Ads",
+     "a": "Ad-free music listening",
+     "b": "Ad-free listening",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://apps.apple.com/us/app/id292738169"
+    },
+    {
+     "label": "Offline listening",
+     "a": "Download thousands of songs",
+     "b": "Offline mode for albums, playlists, podcasts",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://apps.apple.com/us/app/id292738169"
+    },
+    {
+     "label": "Duo plan",
+     "a": "Premium Duo: 2 accounts, same address",
+     "b": "Duo: 2 accounts",
+     "sourceA": "https://www.spotify.com/us/duo/",
+     "sourceB": "https://www.deezer.com/us/offers"
+    },
+    {
+     "label": "Family plan",
+     "a": "Up to 6 accounts, parental controls",
+     "b": "Up to 6 accounts with kid-friendly profiles",
+     "sourceA": "https://www.spotify.com/us/family/",
+     "sourceB": "https://apps.apple.com/us/app/id292738169"
+    },
+    {
+     "label": "Student plan",
+     "a": "Premium Student, includes access to Hulu",
+     "b": "Student: Premium benefits for half the price",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://apps.apple.com/us/app/id292738169"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Spotify vs Deezer sound quality?",
+     "a": "Spotify Premium streams lossless up to 24-bit/44.1 kHz. Deezer says its HiFi now streams up to 24-bit / 192 kHz.",
+     "source": "https://www.spotify.com/us/premium/ · https://apps.apple.com/us/app/id292738169"
+    },
+    {
+     "q": "Does Deezer have a free version like Spotify?",
+     "a": "Yes. Deezer Free gives full access to the catalog with occasional ads and limited features. Spotify also offers a free, ad-supported service.",
+     "source": "https://apps.apple.com/us/app/id292738169 · https://www.spotify.com/us/premium/"
+    },
+    {
+     "q": "Spotify vs Deezer family and duo plans?",
+     "a": "Both sell a 2-account Duo and a Family plan of up to 6 accounts. Spotify Duo and Family require everyone to live at the same address.",
+     "source": "https://www.spotify.com/us/duo/ · https://www.spotify.com/us/family/ · https://www.deezer.com/us/offers"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "Price mismatch: deezer.com/us/offers today shows Premium $11.99, Duo $15.99, Family $19.99; prices-2026-11.json has Premium $14.99 / Family $22.99 from the App Store. No Deezer price used in the FAQ; re-check the price row.",
+    "Deezer's 24-bit/192 kHz line is from its App Store release notes (Oct 19), not the offers page."
+   ]
+  },
+  {
+   "slug": "apple-music-vs-youtube-music",
+   "kind": "vs",
+   "a": "apple-music",
+   "b": "youtube-premium",
+   "ap": "individual",
+   "bp": "individual",
+   "name": "Apple Music vs YouTube Music",
+   "rows": [
+    {
+     "label": "Catalogue",
+     "a": "Over 100 million songs",
+     "b": "Millions of songs, plus remixes, covers, DJ sets",
+     "sourceA": "https://www.apple.com/apple-music/",
+     "sourceB": "https://support.google.com/youtube/answer/6308116"
+    },
+    {
+     "label": "Sound quality",
+     "a": "Lossless, Hi-Res Lossless up to 192kHz, Dolby Atmos",
+     "b": "Audio at 256 kbps on music videos and Art Tracks",
+     "sourceA": "https://www.apple.com/apple-music/",
+     "sourceB": "https://support.google.com/youtube/answer/6308116"
+    },
+    {
+     "label": "Ads",
+     "a": "Zero ads",
+     "b": "No ads in YouTube Music or on YouTube videos",
+     "sourceA": "https://www.apple.com/apple-music/",
+     "sourceB": "https://support.google.com/youtube/answer/6308116"
+    },
+    {
+     "label": "Offline listening",
+     "a": "Download for offline listening",
+     "b": "Download music offline",
+     "sourceA": "https://www.apple.com/apple-music/",
+     "sourceB": "https://support.google.com/youtube/answer/6308116"
+    },
+    {
+     "label": "Also included",
+     "a": "Apple Music Classical app",
+     "b": "Ad-free YouTube videos, background play",
+     "sourceA": "https://www.apple.com/apple-music/",
+     "sourceB": "https://support.google.com/youtube/answer/6308116"
+    },
+    {
+     "label": "Family plan",
+     "a": "Up to six people via Family Sharing",
+     "b": "Share with up to 5 others in your household",
+     "sourceA": "https://www.apple.com/apple-music/",
+     "sourceB": "https://support.google.com/youtube/answer/12156000"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Apple Music vs YouTube Music sound quality?",
+     "a": "Apple Music offers lossless and Hi-Res Lossless up to 192kHz plus Dolby Atmos. YouTube Premium plays music videos and Art Tracks at up to 256 kbps.",
+     "source": "https://www.apple.com/apple-music/ · https://support.google.com/youtube/answer/6308116"
+    },
+    {
+     "q": "Is YouTube Music included with YouTube Premium?",
+     "a": "Yes. YouTube Premium includes the YouTube Music app ad-free, offline and in the background.",
+     "source": "https://support.google.com/youtube/answer/6308116"
+    },
+    {
+     "q": "Apple Music vs YouTube Music family plan?",
+     "a": "Apple Music Family is $19.99 a month for up to six people. A YouTube family plan shares with up to 5 other family members in your household.",
+     "source": "docs/research/prices-2026-11.json (US) · https://www.apple.com/apple-music/ · https://support.google.com/youtube/answer/12156000"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "YouTube Premium US prices in prices-2026-11.json are 'unverified', so no YouTube price is quoted.",
+    "YouTube's pages give no song count."
+   ]
+  },
+  {
+   "slug": "apple-music-vs-amazon-music",
+   "kind": "vs",
+   "a": "apple-music",
+   "b": "amazon-music",
+   "ap": "individual",
+   "bp": "individual",
+   "name": "Apple Music vs Amazon Music",
+   "rows": [
+    {
+     "label": "Catalogue",
+     "a": "Over 100 million songs",
+     "b": "100 million songs",
+     "sourceA": "https://www.apple.com/apple-music/",
+     "sourceB": "https://www.amazon.com/music/unlimited"
+    },
+    {
+     "label": "Sound quality",
+     "a": "Lossless, Hi-Res Lossless up to 192kHz, Dolby Atmos",
+     "b": "HD and Spatial Audio",
+     "sourceA": "https://www.apple.com/apple-music/",
+     "sourceB": "https://www.amazon.com/music/unlimited"
+    },
+    {
+     "label": "Ads",
+     "a": "Zero ads",
+     "b": "Ad-free and on demand",
+     "sourceA": "https://www.apple.com/apple-music/",
+     "sourceB": "https://www.amazon.com/music/unlimited"
+    },
+    {
+     "label": "Offline listening",
+     "a": "Download for offline listening",
+     "b": "Listen offline",
+     "sourceA": "https://www.apple.com/apple-music/",
+     "sourceB": "https://apps.apple.com/us/app/id510855668"
+    },
+    {
+     "label": "Audiobooks",
+     "a": "Not included (no podcasts or audiobooks in app)",
+     "b": "One Audible audiobook each month",
+     "sourceA": "https://www.apple.com/apple-music/",
+     "sourceB": "https://www.amazon.com/music/unlimited"
+    },
+    {
+     "label": "Family plan",
+     "a": "Up to six people via Family Sharing",
+     "b": "Family plan sold; size not stated",
+     "sourceA": "https://www.apple.com/apple-music/",
+     "sourceB": "https://apps.apple.com/us/app/id510855668"
+    },
+    {
+     "label": "Member discount",
+     "a": "Student $6.99/mo with Apple TV",
+     "b": "$11.99/mo for Prime members",
+     "sourceA": "https://www.apple.com/apple-music/",
+     "sourceB": "https://www.amazon.com/music/unlimited"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Apple Music or Amazon Music Unlimited cheaper?",
+     "a": "Apple Music Individual is $11.99 a month. Amazon Music Unlimited is $12.99 a month, or $11.99 for Prime members.",
+     "source": "docs/research/prices-2026-11.json (US) · https://www.apple.com/apple-music/ · https://www.amazon.com/music/unlimited"
+    },
+    {
+     "q": "Apple Music vs Amazon Music sound quality?",
+     "a": "Apple Music has lossless and Hi-Res Lossless up to 192kHz plus Dolby Atmos. Amazon says Unlimited gives HD and Spatial Audio.",
+     "source": "https://www.apple.com/apple-music/ · https://www.amazon.com/music/unlimited"
+    },
+    {
+     "q": "Does Apple Music or Amazon Music include audiobooks?",
+     "a": "Amazon Music Unlimited includes one Audible audiobook each month. Apple Music says it keeps podcasts and audiobooks out so it's all about the music.",
+     "source": "https://www.amazon.com/music/unlimited · https://www.apple.com/apple-music/"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "Amazon Music family-plan size not confirmed (amazon.com help pages blocked)."
+   ]
+  },
+  {
+   "slug": "netflix-vs-disney-plus",
+   "kind": "vs",
+   "a": "netflix",
+   "b": "disney-plus",
+   "ap": "standard",
+   "bp": "premium",
+   "name": "Netflix vs Disney+",
+   "rows": [
+    {
+     "label": "Ads",
+     "a": "Standard and Premium: no ads; ads plan $8.99",
+     "b": "Premium: no ads; Disney+ (With Ads) plan",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.disneyplus.com/article/disneyplus-price"
+    },
+    {
+     "label": "Max video quality",
+     "a": "1080p on Standard, 4K + HDR on Premium",
+     "b": "Up to 4K UHD & HDR on both plans",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.disneyplus.com/article/disneyplus-price"
+    },
+    {
+     "label": "Screens at once",
+     "a": "2 on Standard, 4 on Premium",
+     "b": "Up to four devices at a time",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.disneyplus.com/article/disneyplus-concurrent-streams"
+    },
+    {
+     "label": "Downloads",
+     "a": "2 devices on Standard, 6 on Premium",
+     "b": "Premium: downloads on up to 10 devices",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.disneyplus.com/article/disneyplus-price"
+    },
+    {
+     "label": "Audio",
+     "a": "Netflix spatial audio on Premium",
+     "b": "Premium: up to Dolby Atmos",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.disneyplus.com/article/disneyplus-price"
+    },
+    {
+     "label": "Yearly billing",
+     "a": "No annual plans",
+     "b": "Premium annual: $214.99",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.disneyplus.com/article/disneyplus-price"
+    },
+    {
+     "label": "Extra member outside home",
+     "a": "Standard: 1, Premium: up to 2",
+     "b": "Extra Member add-on, one device at a time",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.disneyplus.com/article/disneyplus-price"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Netflix or Disney+ cheaper?",
+     "a": "With ads, Netflix is $8.99 a month and Disney+ is $12.49. Without ads, Netflix Standard is $19.99 and Disney+ Premium is $21.49.",
+     "source": "docs/research/prices-2026-11.json (US) · https://help.netflix.com/en/node/24926/us · https://help.disneyplus.com/article/disneyplus-price"
+    },
+    {
+     "q": "Netflix vs Disney+ video quality?",
+     "a": "Netflix Standard tops out at 1080p and Premium at 4K + HDR. Disney+ lists up to 4K UHD & HDR on both its plans.",
+     "source": "https://help.netflix.com/en/node/24926/us · https://help.disneyplus.com/article/disneyplus-price"
+    },
+    {
+     "q": "How many screens can watch Netflix vs Disney+?",
+     "a": "Netflix allows 2 at a time on Standard and 4 on Premium. Disney+ allows up to four devices at a time.",
+     "source": "https://help.netflix.com/en/node/24926/us · https://help.disneyplus.com/article/disneyplus-concurrent-streams"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": []
+  },
+  {
+   "slug": "netflix-vs-hbo-max",
+   "kind": "vs",
+   "a": "netflix",
+   "b": "max",
+   "ap": "standard",
+   "bp": "standard",
+   "name": "Netflix vs HBO Max",
+   "rows": [
+    {
+     "label": "Ads",
+     "a": "Standard and Premium: no ads; ads plan $8.99",
+     "b": "Basic with Ads; Standard and Premium no ads",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.hbomax.com/us/Answer/Detail/000002547"
+    },
+    {
+     "label": "Max video quality",
+     "a": "1080p on Standard, 4K + HDR on Premium",
+     "b": "1080p on Standard, 4K on Premium (as available)",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.hbomax.com/us/Answer/Detail/000002547"
+    },
+    {
+     "label": "Screens at once",
+     "a": "2 on Standard, 4 on Premium",
+     "b": "2 on Standard, 4 on Premium (2 for sports)",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.hbomax.com/us/Answer/Detail/000002547"
+    },
+    {
+     "label": "Downloads",
+     "a": "2 devices on Standard, 6 on Premium",
+     "b": "30 on Standard, 100 on Premium",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.hbomax.com/us/Answer/Detail/000002547"
+    },
+    {
+     "label": "Live sports",
+     "a": "Not stated",
+     "b": "Included with Standard and Premium",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.hbomax.com/us/Answer/Detail/000002547"
+    },
+    {
+     "label": "Yearly billing",
+     "a": "No annual plans",
+     "b": "Yes, 16% savings on every plan",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.hbomax.com/us/Answer/Detail/000002547"
+    },
+    {
+     "label": "Share outside home",
+     "a": "Extra member: 1 on Standard, 2 on Premium",
+     "b": "Extra Member Add-On",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.hbomax.com/us/Answer/Detail/000002547"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Netflix or HBO Max cheaper?",
+     "a": "With ads, Netflix is $8.99 a month and HBO Max Basic with Ads is $10.99. Ad-free, Netflix Standard is $19.99 and HBO Max Standard is $18.49.",
+     "source": "docs/research/prices-2026-11.json (US) · https://help.netflix.com/en/node/24926/us · https://help.hbomax.com/us/Answer/Detail/000002547"
+    },
+    {
+     "q": "Does Netflix or HBO Max have a yearly plan?",
+     "a": "HBO Max sells yearly plans on all three tiers. Netflix says it doesn't offer annual plans.",
+     "source": "https://help.hbomax.com/us/Answer/Detail/000002547 · https://help.netflix.com/en/node/24926/us"
+    },
+    {
+     "q": "Netflix vs HBO Max 4K?",
+     "a": "Both put 4K on their top plan only: Netflix Premium (4K + HDR) and HBO Max Premium (4K Ultra HD, as available).",
+     "source": "https://help.netflix.com/en/node/24926/us · https://help.hbomax.com/us/Answer/Detail/000002547"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "'No ads' for HBO Max Standard is worded on the Disney+ bundle page ('HBO Max Standard (No Ads)'); the HBO Max help page only names the plan 'Basic with Ads'."
+   ]
+  },
+  {
+   "slug": "netflix-vs-hulu",
+   "kind": "vs",
+   "a": "netflix",
+   "b": "hulu",
+   "ap": "standard",
+   "bp": "no-ads",
+   "name": "Netflix vs Hulu",
+   "rows": [
+    {
+     "label": "Ads",
+     "a": "Standard and Premium: no ads; ads plan $8.99",
+     "b": "Hulu Premium: no ads (a few shows excepted)",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost"
+    },
+    {
+     "label": "Max video quality",
+     "a": "1080p on Standard, 4K + HDR on Premium",
+     "b": "Up to 4K UHD on both plans",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost"
+    },
+    {
+     "label": "Screens at once",
+     "a": "2 on Standard, 4 on Premium",
+     "b": "Stream on multiple devices at a time",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost"
+    },
+    {
+     "label": "Downloads",
+     "a": "2 devices on Standard, 6 on Premium",
+     "b": "Premium: download select shows and movies",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost"
+    },
+    {
+     "label": "Yearly billing",
+     "a": "No annual plans",
+     "b": "Hulu (With Ads) annual: $124.99",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost"
+    },
+    {
+     "label": "Live TV",
+     "a": "Not stated",
+     "b": "Hulu + Live TV plans from $99.99/mo",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Netflix or Hulu cheaper?",
+     "a": "With ads, Netflix is $8.99 a month and Hulu is $12.49. Ad-free, Netflix Standard is $19.99 and Hulu Premium is $21.49.",
+     "source": "docs/research/prices-2026-11.json (US) · https://help.netflix.com/en/node/24926/us · https://help.hulu.com/article/hulu-how-much-does-hulu-cost"
+    },
+    {
+     "q": "Can you get Hulu with Disney+ in one plan?",
+     "a": "Yes. The Disney+, Hulu Bundle is $12.99 a month with ads or $21.99 without. Netflix isn't part of that bundle.",
+     "source": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost"
+    },
+    {
+     "q": "Netflix vs Hulu video quality?",
+     "a": "Netflix Standard is 1080p and Premium is 4K + HDR. Hulu lists up to 4K UHD on both of its standalone plans.",
+     "source": "https://help.netflix.com/en/node/24926/us · https://help.hulu.com/article/hulu-how-much-does-hulu-cost"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "Hulu's help page doesn't give a number for screens at once ('multiple devices'); our guess at the device-limit article URL didn't load."
+   ]
+  },
+  {
+   "slug": "netflix-vs-prime-video",
+   "kind": "vs",
+   "a": "netflix",
+   "b": "amazon-prime",
+   "ap": "standard",
+   "bp": "prime",
+   "name": "Netflix vs Prime Video",
+   "rows": [
+    {
+     "label": "Ads",
+     "a": "Standard and Premium: no ads",
+     "b": "Ads; ad-free needs Prime Video Ultra ($4.99/mo)",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.aboutamazon.com/news/entertainment/prime-video-ultra-ad-free-streaming-subscription"
+    },
+    {
+     "label": "Max video quality",
+     "a": "1080p on Standard, 4K + HDR on Premium",
+     "b": "HD, HDR10+, Dolby Vision; 4K needs Ultra",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.aboutamazon.com/news/entertainment/prime-video-ultra-ad-free-streaming-subscription"
+    },
+    {
+     "label": "Screens at once",
+     "a": "2 on Standard, 4 on Premium",
+     "b": "4 streams (5 with Ultra)",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.aboutamazon.com/news/entertainment/prime-video-ultra-ad-free-streaming-subscription"
+    },
+    {
+     "label": "Downloads",
+     "a": "2 devices on Standard, 6 on Premium",
+     "b": "50 downloads (100 with Ultra)",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.aboutamazon.com/news/entertainment/prime-video-ultra-ad-free-streaming-subscription"
+    },
+    {
+     "label": "Live sports",
+     "a": "Not stated",
+     "b": "NFL, NBA, NASCAR and The Masters",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.aboutamazon.com/news/entertainment/prime-video-ultra-ad-free-streaming-subscription"
+    },
+    {
+     "label": "Yearly billing",
+     "a": "No annual plans",
+     "b": "Prime $139/year; Ultra yearly $45.99",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.aboutamazon.com/news/entertainment/prime-video-ultra-ad-free-streaming-subscription"
+    },
+    {
+     "label": "What else you get",
+     "a": "Games included in the plan",
+     "b": "Prime shipping and other Prime benefits",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.aboutamazon.com/news/retail/prime-membership-cost-benefits"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Prime Video included with Amazon Prime?",
+     "a": "Yes. Prime Video comes with a Prime membership ($14.99 a month or $139 a year). Going ad-free and 4K costs $4.99 a month more with Prime Video Ultra.",
+     "source": "https://www.aboutamazon.com/news/entertainment/prime-video-ultra-ad-free-streaming-subscription"
+    },
+    {
+     "q": "Netflix vs Prime Video quality?",
+     "a": "Netflix Standard is 1080p and Premium is 4K + HDR. Prime Video includes HD, HDR10, HDR10+ and Dolby Vision, with 4K/UHD only on Prime Video Ultra.",
+     "source": "https://help.netflix.com/en/node/24926/us · https://www.aboutamazon.com/news/entertainment/prime-video-ultra-ad-free-streaming-subscription"
+    },
+    {
+     "q": "Does Prime Video have ads?",
+     "a": "Yes, the Prime Video benefit has ads. Prime Video Ultra removes them, though live TV and sports may still show ads.",
+     "source": "https://www.aboutamazon.com/news/entertainment/prime-video-ultra-ad-free-streaming-subscription"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "Prime Video Ultra ($4.99/mo, $45.99/yr) isn't in prices-2026-11.json; amazon-prime has only Prime monthly/yearly. Consider adding an 'ultra' add-on plan.",
+    "Facts come from Amazon's own newsroom (aboutamazon.com, updated Apr 10, 2026); amazon.com help pages were blocked."
+   ]
+  },
+  {
+   "slug": "netflix-vs-paramount-plus",
+   "kind": "vs",
+   "a": "netflix",
+   "b": "paramount-plus",
+   "ap": "standard",
+   "bp": "premium",
+   "name": "Netflix vs Paramount+",
+   "rows": [
+    {
+     "label": "Ads",
+     "a": "Standard and Premium: no ads; ads plan $8.99",
+     "b": "Premium ad free except live TV; Essential has ads",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.paramountplus.com/"
+    },
+    {
+     "label": "Max video quality",
+     "a": "1080p on Standard, 4K + HDR on Premium",
+     "b": "Premium: 4K UHD, Dolby Vision on select titles",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.paramountplus.com/"
+    },
+    {
+     "label": "Screens at once",
+     "a": "2 on Standard, 4 on Premium",
+     "b": "3 devices at once",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.paramountplus.com/"
+    },
+    {
+     "label": "Downloads",
+     "a": "2 devices on Standard, 6 on Premium",
+     "b": "Premium plan only",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.paramountplus.com/"
+    },
+    {
+     "label": "Live sports",
+     "a": "Not stated",
+     "b": "NFL on CBS, UEFA Champions League, UFC",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.paramountplus.com/"
+    },
+    {
+     "label": "Yearly billing",
+     "a": "No annual plans",
+     "b": "Annual plans on both tiers",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.paramountplus.com/"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Netflix or Paramount+ cheaper?",
+     "a": "Both start at $8.99 a month with ads. Ad-free, Netflix Standard is $19.99 and Paramount+ Premium is $13.99.",
+     "source": "docs/research/prices-2026-11.json (US) · https://help.netflix.com/en/node/24926/us · https://www.paramountplus.com/"
+    },
+    {
+     "q": "Netflix vs Paramount+ streaming quality?",
+     "a": "Netflix Standard is 1080p and Premium is 4K + HDR. Paramount+ Premium offers 4K UHD, Dolby Vision and HDR10 on select titles.",
+     "source": "https://help.netflix.com/en/node/24926/us · https://www.paramountplus.com/"
+    },
+    {
+     "q": "Does Paramount+ have live sports?",
+     "a": "Yes. Paramount+ lists the NFL on CBS, UEFA Champions League and UFC. Netflix's plans page doesn't mention live sports.",
+     "source": "https://www.paramountplus.com/ · https://help.netflix.com/en/node/24926/us"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": []
+  },
+  {
+   "slug": "netflix-vs-peacock",
+   "kind": "vs",
+   "a": "netflix",
+   "b": "peacock",
+   "ap": "standard",
+   "bp": "premium-plus",
+   "name": "Netflix vs Peacock",
+   "rows": [
+    {
+     "label": "Ads",
+     "a": "Standard and Premium: no ads; ads plan $8.99",
+     "b": "Premium Plus: no ads (limited exceptions)",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.peacocktv.com/plans/all-monthly"
+    },
+    {
+     "label": "Max video quality",
+     "a": "1080p on Standard, 4K + HDR on Premium",
+     "b": "Some 4K on Premium and Premium Plus",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.peacocktv.com/help/article/4k-uhd"
+    },
+    {
+     "label": "Screens at once",
+     "a": "2 on Standard, 4 on Premium",
+     "b": "Up to three streams",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.peacocktv.com/help/article/how-many-streams-can-i-view-concurrently"
+    },
+    {
+     "label": "Downloads",
+     "a": "2 devices on Standard, 6 on Premium",
+     "b": "Premium Plus only",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.peacocktv.com/plans/all-monthly"
+    },
+    {
+     "label": "Live sports",
+     "a": "Not stated",
+     "b": "Live sports and events on Premium plans",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.peacocktv.com/plans/all-monthly"
+    },
+    {
+     "label": "Yearly billing",
+     "a": "No annual plans",
+     "b": "Annual: 12 months for the price of 10",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.peacocktv.com/plans/all-monthly"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Netflix or Peacock cheaper?",
+     "a": "With ads, both start at $8.99 a month (Peacock Select skips sports and movies). Ad-free, Netflix Standard is $19.99 and Peacock Premium Plus is $19.99.",
+     "source": "docs/research/prices-2026-11.json (US) · https://help.netflix.com/en/node/24926/us · https://www.peacocktv.com/plans/all-monthly"
+    },
+    {
+     "q": "Netflix vs Peacock streaming quality?",
+     "a": "Netflix Standard is 1080p and Premium is 4K + HDR. Peacock offers certain content in 4K Ultra HD on Premium and Premium Plus on supported devices.",
+     "source": "https://help.netflix.com/en/node/24926/us · https://www.peacocktv.com/help/article/4k-uhd"
+    },
+    {
+     "q": "How many screens can watch Peacock vs Netflix?",
+     "a": "Peacock allows up to three streams at once. Netflix allows 2 on Standard and 4 on Premium.",
+     "source": "https://www.peacocktv.com/help/article/how-many-streams-can-i-view-concurrently · https://help.netflix.com/en/node/24926/us"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": []
+  },
+  {
+   "slug": "netflix-vs-apple-tv",
+   "kind": "vs",
+   "a": "netflix",
+   "b": "apple-tv",
+   "ap": "standard",
+   "bp": "monthly",
+   "name": "Netflix vs Apple TV",
+   "rows": [
+    {
+     "label": "Ads",
+     "a": "Standard and Premium: no ads; ads plan $8.99",
+     "b": "Apple Originals always commercial-free",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.apple.com/apple-tv/"
+    },
+    {
+     "label": "Video quality",
+     "a": "1080p on Standard, 4K + HDR on Premium",
+     "b": "Dolby Vision and Dolby Atmos when available",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://apps.apple.com/us/app/apple-tv/id1174078549"
+    },
+    {
+     "label": "Screens at once",
+     "a": "2 on Standard, 4 on Premium",
+     "b": "6 streams for most content",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://support.apple.com/en-us/118239"
+    },
+    {
+     "label": "Downloads",
+     "a": "2 devices on Standard, 6 on Premium",
+     "b": "Download Apple Originals to Apple devices",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.apple.com/apple-tv/"
+    },
+    {
+     "label": "Sharing",
+     "a": "Extra member outside home: 1 or 2",
+     "b": "Family Sharing for up to six people",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.apple.com/apple-tv/"
+    },
+    {
+     "label": "Live sports",
+     "a": "Not stated",
+     "b": "F1, MLS and Friday Night Baseball",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.apple.com/apple-tv/"
+    },
+    {
+     "label": "Catalogue",
+     "a": "Movies, TV shows and games",
+     "b": "Apple Originals only, new every week",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://www.apple.com/apple-tv/"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Netflix or Apple TV cheaper?",
+     "a": "Apple TV is $14.99 a month. Netflix is $8.99 with ads, $19.99 for Standard and $26.99 for Premium.",
+     "source": "docs/research/prices-2026-11.json (US) · https://help.netflix.com/en/node/24926/us · https://www.apple.com/apple-tv/"
+    },
+    {
+     "q": "Is Apple TV the same as Apple TV+?",
+     "a": "Apple's page calls the service Apple TV: an all-original streaming service with Apple Originals, watched in the Apple TV app.",
+     "source": "https://www.apple.com/apple-tv/"
+    },
+    {
+     "q": "How many people can watch Apple TV vs Netflix at once?",
+     "a": "One Apple TV subscription allows 6 streams for most content. Netflix allows 2 on Standard and 4 on Premium.",
+     "source": "https://support.apple.com/en-us/118239 · https://help.netflix.com/en/node/24926/us"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "Apple doesn't state a maximum resolution for the Apple TV service itself (only 'Dolby Vision and Dolby Atmos when available' in the app listing)."
+   ]
+  },
+  {
+   "slug": "disney-plus-vs-hbo-max",
+   "kind": "vs",
+   "a": "disney-plus",
+   "b": "max",
+   "ap": "premium",
+   "bp": "standard",
+   "name": "Disney+ vs HBO Max",
+   "rows": [
+    {
+     "label": "Ads",
+     "a": "Premium no ads; Disney+ (With Ads) plan",
+     "b": "Basic with Ads; Standard and Premium no ads",
+     "sourceA": "https://help.disneyplus.com/article/disneyplus-price",
+     "sourceB": "https://help.hbomax.com/us/Answer/Detail/000002547"
+    },
+    {
+     "label": "Max video quality",
+     "a": "Up to 4K UHD & HDR on both plans",
+     "b": "1080p on Standard, 4K on Premium (as available)",
+     "sourceA": "https://help.disneyplus.com/article/disneyplus-price",
+     "sourceB": "https://help.hbomax.com/us/Answer/Detail/000002547"
+    },
+    {
+     "label": "Screens at once",
+     "a": "Up to four devices",
+     "b": "2 on Standard, 4 on Premium (2 for sports)",
+     "sourceA": "https://help.disneyplus.com/article/disneyplus-concurrent-streams",
+     "sourceB": "https://help.hbomax.com/us/Answer/Detail/000002547"
+    },
+    {
+     "label": "Downloads",
+     "a": "Premium: up to 10 devices",
+     "b": "30 on Standard, 100 on Premium",
+     "sourceA": "https://help.disneyplus.com/article/disneyplus-price",
+     "sourceB": "https://help.hbomax.com/us/Answer/Detail/000002547"
+    },
+    {
+     "label": "Audio",
+     "a": "Premium: up to Dolby Atmos",
+     "b": "Premium: Dolby Atmos (as available)",
+     "sourceA": "https://help.disneyplus.com/article/disneyplus-price",
+     "sourceB": "https://help.hbomax.com/us/Answer/Detail/000002547"
+    },
+    {
+     "label": "Yearly billing",
+     "a": "Premium annual: $214.99",
+     "b": "Yes, 16% savings on every plan",
+     "sourceA": "https://help.disneyplus.com/article/disneyplus-price",
+     "sourceB": "https://help.hbomax.com/us/Answer/Detail/000002547"
+    },
+    {
+     "label": "Bundle",
+     "a": "Disney+, Hulu, HBO Max Bundle from $21.99",
+     "b": "Disney+, Hulu, HBO Max Bundle available",
+     "sourceA": "https://help.disneyplus.com/article/disneyplus-price",
+     "sourceB": "https://help.hbomax.com/us/Answer/Detail/000002547"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Disney+ or HBO Max cheaper?",
+     "a": "With ads, Disney+ is $12.49 a month and HBO Max Basic with Ads is $10.99. Ad-free, Disney+ Premium is $21.49 and HBO Max Standard is $18.49.",
+     "source": "docs/research/prices-2026-11.json (US) · https://help.disneyplus.com/article/disneyplus-price · https://help.hbomax.com/us/Answer/Detail/000002547"
+    },
+    {
+     "q": "Can you get Disney+ and HBO Max together?",
+     "a": "Yes. The Disney+, Hulu, HBO Max Bundle is $21.99 a month with ads or $34.99 without.",
+     "source": "https://help.disneyplus.com/article/disneyplus-price"
+    },
+    {
+     "q": "Disney+ vs HBO Max 4K?",
+     "a": "Disney+ lists up to 4K UHD & HDR on both plans. HBO Max only offers 4K on its Premium plan.",
+     "source": "https://help.disneyplus.com/article/disneyplus-price · https://help.hbomax.com/us/Answer/Detail/000002547"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": []
+  },
+  {
+   "slug": "hulu-vs-peacock",
+   "kind": "vs",
+   "a": "hulu",
+   "b": "peacock",
+   "ap": "with-ads",
+   "bp": "premium",
+   "name": "Hulu vs Peacock",
+   "rows": [
+    {
+     "label": "Ads",
+     "a": "Hulu (With Ads); Hulu Premium no ads",
+     "b": "Premium has ads; Premium Plus no ads (mostly)",
+     "sourceA": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
+     "sourceB": "https://www.peacocktv.com/plans/all-monthly"
+    },
+    {
+     "label": "Max video quality",
+     "a": "Up to 4K UHD",
+     "b": "Some 4K on Premium and Premium Plus",
+     "sourceA": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
+     "sourceB": "https://www.peacocktv.com/help/article/4k-uhd"
+    },
+    {
+     "label": "Screens at once",
+     "a": "Multiple devices at a time",
+     "b": "Up to three streams",
+     "sourceA": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
+     "sourceB": "https://www.peacocktv.com/help/article/how-many-streams-can-i-view-concurrently"
+    },
+    {
+     "label": "Downloads",
+     "a": "Hulu Premium only",
+     "b": "Premium Plus only",
+     "sourceA": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
+     "sourceB": "https://www.peacocktv.com/plans/all-monthly"
+    },
+    {
+     "label": "Live sports",
+     "a": "Via Hulu + Live TV plans",
+     "b": "Live sports and events on Premium plans",
+     "sourceA": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
+     "sourceB": "https://www.peacocktv.com/plans/all-monthly"
+    },
+    {
+     "label": "Yearly billing",
+     "a": "Hulu (With Ads) annual: $124.99",
+     "b": "Annual on all plans: 12 months for 10",
+     "sourceA": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost",
+     "sourceB": "https://www.peacocktv.com/plans/all-monthly"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Hulu or Peacock cheaper?",
+     "a": "With ads, Hulu is $12.49 a month and Peacock Premium is $12.99 (Peacock Select is $8.99 but skips sports and movies). Ad-free, Hulu Premium is $21.49 and Peacock Premium Plus is $19.99.",
+     "source": "docs/research/prices-2026-11.json (US) · https://help.hulu.com/article/hulu-how-much-does-hulu-cost · https://www.peacocktv.com/plans/all-monthly"
+    },
+    {
+     "q": "Hulu vs Peacock ads?",
+     "a": "Hulu Premium removes ads except on a few shows. Peacock Premium Plus has no ads with limited exceptions; ads stay on channels, live sports and some titles.",
+     "source": "https://help.hulu.com/article/hulu-how-much-does-hulu-cost · https://www.peacocktv.com/plans/all-monthly"
+    },
+    {
+     "q": "Does Hulu or Peacock have live sports?",
+     "a": "Peacock Premium and Premium Plus include live sports and events. On Hulu, live TV and sports come with Hulu + Live TV plans.",
+     "source": "https://www.peacocktv.com/plans/all-monthly · https://help.hulu.com/article/hulu-how-much-does-hulu-cost"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "Hulu doesn't give a number for screens at once on its pricing page."
+   ]
+  },
+  {
+   "slug": "icloud-vs-google-one",
+   "kind": "vs",
+   "a": "icloud",
+   "b": "google-one",
+   "ap": "200gb",
+   "bp": "200gb",
+   "name": "iCloud vs Google One",
+   "rows": [
+    {
+     "label": "Free storage",
+     "a": "5GB",
+     "b": "Up to 15 GB",
+     "sourceA": "https://www.apple.com/icloud/",
+     "sourceB": "https://one.google.com/about/plans"
+    },
+    {
+     "label": "Paid plans",
+     "a": "50GB, 200GB, 2TB, 6TB, 12TB",
+     "b": "100 GB, 200 GB, AI Plus 2 TB and up",
+     "sourceA": "https://www.apple.com/icloud/",
+     "sourceB": "https://apps.apple.com/us/app/id1451784328"
+    },
+    {
+     "label": "Family sharing",
+     "a": "Up to five other family members",
+     "b": "Up to 5 family members (not 30 GB Lite)",
+     "sourceA": "https://www.apple.com/icloud/",
+     "sourceB": "https://support.google.com/googleone/answer/9004015"
+    },
+    {
+     "label": "Privacy extras",
+     "a": "Private Relay, Hide My Email, custom domain",
+     "b": "Not stated",
+     "sourceA": "https://www.apple.com/icloud/",
+     "sourceB": "https://one.google.com/about/plans"
+    },
+    {
+     "label": "Other extras",
+     "a": "HomeKit Secure Video",
+     "b": "3% back in Google Store credit (200 GB)",
+     "sourceA": "https://www.apple.com/icloud/",
+     "sourceB": "https://support.google.com/googleone/answer/9003266"
+    },
+    {
+     "label": "AI features",
+     "a": "Not stated",
+     "b": "Gemini app and AI credits on AI Plus and up",
+     "sourceA": "https://www.apple.com/icloud/",
+     "sourceB": "https://support.google.com/googleone/answer/9004015"
+    },
+    {
+     "label": "Storage used by",
+     "a": "Photos, iCloud Drive, device backups, Mail",
+     "b": "Google Drive, Gmail, Google Photos",
+     "sourceA": "https://www.apple.com/icloud/",
+     "sourceB": "https://apps.apple.com/us/app/id1451784328"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is iCloud or Google One cheaper?",
+     "a": "At 200 GB both cost $2.99 a month in the US. Google One also sells 100 GB for $1.99; iCloud's smallest paid plan is 50GB for $0.99.",
+     "source": "docs/research/prices-2026-11.json (US) · https://www.apple.com/icloud/ · https://apps.apple.com/us/app/id1451784328"
+    },
+    {
+     "q": "Should iPhone users pick iCloud or Google One?",
+     "a": "iCloud Backup backs up your iPhone automatically on power and Wi-Fi. Google One's app backs up photos, contacts and messages to your Google storage.",
+     "source": "https://www.apple.com/icloud/ · https://apps.apple.com/us/app/id1451784328"
+    },
+    {
+     "q": "Can I share iCloud or Google One with family?",
+     "a": "Yes. Every iCloud+ plan can be shared with up to five other family members, and Google One can be shared with up to 5 family members.",
+     "source": "https://www.apple.com/icloud/ · https://support.google.com/googleone/answer/9004015"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "one.google.com/about/plans showed only the free 15 GB tier from our network; paid tiers taken from the US App Store list and our prices file. Google One 2 TB is sold as 'Google AI Plus (2 TB)' in the US."
+   ]
+  },
+  {
+   "slug": "icloud-vs-dropbox",
+   "kind": "vs",
+   "a": "icloud",
+   "b": "dropbox",
+   "ap": "2tb",
+   "bp": "plus",
+   "name": "iCloud vs Dropbox",
+   "rows": [
+    {
+     "label": "Storage",
+     "a": "2TB (plans from 50GB to 12TB)",
+     "b": "Plus: 2 TB",
+     "sourceA": "https://www.apple.com/icloud/",
+     "sourceB": "https://www.dropbox.com/plans"
+    },
+    {
+     "label": "Free storage",
+     "a": "5GB",
+     "b": "Basic: 2 GB",
+     "sourceA": "https://www.apple.com/icloud/",
+     "sourceB": "https://www.dropbox.com/plans"
+    },
+    {
+     "label": "People",
+     "a": "Share with up to five other family members",
+     "b": "Plus: for 1 person",
+     "sourceA": "https://www.apple.com/icloud/",
+     "sourceB": "https://www.dropbox.com/plans"
+    },
+    {
+     "label": "Restore deleted files",
+     "a": "Not stated",
+     "b": "30 days",
+     "sourceA": "https://www.apple.com/icloud/",
+     "sourceB": "https://www.dropbox.com/plans"
+    },
+    {
+     "label": "Extras",
+     "a": "Private Relay, Hide My Email, custom domain",
+     "b": "Edit PDFs, signatures, transfers up to 50 GB",
+     "sourceA": "https://www.apple.com/icloud/",
+     "sourceB": "https://www.dropbox.com/plans"
+    },
+    {
+     "label": "Devices",
+     "a": "Apple devices, Windows, iCloud.com",
+     "b": "Connect unlimited devices",
+     "sourceA": "https://www.apple.com/icloud/",
+     "sourceB": "https://www.dropbox.com/plans"
+    },
+    {
+     "label": "Yearly option",
+     "a": "Not stated",
+     "b": "Billed yearly or monthly",
+     "sourceA": "https://www.apple.com/icloud/",
+     "sourceB": "https://www.dropbox.com/plans"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is iCloud or Dropbox cheaper for 2 TB?",
+     "a": "iCloud+ 2TB is $9.99 a month. Dropbox Plus (2 TB) is $11.99 billed monthly or $119.88 billed yearly.",
+     "source": "docs/research/prices-2026-11.json (US) · https://www.apple.com/icloud/ · https://www.dropbox.com/plans"
+    },
+    {
+     "q": "iCloud vs Dropbox for photos?",
+     "a": "iCloud includes Shared Photo Library and iCloud Backup for iPhone and iPad. Dropbox Plus is 2 TB for one person, with 30 days to restore deleted files.",
+     "source": "https://www.apple.com/icloud/ · https://www.dropbox.com/plans"
+    },
+    {
+     "q": "Can I share iCloud or Dropbox storage with family?",
+     "a": "Every iCloud+ plan can be shared with up to five other family members. Dropbox Plus is listed for 1 person.",
+     "source": "https://www.apple.com/icloud/ · https://www.dropbox.com/plans"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": []
+  },
+  {
+   "slug": "google-one-vs-dropbox",
+   "kind": "vs",
+   "a": "google-one",
+   "b": "dropbox",
+   "ap": "ai-plus",
+   "bp": "plus",
+   "name": "Google One vs Dropbox",
+   "rows": [
+    {
+     "label": "Storage",
+     "a": "Google AI Plus: 2 TB",
+     "b": "Plus: 2 TB",
+     "sourceA": "https://apps.apple.com/us/app/id1451784328",
+     "sourceB": "https://www.dropbox.com/plans"
+    },
+    {
+     "label": "Free storage",
+     "a": "Up to 15 GB",
+     "b": "Basic: 2 GB",
+     "sourceA": "https://one.google.com/about/plans",
+     "sourceB": "https://www.dropbox.com/plans"
+    },
+    {
+     "label": "People",
+     "a": "Share with up to 5 family members",
+     "b": "Plus: for 1 person",
+     "sourceA": "https://support.google.com/googleone/answer/9004015",
+     "sourceB": "https://www.dropbox.com/plans"
+    },
+    {
+     "label": "Restore deleted files",
+     "a": "Not stated",
+     "b": "30 days",
+     "sourceA": "https://one.google.com/about/plans",
+     "sourceB": "https://www.dropbox.com/plans"
+    },
+    {
+     "label": "AI features",
+     "a": "Gemini app and AI credits",
+     "b": "Integrate with leading AI tools",
+     "sourceA": "https://support.google.com/googleone/answer/9004015",
+     "sourceB": "https://www.dropbox.com/plans"
+    },
+    {
+     "label": "Other extras",
+     "a": "10% back in Google Store credit",
+     "b": "Edit PDFs, signatures, transfers up to 50 GB",
+     "sourceA": "https://support.google.com/googleone/answer/9003266",
+     "sourceB": "https://www.dropbox.com/plans"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Google One or Dropbox cheaper for 2 TB?",
+     "a": "In the US, Google AI Plus (2 TB) is $9.99 a month. Dropbox Plus (2 TB) is $11.99 billed monthly or $119.88 a year.",
+     "source": "docs/research/prices-2026-11.json (US) · https://apps.apple.com/us/app/id1451784328 · https://www.dropbox.com/plans"
+    },
+    {
+     "q": "Can I share Google One or Dropbox with family?",
+     "a": "Google One can be shared with up to 5 family members on 100 GB plans and up. Dropbox Plus is listed for 1 person.",
+     "source": "https://support.google.com/googleone/answer/9004015 · https://www.dropbox.com/plans"
+    },
+    {
+     "q": "Is Google One the same as Google Drive?",
+     "a": "Google One is the paid plan; its storage is used across Google Drive, Gmail and Google Photos.",
+     "source": "https://apps.apple.com/us/app/id1451784328"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "Google One paid tiers come from the US App Store list (one.google.com plans page showed only the free tier from our network)."
+   ]
+  },
+  {
+   "slug": "xbox-game-pass-vs-ps-plus",
+   "kind": "vs",
+   "a": "xbox-game-pass",
+   "b": "ps-plus",
+   "ap": "ultimate",
+   "bp": "premium",
+   "name": "Xbox Game Pass vs PS Plus",
+   "rows": [
+    {
+     "label": "Game library",
+     "a": "Ultimate: 500+ games",
+     "b": "Extra/Premium: hundreds of games",
+     "sourceA": "https://www.xbox.com/en-US/xbox-game-pass",
+     "sourceB": "https://www.playstation.com/en-us/ps-plus/"
+    },
+    {
+     "label": "New games",
+     "a": "Ultimate: new games on day one",
+     "b": "Not stated",
+     "sourceA": "https://www.xbox.com/en-US/xbox-game-pass",
+     "sourceB": "https://www.playstation.com/en-us/ps-plus/"
+    },
+    {
+     "label": "Cloud streaming",
+     "a": "15 hours/month on Ultimate",
+     "b": "Premium: PS5 cloud streaming",
+     "sourceA": "https://www.xbox.com/en-US/xbox-game-pass",
+     "sourceB": "https://www.playstation.com/en-us/ps-plus/"
+    },
+    {
+     "label": "Online multiplayer",
+     "a": "Included on Essential, Premium, Ultimate",
+     "b": "Included with all memberships",
+     "sourceA": "https://www.xbox.com/en-US/xbox-game-pass",
+     "sourceB": "https://www.playstation.com/en-us/ps-plus/"
+    },
+    {
+     "label": "Extra services",
+     "a": "EA Play, Fortnite Crew, Ubisoft+ Classics",
+     "b": "Ubisoft+ Classics; Premium: Sony Pictures",
+     "sourceA": "https://www.xbox.com/en-US/xbox-game-pass",
+     "sourceB": "https://www.playstation.com/en-us/ps-plus/"
+    },
+    {
+     "label": "Retro games",
+     "a": "Not stated",
+     "b": "Premium: Classics Catalog",
+     "sourceA": "https://www.xbox.com/en-US/xbox-game-pass",
+     "sourceB": "https://www.playstation.com/en-us/ps-plus/"
+    },
+    {
+     "label": "Play on PC",
+     "a": "Console, PC and more devices",
+     "b": "Not stated",
+     "sourceA": "https://www.xbox.com/en-US/xbox-game-pass",
+     "sourceB": "https://www.playstation.com/en-us/ps-plus/"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Xbox Game Pass or PS Plus cheaper?",
+     "a": "Monthly, Game Pass Ultimate is $22.99 and PS Plus Premium is $19.99. PS Plus also sells 3- and 12-month plans; Premium is $159.99 a year.",
+     "source": "docs/research/prices-2026-11.json (US) · https://www.xbox.com/en-US/xbox-game-pass · https://www.playstation.com/en-us/ps-plus/"
+    },
+    {
+     "q": "Game Pass Ultimate vs PS Plus Premium?",
+     "a": "Ultimate lists 500+ games, day-one releases, EA Play, Fortnite Crew and Ubisoft+ Classics. PS Plus Premium adds the Classics Catalog, game trials, PS5 cloud streaming and the Sony Pictures Catalog on top of the Game Catalog.",
+     "source": "https://www.xbox.com/en-US/xbox-game-pass · https://www.playstation.com/en-us/ps-plus/"
+    },
+    {
+     "q": "Do both include online multiplayer?",
+     "a": "Yes. Online console multiplayer is in Game Pass Essential, Premium and Ultimate, and online multiplayer comes with every PlayStation Plus membership.",
+     "source": "https://www.xbox.com/en-US/xbox-game-pass · https://www.playstation.com/en-us/ps-plus/"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "PlayStation's page doesn't give a game count beyond 'hundreds of games'."
+   ]
+  },
+  {
+   "slug": "game-pass-premium-vs-ultimate",
+   "kind": "tiers",
+   "a": "xbox-game-pass",
+   "b": "xbox-game-pass",
+   "ap": "premium",
+   "bp": "ultimate",
+   "name": "Game Pass Premium vs Ultimate",
+   "rows": [
+    {
+     "label": "Game library",
+     "a": "200+ games",
+     "b": "500+ games",
+     "sourceA": "https://www.xbox.com/en-US/xbox-game-pass",
+     "sourceB": "https://www.xbox.com/en-US/xbox-game-pass"
+    },
+    {
+     "label": "New games",
+     "a": "New Xbox-published games within 1yr",
+     "b": "New games on day one",
+     "sourceA": "https://www.xbox.com/en-US/xbox-game-pass",
+     "sourceB": "https://www.xbox.com/en-US/xbox-game-pass"
+    },
+    {
+     "label": "Cloud playtime",
+     "a": "10 hours/month",
+     "b": "15 hours/month",
+     "sourceA": "https://www.xbox.com/en-US/xbox-game-pass",
+     "sourceB": "https://www.xbox.com/en-US/xbox-game-pass"
+    },
+    {
+     "label": "EA Play, Fortnite Crew, Ubisoft+",
+     "a": "Not included (Ultimate only)",
+     "b": "Included",
+     "sourceA": "https://www.xbox.com/en-US/xbox-game-pass",
+     "sourceB": "https://www.xbox.com/en-US/xbox-game-pass"
+    },
+    {
+     "label": "Rewards",
+     "a": "2x Rewards points",
+     "b": "4x Rewards points",
+     "sourceA": "https://www.xbox.com/en-US/xbox-game-pass",
+     "sourceB": "https://www.xbox.com/en-US/xbox-game-pass"
+    },
+    {
+     "label": "Online multiplayer",
+     "a": "Included",
+     "b": "Included",
+     "sourceA": "https://www.xbox.com/en-US/xbox-game-pass",
+     "sourceB": "https://www.xbox.com/en-US/xbox-game-pass"
+    }
+   ],
+   "faq": [
+    {
+     "q": "How much more is Game Pass Ultimate than Premium?",
+     "a": "In the US, Premium is $14.99 a month and Ultimate is $22.99, so Ultimate costs $8 a month more.",
+     "source": "docs/research/prices-2026-11.json (US) · https://www.xbox.com/en-US/xbox-game-pass"
+    },
+    {
+     "q": "Does Game Pass Premium get new games on day one?",
+     "a": "No. Day-one games are for Ultimate and PC. New Xbox-published games join Premium within 12 months of launch, and Call of Duty titles are excluded.",
+     "source": "https://www.xbox.com/en-US/xbox-game-pass"
+    },
+    {
+     "q": "Game Pass Premium vs Ultimate cloud gaming?",
+     "a": "Both include cloud gaming. Premium gets 10 hours a month and Ultimate gets 15 hours a month.",
+     "source": "https://www.xbox.com/en-US/xbox-game-pass"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": []
+  },
+  {
+   "slug": "ps-plus-extra-vs-premium",
+   "kind": "tiers",
+   "a": "ps-plus",
+   "b": "ps-plus",
+   "ap": "extra",
+   "bp": "premium",
+   "name": "PS Plus Extra vs Premium",
+   "rows": [
+    {
+     "label": "Game Catalog",
+     "a": "Included",
+     "b": "Included",
+     "sourceA": "https://www.playstation.com/en-us/ps-plus/",
+     "sourceB": "https://www.playstation.com/en-us/ps-plus/"
+    },
+    {
+     "label": "Ubisoft+ Classics",
+     "a": "Included",
+     "b": "Included",
+     "sourceA": "https://www.playstation.com/en-us/ps-plus/",
+     "sourceB": "https://www.playstation.com/en-us/ps-plus/"
+    },
+    {
+     "label": "Classics Catalog",
+     "a": "Not included",
+     "b": "Included",
+     "sourceA": "https://www.playstation.com/en-us/ps-plus/",
+     "sourceB": "https://www.playstation.com/en-us/ps-plus/"
+    },
+    {
+     "label": "Game trials",
+     "a": "Not included",
+     "b": "Included",
+     "sourceA": "https://www.playstation.com/en-us/ps-plus/",
+     "sourceB": "https://www.playstation.com/en-us/ps-plus/"
+    },
+    {
+     "label": "PS5 cloud streaming",
+     "a": "Not included",
+     "b": "Included",
+     "sourceA": "https://www.playstation.com/en-us/ps-plus/",
+     "sourceB": "https://www.playstation.com/en-us/ps-plus/"
+    },
+    {
+     "label": "Sony Pictures Catalog",
+     "a": "Not included",
+     "b": "Up to 100 movies on demand",
+     "sourceA": "https://www.playstation.com/en-us/ps-plus/",
+     "sourceB": "https://www.playstation.com/en-us/ps-plus/"
+    },
+    {
+     "label": "Online multiplayer",
+     "a": "Included",
+     "b": "Included",
+     "sourceA": "https://www.playstation.com/en-us/ps-plus/",
+     "sourceB": "https://www.playstation.com/en-us/ps-plus/"
+    }
+   ],
+   "faq": [
+    {
+     "q": "What does PS Plus Premium add over Extra?",
+     "a": "Premium adds the Classics Catalog, game trials, PS5 cloud streaming and the Sony Pictures Catalog. Both include the Game Catalog and Ubisoft+ Classics.",
+     "source": "https://www.playstation.com/en-us/ps-plus/"
+    },
+    {
+     "q": "How much more is PS Plus Premium than Extra?",
+     "a": "In the US, Extra is $16.99 a month or $134.99 a year. Premium is $19.99 a month or $159.99 a year.",
+     "source": "docs/research/prices-2026-11.json (US) · https://www.playstation.com/en-us/ps-plus/"
+    },
+    {
+     "q": "Is the game list the same on Extra and Premium?",
+     "a": "Both get the Game Catalog of hundreds of games. Premium also gets the Classics Catalog of older PlayStation games and game trials.",
+     "source": "https://www.playstation.com/en-us/ps-plus/"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": []
+  },
+  {
+   "slug": "netflix-standard-vs-premium",
+   "kind": "tiers",
+   "a": "netflix",
+   "b": "netflix",
+   "ap": "standard",
+   "bp": "premium",
+   "name": "Netflix Standard vs Premium",
+   "rows": [
+    {
+     "label": "Video quality",
+     "a": "1080p (Full HD)",
+     "b": "4K (Ultra HD) + HDR",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.netflix.com/en/node/24926/us"
+    },
+    {
+     "label": "Screens at once",
+     "a": "2 devices",
+     "b": "4 devices",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.netflix.com/en/node/24926/us"
+    },
+    {
+     "label": "Downloads",
+     "a": "2 devices at a time",
+     "b": "6 devices at a time",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.netflix.com/en/node/24926/us"
+    },
+    {
+     "label": "Extra members",
+     "a": "Add 1 who doesn't live with you",
+     "b": "Add up to 2",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.netflix.com/en/node/24926/us"
+    },
+    {
+     "label": "Spatial audio",
+     "a": "Not included",
+     "b": "Netflix spatial audio",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.netflix.com/en/node/24926/us"
+    },
+    {
+     "label": "Ads",
+     "a": "No ads",
+     "b": "No ads",
+     "sourceA": "https://help.netflix.com/en/node/24926/us",
+     "sourceB": "https://help.netflix.com/en/node/24926/us"
+    }
+   ],
+   "faq": [
+    {
+     "q": "What's the difference between Netflix Standard and Premium?",
+     "a": "Premium adds 4K + HDR, 4 screens at once instead of 2, downloads on 6 devices instead of 2, up to 2 extra members and spatial audio.",
+     "source": "https://help.netflix.com/en/node/24926/us"
+    },
+    {
+     "q": "How much more is Netflix Premium?",
+     "a": "In the US, Standard is $19.99 a month and Premium is $26.99, so $7 more.",
+     "source": "docs/research/prices-2026-11.json (US) · https://help.netflix.com/en/node/24926/us"
+    },
+    {
+     "q": "Is Netflix Standard 4K?",
+     "a": "No. Standard is 1080p (Full HD). 4K (Ultra HD) + HDR is Premium only.",
+     "source": "https://help.netflix.com/en/node/24926/us"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": []
+  },
+  {
+   "slug": "youtube-premium-vs-lite",
+   "kind": "tiers",
+   "a": "youtube-premium",
+   "b": "youtube-premium",
+   "ap": "individual",
+   "bp": "lite",
+   "name": "YouTube Premium vs Lite",
+   "rows": [
+    {
+     "label": "Ads",
+     "a": "No ads on videos",
+     "b": "Most videos ad-free; ads on music, Shorts, search",
+     "sourceA": "https://support.google.com/youtube/answer/6308116",
+     "sourceB": "https://support.google.com/youtube/answer/15968883"
+    },
+    {
+     "label": "YouTube Music Premium",
+     "a": "Included",
+     "b": "Not included",
+     "sourceA": "https://support.google.com/youtube/answer/6308116",
+     "sourceB": "https://support.google.com/youtube/answer/15968883"
+    },
+    {
+     "label": "Background play",
+     "a": "All videos",
+     "b": "Most videos, not music or Shorts",
+     "sourceA": "https://support.google.com/youtube/answer/6308116",
+     "sourceB": "https://support.google.com/youtube/answer/15968883"
+    },
+    {
+     "label": "Downloads",
+     "a": "Videos and music",
+     "b": "Most videos, not music or Shorts",
+     "sourceA": "https://support.google.com/youtube/answer/6308116",
+     "sourceB": "https://support.google.com/youtube/answer/15968883"
+    },
+    {
+     "label": "Video and audio quality",
+     "a": "1080p Premium, 256 kbps audio",
+     "b": "Not included",
+     "sourceA": "https://support.google.com/youtube/answer/6308116",
+     "sourceB": "https://support.google.com/youtube/answer/15968883"
+    },
+    {
+     "label": "Extras",
+     "a": "Continue watching, Jump ahead, queue",
+     "b": "Not included",
+     "sourceA": "https://support.google.com/youtube/answer/6308116",
+     "sourceB": "https://support.google.com/youtube/answer/15968883"
+    },
+    {
+     "label": "Family plan",
+     "a": "Share with up to 5 others",
+     "b": "Not stated",
+     "sourceA": "https://support.google.com/youtube/answer/12156000",
+     "sourceB": "https://support.google.com/youtube/answer/15968883"
+    }
+   ],
+   "faq": [
+    {
+     "q": "What's the difference between YouTube Premium and Premium Lite?",
+     "a": "Lite removes ads from most videos but not music, Shorts or search. It skips YouTube Music Premium, and background play and downloads skip music content.",
+     "source": "https://support.google.com/youtube/answer/15968883"
+    },
+    {
+     "q": "Does YouTube Premium Lite include YouTube Music?",
+     "a": "No. Google says Premium Lite does not include YouTube Music Premium.",
+     "source": "https://support.google.com/youtube/answer/15968883"
+    },
+    {
+     "q": "Does Premium Lite have downloads and background play?",
+     "a": "Yes, for most videos. Neither works on Shorts or music content such as official music videos and covers.",
+     "source": "https://support.google.com/youtube/answer/15968883"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "YouTube Premium US prices in prices-2026-11.json are 'unverified', so no prices are quoted here.",
+    "youtube.com/premium and /premiumlite were not viewable from our network ('not available in your country'); facts come from YouTube Help."
+   ]
+  },
+  {
+   "slug": "spotify-duo-vs-family",
+   "kind": "tiers",
+   "a": "spotify",
+   "b": "spotify",
+   "ap": "duo",
+   "bp": "family",
+   "name": "Spotify Duo vs Family",
+   "rows": [
+    {
+     "label": "Accounts",
+     "a": "2 Premium accounts",
+     "b": "Up to 6 Premium accounts",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://www.spotify.com/us/premium/"
+    },
+    {
+     "label": "Who can join",
+     "a": "Couples at the same address",
+     "b": "Family at the same address",
+     "sourceA": "https://www.spotify.com/us/duo/",
+     "sourceB": "https://www.spotify.com/us/family/"
+    },
+    {
+     "label": "Parental controls",
+     "a": "Not stated",
+     "b": "Yes, including explicit content filter",
+     "sourceA": "https://www.spotify.com/us/duo/",
+     "sourceB": "https://www.spotify.com/us/family/"
+    },
+    {
+     "label": "Accounts for under-13s",
+     "a": "Not stated",
+     "b": "Yes, with Premium benefits",
+     "sourceA": "https://www.spotify.com/us/duo/",
+     "sourceB": "https://www.spotify.com/us/premium/"
+    },
+    {
+     "label": "Audiobooks",
+     "a": "15 hours/month (plan manager only)",
+     "b": "15 hours/month (plan manager only)",
+     "sourceA": "https://www.spotify.com/us/premium/",
+     "sourceB": "https://www.spotify.com/us/premium/"
+    }
+   ],
+   "faq": [
+    {
+     "q": "How much more is Spotify Family than Duo?",
+     "a": "In the US, Duo is $18.99 a month for 2 accounts and Family is $21.99 for up to 6, so $3 more.",
+     "source": "docs/research/prices-2026-11.json (US) · https://www.spotify.com/us/premium/"
+    },
+    {
+     "q": "Do Duo or Family members need the same address?",
+     "a": "Yes. Spotify says Duo is for couples who reside at the same address and Family is for family members at the same address.",
+     "source": "https://www.spotify.com/us/duo/ · https://www.spotify.com/us/family/"
+    },
+    {
+     "q": "Can kids use Spotify Duo?",
+     "a": "Spotify only mentions accounts for listeners under 13 and parental controls on Premium Family.",
+     "source": "https://www.spotify.com/us/family/"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": []
+  },
+  {
+   "slug": "apple-one-family-vs-premier",
+   "kind": "tiers",
+   "a": "apple-one",
+   "b": "apple-one",
+   "ap": "family",
+   "bp": "premier",
+   "name": "Apple One Family vs Premier",
+   "rows": [
+    {
+     "label": "iCloud+ storage",
+     "a": "200GB",
+     "b": "2TB",
+     "sourceA": "https://www.apple.com/apple-one/",
+     "sourceB": "https://www.apple.com/apple-one/"
+    },
+    {
+     "label": "Apple TV, Music, Arcade",
+     "a": "Included",
+     "b": "Included",
+     "sourceA": "https://www.apple.com/apple-one/",
+     "sourceB": "https://www.apple.com/apple-one/"
+    },
+    {
+     "label": "Apple Fitness+",
+     "a": "Not included",
+     "b": "Included",
+     "sourceA": "https://www.apple.com/apple-one/",
+     "sourceB": "https://www.apple.com/apple-one/"
+    },
+    {
+     "label": "Apple News+",
+     "a": "Not included",
+     "b": "Included",
+     "sourceA": "https://www.apple.com/apple-one/",
+     "sourceB": "https://www.apple.com/apple-one/"
+    },
+    {
+     "label": "Sharing",
+     "a": "Up to five other people",
+     "b": "Up to five other people",
+     "sourceA": "https://www.apple.com/apple-one/",
+     "sourceB": "https://www.apple.com/apple-one/"
+    },
+    {
+     "label": "Saving Apple states",
+     "a": "“Save $17/mo.” vs buying each",
+     "b": "“Save $35/mo.” vs buying each",
+     "sourceA": "https://www.apple.com/apple-one/",
+     "sourceB": "https://www.apple.com/apple-one/"
+    },
+    {
+     "label": "Billing",
+     "a": "Monthly, no long-term commitment",
+     "b": "Monthly, no long-term commitment",
+     "sourceA": "https://www.apple.com/apple-one/",
+     "sourceB": "https://www.apple.com/apple-one/"
+    }
+   ],
+   "faq": [
+    {
+     "q": "What does Apple One Premier add over Family?",
+     "a": "Premier adds Apple Fitness+ and Apple News+ and raises iCloud+ from 200GB to 2TB. Both include Apple TV, Apple Music and Apple Arcade.",
+     "source": "https://www.apple.com/apple-one/"
+    },
+    {
+     "q": "Does Apple One Premier include family sharing?",
+     "a": "Yes. Both Family and Premier let you share with up to five people.",
+     "source": "https://www.apple.com/apple-one/"
+    },
+    {
+     "q": "How much more is Apple One Premier than Family?",
+     "a": "In the US, Family is $27.95 a month and Premier is $39.95, so $12 more.",
+     "source": "docs/research/prices-2026-11.json (US) · https://www.apple.com/apple-one/"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": []
+  },
+  {
+   "slug": "disney-plus-basic-vs-premium",
+   "kind": "tiers",
+   "a": "disney-plus",
+   "b": "disney-plus",
+   "ap": "standard-ads",
+   "bp": "premium",
+   "name": "Disney+ With Ads vs Premium",
+   "rows": [
+    {
+     "label": "Ads",
+     "a": "With ads",
+     "b": "No ads (some live programming excepted)",
+     "sourceA": "https://help.disneyplus.com/article/disneyplus-price",
+     "sourceB": "https://help.disneyplus.com/article/disneyplus-price"
+    },
+    {
+     "label": "Video quality",
+     "a": "Up to 4K UHD & HDR",
+     "b": "Up to 4K UHD & HDR",
+     "sourceA": "https://help.disneyplus.com/article/disneyplus-price",
+     "sourceB": "https://help.disneyplus.com/article/disneyplus-price"
+    },
+    {
+     "label": "Audio",
+     "a": "Up to 5.1",
+     "b": "Up to Dolby Atmos",
+     "sourceA": "https://help.disneyplus.com/article/disneyplus-price",
+     "sourceB": "https://help.disneyplus.com/article/disneyplus-price"
+    },
+    {
+     "label": "Downloads",
+     "a": "Not listed for this plan",
+     "b": "Up to 10 devices",
+     "sourceA": "https://help.disneyplus.com/article/disneyplus-price",
+     "sourceB": "https://help.disneyplus.com/article/disneyplus-price"
+    },
+    {
+     "label": "Screens at once",
+     "a": "Up to four devices",
+     "b": "Up to four devices",
+     "sourceA": "https://help.disneyplus.com/article/disneyplus-concurrent-streams",
+     "sourceB": "https://help.disneyplus.com/article/disneyplus-concurrent-streams"
+    },
+    {
+     "label": "Yearly billing",
+     "a": "Not listed",
+     "b": "Annual: $214.99",
+     "sourceA": "https://help.disneyplus.com/article/disneyplus-price",
+     "sourceB": "https://help.disneyplus.com/article/disneyplus-price"
+    },
+    {
+     "label": "Extra Member add-on",
+     "a": "$6.99 a month",
+     "b": "$9.99 a month",
+     "sourceA": "https://help.disneyplus.com/article/disneyplus-price",
+     "sourceB": "https://help.disneyplus.com/article/disneyplus-price"
+    }
+   ],
+   "faq": [
+    {
+     "q": "What's the difference between Disney+ Basic and Premium?",
+     "a": "Premium drops ads, adds Dolby Atmos audio and downloads on up to 10 devices, and has a yearly option. Both list video up to 4K UHD & HDR.",
+     "source": "https://help.disneyplus.com/article/disneyplus-price"
+    },
+    {
+     "q": "How much more is Disney+ Premium?",
+     "a": "In the US, Disney+ (With Ads) is $12.49 a month and Premium is $21.49, so $9 more. Premium is also $214.99 a year.",
+     "source": "docs/research/prices-2026-11.json (US) · https://help.disneyplus.com/article/disneyplus-price"
+    },
+    {
+     "q": "Can you download on Disney+ with ads?",
+     "a": "Disney+ lists downloads only for Premium (up to 10 devices). The With Ads plan doesn't list downloads.",
+     "source": "https://help.disneyplus.com/article/disneyplus-price"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "In the US the cheaper plan is called 'Disney+ (With Ads)'; 'Basic' is the search term people use. Plan id standard-ads.",
+    "Downloads on the With Ads plan: the page lists none; not explicitly 'not included'."
+   ]
+  }
+ ]
+}

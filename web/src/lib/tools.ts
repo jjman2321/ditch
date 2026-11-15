@@ -49,19 +49,26 @@ export const SERVICE_TOOLS: ServiceTool[] = [
 type Pair = { slug: string; kind: 'vs' | 'tiers'; a: string; b: string; ap?: string; bp?: string; name: string; rows?: Fact[]; faq?: { q: string; a: string; source?: string }[]; checkedOn?: string };
 const GROUP: Record<string, string> = { AI: 'ai', 'Music & audio': 'music', Streaming: 'tv', 'Cloud & security': 'storage', Productivity: 'storage', Gaming: 'gaming' };
 const yearlyIdOf = (id: string): string[] => [`${id}-yearly`, ...(id === 'monthly' ? ['yearly'] : [])];
+// A checked US price on both sides (Nov 15: YouTube Premium only has Saudi/Qatar prices, so US visitors would land on riyals).
+const usRow = (id: string) => verifiedPrices(id).find((r) => r.country === 'US');
 const hasBoth = (p: Pair) =>
   p.kind === 'tiers'
-    ? verifiedPrices(p.a).some((r) => r.plans.some((x) => x.id === p.ap) && r.plans.some((x) => x.id === p.bp))
-    : verifiedPrices(p.a).some((r) => verifiedPrices(p.b).some((o) => o.country === r.country));
+    ? Boolean(usRow(p.a)?.plans.some((x) => x.id === p.ap) && usRow(p.a)?.plans.some((x) => x.id === p.bp))
+    : Boolean(usRow(p.a) && usRow(p.b));
 const pairTitle = (name: string) => `${name} 2026: price and what you get`;
+/**
+ * Held for the owner (Nov 15): xAI's website now sells Plus/Premium/Super/Ultra while the iPhone app still sells
+ * "SuperGrok", so these pages would show a SuperGrok price next to facts about Premium. Back once Grok's plans are settled.
+ */
+const HELD = new Set(['chatgpt-vs-grok', 'claude-vs-grok', 'gemini-vs-grok', 'supergrok-vs-heavy']);
 for (const p of compareJson as Pair[]) {
-  if (!serviceById(p.a) || !serviceById(p.b) || !hasBoth(p)) continue;
+  if (HELD.has(p.slug) || !serviceById(p.a) || !serviceById(p.b) || !hasBoth(p)) continue;
   const facts = (p.rows ?? []).filter((r) => r.label && (r.a || r.b));
   const faq = (p.faq ?? []).map((f) => ({ q: f.q, a: f.a }));
   const sources = [...new Set([...facts.flatMap((r) => [r.sourceA, r.sourceB]), ...(p.faq ?? []).map((f) => f.source)].filter((u): u is string => Boolean(u && /^https:\/\//.test(u))))];
   const old = SERVICE_TOOLS.find((t) => t.kind === 'vs' && p.kind === 'vs' && ((t.a === p.a && t.b === p.b) || (t.a === p.b && t.b === p.a)));
   if (old) {
-    Object.assign(old, { facts, factsChecked: p.checkedOn, group: GROUP[serviceById(old.a!)?.category ?? ''], faq: [...old.faq, ...faq.filter((f) => !old.faq.some((o) => o.q === f.q))], sources: [...new Set([...(old.sources ?? []), ...sources])] });
+    Object.assign(old, { facts, factsChecked: p.checkedOn, group: GROUP[serviceById(old.a!)?.category ?? ''], faq: faq.length ? faq : old.faq, sources: [...new Set([...(old.sources ?? []), ...sources])] });
     continue;
   }
   if (SERVICE_TOOLS.some((t) => t.slug === p.slug)) continue;

@@ -345,64 +345,6 @@
   },
   {
    "serviceId": "spotify",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "individual",
-     "name": "Premium Individual",
-     "amountMinor": 1299,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "duo",
-     "name": "Premium Duo",
-     "amountMinor": 1899,
-     "cycle": "monthly"
-    },
-    {
-     "id": "family",
-     "name": "Premium Family",
-     "amountMinor": 2199,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://www.spotify.com/us/premium/",
-   "checked": "2026-11-09"
-  },
-  {
-   "serviceId": "spotify",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "individual",
-     "name": "Premium Individual",
-     "amountMinor": 1299,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "duo",
-     "name": "Premium Duo",
-     "amountMinor": 1799,
-     "cycle": "monthly"
-    },
-    {
-     "id": "family",
-     "name": "Premium Family",
-     "amountMinor": 2199,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://www.spotify.com/uk/premium/",
-   "checked": "2026-11-09"
-  },
-  {
-   "serviceId": "spotify",
    "country": "CA",
    "currency": "CAD",
    "status": "verified",
@@ -686,88 +628,6 @@
    "source": "https://www.spotify.com/in/premium/",
    "checked": "2026-11-09",
    "note": "India uses different plan names (Standard, Platinum; Lite not checked)."
-  },
-  {
-   "serviceId": "icloud",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "50gb",
-     "name": "50 GB",
-     "amountMinor": 99,
-     "cycle": "monthly"
-    },
-    {
-     "id": "200gb",
-     "name": "200 GB",
-     "amountMinor": 299,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "2tb",
-     "name": "2 TB",
-     "amountMinor": 999,
-     "cycle": "monthly"
-    },
-    {
-     "id": "6tb",
-     "name": "6 TB",
-     "amountMinor": 2999,
-     "cycle": "monthly"
-    },
-    {
-     "id": "12tb",
-     "name": "12 TB",
-     "amountMinor": 5999,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://support.apple.com/en-us/108047",
-   "checked": "2026-11-09"
-  },
-  {
-   "serviceId": "icloud",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "50gb",
-     "name": "50 GB",
-     "amountMinor": 99,
-     "cycle": "monthly"
-    },
-    {
-     "id": "200gb",
-     "name": "200 GB",
-     "amountMinor": 299,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "2tb",
-     "name": "2 TB",
-     "amountMinor": 899,
-     "cycle": "monthly"
-    },
-    {
-     "id": "6tb",
-     "name": "6 TB",
-     "amountMinor": 2699,
-     "cycle": "monthly"
-    },
-    {
-     "id": "12tb",
-     "name": "12 TB",
-     "amountMinor": 5499,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://support.apple.com/en-us/108047",
-   "checked": "2026-11-09"
   },
   {
    "serviceId": "icloud",
@@ -1184,64 +1044,6 @@
    "source": "https://support.apple.com/en-us/108047",
    "checked": "2026-11-09",
    "note": "Apple lists one 'Euro' row for euro countries."
-  },
-  {
-   "serviceId": "apple-music",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "individual",
-     "name": "Individual",
-     "amountMinor": 1199,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "family",
-     "name": "Family",
-     "amountMinor": 1999,
-     "cycle": "monthly"
-    },
-    {
-     "id": "student",
-     "name": "Student",
-     "amountMinor": 699,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://www.apple.com/apple-music/",
-   "checked": "2026-11-09"
-  },
-  {
-   "serviceId": "apple-music",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "individual",
-     "name": "Individual",
-     "amountMinor": 1199,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "family",
-     "name": "Family",
-     "amountMinor": 1999,
-     "cycle": "monthly"
-    },
-    {
-     "id": "student",
-     "name": "Student",
-     "amountMinor": 599,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://www.apple.com/uk/apple-music/",
-   "checked": "2026-11-09"
   },
   {
    "serviceId": "apple-music",
@@ -1688,52 +1490,6 @@
   },
   {
    "serviceId": "apple-arcade",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "monthly",
-     "name": "Monthly",
-     "amountMinor": 699,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "yearly",
-     "name": "Yearly",
-     "amountMinor": 4999,
-     "cycle": "yearly"
-    }
-   ],
-   "source": "https://www.apple.com/apple-arcade/",
-   "checked": "2026-11-09"
-  },
-  {
-   "serviceId": "apple-arcade",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "monthly",
-     "name": "Monthly",
-     "amountMinor": 699,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "yearly",
-     "name": "Yearly",
-     "amountMinor": 4999,
-     "cycle": "yearly"
-    }
-   ],
-   "source": "https://www.apple.com/uk/apple-arcade/",
-   "checked": "2026-11-09"
-  },
-  {
-   "serviceId": "apple-arcade",
    "country": "CA",
    "currency": "CAD",
    "status": "verified",
@@ -1936,35 +1692,6 @@
   },
   {
    "serviceId": "apple-one",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "individual",
-     "name": "Individual",
-     "amountMinor": 2195,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "family",
-     "name": "Family",
-     "amountMinor": 2795,
-     "cycle": "monthly"
-    },
-    {
-     "id": "premier",
-     "name": "Premier",
-     "amountMinor": 3995,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://www.apple.com/apple-one/",
-   "checked": "2026-11-09"
-  },
-  {
-   "serviceId": "apple-one",
    "country": "CA",
    "currency": "CAD",
    "status": "verified",
@@ -2049,36 +1776,6 @@
    ],
    "source": "https://www.apple.com/nz/apple-one/",
    "checked": "2026-11-09"
-  },
-  {
-   "serviceId": "apple-one",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "individual",
-     "name": "Individual",
-     "amountMinor": 1895,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "family",
-     "name": "Family",
-     "amountMinor": 2495,
-     "cycle": "monthly"
-    },
-    {
-     "id": "premier",
-     "name": "Premier",
-     "amountMinor": 3695,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://www.apple.com/uk/apple-tv/",
-   "checked": "2026-11-09",
-   "note": "Prices read from the Apple One line on Apple's Apple TV page."
   },
   {
    "serviceId": "apple-one",
@@ -2879,70 +2576,6 @@
    "checked": "2026-11-09"
   },
   {
-   "serviceId": "nintendo-online",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "individual",
-     "name": "Individual",
-     "amountMinor": 1999,
-     "cycle": "yearly",
-     "default": true
-    },
-    {
-     "id": "family",
-     "name": "Family",
-     "amountMinor": 3499,
-     "cycle": "yearly"
-    },
-    {
-     "id": "expansion-individual",
-     "name": "+ Expansion Pack, Individual",
-     "amountMinor": 4999,
-     "cycle": "yearly"
-    },
-    {
-     "id": "expansion-family",
-     "name": "+ Expansion Pack, Family",
-     "amountMinor": 7999,
-     "cycle": "yearly"
-    }
-   ],
-   "source": "https://www.nintendo.com/us/switch/online/",
-   "checked": "2026-11-09"
-  },
-  {
-   "serviceId": "audible",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "standard",
-     "name": "Standard",
-     "amountMinor": 899,
-     "cycle": "monthly"
-    },
-    {
-     "id": "premium-plus",
-     "name": "Premium Plus",
-     "amountMinor": 1495,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "premium-plus-yearly",
-     "name": "Premium Plus (yearly, 12 credits)",
-     "amountMinor": 14950,
-     "cycle": "yearly"
-    }
-   ],
-   "source": "https://www.audible.com/ep/memberbenefits",
-   "checked": "2026-11-09"
-  },
-  {
    "serviceId": "youtube-premium",
    "country": "US",
    "currency": "USD",
@@ -3321,137 +2954,6 @@
     }
    ],
    "source": "https://www.disneyplus.com/en-au",
-   "checked": "2026-11-09"
-  },
-  {
-   "serviceId": "ps-plus",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "premium-yearly",
-     "name": "Premium (12 months)",
-     "amountMinor": 15999,
-     "cycle": "yearly"
-    },
-    {
-     "id": "premium-quarterly",
-     "name": "Premium (3 months)",
-     "amountMinor": 5499,
-     "cycle": "quarterly"
-    },
-    {
-     "id": "premium",
-     "name": "Premium (1 month)",
-     "amountMinor": 1999,
-     "cycle": "monthly"
-    },
-    {
-     "id": "extra-yearly",
-     "name": "Extra (12 months)",
-     "amountMinor": 13499,
-     "cycle": "yearly"
-    },
-    {
-     "id": "extra-quarterly",
-     "name": "Extra (3 months)",
-     "amountMinor": 4399,
-     "cycle": "quarterly"
-    },
-    {
-     "id": "extra",
-     "name": "Extra (1 month)",
-     "amountMinor": 1699,
-     "cycle": "monthly"
-    },
-    {
-     "id": "essential-yearly",
-     "name": "Essential (12 months)",
-     "amountMinor": 7999,
-     "cycle": "yearly",
-     "default": true
-    },
-    {
-     "id": "essential-quarterly",
-     "name": "Essential (3 months)",
-     "amountMinor": 2799,
-     "cycle": "quarterly"
-    },
-    {
-     "id": "essential",
-     "name": "Essential (1 month)",
-     "amountMinor": 1099,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://www.playstation.com/en-us/ps-plus/",
-   "checked": "2026-11-09",
-   "note": "Excludes sales tax."
-  },
-  {
-   "serviceId": "ps-plus",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "premium-yearly",
-     "name": "Premium (12 months)",
-     "amountMinor": 11999,
-     "cycle": "yearly"
-    },
-    {
-     "id": "premium-quarterly",
-     "name": "Premium (3 months)",
-     "amountMinor": 4399,
-     "cycle": "quarterly"
-    },
-    {
-     "id": "premium",
-     "name": "Premium (1 month)",
-     "amountMinor": 1499,
-     "cycle": "monthly"
-    },
-    {
-     "id": "extra-yearly",
-     "name": "Extra (12 months)",
-     "amountMinor": 9999,
-     "cycle": "yearly"
-    },
-    {
-     "id": "extra-quarterly",
-     "name": "Extra (3 months)",
-     "amountMinor": 3499,
-     "cycle": "quarterly"
-    },
-    {
-     "id": "extra",
-     "name": "Extra (1 month)",
-     "amountMinor": 1199,
-     "cycle": "monthly"
-    },
-    {
-     "id": "essential-yearly",
-     "name": "Essential (12 months)",
-     "amountMinor": 5999,
-     "cycle": "yearly",
-     "default": true
-    },
-    {
-     "id": "essential-quarterly",
-     "name": "Essential (3 months)",
-     "amountMinor": 2199,
-     "cycle": "quarterly"
-    },
-    {
-     "id": "essential",
-     "name": "Essential (1 month)",
-     "amountMinor": 799,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://www.playstation.com/en-gb/ps-plus/",
    "checked": "2026-11-09"
   },
   {
@@ -4106,72 +3608,6 @@
   },
   {
    "serviceId": "xbox-game-pass",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "essential",
-     "name": "Game Pass Essential",
-     "amountMinor": 999,
-     "cycle": "monthly"
-    },
-    {
-     "id": "premium",
-     "name": "Game Pass Premium",
-     "amountMinor": 1499,
-     "cycle": "monthly"
-    },
-    {
-     "id": "ultimate",
-     "name": "Game Pass Ultimate",
-     "amountMinor": 2299,
-     "cycle": "monthly",
-     "default": true
-    }
-   ],
-   "source": "https://www.xbox.com/en-US/xbox-game-pass",
-   "checked": "2026-11-09",
-   "note": "Regular monthly price after the 14-day $1 intro offer. Excludes sales tax."
-  },
-  {
-   "serviceId": "xbox-game-pass",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "essential",
-     "name": "Game Pass Essential",
-     "amountMinor": 699,
-     "cycle": "monthly"
-    },
-    {
-     "id": "premium",
-     "name": "Game Pass Premium",
-     "amountMinor": 1099,
-     "cycle": "monthly"
-    },
-    {
-     "id": "ultimate",
-     "name": "Game Pass Ultimate",
-     "amountMinor": 1699,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "pc",
-     "name": "PC Game Pass",
-     "amountMinor": 1099,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://www.xbox.com/en-GB/xbox-game-pass",
-   "checked": "2026-11-09",
-   "note": "Regular monthly price after the 14-day $1 intro offer."
-  },
-  {
-   "serviceId": "xbox-game-pass",
    "country": "CA",
    "currency": "CAD",
    "status": "verified",
@@ -4502,52 +3938,6 @@
   },
   {
    "serviceId": "apple-fitness",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "monthly",
-     "name": "Monthly",
-     "amountMinor": 999,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "yearly",
-     "name": "Yearly",
-     "amountMinor": 7999,
-     "cycle": "yearly"
-    }
-   ],
-   "source": "https://www.apple.com/apple-fitness-plus/",
-   "checked": "2026-11-10"
-  },
-  {
-   "serviceId": "apple-fitness",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "monthly",
-     "name": "Monthly",
-     "amountMinor": 999,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "yearly",
-     "name": "Yearly",
-     "amountMinor": 7999,
-     "cycle": "yearly"
-    }
-   ],
-   "source": "https://www.apple.com/uk/apple-fitness-plus/",
-   "checked": "2026-11-10"
-  },
-  {
-   "serviceId": "apple-fitness",
    "country": "CA",
    "currency": "CAD",
    "status": "verified",
@@ -4778,40 +4168,6 @@
   },
   {
    "serviceId": "apple-news",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "monthly",
-     "name": "Apple News+",
-     "amountMinor": 1299,
-     "cycle": "monthly",
-     "default": true
-    }
-   ],
-   "source": "https://www.apple.com/apple-news/",
-   "checked": "2026-11-10"
-  },
-  {
-   "serviceId": "apple-news",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "monthly",
-     "name": "Apple News+",
-     "amountMinor": 1299,
-     "cycle": "monthly",
-     "default": true
-    }
-   ],
-   "source": "https://www.apple.com/uk/apple-news/",
-   "checked": "2026-11-10"
-  },
-  {
-   "serviceId": "apple-news",
    "country": "CA",
    "currency": "CAD",
    "status": "verified",
@@ -4878,47 +4234,6 @@
    "source": "https://www.apple.com/in/apple-tv/",
    "checked": "2026-11-10",
    "note": "Read from the Apple One line on Apple's India Apple TV page ('plans start at ₹195 per month'); the Family price isn't shown there."
-  },
-  {
-   "serviceId": "uber-one",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "monthly",
-     "name": "Monthly",
-     "amountMinor": 999,
-     "cycle": "monthly",
-     "default": true
-    }
-   ],
-   "source": "https://www.uber.com/us/en/u/uber-one/",
-   "checked": "2026-11-10",
-   "note": "Only the monthly price is shown on this page."
-  },
-  {
-   "serviceId": "uber-one",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "monthly",
-     "name": "Monthly",
-     "amountMinor": 499,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "yearly",
-     "name": "Yearly",
-     "amountMinor": 4999,
-     "cycle": "yearly"
-    }
-   ],
-   "source": "https://www.uber.com/gb/en/u/uber-one/",
-   "checked": "2026-11-10"
   },
   {
    "serviceId": "uber-one",
@@ -5216,29 +4531,6 @@
    "note": "Plus Silver is only sold through partners."
   },
   {
-   "serviceId": "nintendo-online",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "individual",
-     "name": "Individual",
-     "amountMinor": 1799,
-     "cycle": "yearly",
-     "default": true
-    },
-    {
-     "id": "family",
-     "name": "Family",
-     "amountMinor": 3149,
-     "cycle": "yearly"
-    }
-   ],
-   "source": "https://www.nintendo.com/en-gb/Nintendo-Switch-Online/Nintendo-Switch-Online-1183143.html",
-   "checked": "2026-11-10"
-  },
-  {
    "serviceId": "deliveroo-plus",
    "country": "IE",
    "currency": "EUR",
@@ -5447,29 +4739,6 @@
   },
   {
    "serviceId": "oura",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "monthly",
-     "name": "Monthly",
-     "amountMinor": 599,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "yearly",
-     "name": "Yearly",
-     "amountMinor": 6999,
-     "cycle": "yearly"
-    }
-   ],
-   "source": "https://ouraring.com/membership",
-   "checked": "2026-11-10"
-  },
-  {
-   "serviceId": "oura",
    "country": "CA",
    "currency": "CAD",
    "status": "verified",
@@ -5508,29 +4777,6 @@
      "id": "yearly",
      "name": "Yearly",
      "amountMinor": 10999,
-     "cycle": "yearly"
-    }
-   ],
-   "source": "https://ouraring.com/membership",
-   "checked": "2026-11-10"
-  },
-  {
-   "serviceId": "oura",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "monthly",
-     "name": "Monthly",
-     "amountMinor": 599,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "yearly",
-     "name": "Yearly",
-     "amountMinor": 6999,
      "cycle": "yearly"
     }
    ],
@@ -5680,36 +4926,6 @@
    "source": "https://ouraring.com/membership",
    "checked": "2026-11-10",
    "note": "Read from the price list on the membership page (EU row)."
-  },
-  {
-   "serviceId": "siriusxm",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "app",
-     "name": "All Access (app only)",
-     "amountMinor": 1199,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "music",
-     "name": "All Music",
-     "amountMinor": 1199,
-     "cycle": "monthly"
-    },
-    {
-     "id": "all-access",
-     "name": "All Access",
-     "amountMinor": 2599,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://www.siriusxm.com/plans",
-   "checked": "2026-11-10",
-   "note": "Regular prices after the $1-for-3-months offer."
   },
   {
    "serviceId": "audible",
@@ -5907,24 +5123,6 @@
    "checked": "2026-11-10"
   },
   {
-   "serviceId": "economist",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "annual",
-     "name": "Digital (yearly)",
-     "amountMinor": 28900,
-     "cycle": "yearly",
-     "default": true
-    }
-   ],
-   "source": "https://www.economist.com/subscribe",
-   "checked": "2026-11-10",
-   "note": "Regular yearly price after the first-year discount. The 4-weekly plan ($29) is not shown because Ditch has no 4-week cycle."
-  },
-  {
    "serviceId": "guardian",
    "country": "GB",
    "currency": "GBP",
@@ -5945,52 +5143,6 @@
     }
    ],
    "source": "https://support.theguardian.com/uk/subscribe",
-   "checked": "2026-11-10"
-  },
-  {
-   "serviceId": "amazon-music",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "individual",
-     "name": "Unlimited Individual",
-     "amountMinor": 1299,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "individual-prime",
-     "name": "Unlimited Individual (Prime members)",
-     "amountMinor": 1199,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://www.amazon.com/music/unlimited",
-   "checked": "2026-11-10"
-  },
-  {
-   "serviceId": "amazon-music",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "individual",
-     "name": "Unlimited Individual",
-     "amountMinor": 1299,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "individual-prime",
-     "name": "Unlimited Individual (Prime members)",
-     "amountMinor": 1199,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://www.amazon.co.uk/music/unlimited",
    "checked": "2026-11-10"
   },
   {
@@ -9400,30 +8552,6 @@
   },
   {
    "serviceId": "strava",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "monthly",
-     "name": "Monthly",
-     "amountMinor": 899,
-     "cycle": "monthly"
-    },
-    {
-     "id": "yearly",
-     "name": "Yearly",
-     "amountMinor": 5499,
-     "cycle": "yearly",
-     "default": true
-    }
-   ],
-   "source": "https://apps.apple.com/gb/app/id426826309",
-   "checked": "2026-11-10",
-   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Where one name has two prices and the list doesn’t say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly."
-  },
-  {
-   "serviceId": "strava",
    "country": "IE",
    "currency": "EUR",
    "status": "verified",
@@ -9539,30 +8667,6 @@
     }
    ],
    "source": "https://apps.apple.com/nz/app/id426826309",
-   "checked": "2026-11-10",
-   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Where one name has two prices and the list doesn’t say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly."
-  },
-  {
-   "serviceId": "strava",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "monthly",
-     "name": "Monthly",
-     "amountMinor": 1199,
-     "cycle": "monthly"
-    },
-    {
-     "id": "yearly",
-     "name": "Yearly",
-     "amountMinor": 7999,
-     "cycle": "yearly",
-     "default": true
-    }
-   ],
-   "source": "https://apps.apple.com/us/app/id426826309",
    "checked": "2026-11-10",
    "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Where one name has two prices and the list doesn’t say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly."
   },
@@ -9711,30 +8815,6 @@
    "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price)."
   },
   {
-   "serviceId": "headspace",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "monthly",
-     "name": "Monthly",
-     "amountMinor": 1299,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "yearly",
-     "name": "Yearly",
-     "amountMinor": 6999,
-     "cycle": "yearly"
-    }
-   ],
-   "source": "https://apps.apple.com/us/app/id493145008",
-   "checked": "2026-11-10",
-   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price)."
-  },
-  {
    "serviceId": "myfitnesspal",
    "country": "AU",
    "currency": "AUD",
@@ -9862,24 +8942,6 @@
   },
   {
    "serviceId": "snapchat-plus",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "monthly",
-     "name": "Snapchat+ (monthly)",
-     "amountMinor": 499,
-     "cycle": "monthly",
-     "default": true
-    }
-   ],
-   "source": "https://apps.apple.com/gb/app/id447188370",
-   "checked": "2026-11-10",
-   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price)."
-  },
-  {
-   "serviceId": "snapchat-plus",
    "country": "IT",
    "currency": "EUR",
    "status": "verified",
@@ -9911,24 +8973,6 @@
     }
    ],
    "source": "https://apps.apple.com/nl/app/id447188370",
-   "checked": "2026-11-10",
-   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price)."
-  },
-  {
-   "serviceId": "snapchat-plus",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "monthly",
-     "name": "Snapchat+ (monthly)",
-     "amountMinor": 499,
-     "cycle": "monthly",
-     "default": true
-    }
-   ],
-   "source": "https://apps.apple.com/us/app/id447188370",
    "checked": "2026-11-10",
    "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price)."
   },
@@ -10061,30 +9105,6 @@
     }
    ],
    "source": "https://apps.apple.com/fr/app/id985746746",
-   "checked": "2026-11-10",
-   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price)."
-  },
-  {
-   "serviceId": "discord-nitro",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "nitro",
-     "name": "Nitro",
-     "amountMinor": 899,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "basic",
-     "name": "Nitro Basic",
-     "amountMinor": 249,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://apps.apple.com/gb/app/id985746746",
    "checked": "2026-11-10",
    "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price)."
   },
@@ -10229,30 +9249,6 @@
     }
    ],
    "source": "https://apps.apple.com/nz/app/id985746746",
-   "checked": "2026-11-10",
-   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price)."
-  },
-  {
-   "serviceId": "discord-nitro",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "nitro",
-     "name": "Nitro",
-     "amountMinor": 999,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "basic",
-     "name": "Nitro Basic",
-     "amountMinor": 299,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://apps.apple.com/us/app/id985746746",
    "checked": "2026-11-10",
    "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price)."
   },
@@ -10738,30 +9734,6 @@
   },
   {
    "serviceId": "deezer",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "premium",
-     "name": "Premium",
-     "amountMinor": 1499,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "family",
-     "name": "Family",
-     "amountMinor": 2299,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://apps.apple.com/gb/app/id292738169",
-   "checked": "2026-11-10",
-   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Some names in this list don’t say the period; those plans are monthly."
-  },
-  {
-   "serviceId": "deezer",
    "country": "IE",
    "currency": "EUR",
    "status": "verified",
@@ -10847,30 +9819,6 @@
     }
    ],
    "source": "https://apps.apple.com/nz/app/id292738169",
-   "checked": "2026-11-10",
-   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Some names in this list don’t say the period; those plans are monthly."
-  },
-  {
-   "serviceId": "deezer",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "premium",
-     "name": "Premium",
-     "amountMinor": 1499,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "family",
-     "name": "Family",
-     "amountMinor": 2299,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://apps.apple.com/us/app/id292738169",
    "checked": "2026-11-10",
    "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Some names in this list don’t say the period; those plans are monthly."
   },
@@ -10996,30 +9944,6 @@
   },
   {
    "serviceId": "tidal",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "individual",
-     "name": "Individual",
-     "amountMinor": 1699,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "family",
-     "name": "Family",
-     "amountMinor": 2999,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://apps.apple.com/gb/app/id913943275",
-   "checked": "2026-11-10",
-   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Some names in this list don’t say the period; those plans are monthly."
-  },
-  {
-   "serviceId": "tidal",
    "country": "IE",
    "currency": "EUR",
    "status": "verified",
@@ -11111,30 +10035,6 @@
     }
    ],
    "source": "https://apps.apple.com/nz/app/id913943275",
-   "checked": "2026-11-10",
-   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Some names in this list don’t say the period; those plans are monthly."
-  },
-  {
-   "serviceId": "tidal",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "individual",
-     "name": "Individual",
-     "amountMinor": 1549,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "family",
-     "name": "Family",
-     "amountMinor": 2699,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://apps.apple.com/us/app/id913943275",
    "checked": "2026-11-10",
    "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Some names in this list don’t say the period; those plans are monthly."
   },
@@ -11325,30 +10225,6 @@
    "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price)."
   },
   {
-   "serviceId": "nyt",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "all-access",
-     "name": "All Access (monthly)",
-     "amountMinor": 2999,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "games",
-     "name": "Games (monthly)",
-     "amountMinor": 499,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://apps.apple.com/us/app/id284862083",
-   "checked": "2026-11-10",
-   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price)."
-  },
-  {
    "serviceId": "roblox",
    "country": "AU",
    "currency": "AUD",
@@ -11500,36 +10376,6 @@
   },
   {
    "serviceId": "roblox",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "premium-450",
-     "name": "Premium 450",
-     "amountMinor": 499,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "premium-1000",
-     "name": "Premium 1000",
-     "amountMinor": 999,
-     "cycle": "monthly"
-    },
-    {
-     "id": "premium-2200",
-     "name": "Premium 2200",
-     "amountMinor": 1999,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://apps.apple.com/gb/app/id431946152",
-   "checked": "2026-11-10",
-   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price)."
-  },
-  {
-   "serviceId": "roblox",
    "country": "IE",
    "currency": "EUR",
    "status": "verified",
@@ -11675,36 +10521,6 @@
     }
    ],
    "source": "https://apps.apple.com/nz/app/id431946152",
-   "checked": "2026-11-10",
-   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price)."
-  },
-  {
-   "serviceId": "roblox",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "premium-450",
-     "name": "Premium 450",
-     "amountMinor": 499,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "premium-1000",
-     "name": "Premium 1000",
-     "amountMinor": 999,
-     "cycle": "monthly"
-    },
-    {
-     "id": "premium-2200",
-     "name": "Premium 2200",
-     "amountMinor": 1999,
-     "cycle": "monthly"
-    }
-   ],
-   "source": "https://apps.apple.com/us/app/id431946152",
    "checked": "2026-11-10",
    "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price)."
   },
@@ -12046,24 +10862,6 @@
   },
   {
    "serviceId": "babbel",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "all-yearly",
-     "name": "All Languages (12 months)",
-     "amountMinor": 8999,
-     "cycle": "yearly",
-     "default": true
-    }
-   ],
-   "source": "https://apps.apple.com/gb/app/id829587759",
-   "checked": "2026-11-10",
-   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price)."
-  },
-  {
-   "serviceId": "babbel",
    "country": "IE",
    "currency": "EUR",
    "status": "verified",
@@ -12149,24 +10947,6 @@
     }
    ],
    "source": "https://apps.apple.com/nz/app/id829587759",
-   "checked": "2026-11-10",
-   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price)."
-  },
-  {
-   "serviceId": "babbel",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "all-yearly",
-     "name": "All Languages (12 months)",
-     "amountMinor": 10799,
-     "cycle": "yearly",
-     "default": true
-    }
-   ],
-   "source": "https://apps.apple.com/us/app/id829587759",
    "checked": "2026-11-10",
    "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price)."
   },
@@ -12322,36 +11102,6 @@
   },
   {
    "serviceId": "masterclass",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "individual",
-     "name": "Individual (yearly)",
-     "amountMinor": 11999,
-     "cycle": "yearly",
-     "default": true
-    },
-    {
-     "id": "duo",
-     "name": "Duo (yearly)",
-     "amountMinor": 17999,
-     "cycle": "yearly"
-    },
-    {
-     "id": "family",
-     "name": "Family (yearly)",
-     "amountMinor": 22999,
-     "cycle": "yearly"
-    }
-   ],
-   "source": "https://apps.apple.com/gb/app/id1273867416",
-   "checked": "2026-11-10",
-   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Some names in this list don’t say the period; those plans are monthly."
-  },
-  {
-   "serviceId": "masterclass",
    "country": "IE",
    "currency": "EUR",
    "status": "verified",
@@ -12497,36 +11247,6 @@
     }
    ],
    "source": "https://apps.apple.com/nz/app/id1273867416",
-   "checked": "2026-11-10",
-   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Some names in this list don’t say the period; those plans are monthly."
-  },
-  {
-   "serviceId": "masterclass",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "individual",
-     "name": "Individual (yearly)",
-     "amountMinor": 11999,
-     "cycle": "yearly",
-     "default": true
-    },
-    {
-     "id": "duo",
-     "name": "Duo (yearly)",
-     "amountMinor": 17999,
-     "cycle": "yearly"
-    },
-    {
-     "id": "family",
-     "name": "Family (yearly)",
-     "amountMinor": 23999,
-     "cycle": "yearly"
-    }
-   ],
-   "source": "https://apps.apple.com/us/app/id1273867416",
    "checked": "2026-11-10",
    "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Some names in this list don’t say the period; those plans are monthly."
   },
@@ -12881,78 +11601,6 @@
     }
    ],
    "source": "https://apps.apple.com/de/app/id792750948",
-   "checked": "2026-11-10",
-   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price)."
-  },
-  {
-   "serviceId": "peloton",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "app-one",
-     "name": "App One (monthly)",
-     "amountMinor": 1299,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "app-plus",
-     "name": "App+ (monthly)",
-     "amountMinor": 2899,
-     "cycle": "monthly"
-    },
-    {
-     "id": "app-one-yearly",
-     "name": "App One (yearly)",
-     "amountMinor": 12900,
-     "cycle": "yearly"
-    },
-    {
-     "id": "app-plus-yearly",
-     "name": "App+ (yearly)",
-     "amountMinor": 28900,
-     "cycle": "yearly"
-    }
-   ],
-   "source": "https://apps.apple.com/gb/app/id792750948",
-   "checked": "2026-11-10",
-   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price)."
-  },
-  {
-   "serviceId": "peloton",
-   "country": "US",
-   "currency": "USD",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "app-one",
-     "name": "App One (monthly)",
-     "amountMinor": 1599,
-     "cycle": "monthly",
-     "default": true
-    },
-    {
-     "id": "app-plus",
-     "name": "App+ (monthly)",
-     "amountMinor": 2899,
-     "cycle": "monthly"
-    },
-    {
-     "id": "app-one-yearly",
-     "name": "App One (yearly)",
-     "amountMinor": 15900,
-     "cycle": "yearly"
-    },
-    {
-     "id": "app-plus-yearly",
-     "name": "App+ (yearly)",
-     "amountMinor": 28900,
-     "cycle": "yearly"
-    }
-   ],
-   "source": "https://apps.apple.com/us/app/id792750948",
    "checked": "2026-11-10",
    "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price)."
   },
@@ -13313,30 +11961,6 @@
     }
    ],
    "source": "https://apps.apple.com/fr/app/id1239397626",
-   "checked": "2026-11-10",
-   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price)."
-  },
-  {
-   "serviceId": "economist",
-   "country": "GB",
-   "currency": "GBP",
-   "status": "verified",
-   "plans": [
-    {
-     "id": "monthly",
-     "name": "Premium (monthly)",
-     "amountMinor": 2790,
-     "cycle": "monthly"
-    },
-    {
-     "id": "annual",
-     "name": "Premium (yearly)",
-     "amountMinor": 27900,
-     "cycle": "yearly",
-     "default": true
-    }
-   ],
-   "source": "https://apps.apple.com/gb/app/id1239397626",
    "checked": "2026-11-10",
    "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price)."
   },
@@ -17431,6 +16055,1615 @@
    "source": "https://apps.apple.com/gb/app/id979659905",
    "checked": "2026-11-15",
    "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items. Proton Mail app (the source used to be the Proton Drive app; Unlimited prices are the same in both). proton.me only offers CHF, EUR or USD to our cloud browser, so UK web prices weren't readable. Pass, VPN, Duo and Family aren't in this list; see notChecked."
+  },
+  {
+   "serviceId": "spotify",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 1899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 2199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Premium Student",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "audiobooks-access",
+     "name": "Audiobooks Access",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/us/premium/",
+   "checked": "2026-11-15",
+   "note": "Regular prices after the 1-month $0 trial. Audiobooks Access is listed on the premium page without a price; $9.99/month was read on https://www.spotify.com/us/audiobooks/ (\"Spotify Audiobook Access $9.99/month\"). Audiobooks+ ($11.99/month) is an add-on billed on top of Premium, not a plan, so it's left out. Student offer currently includes Hulu (with ads)."
+  },
+  {
+   "serviceId": "spotify",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 1799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 2199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Premium Student",
+     "amountMinor": 599,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/uk/premium/",
+   "checked": "2026-11-15",
+   "note": "Regular prices after the 1-month £0 trial. The UK page doesn't sell Audiobooks Access. Audiobooks+ (£8.99/month) is an add-on on top of Premium, not a plan, so it's left out."
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/apple-music/",
+   "checked": "2026-11-15",
+   "note": "The page lists monthly prices only; no yearly plan is priced there."
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 599,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/uk/apple-music/",
+   "checked": "2026-11-15",
+   "note": "The page lists monthly prices only; no yearly plan is priced there."
+  },
+  {
+   "serviceId": "amazon-music",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Unlimited Individual",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "individual-prime",
+     "name": "Unlimited Individual (Prime members)",
+     "amountMinor": 1199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Unlimited Family",
+     "amountMinor": 2199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Unlimited Student",
+     "amountMinor": 599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "single-device",
+     "name": "Unlimited Single Device",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.amazon.com/music/unlimited",
+   "checked": "2026-11-15",
+   "note": "Individual prices from the main page. Family $21.99 from https://www.amazon.com/music/unlimited/family, Student $5.99 from https://www.amazon.com/music/unlimited/student, Single Device (one Echo or Fire TV) $6.99 from https://www.amazon.com/music/unlimited/echo. Regular prices after the free trial. Yearly plans aren't priced on these pages. US prices exclude sales tax."
+  },
+  {
+   "serviceId": "amazon-music",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Unlimited Individual",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "individual-prime",
+     "name": "Unlimited Individual (Prime members)",
+     "amountMinor": 1199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Unlimited Family",
+     "amountMinor": 2199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Unlimited Student",
+     "amountMinor": 599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "single-device",
+     "name": "Unlimited Single Device",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.amazon.co.uk/music/unlimited",
+   "checked": "2026-11-15",
+   "note": "Individual prices from the main page (incl. VAT). Family £21.99 from https://www.amazon.co.uk/music/unlimited/family, Student £5.99 from https://www.amazon.co.uk/music/unlimited/student, Single Device £6.99 from https://www.amazon.co.uk/music/unlimited/echo (that page's browser title still says £5.99, but the page body says £6.99 twice; we used the body). Yearly plans aren't priced on these pages."
+  },
+  {
+   "serviceId": "deezer",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Duo",
+     "amountMinor": 1599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 10799,
+     "cycle": "yearly"
+    },
+    {
+     "id": "duo-yearly",
+     "name": "Duo (yearly)",
+     "amountMinor": 17499,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 21899,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.deezer.com/us/offers",
+   "checked": "2026-11-15",
+   "note": "Now read from Deezer's own US offers page (before: App Store, $14.99/$22.99, which is the higher Apple-billed price). Monthly tab and the Student discount card (monthly only) plus the Annual tab. Regular prices after the 1-month free trial."
+  },
+  {
+   "serviceId": "deezer",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 2299,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/gb/app/id292738169?l=en-GB",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items, so tiers outside that list can't be read there. deezer.com picks the country from the visitor's IP and showed US prices to our US browser, so the UK website couldn't be read. Duo, Student and yearly plans aren't in the App Store list, so they're missing here."
+  },
+  {
+   "serviceId": "tidal",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1549,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 2699,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/us/app/id913943275",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items, so tiers outside that list can't be read there. tidal.com/pricing returns 403 to our browser, so Student and any yearly plans couldn't be read."
+  },
+  {
+   "serviceId": "tidal",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 2999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/gb/app/id913943275?l=en-GB",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items, so tiers outside that list can't be read there. tidal.com/pricing returns 403 to our browser, so Student and any yearly plans couldn't be read."
+  },
+  {
+   "serviceId": "audible",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1495,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.audible.com/ep/memberbenefits",
+   "checked": "2026-11-15",
+   "note": "Audible now calls the old Premium Plus plan just \"Premium\" ($14.95/mo, same plan; stored as id premium, like GB/CA/AU). The yearly Premium Plus plan ($149.50) is no longer on this page, so it's dropped; the page only shows a limited-time $99 first year of Premium, which isn't a regular price. Regular prices after the 30-day trial / $0.99 intro. US prices exclude sales tax. Plan id \"premium\" matches GB/CA/AU (US used to store it as premium-plus)."
+  },
+  {
+   "serviceId": "audible",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 899,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.audible.co.uk/ep/memberbenefits",
+   "checked": "2026-11-15",
+   "note": "Regular prices after the 30-day trial / £0.99-for-3-months intro. The page shows only a limited-time £59.99 first year of Premium, not a regular yearly price, so no yearly plan. Plan id premium matches CA/AU (the US row uses premium-plus for the same plan)."
+  },
+  {
+   "serviceId": "siriusxm",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "app",
+     "name": "All Access (App Only)",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "music",
+     "name": "All Music",
+     "amountMinor": 1199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "all-access",
+     "name": "All Access",
+     "amountMinor": 2599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "sports-pass",
+     "name": "SiriusXM Sports Pass",
+     "amountMinor": 500,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.siriusxm.com/plans",
+   "checked": "2026-11-15",
+   "note": "Regular prices after the $1-for-3-months offer (Sports Pass: after 1 free month). All Music add-ons (Sports +$8, News +$5, Talk +$5 a month) are extras, not plans. US prices exclude tax."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 99,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 2999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 5999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-15",
+   "note": "Monthly only; Apple sells no yearly iCloud+ plan."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 99,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 2699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 5499,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-gb/108047",
+   "checked": "2026-11-15",
+   "note": "Monthly only; Apple sells no yearly iCloud+ plan."
+  },
+  {
+   "serviceId": "apple-one",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 2195,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 2795,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premier",
+     "name": "Premier",
+     "amountMinor": 3995,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/apple-one/",
+   "checked": "2026-11-15"
+  },
+  {
+   "serviceId": "apple-one",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1895,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 2495,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premier",
+     "name": "Premier",
+     "amountMinor": 3695,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/uk/apple-one/",
+   "checked": "2026-11-15",
+   "note": "Now read from Apple's own UK Apple One page (before: the Apple One line on the Apple TV page). Same prices."
+  },
+  {
+   "serviceId": "apple-arcade",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 4999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/apple-arcade/",
+   "checked": "2026-11-15"
+  },
+  {
+   "serviceId": "apple-arcade",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 4999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/uk/apple-arcade/",
+   "checked": "2026-11-15"
+  },
+  {
+   "serviceId": "apple-fitness",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 7999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/apple-fitness-plus/",
+   "checked": "2026-11-15"
+  },
+  {
+   "serviceId": "apple-fitness",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 7999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/uk/apple-fitness-plus/",
+   "checked": "2026-11-15"
+  },
+  {
+   "serviceId": "apple-news",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple News+",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/apple-news/",
+   "checked": "2026-11-15",
+   "note": "Only a monthly price is on Apple's page."
+  },
+  {
+   "serviceId": "apple-news",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple News+",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/uk/apple-news/",
+   "checked": "2026-11-15",
+   "note": "Only a monthly price is on Apple's page."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Game Pass Essential",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Game Pass Premium",
+     "amountMinor": 1499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Game Pass Ultimate",
+     "amountMinor": 2299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pc",
+     "name": "PC Game Pass",
+     "amountMinor": 1399,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.xbox.com/en-US/xbox-game-pass",
+   "checked": "2026-11-15",
+   "note": "Regular monthly prices after the 14-day $1 intro. PC Game Pass $13.99 also confirmed on https://www.xbox.com/en-US/xbox-game-pass/pc-game-pass. Excludes sales tax."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Game Pass Essential",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Game Pass Premium",
+     "amountMinor": 1099,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Game Pass Ultimate",
+     "amountMinor": 1699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pc",
+     "name": "PC Game Pass",
+     "amountMinor": 1099,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.xbox.com/en-GB/xbox-game-pass",
+   "checked": "2026-11-15",
+   "note": "Regular monthly prices after the 14-day £1 intro."
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-yearly",
+     "name": "Premium (12 months)",
+     "amountMinor": 15999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-quarterly",
+     "name": "Premium (3 months)",
+     "amountMinor": 5499,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium (1 month)",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 13499,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 4399,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 1699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 7999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 2799,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 1099,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.playstation.com/en-us/ps-plus/",
+   "checked": "2026-11-15",
+   "note": "Deluxe isn't sold in the US. Excludes sales tax."
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-yearly",
+     "name": "Premium (12 months)",
+     "amountMinor": 11999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-quarterly",
+     "name": "Premium (3 months)",
+     "amountMinor": 4399,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium (1 month)",
+     "amountMinor": 1499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 9999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 3499,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 1199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 5999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 2199,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 799,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.playstation.com/en-gb/ps-plus/",
+   "checked": "2026-11-15",
+   "note": "Deluxe isn't sold in the UK."
+  },
+  {
+   "serviceId": "nintendo-online",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 3499,
+     "cycle": "yearly"
+    },
+    {
+     "id": "expansion-individual",
+     "name": "+ Expansion Pack, Individual",
+     "amountMinor": 4999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "expansion-family",
+     "name": "+ Expansion Pack, Family",
+     "amountMinor": 7999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.nintendo.com/us/online/",
+   "checked": "2026-11-15",
+   "note": "12-month prices. Nintendo also sells 1- and 3-month Individual memberships, but this page doesn't price them, so they're left out."
+  },
+  {
+   "serviceId": "nintendo-online",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1799,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 3149,
+     "cycle": "yearly"
+    },
+    {
+     "id": "expansion-individual",
+     "name": "+ Expansion Pack, Individual",
+     "amountMinor": 3499,
+     "cycle": "yearly"
+    },
+    {
+     "id": "expansion-family",
+     "name": "+ Expansion Pack, Family",
+     "amountMinor": 5999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.nintendo.com/en-gb/Nintendo-Switch-Online/What-s-included-/Nintendo-Switch-Online-What-s-included-2060569.html",
+   "checked": "2026-11-15",
+   "note": "12-month prices, read from the footnotes (\"based on an individual 12-month membership costing £17.99\", family £31.49, Expansion Pack individual £34.99, Expansion Pack family £59.99). Shorter memberships aren't priced on Nintendo's UK pages."
+  },
+  {
+   "serviceId": "roblox",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-450",
+     "name": "Premium 450",
+     "amountMinor": 499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-1000",
+     "name": "Premium 1000",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-2200",
+     "name": "Premium 2200",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/us/app/id431946152",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items, so tiers outside that list can't be read there."
+  },
+  {
+   "serviceId": "roblox",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-450",
+     "name": "Premium 450",
+     "amountMinor": 499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-1000",
+     "name": "Premium 1000",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-2200",
+     "name": "Premium 2200",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/gb/app/id431946152?l=en-GB",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items, so tiers outside that list can't be read there."
+  },
+  {
+   "serviceId": "discord-nitro",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "nitro",
+     "name": "Nitro",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "basic",
+     "name": "Nitro Basic",
+     "amountMinor": 299,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/us/app/id985746746",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items, so tiers outside that list can't be read there. discord.com/nitro shows no prices (Discord's help page says prices vary by location and are tested). Nitro yearly isn't in the App Store list. Nitro + Boost bundles and Server Boosts are add-ons, left out."
+  },
+  {
+   "serviceId": "discord-nitro",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "nitro",
+     "name": "Nitro",
+     "amountMinor": 899,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "basic",
+     "name": "Nitro Basic",
+     "amountMinor": 249,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/gb/app/id985746746?l=en-GB",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items, so tiers outside that list can't be read there. Uses the items named \"Nitro Monthly\" and \"Nitro Basic Monthly\"; the list also has \"Nitro (1 Month)\" £9.99 and \"Nitro Basic (1 Month)\" £2.99, which look like one-month passes. Nitro yearly isn't in the list."
+  },
+  {
+   "serviceId": "snapchat-plus",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Snapchat+ (monthly)",
+     "amountMinor": 499,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/us/app/id447188370",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items, so tiers outside that list can't be read there. Snapchat Platinum and Lens+ exist (help.snapchat.com) but no official page or App Store list we could read shows their price, so they're missing."
+  },
+  {
+   "serviceId": "snapchat-plus",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Snapchat+ (monthly)",
+     "amountMinor": 499,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/gb/app/id447188370?l=en-GB",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items, so tiers outside that list can't be read there. Snapchat Platinum and Lens+ exist but no official page or App Store list we could read shows their price, so they're missing."
+  },
+  {
+   "serviceId": "strava",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 1199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 7999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family (yearly, 4 accounts)",
+     "amountMinor": 13999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "student",
+     "name": "Student (yearly)",
+     "amountMinor": 3999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "strava-runna",
+     "name": "Strava + Runna (yearly)",
+     "amountMinor": 14999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.strava.com/subscribe",
+   "checked": "2026-11-15",
+   "note": "Now read from Strava's own page (Annual and Monthly toggle). Family, Student (verified students, 50% off) and Strava + Runna are annual only. Regular prices after the 30-day trial. Excludes tax."
+  },
+  {
+   "serviceId": "strava",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 5499,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family (yearly)",
+     "amountMinor": 9999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "strava-runna",
+     "name": "Strava + Runna (yearly)",
+     "amountMinor": 12499,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/gb/app/id426826309?l=en-GB",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items, so tiers outside that list can't be read there. strava.com/subscribe picks the country from the visitor's IP, so the UK website couldn't be read. Names in the list: \"Strava Subscription\" £8.99 and £54.99 (lower = monthly, higher = yearly), \"Strava Family Plan Subscription\" £99.99, \"Strava + Runna Subscription\" £124.99 (the US website sells both of these as annual only). The list also has unnamed \"1 Month\" £5.99 and \"1 Year\" £59.99 items we can't place, so they're left out. Student isn't in the list."
+  },
+  {
+   "serviceId": "headspace",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "student",
+     "name": "Student (yearly)",
+     "amountMinor": 999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family",
+     "name": "Family (yearly, 6 accounts)",
+     "amountMinor": 9999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.headspace.com/subscriptions",
+   "checked": "2026-11-15",
+   "note": "Now read from Headspace's own page (before: App Store, same monthly/yearly prices). Yearly is $69.99 after the 50%-off first year. Student and Family prices read after tapping \"View Student Pricing\" and \"View Family Pricing\" on the same page."
+  },
+  {
+   "serviceId": "oura",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://ouraring.com/membership",
+   "checked": "2026-11-15",
+   "note": "Footnote: \"$5.99 USD/month or $69.99 USD/annually before tax for US members\". First month free."
+  },
+  {
+   "serviceId": "oura",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://ouraring.com/membership",
+   "checked": "2026-11-15",
+   "note": "Footnote: \"£5.99/month or £69.99/annually after tax for UK members\"."
+  },
+  {
+   "serviceId": "peloton",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "app-one",
+     "name": "App One (monthly)",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "app-plus",
+     "name": "App+ (monthly)",
+     "amountMinor": 2899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "app-one-yearly",
+     "name": "App One (yearly)",
+     "amountMinor": 12900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "app-plus-yearly",
+     "name": "App+ (yearly)",
+     "amountMinor": 28900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "all-access",
+     "name": "All-Access Membership (with Peloton equipment)",
+     "amountMinor": 4999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.onepeloton.com/app",
+   "checked": "2026-11-15",
+   "note": "Now read from Peloton's own page (before: App Store, where App One is $15.99/mo and $159/yr). Monthly and Annual toggle. All-Access is for people who own a Peloton Bike, Tread or Row; the page states its price ($49.99/mo). Regular prices after the 30-day trial."
+  },
+  {
+   "serviceId": "peloton",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "app-one",
+     "name": "App One (monthly)",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "app-plus",
+     "name": "App+ (monthly)",
+     "amountMinor": 2899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "app-one-yearly",
+     "name": "App One (yearly)",
+     "amountMinor": 12900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "app-plus-yearly",
+     "name": "App+ (yearly)",
+     "amountMinor": 28900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "all-access",
+     "name": "All-Access Membership (with Peloton equipment)",
+     "amountMinor": 4500,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.onepeloton.com/en-GB/app",
+   "checked": "2026-11-15",
+   "note": "Now read from Peloton's own UK page (same amounts as the App Store). Monthly and Annual toggle. All-Access is for people who own a Peloton Bike or Tread; the page states £45/mo. Regular prices after the trial."
+  },
+  {
+   "serviceId": "babbel",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "all-monthly",
+     "name": "All Languages (1 month)",
+     "amountMinor": 1795,
+     "cycle": "monthly"
+    },
+    {
+     "id": "all-quarterly",
+     "name": "All Languages (3 months)",
+     "amountMinor": 4575,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "all-yearly",
+     "name": "All Languages (12 months)",
+     "amountMinor": 10740,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "group",
+     "name": "Group, up to 6 users (1 month)",
+     "amountMinor": 3095,
+     "cycle": "monthly"
+    },
+    {
+     "id": "group-yearly",
+     "name": "Group, up to 6 users (12 months)",
+     "amountMinor": 18570,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://my.babbel.com/en/prices",
+   "checked": "2026-11-15",
+   "note": "Now read from Babbel's own price page (before: App Store, $107.99/yr). Individual plans cover all 14 languages; \"Show all plans\" adds 1, 3 and 6 months. The 6-month plan ($80.70) is left out because Ditch has no 6-month cycle, and Lifetime ($299.99 one-time) isn't a subscription. Group Plans tab: up to 6 users. Babbel shows the 12-month price as \"Save 50%\" against 12 x the monthly price; that's the normal 12-month price, not a time-limited sale."
+  },
+  {
+   "serviceId": "babbel",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "all-yearly",
+     "name": "All Languages (12 months)",
+     "amountMinor": 8999,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/gb/app/id829587759?l=en-GB",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items, so tiers outside that list can't be read there. Babbel's price page showed US dollars to our US browser, so UK website prices couldn't be read. The App Store list also has single-language plans (e.g. Spanish 1 month £16.99, Spanish 1 year £77.99, 3-month £38.99) that don't match the all-language plans, so they're left out."
+  },
+  {
+   "serviceId": "masterclass",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual (yearly)",
+     "amountMinor": 11999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Duo (yearly)",
+     "amountMinor": 17999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family",
+     "name": "Family (yearly)",
+     "amountMinor": 23999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/us/app/id1273867416",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items, so tiers outside that list can't be read there. masterclass.com/plans returns 403 to our browser."
+  },
+  {
+   "serviceId": "masterclass",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual (yearly)",
+     "amountMinor": 11999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Duo (yearly)",
+     "amountMinor": 17999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family",
+     "name": "Family (yearly)",
+     "amountMinor": 22999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/gb/app/id1273867416?l=en-GB",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items, so tiers outside that list can't be read there. masterclass.com/plans returns 403 to our browser. Uses \"MasterClass Duo\" and \"MasterClass Family\"; the \"(Free Upgrade)\" items (£169.99, £209.99) are upgrade offers."
+  },
+  {
+   "serviceId": "nyt",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "all-access",
+     "name": "All Access (monthly)",
+     "amountMinor": 2999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "basic",
+     "name": "Basic (monthly)",
+     "amountMinor": 2499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "games",
+     "name": "Games (monthly)",
+     "amountMinor": 499,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/us/app/id284862083",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Apple shows at most 10 items, so tiers outside that list can't be read there. nytimes.com bills every 4 weeks, which Ditch can't store, so this row keeps the App Store monthly prices. For reference, nytimes.com/subscription today: All Access $30 every 4 weeks, All Access Family (1-4 people) $34 every 4 weeks; nytimes.com/subscription/games: Games $6 every 4 weeks or $50/year, Games Family $10 every 4 weeks or $80/year; nytimes.com/subscription/cooking: Cooking $6 every 4 weeks or $50/year (all regular prices after intro offers). Cooking is sold in a separate app, so it isn't in this list. The App Store list also has \"News - Monthly\" at both $21.99 and $24.99, so News is left out."
+  },
+  {
+   "serviceId": "economist",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "annual",
+     "name": "Premium (yearly)",
+     "amountMinor": 28900,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://www.economist.com/subscribe?country=US",
+   "checked": "2026-11-15",
+   "note": "Regular yearly price after the Black Friday first-year discount ($115.60). The 4-week plan ($29 every 4 weeks) is left out because Ditch has no 4-week cycle. Premium + Print couldn't be read (the tab didn't switch for our browser)."
+  },
+  {
+   "serviceId": "economist",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 2790,
+     "cycle": "monthly"
+    },
+    {
+     "id": "annual",
+     "name": "Premium (yearly)",
+     "amountMinor": 27900,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://www.economist.com/subscribe?country=GB",
+   "checked": "2026-11-15",
+   "note": "Now read from The Economist's own UK page (before: App Store, same amounts). Regular prices: £279 a year after the Black Friday first-year price (£111.60); £27.90 a month after the free first month. Premium + Print not read."
+  },
+  {
+   "serviceId": "uber-one",
+   "country": "US",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 9600,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.ubereats.com/membership",
+   "checked": "2026-11-15",
+   "note": "Uber's own Uber One page on ubereats.com: \"$9.99/mo or $96/yr\". uber.com/us/en/uber-one/ shows only the monthly price. Excludes tax."
+  },
+  {
+   "serviceId": "uber-one",
+   "country": "GB",
+   "currency": "GBP",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 4999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.uber.com/gb/en/uber-one/",
+   "checked": "2026-11-15",
+   "note": "\"Sign up now for just £4.99/month or £49.99/year.\" Same on https://www.ubereats.com/gb/membership."
   },
   {
    "serviceId": "netflix",

@@ -10,7 +10,7 @@ export type FactRow = { label: string; a: string; b: string };
  * the label on top, the two answers next to each other underneath.
  */
 export function WhatYouGet({ title, heads, rows, note }: { title: string; heads: [Head, Head]; rows: FactRow[]; note: string }) {
-  const na = (v: string) => !v || /^not stated$/i.test(v.trim());
+  const na = (v: string) => !v || /^not (stated|listed)\b/i.test(v.trim());
   return (
     <section className="v4-sec wyg" aria-labelledby="wyg-h">
       <h2 id="wyg-h">{title}</h2>

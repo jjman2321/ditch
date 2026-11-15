@@ -1,0 +1,1595 @@
+{
+ "checkedOn": "2026-11-15",
+ "pairs": [
+  {
+   "slug": "chatgpt-vs-claude",
+   "kind": "vs",
+   "a": "chatgpt-plus",
+   "b": "claude-pro",
+   "ap": "plus",
+   "bp": "monthly",
+   "name": "ChatGPT vs Claude",
+   "rows": [
+    {
+     "label": "Usage, in the company's words",
+     "a": "Expanded messages and uploads",
+     "b": "At least 5x Free usage per 5-hour session",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://claude.com/pricing"
+    },
+    {
+     "label": "Models",
+     "a": "GPT-6 Astra, GPT-6 Sol, GPT-6.1 Sol and more",
+     "b": "Opus, Sonnet, Haiku; Fable via usage credits",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://claude.com/pricing"
+    },
+    {
+     "label": "Deep research",
+     "a": "Expanded deep research",
+     "b": "Research included",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://claude.com/pricing"
+    },
+    {
+     "label": "Image creation",
+     "a": "More complex and accurate image creation",
+     "b": "Not stated",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://claude.com/pricing"
+    },
+    {
+     "label": "Coding tool",
+     "a": "Codex, expanded usage",
+     "b": "Claude Code included",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://claude.com/pricing"
+    },
+    {
+     "label": "Apps",
+     "a": "Web, iOS and Android",
+     "b": "Web, iOS, Android and desktop",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://claude.com/pricing"
+    },
+    {
+     "label": "Yearly billing",
+     "a": "Monthly only (annual is for Business/Enterprise)",
+     "b": "Monthly or annual",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://claude.com/pricing"
+    },
+    {
+     "label": "Sharing",
+     "a": "For individuals; Business plan from 2 users",
+     "b": "Individual; separate Team plan for 2 to 150",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://claude.com/pricing"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is ChatGPT Plus or Claude Pro cheaper?",
+     "a": "ChatGPT Plus is $19.99 a month in the US iPhone app. Claude Pro is $20 a month or $200 a year on claude.com.",
+     "source": "prices-2026-11.json (US row): https://apps.apple.com/us/app/id6448311069; https://claude.com/pricing"
+    },
+    {
+     "q": "Do ChatGPT Plus and Claude Pro include a coding tool?",
+     "a": "Yes. Plus includes Codex with expanded usage, and Claude Pro includes Claude Code, which shares one usage pool with your chats.",
+     "source": "https://chatgpt.com/pricing; https://claude.com/pricing"
+    },
+    {
+     "q": "Can I share ChatGPT Plus or Claude Pro with someone?",
+     "a": "Both are personal plans. OpenAI says Plus is for individuals (Business starts at 2 users), and Claude sells a separate Team plan for 2 to 150 people.",
+     "source": "https://chatgpt.com/pricing; https://claude.com/pricing"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "ChatGPT's pricing page didn't show prices in our browser; ChatGPT prices in the FAQ are the US App Store prices from prices-2026-11.json."
+   ]
+  },
+  {
+   "slug": "chatgpt-vs-gemini",
+   "kind": "vs",
+   "a": "chatgpt-plus",
+   "b": "google-ai-pro",
+   "ap": "plus",
+   "bp": "pro",
+   "name": "ChatGPT vs Gemini",
+   "rows": [
+    {
+     "label": "Usage, in the company's words",
+     "a": "Expanded messages and uploads",
+     "b": "4x higher usage than Free",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://gemini.google/subscriptions/"
+    },
+    {
+     "label": "Models",
+     "a": "GPT-6 Astra, GPT-6 Sol, GPT-6.1 Sol and more",
+     "b": "Gemini 4 Argon, Gemini 4 Hydrogen, Pro model",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://gemini.google/subscriptions/"
+    },
+    {
+     "label": "Deep research",
+     "a": "Expanded deep research",
+     "b": "Expanded access to Deep Research",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://one.google.com/about/google-ai-plans/"
+    },
+    {
+     "label": "Image creation",
+     "a": "More complex and accurate image creation",
+     "b": "Expanded image generation and editing",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://one.google.com/about/google-ai-plans/"
+    },
+    {
+     "label": "Video creation",
+     "a": "Not stated",
+     "b": "Video generation; 1,000 Google Flow credits",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://gemini.google/subscriptions/"
+    },
+    {
+     "label": "Cloud storage",
+     "a": "Not stated",
+     "b": "5 TB cloud storage",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://gemini.google/subscriptions/"
+    },
+    {
+     "label": "Yearly billing",
+     "a": "Monthly only (annual is for Business/Enterprise)",
+     "b": "Monthly or annual",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://one.google.com/about/google-ai-plans/"
+    },
+    {
+     "label": "Sharing",
+     "a": "For individuals; Business plan from 2 users",
+     "b": "Family sharing with up to 5 others, AI included",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://one.google.com/about/google-ai-plans/"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is ChatGPT Plus or Google AI Pro cheaper?",
+     "a": "ChatGPT Plus is $19.99 a month in the US iPhone app. Google AI Pro is $19.99 a month in the US iPhone app (Google One also lists $199.99 a year).",
+     "source": "prices-2026-11.json (US row): https://apps.apple.com/us/app/id6448311069; https://apps.apple.com/us/app/id6477489729; https://one.google.com/about/google-ai-plans/"
+    },
+    {
+     "q": "Can ChatGPT Plus and Google AI Pro both make images?",
+     "a": "Yes. ChatGPT lists \"more complex and accurate image creation\" for Plus. Google AI Pro lists expanded image generation and editing, plus video generation.",
+     "source": "https://chatgpt.com/pricing; https://one.google.com/about/google-ai-plans/; https://gemini.google/subscriptions/"
+    },
+    {
+     "q": "What else comes with Google AI Pro?",
+     "a": "Google lists 5 TB of storage, Gemini in Gmail and Docs, YouTube Premium Lite and family sharing with up to 5 others. ChatGPT's pricing page lists no storage or family sharing for Plus.",
+     "source": "https://gemini.google/subscriptions/; https://one.google.com/about/google-ai-plans/; https://chatgpt.com/pricing"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "ChatGPT's pricing page didn't show prices in our browser; ChatGPT prices in the FAQ are the US App Store prices from prices-2026-11.json."
+   ]
+  },
+  {
+   "slug": "claude-vs-gemini",
+   "kind": "vs",
+   "a": "claude-pro",
+   "b": "google-ai-pro",
+   "ap": "monthly",
+   "bp": "pro",
+   "name": "Claude vs Gemini",
+   "rows": [
+    {
+     "label": "Usage, in the company's words",
+     "a": "At least 5x Free usage per 5-hour session",
+     "b": "4x higher usage than Free",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://gemini.google/subscriptions/"
+    },
+    {
+     "label": "Models",
+     "a": "Opus, Sonnet, Haiku; Fable via usage credits",
+     "b": "Gemini 4 Argon, Gemini 4 Hydrogen, Pro model",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://gemini.google/subscriptions/"
+    },
+    {
+     "label": "Deep research",
+     "a": "Research included",
+     "b": "Expanded access to Deep Research",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://one.google.com/about/google-ai-plans/"
+    },
+    {
+     "label": "Image creation",
+     "a": "Not stated",
+     "b": "Expanded image generation and editing",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://one.google.com/about/google-ai-plans/"
+    },
+    {
+     "label": "Video creation",
+     "a": "Not stated",
+     "b": "Video generation; 1,000 Google Flow credits",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://gemini.google/subscriptions/"
+    },
+    {
+     "label": "Cloud storage",
+     "a": "Not stated",
+     "b": "5 TB cloud storage",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://gemini.google/subscriptions/"
+    },
+    {
+     "label": "Yearly billing",
+     "a": "Monthly or annual",
+     "b": "Monthly or annual",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://one.google.com/about/google-ai-plans/"
+    },
+    {
+     "label": "Sharing",
+     "a": "Individual; separate Team plan for 2 to 150",
+     "b": "Family sharing with up to 5 others, AI included",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://one.google.com/about/google-ai-plans/"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Claude Pro or Google AI Pro cheaper?",
+     "a": "Claude Pro is $20 a month or $200 a year on claude.com. Google AI Pro is $19.99 a month in the US iPhone app (Google One also lists $199.99 a year).",
+     "source": "prices-2026-11.json (US row): https://claude.com/pricing; https://apps.apple.com/us/app/id6477489729; https://one.google.com/about/google-ai-plans/"
+    },
+    {
+     "q": "Do Claude Pro and Google AI Pro include coding tools?",
+     "a": "Claude Pro includes Claude Code. Google AI Pro includes entry rate limits in Google Antigravity, Google's agentic development platform.",
+     "source": "https://claude.com/pricing; https://gemini.google/subscriptions/"
+    },
+    {
+     "q": "Can I share Claude Pro or Google AI Pro with family?",
+     "a": "Google AI Pro has family sharing with up to 5 others, and family members get the AI benefits too. Claude Pro is a personal plan; Claude sells a separate Team plan.",
+     "source": "https://one.google.com/about/google-ai-plans/; https://claude.com/pricing"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": []
+  },
+  {
+   "slug": "chatgpt-vs-perplexity",
+   "kind": "vs",
+   "a": "chatgpt-plus",
+   "b": "perplexity",
+   "ap": "plus",
+   "bp": "pro",
+   "name": "ChatGPT vs Perplexity",
+   "rows": [
+    {
+     "label": "Usage, in the company's words",
+     "a": "Expanded messages and uploads",
+     "b": "Extended Pro Search (Free: 3 a day)",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://www.perplexity.ai/help-center/en/articles/11187416-which-perplexity-subscription-plan-is-right-for-you"
+    },
+    {
+     "label": "Models",
+     "a": "GPT-6 Astra, GPT-6 Sol, GPT-6.1 Sol and more",
+     "b": "GPT-6.1 Sol, Claude Sonnet 5.5, Gemini 4 Hydrogen, more",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://www.perplexity.ai/pro"
+    },
+    {
+     "label": "Deep research",
+     "a": "Expanded deep research",
+     "b": "Extended access to Perplexity Research",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://www.perplexity.ai/help-center/en/articles/10352901-what-is-perplexity-pro"
+    },
+    {
+     "label": "Image creation",
+     "a": "More complex and accurate image creation",
+     "b": "Enhanced image generation",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://www.perplexity.ai/help-center/en/articles/10352901-what-is-perplexity-pro"
+    },
+    {
+     "label": "Video creation",
+     "a": "Not stated",
+     "b": "Limited access to video generation",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://www.perplexity.ai/help-center/en/articles/10352901-what-is-perplexity-pro"
+    },
+    {
+     "label": "Apps",
+     "a": "Web, iOS and Android",
+     "b": "Web and mobile app subscriptions",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://www.perplexity.ai/help-center/en/articles/10352901-what-is-perplexity-pro"
+    },
+    {
+     "label": "Yearly billing",
+     "a": "Monthly only (annual is for Business/Enterprise)",
+     "b": "Monthly or billed annually",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://www.perplexity.ai/pro"
+    },
+    {
+     "label": "Sharing",
+     "a": "For individuals; Business plan from 2 users",
+     "b": "For personal use only",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://www.perplexity.ai/pro"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is ChatGPT Plus or Perplexity Pro cheaper?",
+     "a": "ChatGPT Plus is $19.99 a month in the US iPhone app. Perplexity Pro is $20 a month or $200 a year in the US iPhone app.",
+     "source": "prices-2026-11.json (US row): https://apps.apple.com/us/app/id6448311069; https://apps.apple.com/us/app/id1668000334"
+    },
+    {
+     "q": "Does Perplexity Pro include ChatGPT's models?",
+     "a": "Perplexity's Pro page lists OpenAI's GPT-6.1 Sol next to Claude, Gemini and Grok models. ChatGPT Plus includes GPT-6 Astra, GPT-6 Sol and GPT-6.1 Sol.",
+     "source": "https://www.perplexity.ai/pro; https://chatgpt.com/pricing"
+    },
+    {
+     "q": "Do both have deep research?",
+     "a": "Yes. ChatGPT Plus has \"expanded deep research\". Perplexity Pro has extended access to Perplexity Research, with monthly limits.",
+     "source": "https://chatgpt.com/pricing; https://www.perplexity.ai/help-center/en/articles/11187416-which-perplexity-subscription-plan-is-right-for-you"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "ChatGPT's pricing page didn't show prices in our browser; ChatGPT prices in the FAQ are the US App Store prices from prices-2026-11.json.",
+    "Perplexity's Pro page lists Gemini 4 Hydrogen, Grok 4.7, Kimi K3 and GLM 5.3; its Pro help article (updated Nov 12) lists Gemini 3.8 Flash instead. Models row follows the Pro page."
+   ]
+  },
+  {
+   "slug": "claude-vs-perplexity",
+   "kind": "vs",
+   "a": "claude-pro",
+   "b": "perplexity",
+   "ap": "monthly",
+   "bp": "pro",
+   "name": "Claude vs Perplexity",
+   "rows": [
+    {
+     "label": "Usage, in the company's words",
+     "a": "At least 5x Free usage per 5-hour session",
+     "b": "Extended Pro Search (Free: 3 a day)",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://www.perplexity.ai/help-center/en/articles/11187416-which-perplexity-subscription-plan-is-right-for-you"
+    },
+    {
+     "label": "Models",
+     "a": "Opus, Sonnet, Haiku; Fable via usage credits",
+     "b": "GPT-6.1 Sol, Claude Sonnet 5.5, Gemini 4 Hydrogen, more",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://www.perplexity.ai/pro"
+    },
+    {
+     "label": "Deep research",
+     "a": "Research included",
+     "b": "Extended access to Perplexity Research",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://www.perplexity.ai/help-center/en/articles/10352901-what-is-perplexity-pro"
+    },
+    {
+     "label": "Image creation",
+     "a": "Not stated",
+     "b": "Enhanced image generation",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://www.perplexity.ai/help-center/en/articles/10352901-what-is-perplexity-pro"
+    },
+    {
+     "label": "Video creation",
+     "a": "Not stated",
+     "b": "Limited access to video generation",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://www.perplexity.ai/help-center/en/articles/10352901-what-is-perplexity-pro"
+    },
+    {
+     "label": "Apps",
+     "a": "Web, iOS, Android and desktop",
+     "b": "Web and mobile app subscriptions",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://www.perplexity.ai/help-center/en/articles/10352901-what-is-perplexity-pro"
+    },
+    {
+     "label": "Yearly billing",
+     "a": "Monthly or annual",
+     "b": "Monthly or billed annually",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://www.perplexity.ai/pro"
+    },
+    {
+     "label": "Sharing",
+     "a": "Individual; separate Team plan for 2 to 150",
+     "b": "For personal use only",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://www.perplexity.ai/pro"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Claude Pro or Perplexity Pro cheaper?",
+     "a": "Claude Pro is $20 a month or $200 a year on claude.com. Perplexity Pro is $20 a month or $200 a year in the US iPhone app.",
+     "source": "prices-2026-11.json (US row): https://claude.com/pricing; https://apps.apple.com/us/app/id1668000334"
+    },
+    {
+     "q": "Does Perplexity Pro include Claude?",
+     "a": "Yes, Claude Sonnet 5.5. Perplexity keeps Claude Opus 5.5 for Max users. Claude Pro itself includes Opus, Sonnet and Haiku.",
+     "source": "https://www.perplexity.ai/help-center/en/articles/10352901-what-is-perplexity-pro; https://claude.com/pricing"
+    },
+    {
+     "q": "Which one is built for research with sources?",
+     "a": "Claude Pro includes Research. Perplexity Pro has extended Research access, and Perplexity says every answer includes inline citations.",
+     "source": "https://claude.com/pricing; https://www.perplexity.ai/pro"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "Perplexity's Pro page lists Gemini 4 Hydrogen, Grok 4.7, Kimi K3 and GLM 5.3; its Pro help article (updated Nov 12) lists Gemini 3.8 Flash instead. Models row follows the Pro page."
+   ]
+  },
+  {
+   "slug": "gemini-vs-perplexity",
+   "kind": "vs",
+   "a": "google-ai-pro",
+   "b": "perplexity",
+   "ap": "pro",
+   "bp": "pro",
+   "name": "Gemini vs Perplexity",
+   "rows": [
+    {
+     "label": "Usage, in the company's words",
+     "a": "4x higher usage than Free",
+     "b": "Extended Pro Search (Free: 3 a day)",
+     "sourceA": "https://gemini.google/subscriptions/",
+     "sourceB": "https://www.perplexity.ai/help-center/en/articles/11187416-which-perplexity-subscription-plan-is-right-for-you"
+    },
+    {
+     "label": "Models",
+     "a": "Gemini 4 Argon, Gemini 4 Hydrogen, Pro model",
+     "b": "GPT-6.1 Sol, Claude Sonnet 5.5, Gemini 4 Hydrogen, more",
+     "sourceA": "https://gemini.google/subscriptions/",
+     "sourceB": "https://www.perplexity.ai/pro"
+    },
+    {
+     "label": "Deep research",
+     "a": "Expanded access to Deep Research",
+     "b": "Extended access to Perplexity Research",
+     "sourceA": "https://one.google.com/about/google-ai-plans/",
+     "sourceB": "https://www.perplexity.ai/help-center/en/articles/10352901-what-is-perplexity-pro"
+    },
+    {
+     "label": "Image creation",
+     "a": "Expanded image generation and editing",
+     "b": "Enhanced image generation",
+     "sourceA": "https://one.google.com/about/google-ai-plans/",
+     "sourceB": "https://www.perplexity.ai/help-center/en/articles/10352901-what-is-perplexity-pro"
+    },
+    {
+     "label": "Video creation",
+     "a": "Video generation; 1,000 Google Flow credits",
+     "b": "Limited access to video generation",
+     "sourceA": "https://gemini.google/subscriptions/",
+     "sourceB": "https://www.perplexity.ai/help-center/en/articles/10352901-what-is-perplexity-pro"
+    },
+    {
+     "label": "Cloud storage",
+     "a": "5 TB cloud storage",
+     "b": "Not stated",
+     "sourceA": "https://gemini.google/subscriptions/",
+     "sourceB": "https://www.perplexity.ai/pro"
+    },
+    {
+     "label": "Yearly billing",
+     "a": "Monthly or annual",
+     "b": "Monthly or billed annually",
+     "sourceA": "https://one.google.com/about/google-ai-plans/",
+     "sourceB": "https://www.perplexity.ai/pro"
+    },
+    {
+     "label": "Sharing",
+     "a": "Family sharing with up to 5 others, AI included",
+     "b": "For personal use only",
+     "sourceA": "https://one.google.com/about/google-ai-plans/",
+     "sourceB": "https://www.perplexity.ai/pro"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Google AI Pro or Perplexity Pro cheaper?",
+     "a": "Google AI Pro is $19.99 a month in the US iPhone app (Google One also lists $199.99 a year). Perplexity Pro is $20 a month or $200 a year in the US iPhone app.",
+     "source": "prices-2026-11.json (US row): https://apps.apple.com/us/app/id6477489729; https://one.google.com/about/google-ai-plans/; https://apps.apple.com/us/app/id1668000334"
+    },
+    {
+     "q": "How do Gemini and Perplexity deep research limits compare?",
+     "a": "Gemini's free plan already includes Deep Research and Google AI Pro expands it. Perplexity Free gets 1 Research query a month; Pro gets monthly limits for average use.",
+     "source": "https://gemini.google/subscriptions/; https://one.google.com/about/google-ai-plans/; https://www.perplexity.ai/help-center/en/articles/11187416-which-perplexity-subscription-plan-is-right-for-you"
+    },
+    {
+     "q": "Does Perplexity Pro include Gemini?",
+     "a": "Perplexity's Pro page lists Gemini 4 Hydrogen among its models. Google AI Pro includes Gemini 4 Argon and Gemini 4 Hydrogen in the Gemini app.",
+     "source": "https://www.perplexity.ai/pro; https://gemini.google/subscriptions/"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "Perplexity's Pro page lists Gemini 4 Hydrogen, Grok 4.7, Kimi K3 and GLM 5.3; its Pro help article (updated Nov 12) lists Gemini 3.8 Flash instead. Models row follows the Pro page."
+   ]
+  },
+  {
+   "slug": "chatgpt-vs-grok",
+   "kind": "vs",
+   "a": "chatgpt-plus",
+   "b": "grok",
+   "ap": "plus",
+   "bp": "supergrok",
+   "name": "ChatGPT vs Grok",
+   "rows": [
+    {
+     "label": "Usage, in the company's words",
+     "a": "Expanded messages and uploads",
+     "b": "Premium: 4x more usage than Plus",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Models",
+     "a": "GPT-6 Astra, GPT-6 Sol, GPT-6.1 Sol and more",
+     "b": "Latest Grok models",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Deep research",
+     "a": "Expanded deep research",
+     "b": "Not stated",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Image creation",
+     "a": "More complex and accurate image creation",
+     "b": "Make AI images (Grok Imagine)",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Video creation",
+     "a": "Not stated",
+     "b": "Make AI videos; 1080p 15s videos need Super",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Apps",
+     "a": "Web, iOS and Android",
+     "b": "Web, iOS and Android",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://x.ai/grok"
+    },
+    {
+     "label": "Yearly billing",
+     "a": "Monthly only (annual is for Business/Enterprise)",
+     "b": "Monthly or annual",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://docs.x.ai/x-subscription/pricing"
+    },
+    {
+     "label": "Sharing",
+     "a": "For individuals; Business plan from 2 users",
+     "b": "Team seats on Premium; no family plan stated",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://docs.x.ai/x-subscription/pricing"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is ChatGPT Plus or SuperGrok cheaper?",
+     "a": "ChatGPT Plus is $19.99 a month in the US iPhone app. SuperGrok is $30 a month in the US iPhone app.",
+     "source": "prices-2026-11.json (US row): https://apps.apple.com/us/app/id6448311069; https://apps.apple.com/us/app/id6670324846"
+    },
+    {
+     "q": "Can ChatGPT Plus and Grok make images?",
+     "a": "Yes. Plus lists \"more complex and accurate image creation\". xAI's Premium plan lists AI images and videos; 1080p 15-second videos come with Super.",
+     "source": "https://chatgpt.com/pricing; https://x.ai/pricing"
+    },
+    {
+     "q": "What is Grok Bot and does ChatGPT have one?",
+     "a": "Grok Bot gives you AI teammates on a cloud computer and comes with Premium, Super and Ultra. ChatGPT's always-on agent, Dot, is a Pro feature, not Plus.",
+     "source": "https://docs.x.ai/x-subscription/pricing; https://docs.x.ai/grok/faq; https://chatgpt.com/pricing"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "ChatGPT's pricing page didn't show prices in our browser; ChatGPT prices in the FAQ are the US App Store prices from prices-2026-11.json.",
+    "Grok side: xAI's website now sells The X Subscription (Plus, Premium, Super, Ultra). New web customers can't buy \"SuperGrok\" any more (\"Existing ... SuperGrok ... plans continue\", docs.x.ai/x-subscription/pricing), but the US App Store still sells \"SuperGrok\" at $30. Grok facts here are for Premium, the $30 web plan; xAI doesn't say SuperGrok and Premium are the same plan. Consider a new grok plan id \"premium\"."
+   ]
+  },
+  {
+   "slug": "claude-vs-grok",
+   "kind": "vs",
+   "a": "claude-pro",
+   "b": "grok",
+   "ap": "monthly",
+   "bp": "supergrok",
+   "name": "Claude vs Grok",
+   "rows": [
+    {
+     "label": "Usage, in the company's words",
+     "a": "At least 5x Free usage per 5-hour session",
+     "b": "Premium: 4x more usage than Plus",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Models",
+     "a": "Opus, Sonnet, Haiku; Fable via usage credits",
+     "b": "Latest Grok models",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Deep research",
+     "a": "Research included",
+     "b": "Not stated",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Image creation",
+     "a": "Not stated",
+     "b": "Make AI images (Grok Imagine)",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Video creation",
+     "a": "Not stated",
+     "b": "Make AI videos; 1080p 15s videos need Super",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Apps",
+     "a": "Web, iOS, Android and desktop",
+     "b": "Web, iOS and Android",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://x.ai/grok"
+    },
+    {
+     "label": "Yearly billing",
+     "a": "Monthly or annual",
+     "b": "Monthly or annual",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://docs.x.ai/x-subscription/pricing"
+    },
+    {
+     "label": "Sharing",
+     "a": "Individual; separate Team plan for 2 to 150",
+     "b": "Team seats on Premium; no family plan stated",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://docs.x.ai/x-subscription/pricing"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Claude Pro or SuperGrok cheaper?",
+     "a": "Claude Pro is $20 a month or $200 a year on claude.com. SuperGrok is $30 a month in the US iPhone app.",
+     "source": "prices-2026-11.json (US row): https://claude.com/pricing; https://apps.apple.com/us/app/id6670324846"
+    },
+    {
+     "q": "Do Claude and Grok include coding tools?",
+     "a": "Claude Pro includes Claude Code. xAI's plans include Grok Build, and Premium adds code hosting and AI code reviews, with usage shared with Cursor.",
+     "source": "https://claude.com/pricing; https://x.ai/pricing"
+    },
+    {
+     "q": "Can Claude Pro or Grok run tasks for me?",
+     "a": "Claude Pro lists \"Hand off and schedule tasks\". xAI includes Grok Bot, AI teammates on a cloud computer, on Premium, Super and Ultra.",
+     "source": "https://claude.com/pricing; https://docs.x.ai/x-subscription/pricing"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "Grok side: xAI's website now sells The X Subscription (Plus, Premium, Super, Ultra). New web customers can't buy \"SuperGrok\" any more (\"Existing ... SuperGrok ... plans continue\", docs.x.ai/x-subscription/pricing), but the US App Store still sells \"SuperGrok\" at $30. Grok facts here are for Premium, the $30 web plan; xAI doesn't say SuperGrok and Premium are the same plan. Consider a new grok plan id \"premium\"."
+   ]
+  },
+  {
+   "slug": "gemini-vs-grok",
+   "kind": "vs",
+   "a": "google-ai-pro",
+   "b": "grok",
+   "ap": "pro",
+   "bp": "supergrok",
+   "name": "Gemini vs Grok",
+   "rows": [
+    {
+     "label": "Usage, in the company's words",
+     "a": "4x higher usage than Free",
+     "b": "Premium: 4x more usage than Plus",
+     "sourceA": "https://gemini.google/subscriptions/",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Models",
+     "a": "Gemini 4 Argon, Gemini 4 Hydrogen, Pro model",
+     "b": "Latest Grok models",
+     "sourceA": "https://gemini.google/subscriptions/",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Deep research",
+     "a": "Expanded access to Deep Research",
+     "b": "Not stated",
+     "sourceA": "https://one.google.com/about/google-ai-plans/",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Image creation",
+     "a": "Expanded image generation and editing",
+     "b": "Make AI images (Grok Imagine)",
+     "sourceA": "https://one.google.com/about/google-ai-plans/",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Video creation",
+     "a": "Video generation; 1,000 Google Flow credits",
+     "b": "Make AI videos; 1080p 15s videos need Super",
+     "sourceA": "https://gemini.google/subscriptions/",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Cloud storage",
+     "a": "5 TB cloud storage",
+     "b": "Not stated",
+     "sourceA": "https://gemini.google/subscriptions/",
+     "sourceB": "https://x.ai/pricing"
+    },
+    {
+     "label": "Yearly billing",
+     "a": "Monthly or annual",
+     "b": "Monthly or annual",
+     "sourceA": "https://one.google.com/about/google-ai-plans/",
+     "sourceB": "https://docs.x.ai/x-subscription/pricing"
+    },
+    {
+     "label": "Sharing",
+     "a": "Family sharing with up to 5 others, AI included",
+     "b": "Team seats on Premium; no family plan stated",
+     "sourceA": "https://one.google.com/about/google-ai-plans/",
+     "sourceB": "https://docs.x.ai/x-subscription/pricing"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Google AI Pro or SuperGrok cheaper?",
+     "a": "Google AI Pro is $19.99 a month in the US iPhone app (Google One also lists $199.99 a year). SuperGrok is $30 a month in the US iPhone app.",
+     "source": "prices-2026-11.json (US row): https://apps.apple.com/us/app/id6477489729; https://one.google.com/about/google-ai-plans/; https://apps.apple.com/us/app/id6670324846"
+    },
+    {
+     "q": "Can Gemini and Grok make images and videos?",
+     "a": "Yes. Google AI Pro lists expanded image, music and video generation plus 1,000 Google Flow credits. xAI's Premium lists AI images and videos.",
+     "source": "https://one.google.com/about/google-ai-plans/; https://gemini.google/subscriptions/; https://x.ai/pricing"
+    },
+    {
+     "q": "Do Gemini and Grok include coding tools?",
+     "a": "Google AI Pro includes entry rate limits in Google Antigravity. xAI's Premium includes Grok Build, code hosting and AI code reviews.",
+     "source": "https://gemini.google/subscriptions/; https://x.ai/pricing"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "Grok side: xAI's website now sells The X Subscription (Plus, Premium, Super, Ultra). New web customers can't buy \"SuperGrok\" any more (\"Existing ... SuperGrok ... plans continue\", docs.x.ai/x-subscription/pricing), but the US App Store still sells \"SuperGrok\" at $30. Grok facts here are for Premium, the $30 web plan; xAI doesn't say SuperGrok and Premium are the same plan. Consider a new grok plan id \"premium\"."
+   ]
+  },
+  {
+   "slug": "chatgpt-vs-copilot",
+   "kind": "vs",
+   "a": "chatgpt-plus",
+   "b": "copilot-pro",
+   "ap": "plus",
+   "bp": "premium",
+   "name": "ChatGPT vs Copilot",
+   "rows": [
+    {
+     "label": "Usage, in the company's words",
+     "a": "Expanded messages and uploads",
+     "b": "Extensive AI usage (Personal/Family: higher than free)",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/premium"
+    },
+    {
+     "label": "Models",
+     "a": "GPT-6 Astra, GPT-6 Sol, GPT-6.1 Sol and more",
+     "b": "Not stated",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q"
+    },
+    {
+     "label": "Deep research",
+     "a": "Expanded deep research",
+     "b": "AI agents for source-cited research reports",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/premium"
+    },
+    {
+     "label": "Image creation",
+     "a": "More complex and accurate image creation",
+     "b": "Extensive usage to create AI images",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q"
+    },
+    {
+     "label": "Inside office apps",
+     "a": "Excel, Word, PowerPoint and Google Sheets extensions",
+     "b": "Copilot in Word, Excel, PowerPoint, Outlook",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q"
+    },
+    {
+     "label": "Cloud storage",
+     "a": "Not stated",
+     "b": "2 TB shared cloud storage",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q"
+    },
+    {
+     "label": "Yearly billing",
+     "a": "Monthly only (annual is for Business/Enterprise)",
+     "b": "Monthly or yearly",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q"
+    },
+    {
+     "label": "Sharing",
+     "a": "For individuals; Business plan from 2 users",
+     "b": "1 to 6 people (AI for owner only)",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is ChatGPT Plus or Microsoft 365 Premium cheaper?",
+     "a": "ChatGPT Plus is $19.99 a month in the US iPhone app. Microsoft 365 Premium is $19.99 a month or $199.99 a year in the US iPhone app.",
+     "source": "prices-2026-11.json (US row): https://apps.apple.com/us/app/id6448311069; https://apps.apple.com/us/app/id541164041"
+    },
+    {
+     "q": "Does Copilot come with Word and Excel?",
+     "a": "Microsoft 365 Premium includes Word, Excel, PowerPoint, Outlook and OneNote with Copilot, plus 2 TB of storage. ChatGPT Plus has extensions for Excel, Word, PowerPoint and Google Sheets.",
+     "source": "https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q; https://chatgpt.com/pricing"
+    },
+    {
+     "q": "Can ChatGPT Plus and Copilot make images?",
+     "a": "Yes. ChatGPT lists \"more complex and accurate image creation\" for Plus, and Microsoft lists \"extensive usage to create AI images\" for Premium.",
+     "source": "https://chatgpt.com/pricing; https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "ChatGPT's pricing page didn't show prices in our browser; ChatGPT prices in the FAQ are the US App Store prices from prices-2026-11.json.",
+    "Copilot side: microsoft.com/store/b/copilotpro now redirects to Microsoft 365 Premium, so facts are for Microsoft 365 Premium (our copilot-pro \"premium\" id). Microsoft's pages don't name the AI models."
+   ]
+  },
+  {
+   "slug": "claude-vs-copilot",
+   "kind": "vs",
+   "a": "claude-pro",
+   "b": "copilot-pro",
+   "ap": "monthly",
+   "bp": "premium",
+   "name": "Claude vs Copilot",
+   "rows": [
+    {
+     "label": "Usage, in the company's words",
+     "a": "At least 5x Free usage per 5-hour session",
+     "b": "Extensive AI usage (Personal/Family: higher than free)",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/premium"
+    },
+    {
+     "label": "Models",
+     "a": "Opus, Sonnet, Haiku; Fable via usage credits",
+     "b": "Not stated",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q"
+    },
+    {
+     "label": "Deep research",
+     "a": "Research included",
+     "b": "AI agents for source-cited research reports",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/premium"
+    },
+    {
+     "label": "Image creation",
+     "a": "Not stated",
+     "b": "Extensive usage to create AI images",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q"
+    },
+    {
+     "label": "Inside office apps",
+     "a": "Claude for Microsoft 365 and Outlook",
+     "b": "Copilot in Word, Excel, PowerPoint, Outlook",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q"
+    },
+    {
+     "label": "Cloud storage",
+     "a": "Not stated",
+     "b": "2 TB shared cloud storage",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q"
+    },
+    {
+     "label": "Yearly billing",
+     "a": "Monthly or annual",
+     "b": "Monthly or yearly",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q"
+    },
+    {
+     "label": "Sharing",
+     "a": "Individual; separate Team plan for 2 to 150",
+     "b": "1 to 6 people (AI for owner only)",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Claude Pro or Microsoft 365 Premium cheaper?",
+     "a": "Claude Pro is $20 a month or $200 a year on claude.com. Microsoft 365 Premium is $19.99 a month or $199.99 a year in the US iPhone app.",
+     "source": "prices-2026-11.json (US row): https://claude.com/pricing; https://apps.apple.com/us/app/id541164041"
+    },
+    {
+     "q": "Can I use Claude or Copilot inside Excel?",
+     "a": "Claude Pro includes Claude for Microsoft 365. Microsoft 365 Premium includes Copilot in Excel, which needs AutoSave on with the file saved to OneDrive.",
+     "source": "https://claude.com/pricing; https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q"
+    },
+    {
+     "q": "Do Claude and Copilot do research reports?",
+     "a": "Claude Pro includes Research. Microsoft 365 Premium includes AI agents that create source-cited research reports.",
+     "source": "https://claude.com/pricing; https://www.microsoft.com/en-us/microsoft-365/premium"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "Copilot side: microsoft.com/store/b/copilotpro now redirects to Microsoft 365 Premium, so facts are for Microsoft 365 Premium (our copilot-pro \"premium\" id). Microsoft's pages don't name the AI models."
+   ]
+  },
+  {
+   "slug": "gemini-vs-copilot",
+   "kind": "vs",
+   "a": "google-ai-pro",
+   "b": "copilot-pro",
+   "ap": "pro",
+   "bp": "premium",
+   "name": "Gemini vs Copilot",
+   "rows": [
+    {
+     "label": "Usage, in the company's words",
+     "a": "4x higher usage than Free",
+     "b": "Extensive AI usage (Personal/Family: higher than free)",
+     "sourceA": "https://gemini.google/subscriptions/",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/premium"
+    },
+    {
+     "label": "Models",
+     "a": "Gemini 4 Argon, Gemini 4 Hydrogen, Pro model",
+     "b": "Not stated",
+     "sourceA": "https://gemini.google/subscriptions/",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q"
+    },
+    {
+     "label": "Deep research",
+     "a": "Expanded access to Deep Research",
+     "b": "AI agents for source-cited research reports",
+     "sourceA": "https://one.google.com/about/google-ai-plans/",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/premium"
+    },
+    {
+     "label": "Image creation",
+     "a": "Expanded image generation and editing",
+     "b": "Extensive usage to create AI images",
+     "sourceA": "https://one.google.com/about/google-ai-plans/",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q"
+    },
+    {
+     "label": "Inside office apps",
+     "a": "Gemini in Gmail, Docs, Vids and more",
+     "b": "Copilot in Word, Excel, PowerPoint, Outlook",
+     "sourceA": "https://gemini.google/subscriptions/",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q"
+    },
+    {
+     "label": "Cloud storage",
+     "a": "5 TB cloud storage",
+     "b": "2 TB shared cloud storage",
+     "sourceA": "https://gemini.google/subscriptions/",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q"
+    },
+    {
+     "label": "Yearly billing",
+     "a": "Monthly or annual",
+     "b": "Monthly or yearly",
+     "sourceA": "https://one.google.com/about/google-ai-plans/",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q"
+    },
+    {
+     "label": "Sharing",
+     "a": "Family sharing with up to 5 others, AI included",
+     "b": "1 to 6 people (AI for owner only)",
+     "sourceA": "https://one.google.com/about/google-ai-plans/",
+     "sourceB": "https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Google AI Pro or Microsoft 365 Premium cheaper?",
+     "a": "Google AI Pro is $19.99 a month in the US iPhone app (Google One also lists $199.99 a year). Microsoft 365 Premium is $19.99 a month or $199.99 a year in the US iPhone app.",
+     "source": "prices-2026-11.json (US row): https://apps.apple.com/us/app/id6477489729; https://one.google.com/about/google-ai-plans/; https://apps.apple.com/us/app/id541164041"
+    },
+    {
+     "q": "Which one gives more storage and sharing?",
+     "a": "Google AI Pro has 5 TB and family sharing with up to 5 others, AI included. Microsoft 365 Premium has 2 TB shared with up to 5 people, but AI is for the owner only.",
+     "source": "https://gemini.google/subscriptions/; https://one.google.com/about/google-ai-plans/; https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q"
+    },
+    {
+     "q": "Which office apps do they work in?",
+     "a": "Google AI Pro puts Gemini in Gmail, Docs, Vids and more. Microsoft 365 Premium puts Copilot in Word, Excel, PowerPoint and Outlook.",
+     "source": "https://gemini.google/subscriptions/; https://www.microsoft.com/en-us/microsoft-365/p/microsoft-365-premium/cfq7ttc11z3q"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "Copilot side: microsoft.com/store/b/copilotpro now redirects to Microsoft 365 Premium, so facts are for Microsoft 365 Premium (our copilot-pro \"premium\" id). Microsoft's pages don't name the AI models."
+   ]
+  },
+  {
+   "slug": "claude-pro-vs-max",
+   "kind": "tiers",
+   "a": "claude-pro",
+   "b": "claude-pro",
+   "ap": "monthly",
+   "bp": "max",
+   "name": "Claude Pro vs Max",
+   "rows": [
+    {
+     "label": "Usage every 5 hours",
+     "a": "1x (the Pro baseline)",
+     "b": "5x Pro usage",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://claude.com/pricing"
+    },
+    {
+     "label": "Usage every week",
+     "a": "1x",
+     "b": "5x Pro usage",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://claude.com/pricing"
+    },
+    {
+     "label": "Fable (top model)",
+     "a": "Paid with usage credits",
+     "b": "Included, up to half your weekly limit",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://claude.com/pricing"
+    },
+    {
+     "label": "Monthly API credits",
+     "a": "No",
+     "b": "$100 a month on the Claude Platform",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://claude.com/pricing"
+    },
+    {
+     "label": "Priority access at busy times",
+     "a": "No",
+     "b": "Yes",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://claude.com/pricing"
+    },
+    {
+     "label": "Early access to advanced features",
+     "a": "Not stated",
+     "b": "Yes",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://claude.com/pricing"
+    },
+    {
+     "label": "Claude Code and Research",
+     "a": "Included",
+     "b": "Included",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://claude.com/pricing"
+    },
+    {
+     "label": "Billing",
+     "a": "Monthly or annual",
+     "b": "Monthly only",
+     "sourceA": "https://claude.com/pricing",
+     "sourceB": "https://claude.com/pricing"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Is Claude Max 5x or 20x?",
+     "a": "Claude's pricing page sells one Max plan at 5x Pro usage. The next tier up is now called Ultra: 10x Pro weekly usage and no 5-hour limit for verified accounts.",
+     "source": "https://claude.com/pricing"
+    },
+    {
+     "q": "How much does Claude Max cost compared to Pro?",
+     "a": "Pro is $20 a month or $200 a year. Max is $100 a month and is billed monthly only.",
+     "source": "https://claude.com/pricing; prices-2026-11.json (US row)"
+    },
+    {
+     "q": "Do Pro and Max share limits with Claude Code?",
+     "a": "Yes. Claude Code shares the same usage limits as the rest of your plan, so chats and the terminal draw from one pool.",
+     "source": "https://claude.com/pricing"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "Claude now also sells Ultra ($200 a month, 10x Pro weekly usage, no 5-hour limit, $200 API credits). Suggested new plan id \"ultra\".",
+    "Our max id is the plan claude.com calls \"Max\" (5x Pro). prices-2026-11.json has no US row for max; claude.com/pricing shows $100 a month."
+   ]
+  },
+  {
+   "slug": "chatgpt-plus-vs-pro",
+   "kind": "tiers",
+   "a": "chatgpt-plus",
+   "b": "chatgpt-plus",
+   "ap": "plus",
+   "bp": "pro",
+   "name": "ChatGPT Plus vs Pro",
+   "rows": [
+    {
+     "label": "Usage",
+     "a": "Expanded messages and uploads",
+     "b": "Your choice of 3 usage tiers",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://chatgpt.com/pricing"
+    },
+    {
+     "label": "Models",
+     "a": "GPT-6 Astra, GPT-6 Sol, GPT-6.1 Sol",
+     "b": "Expanded, plus GPT-5.6 Sol Pro",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://chatgpt.com/pricing"
+    },
+    {
+     "label": "Deep research",
+     "a": "Expanded deep research",
+     "b": "Maximum deep research",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://chatgpt.com/pricing"
+    },
+    {
+     "label": "Image creation",
+     "a": "More complex and accurate image creation",
+     "b": "Unlimited and faster image creation",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://chatgpt.com/pricing"
+    },
+    {
+     "label": "Reasoning context window",
+     "a": "256K",
+     "b": "400K",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://chatgpt.com/pricing"
+    },
+    {
+     "label": "Codex",
+     "a": "Included",
+     "b": "Expanded, with longer sessions",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://chatgpt.com/pricing"
+    },
+    {
+     "label": "Dot, the always-on agent",
+     "a": "No",
+     "b": "Yes",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://chatgpt.com/pricing"
+    },
+    {
+     "label": "Monthly API credits",
+     "a": "No",
+     "b": "Yes, amount depends on Pro tier",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://chatgpt.com/pricing"
+    }
+   ],
+   "faq": [
+    {
+     "q": "How much is ChatGPT Pro compared to Plus?",
+     "a": "In the US iPhone app, Plus is $19.99 a month and Pro is $200 a month. ChatGPT's pricing page says Pro comes in 3 usage tiers: Pro 100, Pro 200 and Pro 500.",
+     "source": "prices-2026-11.json (US row): https://apps.apple.com/us/app/id6448311069; https://chatgpt.com/pricing"
+    },
+    {
+     "q": "Does ChatGPT Pro have higher Codex limits than Plus?",
+     "a": "Yes. ChatGPT lists Codex as included on Plus and \"Expanded\" on Pro, with longer Codex sessions.",
+     "source": "https://chatgpt.com/pricing"
+    },
+    {
+     "q": "Is image generation better on Pro?",
+     "a": "ChatGPT lists \"unlimited and faster image creation\" for Pro (subject to abuse guardrails) and \"more complex and accurate image creation\" for Plus.",
+     "source": "https://chatgpt.com/pricing"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "ChatGPT Pro now has 3 usage tiers (Pro 100, Pro 200, Pro 500). Our \"pro\" id holds the $200 App Store \"Pro\" price; the pricing page didn't render tier prices. Possible new ids: pro-100, pro-500.",
+    "ChatGPT's pricing page didn't show prices in our browser; ChatGPT prices in the FAQ are the US App Store prices from prices-2026-11.json."
+   ]
+  },
+  {
+   "slug": "chatgpt-plus-vs-go",
+   "kind": "tiers",
+   "a": "chatgpt-plus",
+   "b": "chatgpt-plus",
+   "ap": "plus",
+   "bp": "go",
+   "name": "ChatGPT Plus vs Go",
+   "rows": [
+    {
+     "label": "Ads",
+     "a": "Not stated",
+     "b": "This plan may include ads",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://chatgpt.com/pricing"
+    },
+    {
+     "label": "Models",
+     "a": "Adds GPT-6 Astra, GPT-6 Sol, GPT-6.1 Sol",
+     "b": "GPT-6 Luna, GPT-5 Thinking Mini",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://chatgpt.com/pricing"
+    },
+    {
+     "label": "Response times",
+     "a": "Fast",
+     "b": "Limited on bandwidth and availability",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://chatgpt.com/pricing"
+    },
+    {
+     "label": "Deep research",
+     "a": "Yes, expanded",
+     "b": "Limited",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://chatgpt.com/pricing"
+    },
+    {
+     "label": "Image creation",
+     "a": "Yes, including image generation with Thinking",
+     "b": "Yes, without Thinking",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://chatgpt.com/pricing"
+    },
+    {
+     "label": "Codex",
+     "a": "Included",
+     "b": "Limited",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://chatgpt.com/pricing"
+    },
+    {
+     "label": "ChatGPT Work",
+     "a": "Desktop, web and mobile",
+     "b": "Limited (desktop app)",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://chatgpt.com/pricing"
+    },
+    {
+     "label": "Memory",
+     "a": "Expanded",
+     "b": "Yes",
+     "sourceA": "https://chatgpt.com/pricing",
+     "sourceB": "https://chatgpt.com/pricing"
+    }
+   ],
+   "faq": [
+    {
+     "q": "Does ChatGPT Go have ads?",
+     "a": "ChatGPT's pricing page says Go \"may include ads\". It doesn't say that about Plus.",
+     "source": "https://chatgpt.com/pricing"
+    },
+    {
+     "q": "Can ChatGPT Go make images?",
+     "a": "Yes, Go includes image generation. Image generation with Thinking is only on Plus and Pro.",
+     "source": "https://chatgpt.com/pricing"
+    },
+    {
+     "q": "How much is ChatGPT Go vs Plus?",
+     "a": "In the US iPhone app, Go is $8 a month and Plus is $19.99 a month. Both are monthly plans.",
+     "source": "prices-2026-11.json (US row): https://apps.apple.com/us/app/id6448311069; https://chatgpt.com/pricing"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "ChatGPT's pricing page didn't show prices in our browser; ChatGPT prices in the FAQ are the US App Store prices from prices-2026-11.json."
+   ]
+  },
+  {
+   "slug": "gemini-pro-vs-ultra",
+   "kind": "tiers",
+   "a": "google-ai-pro",
+   "b": "google-ai-pro",
+   "ap": "pro",
+   "bp": "ultra-5x",
+   "name": "Gemini Pro vs Ultra",
+   "rows": [
+    {
+     "label": "Usage",
+     "a": "4x higher usage than Free",
+     "b": "5x or 20x AI Pro (two Ultra plans)",
+     "sourceA": "https://gemini.google/subscriptions/",
+     "sourceB": "https://gemini.google/subscriptions/"
+    },
+    {
+     "label": "Models",
+     "a": "Gemini 4 Argon, Gemini 4 Hydrogen, Pro model",
+     "b": "Adds Gemini 4 Carbon; highest access",
+     "sourceA": "https://gemini.google/subscriptions/",
+     "sourceB": "https://gemini.google/subscriptions/"
+    },
+    {
+     "label": "Cloud storage",
+     "a": "5 TB",
+     "b": "20 TB (Ultra 5x) or 30 TB (Ultra 20x)",
+     "sourceA": "https://one.google.com/about/google-ai-plans/",
+     "sourceB": "https://one.google.com/about/google-ai-plans/"
+    },
+    {
+     "label": "Google Flow credits",
+     "a": "1,000",
+     "b": "10,000 or 25,000",
+     "sourceA": "https://gemini.google/subscriptions/",
+     "sourceB": "https://gemini.google/subscriptions/"
+    },
+    {
+     "label": "Google Antigravity",
+     "a": "Entry rate limits",
+     "b": "Higher (5x) or highest (20x) limits",
+     "sourceA": "https://gemini.google/subscriptions/",
+     "sourceB": "https://gemini.google/subscriptions/"
+    },
+    {
+     "label": "YouTube",
+     "a": "YouTube Premium Lite",
+     "b": "YouTube Premium individual plan",
+     "sourceA": "https://gemini.google/subscriptions/",
+     "sourceB": "https://gemini.google/subscriptions/"
+    },
+    {
+     "label": "Google Home Premium",
+     "a": "Standard plan",
+     "b": "Advanced plan",
+     "sourceA": "https://gemini.google/subscriptions/",
+     "sourceB": "https://gemini.google/subscriptions/"
+    },
+    {
+     "label": "Billing",
+     "a": "Monthly or annual",
+     "b": "Monthly only",
+     "sourceA": "https://one.google.com/about/google-ai-plans/",
+     "sourceB": "https://one.google.com/about/google-ai-plans/"
+    }
+   ],
+   "faq": [
+    {
+     "q": "What is the difference between Gemini Pro and Ultra?",
+     "a": "Ultra adds Gemini 4 Carbon, 5x or 20x the AI Pro usage, 20 or 30 TB of storage and the full YouTube Premium plan instead of Premium Lite.",
+     "source": "https://gemini.google/subscriptions/; https://one.google.com/about/google-ai-plans/"
+    },
+    {
+     "q": "How much is Google AI Ultra?",
+     "a": "Google lists Ultra at $99.99 a month for 5x AI Pro usage and $199.99 a month for 20x. Ultra plans are billed monthly only.",
+     "source": "https://gemini.google/subscriptions/; https://one.google.com/about/google-ai-plans/"
+    },
+    {
+     "q": "Does Ultra give more Antigravity limits than Pro?",
+     "a": "Yes. Pro has entry rate limits in Google Antigravity; Ultra 5x has higher and Ultra 20x has the highest.",
+     "source": "https://gemini.google/subscriptions/"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "Project Genie: gemini.google says Ultra only; one.google.com footnote says Ultra 20x only. Left out of the rows.",
+    "Compared plan is Ultra 5x (id ultra-5x, $99.99); Ultra 20x is id ultra in the prices file."
+   ]
+  },
+  {
+   "slug": "perplexity-pro-vs-max",
+   "kind": "tiers",
+   "a": "perplexity",
+   "b": "perplexity",
+   "ap": "pro",
+   "bp": "max",
+   "name": "Perplexity Pro vs Max",
+   "rows": [
+    {
+     "label": "Pro Searches",
+     "a": "Weekly limits (average use)",
+     "b": "Weekly limits (advanced use)",
+     "sourceA": "https://www.perplexity.ai/help-center/en/articles/11187416-which-perplexity-subscription-plan-is-right-for-you",
+     "sourceB": "https://www.perplexity.ai/help-center/en/articles/11187416-which-perplexity-subscription-plan-is-right-for-you"
+    },
+    {
+     "label": "Research queries",
+     "a": "Monthly limits (average use)",
+     "b": "Monthly limits (advanced use)",
+     "sourceA": "https://www.perplexity.ai/help-center/en/articles/11187416-which-perplexity-subscription-plan-is-right-for-you",
+     "sourceB": "https://www.perplexity.ai/help-center/en/articles/11187416-which-perplexity-subscription-plan-is-right-for-you"
+    },
+    {
+     "label": "Create files and apps",
+     "a": "Monthly limits (average use)",
+     "b": "Monthly limits (advanced use)",
+     "sourceA": "https://www.perplexity.ai/help-center/en/articles/11187416-which-perplexity-subscription-plan-is-right-for-you",
+     "sourceB": "https://www.perplexity.ai/help-center/en/articles/11187416-which-perplexity-subscription-plan-is-right-for-you"
+    },
+    {
+     "label": "Perplexity Computer",
+     "a": "Expanded access, 4,000 bonus credits",
+     "b": "Max usage, 35,000 bonus + 10,000 a month",
+     "sourceA": "https://www.perplexity.ai/pro",
+     "sourceB": "https://www.perplexity.ai/pro"
+    },
+    {
+     "label": "Models",
+     "a": "GPT-6.1 Sol, Claude Sonnet 5.5 and more",
+     "b": "Adds GPT-6 Astra, Claude Opus 5.5",
+     "sourceA": "https://www.perplexity.ai/help-center/en/articles/10352901-what-is-perplexity-pro",
+     "sourceB": "https://www.perplexity.ai/help-center/en/articles/10352901-what-is-perplexity-pro"
+    },
+    {
+     "label": "Support",
+     "a": "Priority",
+     "b": "Dedicated",
+     "sourceA": "https://www.perplexity.ai/help-center/en/articles/11187416-which-perplexity-subscription-plan-is-right-for-you",
+     "sourceB": "https://www.perplexity.ai/help-center/en/articles/11187416-which-perplexity-subscription-plan-is-right-for-you"
+    },
+    {
+     "label": "Brain memory (preview)",
+     "a": "Not stated",
+     "b": "Yes, in Perplexity Computer",
+     "sourceA": "https://www.perplexity.ai/help-center/en/articles/11680686-perplexity-max",
+     "sourceB": "https://www.perplexity.ai/help-center/en/articles/11680686-perplexity-max"
+    },
+    {
+     "label": "Yearly billing",
+     "a": "Yes",
+     "b": "Yes, on perplexity.ai only",
+     "sourceA": "https://www.perplexity.ai/pro",
+     "sourceB": "https://www.perplexity.ai/help-center/en/articles/11187416-which-perplexity-subscription-plan-is-right-for-you"
+    }
+   ],
+   "faq": [
+    {
+     "q": "How many credits do Perplexity Pro and Max include?",
+     "a": "Perplexity lists 4,000 bonus credits for Pro, and 35,000 bonus credits plus 10,000 monthly credits for Max.",
+     "source": "https://www.perplexity.ai/pro"
+    },
+    {
+     "q": "How much is Perplexity Max vs Pro?",
+     "a": "In the US iPhone app, Pro is $20 a month or $200 a year, and Max is $200 a month. Yearly Max is only sold on perplexity.ai.",
+     "source": "prices-2026-11.json (US row): https://apps.apple.com/us/app/id1668000334; https://www.perplexity.ai/help-center/en/articles/11187416-which-perplexity-subscription-plan-is-right-for-you"
+    },
+    {
+     "q": "What does Max add in Comet?",
+     "a": "Max includes Max Assistant on Comet and the highest weekly limit on browser agent queries of any plan.",
+     "source": "https://www.perplexity.ai/help-center/en/articles/11680686-perplexity-max"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "The \"+$40\" and \"+$450 free Computer credits\" are limited-time offers on perplexity.ai/pro, left out.",
+    "Perplexity's Pro page lists Gemini 4 Hydrogen, Grok 4.7, Kimi K3 and GLM 5.3; its Pro help article (updated Nov 12) lists Gemini 3.8 Flash instead. Models row follows the Pro page."
+   ]
+  },
+  {
+   "slug": "supergrok-vs-heavy",
+   "kind": "tiers",
+   "a": "grok",
+   "b": "grok",
+   "ap": "supergrok",
+   "bp": "heavy",
+   "name": "SuperGrok vs SuperGrok Heavy",
+   "rows": [
+    {
+     "label": "Sold to new web customers",
+     "a": "No, existing plans continue",
+     "b": "No, existing plans continue",
+     "sourceA": "https://docs.x.ai/x-subscription/pricing",
+     "sourceB": "https://docs.x.ai/x-subscription/pricing"
+    },
+    {
+     "label": "Sold in the US iPhone app",
+     "a": "Yes, In-App Purchase",
+     "b": "Yes, In-App Purchase",
+     "sourceA": "https://apps.apple.com/us/app/id6670324846",
+     "sourceB": "https://apps.apple.com/us/app/id6670324846"
+    },
+    {
+     "label": "What xAI says it gives",
+     "a": "Higher usage quotas and advanced features",
+     "b": "Even more powerful performance",
+     "sourceA": "https://docs.x.ai/grok/user-guide",
+     "sourceB": "https://docs.x.ai/grok/user-guide"
+    },
+    {
+     "label": "Grok Business seat",
+     "a": "Standard license",
+     "b": "Upgraded license",
+     "sourceA": "https://docs.x.ai/grok/user-guide",
+     "sourceB": "https://docs.x.ai/grok/user-guide"
+    },
+    {
+     "label": "How usage works",
+     "a": "One shared weekly pool across Grok",
+     "b": "One shared weekly pool across Grok",
+     "sourceA": "https://docs.x.ai/grok/faq",
+     "sourceB": "https://docs.x.ai/grok/faq"
+    },
+    {
+     "label": "Usage amount",
+     "a": "Not stated",
+     "b": "Not stated",
+     "sourceA": "https://docs.x.ai/grok/faq",
+     "sourceB": "https://docs.x.ai/grok/faq"
+    },
+    {
+     "label": "Models",
+     "a": "Not stated",
+     "b": "Not stated",
+     "sourceA": "https://docs.x.ai/grok/faq",
+     "sourceB": "https://docs.x.ai/grok/faq"
+    },
+    {
+     "label": "Yearly option",
+     "a": "Not stated",
+     "b": "Yes, yearly plans exist",
+     "sourceA": "https://docs.x.ai/grok/faq",
+     "sourceB": "https://docs.x.ai/grok/faq"
+    }
+   ],
+   "faq": [
+    {
+     "q": "What is the difference between SuperGrok and SuperGrok Heavy usage limits?",
+     "a": "xAI's help pages don't publish numbers for either. Both use one weekly usage pool shared across Grok products, which resets on a schedule shown in Settings, then Usage.",
+     "source": "https://docs.x.ai/grok/faq"
+    },
+    {
+     "q": "How much is SuperGrok Heavy?",
+     "a": "In the US iPhone app, SuperGrok is $30 a month and SuperGrok Heavy is $300 a month.",
+     "source": "prices-2026-11.json (US row): https://apps.apple.com/us/app/id6670324846"
+    },
+    {
+     "q": "Can I still sign up for SuperGrok on the web?",
+     "a": "New web customers choose from The X Subscription plans (Plus, Premium, Super, Ultra). xAI says existing SuperGrok plans continue unless you change or cancel.",
+     "source": "https://docs.x.ai/x-subscription/pricing"
+    }
+   ],
+   "checkedOn": "2026-11-15",
+   "openIssues": [
+    "xAI's site no longer describes SuperGrok or SuperGrok Heavy; the web sells The X Subscription (Plus $8, Premium $30, Super $100, Ultra $200, monthly or annual). Only the App Store still sells the SuperGrok names. Most rows are thin for that reason.",
+    "Owner call: keep this page, or swap it for \"Grok Premium vs Super\" (both fully described on x.ai/pricing) with new grok plan ids \"premium\", \"super\", \"ultra\"."
+   ]
+  }
+ ]
+}

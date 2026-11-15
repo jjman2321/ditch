@@ -231,7 +231,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
           <h2 id="extras">{s.name} bundles{extras.some((x) => x.plans.some((p) => /live/i.test(p.id))) ? ' and live TV' : ''}</h2>
           <p className="g5-sub">Plans that come with other services or live channels, from {s.name}’s own page.</p>
           {extras.map(({ r, plans }) => (
-            <div key={r.country} className="tbl-scroll">
+            <div key={r.country} className="tbl-scroll" role="region" aria-label={`${s.name} bundles in ${COUNTRY[r.country].name}`} tabIndex={0}>
               <table className="ttable wide-t">
                 <caption className="sr">{s.name} bundles in {COUNTRY[r.country].name}</caption>
                 <thead>

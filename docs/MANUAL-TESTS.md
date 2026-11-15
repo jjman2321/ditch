@@ -438,6 +438,14 @@ Why: an app feels premium when the bad moments are handled well, not only the ha
 - [ ] /cancel/google-one: "What happens after", "How to check", "Pause instead" and 3 questions, each fact matching Google's own page.
 - [ ] Footer → Prices column has "Price increases".
 
+### W7. Phone top, menu and motion (Nov 15)
+- [ ] Home at the top: yellow header and a yellow bar above it. Scroll a little: header and bar turn cream.
+- [ ] Open the menu at the top of home: the menu is yellow, no strip. Open it on /tools: cream all the way up. Lines turn into an X in the same spot, links slide in; closing plays it backwards.
+- [ ] Refresh any page, or tap the ditch logo from another page: you land at the very top.
+- [ ] On a guide, tap "See the steps ↓": the page glides down and stops just under the header.
+- [ ] Scroll a guide and a price page: sections fade up as they come on screen; nothing stutters.
+- [ ] The rotating name in the home headline keeps changing.
+
 ### W6. Google titles and price-page questions (Nov 14, evening)
 - [ ] Share or bookmark a few pages and check the tab title: home says "Free subscription tracker app for iPhone | Ditch"; /cancel/spotify says "How to cancel Spotify (2026): web, iPhone, Android"; /prices/netflix says "Netflix prices 2026: every plan, from $8.99/mo (US)". The full before/after list is in docs/website/titles-2026-11-14.md.
 - [ ] /prices/netflix, under the country table: "Netflix prices: questions" with 3 answers (a month, other countries, the UK). Nothing repeats the price history list below it.

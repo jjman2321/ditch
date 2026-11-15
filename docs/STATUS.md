@@ -10,6 +10,7 @@ _Update this at the end of every session._
   - 19 new guides: subscriptions on iPhone and on Android (Google Play), an updated Claude guide, Perplexity, Copilot Pro, GitHub Copilot, Notion, Grammarly, 1Password, Proton, Telegram Premium, Deezer, TIDAL, Sling TV, Fubo, Philo, Oura, MyFitnessPal, Babbel and Apple News+.
   - Animated phone menu, a softer replay on the ditch card, and the "How it works" fix on phones.
   - Every page checked at 18 screen sizes (320 to 2560 px, iPhone Duo, Galaxy Fold, iPads). Headings sit at the same height on every page.
+  - Phone top fixed (Nov 15): iOS 26 Safari ignores theme-color and tints its bar from the pinned header, so the phone menu now matches the header's colour (yellow on the home hero, cream elsewhere). Owner confirmed it looks better. Pages land at the very top after navigation; jump links glide; looping animations pause off screen.
   - **Owner, phone checks:** 21 guides are written but hidden until their button names are confirmed on a phone. Amazon Prime and ChatGPT come first. The list and steps are in `docs/website/phone-checks-2026-11-15.md`.
 - ✅ **Website round, Nov 14** (live at ditchsubs.app):
   - Big money figures in the tools never split mid-number (the "EGP 34.7 / 5" bug); they shrink to fit the panel. Prices in tables never wrap either.

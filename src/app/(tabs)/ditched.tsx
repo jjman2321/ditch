@@ -1,7 +1,8 @@
-// 13 · Ditched. "You're saving $X a year" counts only cancels the user
+// 13 · Ditched. "You won't pay $X a year" counts only cancels the user
 // confirmed (Ditch can't see the bank). Ditched-but-not-cancelled ones wait
 // at the top with "I cancelled it". Rewards are real money only (DECISIONS #13).
 
+import { Image } from 'expo-image';
 import { useMemo } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 
@@ -13,7 +14,8 @@ import { StepChart } from '@/ditched/StepChart';
 import { SubLogo } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
 import { ask } from '@/ui/alert';
-import { BottomFade, Card, ChevronRight, DitchedTag, F, ProLockup, RowDivider, SectionHeader, Stamp, Txt, brand, haptic, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
+import { DUCK_DARK, DUCK_LIGHT } from '@/ui/sunflower/duckAsset';
+import { BottomFade, Card, ChevronRight, DitchedTag, F, ProLockup, RowDivider, SectionHeader, Txt, brand, haptic, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
 
 export default function DitchedTab() {
   const p = usePalette();
@@ -59,8 +61,17 @@ export default function DitchedTab() {
 
         {nothing ? (
           <View style={{ alignItems: 'center', marginTop: 56 }}>
-            <View style={{ opacity: 0.25 }}>
-              <Stamp date={app.today} width={240} bg={p.bg} />
+            {/* Empty state: the duck (CLAUDE.md rule 8: he has a job here), not the old stamp (DECISIONS #58). */}
+            <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ width: 260, alignItems: 'center' }}>
+              <Image source={p.dark ? DUCK_DARK : DUCK_LIGHT} style={{ width: 150, height: 88, marginBottom: -3 }} contentFit="contain" />
+              {/* A faint row for him to sit on: the art's flat bottom is made to tuck behind a card. */}
+              <View style={{ width: 260, height: 64, borderRadius: 18, borderWidth: 1.5, borderStyle: 'dashed', borderColor: p.cardBorder, backgroundColor: p.dark ? p.card : brand.white, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14 }}>
+                <View style={{ width: 36, height: 36, borderRadius: 9, backgroundColor: p.segBg }} />
+                <View style={{ flex: 1, gap: 7 }}>
+                  <View style={{ width: '70%', height: 9, borderRadius: 5, backgroundColor: p.segBg }} />
+                  <View style={{ width: '45%', height: 9, borderRadius: 5, backgroundColor: p.segBg }} />
+                </View>
+              </View>
             </View>
             <Txt v="heading" center style={{ marginTop: 28 }}>
               Nothing ditched yet.
@@ -75,7 +86,7 @@ export default function DitchedTab() {
               accessible
               accessibilityLabel={
                 main
-                  ? `You’re saving ${money(main.yearlyMinor, main.currency, { whole: true })} a year, from ${main.count} ${main.count === 1 ? 'sub' : 'subs'} you cancelled${sinceWord ? ` since ${sinceWord}` : ''}, ${money(main.monthlyMinor, main.currency)} a month.`
+                  ? `You won’t pay ${money(main.yearlyMinor, main.currency, { whole: true })} a year, from ${main.count} ${main.count === 1 ? 'sub' : 'subs'} you cancelled${sinceWord ? ` since ${sinceWord}` : ''}, ${money(main.monthlyMinor, main.currency)} a month.`
                   : confirmed.length
                     ? `${confirmed.length} cancelled. No price on ${confirmed.length === 1 ? 'it' : 'them'}, so there’s nothing to add up yet.`
                     : 'Nothing cancelled yet.'
@@ -88,7 +99,7 @@ export default function DitchedTab() {
               {main ? (
                 <>
                   <Txt v="lead" color={p.dark ? p.fg : brand.ink} style={{ fontFamily: F.semi }}>
-                    You’re saving
+                    You won’t pay
                   </Txt>
                   <View style={{ flexDirection: 'row', alignItems: 'baseline', flexWrap: 'wrap', columnGap: 10 }}>
                     <Txt v="displayXL" num color={p.dark ? brand.sunflower : brand.ink} style={{ fontSize: 60, lineHeight: 66 }}>
@@ -123,7 +134,7 @@ export default function DitchedTab() {
                     Nothing cancelled yet.
                   </Txt>
                   <Txt v="leadS" num color={p.dark ? p.fg2 : '#4B4220'} style={{ marginTop: 6 }}>
-                    {waiting[0] ? `Cancel what you ditched and you’ll be saving ${money(waiting[0].yearlyMinor, waiting[0].currency, { whole: true })} a year.` : 'Cancel what you ditched and it adds up here.'}
+                    {waiting[0] ? `Cancel what you ditched and that’s ${money(waiting[0].yearlyMinor, waiting[0].currency, { whole: true })} a year you won’t pay.` : 'Cancel what you ditched and it adds up here.'}
                   </Txt>
                 </>
               )}

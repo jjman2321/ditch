@@ -1,5 +1,6 @@
-// 10 / 10b / 10-se · Ditched. The stamp lands (MOTION.md §3), then
-// "$X a year you won't pay, once you cancel." Ditching doesn't cancel
+// 10 / 10b / 10-se · Ditched. Same moment as the website (owner, Nov 15; DECISIONS #58): the row's
+// "Ditched" tag appears with a firm buzz, the logo dims, the duck pops up over the row, then
+// "$X a year you won't pay, once you cancel." fades in. No stamp. Ditching doesn't cancel
 // anything: the user still has to cancel with the service, so the one
 // last check reminder stays, and "I already cancelled" is what confirms it.
 
@@ -12,8 +13,6 @@ import Animated, {
   useReducedMotion,
   useSharedValue,
   withDelay,
-  withSequence,
-  withSpring,
   withTiming,
 } from 'react-native-reanimated';
 
@@ -26,9 +25,11 @@ import { helpFor, openUrl, useCancelHelp } from '@/ditch/CancelHelp';
 import { SubLogo } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
 import { ask } from '@/ui/alert';
-import { Bell, Button, Card, Duck, EDGE, External, F, ProLockup, Stamp, SurfaceContext, Txt, brand, haptic, paletteFor, useInsets, useIsDark, usePageEdge } from '@/ui/sunflower';
+import { Bell, Button, Card, DitchedTag, Duck, EDGE, External, F, ProLockup, SurfaceContext, Txt, brand, haptic, paletteFor, useInsets, useIsDark, usePageEdge } from '@/ui/sunflower';
 
-const IMPACT_MS = 420;
+// The website's timing: tag at 0.35 s (with the buzz), duck at 0.5 s, the number at 0.75 s, the rest after.
+const TAG_MS = 350;
+const DUCK_MS = 500;
 
 export default function Ditched() {
   const { id, fresh, preview } = useLocalSearchParams<{ id: string; fresh?: string; preview?: string }>();
@@ -51,33 +52,31 @@ export default function Ditched() {
   // The landing plays when the user just ditched it; reopening shows it at rest.
   const animate = !!fresh || !!preview;
   const card = useSharedValue(animate && !reduce ? 0 : 1);
-  const stampScale = useSharedValue(animate && !reduce ? 1.4 : 1);
-  const stampTurn = useSharedValue(animate && !reduce ? 4 : 0);
-  const stampInk = useSharedValue(animate ? 0 : 1);
+  const tag = useSharedValue(animate ? 0 : 1);
   const amount = useSharedValue(animate ? 0 : 1);
   const rest = useSharedValue(animate ? 0 : 1);
 
   useEffect(() => {
     if (!animate) return;
     if (reduce) {
-      // Everything at once with a short crossfade; the heavy haptic stays.
-      [stampInk, amount, rest].forEach((v) => v.set(withTiming(1, { duration: 200 })));
+      // Reduce Motion: everything at once with a short crossfade; the firm buzz stays.
+      [tag, amount, rest].forEach((v) => v.set(withTiming(1, { duration: 200 })));
       const h = setTimeout(haptic.heavy, 200);
       return () => clearTimeout(h);
     }
     card.set(withTiming(1, { duration: 220, easing: Easing.out(Easing.cubic) }));
-    stampScale.set(withDelay(260, withTiming(1, { duration: 160, easing: Easing.bezier(0.5, 0, 0.9, 0.4) })));
-    stampTurn.set(withDelay(260, withSpring(0, { damping: 14, stiffness: 220 })));
-    stampInk.set(withDelay(IMPACT_MS, withSequence(withTiming(0.85, { duration: 0 }), withTiming(1, { duration: 120 }))));
-    amount.set(withDelay(520, withTiming(1, { duration: 200 })));
-    rest.set(withDelay(700, withTiming(1, { duration: 220 })));
-    const h = setTimeout(haptic.heavy, IMPACT_MS);
+    tag.set(withDelay(TAG_MS, withTiming(1, { duration: 180, easing: Easing.out(Easing.cubic) })));
+    amount.set(withDelay(750, withTiming(1, { duration: 240 })));
+    rest.set(withDelay(950, withTiming(1, { duration: 220 })));
+    const h = setTimeout(haptic.heavy, TAG_MS);
     return () => clearTimeout(h);
-  }, [animate, reduce, card, stampScale, stampTurn, stampInk, amount, rest]);
+  }, [animate, reduce, card, tag, amount, rest]);
 
   // Fade only: the card shows the price, and nothing moves next to a price (CLAUDE.md rule 8).
   const cardStyle = useAnimatedStyle(() => ({ opacity: card.get() }));
-  const stampStyle = useAnimatedStyle(() => ({ opacity: stampInk.get(), transform: [{ scale: stampScale.get() }, { rotate: `${stampTurn.get()}deg` }] }));
+  const tagStyle = useAnimatedStyle(() => ({ opacity: tag.get() }));
+  // The logo dims as the tag lands, like the website's grey logo.
+  const logoStyle = useAnimatedStyle(() => ({ opacity: 1 - 0.55 * tag.get() }));
   const amountStyle = useAnimatedStyle(() => ({ opacity: amount.get() }));
   const restStyle = useAnimatedStyle(() => ({ opacity: rest.get(), transform: [{ translateY: (1 - rest.get()) * 6 }] }));
 
@@ -150,9 +149,11 @@ export default function Ditched() {
           </View>
 
           <Animated.View style={[{ marginTop: compact ? 62 : 86 }, cardStyle]}>
-            <Duck width={compact ? 84 : 114} left={20} sink={2} delay={animate ? 120 : 0} />
+            <Duck width={compact ? 84 : 114} left={20} sink={2} delay={animate ? DUCK_MS : 0} />
             <Card style={{ flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, paddingVertical: compact ? 11 : 14 }}>
-              <SubLogo sub={sub} size={compact ? 36 : 40} />
+              <Animated.View style={logoStyle}>
+                <SubLogo sub={sub} size={compact ? 36 : 40} />
+              </Animated.View>
               <View style={{ flex: 1 }}>
                 {trial ? (
                   <ProLockup size={17} suffix="trial" color={p.cardFg} />
@@ -166,16 +167,13 @@ export default function Ditched() {
                   {priceLine ? ` · ${priceLine}` : ''}
                 </Txt>
               </View>
+              <Animated.View style={tagStyle} accessible accessibilityLabel="Ditched">
+                <DitchedTag />
+              </Animated.View>
             </Card>
           </Animated.View>
 
-          <View style={{ alignItems: 'center', marginTop: compact ? 8 : 14 }}>
-            <Animated.View style={stampStyle}>
-              <Stamp date={sub.ditchedOn ?? app.today} width={compact ? 222 : 270} />
-            </Animated.View>
-          </View>
-
-          <Animated.View style={[{ alignItems: 'center', marginTop: compact ? 2 : 6 }, amountStyle]}>
+          <Animated.View style={[{ alignItems: 'center', marginTop: compact ? 28 : 40 }, amountStyle]}>
             {yearly !== null && sub.currency ? (
               <>
                 <Txt v="displayXL" num center color={p.dark ? brand.sunflower : brand.ink} style={{ fontSize: compact ? 54 : 66, lineHeight: compact ? 58 : 70 }} adjustsFontSizeToFit numberOfLines={1}>
@@ -196,7 +194,7 @@ export default function Ditched() {
               </Txt>
             ) : already && yearly !== null ? (
               <Txt v="leadS" tone="fg2" center num style={{ marginTop: 12 }}>
-                Cancel it and you’ll be saving {money(already.yearlyMinor + yearly, sub.currency!, { whole: true })} a year.
+                With the ones you’ve cancelled, that’s {money(already.yearlyMinor + yearly, sub.currency!, { whole: true })} a year you won’t pay.
               </Txt>
             ) : null}
           </Animated.View>

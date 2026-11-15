@@ -321,7 +321,7 @@ function sumSnapshots(list: Sub[], home?: string): Savings[] {
   return homeFirst([...map.values()].sort((a, b) => b.yearlyMinor - a.yearlyMinor), home);
 }
 
-/** "You're saving $X a year": confirmed cancels only, one total per currency. */
+/** "You won't pay $X a year": confirmed cancels only, one total per currency. */
 export function confirmedSavings(subs: Sub[], home?: string): Savings[] {
   return sumSnapshots(subs.filter(isConfirmed), home);
 }

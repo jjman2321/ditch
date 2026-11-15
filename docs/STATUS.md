@@ -5,6 +5,12 @@ _Update this at the end of every session._
 **Last updated:** Nov 10, 2026 · **Milestone:** M1, Phase 2 done, onboarding rebuilt to design v12 (DECISIONS #29)
 
 ## Where we are
+- ✅ **Nov 15 (live): 29 countries and 59 cancel guides.**
+  - 12 new countries, each price read from official pages or the App Store for that country: Switzerland, Austria, Sweden, Norway, Denmark, Portugal, Singapore, Hong Kong, Japan, South Korea, Brazil, Türkiye. 1,021 price rows in total; anything unclear stays out (for example Xbox Singapore, whose currency we couldn't read).
+  - 19 new guides: subscriptions on iPhone and on Android (Google Play), an updated Claude guide, Perplexity, Copilot Pro, GitHub Copilot, Notion, Grammarly, 1Password, Proton, Telegram Premium, Deezer, TIDAL, Sling TV, Fubo, Philo, Oura, MyFitnessPal, Babbel and Apple News+.
+  - Animated phone menu, a softer replay on the ditch card, and the "How it works" fix on phones.
+  - Every page checked at 18 screen sizes (320 to 2560 px, iPhone Duo, Galaxy Fold, iPads). Headings sit at the same height on every page.
+  - **Owner, phone checks:** 21 guides are written but hidden until their button names are confirmed on a phone. Amazon Prime and ChatGPT come first. The list and steps are in `docs/website/phone-checks-2026-11-15.md`.
 - ✅ **Website round, Nov 14** (live at ditchsubs.app):
   - Big money figures in the tools never split mid-number (the "EGP 34.7 / 5" bug); they shrink to fit the panel. Prices in tables never wrap either.
   - Price by country is now one comparison table (countries as rows, plans as columns, sticky country column, cheapest marked, your country tagged, a cycle switch for services with many plans). Inspired by the Craft, Tailscale and Replit compare tables on Mobbin.

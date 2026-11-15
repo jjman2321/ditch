@@ -65,6 +65,19 @@ export function HeaderBar({ items, pages = [] }: { items: SearchItem[]; pages?: 
     return () => window.removeEventListener('scroll', on);
   }, []);
 
+  // The iPhone's top bar takes this colour: yellow only while the yellow home header shows, cream otherwise
+  // (owner, Nov 15: a yellow strip sat above cream pages and over the open menu).
+  useEffect(() => {
+    const yellow = onSun && !scrolled && !menu;
+    let meta = document.querySelector('meta[name="theme-color"]');
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.setAttribute('name', 'theme-color');
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute('content', yellow ? '#FFCC2E' : '#FBF7EE');
+  }, [onSun, scrolled, menu]);
+
   // "/" opens search, like Stripe and Linear docs. Not while typing in a field.
   useEffect(() => {
     const key = (e: KeyboardEvent) => {

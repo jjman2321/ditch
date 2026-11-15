@@ -44,9 +44,21 @@ export function ScrollTop() {
     if (location.hash) return;
     const top = () => window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     top();
-    // Once more after the page has painted, in case a restored position lands late.
-    const t = window.setTimeout(top, 60);
-    return () => window.clearTimeout(t);
+    // Next.js scrolls the new page's first block into view after it renders, which on Safari can land after us
+    // and leave the page ~35px down under the pinned header (owner, Nov 15). Repeat a few times while the page
+    // settles, but never fight someone who has started scrolling.
+    let moved = false;
+    const stop = () => {
+      moved = true;
+    };
+    window.addEventListener('wheel', stop, { passive: true, once: true });
+    window.addEventListener('touchmove', stop, { passive: true, once: true });
+    const ts = [60, 160, 360].map((ms) => window.setTimeout(() => !moved && window.scrollY < 240 && top(), ms));
+    return () => {
+      ts.forEach(window.clearTimeout);
+      window.removeEventListener('wheel', stop);
+      window.removeEventListener('touchmove', stop);
+    };
   }, [path]);
 
   return null;

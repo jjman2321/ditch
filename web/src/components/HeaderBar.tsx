@@ -65,6 +65,8 @@ export function HeaderBar({ items, pages = [] }: { items: SearchItem[]; pages?: 
     return () => window.removeEventListener('scroll', on);
   }, []);
 
+  // iOS 26 Safari ignores theme-color and tints its top bar from the pinned header instead, so the header itself
+  // turns cream while the menu is open (owner, Nov 15). Older Safari and Android still read this meta tag.
   // The iPhone's top bar takes this colour: yellow only while the yellow home header shows, cream otherwise
   // (owner, Nov 15: a yellow strip sat above cream pages and over the open menu).
   useEffect(() => {
@@ -92,7 +94,7 @@ export function HeaderBar({ items, pages = [] }: { items: SearchItem[]; pages?: 
   }, []);
 
   return (
-    <header className={`hdr${onSun && !scrolled ? ' on-sun' : ''}${scrolled ? ' scrolled' : ''}`}>
+    <header className={`hdr${onSun && !scrolled && !menu ? ' on-sun' : ''}${scrolled ? ' scrolled' : ''}`}>
       <div className="wrap bar">
         <Link className="wordmark" href="/" aria-label="Ditch, home" prefetch={false}>
           ditch

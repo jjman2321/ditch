@@ -16,7 +16,7 @@ import { OnbRoot } from '@/onboarding/Parts';
 import { byYearlyDesc, chargeOf, pickHasDate, useOnboarding, usePickedList, type Picked } from '@/state/onboarding';
 import { Button, F, LogoTile, StepHeader, Txt, brand, haptic, useFrame, usePalette } from '@/ui/sunflower';
 
-const CYCLE_LABEL = { weekly: 'Weekly', monthly: 'Monthly', quarterly: 'Every 3 months', yearly: 'Yearly' } as const;
+const CYCLE_LABEL = { weekly: 'Weekly', biweekly: 'Every 2 weeks', monthly: 'Monthly', quarterly: 'Every 3 months', semiannual: 'Every 6 months', yearly: 'Yearly' } as const;
 
 /** "19th" (monthly), "Apr 28" (yearly), "Thu, Nov 19" (others). */
 function setLabel(x: Picked): string {

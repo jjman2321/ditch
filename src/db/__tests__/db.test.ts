@@ -2,7 +2,7 @@ import { DEFAULT_SETTINGS } from '@/domain/settings';
 import { makeSub, type Sub } from '@/domain/subs';
 
 import { memoryRepo, sqlRepo, type Repo } from '../repo';
-import { rowToSub, subToRow } from '../rows';
+import { rowToSub, SUB_COLUMNS, subToRow } from '../rows';
 import { MIGRATIONS, migrate, schemaVersion, type Migration } from '../sql';
 import { nodeSqlite } from '../testing/nodeSqlite';
 
@@ -63,21 +63,43 @@ describe('migrations', () => {
     await migrate(db);
     const extra: Migration[] = [
       ...MIGRATIONS,
-      { version: 4, name: 'c', up: ['ALTER TABLE settings ADD COLUMN c TEXT'] },
-      { version: 3, name: 'b', up: ['ALTER TABLE settings ADD COLUMN b TEXT'] },
+      { version: 101, name: 'c', up: ['ALTER TABLE settings ADD COLUMN c TEXT'] },
+      { version: 100, name: 'b', up: ['ALTER TABLE settings ADD COLUMN b TEXT'] },
     ];
-    expect(await migrate(db, extra)).toBe(4);
+    expect(await migrate(db, extra)).toBe(101);
     const cols = await db.getAllAsync<{ name: string }>('PRAGMA table_info(settings)');
     expect(cols.map((c) => c.name)).toEqual(['key', 'value', 'b', 'c']);
+    db.close();
+  });
+
+  it('migration 3 keeps every saved subscription and allows every 2 weeks and every 6 months (DECISIONS #57)', async () => {
+    const db = nodeSqlite();
+    await migrate(db, MIGRATIONS.filter((m) => m.version <= 2));
+    const before = [netflix(), netflix({ id: 'sub-ditched', name: 'Hulu', status: 'ditched-pending', ditchedOn: '2026-11-10', snapAmountMinor: 1899, snapCurrency: 'USD', snapCycle: 'monthly' })];
+    for (const sub of before) {
+      const row = subToRow(sub);
+      await db.runAsync(`INSERT INTO subscriptions (${SUB_COLUMNS.join(', ')}) VALUES (${SUB_COLUMNS.map(() => '?').join(', ')})`, ...SUB_COLUMNS.map((c) => row[c]));
+    }
+    // A biweekly row is refused before the migration…
+    await expect(db.runAsync("UPDATE subscriptions SET cycle = 'biweekly' WHERE id = 'sub-netflix'")).rejects.toThrow();
+    const repo = await sqlRepo(db); // …opening the app runs migration 3
+    expect(await schemaVersion(db)).toBe(3);
+    const byId = (list: Sub[]) => [...list].sort((a, b) => a.id.localeCompare(b.id));
+    expect(byId(await repo.loadSubs())).toEqual(byId(before));
+    await repo.saveSubs([netflix({ id: 'sub-gym', name: 'Gym', cycle: 'biweekly' }), netflix({ id: 'sub-car', name: 'Car insurance', cycle: 'semiannual' })]);
+    expect((await repo.loadSubs()).map((x) => x.cycle).sort()).toEqual(['biweekly', 'monthly', 'monthly', 'semiannual']);
+    await expect(db.runAsync("UPDATE subscriptions SET cycle = 'daily' WHERE id = 'sub-gym'")).rejects.toThrow();
+    expect(await db.getAllAsync("SELECT name FROM sqlite_master WHERE type = 'index' AND name = 'subscriptions_status'")).toHaveLength(1);
     db.close();
   });
 
   it('a failing migration rolls back and leaves the version where it was', async () => {
     const db = nodeSqlite();
     await migrate(db);
-    const broken: Migration[] = [...MIGRATIONS, { version: 3, name: 'broken', up: ['ALTER TABLE settings ADD COLUMN ok TEXT', 'THIS IS NOT SQL'] }];
+    const latest = MIGRATIONS[MIGRATIONS.length - 1].version;
+    const broken: Migration[] = [...MIGRATIONS, { version: 100, name: 'broken', up: ['ALTER TABLE settings ADD COLUMN ok TEXT', 'THIS IS NOT SQL'] }];
     await expect(migrate(db, broken)).rejects.toThrow();
-    expect(await schemaVersion(db)).toBe(2);
+    expect(await schemaVersion(db)).toBe(latest);
     const cols = await db.getAllAsync<{ name: string }>('PRAGMA table_info(settings)');
     expect(cols.map((c) => c.name)).toEqual(['key', 'value']);
     db.close();

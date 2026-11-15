@@ -137,6 +137,10 @@ const CYCLES: { value: Cycle; label: string }[] = [
   { value: 'quarterly', label: '3 months' },
   { value: 'yearly', label: 'Yearly' },
 ];
+const OTHER_CYCLES: { value: Cycle; label: string }[] = [
+  { value: 'biweekly', label: 'Every 2 weeks' },
+  { value: 'semiannual', label: 'Every 6 months' },
+];
 
 const COMMON = ['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'NZD', 'INR', 'JPY'];
 
@@ -456,6 +460,12 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
 
             <FieldLabel>How often</FieldLabel>
             <Segmented label="How often it charges" value={draft.cycle} onChange={setCycle} options={CYCLES} fontSize={13.5} />
+            {/* Less common cycles (Nov 15, DECISIONS #57): chips under the main four, so the switch stays readable. */}
+            <View style={{ flexDirection: 'row', gap: 8, paddingTop: 10 }}>
+              {OTHER_CYCLES.map((c) => (
+                <Chip key={c.value} label={c.label} selected={draft.cycle === c.value} onPress={() => setCycle(c.value)} />
+              ))}
+            </View>
 
             <FieldLabel>{draft.isTrial ? 'Trial ends' : 'Next charge'}</FieldLabel>
             {/* No guesses (DECISIONS #33): a real date, or "Add date" and no reminder yet. */}

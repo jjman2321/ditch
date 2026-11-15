@@ -68,7 +68,7 @@ export const SUB_COLUMNS: (keyof SubRow)[] = [
   'updated_at',
 ];
 
-const CYCLES: Cycle[] = ['weekly', 'monthly', 'quarterly', 'yearly'];
+const CYCLES: Cycle[] = ['weekly', 'biweekly', 'monthly', 'quarterly', 'semiannual', 'yearly'];
 const oneOf = <T extends string>(v: string | null, ok: readonly T[], fallback: T): T => (ok.includes(v as T) ? (v as T) : fallback);
 const int = (v: number | null) => (v === null || v === undefined ? null : Math.round(Number(v)));
 

@@ -33,7 +33,7 @@ import { Button, ChevronLeft, ChevronRight, F, IconButton, LogoTile, Sheet, Txt,
 import { CloseButton } from './Parts';
 
 const WEEKDAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-const EVERY = { weekly: 'every week', monthly: 'every month', quarterly: 'every 3 months', yearly: 'every year' } as const;
+const EVERY = { weekly: 'every week', biweekly: 'every 2 weeks', monthly: 'every month', quarterly: 'every 3 months', semiannual: 'every 6 months', yearly: 'every year' } as const;
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 /**
@@ -180,7 +180,8 @@ export function DayBody({
         ? `Renews every year on ${shortDate(next)}.`
         : `Charges ${EVERY[pick.cycle]}.`;
 
-  const max = addDays(today, pick.cycle === 'quarterly' ? 92 : 31);
+  // The next charge is at most one cycle away.
+  const max = addDays(today, pick.cycle === 'semiannual' ? 184 : pick.cycle === 'quarterly' ? 92 : 31);
   const canPrev = view.y * 12 + view.m > parseDate(today).y * 12 + parseDate(today).m;
   const canNext = view.y * 12 + view.m < parseDate(max).y * 12 + parseDate(max).m;
   const cells = monthly || yearly ? [] : monthGrid(view.y, view.m);

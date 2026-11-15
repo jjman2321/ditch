@@ -33,7 +33,7 @@ import {
 type Mode = 'next' | 'receipt';
 const WEEKDAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 const WEEKDAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const EVERY: Record<Cycle, string> = { weekly: 'every week', monthly: 'every month', quarterly: 'every 3 months', yearly: 'every year' };
+const EVERY: Record<Cycle, string> = { weekly: 'every week', biweekly: 'every 2 weeks', monthly: 'every month', quarterly: 'every 3 months', semiannual: 'every 6 months', yearly: 'every year' };
 
 function B({ children }: { children: string }) {
   return <Txt v="body" style={{ fontFamily: F.bold, fontSize: 14 }}>{children}</Txt>;

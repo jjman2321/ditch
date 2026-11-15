@@ -15,7 +15,7 @@ import { Button, Sheet, Txt, haptic, usePalette } from '@/ui/sunflower';
 
 import { SubLogo } from './SubRow';
 
-const CYCLE_LABEL = { weekly: 'Weekly', monthly: 'Monthly', quarterly: 'Every 3 months', yearly: 'Yearly' } as const;
+const CYCLE_LABEL = { weekly: 'Weekly', biweekly: 'Every 2 weeks', monthly: 'Monthly', quarterly: 'Every 3 months', semiannual: 'Every 6 months', yearly: 'Yearly' } as const;
 
 function Row({ s, first, onPress }: { s: Sub; first: boolean; onPress: () => void }) {
   const p = usePalette();

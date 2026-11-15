@@ -360,7 +360,7 @@ export function chargesBetween(s: Sub, from: DateOnly, to: DateOnly): DateOnly[]
   // Divide by the LONGEST a cycle can be, so the jump can never land past `from`
   // (with 28-day months it overshot once an anchor was ~3 years old).
   const span = daysBetween(s.anchor, from);
-  const per = s.cycle === 'weekly' ? 7 : s.cycle === 'monthly' ? 31 : s.cycle === 'quarterly' ? 92 : 366;
+  const per = ({ weekly: 7, biweekly: 14, monthly: 31, quarterly: 92, semiannual: 184, yearly: 366 } as const)[s.cycle];
   let k = Math.max(0, Math.floor(span / per) - 2);
   const out: DateOnly[] = [];
   for (let guard = 0; guard < 400; guard++, k++) {

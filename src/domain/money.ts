@@ -2,14 +2,17 @@
 // Amounts are whole minor units (cents). Never floats in storage.
 // Different currencies are never added together.
 
-export type Cycle = 'weekly' | 'monthly' | 'quarterly' | 'yearly';
+/** biweekly = every 2 weeks, semiannual = every 6 months (Nov 15: Bobby users asked for both; DECISIONS #57). */
+export type Cycle = 'weekly' | 'biweekly' | 'monthly' | 'quarterly' | 'semiannual' | 'yearly';
 
 export type Money = { amountMinor: number; currency: string };
 
 const CHARGES_PER_YEAR: Record<Cycle, number> = {
   weekly: 52,
+  biweekly: 26,
   monthly: 12,
   quarterly: 4,
+  semiannual: 2,
   yearly: 1,
 };
 
@@ -20,7 +23,7 @@ export function yearlyMinor(amountMinor: number, cycle: Cycle): number {
 
 /**
  * Monthly equivalent in minor units, unrounded.
- * weekly × 52 / 12, monthly × 1, quarterly ÷ 3, yearly ÷ 12.
+ * weekly × 52 / 12, every 2 weeks × 26 / 12, monthly × 1, quarterly ÷ 3, every 6 months ÷ 6, yearly ÷ 12.
  * Round only when displaying.
  */
 export function monthlyMinorExact(amountMinor: number, cycle: Cycle): number {
@@ -131,16 +134,20 @@ export function totalsByCurrency(
 
 export const CYCLE_SHORT: Record<Cycle, string> = {
   weekly: '/wk',
+  biweekly: '/2 wks',
   monthly: '/mo',
   quarterly: '/qtr',
+  semiannual: '/6 mo',
   yearly: '/yr',
 };
 
 /** "a month", "a year"… for "about $17.99 a month". */
 export const CYCLE_WORDS: Record<Cycle, string> = {
   weekly: 'a week',
+  biweekly: 'every 2 weeks',
   monthly: 'a month',
   quarterly: 'every 3 months',
+  semiannual: 'every 6 months',
   yearly: 'a year',
 };
 

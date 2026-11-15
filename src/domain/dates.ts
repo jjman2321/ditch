@@ -60,15 +60,18 @@ export function addMonthsClamped(anchor: DateOnly, months: number): DateOnly {
   return formatDate({ y: ny, m: nm, d: Math.min(d, daysInMonth(ny, nm)) });
 }
 
-const MONTHS_PER_CYCLE: Record<Exclude<Cycle, 'weekly'>, number> = {
+const MONTHS_PER_CYCLE: Record<Exclude<Cycle, 'weekly' | 'biweekly'>, number> = {
   monthly: 1,
   quarterly: 3,
+  semiannual: 6,
   yearly: 12,
 };
+/** Day-based cycles step in whole days; the rest step in clamped months from the anchor. */
+const DAYS_PER_CYCLE: Partial<Record<Cycle, number>> = { weekly: 7, biweekly: 14 };
 
 /** The k-th charge counted from the anchor (k = 0 is the anchor itself). */
 export function occurrence(anchor: DateOnly, cycle: Cycle, k: number): DateOnly {
-  if (cycle === 'weekly') return addDays(anchor, 7 * k);
+  if (cycle === 'weekly' || cycle === 'biweekly') return addDays(anchor, DAYS_PER_CYCLE[cycle]! * k);
   return addMonthsClamped(anchor, MONTHS_PER_CYCLE[cycle] * k);
 }
 
@@ -82,8 +85,8 @@ export function nextChargeDate(anchor: DateOnly, cycle: Cycle, today: DateOnly):
   // Jump close to today, then step. Never compute from the previous
   // (clamped) occurrence, always from the anchor, so clamps don't stick.
   let k: number;
-  if (cycle === 'weekly') {
-    k = Math.ceil(daysBetween(anchor, today) / 7);
+  if (cycle === 'weekly' || cycle === 'biweekly') {
+    k = Math.ceil(daysBetween(anchor, today) / DAYS_PER_CYCLE[cycle]!);
   } else {
     const a = parseDate(anchor);
     const t = parseDate(today);

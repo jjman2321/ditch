@@ -63,6 +63,47 @@ export const MIGRATIONS: Migration[] = [
     // Guessed dates were never the user's: they become "No date yet".
     up: [`UPDATE subscriptions SET date_source = 'none' WHERE date_source = 'guess'`],
   },
+  {
+    version: 3,
+    name: 'every 2 weeks and every 6 months (DECISIONS #57)',
+    // SQLite can't change a CHECK in place: build the new table, copy every row, swap. Runs in one transaction.
+    up: [
+      `CREATE TABLE subscriptions_v3 (
+        id TEXT PRIMARY KEY NOT NULL,
+        kind TEXT NOT NULL DEFAULT 'user',
+        catalog_id TEXT,
+        name TEXT NOT NULL,
+        category TEXT,
+        amount_minor INTEGER CHECK (amount_minor IS NULL OR amount_minor >= 0),
+        currency TEXT,
+        cycle TEXT NOT NULL CHECK (cycle IN ('weekly','biweekly','monthly','quarterly','semiannual','yearly')),
+        amount_is_estimate INTEGER NOT NULL DEFAULT 0,
+        plan_id TEXT,
+        plan_name TEXT,
+        price_source TEXT NOT NULL DEFAULT 'none',
+        price_country TEXT,
+        anchor_date TEXT NOT NULL,
+        date_source TEXT NOT NULL DEFAULT 'guess',
+        is_trial INTEGER NOT NULL DEFAULT 0,
+        free_pick INTEGER NOT NULL DEFAULT 0,
+        reminders_muted INTEGER NOT NULL DEFAULT 0,
+        status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active','ditched-pending','ditched-confirmed','deleted')),
+        ditched_on TEXT,
+        cancel_by TEXT,
+        confirmed_on TEXT,
+        ditched_amount_minor INTEGER,
+        ditched_currency TEXT,
+        ditched_cycle TEXT,
+        source TEXT NOT NULL DEFAULT 'manual',
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      )`,
+      `INSERT INTO subscriptions_v3 (id, kind, catalog_id, name, category, amount_minor, currency, cycle, amount_is_estimate, plan_id, plan_name, price_source, price_country, anchor_date, date_source, is_trial, free_pick, reminders_muted, status, ditched_on, cancel_by, confirmed_on, ditched_amount_minor, ditched_currency, ditched_cycle, source, created_at, updated_at) SELECT id, kind, catalog_id, name, category, amount_minor, currency, cycle, amount_is_estimate, plan_id, plan_name, price_source, price_country, anchor_date, date_source, is_trial, free_pick, reminders_muted, status, ditched_on, cancel_by, confirmed_on, ditched_amount_minor, ditched_currency, ditched_cycle, source, created_at, updated_at FROM subscriptions`,
+      `DROP TABLE subscriptions`,
+      `ALTER TABLE subscriptions_v3 RENAME TO subscriptions`,
+      `CREATE INDEX subscriptions_status ON subscriptions (status)`,
+    ],
+  },
 ];
 
 export async function schemaVersion(db: SqlDb): Promise<number> {

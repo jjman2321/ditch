@@ -13,7 +13,7 @@ import { effectiveLeads, formatTime, leadsLabel, shortTimeLabel } from '@/domain
 import { FREE_REMINDERS, hasDate, listedUserSubs, remindedIds, runningProTrial } from '@/domain/subs';
 import { pendingCount } from '@/services/notifications';
 import { Group, Row, SettingsPage } from '@/settings/Parts';
-import { SUPPORT_EMAIL, rateDitch, reportProblem, suggestFeature } from '@/settings/feedback';
+import { SUPPORT_EMAIL, rateDitch, reportProblem, suggestFeature, suggestService } from '@/settings/feedback';
 import { SHORT_VERSION } from '@/settings/version';
 import { TimeField } from '@/settings/TimeField';
 import { useApp } from '@/state/app';
@@ -81,6 +81,7 @@ export default function Settings() {
       <Group header="Feedback & help" note="A real person reads every email.">
         <Row label="Report a problem" hint="Opens an email with a line of counts, no names or prices" onPress={() => void reportProblem({ subs, settings, pro, notif: app.notif, leads: effectiveLeads(settings, pro) })} />
         <Row label="Suggest a feature" hint={`Opens an email to ${SUPPORT_EMAIL}`} onPress={suggestFeature} />
+        <Row label="Suggest a subscription" hint="Missing one? We’ll add it to the list" onPress={() => suggestService()} />
         <Row label="Rate Ditch" hint="Opens the App Store" onPress={rateDitch} />
       </Group>
 

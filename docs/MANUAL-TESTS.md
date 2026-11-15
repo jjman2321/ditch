@@ -86,6 +86,18 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
+## 1h. Ditched moment, new billing cycles, Bobby gaps (Nov 15)
+- [ ] Hold a subscription on Home to ditch it. The Ditched screen: no big stamp. The row's DITCHED tag appears with a firm buzz, the logo dims, the duck pops up over the row, then "$X a year you won't pay, once you cancel." fades in. The number never moves.
+- [ ] Turn on Reduce Motion (iPhone Settings → Accessibility → Motion) and ditch another: everything shows finished with a short fade, the buzz still comes.
+- [ ] Nowhere says "saving" or "saved": the Ditched screen line reads "With the ones you've cancelled, that's $X a year you won't pay"; the Ditched tab reads "You won't pay $X a year."
+- [ ] Ditched tab with nothing ditched: the duck sits on a faint placeholder row (no stamp).
+- [ ] Edit any subscription: under Weekly · Monthly · 3 months · Yearly there are two chips, Every 2 weeks and Every 6 months. Pick Every 2 weeks at $10: Home's yearly total goes up by $260; the next charge steps 14 days at a time.
+- [ ] Every 6 months with a date of Aug 31: the next charges read Feb 28 (Feb 29 in a leap year), then Aug 31.
+- [ ] Settings → Your data → Export as spreadsheet (CSV): the Billed column says Monthly / Every 2 weeks / Every 6 months (words, not codes). Export is free.
+- [ ] Add a subscription, search a name that isn't on our list (e.g. "Corner Bakery Club"): under "Add … as your own" is "Not on our list? Ask us to add it", which opens an email. Searching one we have (e.g. Netflix) doesn't show it. Editing an existing one never shows it.
+- [ ] Settings → Feedback & help has "Suggest a subscription".
+- [ ] Update over an old install: your saved list is all still there after the update (the app upgrades its storage once, on first open).
+
 ## 1g. Release audit fixes (Nov 11, docs/audits/2026-11-11-release-audit.md)
 Needs the EAS development build for the starred ones (*).
 

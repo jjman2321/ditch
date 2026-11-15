@@ -444,6 +444,9 @@ function csvCell(v: string | number | null): string {
   return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 }
 
+/** Plain words for the Billed column (Nov 15: readable in any spreadsheet). */
+const BILLED: Record<Sub['cycle'], string> = { weekly: 'Weekly', biweekly: 'Every 2 weeks', monthly: 'Monthly', quarterly: 'Every 3 months', semiannual: 'Every 6 months', yearly: 'Yearly' };
+
 /** A spreadsheet of the list. Amounts are plain decimals in each sub's own currency. */
 export function toCsv(subs: Sub[], today: DateOnly, digitsOf: (currency: string) => number): string {
   const head = ['Name', 'Amount', 'Currency', 'Billed', 'Next charge', 'Status', 'Ditched on', 'Cancelled on'];
@@ -453,7 +456,7 @@ export function toCsv(subs: Sub[], today: DateOnly, digitsOf: (currency: string)
       const digits = s.currency ? digitsOf(s.currency) : 2;
       const amount = s.amountMinor === null ? '' : (s.amountMinor / 10 ** digits).toFixed(digits);
       const status = s.status === 'active' ? 'Active' : s.status === 'ditched-pending' ? 'Ditched, not cancelled yet' : 'Cancelled';
-      return [s.name, amount, s.currency ?? '', s.cycle, s.status === 'active' ? (chargeOfSub(s, today) ?? '') : (s.cancelBy ?? ''), status, s.ditchedOn, s.confirmedOn];
+      return [s.name, amount, s.currency ?? '', BILLED[s.cycle], s.status === 'active' ? (chargeOfSub(s, today) ?? '') : (s.cancelBy ?? ''), status, s.ditchedOn, s.confirmedOn];
     });
   return [head, ...rows].map((r) => r.map(csvCell).join(',')).join('\n') + '\n';
 }

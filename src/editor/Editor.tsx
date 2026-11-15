@@ -25,6 +25,7 @@ import { Picker } from './Picker';
 import { useApp, useAppMoney } from '@/state/app';
 import { chooseCycle, choosePlan, newPick, type Picked } from '@/state/picks';
 import { ask } from '@/ui/alert';
+import { suggestService } from '@/settings/feedback';
 import { Button, Card, ChevronRight, Chip, F, KEYBOARD_DONE, KeyboardDone, LogoTile, NotificationPreview, Search, Segmented, Sheet, SunSwitch, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
 
 /**
@@ -394,6 +395,20 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                   </Pressable>
                 ) : null}
               </Card>
+            ) : null}
+            {/* Only while searching in Add, and only when what they typed isn't already on the list. */}
+            {searching && query.trim() && !matches.some((m) => m.name.toLowerCase() === query.trim().toLowerCase()) ? (
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={`Ask us to add ${query.trim()} to the list`}
+                accessibilityHint="Opens an email"
+                onPress={() => suggestService(query)}
+                style={{ minHeight: 44, justifyContent: 'center', alignSelf: 'center' }}
+              >
+                <Txt v="sub" tone="mute" center>
+                  Not on our list? <Txt v="sub" style={{ textDecorationLine: 'underline' }}>Ask us to add it</Txt>
+                </Txt>
+              </Pressable>
             ) : null}
           </>
         )}

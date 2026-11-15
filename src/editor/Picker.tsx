@@ -17,6 +17,7 @@ import { shortPlanName } from '@/domain/copy';
 import { CYCLE_SHORT } from '@/domain/money';
 import { isActive, isPending } from '@/domain/subs';
 import { subFromPick } from '@/state/fromOnboarding';
+import { suggestService } from '@/settings/feedback';
 import { useApp, useAppMoney } from '@/state/app';
 import { newPick } from '@/state/picks';
 import { Bell, Button, Camera, ChevronRight, F, LogoTile, Search, Tick, Txt, haptic, radius, usePalette } from '@/ui/sunflower';
@@ -223,7 +224,22 @@ export function Picker({ onCustom, onTrial, onForgotten, onClose }: { onCustom: 
             {`Add “${query.trim()}” as your own`}
           </Txt>
         </Pressable>
-      ) : (
+      ) : null}
+      {/* Not on our list (Nov 15): one tap emails us, and we add it with its real price for everyone. */}
+      {query.trim() && !data.some((x) => x.name.toLowerCase() === query.trim().toLowerCase()) ? (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`Ask us to add ${query.trim()} to the list`}
+          accessibilityHint="Opens an email"
+          onPress={() => suggestService(query)}
+          style={{ minHeight: 44, justifyContent: 'center' }}
+        >
+          <Txt v="sub" tone="mute">
+            Not on our list? <Txt v="sub" style={{ textDecorationLine: 'underline' }}>Ask us to add it</Txt>
+          </Txt>
+        </Pressable>
+      ) : null}
+      {query.trim() ? null : (
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 8, flexGrow: 0 }} contentContainerStyle={{ gap: 8 }} keyboardShouldPersistTaps="handled">
           {FILTERS.map((x) => {
             const on = filter === x;

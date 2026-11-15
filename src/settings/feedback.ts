@@ -50,6 +50,12 @@ export function suggestFeature() {
   mail('Idea for Ditch', 'What would make Ditch better for you?\n\n');
 }
 
+/** "Not on our list?" (Nov 15: Bobby lets people submit services; we add them to the catalog for everyone). */
+export function suggestService(name?: string) {
+  const n = name?.trim();
+  mail(n ? `Please add ${n} to Ditch` : 'Please add a subscription to Ditch', `${n ? `Name: ${n}` : 'Name:'}\nCountry:\nIts website (if you know it):\n\nThanks! We add the price from the service’s own page.\n`);
+}
+
 export function rateDitch() {
   if (APP_STORE_ID) Linking.openURL(`https://apps.apple.com/app/id${APP_STORE_ID}?action=write-review`).catch(() => {});
   else tell('Not yet', 'Rating opens once Ditch is in the App Store. Thanks for wanting to!');

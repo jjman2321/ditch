@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { NAV } from '@/lib/site';
+import { NAV, NAV_PRICING } from '@/lib/site';
 
 export type SearchItem = { id: string; slug: string; name: string; aliases: string[]; guide: boolean; prices: boolean; rank: number; logo: boolean };
 export type PageItem = { key: string; label: string; href: string; words: string };
@@ -100,6 +100,11 @@ export function HeaderBar({ items, pages = [] }: { items: SearchItem[]; pages?: 
           ))}
         </nav>
         <div className="spacer" />
+        <nav className="links pricing-link" aria-label="Ditch">
+          <Link href={NAV_PRICING.href} prefetch={false}>
+            {NAV_PRICING.label}
+          </Link>
+        </nav>
         <button className="iconbtn" type="button" aria-label="Search guides and prices" onClick={() => setSearch(true)}>
           <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden>
             <circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" strokeWidth="2" />
@@ -149,13 +154,13 @@ function MenuSheet({ onClose, closing, sun }: { onClose: () => void; closing: bo
           </button>
         </div>
         <nav aria-label="Menu">
-          {NAV.map((n, i) => (
-            <Link key={n.href} href={n.href} onClick={onClose} style={{ '--i': i } as React.CSSProperties}>
+          {[...NAV, NAV_PRICING].map((n, i) => (
+            <Link key={n.href} href={n.href} onClick={onClose} prefetch={n.href.startsWith('/#') ? false : undefined} style={{ '--i': i } as React.CSSProperties}>
               {n.label}
             </Link>
           ))}
         </nav>
-        <Link className="btn block" href="/#join" prefetch={false} onClick={onClose} style={{ marginTop: 20, '--i': NAV.length } as React.CSSProperties}>
+        <Link className="btn block" href="/#join" prefetch={false} onClick={onClose} style={{ marginTop: 20, '--i': NAV.length + 1 } as React.CSSProperties}>
           Join the waitlist
         </Link>
       </div>

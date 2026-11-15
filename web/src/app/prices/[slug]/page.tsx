@@ -171,7 +171,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
       '@type': 'BreadcrumbList',
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: SITE },
-        { '@type': 'ListItem', position: 2, name: 'Prices', item: `${SITE}/prices` },
+        { '@type': 'ListItem', position: 2, name: 'Price lists', item: `${SITE}/prices` },
         { '@type': 'ListItem', position: 3, name: s.name, item: `${SITE}/prices/${slugOf(s.id)}` },
       ],
     },
@@ -187,7 +187,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
     <div className="wrap guide gv3 v4 guide4 g5 pricepage">
       <JsonLd data={ld} />
       <nav className="crumbs" aria-label="Breadcrumb">
-        <Link href="/prices">Prices</Link>
+        <Link href="/prices">Price lists</Link>
         <span aria-hidden>›</span>
         <span aria-current="page">{s.name}</span>
       </nav>

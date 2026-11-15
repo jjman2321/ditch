@@ -70,7 +70,7 @@ export function SmoothMotion() {
 
   useEffect(() => {
     if (!('IntersectionObserver' in window)) return;
-    const els = Array.from(document.querySelectorAll<HTMLElement>('.sa, .g5-hero-card, .hero .stage, .mq, .slot, .ditch-demo'));
+    const els = Array.from(document.querySelectorAll<HTMLElement>('.sa, .g5-hero-card, .hero .stage, .mq'));
     const io = new IntersectionObserver(
       (entries) => {
         for (const en of entries) en.target.classList.toggle('anim-off', !en.isIntersecting);

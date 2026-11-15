@@ -39,7 +39,6 @@ const norm = (s: string) => s.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]
 
 export function HeaderBar({ items, pages = [] }: { items: SearchItem[]; pages?: PageItem[] }) {
   const path = usePathname();
-  const onSun = path === '/';
   const [scrolled, setScrolled] = useState(false);
   // Open state remembers the page it was opened on, so moving to another page closes it without an effect.
   const [menuAt, setMenuAt] = useState<string | null>(null);
@@ -65,20 +64,8 @@ export function HeaderBar({ items, pages = [] }: { items: SearchItem[]; pages?: 
     return () => window.removeEventListener('scroll', on);
   }, []);
 
-  // iOS 26 Safari ignores theme-color and tints its top bar from the pinned header instead, so the header itself
-  // turns cream while the menu is open (owner, Nov 15). Older Safari and Android still read this meta tag.
-  // The iPhone's top bar takes this colour: yellow only while the yellow home header shows, cream otherwise
-  // (owner, Nov 15: a yellow strip sat above cream pages and over the open menu).
-  useEffect(() => {
-    const yellow = onSun && !scrolled && !menu;
-    let meta = document.querySelector('meta[name="theme-color"]');
-    if (!meta) {
-      meta = document.createElement('meta');
-      meta.setAttribute('name', 'theme-color');
-      document.head.appendChild(meta);
-    }
-    meta.setAttribute('content', yellow ? '#FFCC2E' : '#FBF7EE');
-  }, [onSun, scrolled, menu]);
+  // The header is cream on every page (owner, Nov 15): iOS 26 Safari tints its top bar from the pinned header,
+  // so a yellow header showed as a yellow strip. The layout's theme-color is cream to match, for older Safari and Android.
 
   // "/" opens search, like Stripe and Linear docs. Not while typing in a field.
   useEffect(() => {
@@ -94,7 +81,7 @@ export function HeaderBar({ items, pages = [] }: { items: SearchItem[]; pages?: 
   }, []);
 
   return (
-    <header className={`hdr${onSun && !scrolled && !menu ? ' on-sun' : ''}${scrolled ? ' scrolled' : ''}`}>
+    <header className={`hdr${scrolled ? ' scrolled' : ''}`}>
       <div className="wrap bar">
         <Link className="wordmark" href="/" aria-label="Ditch, home" prefetch={false}>
           ditch

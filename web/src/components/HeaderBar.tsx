@@ -39,6 +39,7 @@ const norm = (s: string) => s.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]
 
 export function HeaderBar({ items, pages = [] }: { items: SearchItem[]; pages?: PageItem[] }) {
   const path = usePathname();
+  const onSun = path === '/';
   const [scrolled, setScrolled] = useState(false);
   // Open state remembers the page it was opened on, so moving to another page closes it without an effect.
   const [menuAt, setMenuAt] = useState<string | null>(null);
@@ -64,8 +65,13 @@ export function HeaderBar({ items, pages = [] }: { items: SearchItem[]; pages?: 
     return () => window.removeEventListener('scroll', on);
   }, []);
 
-  // The header is cream on every page (owner, Nov 15): iOS 26 Safari tints its top bar from the pinned header,
-  // so a yellow header showed as a yellow strip. The layout's theme-color is cream to match, for older Safari and Android.
+  // Yellow header on the home hero (owner, Nov 15: "cleaner"). iOS 26 Safari tints its top bar from that header,
+  // so the menu panel matches it (yellow at the top of home, cream elsewhere) instead of fighting the bar.
+  // Older Safari and Android read theme-color, which follows the same rule.
+  const sunTop = onSun && !scrolled;
+  useEffect(() => {
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', sunTop ? '#FFCC2E' : '#FBF7EE');
+  }, [sunTop]);
 
   // "/" opens search, like Stripe and Linear docs. Not while typing in a field.
   useEffect(() => {
@@ -81,7 +87,7 @@ export function HeaderBar({ items, pages = [] }: { items: SearchItem[]; pages?: 
   }, []);
 
   return (
-    <header className={`hdr${scrolled ? ' scrolled' : ''}`}>
+    <header className={`hdr${onSun && !scrolled ? ' on-sun' : ''}${scrolled ? ' scrolled' : ''}`}>
       <div className="wrap bar">
         <Link className="wordmark" href="/" aria-label="Ditch, home" prefetch={false}>
           ditch
@@ -111,7 +117,7 @@ export function HeaderBar({ items, pages = [] }: { items: SearchItem[]; pages?: 
           </svg>
         </button>
       </div>
-      {menu ? <MenuSheet closing={closing} onClose={closeMenu} /> : null}
+      {menu ? <MenuSheet closing={closing} sun={sunTop} onClose={closeMenu} /> : null}
       {search ? <SearchDialog items={items} pages={pages} onClose={() => setSearch(false)} /> : null}
     </header>
   );
@@ -122,7 +128,7 @@ export function HeaderBar({ items, pages = [] }: { items: SearchItem[]; pages?: 
  * dims, the links slide in one after another, and the menu icon's two lines turn into the close X in the same spot.
  * Closing plays it backwards, faster. Pure CSS animations; nothing moves near a price.
  */
-function MenuSheet({ onClose, closing }: { onClose: () => void; closing: boolean }) {
+function MenuSheet({ onClose, closing, sun }: { onClose: () => void; closing: boolean; sun: boolean }) {
   const box = useRef<HTMLDivElement>(null);
   const close = useRef<HTMLButtonElement>(null);
   useDialog(box, onClose);
@@ -131,7 +137,7 @@ function MenuSheet({ onClose, closing }: { onClose: () => void; closing: boolean
     close.current?.focus();
   }, []);
   return (
-    <div className={`sheet menu-sheet${closing ? ' out' : ''}`} id="menu-sheet" role="dialog" aria-modal="true" aria-label="Menu" onClick={onClose}>
+    <div className={`sheet menu-sheet${sun ? ' sun' : ''}${closing ? ' out' : ''}`} id="menu-sheet" role="dialog" aria-modal="true" aria-label="Menu" onClick={onClose}>
       <div className="in" ref={box} onClick={(e) => e.stopPropagation()}>
         <div className="menu-top">
           <span className="wordmark">ditch</span>

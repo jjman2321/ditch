@@ -1882,3 +1882,7 @@ main > :first-child, main > :first-child > :first-child { scroll-margin-top: 200
 .v4 .tk .result .cards2 { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
 .v4 .tk .result .cards2 > div { min-width: 0; }
 .v4 .tk .result .cards2 small { overflow-wrap: anywhere; }
+/* menu opened at the top of the home page: the panel is sunflower like the header and Safari's top bar above it */
+.menu-sheet.sun .in { background: var(--sun); }
+.menu-sheet.sun nav a { border-bottom-color: rgba(22, 20, 15, .14); }
+.menu-sheet.sun .iconbtn { background: rgba(22, 20, 15, .08); }

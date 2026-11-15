@@ -1,17 +1,17 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
-import { COMPANY, SITE, SUPPORT_EMAIL, pageTitle, og } from '@/lib/site';
+import { COMPANY, SITE, SUPPORT_EMAIL, og } from '@/lib/site';
 import { JsonLd } from '@/components/JsonLd';
 
 export const metadata: Metadata = {
-  title: { absolute: 'About Ditch, the subscription tracker for iPhone' },
+  title: { absolute: 'About Ditch' },
   description: 'Ditch is made by Aribo, who built it to keep track of his own subscriptions. A small, independent iPhone app that reminds you before every charge.',
   alternates: { canonical: '/about' }, openGraph: og('/about'),
 };
 
 export default function About() {
-  const ld = { '@context': 'https://schema.org', '@type': 'AboutPage', name: 'About Ditch', url: `${SITE}/about`, mainEntity: { '@type': 'Person', name: 'Aribo', jobTitle: 'Maker of Ditch', worksFor: { '@type': 'Organization', name: COMPANY } } };
+  const ld = { '@context': 'https://schema.org', '@type': 'AboutPage', name: 'About Ditch', url: `${SITE}/about`, mainEntity: { '@type': 'Person', name: 'Aribo', jobTitle: 'Maker of Ditch', worksFor: { '@type': 'Organization', name: 'Ditch', legalName: COMPANY } } };
   return (
     <div className="wrap doc v4">
       <JsonLd data={ld} />

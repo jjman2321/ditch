@@ -100,25 +100,12 @@ function summary(name: string, rows: PriceRow[]) {
 
 /** "Netflix price 2026: from $8.99/mo in the US". The answer in the title, from the cheapest monthly plan we list. */
 function titleFor(name: string, year: string, rows: PriceRow[]) {
-  const r = rows.find((x) => x.country === 'US') ?? rows.find((x) => x.country === 'GB');
-  const all = r?.plans.filter((p) => p.cycle === 'monthly' && !/student/i.test(p.name)).sort((a, b) => a.amountMinor - b.amountMinor) ?? [];
-  // "Google AI Pro" is a tier: quote the Pro plan, not the cheaper Plus plan sold on the same page.
-  const tier = name.split(' ').pop()!.toLowerCase();
-  const named = ['pro', 'plus', 'premium', 'max', 'ultra'].includes(tier) ? all.filter((p) => p.name.toLowerCase().split(/\s+/).includes(tier)) : [];
-  const monthly = named[0] ?? all[0];
-  // People search "X prices 2026", "X price plans", "X price per month" (Google autocomplete, Nov 14).
-  const fit = (...t: string[]) => { const ok = t.filter(Boolean); return ok.find((x) => x.length <= 60) ?? ok[ok.length - 1]; };
+  // One clean pattern (owner, Nov 15): "Netflix prices 2026: every plan, 29 countries | Ditch".
   const n = rows.length;
-  if (!r || !monthly) {
-    const yr = r?.plans.filter((p) => p.cycle === 'yearly').sort((a, b) => a.amountMinor - b.amountMinor)[0];
-    if (r && yr) { const a = `${r.plans.length > 1 ? 'from ' : ''}${formatMoney(yr.amountMinor, r.currency, { country: r.country })}`; const w = r.country === 'US' ? 'US' : 'UK'; const more = n > 1 ? ` + ${n - 1} more countries` : ''; return fit(`${name} price ${year}: ${a} a year (${w})${more}`, `${name} price ${year}: ${a}/yr (${w})${more}`, `${name} price ${year}: ${a} a year (${w})`); }
-    return fit(`${name} prices ${year}: every plan in ${n} countries`, `${name} price ${year} ${inWhere(rows)}`);
-  }
-  const where = r.country === 'US' ? 'US' : 'UK';
-  const amt = formatMoney(monthly.amountMinor, r.currency, { country: r.country });
-  if (named[0]) return fit(n > 1 ? `${name} price ${year}: ${amt}/mo (${where}) + ${n - 1} more countries` : '', `${name} price ${year}: ${amt} a month (${where})`, `${name} price ${year}: ${amt}/mo (${where})`);
-  const many = r.plans.length > 1;
-  return many ? fit(`${name} prices ${year}: every plan, from ${amt}/mo (${where})`, `${name} prices ${year}: from ${amt}/mo (${where})`, `${name} price ${year}: from ${amt}/mo`) : fit(`${name} price ${year}: ${amt} a month (${where})${n > 1 ? ` + ${n - 1} more countries` : ''}`, `${name} price ${year}: ${amt}/mo (${where})`);
+  const plans = new Set(rows.flatMap((r) => r.plans.map((p) => p.id))).size;
+  const where = n > 1 ? `${n} countries` : inWhere(rows).replace(/^in /, '');
+  const tries = n === 1 ? [`${name} ${plans > 1 ? 'prices' : 'price'} ${year} ${inWhere(rows)}`, `${name} ${plans > 1 ? 'prices' : 'price'} ${year}`] : plans > 1 ? [`${name} prices ${year}: every plan, ${where}`, `${name} prices ${year}: every plan`] : [`${name} price ${year} in ${where}`, `${name} price ${year}`];
+  return tries.find((t) => t.length + 8 <= 60) ?? tries[tries.length - 1];
 }
 
 export async function generateMetadata({ params }: PageProps<'/prices/[slug]'>): Promise<Metadata> {

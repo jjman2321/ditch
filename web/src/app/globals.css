@@ -15,7 +15,7 @@
 @media (max-width: 1023px) { :root { --pad: 32px; } }
 @media (max-width: 639px) { :root { --pad: 20px; --sec: 64px; --sec-tight: 52px; --sec-moment: 88px; } }
 
-html { -webkit-text-size-adjust: 100%; scroll-padding-top: 88px; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 104px; }
 @media all { html { scroll-behavior: smooth; } }
 @media not all { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
 body { margin: 0; background: var(--cream); color: var(--ink); font: 18px/1.55 var(--body); -webkit-font-smoothing: antialiased; }

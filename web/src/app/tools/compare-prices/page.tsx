@@ -8,7 +8,7 @@ import { Compare } from '@/components/tools/PlanTools';
 import { countryList } from '@/lib/tools';
 
 export const metadata: Metadata = {
-  title: pageTitle('Subscription price comparison: two services side by side'),
+  title: pageTitle('Compare subscription prices side by side'),
   description: `Compare two subscriptions plan by plan, in your country, from each service’s own prices. Netflix, Spotify, Disney+, ChatGPT and more, in ${COUNTRIES.length} countries.`,
   alternates: { canonical: '/tools/compare-prices' }, openGraph: og('/tools/compare-prices'),
 };

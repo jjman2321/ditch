@@ -28,26 +28,14 @@ function answer(g: { answer?: string; steps: string[]; name: string; checkedOn: 
 
 const cap = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
 
-/**
- * Search title (owner, Nov 14: "10/10 Google titles"). People type "how to cancel X subscription", "…on iPhone",
- * "…on phone" (Google autocomplete, Nov 14), so the title names the ways this guide covers: website, the app,
- * iPhone (Apple billing), Android (Google Play). Names like "Kindle+ (Kindle Unlimited)" use the name people search.
- * Falls back to shorter forms so it stays within 60 characters.
- */
+/** Search title: phrase first, brand last, within 60 characters (seo-aiseo rules). */
 function guideTitle(g: NonNullable<ReturnType<typeof guideById>>) {
   const year = g.checkedOn.slice(0, 4);
-  // Platform guides ("subscriptions on Android (Google Play)") keep their words; brand guides use the name people search.
+  // One clean pattern (owner, Nov 15): "How to cancel Netflix in 2026 | Ditch". Platform guides keep their words;
+  // names like "Kindle+ (Kindle Unlimited)" use the name people search.
   const platform = /^subscriptions on/i.test(g.name);
   const name = platform ? g.name.replace(/\s*\(.*\)/, '') : g.name.replace(/^.+?\s*\((.+)\)$/, '$1');
-  if (platform) return pageTitle(`How to cancel ${name} (${year})`);
-  const appleOnly = /^https:\/\/(apps|account)\.apple\.com/.test(g.url ?? '') || g.id === 'icloud' || g.id.startsWith('apple-');
-  const webish = /safari|website|browser|\.(com|net|tv|co|org)\b|sign in at/i.test(g.steps[0] ?? '');
-  const ways = [appleOnly ? 'iPhone' : webish ? 'web' : 'app', ...(!appleOnly && g.appleBilling !== false ? ['iPhone'] : []), ...(g.depth?.googlePlay ? ['Android'] : [])];
-  const list = [...new Set(ways)];
-  const what = /membership|subscription|premium$/i.test(name) ? '' : /costco|uber-one|dashpass|doordash|instacart|walmart|amazon-prime/.test(g.id) ? 'membership' : 'subscription';
-  // One way only: "How to cancel Costco membership (2026)" reads better than a one-word list.
-  const tries = [...(list.length > 1 ? [`How to cancel ${name} (${year}): ${list.join(', ')}`] : []), `How to cancel ${name}${what ? ` ${what}` : ''} (${year})`, `How to cancel ${name} (${year})`];
-  return pageTitle(tries.find((t) => t.length <= 60) ?? tries[2]);
+  return pageTitle(`How to cancel ${name} in ${year}`);
 }
 
 export async function generateMetadata({ params }: PageProps<'/cancel/[slug]'>): Promise<Metadata> {

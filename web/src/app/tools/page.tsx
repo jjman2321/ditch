@@ -10,7 +10,7 @@ import { SERVICE_TOOLS, TOOLS } from '@/lib/tools';
 import { JsonLd } from '@/components/JsonLd';
 
 export const metadata: Metadata = {
-  title: pageTitle('Free subscription tools: calculators and charge finder'),
+  title: pageTitle('Free subscription tools and calculators'),
   description: 'Free tools for what you pay for: find an unknown charge, see your yearly total, catch a free trial, split a family plan and compare prices.',
   alternates: { canonical: '/tools' }, openGraph: og('/tools'),
 };

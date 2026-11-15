@@ -6,7 +6,7 @@ import { SITE, pageTitle, og } from '@/lib/site';
 import { JsonLd } from '@/components/JsonLd';
 
 export const metadata: Metadata = {
-  title: pageTitle(`How to cancel subscriptions: ${publishedGuides().length} official guides (${new Date().getFullYear()})`),
+  title: pageTitle(`How to cancel subscriptions: ${publishedGuides().length} guides (${new Date().getFullYear()})`),
   description: 'Official cancel links and steps for Netflix, Spotify, Disney+, YouTube Premium and more, split by how you pay. Each guide shows the date we checked it.',
   alternates: { canonical: '/cancel' }, openGraph: og('/cancel', 'cancel'),
 };

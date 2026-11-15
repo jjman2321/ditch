@@ -7,7 +7,9 @@ import { useEffect } from 'react';
 let pending: string | null = null;
 
 /** Smallest page offset an anchor can land at: the pinned header plus a little air. */
-const headerGap = () => (document.querySelector('header')?.getBoundingClientRect().height ?? 0) + 16;
+// 32px of air under the header on phones, 40px on bigger screens (owner, Nov 15: 16px felt tight; 48px let the
+// section above peek in on phones).
+const headerGap = () => (document.querySelector('header')?.getBoundingClientRect().height ?? 0) + (window.innerWidth < 860 ? 32 : 40);
 
 /** Gentle start, soft landing: the scroll speeds up then settles (easeInOutCubic). */
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
@@ -58,8 +60,18 @@ export function smoothScrollTo(top: number) {
 const glideTo = (hash: string) => {
   const el = document.getElementById(decodeURIComponent(hash.slice(1)));
   if (!el) return false;
-  const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
-  smoothScrollTo(el.getBoundingClientRect().top + window.scrollY - Math.max(margin, headerGap()));
+  // Line up on the first line of text, so every heading lands the same distance under the header
+  // (some headings have extra space above the letters inside their box).
+  const rg = document.createRange();
+  rg.selectNodeContents(el);
+  const tops = [...rg.getClientRects()].filter((r) => r.height > 0).map((r) => r.top);
+  let top = tops.length ? Math.min(...tops) : el.getBoundingClientRect().top;
+  // A heading still waiting to fade in sits a few px lower until its animation ends: aim for where it settles.
+  for (let n: HTMLElement | null = el; n && n !== document.body; n = n.parentElement) {
+    const t = getComputedStyle(n).transform;
+    if (t && t !== 'none') top -= new DOMMatrix(t).m42;
+  }
+  smoothScrollTo(top + window.scrollY - headerGap());
   return true;
 };
 

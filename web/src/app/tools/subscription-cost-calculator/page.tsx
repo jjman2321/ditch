@@ -9,7 +9,7 @@ import { defaultPlan, priceFor } from '@/lib/data';
 import { formatMoney, yearlyMinor } from '@/lib/money';
 
 export const metadata: Metadata = {
-  title: pageTitle('Subscription cost calculator: your monthly and yearly total'),
+  title: pageTitle('Subscription cost calculator: monthly and yearly'),
   description: 'Tap the subscriptions you pay for and see the total a month and a year, with real prices for your country. Free, runs in your browser.',
   alternates: { canonical: '/tools/subscription-cost-calculator' }, openGraph: og('/tools/subscription-cost-calculator'),
 };

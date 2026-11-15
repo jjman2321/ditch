@@ -439,8 +439,8 @@ Why: an app feels premium when the bad moments are handled well, not only the ha
 - [ ] Footer → Prices column has "Price increases".
 
 ### W8. Comparison pages and every tier (Nov 15, late)
-- [ ] Laptop: the menu reads Cancel guides · Price lists · Compare · Free tools on the left, Pricing next to the search and Join buttons on the right. Nothing wraps onto two lines. On an iPad or a narrow window it turns into the ☰ button.
-- [ ] iPhone: ☰ shows Cancel guides, Price lists, Compare, Free tools, Pricing. Tap Pricing from any page: it glides to the pricing section on the home page.
+- [ ] Laptop: the menu reads Cancel guides · Prices · Compare · Free tools · Pricing in one row. Nothing wraps onto two lines. On an iPad or a narrow window it turns into the ☰ button.
+- [ ] iPhone: ☰ shows Cancel guides, Prices, Compare, Free tools, Pricing. Tap Pricing from any page: it glides to the pricing section on the home page.
 - [ ] Open ditchsubs.app/compare: groups AI chat, Music, TV and video, Cloud storage, Gaming, Which plan?. Type "claude" in the search: only Claude pages stay.
 - [ ] /tools/claude-vs-gemini: the first line says both US prices. The price box works (switch country, switch A month / A year). Under it, "What you get": logos, then rows like Usage, Models, Deep research. On the iPhone each row shows the label on top and the two answers side by side. "Not stated" is grey and italic.
 - [ ] /tools/claude-pro-vs-max: the box shows Pro and Max with "Pay monthly" and "Pay yearly". Under it: "Max costs $80.00 more a month". Switch the country to the UK. "What Max adds" table under it.

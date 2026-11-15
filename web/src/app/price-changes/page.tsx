@@ -44,7 +44,7 @@ export default function PriceChanges() {
     : [];
   const ld = [
     { '@context': 'https://schema.org', '@type': 'Article', headline: `Subscription price increases ${YEAR}`, dateModified: checked ?? undefined, author: { '@id': `${SITE}/#org` }, publisher: { '@id': `${SITE}/#org` }, mainEntityOfPage: `${SITE}/price-changes` },
-    { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Price lists', item: `${SITE}/prices` }, { '@type': 'ListItem', position: 2, name: 'Price changes', item: `${SITE}/price-changes` }] },
+    { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Prices', item: `${SITE}/prices` }, { '@type': 'ListItem', position: 2, name: 'Price changes', item: `${SITE}/price-changes` }] },
     ...(faq.length ? [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }] : []),
   ];
   const hubs = new Set(priceHubServices().map((s) => s.id));
@@ -53,7 +53,7 @@ export default function PriceChanges() {
     <div className="wrap v4 gv3 guide4 pchg">
       <JsonLd data={ld} />
       <nav className="crumbs" aria-label="Breadcrumb">
-        <Link href="/prices">Price lists</Link>
+        <Link href="/prices">Prices</Link>
         <span aria-hidden>›</span>
         <span aria-current="page">Price changes</span>
       </nav>

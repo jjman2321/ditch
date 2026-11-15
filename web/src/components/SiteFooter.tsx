@@ -24,7 +24,7 @@ export function SiteFooter() {
             <Link href="/cancel">All guides →</Link>
           </nav>
           <nav aria-label="Prices">
-            <p className="ttl">Price lists</p>
+            <p className="ttl">Prices</p>
             {hubs.map((s) => (
               <Link key={s.id} href={`/prices/${slugOf(s.id)}`}>
                 {s.name} prices

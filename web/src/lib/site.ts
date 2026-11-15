@@ -39,17 +39,14 @@ export const PRO = { yearly: '$29.99', yearlyPerMonth: '$2.50', monthly: '$4.99'
 /** App Store: null until the app is live. Then the hero CTA becomes the badge and the Smart App Banner turns on. */
 export const APP_STORE_ID: string | null = null;
 
-/**
- * Main menu (owner, Nov 15): "Pricing" stays (it's the standard word for what Ditch costs), so the price lists are
- * called "Price lists" and Pricing sits on the right next to the waitlist button: content on the left, Ditch on the right.
- */
+/** Main menu (owner, Nov 15: the old menu plus Compare, all in one row). */
 export const NAV = [
   { href: '/cancel', label: 'Cancel guides' },
-  { href: '/prices', label: 'Price lists' },
+  { href: '/prices', label: 'Prices' },
   { href: '/compare', label: 'Compare' },
   { href: '/tools', label: 'Free tools' },
+  { href: '/#pricing', label: 'Pricing' },
 ];
-export const NAV_PRICING = { href: '/#pricing', label: 'Pricing' };
 
 /** Sourced stats we're allowed to quote (CLAUDE.md rule 5: no unsourced claims). */
 export const STATS = {

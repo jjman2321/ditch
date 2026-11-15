@@ -1924,7 +1924,6 @@ main > :first-child, main > :first-child > :first-child { scroll-margin-top: 200
 .tv.pair .mono { width: 36px !important; height: 36px !important; border-radius: 10px; font-size: 13px !important; }
 .tv.pair > * + * { margin-left: -10px; box-shadow: 0 0 0 2px var(--white); }
 
-/* Header (Nov 15): 4 content links + Pricing on the right. Labels never wrap; below 1020px it's the menu button. */
+/* Header (Nov 15): 5 links in one row. Labels never wrap; below 1020px it's the menu button. */
 .hdr nav.links a { white-space: nowrap; }
-.hdr nav.pricing-link { margin-right: 4px; }
 @media (max-width: 1020px) { .hdr nav.links { display: none; } .menu-btn { display: inline-flex; } }

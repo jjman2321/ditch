@@ -27,6 +27,13 @@ export function Reveal() {
       el.style.setProperty('--i', String(Math.min(n, 5)));
       el.setAttribute('data-reveal', '');
     }
+    // Safari 26+, Chrome, Edge: the fade is tied to scroll position and drawn by the graphics chip (CSS view timeline),
+    // so it never lags behind a fast flick on iPhone (owner, Nov 15: "clunky"). Plain blocks just get shown; the CSS
+    // under .sda animates them. Blocks with their own entrance (stamp, notification, pricing cards) still use the observer.
+    const sda = typeof CSS !== 'undefined' && CSS.supports('animation-timeline: view()');
+    document.documentElement.classList.toggle('sda', sda);
+    const special = '.stamp, .big-notif, .pg';
+    if (sda) document.querySelectorAll<HTMLElement>('[data-reveal]:not(.is-in)').forEach((e) => !e.matches(special) && e.classList.add('is-in'));
     const els = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]:not(.is-in)'));
     if (!('IntersectionObserver' in window)) {
       els.forEach((e) => e.classList.add('is-in'));

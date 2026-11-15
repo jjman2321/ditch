@@ -1886,3 +1886,15 @@ main > :first-child, main > :first-child > :first-child { scroll-margin-top: 200
 .menu-sheet.sun .in { background: var(--sun); }
 .menu-sheet.sun nav a { border-bottom-color: rgba(22, 20, 15, .14); }
 .menu-sheet.sun .iconbtn { background: rgba(22, 20, 15, .08); }
+
+/* ---------- Nov 15: scroll-driven fade-ins (Safari 26+, Chrome, Edge) ----------
+   Each block fades up as it scrolls in, tied to scroll position instead of a "now on screen" event, so it can't lag
+   behind a fast flick on iPhone. Opacity and transform only (drawn by the graphics chip). Browsers without view
+   timelines keep the observer-based fade above. Prices never move: price blocks aren't in the reveal list. */
+@supports (animation-timeline: view()) {
+  .sda [data-reveal]:not(.stamp):not(.big-notif):not(.pg):not(.ditch-demo) {
+    opacity: 1; transform: none; transition: none;
+    animation: sdaIn linear both; animation-timeline: view(); animation-range: cover 0px cover 160px;
+  }
+  @keyframes sdaIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+}

@@ -30,6 +30,14 @@ const prices = latest('prices-20');
 const mena = latest('prices-mena-');
 prices.prices = [...prices.prices, ...mena.prices];
 prices.about.countries = { ...prices.about.countries, ...(mena.about.countries ?? {}) };
+// Full tier lists (Nov 15): each prices-tiers-*.json row replaces our row for the same service and country
+// (it lists every plan, old and new, read from the official page).
+const tierFiles = readdirSync(join(APP, 'docs/research')).filter((n) => n.startsWith('prices-tiers-') && n.endsWith('.json')).sort();
+for (const f of tierFiles) {
+  const x = JSON.parse(readFileSync(join(APP, 'docs/research', f), 'utf8'));
+  const keys = new Set(x.prices.filter((r) => r.status === 'verified').map((r) => `${r.serviceId}|${r.country}`));
+  prices.prices = [...prices.prices.filter((r) => !keys.has(`${r.serviceId}|${r.country}`)), ...x.prices.filter((r) => r.status === 'verified')];
+}
 // More countries (Nov 15): every prices-intl-*.json, same format as the MENA file.
 for (const f of readdirSync(join(APP, 'docs/research')).filter((n) => n.startsWith('prices-intl-') && n.endsWith('.json')).sort()) {
   const x = JSON.parse(readFileSync(join(APP, 'docs/research', f), 'utf8'));

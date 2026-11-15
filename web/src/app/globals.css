@@ -1927,3 +1927,9 @@ main > :first-child, main > :first-child > :first-child { scroll-margin-top: 200
 /* Header (Nov 15): 5 links in one row. Labels never wrap; below 1020px it's the menu button. */
 .hdr nav.links a { white-space: nowrap; }
 @media (max-width: 1020px) { .hdr nav.links { display: none; } .menu-btn { display: inline-flex; } }
+
+/* Header colour follows what's under it (Nov 15): it fades between yellow and cream instead of snapping. */
+.hdr { transition: background-color 280ms var(--ease), box-shadow var(--t-base) var(--ease); }
+/* Lock-screen torch and camera (owner, Nov 15: "feels like a real iPhone"). Solid white, drawn in the iOS lock-screen
+   style (our own drawing). The circles stay where they were, half hidden by the hero edge: that's what looks natural. */
+.phone .lockbtns span { display: inline-flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, .92); }

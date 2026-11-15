@@ -144,8 +144,17 @@ export default function Home() {
                 <Notif text={`Netflix renews in 3 days. ${formatMoney(nfPlan.amountMinor, 'USD')}. Still watching?`} style={{ top: 236 }} />
                 <Notif className="second" when="Tue" text={`Spotify renews in 3 days. ${formatMoney(defaultPlan(priceFor('spotify', 'US')!).amountMinor, 'USD')}.`} style={{ top: 330 }} />
                 <div className="lockbtns">
-                  <span />
-                  <span />
+                  <span>
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden>
+                      <path d="M7.5 2.5h9a1 1 0 011 1V6a1 1 0 01-.2.6L15 9.8V20a1.5 1.5 0 01-1.5 1.5h-3A1.5 1.5 0 019 20V9.8L6.7 6.6a1 1 0 01-.2-.6V3.5a1 1 0 011-1z" />
+                      <rect x="11" y="11.5" width="2" height="3.6" rx="1" fill="#2b2923" />
+                    </svg>
+                  </span>
+                  <span>
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden>
+                      <path d="M9.2 4.5h5.6c.5 0 1 .3 1.3.7l1 1.6h1.9A2.5 2.5 0 0121.5 9.3v8.2a2.5 2.5 0 01-2.5 2.5H5a2.5 2.5 0 01-2.5-2.5V9.3A2.5 2.5 0 015 6.8h1.9l1-1.6c.3-.4.8-.7 1.3-.7zM12 9.3a4 4 0 100 8 4 4 0 000-8z" fillRule="evenodd" />
+                    </svg>
+                  </span>
                 </div>
               </div>
             </div>

@@ -439,6 +439,8 @@ Why: an app feels premium when the bad moments are handled well, not only the ha
 - [ ] Footer → Prices column has "Price increases".
 
 ### W8. Comparison pages and every tier (Nov 15, late)
+- [ ] Home on iPhone and laptop: the header is yellow over the yellow hero. Scroll down: it stays yellow until the hero has gone under it, then fades to cream. Scroll back up: it fades to yellow as soon as the hero comes back. No cream bar over yellow, no snap.
+- [ ] Laptop home hero: the phone's two round buttons at the bottom edge show a torch (left) and a camera (right), half hidden by the edge.
 - [ ] Laptop: the menu reads Cancel guides · Prices · Compare · Free tools · Pricing in one row. Nothing wraps onto two lines. On an iPad or a narrow window it turns into the ☰ button.
 - [ ] iPhone: ☰ shows Cancel guides, Prices, Compare, Free tools, Pricing. Tap Pricing from any page: it glides to the pricing section on the home page.
 - [ ] Open ditchsubs.app/compare: groups AI chat, Music, TV and video, Cloud storage, Gaming, Which plan?. Type "claude" in the search: only Claude pages stay.

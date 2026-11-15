@@ -58,17 +58,29 @@ export function HeaderBar({ items, pages = [] }: { items: SearchItem[]; pages?: 
   };
   const setSearch = (v: boolean) => setSearchAt(v ? path : null);
 
+  // Yellow while the header sits over the yellow home hero; cream once the hero has scrolled out from under it
+  // (owner, Nov 15 recording: the header turned cream after 4px and snapped back to yellow at the top). One rAF per frame.
+  const [overSun, setOverSun] = useState(onSun);
   useEffect(() => {
-    const on = () => setScrolled(window.scrollY > 4);
-    on();
+    let raf = 0;
+    const read = () => {
+      raf = 0;
+      setScrolled(window.scrollY > 4);
+      const hero = onSun ? document.querySelector('.hero') : null;
+      const head = document.querySelector('.hdr')?.getBoundingClientRect().height ?? 64;
+      setOverSun(Boolean(hero && hero.getBoundingClientRect().bottom > head));
+    };
+    const on = () => { if (!raf) raf = requestAnimationFrame(read); };
+    read();
     window.addEventListener('scroll', on, { passive: true });
-    return () => window.removeEventListener('scroll', on);
-  }, []);
+    window.addEventListener('resize', on);
+    return () => { window.removeEventListener('scroll', on); window.removeEventListener('resize', on); if (raf) cancelAnimationFrame(raf); };
+  }, [onSun]);
 
   // Yellow header on the home hero (owner, Nov 15: "cleaner"). iOS 26 Safari tints its top bar from that header,
-  // so the menu panel matches it (yellow at the top of home, cream elsewhere) instead of fighting the bar.
+  // so the menu panel matches it (yellow over the hero, cream elsewhere) instead of fighting the bar.
   // Older Safari and Android read theme-color, which follows the same rule.
-  const sunTop = onSun && !scrolled;
+  const sunTop = onSun && overSun;
   useEffect(() => {
     document.querySelector('meta[name="theme-color"]')?.setAttribute('content', sunTop ? '#FFCC2E' : '#FBF7EE');
   }, [sunTop]);
@@ -87,7 +99,7 @@ export function HeaderBar({ items, pages = [] }: { items: SearchItem[]; pages?: 
   }, []);
 
   return (
-    <header className={`hdr${onSun && !scrolled ? ' on-sun' : ''}${scrolled ? ' scrolled' : ''}`}>
+    <header className={`hdr${sunTop ? ' on-sun' : ''}${scrolled && !sunTop ? ' scrolled' : ''}`}>
       <div className="wrap bar">
         <Link className="wordmark" href="/" aria-label="Ditch, home" prefetch={false}>
           ditch

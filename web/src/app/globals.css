@@ -1845,3 +1845,6 @@ td.num, .r.num, .tbl td:not(:first-child), .vs-t td { white-space: nowrap; }
 @keyframes barBotOut { from { transform: translateY(-4px) rotate(-45deg); } to { transform: none; } }
 /* the phone version of "How it works" showed the notification floating out of its card (it kept the hero phone's absolute position) */
 .story-shot-m .notif { position: static; }
+/* the ditch card's replay: fade the finished card out, reset unseen, fade back in (owner: "should leave smoothly") */
+.js .ditch-demo[data-play] .dd-stack { transition: opacity .4s var(--ease); }
+.js .ditch-demo[data-play].fading .dd-stack, .js .ditch-demo[data-play].fading .dd-year { opacity: 0 !important; transition: opacity .4s ease-in 0s !important; }

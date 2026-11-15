@@ -16,17 +16,28 @@ export function DitchDemo({ name, meta, yearly, logo, small = false }: { name: s
     const el = ref.current;
     if (!el || small || !('IntersectionObserver' in window)) return;
     let timer: number | undefined;
+    let step: number | undefined;
+    // Replay softly: the finished card fades out, resets while invisible, fades back in and plays again.
     const play = () => {
-      el.classList.remove('is-in');
-      void el.offsetWidth; // restart from the start state
-      el.classList.add('is-in');
+      window.clearTimeout(step);
+      if (!el.classList.contains('is-in')) {
+        el.classList.add('is-in');
+        return;
+      }
+      el.classList.add('fading');
+      step = window.setTimeout(() => {
+        el.classList.remove('is-in');
+        void el.offsetWidth;
+        el.classList.remove('fading');
+        step = window.setTimeout(() => el.classList.add('is-in'), 120);
+      }, 420);
     };
     const io = new IntersectionObserver(
       ([e]) => {
         window.clearInterval(timer);
         if (e.isIntersecting) {
           play();
-          timer = window.setInterval(play, 5200);
+          timer = window.setInterval(play, 5600);
         }
       },
       { threshold: 0.5 },
@@ -35,6 +46,7 @@ export function DitchDemo({ name, meta, yearly, logo, small = false }: { name: s
     return () => {
       io.disconnect();
       window.clearInterval(timer);
+      window.clearTimeout(step);
     };
   }, [small]);
   return (

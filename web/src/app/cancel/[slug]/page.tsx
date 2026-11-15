@@ -12,6 +12,7 @@ import { PayTabs, type PayTab } from '@/components/guide/PayTabs';
 import { StepArt, stepUrl, tapLabel } from '@/components/guide/StepArt';
 import { APPLE_SOURCE, formatDate, freshness, guideById, neighbours, priceFor, priceHubServices, pubDates, publicNotes, publishedGuides, serviceById, idOf, slugOf } from '@/lib/data';
 import { COMPANY, SITE, SUPPORT_EMAIL, pageTitle, shareImage } from '@/lib/site';
+import { CANCEL_NAME } from '@/lib/searchNames';
 import { JsonLd } from '@/components/JsonLd';
 
 
@@ -34,7 +35,7 @@ function guideTitle(g: NonNullable<ReturnType<typeof guideById>>) {
   // One clean pattern (owner, Nov 15): "How to cancel Netflix in 2026 | Ditch". Platform guides keep their words;
   // names like "Kindle+ (Kindle Unlimited)" use the name people search.
   const platform = /^subscriptions on/i.test(g.name);
-  const name = platform ? g.name.replace(/\s*\(.*\)/, '') : g.name.replace(/^.+?\s*\((.+)\)$/, '$1');
+  const name = CANCEL_NAME[g.id] ?? (platform ? g.name.replace(/\s*\(.*\)/, '') : g.name.replace(/^.+?\s*\((.+)\)$/, '$1'));
   return pageTitle(`How to cancel ${name} in ${year}`);
 }
 
@@ -258,7 +259,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
           <div className="kick">
             <Logo id={g.id} size={40} />
           </div>
-          <h1>How to cancel {g.name}</h1>
+          <h1>How to cancel {CANCEL_NAME[g.id] ?? g.name}</h1>
           <p className="lead">{withPhones(quick)}</p>
           {fresh !== 'fresh' ? <p className="stale">Last checked {formatDate(g.checkedOn)}. {g.name} may have changed its steps since. We re-check every 90 days.</p> : null}
           <div className="g5-cta-row">

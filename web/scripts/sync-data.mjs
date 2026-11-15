@@ -20,7 +20,8 @@ for (let i = start; i < cat.length; i++) {
 }
 const services = JSON.parse(cat.slice(start, end));
 // Website-only display names (Nov 15): xAI now sells Grok Plus/Premium/Super/Ultra on its website; the app catalog still says SuperGrok.
-const SITE_NAMES = { grok: 'Grok' };
+// Nov 15 (owner): names as people search them; plans then read "Claude Max", not "Claude Pro Max".
+const SITE_NAMES = { grok: 'Grok', 'claude-pro': 'Claude', dropbox: 'Dropbox', notion: 'Notion', grammarly: 'Grammarly', proton: 'Proton' };
 for (const s of services) if (SITE_NAMES[s.id]) s.name = SITE_NAMES[s.id];
 
 // Newest price and cancel-guide files (named *-YYYY-MM.json).

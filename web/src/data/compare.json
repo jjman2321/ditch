@@ -1239,63 +1239,63 @@
   "kind": "tiers",
   "a": "chatgpt-plus",
   "b": "chatgpt-plus",
-  "ap": "plus",
-  "bp": "go",
-  "name": "ChatGPT Plus vs Go",
+  "ap": "go",
+  "bp": "plus",
+  "name": "ChatGPT Go vs Plus",
   "rows": [
    {
     "label": "Ads",
-    "a": "Not stated",
-    "b": "This plan may include ads",
+    "a": "This plan may include ads",
+    "b": "Not stated",
     "sourceA": "https://chatgpt.com/pricing",
     "sourceB": "https://chatgpt.com/pricing"
    },
    {
     "label": "Models",
-    "a": "Adds GPT-6 Astra, GPT-6 Sol, GPT-6.1 Sol",
-    "b": "GPT-6 Luna, GPT-5 Thinking Mini",
+    "a": "GPT-6 Luna, GPT-5 Thinking Mini",
+    "b": "Adds GPT-6 Astra, GPT-6 Sol, GPT-6.1 Sol",
     "sourceA": "https://chatgpt.com/pricing",
     "sourceB": "https://chatgpt.com/pricing"
    },
    {
     "label": "Response times",
-    "a": "Fast",
-    "b": "Limited on bandwidth and availability",
+    "a": "Limited on bandwidth and availability",
+    "b": "Fast",
     "sourceA": "https://chatgpt.com/pricing",
     "sourceB": "https://chatgpt.com/pricing"
    },
    {
     "label": "Deep research",
-    "a": "Yes, expanded",
-    "b": "Limited",
+    "a": "Limited",
+    "b": "Yes, expanded",
     "sourceA": "https://chatgpt.com/pricing",
     "sourceB": "https://chatgpt.com/pricing"
    },
    {
     "label": "Image creation",
-    "a": "Yes, including image generation with Thinking",
-    "b": "Yes, without Thinking",
+    "a": "Yes, without Thinking",
+    "b": "Yes, including image generation with Thinking",
     "sourceA": "https://chatgpt.com/pricing",
     "sourceB": "https://chatgpt.com/pricing"
    },
    {
     "label": "Codex",
-    "a": "Included",
-    "b": "Limited",
+    "a": "Limited",
+    "b": "Included",
     "sourceA": "https://chatgpt.com/pricing",
     "sourceB": "https://chatgpt.com/pricing"
    },
    {
     "label": "ChatGPT Work",
-    "a": "Desktop, web and mobile",
-    "b": "Limited (desktop app)",
+    "a": "Limited (desktop app)",
+    "b": "Desktop, web and mobile",
     "sourceA": "https://chatgpt.com/pricing",
     "sourceB": "https://chatgpt.com/pricing"
    },
    {
     "label": "Memory",
-    "a": "Expanded",
-    "b": "Yes",
+    "a": "Yes",
+    "b": "Expanded",
     "sourceA": "https://chatgpt.com/pricing",
     "sourceB": "https://chatgpt.com/pricing"
    }

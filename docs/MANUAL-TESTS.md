@@ -439,6 +439,9 @@ Why: an app feels premium when the bad moments are handled well, not only the ha
 - [ ] Footer → Prices column has "Price increases".
 
 ### W8. Comparison pages and every tier (Nov 15, late)
+- [ ] Browser tab titles: /prices/claude-pro reads "Claude pricing 2026: Pro, Max and Ultra, 28 countries"; /prices/costco "Costco membership cost 2026…"; /prices/icloud "iCloud storage plans 2026…". Page heading on /prices/claude-pro says "Claude pricing 2026" and the plans say Claude Pro, Claude Max, Claude Ultra.
+- [ ] /tools/chatgpt-plus-vs-go: title "ChatGPT Go vs Plus", Go on the left, "What ChatGPT Plus adds" table.
+- [ ] /cancel/claude-pro heading: "How to cancel Claude".
 - [ ] Home on iPhone and laptop: the header is yellow over the yellow hero. Scroll down: it stays yellow until the hero has gone under it, then fades to cream. Scroll back up: it fades to yellow as soon as the hero comes back. No cream bar over yellow, no snap.
 - [ ] Laptop home hero: the phone's two round buttons at the bottom edge show a torch (left) and a camera (right), half hidden by the edge.
 - [ ] Laptop: the menu reads Cancel guides · Prices · Compare · Free tools · Pricing in one row. Nothing wraps onto two lines. On an iPad or a narrow window it turns into the ☰ button.

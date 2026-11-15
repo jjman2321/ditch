@@ -50,3 +50,16 @@ describe('share images', () => {
   it('every page has one', () => expect(want.filter((f) => !(OG as string[]).includes(f))).toEqual([]));
   it('every listed image exists', () => expect((OG as string[]).filter((f) => !existsSync(join(__dirname, '../../public/og', `${f}.jpg`)))).toEqual([]));
 });
+
+import { CANCEL_NAME, PRICE_SEARCH } from './searchNames';
+import { guideById } from './data';
+
+/** Search-matched titles (Nov 15) only work when keyed by the real service id. */
+describe('search names', () => {
+  it('every price title belongs to a live price page and fits in 60 characters', () => {
+    const hubs = new Set(priceHubServices().map((s) => s.id));
+    expect(Object.keys(PRICE_SEARCH).filter((id) => !hubs.has(id))).toEqual([]);
+    expect(Object.entries(PRICE_SEARCH).filter(([, v]) => v.title(29).length > 60).map(([k]) => k)).toEqual([]);
+  });
+  it('every cancel name belongs to a guide', () => expect(Object.keys(CANCEL_NAME).filter((id) => !guideById(id))).toEqual([]));
+});

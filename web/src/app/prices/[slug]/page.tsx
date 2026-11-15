@@ -9,6 +9,7 @@ import { ToolCard } from '@/components/ToolCard';
 import { comparesFor, planLabel, toolsFor } from '@/lib/tools';
 import { PriceGrid, type GridCol, type GridRow } from '@/components/PriceGrid';
 import { priceText } from '@/lib/priceText';
+import { PRICE_SEARCH } from '@/lib/searchNames';
 import { COUNTRIES, COUNTRY, dateRange, inCountry, priceChanges, defaultPlan, formatDate, host, guideById, isAppStorePrice, isExtraPlan, neighbours, priceHubServices, pubDates, serviceById, verifiedPrices, type PriceRow, idOf, inWhere, slugOf } from '@/lib/data';
 import { CYCLE_WORD, formatMoney, monthlyMinor } from '@/lib/money';
 import { COMPANY, SITE, SUPPORT_EMAIL, fitDesc, pageTitle, shareImage } from '@/lib/site';
@@ -120,8 +121,8 @@ export async function generateMetadata({ params }: PageProps<'/prices/[slug]'>):
   const latest = rows.map((r) => r.checked).sort().pop()!;
   const share = shareImage(`p/${slugOf(s.id)}`, `${s.name} prices ${latest.slice(0, 4)}`, 'prices');
   return {
-    title: pageTitle(titleFor(s.name, latest.slice(0, 4), rows)),
-    description: fitDesc(`${summary(s.name, rows)} Main plans ${inWhere(rows)}, checked ${dateRange(rows.map((r) => r.checked))}.`, `Every price from ${s.name}’s own page.`, guideById(s.id) ? `Plus how to cancel ${s.name}.` : ''),
+    title: pageTitle(PRICE_SEARCH[s.id]?.title(rows.length) ?? titleFor(s.name, latest.slice(0, 4), rows)),
+    description: fitDesc(`${summary(PRICE_SEARCH[s.id]?.who ?? s.name, rows)} Main plans ${inWhere(rows)}, checked ${dateRange(rows.map((r) => r.checked))}.`, `Every price from ${s.name}’s own page.`, guideById(s.id) ? `Plus how to cancel ${s.name}.` : ''),
     alternates: { canonical: `/prices/${slugOf(s.id)}` },
     openGraph: { title: `${s.name} prices ${inWhere(rows)}`, url: `/prices/${slugOf(s.id)}`, type: 'article', siteName: 'Ditch: Subscription Tracker', locale: 'en_US', images: share.images },
     twitter: share.twitter,
@@ -151,7 +152,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
   const lead = ['US', 'GB'].map((c) => rows.find((r) => r.country === c)).filter((r): r is PriceRow => Boolean(r));
   const leadApp = lead.filter(isAppStorePrice);
   const appLine = !lead.length ? (appShare > 0.5 ? ' These are iPhone app prices.' : '') : leadApp.length === lead.length ? ' These are iPhone app prices.' : leadApp.length ? ` ${leadApp.map((r) => (r.country === 'GB' ? 'UK' : r.country)).join(' and ')} prices are from the iPhone app.` : '';
-  const ans = `${summary(s.name, rows)}${appLine}${taxNote} Checked ${dateRange(rows.map((r) => r.checked))}.`;
+  const ans = `${summary(PRICE_SEARCH[s.id]?.who ?? s.name, rows)}${appLine}${taxNote} Checked ${dateRange(rows.map((r) => r.checked))}.`;
   const others = neighbours(priceHubServices().filter((x) => x.category === s.category), s.id, 5);
 
   const ld = [
@@ -198,7 +199,7 @@ export default async function PriceHub({ params }: PageProps<'/prices/[slug]'>) 
             {appShare > 0.5 && leadApp.length === lead.length ? <span>App Store prices</span> : null}
           </div>
           <h1>
-            {s.name} price {latest.slice(0, 4)}
+            {PRICE_SEARCH[s.id]?.h1 ?? `${s.name} price`} {latest.slice(0, 4)}
           </h1>
           <p className="lead">{ans.replace(/ Checked [^.]*\.$/, '')}</p>
           <div className="g5-cta-row">

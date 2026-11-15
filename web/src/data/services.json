@@ -915,7 +915,7 @@
  },
  {
   "id": "claude-pro",
-  "name": "Claude Pro",
+  "name": "Claude",
   "category": "AI",
   "color": "#D97757",
   "mono": "C",
@@ -1116,7 +1116,7 @@
  },
  {
   "id": "notion",
-  "name": "Notion Plus",
+  "name": "Notion",
   "category": "Productivity",
   "color": "#191919",
   "mono": "N",
@@ -1141,7 +1141,7 @@
  },
  {
   "id": "grammarly",
-  "name": "Grammarly Pro",
+  "name": "Grammarly",
   "category": "Productivity",
   "color": "#15C39A",
   "mono": "G",
@@ -1327,7 +1327,7 @@
  },
  {
   "id": "dropbox",
-  "name": "Dropbox Plus",
+  "name": "Dropbox",
   "category": "Cloud & security",
   "color": "#0061FE",
   "mono": "Db",
@@ -1350,7 +1350,7 @@
  },
  {
   "id": "proton",
-  "name": "Proton Unlimited",
+  "name": "Proton",
   "category": "Cloud & security",
   "color": "#6D4AFF",
   "mono": "P",

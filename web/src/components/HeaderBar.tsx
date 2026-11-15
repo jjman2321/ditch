@@ -47,6 +47,15 @@ export function HeaderBar({ items, pages = [] }: { items: SearchItem[]; pages?: 
   const menu = menuAt === path;
   const search = searchAt === path;
   const setMenu = (v: boolean) => setMenuAt(v ? path : null);
+  // Closing plays the menu's exit animation first, then removes it.
+  const [closing, setClosing] = useState(false);
+  const closeMenu = () => {
+    setClosing(true);
+    window.setTimeout(() => {
+      setMenu(false);
+      setClosing(false);
+    }, 260);
+  };
   const setSearch = (v: boolean) => setSearchAt(v ? path : null);
 
   useEffect(() => {
@@ -94,18 +103,24 @@ export function HeaderBar({ items, pages = [] }: { items: SearchItem[]; pages?: 
           <span className="show-xs">Join</span>
         </Link>
         <button className="iconbtn menu-btn" type="button" aria-label="Menu" aria-expanded={menu} aria-controls="menu-sheet" onClick={() => setMenu(true)}>
-          <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden>
-            <path d="M3 6h14M3 14h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden className="burger">
+            <path d="M3 6h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            <path d="M3 14h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
           </svg>
         </button>
       </div>
-      {menu ? <MenuSheet onClose={() => setMenu(false)} /> : null}
+      {menu ? <MenuSheet closing={closing} onClose={closeMenu} /> : null}
       {search ? <SearchDialog items={items} pages={pages} onClose={() => setSearch(false)} /> : null}
     </header>
   );
 }
 
-function MenuSheet({ onClose }: { onClose: () => void }) {
+/**
+ * Phone menu (owner, Nov 14: "super smooth"): the panel drops from the top with an iOS-style ease while the page
+ * dims, the links slide in one after another, and the menu icon's two lines turn into the close X in the same spot.
+ * Closing plays it backwards, faster. Pure CSS animations; nothing moves near a price.
+ */
+function MenuSheet({ onClose, closing }: { onClose: () => void; closing: boolean }) {
   const box = useRef<HTMLDivElement>(null);
   const close = useRef<HTMLButtonElement>(null);
   useDialog(box, onClose);
@@ -114,24 +129,25 @@ function MenuSheet({ onClose }: { onClose: () => void }) {
     close.current?.focus();
   }, []);
   return (
-    <div className="sheet" id="menu-sheet" role="dialog" aria-modal="true" aria-label="Menu" onClick={onClose}>
+    <div className={`sheet menu-sheet${closing ? ' out' : ''}`} id="menu-sheet" role="dialog" aria-modal="true" aria-label="Menu" onClick={onClose}>
       <div className="in" ref={box} onClick={(e) => e.stopPropagation()}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 56 }}>
+        <div className="menu-top">
           <span className="wordmark">ditch</span>
           <button ref={close} className="iconbtn" type="button" aria-label="Close menu" onClick={onClose}>
-            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden>
-              <path d="M3 3l12 12M15 3L3 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden className="burger x">
+              <path d="M3 6h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <path d="M3 14h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </button>
         </div>
         <nav aria-label="Menu">
-          {NAV.map((n) => (
-            <Link key={n.href} href={n.href} onClick={onClose}>
+          {NAV.map((n, i) => (
+            <Link key={n.href} href={n.href} onClick={onClose} style={{ '--i': i } as React.CSSProperties}>
               {n.label}
             </Link>
           ))}
         </nav>
-        <Link className="btn block" href="/#join" prefetch={false} onClick={onClose} style={{ marginTop: 20 }}>
+        <Link className="btn block" href="/#join" prefetch={false} onClick={onClose} style={{ marginTop: 20, '--i': NAV.length } as React.CSSProperties}>
           Join the waitlist
         </Link>
       </div>

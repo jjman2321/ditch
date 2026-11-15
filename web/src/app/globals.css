@@ -1815,3 +1815,33 @@ td.num, .r.num, .tbl td:not(:first-child), .vs-t td { white-space: nowrap; }
 .crumbs + .v4-hero, .crumbs + .v4-hero.solo, .crumbs + .g5-hero { margin-top: 5px; }
 /* the floating logos sit in front of the phone; on iPad landscape they overlapped its edge and hid behind it */
 .hero .float { z-index: 3; }
+
+/* ---------- Phone menu motion (owner, Nov 14) ----------
+   iOS-style ease (fast start, long soft settle). Opening: page dims, panel drops from the top, links slide in 40ms
+   apart, the menu icon's lines turn into an X in the same spot. Closing: the same, backwards and quicker. */
+.menu-sheet { --ease-ios: cubic-bezier(.32, .72, 0, 1); animation: menuDim .3s ease-out both; }
+.menu-sheet .in { padding-top: 0; transform-origin: top center; animation: menuDrop .42s var(--ease-ios) both; box-shadow: 0 24px 48px -24px rgba(22, 20, 15, .35); }
+.menu-sheet .menu-top { display: flex; justify-content: space-between; align-items: center; height: 56px; }
+.menu-sheet nav a, .menu-sheet .btn.block { animation: menuItem .5s var(--ease-ios) both; animation-delay: calc(80ms + var(--i, 0) * 40ms); }
+.burger path { transform-box: fill-box; transform-origin: center; transition: transform .35s cubic-bezier(.32, .72, 0, 1); }
+.burger.x path:first-child { animation: barTop .42s cubic-bezier(.32, .72, 0, 1) both; }
+.burger.x path:last-child { animation: barBot .42s cubic-bezier(.32, .72, 0, 1) both; }
+.menu-btn:active .burger path:first-child { transform: translateY(1px); }
+.menu-btn:active .burger path:last-child { transform: translateY(-1px); }
+.menu-sheet.out { animation: menuUndim .26s ease-in both; }
+.menu-sheet.out .in { animation: menuLift .26s cubic-bezier(.4, 0, 1, 1) both; }
+.menu-sheet.out nav a, .menu-sheet.out .btn.block { animation: menuItemOut .12s ease-in both; }
+@keyframes menuItemOut { to { opacity: 0; transform: translateY(-4px); } }
+.menu-sheet.out .burger.x path:first-child { animation: barTopOut .26s ease-in both; }
+.menu-sheet.out .burger.x path:last-child { animation: barBotOut .26s ease-in both; }
+@keyframes menuDim { from { background: rgba(22, 20, 15, 0); backdrop-filter: blur(0); } to { background: rgba(22, 20, 15, .45); backdrop-filter: blur(2px); } }
+@keyframes menuUndim { from { background: rgba(22, 20, 15, .45); } to { background: rgba(22, 20, 15, 0); } }
+@keyframes menuDrop { from { transform: translateY(-24px) scaleY(.96); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes menuLift { from { transform: none; opacity: 1; } to { transform: translateY(-16px) scaleY(.98); opacity: 0; } }
+@keyframes menuItem { from { transform: translateY(10px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes barTop { from { transform: none; } to { transform: translateY(4px) rotate(45deg); } }
+@keyframes barBot { from { transform: none; } to { transform: translateY(-4px) rotate(-45deg); } }
+@keyframes barTopOut { from { transform: translateY(4px) rotate(45deg); } to { transform: none; } }
+@keyframes barBotOut { from { transform: translateY(-4px) rotate(-45deg); } to { transform: none; } }
+/* the phone version of "How it works" showed the notification floating out of its card (it kept the hero phone's absolute position) */
+.story-shot-m .notif { position: static; }

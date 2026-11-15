@@ -15,7 +15,7 @@ export default function CancelIndex() {
   const guides = publishedGuides();
   const items: IndexItem[] = guides.map((g) => {
     const s = serviceById(g.id);
-    return { id: g.id, slug: slugOf(g.id), name: g.name, aliases: s?.aliases ?? [], category: s?.category ?? 'Other', meta: `Checked ${formatDate(g.checkedOn)}`, logo: hasLogo(g.id), color: s?.color ?? '#6B6559', mono: s?.mono ?? g.name[0] };
+    return { id: g.id, slug: slugOf(g.id), name: g.name.charAt(0).toUpperCase() + g.name.slice(1), aliases: s?.aliases ?? [], category: s?.category ?? 'Other', meta: `Checked ${formatDate(g.checkedOn)}`, logo: hasLogo(g.id), color: s?.color ?? '#6B6559', mono: s?.mono ?? g.name[0] };
   });
   const ld = {
     '@context': 'https://schema.org',

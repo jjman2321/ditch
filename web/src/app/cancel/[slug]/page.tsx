@@ -44,9 +44,9 @@ function guideTitle(g: NonNullable<ReturnType<typeof guideById>>) {
   const webish = /safari|website|browser|\.(com|net|tv|co|org)\b|sign in at/i.test(g.steps[0] ?? '');
   const ways = [appleOnly ? 'iPhone' : webish ? 'web' : 'app', ...(!appleOnly && g.appleBilling !== false ? ['iPhone'] : []), ...(g.depth?.googlePlay ? ['Android'] : [])];
   const list = [...new Set(ways)];
-  const what = /costco|uber-one|dashpass|doordash|instacart|walmart|amazon-prime/.test(g.id) ? 'membership' : 'subscription';
+  const what = /membership|subscription|premium$/i.test(name) ? '' : /costco|uber-one|dashpass|doordash|instacart|walmart|amazon-prime/.test(g.id) ? 'membership' : 'subscription';
   // One way only: "How to cancel Costco membership (2026)" reads better than a one-word list.
-  const tries = [...(list.length > 1 ? [`How to cancel ${name} (${year}): ${list.join(', ')}`] : []), `How to cancel ${name} ${what} (${year})`, `How to cancel ${name} (${year})`];
+  const tries = [...(list.length > 1 ? [`How to cancel ${name} (${year}): ${list.join(', ')}`] : []), `How to cancel ${name}${what ? ` ${what}` : ''} (${year})`, `How to cancel ${name} (${year})`];
   return pageTitle(tries.find((t) => t.length <= 60) ?? tries[2]);
 }
 
@@ -126,7 +126,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: SITE },
         { '@type': 'ListItem', position: 2, name: 'Cancel guides', item: `${SITE}/cancel` },
-        { '@type': 'ListItem', position: 3, name: g.name, item: `${SITE}/cancel/${slugOf(g.id)}` },
+        { '@type': 'ListItem', position: 3, name: cap(g.name), item: `${SITE}/cancel/${slugOf(g.id)}` },
       ],
     },
     ...(faq.length ? [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }] : []),
@@ -262,7 +262,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
       <nav className="crumbs" aria-label="Breadcrumb">
         <Link href="/cancel">Cancel guides</Link>
         <span aria-hidden>›</span>
-        <span aria-current="page">{g.name}</span>
+        <span aria-current="page">{cap(g.name)}</span>
       </nav>
 
       <header className="g5-hero">

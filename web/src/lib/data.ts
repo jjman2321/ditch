@@ -117,7 +117,21 @@ export const serviceById = (id: string) => SERVICES.find((s) => s.id === id);
 export const hasLogo = (id: string) => LOGOS.has(id);
 
 /** Gate 1: only verified rows are ever shown. */
+// The data is fixed for the life of the server, so these lookups are worked out once and reused
+// (with 29 countries, re-scanning on every call made tool pages take minutes to build, Nov 15).
+const VERIFIED = new Map<string, PriceRow[]>();
+let HUBS: Service[] | null = null;
+let PUBLISHED: CancelGuide[] | null = null;
+
 export function verifiedPrices(serviceId: string): PriceRow[] {
+  const hit = VERIFIED.get(serviceId);
+  if (hit) return hit;
+  const v = verifiedPricesUncached(serviceId);
+  Object.freeze(v);
+  VERIFIED.set(serviceId, v);
+  return v;
+}
+function verifiedPricesUncached(serviceId: string): PriceRow[] {
   const order = COUNTRIES.map((c) => c.code);
   return PRICE_ROWS.filter((r) => r.serviceId === serviceId && r.status === 'verified' && order.includes(r.country)).sort(
     (a, b) => order.indexOf(a.country) - order.indexOf(b.country),
@@ -135,13 +149,13 @@ export function defaultPlan(row: PriceRow): Plan {
 /** Price hubs: services with verified prices in at least 6 countries, most popular first. */
 /** Price pages: services with verified prices in 6+ countries, or a verified US price (owner, Nov 13: US-only pages too). */
 export function priceHubServices(): Service[] {
-  return SERVICES.filter((s) => { const v = verifiedPrices(s.id); return v.length >= 6 || v.some((r) => r.country === 'US'); }).sort((a, b) => (a.rank ?? 999) - (b.rank ?? 999));
+  return (HUBS ??= SERVICES.filter((s) => { const v = verifiedPrices(s.id); return v.length >= 6 || v.some((r) => r.country === 'US'); }).sort((a, b) => (a.rank ?? 999) - (b.rank ?? 999)));
 }
 
 /** Gate 3: high-confidence guides only, until the owner has checked the medium ones on a phone. */
 export function publishedGuides(): CancelGuide[] {
   const rank = (id: string) => serviceById(id)?.rank ?? 999;
-  return GUIDES.filter((g) => g.confidence === 'high').sort((a, b) => rank(a.id) - rank(b.id));
+  return (PUBLISHED ??= GUIDES.filter((g) => g.confidence === 'high').sort((a, b) => rank(a.id) - rank(b.id)));
 }
 export const guideById = (id: string) => publishedGuides().find((g) => g.id === id);
 

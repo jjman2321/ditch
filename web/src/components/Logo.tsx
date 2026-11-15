@@ -7,6 +7,27 @@ export function Logo({ id, size = 40, className = '' }: { id: string; size?: num
   if (hasLogo(id)) {
     return <img className={`logo ${className}`} src={`/logos/${id}.png`} alt="" width={size} height={size} loading="lazy" decoding="async" style={{ width: size, height: size }} />;
   }
+  // Platform guides (iPhone, Android, PayPal, Amazon subscriptions): a plain icon, never another company's logo.
+  if (id.endsWith('-subscriptions')) {
+    const phone = id === 'iphone-subscriptions' || id === 'google-play-subscriptions';
+    return (
+      <span className={`mono ${className}`} aria-hidden style={{ width: size, height: size, background: '#16140F', color: '#FFCC2E' }}>
+        <svg width={Math.round(size * 0.55)} height={Math.round(size * 0.55)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          {phone ? (
+            <>
+              <rect x="6" y="2" width="12" height="20" rx="3" />
+              <path d="M10 18h4" />
+            </>
+          ) : (
+            <>
+              <rect x="2" y="5" width="20" height="14" rx="3" />
+              <path d="M2 10h20" />
+            </>
+          )}
+        </svg>
+      </span>
+    );
+  }
   const bg = s?.color ?? '#6B6559';
   const [r, g, b] = [1, 3, 5].map((i) => parseInt(bg.slice(i, i + 2), 16) / 255).map((c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
   const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;

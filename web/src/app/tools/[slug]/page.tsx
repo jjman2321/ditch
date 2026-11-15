@@ -7,6 +7,7 @@ import { formatMoney } from '@/lib/money';
 import { inCountry, verifiedPrices } from '@/lib/data';
 import { allPoints, countryList, countryName, planLabel, SERVICE_TOOLS, type Pt } from '@/lib/tools';
 import { fitDesc, pageTitle, og } from '@/lib/site';
+import { COUNTRIES } from '@/lib/data';
 
 export function generateStaticParams() {
   return SERVICE_TOOLS.map((t) => ({ slug: t.slug }));
@@ -18,7 +19,7 @@ export async function generateMetadata({ params }: PageProps<'/tools/[slug]'>): 
   const t = tool((await params).slug);
   if (!t) return {};
   const ex = example(t, allPoints());
-  return { title: pageTitle(t.meta), description: fitDesc(ex ?? t.desc, t.kind === 'vs' ? 'Every plan side by side, for your country.' : 'Free, with prices for 17 countries.', 'Prices come from each service’s own page.', 'Runs in your browser.'), alternates: { canonical: `/tools/${t.slug}` }, openGraph: og(`/tools/${t.slug}`) };
+  return { title: pageTitle(t.meta), description: fitDesc(ex ?? t.desc, t.kind === 'vs' ? 'Every plan side by side, for your country.' : `Free, with prices for ${COUNTRIES.length} countries.`, 'Prices come from each service’s own page.', 'Runs in your browser.'), alternates: { canonical: `/tools/${t.slug}` }, openGraph: og(`/tools/${t.slug}`) };
 }
 
 const m = (p: Pt, a = p.a) => formatMoney(a, p.cur, { country: p.c });

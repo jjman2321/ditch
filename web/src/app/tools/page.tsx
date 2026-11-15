@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ToolIcon } from '@/components/ToolCard';
 import { ToolHub, type Group } from '@/components/ToolHub';
 import { HUBS } from '@/components/tools/ChargesBody';
+import { COUNTRIES } from '@/lib/data';
 import { SITE, pageTitle, og } from '@/lib/site';
 import { SERVICE_TOOLS, TOOLS } from '@/lib/tools';
 import { JsonLd } from '@/components/JsonLd';
@@ -48,7 +49,7 @@ export default function Tools() {
       <header className="v4-hero solo">
         <div>
           <h1>Free subscription tools</h1>
-          <p className="lead">{all.length} free tools built on prices from each service’s own page, in 17 countries. They run in your browser.</p>
+          <p className="lead">{all.length} free tools built on prices from each service’s own page, in {COUNTRIES.length} countries. They run in your browser.</p>
         </div>
       </header>
       <ToolHub groups={GROUPS}>

@@ -1,0 +1,188 @@
+{
+  "checkedOn": "2026-11-15",
+  "notes": [
+    "Platform batch: 4 cancel-everything-on-a-platform guides (iPhone, Google Play, PayPal, Amazon). Same shape and rules as guide-depth-2026-11-b.json.",
+    "Apple and Google pages were read live (curl) on 2026-11-15. PayPal pages block curl, so they were read through WebFetch (extracted text, button names asked for word for word). Amazon help pages could not be loaded at all; the only Amazon facts here are from aboutamazon.com, read live.",
+    "Quotes are verbatim (cuts marked with ...). null means the official page we could read is silent or could not be loaded. Never fill a null from memory or a blog.",
+    "googlePlay is null for all four: the Google Play guide is itself the Play flow, and the other three platforms aren't sold through Google Play.",
+    "FAQ questions are the usual People Also Ask questions for 'how to cancel subscriptions on <platform>'. An informed pick, not a scrape."
+  ],
+  "guides": [
+    {
+      "id": "iphone-subscriptions",
+      "checkedOn": "2026-11-15",
+      "after": {
+        "access": {
+          "text": "Apple says a cancelled subscription stops at the end of the billing cycle you're in, so you keep it until then.",
+          "source": "https://apps.apple.com/us/iphone/story/id1539139555",
+          "quote": "After you cancel, your subscription will stop at the end of the current billing cycle."
+        },
+        "data": null,
+        "refunds": {
+          "text": "Apple says some purchases might be eligible. Sign in at reportaproblem.apple.com, choose I'd like to → Request a refund. Expect an update in 24 to 48 hours.",
+          "source": "https://support.apple.com/en-us/118223",
+          "quote": "Some purchases from the App Store, iTunes Store, Apple Books, or other Apple services might be eligible for a refund. ... Tap or click \"I'd like to,\" then choose \"Request a refund.\" ... Wait 24 to 48 hours for an update on your request"
+        }
+      },
+      "verify": {
+        "text": "How to check it worked: open the subscription again. No Cancel button, or an expiry message in red, means it's cancelled.",
+        "source": "https://support.apple.com/en-us/118428",
+        "quote": "If there is no Cancel button or you see an expiration message in red text, the subscription is already canceled."
+      },
+      "pause": null,
+      "googlePlay": null,
+      "faq": [
+        {
+          "q": "Why can't I find a subscription in my iPhone Settings?",
+          "a": "It may be on another Apple Account, or another company bills you. Search your email for “receipt from Apple”. No receipt? Check your bank statement and cancel with whoever bills you.",
+          "source": "https://support.apple.com/en-us/118428",
+          "quote": "You might've bought the subscription from another company. To find out which company bills you, check your bank or credit card statement."
+        },
+        {
+          "q": "How do I cancel a free trial on iPhone?",
+          "a": "Same steps. Apple says do it at least 24 hours before the trial ends.",
+          "source": "https://support.apple.com/en-us/118428",
+          "quote": "If you signed up for a trial subscription and you don't want to renew it, cancel it at least 24 hours before the trial ends."
+        },
+        {
+          "q": "Can I cancel a subscription a family member pays for?",
+          "a": "No. Ask the person whose Apple Account is on the receipt to cancel it.",
+          "source": "https://support.apple.com/en-us/118428",
+          "quote": "Ask the family member whose Apple Account appears on the receipt to cancel the subscription. You can’t cancel a family member's subscription."
+        },
+        {
+          "q": "Can I cancel an Apple subscription without an iPhone?",
+          "a": "Yes. On Android or any browser, sign in at account.apple.com. On Windows, use the Apple Music or Apple TV app.",
+          "source": "https://support.apple.com/en-us/118428",
+          "quote": "To cancel a subscription billed by Apple: Go to account.apple.com. Follow the onscreen instructions. ... To cancel any subscription billed by Apple, use the Apple Music app or Apple TV app for Windows."
+        }
+      ]
+    },
+    {
+      "id": "google-play-subscriptions",
+      "checkedOn": "2026-11-15",
+      "after": {
+        "access": {
+          "text": "You can still use it for the time you've already paid for. Cancel a yearly plan halfway and it runs to the end of the year, with no new charge.",
+          "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+          "quote": "When you cancel a subscription, you’ll still be able to use your subscription for the time you’ve already paid. ... You’ll have access to the subscription until December 31. You won’t be charged another yearly subscription of $10 the following January 1."
+        },
+        "data": {
+          "text": "Cancelling Play Pass? Apps you installed stay on your phone with their data, but paid apps ask you to buy them and ads come back.",
+          "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+          "quote": "Any apps you installed from Play Pass and their data will remain on your device. ... Paid apps will prompt you to buy the app or subscribe to Play Pass. ... Ads will reappear in apps where they were removed."
+        },
+        "refunds": {
+          "text": "Google doesn't refund most purchases. Within 48 hours you may get one. After that, ask the app's developer.",
+          "source": "https://support.google.com/googleplay/answer/15574908?hl=en",
+          "quote": "Google doesn't give refunds for most Google Play purchases. ... Within 48 hours: You may be able to get a refund depending on the details of the purchase. ... After 48 hours: Contact the developer to troubleshoot and find out if you can get a refund."
+        }
+      },
+      "verify": {
+        "text": "How to check it worked: look in subscriptions in Google Play again. A cancelled subscription offers Resubscribe instead.",
+        "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+        "quote": "Restart or resubscribe to a cancelled subscription ... For the subscription you want to restart, tap Resubscribe."
+      },
+      "pause": {
+        "text": "Not sure? Some apps let you pause for one week to three months: select it, tap Manage, then Pause payments.",
+        "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+        "quote": "Depending on the app and subscription, the available pause durations can range from one week to three months. ... Tap Manage Pause payments."
+      },
+      "googlePlay": null,
+      "faq": [
+        {
+          "q": "Does uninstalling the app cancel my subscription?",
+          "a": "No. You keep getting charged until you cancel it in Google Play.",
+          "source": "https://support.google.com/googleplay/answer/9818348?hl=en&co=GENIE.Platform%3DAndroid",
+          "quote": "If you’ve uninstalled the app, you still need to cancel the subscription, or you’ll continue to be charged."
+        },
+        {
+          "q": "I can't find my subscription in Google Play.",
+          "a": "Check you're on the right Google Account. You may have used another email or a family member's account.",
+          "source": "https://support.google.com/googleplay/answer/9818348?hl=en&co=GENIE.Platform%3DAndroid",
+          "quote": "Make sure to sign in to the Google Account that has your subscriptions. ... You may have used a family member’s account to subscribe."
+        },
+        {
+          "q": "How do I cancel a Google Play subscription on a computer?",
+          "a": "Go to subscriptions in Google Play, click Manage, then Cancel subscription, pick a reason and click Continue.",
+          "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DDesktop",
+          "quote": "For the subscription you want to cancel, click Manage. Click Cancel subscription. Within the confirmation pop-up, select a reason. Click Continue."
+        },
+        {
+          "q": "What if the app is removed from Google Play?",
+          "a": "Google cancels your future subscription. Past payments usually aren't refunded.",
+          "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+          "quote": "If you have a subscription with an app and the app gets removed from Google Play, your future subscription will be canceled. Your past subscriptions can’t be refunded, with some exceptions"
+        }
+      ]
+    },
+    {
+      "id": "paypal-subscriptions",
+      "checkedOn": "2026-11-15",
+      "after": {
+        "access": {
+          "text": "Depends on the company. PayPal says most cancellations take effect right away, but some run to the end of the billing cycle. Check the company's policy.",
+          "source": "https://www.paypal.com/us/money-hub/article/how-to-cancel-recurring-subscriptions",
+          "quote": "Most cancellations take effect immediately, but some services process them at the end of the current billing cycle."
+        },
+        "data": null,
+        "refunds": null
+      },
+      "verify": null,
+      "pause": null,
+      "googlePlay": null,
+      "faq": [
+        {
+          "q": "Does cancelling in PayPal cancel the subscription?",
+          "a": "Usually not. It stops charges to your PayPal, but the subscription with the company may still be open. Cancel with them too.",
+          "source": "https://www.paypal.com/us/money-hub/article/how-to-cancel-recurring-subscriptions",
+          "quote": "canceling a payment method through PayPal stops future charges to your PayPal account, but this action typically does not cancel the underlying subscription or contract with the service provider."
+        },
+        {
+          "q": "Can I cancel a subscription through my bank?",
+          "a": "You can ask your bank for a stop payment. PayPal suggests trying the company first.",
+          "source": "https://www.paypal.com/us/money-hub/article/how-to-cancel-recurring-subscriptions",
+          "quote": "You can request a stop payment with your bank to cancel payments on a subscription."
+        },
+        {
+          "q": "Can I block a company from charging my card?",
+          "a": "Usually yes. Ask your card issuer.",
+          "source": "https://www.paypal.com/us/money-hub/article/how-to-cancel-recurring-subscriptions",
+          "quote": "Yes, you can typically block a company from charging your card by making a request with your card issuer."
+        },
+        {
+          "q": "Where do I find the company's contact details?",
+          "a": "Open the automatic payment in PayPal. The company's contact info is there.",
+          "source": "https://www.paypal.com/us/cshelp/article/what-is-an-automatic-payment-and-how-do-i-update-or-cancel-one-help240",
+          "quote": "Contact information for your merchant can be found in the automatic payment."
+        }
+      ]
+    },
+    {
+      "id": "amazon-subscriptions",
+      "checkedOn": "2026-11-15",
+      "after": {
+        "access": null,
+        "data": null,
+        "refunds": null
+      },
+      "verify": null,
+      "pause": null,
+      "googlePlay": null,
+      "faq": [
+        {
+          "q": "How do I cancel Subscribe & Save?",
+          "a": "Go to Manage Your Subscriptions. You can cancel or just skip a delivery any time.",
+          "source": "https://www.aboutamazon.com/news/retail/how-you-can-save-time-and-money-with-amazon-subscribe-save",
+          "quote": "Skip your deliveries or cancel your subscriptions at any time by visiting Manage Your Subscriptions."
+        },
+        {
+          "q": "How do I cancel Kindle+ (Kindle Unlimited)?",
+          "a": "Go to Manage your Kindle+ Subscription and select Cancel Kindle+ Subscription. You keep it until your next billing date, with no refund.",
+          "source": "https://www.aboutamazon.com/news/devices/what-is-kindle-unlimited",
+          "quote": "Just go to Manage your Kindle+ Subscription and select “Cancel Kindle+ Subscription.” Your subscription will remain active until your next billing date ... If you cancel your subscription, you will not receive a refund of any subscription fees paid."
+        }
+      ]
+    }
+  ]
+}

@@ -77,7 +77,7 @@ const GUIDES = (cancelJson as { services: CancelGuide[] }).services;
 
 export type Country = { code: string; slug: string; name: string; short: string; tax: string; region: 'main' | 'mena' };
 
-/** The countries in the price data, in the order the site shows them (12 + 5 in the Middle East). */
+/** The countries in the price data, in the order the site shows them (12 + 5 in the Middle East + 12 more, Nov 15). */
 export const COUNTRIES: Country[] = ([
   { code: 'US', slug: 'us', name: 'United States', short: 'US', tax: 'before sales tax' },
   { code: 'GB', slug: 'uk', name: 'United Kingdom', short: 'UK', tax: 'incl. VAT' },
@@ -97,6 +97,19 @@ export const COUNTRIES: Country[] = ([
   { code: 'QA', slug: 'qatar', name: 'Qatar', short: 'Qatar', tax: 'no VAT' },
   { code: 'KW', slug: 'kuwait', name: 'Kuwait', short: 'Kuwait', tax: 'no VAT' },
   { code: 'EG', slug: 'egypt', name: 'Egypt', short: 'Egypt', tax: 'VAT 14%' },
+  // More countries (owner, Nov 15): high-income, iPhone-heavy markets that pay for subscriptions.
+  { code: 'CH', slug: 'switzerland', name: 'Switzerland', short: 'Switzerland', tax: 'incl. VAT' },
+  { code: 'AT', slug: 'austria', name: 'Austria', short: 'Austria', tax: 'incl. VAT' },
+  { code: 'SE', slug: 'sweden', name: 'Sweden', short: 'Sweden', tax: 'incl. VAT' },
+  { code: 'NO', slug: 'norway', name: 'Norway', short: 'Norway', tax: 'incl. VAT' },
+  { code: 'DK', slug: 'denmark', name: 'Denmark', short: 'Denmark', tax: 'incl. VAT' },
+  { code: 'PT', slug: 'portugal', name: 'Portugal', short: 'Portugal', tax: 'incl. VAT' },
+  { code: 'SG', slug: 'singapore', name: 'Singapore', short: 'Singapore', tax: 'GST varies' },
+  { code: 'HK', slug: 'hong-kong', name: 'Hong Kong', short: 'Hong Kong', tax: 'no VAT' },
+  { code: 'JP', slug: 'japan', name: 'Japan', short: 'Japan', tax: 'tax varies' },
+  { code: 'KR', slug: 'south-korea', name: 'South Korea', short: 'S. Korea', tax: 'VAT varies' },
+  { code: 'BR', slug: 'brazil', name: 'Brazil', short: 'Brazil', tax: 'incl. taxes' },
+  { code: 'TR', slug: 'turkey', name: 'Türkiye', short: 'Türkiye', tax: 'incl. VAT' },
 ] as Omit<Country, 'region'>[]).map((c) => ({ ...c, region: ['AE', 'SA', 'EG', 'QA', 'KW'].includes(c.code) ? 'mena' : 'main' }));
 export const COUNTRY = Object.fromEntries(COUNTRIES.map((c) => [c.code, c])) as Record<string, Country>;
 

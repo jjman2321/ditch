@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import { pageTitle, og } from '@/lib/site';
+import { COUNTRIES } from '@/lib/data';
 
 import { ToolPage } from '@/components/ToolPage';
 import { CostPerHour } from '@/components/tools/PlanTools';
@@ -8,7 +9,7 @@ import { countryList } from '@/lib/tools';
 
 export const metadata: Metadata = {
   title: pageTitle('Subscription cost per hour calculator: what an hour costs'),
-  description: 'Work out what a subscription costs for each hour you use it. Pick a service, a plan and your hours a week, and see the cost per hour. Free, 17 countries.',
+  description: `Work out what a subscription costs for each hour you use it. Pick a service, a plan and your hours a week, and see the cost per hour. Free, ${COUNTRIES.length} countries.`,
   alternates: { canonical: '/tools/cost-per-hour' }, openGraph: og('/tools/cost-per-hour'),
 };
 

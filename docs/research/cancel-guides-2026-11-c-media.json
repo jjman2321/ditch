@@ -1,0 +1,699 @@
+{
+ "checkedOn": "2026-11-15",
+ "services": [
+  {
+   "id": "dazn",
+   "name": "DAZN",
+   "url": null,
+   "helpUrl": "https://help.dazn.com/hc/en-us/articles/16194539395613-How-do-I-cancel-my-subscription",
+   "steps": [
+    "Open dazn.com in Safari and sign in",
+    "Go to My Account, then Subscription",
+    "Tap Cancel Subscription and follow the steps"
+   ],
+   "appleNote": true,
+   "appleBilling": true,
+   "source": "https://help.dazn.com/hc/en-us/articles/16194539395613-How-do-I-cancel-my-subscription",
+   "checkedOn": "2026-11-15",
+   "confidence": "medium",
+   "openIssues": [
+    "help.dazn.com returns 403 (Cloudflare) to curl and WebFetch, and dazn.com/help pages are drawn by JavaScript, so we read nothing on DAZN's own pages today. Every step here comes from search-result snippets of DAZN's help article 16194539395613.",
+    "DAZN's article differs by country. One snippet gives an app path (profile icon \u2192 My Account \u2192 Cancel subscription at the bottom \u2192 enter your password), another says some regions must use a web browser, a third mentions See Plan Details \u2192 Manage Subscription. Check on a phone in the US and UK before publishing.",
+    "30-day notice on monthly plans paid to DAZN directly (with a part-month last charge) is snippet-only and seems to apply only in some countries.",
+    "url left null: we couldn't confirm a direct My Account link."
+   ],
+   "note": "Signed up through Apple, Google, Amazon or Roku? DAZN's help (snippet) says cancel with them, DAZN can't do it for you. Apple-billed: DAZN has a separate help article, 'Manage your subscription through iTunes'. Signing out or deleting the app doesn't cancel (snippet).",
+   "app": "DAZN",
+   "company": "DAZN",
+   "answer": "Sign in at dazn.com, open My Account \u2192 Subscription and choose Cancel Subscription. Signed up through Apple, Google, Amazon or Roku? Cancel with them, DAZN can't do it for you.",
+   "tips": [
+    "Deleting the DAZN app or signing out doesn't cancel.",
+    "On a monthly plan you pay DAZN for directly? Some countries have a 30-day notice period, so your last charge may be a part-month."
+   ],
+   "partner": "Signed up through Apple, Google, Amazon or Roku? Cancel with them. DAZN can't cancel it for you.",
+   "related": [
+    "espn",
+    "fubo",
+    "f1-tv",
+    "nba-league-pass"
+   ],
+   "quotes": [
+    {
+     "source": "https://support.apple.com/en-us/118428",
+     "quote": "In Settings, tap your name. Tap Subscriptions. Tap the subscription. Tap Cancel Subscription."
+    }
+   ]
+  },
+  {
+   "id": "deezer",
+   "name": "Deezer",
+   "url": null,
+   "helpUrl": "https://support.deezer.com/hc/en-gb/articles/214349245-Cancel-Your-Deezer-Subscription",
+   "steps": [
+    "Deezer app: tap your profile icon (top left), then the Settings cog (top right)",
+    "Under Subscription, tap Plan management",
+    "Tap Subscription details & invoices, then Cancel my subscription",
+    "Pick a reason and tap Confirm"
+   ],
+   "appleNote": true,
+   "appleBilling": true,
+   "source": "https://support.deezer.com/hc/en-gb/articles/214349245-Cancel-Your-Deezer-Subscription",
+   "checkedOn": "2026-11-15",
+   "confidence": "high",
+   "openIssues": [
+    "Deezer lists Google Play as a payment method (support.deezer.com/hc/en-gb/articles/115004267129), but its cancel article doesn't say how to cancel a Google Play payment. Google's own steps should apply; Deezer doesn't confirm it.",
+    "url left null: the article gives no direct link to the subscription page."
+   ],
+   "note": "Steps are Deezer's iOS steps. Computer: profile \u2192 Account Settings \u2192 Manage my subscription \u2192 Cancel my subscription \u2192 reason \u2192 Confirm. Android: profile \u2192 Settings cog \u2192 Manage my subscription (under My Subscription Plan) \u2192 Cancel subscription. Paying through Apple: cancel with Apple only. Paying through a partner like TIM or Orange: cancel with the partner. Deezer emails you when it's done.",
+   "app": "Deezer",
+   "company": "Deezer",
+   "answer": "In the Deezer app, go to Settings \u2192 Plan management \u2192 Subscription details & invoices \u2192 Cancel my subscription, then confirm. Paying through Apple? Cancel in iPhone Settings instead.",
+   "tips": [
+    "When it ends you drop to Deezer Free. Your playlists stay, but downloads go grey and won't play.",
+    "Wait for Deezer's confirmation email. No email means the cancel didn't go through."
+   ],
+   "partner": "Paying through Apple or a partner like TIM or Orange? Cancel with them. Deezer can't.",
+   "related": [
+    "spotify",
+    "tidal",
+    "apple-music",
+    "amazon-music"
+   ],
+   "quotes": [
+    {
+     "source": "https://support.deezer.com/hc/en-gb/articles/214349245-Cancel-Your-Deezer-Subscription",
+     "quote": "Navigate to your profile icon at the top left hand side of your application. Select the Settings cog icon at the top right hand side of your application. Under the Subscription section, select Plan management. Select Subscription details & invoices. Select Cancel my subscription. Select the reason for canceling and then select Confirm."
+    },
+    {
+     "source": "https://support.deezer.com/hc/en-gb/articles/214349245-Cancel-Your-Deezer-Subscription",
+     "quote": "If you subscribe to Deezer through your Apple account, you can only cancel directly with Apple."
+    },
+    {
+     "source": "https://support.deezer.com/hc/en-gb/articles/214349245-Cancel-Your-Deezer-Subscription",
+     "quote": "If you are paying for Deezer as part of a partnership, for instance with partners such as TIM and Orange, you will need to cancel through the respective partner directly, as Deezer cannot cancel your subscription."
+    },
+    {
+     "source": "https://support.deezer.com/hc/en-gb/articles/214349245-Cancel-Your-Deezer-Subscription",
+     "quote": "Note : Once you have cancelled, you should receive an email from Deezer confirming your cancellation"
+    },
+    {
+     "source": "https://support.apple.com/en-us/118428",
+     "quote": "In Settings, tap your name. Tap Subscriptions. Tap the subscription. Tap Cancel Subscription."
+    }
+   ]
+  },
+  {
+   "id": "tidal",
+   "name": "TIDAL",
+   "url": "https://account.tidal.com/",
+   "helpUrl": "https://support.tidal.com/hc/en-us/articles/201314601-Cancel-Tidal-Subscription-or-Trial",
+   "steps": [
+    "Go to account.tidal.com in Safari and log in",
+    "Go to Subscription",
+    "Tap Cancel Subscription and confirm"
+   ],
+   "appleNote": true,
+   "appleBilling": true,
+   "source": "https://support.tidal.com/hc/en-us/articles/201314601-Cancel-Tidal-Subscription-or-Trial",
+   "checkedOn": "2026-11-15",
+   "confidence": "high",
+   "openIssues": [
+    "support.tidal.com blocks curl and WebFetch (403). We read the same article through Tidal's own help-centre feed (support.tidal.com/api/v2/help_center/en-us/articles/201314601.json), last updated Nov 10, 2026."
+   ],
+   "note": "Tidal now writes its name 'Tidal'. Android app: heart icon \u2192 gear icon \u2192 Edit \u2192 Manage Subscription \u2192 Subscription \u2192 Cancel Subscription. Paying through Apple or Google Play: cancel with them. Not sure who bills you? account.tidal.com \u2192 Payments tab says if Apple or Google manages it. Deleting your Tidal account doesn't cancel an Apple or Google subscription.",
+   "app": "TIDAL",
+   "company": "Tidal",
+   "answer": "Log in at account.tidal.com, go to Subscription and tap Cancel Subscription. Paying through Apple or Google Play? Cancel with them instead.",
+   "tips": [
+    "Not sure who bills you? The Payments tab at account.tidal.com says if Apple or Google manages your payment.",
+    "Deleting your Tidal account doesn't cancel an Apple or Google subscription."
+   ],
+   "partner": "Paying through Apple or Google Play? Cancel with them. Tidal can't refund those either.",
+   "related": [
+    "spotify",
+    "deezer",
+    "apple-music",
+    "qobuz"
+   ],
+   "quotes": [
+    {
+     "source": "https://support.tidal.com/hc/en-us/articles/201314601-Cancel-Tidal-Subscription-or-Trial",
+     "quote": "You can cancel your subscription or trial at any time. If you are paying for Tidal through a third-party, such as Apple or Google Play, you will need to cancel through them directly."
+    },
+    {
+     "source": "https://support.tidal.com/hc/en-us/articles/201314601-Cancel-Tidal-Subscription-or-Trial",
+     "quote": "Visit account.tidal.com. Log in with your log in name and password. Navigate to Subscription. Click Cancel Subscription and confirm cancellation"
+    },
+    {
+     "source": "https://support.tidal.com/hc/en-us/articles/22401976776593-Refund-FAQs",
+     "quote": "In the Payments tab, you'll see a message indicating if your payment is managed by Apple or Google."
+    },
+    {
+     "source": "https://support.tidal.com/hc/en-us/articles/44745598330385-Delete-Your-Tidal-Account-or-Artist-Data",
+     "quote": "If your subscription is managed by a third party (such as Apple or Google), deleting your Tidal account does not cancel your subscription."
+    },
+    {
+     "source": "https://support.apple.com/en-us/118428",
+     "quote": "In Settings, tap your name. Tap Subscriptions. Tap the subscription. Tap Cancel Subscription."
+    }
+   ]
+  },
+  {
+   "id": "sling-tv",
+   "name": "Sling TV",
+   "url": "https://www.sling.com/my-account",
+   "helpUrl": "https://www.sling.com/help/en/account-questions/account-changes/pause-cancel-subscription",
+   "steps": [
+    "Sign in at sling.com/my-account in Safari",
+    "Tap Manage",
+    "Tap Cancel"
+   ],
+   "appleNote": false,
+   "appleBilling": false,
+   "source": "https://www.sling.com/help/en/account-questions/account-changes/pause-cancel-subscription",
+   "checkedOn": "2026-11-15",
+   "confidence": "high",
+   "openIssues": [
+    "Sling's page never mentions App Store billing, so appleBilling is false. It only mentions 'Apple Pay, Google Pay or other third party billing services' (as a reason you can't pause). If someone was billed by a third party, the page doesn't say where to cancel.",
+    "Retention offers or a password screen during cancel are mentioned by third-party guides only, not on Sling's page."
+   ],
+   "note": "Access runs until your next bill date and Sling emails a confirmation. Pause instead: Manage \u2192 See pause options (standard pause up to 6 months; Pause Extra for 1, 2 or 3 months with a $5 monthly deposit). No pause for promos, gift card or BitPay payers, or third-party billing. Recordings kept 90 days. No refunds for partial or prepaid months. Cancel page erroring? Try a private tab.",
+   "app": "Sling",
+   "company": "Sling TV",
+   "answer": "Sign in at sling.com/my-account, tap Manage, then Cancel. You keep watching until your next bill date and won't be charged again.",
+   "tips": [
+    "Just need a break? Manage \u2192 See pause options lets you pause for a while instead.",
+    "Cancel page timing out or buttons not working? Try a private tab or clear your browser cache.",
+    "Deleting the Sling app doesn't cancel. You still have to cancel in your account."
+   ],
+   "partner": null,
+   "related": [
+    "youtube-tv",
+    "fubo",
+    "philo",
+    "hulu"
+   ],
+   "quotes": [
+    {
+     "source": "https://www.sling.com/help/en/account-questions/account-changes/pause-cancel-subscription",
+     "quote": "To cancel a recurring monthly Sling subscription, sign in to your account and select Manage then select Cancel."
+    },
+    {
+     "source": "https://www.sling.com/help/en/account-questions/account-changes/pause-cancel-subscription",
+     "quote": "Your Sling access will continue until the date of your next regular bill, but you won\u2019t be charged again."
+    },
+    {
+     "source": "https://www.sling.com/help/en/account-questions/account-changes/pause-cancel-subscription",
+     "quote": "We\u2019ll send you an email confirming your cancellation."
+    },
+    {
+     "source": "https://www.sling.com/help/en/account-questions/account-changes/pause-cancel-subscription",
+     "quote": "If you\u2019re experiencing long load times or other errors while trying to cancel, try using a private or incognito tab."
+    }
+   ]
+  },
+  {
+   "id": "fubo",
+   "name": "Fubo",
+   "url": "https://www.fubo.tv/subscription",
+   "helpUrl": "https://support.fubo.tv/hc/en-us/articles/360021527991-How-do-I-Cancel-My-Fubo-Subscription",
+   "steps": [
+    "Sign in at fubo.tv in Safari and pick any profile",
+    "Tap the settings icon, then My Account",
+    "Tap Subscription, then tap your plan to open it",
+    "Scroll down and tap Cancel",
+    "On the offer screen, tap CANCEL SUBSCRIPTION, then OK"
+   ],
+   "appleNote": false,
+   "appleBilling": false,
+   "source": "https://support.fubo.tv/hc/en-us/articles/360021527991-How-do-I-Cancel-My-Fubo-Subscription",
+   "checkedOn": "2026-11-15",
+   "confidence": "high",
+   "openIssues": [
+    "appleBilling is false because Fubo's cancel article (updated Oct 27, 2026) only covers sign-ups on the Fubo website and through Roku, and its mobile article says billing is managed at fubo.tv/account. Older third-party guides mention Apple and Amazon billing; Fubo's current pages don't."
+   ],
+   "note": "The discount screen isn't the end: you're only cancelled after CANCEL SUBSCRIPTION and the confirmation page. Paid plans run to the end of the billing period. Cancelling a website free trial ends it right away. Roku sign-ups: my.roku.com \u2192 Unsubscribe \u2192 Yes, Unsubscribe, or on the Roku: Home \u2192 highlight Fubo \u2192 Star button \u2192 Manage subscription \u2192 Cancel subscription. Not sure? fubo.tv/subscription says Roku Subscription if Roku bills you. No pause. No refunds for partial months. Promo plans with a commitment may have an early cancellation fee.",
+   "app": "Fubo",
+   "company": "Fubo",
+   "answer": "Sign in at fubo.tv, go to My Account \u2192 Subscription, open your plan and tap Cancel, then CANCEL SUBSCRIPTION on the offer screen. Signed up through Roku? Cancel at my.roku.com.",
+   "tips": [
+    "The discount offer isn't the last screen. Tap CANCEL SUBSCRIPTION or you're still subscribed.",
+    "Cancelling a free trial started on fubo.tv ends it right away.",
+    "Joined on a promo with a commitment period? An early cancellation fee may apply."
+   ],
+   "partner": "Signed up through Roku? Cancel at my.roku.com or on your Roku. fubo.tv/subscription shows Roku Subscription if that's you.",
+   "related": [
+    "sling-tv",
+    "youtube-tv",
+    "philo",
+    "espn"
+   ],
+   "quotes": [
+    {
+     "source": "https://support.fubo.tv/hc/en-us/articles/360021527991-How-do-I-Cancel-My-Fubo-Subscription",
+     "quote": "Scroll to the bottom of the screen and select Cancel. You may be offered the option to keep your subscription and receive a discount. If you see this screen, your subscription isn't canceled yet. You can choose to accept the offer on this screen by clicking REDEEM OFFER. Or you can complete your cancellation request by clicking CANCEL SUBSCRIPTION"
+    },
+    {
+     "source": "https://support.fubo.tv/hc/en-us/articles/360021527991-How-do-I-Cancel-My-Fubo-Subscription",
+     "quote": "If you cancel your free trial Fubo subscription, your trial will expire immediately, and another free trial period will not be given"
+    },
+    {
+     "source": "https://support.fubo.tv/hc/en-us/articles/360021527991-How-do-I-Cancel-My-Fubo-Subscription",
+     "quote": "If your subscription was created through Roku, under your subscription details, it will say Roku Subscription"
+    },
+    {
+     "source": "https://support.fubo.tv/hc/en-us/articles/360004457571-What-Is-Fubo-s-Cancellation-Policy",
+     "quote": "Note that we do not provide refunds for prepaid or partial months of service."
+    }
+   ]
+  },
+  {
+   "id": "philo",
+   "name": "Philo",
+   "url": "https://www.philo.com/player/user/account",
+   "helpUrl": "https://help.philo.com/account-billing/cancel/",
+   "steps": [
+    "Sign in at philo.com in Safari",
+    "Tap your Profile avatar, then Account",
+    "Tap Cancel my subscription",
+    "Tap Complete cancellation to confirm"
+   ],
+   "appleNote": true,
+   "appleBilling": true,
+   "source": "https://help.philo.com/account-billing/cancel/",
+   "checkedOn": "2026-11-15",
+   "confidence": "high",
+   "note": "Steps are for people billed by Philo. Philo's page has separate steps for Amazon (amazon.com/appstoresubscriptions \u2192 Turn off auto-renewal), Apple, Google, Roku, Samsung and Vizio billing. No refunds; you can watch until the billing cycle ends, then Free Channels. Locking your card won't stop charges. url is the Account page Philo's help links to.",
+   "app": "Philo",
+   "company": "Philo",
+   "answer": "Sign in at philo.com, tap your Profile avatar \u2192 Account \u2192 Cancel my subscription, then Complete cancellation. Billed by Apple, Google, Amazon, Roku, Samsung or Vizio? Cancel with them.",
+   "tips": [
+    "Philo doesn't refund the current period, but you can keep watching until it ends.",
+    "Locking your card won't stop Philo charges. Cancel properly.",
+    "Check the Your Philo Subscription section on your Account page to see it worked and your last day."
+   ],
+   "partner": "Billed by Amazon, Google, Roku, Samsung or Vizio? Philo's help page has the steps for each. Cancel with that company.",
+   "related": [
+    "sling-tv",
+    "fubo",
+    "youtube-tv",
+    "hulu"
+   ],
+   "quotes": [
+    {
+     "source": "https://help.philo.com/account-billing/cancel/",
+     "quote": "Sign in on philo.com . Click your Profile avatar, and then select Account . Click Cancel my subscription . Click Complete cancellation to confirm."
+    },
+    {
+     "source": "https://help.philo.com/account-billing/cancel/",
+     "quote": "Philo has a no refund policy \u2014 cancellation ensures that you won\u2019t be charged again in the future, but you won\u2019t receive a refund for your current billing period."
+    },
+    {
+     "source": "https://help.philo.com/account-billing/cancel/",
+     "quote": "Go to your device Settings . Tap your name, and then Subscriptions . Under Active Subscriptions, tap Philo . If you're not signed in to your Apple ID, you'll be prompted to sign in. Tap Cancel Subscription ."
+    },
+    {
+     "source": "https://help.philo.com/account-billing/cancel/",
+     "quote": "Locking your card won\u2019t prevent subscription charges."
+    }
+   ]
+  },
+  {
+   "id": "oura",
+   "name": "Oura Membership",
+   "url": "https://membership.ouraring.com",
+   "helpUrl": "https://support.ouraring.com/hc/en-us/articles/4409086524819-Oura-Membership",
+   "steps": [
+    "Oura app: tap the menu in the upper-left corner of the home screen",
+    "Tap Settings, then scroll to Account",
+    "Tap Manage membership to open Membership Hub",
+    "Tap Cancel membership"
+   ],
+   "appleNote": false,
+   "appleBilling": false,
+   "source": "https://support.ouraring.com/hc/en-us/articles/4409086524819-Oura-Membership",
+   "checkedOn": "2026-11-15",
+   "confidence": "high",
+   "openIssues": [
+    "Oura's page lists Cancel membership as an option in Membership Hub but doesn't describe the screens after it.",
+    "appleBilling is false because Oura's payment list (PayPal, Visa, Mastercard, Amex, Discover, HSA/FSA cards, UPI in India) has no Apple option. Oura doesn't say 'never through Apple' outright."
+   ],
+   "note": "Membership Hub also opens at membership.ouraring.com. Cancel during the free first month and you're never charged. After that you keep access to the end of the billing period. No partial refunds for prepaid or yearly plans. Your data stays unless you delete your account. No pause. Oura on the Web closed Oct 5, 2026.",
+   "app": "Oura",
+   "company": "Oura",
+   "answer": "In the Oura app, tap the menu \u2192 Settings \u2192 Manage membership, then Cancel membership in Membership Hub. Your data stays saved, but without a membership you only see your three daily scores.",
+   "tips": [
+    "Still in your free first month? Cancel before it ends and you won't be charged.",
+    "Cancelling doesn't delete your data. Skip Delete account unless you want everything gone.",
+    "There's no pause. It's cancel or keep paying."
+   ],
+   "partner": "Get Oura Membership through your organization? Oura emails you before it ends. Nothing to cancel.",
+   "related": [
+    "whoop",
+    "fitbit-premium",
+    "strava",
+    "garmin-connect"
+   ],
+   "quotes": [
+    {
+     "source": "https://support.ouraring.com/hc/en-us/articles/4409086524819-Oura-Membership",
+     "quote": "Tap the menu in the upper-left corner of the app's home screen. Tap Settings. Scroll to \"Account\". Tap Manage membership"
+    },
+    {
+     "source": "https://support.ouraring.com/hc/en-us/articles/4409086524819-Oura-Membership",
+     "quote": "If you cancel your Oura Membership before your complimentary month of membership ends, you won't be charged"
+    },
+    {
+     "source": "https://support.ouraring.com/hc/en-us/articles/4409086524819-Oura-Membership",
+     "quote": "If you cancel a monthly or annual plan after your complimentary month, you'll have access for the remainder of your billing period"
+    },
+    {
+     "source": "https://support.ouraring.com/hc/en-us/articles/4409086524819-Oura-Membership",
+     "quote": "There is no option to \"pause\" an Oura Membership."
+    }
+   ]
+  },
+  {
+   "id": "peloton",
+   "name": "Peloton App",
+   "url": null,
+   "helpUrl": null,
+   "steps": [
+    "Open members.onepeloton.com/preferences/subscriptions in Safari and sign in",
+    "Open your App membership",
+    "Tap Cancel Subscription and confirm"
+   ],
+   "appleNote": true,
+   "appleBilling": true,
+   "source": "https://support.onepeloton.com/hc/en-us/articles/205411915-How-do-I-cancel-my-monthly-subscription-to-the-Peloton-iOS-app-",
+   "checkedOn": "2026-11-15",
+   "confidence": "medium",
+   "openIssues": [
+    "Peloton's support site (support.onepeloton.com, Salesforce) is drawn by JavaScript. curl and WebFetch only see 'Loading', and the old article address now redirects to a login page. Its sitemap has no current 'cancel App membership' article.",
+    "Steps come only from search snippets of Peloton's own article 'How To Cancel A Peloton App Membership' (support.onepeloton.com/hc/en-us/articles/205411915). That's an old address, so the steps may be out of date.",
+    "Snippets also say iPhone sign-ups cancel in Settings \u2192 your name \u2192 Subscriptions, Android sign-ups in Google Play, and that you keep access to the end of the billing period. Not read on a Peloton page today.",
+    "Third-party guides mention onepeloton.com/mymembership and a one-month pause offer. Not on any Peloton page we could read.",
+    "Covers the App membership only. The All-Access (Bike/Tread) membership is different and not covered."
+   ],
+   "note": "App membership only. Signed up in the iPhone app? Apple bills you, so cancel in iPhone Settings (snippet). Peloton's own App membership page says to cancel a free trial before it ends to avoid being billed.",
+   "app": "Peloton",
+   "company": "Peloton",
+   "answer": "Signed up in the iPhone app? Cancel in Settings \u2192 your name \u2192 Subscriptions. Signed up on the web? Peloton's help points to the subscriptions page at members.onepeloton.com, where you choose Cancel Subscription.",
+   "tips": [
+    "On a free trial? Cancel before it ends or you'll be billed."
+   ],
+   "partner": "Signed up through Apple or Google Play? Cancel with them.",
+   "related": [
+    "strava",
+    "apple-fitness",
+    "zwift",
+    "classpass"
+   ],
+   "quotes": [
+    {
+     "source": "https://www.onepeloton.com/app-membership",
+     "quote": "To opt out, please cancel your trial at any time during the trial period."
+    },
+    {
+     "source": "https://support.apple.com/en-us/118428",
+     "quote": "In Settings, tap your name. Tap Subscriptions. Tap the subscription. Tap Cancel Subscription."
+    }
+   ]
+  },
+  {
+   "id": "myfitnesspal",
+   "name": "MyFitnessPal Premium",
+   "url": "https://www.myfitnesspal.com/account/login",
+   "urlLabel": "Log in to MyFitnessPal",
+   "helpUrl": "https://support.myfitnesspal.com/hc/en-us/articles/360032625371-How-to-cancel-your-Premium-subscription-renewal",
+   "steps": [
+    "Log in at myfitnesspal.com in Safari with your app email and password",
+    "Click Settings, then Subscription Settings",
+    "Switch the Auto-Renewal toggle at the bottom from On to Off"
+   ],
+   "appleNote": true,
+   "appleBilling": true,
+   "source": "https://support.myfitnesspal.com/hc/en-us/articles/360032625371-How-to-cancel-your-Premium-subscription-renewal",
+   "checkedOn": "2026-11-15",
+   "confidence": "high",
+   "note": "Steps are for Premium bought on the website. You must cancel where you paid. iPhone app purchases: Settings \u2192 your name \u2192 Subscriptions \u2192 MyFitnessPal \u2192 Cancel Subscription; only Apple can cancel or refund those. Android: Play Store \u2192 profile icon \u2192 Payments and subscriptions \u2192 Subscriptions \u2192 MyFitnessPal Subscription \u2192 Cancel Subscription. Cancel more than 24 hours before renewal. url is the login page MyFitnessPal's article links to.",
+   "app": "MyFitnessPal",
+   "company": "MyFitnessPal",
+   "answer": "Bought Premium in the iPhone app? Cancel in Settings \u2192 your name \u2192 Subscriptions \u2192 MyFitnessPal. Bought it on the website? Log in at myfitnesspal.com, go to Settings \u2192 Subscription Settings and switch Auto-Renewal off.",
+   "tips": [
+    "Cancel more than 24 hours before it renews, or it may still renew.",
+    "You keep Premium until the end of the period you already paid for."
+   ],
+   "partner": "Paid through Apple? Only Apple can cancel or refund it. MyFitnessPal can't see Apple purchases.",
+   "related": [
+    "noom",
+    "yazio",
+    "ww",
+    "strava"
+   ],
+   "quotes": [
+    {
+     "source": "https://support.myfitnesspal.com/hc/en-us/articles/360032625371-How-to-cancel-your-Premium-subscription-renewal",
+     "quote": "Please note that you must process a request to cancel your renewal using the same platform on which you originally paid."
+    },
+    {
+     "source": "https://support.myfitnesspal.com/hc/en-us/articles/360032625371-How-to-cancel-your-Premium-subscription-renewal",
+     "quote": "If you cancel less than 24 hours before the renewal, your membership or subscription may still renew."
+    },
+    {
+     "source": "https://support.myfitnesspal.com/hc/en-us/articles/360032625371-How-to-cancel-your-Premium-subscription-renewal",
+     "quote": "Click Settings , then click Subscription Settings . Set the Auto-Renewal toggle at the bottom from On to Off to opt out of Premium at the end of your current billing cycle."
+    },
+    {
+     "source": "https://support.myfitnesspal.com/hc/en-us/articles/360032625371-How-to-cancel-your-Premium-subscription-renewal",
+     "quote": "Open the Settings App on your phone. Tap on your name (at the top). Tap Subscriptions . Select MyFitnessPal. Tap Cancel Subscription ."
+    }
+   ]
+  },
+  {
+   "id": "babbel",
+   "name": "Babbel",
+   "url": "https://my.babbel.com/user-profile/account-information/account-information",
+   "helpUrl": "https://support.babbel.com/hc/en-gb/articles/205600298-Cancelling-a-subscription",
+   "steps": [
+    "Log in at babbel.com in Safari",
+    "Tap the profile icon (top right), then Profile and settings",
+    "Open Account Information",
+    "Pick the subscription and tap Cancel auto-renewal"
+   ],
+   "appleNote": true,
+   "appleBilling": true,
+   "source": "https://support.babbel.com/hc/en-gb/articles/205600298-Cancelling-a-subscription",
+   "checkedOn": "2026-11-15",
+   "confidence": "high",
+   "note": "Bought through Apple: Settings \u2192 your name \u2192 Subscriptions \u2192 Babbel. Google Play: Play Store \u2192 profile icon \u2192 Payment and subscriptions \u2192 Subscriptions \u2192 Babbel \u2192 Cancel subscription. Not sure where you bought it? Account Information or your first invoice says. No Cancel auto-renewal button means it already won't renew. url is Babbel's Account Information page.",
+   "app": "Babbel",
+   "company": "Babbel",
+   "answer": "Log in at babbel.com, go to Profile and settings \u2192 Account Information, pick your subscription and tap Cancel auto-renewal. Bought it through Apple or Google Play? Cancel there instead.",
+   "tips": [
+    "Cancel by the day before it renews. The date is on your Account Information page.",
+    "No Cancel auto-renewal button? It's already set to end.",
+    "Deleting the app or your Babbel account doesn't cancel the subscription."
+   ],
+   "partner": "Subscribed through Apple or Google Play? Cancel with them.",
+   "related": [
+    "duolingo",
+    "busuu",
+    "rosetta-stone",
+    "memrise"
+   ],
+   "quotes": [
+    {
+     "source": "https://support.babbel.com/hc/en-gb/articles/205600298-Cancelling-a-subscription",
+     "quote": "Go to babbel.com and log in to your account. Click on the profile icon in the top right corner and choose Profile and settings. Open Account Information. Choose the subscription and click the Cancel auto-renewal button"
+    },
+    {
+     "source": "https://support.babbel.com/hc/en-gb/articles/205600298-Cancelling-a-subscription",
+     "quote": "Please note that deleting the Babbel app from your device or canceling your account doesn't cancel your subscription!"
+    },
+    {
+     "source": "https://support.babbel.com/hc/en-gb/articles/205600298-Cancelling-a-subscription",
+     "quote": "Go to Settings on your iPhone or iPad and tap your name. Tap on Subscriptions. Select Babbel and confirm the cancellation"
+    }
+   ]
+  },
+  {
+   "id": "masterclass",
+   "name": "MasterClass",
+   "url": null,
+   "helpUrl": "https://www.masterclass.com/help-center/masterclass/answers/cancelling-your-subscription-renewal--id--M2McWBvNTh-WNRR6llmkAw",
+   "steps": [
+    "Log in at masterclass.com in Safari",
+    "Open the account menu (top right), then Settings",
+    "Under Membership, tap Cancel Membership and confirm"
+   ],
+   "appleNote": true,
+   "appleBilling": true,
+   "source": "https://www.masterclass.com/help-center/masterclass/answers/cancelling-your-subscription-renewal--id--M2McWBvNTh-WNRR6llmkAw",
+   "checkedOn": "2026-11-15",
+   "confidence": "medium",
+   "openIssues": [
+    "masterclass.com (help center and terms) returns 403 (Cloudflare) to curl and WebFetch. Steps come from search-result summaries of MasterClass's own help articles, not read today.",
+    "Button wording doesn't match across MasterClass pages: the help article (via snippet) says Cancel Membership, the Certificates help page says Cancel Subscription, and the Terms say Cancel under the Subscription box. Check on a phone.",
+    "Snippets say you can't cancel in the MasterClass app, that iPhone purchases cancel in iPhone Settings with refunds from Apple, Android purchases cancel in the Play Store, and that it stays active until the renewal date with a confirmation email.",
+    "url left null: we couldn't confirm a direct settings link."
+   ],
+   "note": "Bought in the iPhone app? Apple bills you: cancel in Settings \u2192 your name \u2192 Subscriptions, and ask Apple for refunds (snippet). Google Play purchases cancel in the Play Store (snippet).",
+   "app": "MasterClass",
+   "company": "MasterClass",
+   "answer": "Log in at masterclass.com, open Settings and cancel under Membership. Bought it in the iPhone app? Cancel in iPhone Settings, since the MasterClass app can't do it.",
+   "tips": [
+    "You can't cancel inside the MasterClass app. Use the website, or your phone's Settings if Apple bills you."
+   ],
+   "partner": "Bought through Apple or Google Play? Cancel with them. Apple handles refunds for iPhone purchases.",
+   "related": [
+    "skillshare",
+    "coursera",
+    "udemy",
+    "duolingo"
+   ],
+   "quotes": [
+    {
+     "source": "https://support.apple.com/en-us/118428",
+     "quote": "In Settings, tap your name. Tap Subscriptions. Tap the subscription. Tap Cancel Subscription."
+    }
+   ]
+  },
+  {
+   "id": "apple-news",
+   "name": "Apple News+",
+   "url": "https://account.apple.com/account/manage/section/subscriptions",
+   "helpUrl": "https://support.apple.com/guide/iphone/subscribe-to-apple-news-iph6a8e168cb/ios",
+   "steps": [
+    "Open the News app and tap Following",
+    "Scroll down and tap Subscriptions (below Manage)",
+    "Tap Cancel Subscription and follow the steps"
+   ],
+   "appleNote": true,
+   "appleBilling": true,
+   "source": "https://support.apple.com/guide/iphone/subscribe-to-apple-news-iph6a8e168cb/ios",
+   "checkedOn": "2026-11-15",
+   "confidence": "high",
+   "note": "Billed by Apple only. Also pay for channels in News? Select Apple News+ first, then Cancel Subscription. Settings \u2192 your name \u2192 Subscriptions works too (support.apple.com/en-us/118428). Mac: News \u2192 File \u2192 Manage Subscriptions. Part of Apple One Premier: cancel or change Apple One instead. Cancelling also stops it for your Family Sharing group. Steps are from the iOS 27 iPhone User Guide. url is the web cancel link on Apple's cancel page (118428).",
+   "app": "News",
+   "company": "Apple",
+   "answer": "In the News app, tap Following, scroll to Subscriptions (under Manage) and tap Cancel Subscription. Or go to Settings \u2192 your name \u2192 Subscriptions.",
+   "tips": [
+    "Pay for channels inside News too? Pick Apple News+ first, then tap Cancel Subscription.",
+    "Cancelling stops Apple News+ for your Family Sharing group too."
+   ],
+   "partner": "Don\u2019t see Apple News+ on its own? You may get it through Apple One Premier. Change Apple One instead.",
+   "related": [
+    "apple-one",
+    "nyt",
+    "apple-music",
+    "washington-post"
+   ],
+   "quotes": [
+    {
+     "source": "https://support.apple.com/guide/iphone/subscribe-to-apple-news-iph6a8e168cb/ios",
+     "quote": "Tap Following , scroll down, tap Subscriptions (below Manage), then do one of the following: Apple News+ only: Tap Cancel Subscription, then follow the onscreen instructions. Apple News+ and individual channels: Select Apple News+, tap Cancel Subscription, then follow the onscreen instructions."
+    },
+    {
+     "source": "https://support.apple.com/guide/iphone/subscribe-to-apple-news-iph6a8e168cb/ios",
+     "quote": "If you subscribe to Apple News+ as part of an Apple One Premier subscription and want to cancel your subscription, see the Apple Support article Cancel a subscription from Apple ."
+    },
+    {
+     "source": "https://support.apple.com/guide/news/iph99d302e69/mac",
+     "quote": "Choose File > Manage Subscriptions, then follow the onscreen instructions."
+    },
+    {
+     "source": "https://support.apple.com/en-us/118428",
+     "quote": "In Settings, tap your name. Tap Subscriptions. Tap the subscription. Tap Cancel Subscription."
+    }
+   ]
+  },
+  {
+   "id": "economist",
+   "name": "The Economist",
+   "url": null,
+   "helpUrl": "https://myaccount.economist.com/s/article/How-do-I-cancel-my-subscription",
+   "steps": [],
+   "appleNote": true,
+   "appleBilling": true,
+   "source": "https://myaccount.economist.com/s/article/How-do-I-cancel-my-subscription",
+   "checkedOn": "2026-11-15",
+   "confidence": "none",
+   "openIssues": [
+    "No official text read today. economist.com returns 403 (Cloudflare) to curl, WebFetch refuses myaccount.economist.com, our search tool can't search economist.com, and myaccount.economist.com/s/... help pages are drawn by JavaScript.",
+    "helpUrl is real: 'How-do-I-cancel-my-subscription' is listed in The Economist's own help sitemap (myaccount.economist.com/s/sitemap-topicarticle-1.xml), read today. Its content is unknown.",
+    "Third-party guides say: sign in, My Account \u2192 Manage subscription, with live chat or phone as a fallback. Not confirmed on any Economist page, so no steps are given.",
+    "appleBilling true only because the same sitemap lists articles for people who subscribed through iTunes or Google Play (legacy app) and a Google Play management article. Check before publishing.",
+    "Needs a person to open the help article in a real browser and copy the steps."
+   ],
+   "note": "Not ready to publish. Steps need checking in a real browser.",
+   "app": "The Economist",
+   "company": "The Economist",
+   "answer": null,
+   "tips": [],
+   "partner": null,
+   "related": [
+    "nyt",
+    "ft",
+    "wsj",
+    "guardian"
+   ],
+   "quotes": []
+  },
+  {
+   "id": "guardian",
+   "name": "The Guardian",
+   "url": "https://manage.theguardian.com/",
+   "helpUrl": "https://manage.theguardian.com/help-centre/article/i-want-to-cancel-my-regular-payments-to-you",
+   "steps": [
+    "Log in to Manage My Account at manage.theguardian.com",
+    "Under your account overview, tap Manage subscription/contribution/membership",
+    "Scroll to the bottom and follow the cancel instructions"
+   ],
+   "appleNote": true,
+   "appleBilling": true,
+   "source": "https://manage.theguardian.com/help-centre/article/i-want-to-cancel-my-regular-payments-to-you",
+   "checkedOn": "2026-11-15",
+   "confidence": "medium",
+   "openIssues": [
+    "The help centre page is drawn by JavaScript and theguardian.com/help blocks our tools, so we read the article text from the help centre's own data feed (manage.theguardian.com/api/help-centre/article/...). Same wording, but not seen as a page.",
+    "The last cancel button isn't named. The Guardian says 'Instructions to cancel vary between types of support.'",
+    "A second help article, 'I want to cancel my subscription' (filed with print vouchers and delivery), says to contact Customer Service instead. It's unclear whether that also applies to digital subscriptions.",
+    "The Guardian's own Apple steps are out of date (iTunes & App Store \u2192 View Apple ID). Use Apple's current steps (support.apple.com/en-us/118428)."
+   ],
+   "note": "Bought the premium tier in the Guardian app through Apple or Google? Cancel with them; Guardian customer service can't help with those. You keep the premium tier until the end of the period. Want to delete your Guardian account? Cancel payments first.",
+   "app": "The Guardian",
+   "company": "Guardian News & Media",
+   "answer": "Log in at manage.theguardian.com, tap Manage subscription/contribution/membership, then scroll to the bottom for the cancel instructions. Paying through Apple or Google in the Guardian app? Cancel with them.",
+   "tips": [
+    "Want to delete your Guardian account too? Cancel your payments first.",
+    "An Apple or Google subscription only unlocks the app, so the website still shows support banners."
+   ],
+   "partner": "Subscribed in the Guardian app through Apple or Google? Cancel with them. Guardian customer service can't help with those.",
+   "related": [
+    "nyt",
+    "the-times",
+    "telegraph",
+    "economist"
+   ],
+   "quotes": [
+    {
+     "source": "https://manage.theguardian.com/help-centre/article/i-want-to-cancel-my-regular-payments-to-you",
+     "quote": "Log into your Manage My Account area. Under your account overview you\u2019ll see your support for the Guardian. Select \u201cManage subscription/contribution/membership\u201d. Scroll to the bottom of the page to see instructions on how to cancel. Instructions to cancel vary between types of support."
+    },
+    {
+     "source": "https://manage.theguardian.com/help-centre/article/i-have-a-googleitunes-subscription-that-i-need-help-with",
+     "quote": "Unfortunately, our Customer Service team is unable to assist with queries regarding subscriptions made via third parties. You will need to get in touch with your subscription provider via Apple or Google support."
+    },
+    {
+     "source": "https://manage.theguardian.com/help-centre/article/i-want-to-cancel-my-subscription",
+     "quote": "Please contact Customer Service using the contact details below. Our Customer Service agents will be able to settle any reimbursements due and provide you with a final bill date before cancelling your payments."
+    },
+    {
+     "source": "https://support.apple.com/en-us/118428",
+     "quote": "In Settings, tap your name. Tap Subscriptions. Tap the subscription. Tap Cancel Subscription."
+    }
+   ]
+  }
+ ]
+}

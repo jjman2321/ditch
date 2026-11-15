@@ -1,0 +1,631 @@
+{
+ "checkedOn": "2026-11-15",
+ "notes": [
+  "Batch c (AI and apps): depth for the guides in cancel-guides-2026-11-c-ai.json. Same shape and rules as guide-depth-2026-11-b.json. claude-pro here replaces the 2026-11-13 entry (adds the Personal Finance warning).",
+  "Every fact below was read live on an official page on 2026-11-15. Quotes are verbatim (long ones cut with ...).",
+  "Exception: midjourney. docs.midjourney.com shows a bot check; its one article here was read through Midjourney's public help-center feed. A second request that way was blocked, so we stopped and kept only what that one article says.",
+  "discord-nitro has no depth entry: support.discord.com blocks our tools, and we only had search snippets, which don't meet the 'read live' rule. roblox depth uses only about.roblox.com.",
+  "null means the official page we could read is silent or could not be loaded. Never fill a null from memory or a blog.",
+  "googlePlay steps come from Google Play Help (re-read 2026-11-15). Included only where the service's own page says Google Play billing is possible.",
+  "FAQ questions are an informed pick of what people search for 'how to cancel <service>', not a scrape of Google's People Also Ask box.",
+  "Nov 15: Midjourney depth removed by the site owner side: it was read through a route around the help site's bot check, so it is not used."
+ ],
+ "googlePlaySource": {
+  "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+  "steps": [
+   "On your Android device, go to subscriptions in Google Play.",
+   "Select the subscription you want to cancel.",
+   "Tap Cancel subscription.",
+   "Follow the instructions."
+  ],
+  "extraQuotes": [
+   "When you uninstall the app, your subscription won't cancel."
+  ]
+ },
+ "guides": [
+  {
+   "id": "claude-pro",
+   "checkedOn": "2026-11-15",
+   "after": {
+    "access": {
+     "text": "You can keep using your paid plan until the end of the billing period.",
+     "source": "https://support.claude.com/en/articles/8325617-cancel-your-pro-or-max-subscription",
+     "quote": "Your cancellation will take effect at the end of your current billing period and you can continue using your paid plan until then."
+    },
+    "data": {
+     "text": "Usage credits you bought stay on your account but only work with a paid plan. Use Personal Finance? It stops when the plan ends and your banks stay linked until you unlink them.",
+     "source": "https://support.claude.com/en/articles/8325617-cancel-your-pro-or-max-subscription",
+     "quote": "Your balance stays on your account, but usage credits can only be used with an active paid plan. ... If you use Personal Finance, you can’t open it after your paid plan ends, and your banks stay linked until you unlink them."
+    },
+    "refunds": {
+     "text": "Anthropic's help page says payments aren't refundable unless its terms or the law say so, or there's fraud. EU and UK: see the FAQ.",
+     "source": "https://support.claude.com/en/articles/12386328-request-a-refund-for-a-paid-claude-plan",
+     "quote": "Except as expressly provided in our Consumer Terms of Service, where required by law, or in cases of fraud, all payments are non-refundable."
+    }
+   },
+   "verify": null,
+   "pause": null,
+   "googlePlay": {
+    "steps": [
+     "On your Android device, go to subscriptions in Google Play.",
+     "Select Claude.",
+     "Tap Cancel subscription.",
+     "Follow the instructions."
+    ],
+    "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+    "serviceSource": "https://support.claude.com/en/articles/8325617-cancel-your-pro-or-max-subscription",
+    "serviceQuote": "If you subscribed to a Pro, Max, or Ultra plan via Claude for Android, your subscription and payment will be handled directly on your Android device.",
+    "serviceNote": "Claude's page also gives in-app steps on Android: tap your initials → Billing → Manage subscription."
+   },
+   "faq": [
+    {
+     "q": "When should I cancel Claude Pro?",
+     "a": "At least 24 hours before your next billing date, so you aren't charged again.",
+     "source": "https://support.claude.com/en/articles/8325617-cancel-your-pro-or-max-subscription",
+     "quote": "To avoid being charged for your next billing period, cancel your subscription at least 24 hours before your next billing date."
+    },
+    {
+     "q": "I paid in the iPhone app. Who refunds me?",
+     "a": "Only Apple, at reportaproblem.apple.com. Asking for a refund doesn't cancel the plan, so cancel it too.",
+     "source": "https://support.claude.com/en/articles/12386328-request-a-refund-for-a-paid-claude-plan",
+     "quote": "Apple processed this payment, so only Apple can review and issue a refund—our Support team can't access or refund App Store charges. ... Note: Requesting a refund doesn't cancel your subscription."
+    },
+    {
+     "q": "I'm in the EU or UK. Can I get a refund?",
+     "a": "You may get one within 14 days of buying. It's cut down based on how much you used.",
+     "source": "https://support.claude.com/en/articles/12386328-request-a-refund-for-a-paid-claude-plan",
+     "quote": "In the European Economic Area and the United Kingdom, you may receive a refund within 14 days of purchase. You may find this option available in your Settings. Your refunds will be prorated according to your use."
+    },
+    {
+     "q": "I use Personal Finance. What should I do before cancelling?",
+     "a": "Unlink your banks before the plan ends if you're not coming back. They stay linked otherwise.",
+     "source": "https://support.claude.com/en/articles/8325617-cancel-your-pro-or-max-subscription",
+     "quote": "If you don’t plan to come back, unlink your banks before your plan ends."
+    }
+   ]
+  },
+  {
+   "id": "perplexity",
+   "checkedOn": "2026-11-15",
+   "after": {
+    "access": {
+     "text": "You keep Pro until the current billing cycle ends, then you're on the free version.",
+     "source": "https://www.perplexity.ai/help-center/en/articles/10354283-canceling-a-subscription",
+     "quote": "Yes. Your account reverts to the free version after the current billing cycle ends."
+    },
+    "data": null,
+    "refunds": {
+     "text": "EU, UK and Turkey: refund if you cancel within 14 days. South Korea and Brazil: 7 days. Everyone else: 24 hours for monthly, 72 hours for yearly. Only one refund ever.",
+     "source": "https://www.perplexity.ai/help-center/en/articles/10354288-refunds",
+     "quote": "We can’t process additional refund requests after we’ve granted a first one. ... Monthly subscriptions: You can request a refund up to 24 hours after the purchase date. ... Annual subscriptions: You’re eligible for a full refund within 72 hours of the original purchase date and time."
+    }
+   },
+   "verify": {
+    "text": "How to check it worked: go back to Settings and click Manage subscription. Still charged? Contact Perplexity via Help > Contact Support.",
+    "source": "https://www.perplexity.ai/help-center/en/articles/10354283-canceling-a-subscription",
+    "quote": "Double-check that you’ve canceled your subscription by going to settings and clicking “Manage subscription.” Contact us via Help > Contact Support for further assistance ."
+   },
+   "pause": {
+    "text": "Perplexity has no pause. Cancel and sign up again later.",
+    "source": "https://www.perplexity.ai/help-center/en/articles/10353002-billing-faq-for-pro-plan-subscribers",
+    "quote": "No, subscription pausing isn’t available. If you can’t make a payment, you can cancel and upgrade at a later time."
+   },
+   "googlePlay": {
+    "steps": [
+     "On your Android device, go to subscriptions in Google Play.",
+     "Select Perplexity - Ask Anything.",
+     "Tap Cancel subscription.",
+     "Follow the instructions."
+    ],
+    "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+    "serviceSource": "https://www.perplexity.ai/help-center/en/articles/10354283-canceling-a-subscription",
+    "serviceQuote": "Open the Google Play app and tap the settings icon in the upper-right corner. Tap “Payments & Subscriptions,” then “Perplexity - Ask Anything.” Choose “Cancel subscription” at the bottom of the screen.",
+    "serviceNote": "Perplexity's own Android steps go through the Google Play app: Payments & Subscriptions → Perplexity - Ask Anything → Cancel subscription."
+   },
+   "faq": [
+    {
+     "q": "If I delete my Perplexity account, does the subscription stop?",
+     "a": "No. Cancel the subscription first, then delete the account.",
+     "source": "https://www.perplexity.ai/help-center/en/articles/10354283-canceling-a-subscription",
+     "quote": "No. Deleting your account doesn’t terminate your subscription. Cancel your subscription before you delete your account."
+    },
+    {
+     "q": "How do I get a refund for Perplexity Pro?",
+     "a": "On the web, the refund option shows up when you cancel. Paid through Apple? Ask Apple at reportaproblem.apple.com. Google Play? Contact Perplexity support with your Google Play email.",
+     "source": "https://www.perplexity.ai/help-center/en/articles/10354288-refunds",
+     "quote": "Visit perplexity.ai/pro and select “Manage Subscription.” Choose “Cancel Plan.” The option to request a refund appears with the cancellation confirmation."
+    },
+    {
+     "q": "I forgot to cancel and got charged. Can I get it back?",
+     "a": "Maybe, if you ask inside the refund window for your country.",
+     "source": "https://www.perplexity.ai/help-center/en/articles/10354288-refunds",
+     "quote": "Forgot to unsubscribe We may issue a refund if your request follows the guidelines above."
+    },
+    {
+     "q": "Why don't I see a cancel button in Perplexity settings?",
+     "a": "You probably paid through the App Store, Google Play or the Galaxy Store. Cancel there.",
+     "source": "https://www.perplexity.ai/help-center/en/articles/10354283-canceling-a-subscription",
+     "quote": "If you subscribed through the Apple App Store or Google Play Store, the app store controls your billing. The cancel option doesn’t appear in Perplexity Settings."
+    }
+   ]
+  },
+  {
+   "id": "grok",
+   "checkedOn": "2026-11-15",
+   "after": {
+    "access": null,
+    "data": null,
+    "refunds": {
+     "text": "Paid on the web or Google Play? Use xAI's refund request form; approved refunds take 5 to 10 business days. Paid through Apple? Ask Apple.",
+     "source": "https://docs.x.ai/grok/faq",
+     "quote": "Web (grok.com) or Google Play: handled by SpaceXSI. Submit your refund request using the xAI Refund Request form (sign in with the account used for the subscription). Our team will review the request. Approved refunds are typically issued to your original payment method within 5–10 business days. Apple App Store: Apple handles all refunds for purchases made through the App Store."
+    }
+   },
+   "verify": null,
+   "pause": null,
+   "googlePlay": {
+    "steps": [
+     "On your Android device, go to subscriptions in Google Play.",
+     "Select Grok.",
+     "Tap Cancel subscription.",
+     "Follow the instructions."
+    ],
+    "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+    "serviceSource": "https://docs.x.ai/x-subscription/cancel",
+    "serviceQuote": "If you subscribed through Google Play, cancel it in the Google Play Store."
+   },
+   "faq": [
+    {
+     "q": "The Manage Subscription button won't open. What now?",
+     "a": "xAI says ad-blockers or extensions can block it. Try a private window or another browser. Still stuck? Support can pass the cancellation to billing.",
+     "source": "https://docs.x.ai/grok/faq",
+     "quote": "If the Manage Subscription button doesn't open, ad-blockers or other apps/extensions can block it — try an incognito window or a different browser. If you still can't complete it, support can escalate the cancellation to the billing team."
+    },
+    {
+     "q": "I switched to The X Subscription. Is my old SuperGrok cancelled?",
+     "a": "Direct-billed and App Store plans are cancelled with a prorated refund. Google Play ones may still renew, so check Google Play.",
+     "source": "https://docs.x.ai/x-subscription/invoices-and-refunds",
+     "quote": "Eligible direct-billed subscriptions included in the switch are canceled and replaced by The X Subscription. ... If you bought Grok, Grok Bot, or X Premium through Google Play, check your subscriptions in Google Play after you switch. If it's still set to renew, cancel it there."
+    },
+    {
+     "q": "Can I undo the switch to The X Subscription?",
+     "a": "No. xAI says the switch is permanent and Support can't undo it. Cancelling doesn't bring your old plans back.",
+     "source": "https://docs.x.ai/x-subscription/cancel",
+     "quote": "Combining accounts is permanent. Canceling The X Subscription does not separate those accounts or restore your previous Cursor, SuperGrok, or X Premium subscriptions."
+    },
+    {
+     "q": "I got a big charge I don't recognise. Is it API usage?",
+     "a": "Often it's a SuperGrok Heavy yearly plan. Check your subscription history before disputing it.",
+     "source": "https://docs.x.ai/grok/faq",
+     "quote": "Large unexpected invoices are often a SuperGrok Heavy yearly subscription, not API usage."
+    }
+   ]
+  },
+  {
+   "id": "copilot-pro",
+   "checkedOn": "2026-11-15",
+   "after": {
+    "access": null,
+    "data": null,
+    "refunds": {
+     "text": "Microsoft's general policy: cancel within 30 days of first buying (or before the first renewal, whichever is sooner) and you may get a refund. You can also get your latest renewal back if you cancel within 30 days of it, once per product.",
+     "source": "https://support.microsoft.com/en-us/accounts-billing/subscriptions/microsoft-subscription-refund-policy",
+     "quote": "In most cases, you may receive a refund within 30 days of your initial purchase or before your first recurring billing date (whichever is sooner) ... In addition, you’re entitled to a refund of your most recent recurring billing charge if you cancel your subscription within 30 days after payment. This refund right is limited to one time per Microsoft account, per subscription product."
+    }
+   },
+   "verify": {
+    "text": "How to check it worked: if you see Turn on recurring billing instead of Manage, it's set to end and won't charge you again.",
+    "source": "https://support.microsoft.com/en-us/accounts-billing/subscriptions/cancel-a-copilot-pro-subscription",
+    "quote": "If you see  Turn on recurring billing instead of a link that says  Manage , this means your subscription is already set to expire on the date shown and you won't be automatically charged after this date."
+   },
+   "pause": null,
+   "googlePlay": {
+    "steps": [
+     "On your Android device, go to subscriptions in Google Play.",
+     "Select Microsoft Copilot.",
+     "Tap Cancel subscription.",
+     "Follow the instructions."
+    ],
+    "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+    "serviceSource": "https://support.microsoft.com/en-us/accounts-billing/subscriptions/cancel-a-copilot-pro-subscription",
+    "serviceQuote": "If you purchased a Microsoft subscription from Google Play or the Apple app store, contact their customer support for cancellation or refund."
+   },
+   "faq": [
+    {
+     "q": "Can I still buy Copilot Pro?",
+     "a": "No. Microsoft stopped selling it and points subscribers to Microsoft 365 Premium. Existing plans can still be cancelled.",
+     "source": "https://www.microsoft.com/en-us/copilot/blog/2025/10/01/meet-microsoft-365-premium-your-ai-and-productivity-powerhouse/",
+     "quote": "As part of this simplification, we’ll no longer sell Copilot Pro—Copilot Pro subscribers can switch to Microsoft 365 Premium for more value."
+    },
+    {
+     "q": "I bought Copilot Pro in the iPhone app. Can Microsoft refund me?",
+     "a": "No. Microsoft says App Store purchases are cancelled and refunded through Apple.",
+     "source": "https://support.microsoft.com/en-us/accounts-billing/subscriptions/microsoft-subscription-refund-policy",
+     "quote": "If you purchased a Microsoft subscription from Google Play or the Apple app store, contact their customer support for cancellation or refund."
+    },
+    {
+     "q": "I'm in Germany. Can I cancel without signing in?",
+     "a": "Yes. Microsoft has a separate page for that; you'll need some purchase details.",
+     "source": "https://support.microsoft.com/en-us/accounts-billing/subscriptions/cancel-a-copilot-pro-subscription",
+     "quote": "If you purchased your subscription in Germany, you can cancel without signing into your Microsoft account. You'll need a few pieces of information to do so."
+    }
+   ]
+  },
+  {
+   "id": "github-copilot",
+   "checkedOn": "2026-11-15",
+   "after": {
+    "access": {
+     "text": "You keep your paid features until the billing cycle ends, then you're moved to Copilot Free.",
+     "source": "https://docs.github.com/en/copilot/how-tos/manage-your-account/view-and-change-your-copilot-plan",
+     "quote": "You can cancel your Copilot plan at any time. You’ll retain access to your current features until your billing cycle ends. You will automatically be downgraded to Copilot Free at the end of your billing cycle."
+    },
+    "data": null,
+    "refunds": {
+     "text": "Extra AI credits you used are still billed, and that charge can arrive after you cancel.",
+     "source": "https://docs.github.com/en/copilot/concepts/billing/billing-for-individuals",
+     "quote": "You must pay for usage you incurred before you canceled, downgraded to Copilot Free, or reduced your additional usage budget to $0. Usage from your final days on the plan might not appear on your last invoice, so you might receive a charge after you cancel."
+    }
+   },
+   "verify": null,
+   "pause": null,
+   "googlePlay": {
+    "steps": [
+     "On your Android device, go to subscriptions in Google Play.",
+     "Select GitHub.",
+     "Tap Cancel subscription.",
+     "Follow the instructions."
+    ],
+    "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+    "serviceSource": "https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing",
+    "serviceQuote": "To manage all Copilot billing in one place, cancel your mobile subscription in the App Store or Google Play and re-subscribe on GitHub.com."
+   },
+   "faq": [
+    {
+     "q": "Why can't I cancel GitHub Copilot?",
+     "a": "Free Copilot for students, teachers and open source maintainers can't be cancelled, and neither can a seat from your company. You can turn Copilot off instead.",
+     "source": "https://docs.github.com/en/copilot/how-tos/manage-your-account/view-and-change-your-copilot-plan",
+     "quote": "If you have been granted free access to Copilot as a verified student, teacher, or maintainer of a popular open source project, you won’t be able to cancel your plan. If you have access to Copilot through an organization or enterprise, you will not be able to cancel your plan."
+    },
+    {
+     "q": "My company gave me Copilot. Do I keep paying for my own plan?",
+     "a": "No. GitHub cancels your personal plan automatically and refunds the unused part.",
+     "source": "https://docs.github.com/en/copilot/concepts/billing/billing-for-individuals",
+     "quote": "your personal Copilot plan will be automatically canceled. ... You will receive a prorated refund for any remaining portion of your personal plan's current billing cycle."
+    },
+    {
+     "q": "I can't sign in to the account that's being charged.",
+     "a": "Try GitHub's account recovery first. If that fails, GitHub Support can help stop future Copilot charges.",
+     "source": "https://docs.github.com/en/copilot/how-tos/manage-your-account/view-and-change-your-copilot-plan",
+     "quote": "If you still can't access the account or identify which account is being charged, contact GitHub Support to request help stopping future Copilot charges or to request removal of the payment method from the locked account."
+    },
+    {
+     "q": "Can I restart Copilot Pro later?",
+     "a": "Restarting counts as a new sign-up. If individual sign-ups are paused, you can't get it back until they reopen.",
+     "source": "https://docs.github.com/en/copilot/how-tos/manage-your-account/get-started-with-a-copilot-plan",
+     "quote": "Restoring a canceled plan is treated as a new individual subscription. If individual sign-up is temporarily unavailable, there is no self-service way to restore paid access until sign-up becomes available again."
+    }
+   ]
+  },
+  {
+   "id": "notion",
+   "checkedOn": "2026-11-15",
+   "after": {
+    "access": {
+     "text": "You keep every paid feature until the billing cycle ends.",
+     "source": "https://www.notion.com/help/upgrade-or-downgrade-your-plan",
+     "quote": "After you cancel, you’ll still have access to all the paid features until the end of your billing cycle."
+    },
+    "data": {
+     "text": "Nothing is deleted, but on Free a shared workspace is capped at 1,000 blocks, files must be 5MB or less, and page history goes back 7 days.",
+     "source": "https://www.notion.com/help/plan-downgrade",
+     "quote": "If your workspace has two or more people in it, you’ll be able to use up to 1,000 blocks in your workspace. ... Each file you upload will need to be 5MB or less. ... You’ll have version history for your pages going back seven days ."
+    },
+    "refunds": {
+     "text": "Full refund if you downgrade within 3 days of a monthly sign-up or 30 days of a yearly one. Message Notion support. Bought on iPhone? Ask Apple.",
+     "source": "https://www.notion.com/help/upgrade-or-downgrade-your-plan",
+     "quote": "We'll be happy to refund you the full amount (not pro-rated) if you downgrade your subscription within three days of signing up for monthly billing, or within 30 days of signing up for annual billing."
+    }
+   },
+   "verify": {
+    "text": "How to check it worked: Notion confirms the downgrade and shows when your current plan ends.",
+    "source": "https://www.notion.com/help/plan-downgrade",
+    "quote": "You’ll receive confirmation of your downgrade, and see when your current plan ends."
+   },
+   "pause": null,
+   "googlePlay": {
+    "steps": [
+     "On your Android device, go to subscriptions in Google Play.",
+     "Select Notion.",
+     "Tap Cancel subscription.",
+     "Follow the instructions."
+    ],
+    "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+    "serviceSource": "https://www.notion.com/help/upgrade-or-downgrade-your-plan",
+    "serviceQuote": "Subscriptions you purchase on mobile can be managed through the Apple App Store or Google Play Store."
+   },
+   "faq": [
+    {
+     "q": "Will I lose my pages if I downgrade Notion to Free?",
+     "a": "No. Alone in your workspace, you keep unlimited blocks. With two or more people, Free allows 1,000 blocks.",
+     "source": "https://www.notion.com/help/plan-downgrade",
+     "quote": "If your workspace has two or more people in it, you’ll be able to use up to 1,000 blocks in your workspace. If your workspace only has one person in it, you’ll continue to be able to use as many blocks as you’d like ."
+    },
+    {
+     "q": "What happens to my automations?",
+     "a": "They keep running on Free but become view-only. You can't edit them or make new ones.",
+     "source": "https://www.notion.com/help/plan-downgrade",
+     "quote": "Your existing automations will continue to work, but they’ll be view-only . This means you won’t be able to edit existing automations or create new ones."
+    },
+    {
+     "q": "I upgraded in the iPhone app. Can Notion cancel it?",
+     "a": "No. Notion says App Store subscriptions are handled by Apple, including cancelling and refunds.",
+     "source": "https://www.notion.com/help/upgrade-or-downgrade-your-plan",
+     "quote": "If you've purchased a subscription through the Apple App Store, you'll need to contact the Apple App Store directly for any issues with your subscription, including cancellations and refunds."
+    }
+   ]
+  },
+  {
+   "id": "grammarly",
+   "checkedOn": "2026-11-15",
+   "after": {
+    "access": {
+     "text": "Renewal stops, but you keep paid features until the end of the period.",
+     "source": "https://support.grammarly.com/hc/en-us/articles/115000090172-How-do-I-cancel-my-subscription",
+     "quote": "Canceling a subscription stops its automatic renewal, but you will still have access to all paid features for the duration of your current subscription period."
+    },
+    "data": {
+     "text": "Your documents stay. On a free trial, cancelling switches you to the free version straight away.",
+     "source": "https://support.grammarly.com/hc/en-us/articles/31475970390285-How-do-I-cancel-my-free-trial",
+     "quote": "After canceling, your free trial will end immediately, and your account will be converted to the free version without any charges. Your data will not be lost, and you will maintain access to all of your documents."
+    },
+    "refunds": {
+     "text": "Grammarly only refunds when the law requires it. Bought in the App Store? Ask Apple.",
+     "source": "https://support.grammarly.com/hc/en-us/articles/360049189071-Can-I-get-a-refund",
+     "quote": "You can cancel your subscription at any time. However, as outlined in our Terms of Service , refunds are issued only if required by law."
+    }
+   },
+   "verify": null,
+   "pause": null,
+   "googlePlay": null,
+   "faq": [
+    {
+     "q": "Can I get a refund from Grammarly?",
+     "a": "Only where the law requires it. App Store purchases go through Apple.",
+     "source": "https://support.grammarly.com/hc/en-us/articles/360049189071-Can-I-get-a-refund",
+     "quote": "refunds are issued only if required by law. Note: If you purchased your subscription from the App Store, contact Apple to request a refund."
+    },
+    {
+     "q": "Will cancelling my Grammarly free trial delete my documents?",
+     "a": "No. The trial ends right away and you keep all your documents.",
+     "source": "https://support.grammarly.com/hc/en-us/articles/31475970390285-How-do-I-cancel-my-free-trial",
+     "quote": "Your data will not be lost, and you will maintain access to all of your documents."
+    },
+    {
+     "q": "I don't see the Cancel Subscription button.",
+     "a": "Check you're signed in to the account that pays. Can't get into it? Contact Grammarly Support.",
+     "source": "https://support.grammarly.com/hc/en-us/articles/115000090172-How-do-I-cancel-my-subscription",
+     "quote": "If you don’t see the cancellation button, please make sure you’re logged in to the correct account."
+    },
+    {
+     "q": "Does cancelling Grammarly cancel Superhuman too?",
+     "a": "Yes. Grammarly says it applies across the Superhuman suite.",
+     "source": "https://support.grammarly.com/hc/en-us/articles/115000090172-How-do-I-cancel-my-subscription",
+     "quote": "If you’re a Superhuman user, canceling your subscription through your associated Grammarly account will apply across all other applications in the Superhuman suite."
+    }
+   ]
+  },
+  {
+   "id": "1password",
+   "checkedOn": "2026-11-15",
+   "after": {
+    "access": {
+     "text": "Your subscription stays active until the end of the billing period, then the account freezes.",
+     "source": "https://support.1password.com/manage-subscription/",
+     "quote": "Your canceled subscription will remain active until the end of the current billing period, then your account will be frozen ."
+    },
+    "data": {
+     "text": "A frozen account still lets you view and copy everything, but you can't add or edit items or fill them in your browser.",
+     "source": "https://support.1password.com/frozen-account/",
+     "quote": "While your account is frozen, you can still view all your items, copy your passwords, and even copy items to vaults outside your account. But you won’t be able to: Add new items to vaults Edit items Invite people to your family or team Fill items in your browser"
+    },
+    "refunds": {
+     "text": "1Password doesn't refund past charges or leftover time. Cancel during the free trial and you're never charged.",
+     "source": "https://support.1password.com/refund-policy/",
+     "quote": "Free trial: If you cancel during your trial period, you won’t be charged. ... We’re unable to issue refunds for past charges or for any time remaining on your account at the time of cancellation."
+    }
+   },
+   "verify": null,
+   "pause": null,
+   "googlePlay": {
+    "steps": [
+     "On your Android device, go to subscriptions in Google Play.",
+     "Select 1Password.",
+     "Tap Cancel subscription.",
+     "Follow the instructions."
+    ],
+    "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+    "serviceSource": "https://support.1password.com/manage-subscription/",
+    "serviceQuote": "If you started your subscription using an in-app purchase on your Android device, you’ll manage your subscription with Google instead."
+   },
+   "faq": [
+    {
+     "q": "What happens to my passwords if I cancel 1Password?",
+     "a": "Nothing is deleted. The account freezes: you can view and copy items, but not add, edit or autofill.",
+     "source": "https://support.1password.com/frozen-account/",
+     "quote": "While your account is frozen, you can still view all your items, copy your passwords, and even copy items to vaults outside your account."
+    },
+    {
+     "q": "Why can't I see my subscription on 1Password.com?",
+     "a": "You probably started it in the iPhone, iPad or Mac app. Apple manages those.",
+     "source": "https://support.1password.com/apple-subscription/",
+     "quote": "When you start your subscription using an in-app purchase, you won’t be able to manage your subscription on 1Password.com."
+    },
+    {
+     "q": "I cancelled with Apple. How do I remove my data?",
+     "a": "Delete your account on 1Password.com.",
+     "source": "https://support.1password.com/apple-subscription/",
+     "quote": "If you canceled your 1Password subscription with Apple, and you want to remove your information from the 1Password service, you can delete your account on 1Password.com ."
+    },
+    {
+     "q": "Can I get a refund for 1Password?",
+     "a": "No refunds for past charges or time left. Cancel in the trial to avoid any charge.",
+     "source": "https://support.1password.com/refund-policy/",
+     "quote": "We’re unable to issue refunds for past charges or for any time remaining on your account at the time of cancellation."
+    }
+   ]
+  },
+  {
+   "id": "proton",
+   "checkedOn": "2026-11-15",
+   "after": {
+    "access": {
+     "text": "Your plan stays active until the billing period ends, then drops to Free.",
+     "source": "https://proton.me/support/manage-subscription",
+     "quote": "When you cancel a subscription, the downgrade to the free plan happens after the current billing period ends."
+    },
+    "data": {
+     "text": "Nothing is deleted. If you're over Free limits, like 1 GB of Mail, you can't send or receive new email until you free up space.",
+     "source": "https://proton.me/support/manage-subscription",
+     "quote": "For example, if you downgraded to the Proton Free plan, and your Mail storage is over the 1 GB limit, you won’t be able to send or receive new emails until you free up space or upgrade again."
+    },
+    "refunds": {
+     "text": "Cancel within 30 days of first buying and ask support for a full refund, once per user. Bought through someone else (like an app store)? Their refund rules apply.",
+     "source": "https://proton.me/legal/terms",
+     "quote": "You may cancel your subscription within 30 days of the initial purchase and receive a full refund for the Service. ... Refunds can only be requested once per user. ... If you have subscribed to Proton's Services through the intermediary of a third-party, please refer to their respective refund policy."
+    }
+   },
+   "verify": null,
+   "pause": null,
+   "googlePlay": {
+    "steps": [
+     "On your Android device, go to subscriptions in Google Play.",
+     "Select Proton.",
+     "Tap Cancel subscription.",
+     "Follow the instructions."
+    ],
+    "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+    "serviceSource": "https://proton.me/pricing",
+    "serviceQuote": "Your subscription’s terms and conditions may also differ when purchasing a plan through the App Store or Play Store.",
+    "serviceNote": "Proton confirms Play Store purchases exist but gives no Android cancel steps of its own."
+   },
+   "faq": [
+    {
+     "q": "Do I lose my emails if I cancel Proton Unlimited?",
+     "a": "No. Proton keeps your data, but you may need to clear space to get under Free limits.",
+     "source": "https://proton.me/pricing",
+     "quote": "When you downgrade your subscription, you won’t lose access to data stored in your Proton account."
+    },
+    {
+     "q": "Do I get credit for unused time if I cancel?",
+     "a": "No credit when you cancel to Free; the plan just runs to the end. Switching to a cheaper paid plan gives prorated credit.",
+     "source": "https://proton.me/support/manage-subscription",
+     "quote": "When you downgrade to another paid plan, any unused time is converted into prorated account credits that are applied automatically to future payments."
+    },
+    {
+     "q": "I can't get into my account. How do I cancel?",
+     "a": "Contact Proton Customer Support.",
+     "source": "https://proton.me/legal/terms",
+     "quote": "If you are unable to access your Account dashboard, you may cancel your subscription by contacting our Customer Support ."
+    }
+   ]
+  },
+  {
+   "id": "telegram-premium",
+   "checkedOn": "2026-11-15",
+   "after": {
+    "access": {
+     "text": "You keep Premium until the end of the period you paid for.",
+     "source": "https://telegram.org/faq_premium",
+     "quote": "When you cancel your subscription, all future payments for Telegram Premium are also canceled. You will still have access to all your Premium features until the end of the current billing period, after which they will expire."
+    },
+    "data": {
+     "text": "Nothing is deleted. Extras over the free limits get hidden or locked (folders past 10, pinned chats past 5, GIFs past 200), and the badge goes.",
+     "source": "https://telegram.org/faq_premium",
+     "quote": "Extra Folders - The first 10 folders will remain functional. Any additional folders will be locked. Extra GIFs - Any GIFs past 200 will be hidden. ... Extra Pinned Chats - Your first 5 pinned chats will remain, but any additional ones will be unpinned."
+    },
+    "refunds": {
+     "text": "Paid through @PremiumBot and deleted your account? No refund for the unused time.",
+     "source": "https://telegram.org/faq_premium",
+     "quote": "It will not be possible to refund any ‘unused’ portion of your billing period."
+    }
+   },
+   "verify": null,
+   "pause": null,
+   "googlePlay": {
+    "steps": [
+     "On your Android device, go to subscriptions in Google Play.",
+     "Select Telegram.",
+     "Tap Cancel subscription.",
+     "Follow the instructions."
+    ],
+    "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+    "serviceSource": "https://telegram.org/faq_premium",
+    "serviceQuote": "Google Play - You can manage your subscription by tapping on your avatar in the top right and navigating to Payments & subscription > Subscriptions ."
+   },
+   "faq": [
+    {
+     "q": "If I delete Telegram, does Premium stop?",
+     "a": "Not if you paid through Apple or Google. They can keep charging you. Cancel there first.",
+     "source": "https://telegram.org/faq_premium",
+     "quote": "If you subscribe to Premium via the App Store or Google Play, you will need to cancel your subscription through your Apple or Google account settings – as these platforms may continue to charge you, even if you deleted your Telegram account or application."
+    },
+    {
+     "q": "What happens to my folders and pinned chats?",
+     "a": "The first 10 folders and 5 pinned chats keep working. The rest get locked or unpinned.",
+     "source": "https://telegram.org/faq_premium",
+     "quote": "Extra Folders - The first 10 folders will remain functional. Any additional folders will be locked. ... Extra Pinned Chats - Your first 5 pinned chats will remain, but any additional ones will be unpinned."
+    },
+    {
+     "q": "Does uninstalling the app pause Premium?",
+     "a": "No. You're still billed on your renewal date.",
+     "source": "https://telegram.org/faq_premium",
+     "quote": "Note that uninstalling the app or not opening it for some time does not pause your subscription, and you will be billed on its original renewal date."
+    },
+    {
+     "q": "How do I cancel Premium I bought through @PremiumBot?",
+     "a": "Open the bot in Telegram and send /stop.",
+     "source": "https://telegram.org/faq_premium",
+     "quote": "@PremiumBot - Open the bot on Telegram and send the /stop command."
+    }
+   ]
+  },
+  {
+   "id": "roblox",
+   "checkedOn": "2026-11-15",
+   "sourceLabel": "Roblox's own about.roblox.com pages. The help center (en.help.roblox.com) blocks our tools, so access and refund rules from it are left out.",
+   "after": {
+    "access": null,
+    "data": {
+     "text": "Selling avatar items? They stay on sale for 5 days after you cancel.",
+     "source": "https://about.roblox.com/what-is-roblox-plus",
+     "quote": "After canceling a Premium or Plus subscription, your items will remain on sale for a five-day grace period."
+    },
+    "refunds": null
+   },
+   "verify": null,
+   "pause": null,
+   "googlePlay": null,
+   "faq": [
+    {
+     "q": "If I cancel Roblox Premium, can I get it back later?",
+     "a": "Roblox stopped selling Premium on Apr 30, 2026, so no. The new plan is Roblox Plus.",
+     "source": "https://about.roblox.com/what-is-roblox-plus",
+     "quote": "We no longer sell Roblox Premium subscriptions as of April 30, 2026. If you previously purchased a Premium subscription, it will remain active on your account."
+    },
+    {
+     "q": "Can I have Roblox Premium and Roblox Plus at the same time?",
+     "a": "Yes. Roblox lets you stack them, so check you're not paying for both by mistake.",
+     "source": "https://about.roblox.com/what-is-roblox-plus",
+     "quote": "You can choose to stack on Roblox Plus in addition to or replace your Premium subscription at any time."
+    },
+    {
+     "q": "What do I keep if I stay on Premium?",
+     "a": "The monthly Robux and trading and selling. The 10% Robux bonus and Premium logo ended May 30.",
+     "source": "https://about.roblox.com/newsroom/2026/04/introducing-roblox-plus-subscription",
+     "quote": "Members who remain on Roblox Premium will keep their monthly Robux stipend and access to avatar item trading, publishing, and selling . Starting May 30, we’ll discontinue the 10% bonus on additional Robux purchases for Roblox Premium subscribers, as well as the Roblox Premium logo."
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,210 @@
+{
+  "checkedOn": "2026-11-15",
+  "services": [
+    {
+      "id": "iphone-subscriptions",
+      "name": "subscriptions on iPhone",
+      "url": "https://account.apple.com/account/manage/section/subscriptions",
+      "helpUrl": "https://support.apple.com/en-us/118428",
+      "steps": [
+        "Open Settings and tap your name",
+        "Tap Subscriptions",
+        "Tap the subscription you want to stop",
+        "Tap Cancel Subscription (you might need to scroll down)"
+      ],
+      "appleNote": true,
+      "appleBilling": true,
+      "source": "https://support.apple.com/en-us/118428",
+      "checkedOn": "2026-11-15",
+      "confidence": "high",
+      "note": "Covers everything Apple bills: Apple's own services and subscriptions bought in App Store apps. Apple One shows Cancel All Services (support.apple.com/guide/iphone, iph4e3e7324f). No Cancel button, or an expiry message in red, means it's already cancelled. Mac: App Store → your name → your name again → Subscriptions → Cancel Subscription. Windows: Apple Music or Apple TV app → your name → View My Account → Subscriptions: Manage → Edit → Cancel Subscription. Android: account.apple.com. url is where the Cancel a subscription button on Apple's page goes. You can't cancel a family member's subscription. Germany, Israel, South Africa and Türkiye have extra rules (support.apple.com/en-us/108098, not read).",
+      "app": "Settings",
+      "company": "Apple",
+      "answer": "On your iPhone, open Settings, tap your name, then Subscriptions, pick the one you want to stop and tap Cancel Subscription. Apple says it stops at the end of the billing period you're in.",
+      "tips": [
+        "Not in the list? Search your email for “receipt from Apple”. No receipt means another company bills you, so check your bank statement.",
+        "Free trial? Cancel at least 24 hours before it ends.",
+        "Turn on Renewal Receipt Emails in the same Subscriptions screen to get an email every time something renews."
+      ],
+      "partner": "Got it through your phone carrier or another provider? Apple says to contact them.",
+      "related": [
+        "apple-one",
+        "icloud",
+        "google-play-subscriptions",
+        "paypal-subscriptions",
+        "amazon-subscriptions"
+      ],
+      "quotes": [
+        {
+          "source": "https://support.apple.com/en-us/118428",
+          "quote": "In Settings, tap your name. Tap Subscriptions. Tap the subscription. Tap Cancel Subscription. You might need to scroll down to find the Cancel Subscription button. If there is no Cancel button or you see an expiration message in red text, the subscription is already canceled."
+        },
+        {
+          "source": "https://support.apple.com/en-us/118428",
+          "quote": "If you signed up for a trial subscription and you don't want to renew it, cancel it at least 24 hours before the trial ends."
+        },
+        {
+          "source": "https://support.apple.com/guide/iphone/see-your-purchases-and-subscriptions-iph4e3e7324f/ios",
+          "quote": "Cancel a subscription: Tap an active subscription, then tap Cancel Subscription or Cancel All Services."
+        },
+        {
+          "source": "https://apps.apple.com/us/iphone/story/id1539139555",
+          "quote": "After you cancel, your subscription will stop at the end of the current billing cycle."
+        }
+      ]
+    },
+    {
+      "id": "google-play-subscriptions",
+      "name": "subscriptions on Android (Google Play)",
+      "url": "https://play.google.com/store/account/subscriptions",
+      "helpUrl": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+      "steps": [
+        "On your Android phone, open subscriptions in Google Play",
+        "Check you're signed in to the Google Account that has the subscription",
+        "Select the subscription you want to cancel",
+        "Tap Cancel subscription",
+        "Follow the instructions"
+      ],
+      "appleNote": false,
+      "appleBilling": false,
+      "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+      "checkedOn": "2026-11-15",
+      "confidence": "high",
+      "note": "url is where Google's “subscriptions in Google Play” link goes. On a computer: go to subscriptions in Google Play → Manage → Cancel subscription → pick a reason → Continue. Uninstalling the app doesn't cancel. Can't find it? It may be on another Google Account. Some apps offer Manage → Pause payments instead. Prepaid plans end on their own.",
+      "app": "Google Play Store",
+      "company": "Google",
+      "answer": "On your Android phone, open subscriptions in Google Play, select the subscription and tap Cancel subscription. You can still use it for the time you've already paid for.",
+      "tips": [
+        "Deleting the app doesn't cancel the subscription. Cancel it in Google Play.",
+        "Not in the list? Google says it may be on a different Google Account. Switch accounts and look again."
+      ],
+      "partner": "Not on any of your Google Accounts? Then Google Play probably isn't billing you. Check your bank statement for who is.",
+      "related": [
+        "iphone-subscriptions",
+        "paypal-subscriptions",
+        "amazon-subscriptions",
+        "google-one"
+      ],
+      "quotes": [
+        {
+          "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+          "quote": "On your Android device, go to subscriptions in Google Play. Select the subscription you want to cancel. Tap Cancel subscription. Follow the instructions."
+        },
+        {
+          "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+          "quote": "Important: When you uninstall the app, your subscription won't cancel."
+        },
+        {
+          "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DAndroid",
+          "quote": "When you cancel a subscription, you’ll still be able to use your subscription for the time you’ve already paid."
+        },
+        {
+          "source": "https://support.google.com/googleplay/answer/7018481?hl=en&co=GENIE.Platform%3DDesktop",
+          "quote": "For the subscription you want to cancel, click Manage. Click Cancel subscription. Within the confirmation pop-up, select a reason. Click Continue."
+        }
+      ]
+    },
+    {
+      "id": "paypal-subscriptions",
+      "name": "subscriptions on PayPal",
+      "url": null,
+      "helpUrl": "https://www.paypal.com/us/cshelp/article/what-is-an-automatic-payment-and-how-do-i-update-or-cancel-one-help240",
+      "steps": [
+        "In the PayPal app, tap Menu, then Subscriptions or Linked Businesses",
+        "Tap the company you want to stop paying",
+        "Tap Account, then Unlink",
+        "Tap Unlink again to confirm",
+        "Cancel with the company too, so the subscription itself ends"
+      ],
+      "appleNote": false,
+      "appleBilling": false,
+      "source": "https://www.paypal.com/us/money-hub/article/how-to-cancel-recurring-subscriptions",
+      "checkedOn": "2026-11-15",
+      "confidence": "medium",
+      "openIssues": [
+        "paypal.com returns a JS bot check (403) to curl, so both PayPal pages were read through WebFetch, which hands back extracted text. Button names were asked for word for word, but check them on a phone.",
+        "App steps (Menu → Subscriptions or Linked Businesses → merchant → Account → Unlink → Unlink) come from PayPal's Money Hub article dated Jan 8, 2026, not from the help center. The help article (help240) has no app cancel steps.",
+        "Website: the help article says Settings → Payments → Subscriptions and saved businesses or Automatic Payments → the merchant, and that you can cancel on that page, but it doesn't name the cancel button. The Money Hub article calls the section Automatic payments.",
+        "A search summary mentioned an older app flow (Account or Manage → Stop Paying with PayPal → Unlink). Neither page we read today says Stop Paying with PayPal.",
+        "url left null: no official page we read gives a direct link to the automatic payments page."
+      ],
+      "note": "On the website: Settings → Payments → Subscriptions and saved businesses (or Automatic Payments) → pick the merchant → cancel there. PayPal says unlinking stops future charges to your PayPal account but usually doesn't cancel the subscription with the company. The company's contact details are in the automatic payment.",
+      "app": "PayPal",
+      "company": "PayPal",
+      "answer": "In the PayPal app, tap Menu → Subscriptions or Linked Businesses, pick the company, then Account → Unlink. PayPal says this stops charges to your PayPal but usually doesn't cancel the subscription itself, so cancel with the company too.",
+      "tips": [
+        "Unlinking only stops PayPal paying. Cancel with the company as well, or you may still owe them or get billed another way.",
+        "Need the company's contact details? PayPal shows them in the automatic payment."
+      ],
+      "related": [
+        "iphone-subscriptions",
+        "google-play-subscriptions",
+        "amazon-subscriptions"
+      ],
+      "quotes": [
+        {
+          "source": "https://www.paypal.com/us/money-hub/article/how-to-cancel-recurring-subscriptions",
+          "quote": "Tap Menu. Tap Subscriptions or Linked Businesses. Tap the merchant to view or update. Tap Account. Tap Unlink to remove PayPal as your payment method. Tap Unlink to confirm the cancellation."
+        },
+        {
+          "source": "https://www.paypal.com/us/money-hub/article/how-to-cancel-recurring-subscriptions",
+          "quote": "Additionally, canceling a payment method through PayPal stops future charges to your PayPal account, but this action typically does not cancel the underlying subscription or contract with the service provider."
+        },
+        {
+          "source": "https://www.paypal.com/us/cshelp/article/what-is-an-automatic-payment-and-how-do-i-update-or-cancel-one-help240",
+          "quote": "Go to Settings. Click Payments. Select Subscriptions and saved businesses or Automatic Payments. Select the merchant."
+        },
+        {
+          "source": "https://www.paypal.com/us/cshelp/article/what-is-an-automatic-payment-and-how-do-i-update-or-cancel-one-help240",
+          "quote": "On this page, you can cancel the automatic payment and change the backup payment method."
+        }
+      ]
+    },
+    {
+      "id": "amazon-subscriptions",
+      "name": "subscriptions on Amazon",
+      "url": null,
+      "helpUrl": "https://www.amazon.com/gp/help/customer/display.html?nodeId=GU8AWX4GDKM7QGTE",
+      "steps": [
+        "Open amazon.com in Safari, sign in and go to Your Memberships and Subscriptions",
+        "Find the subscription you want to cancel",
+        "Tap Manage Subscription",
+        "Tap Cancel Subscription under Advanced Controls"
+      ],
+      "appleNote": false,
+      "appleBilling": false,
+      "source": "https://www.amazon.com/gp/help/customer/display.html?nodeId=GU8AWX4GDKM7QGTE",
+      "checkedOn": "2026-11-15",
+      "confidence": "medium",
+      "openIssues": [
+        "Amazon's help page (nodeId GU8AWX4GDKM7QGTE) returns 403 to curl and 503 to WebFetch on amazon.com, amazon.ca and amazon.co.uk. The steps come only from search snippets of that page: “Go to Your Memberships and Subscriptions. Locate the subscription that you want to cancel. Select Manage Subscription. Select Cancel Subscription under Advanced Controls.”",
+        "Also snippet-only: the list shows active, cancelled and expired subscriptions with renewal dates and prices, and some digital subscriptions have a Turn Auto-Renew On/Off switch.",
+        "Not confirmed: the web address of Your Memberships and Subscriptions, and whether the Amazon Shopping app shows the same screen. Check on a phone.",
+        "Prime has its own flow (see the amazon-prime guide, which also has open issues). Subscribe & Save is managed in Manage Your Subscriptions (aboutamazon.com, read today)."
+      ],
+      "note": "This is Amazon's list for digital subscriptions and memberships. Subscribe & Save deliveries are cancelled in Manage Your Subscriptions. Kindle+ (Kindle Unlimited) has its own Manage your Kindle+ Subscription page. Prime: see the Amazon Prime guide.",
+      "app": "Amazon Shopping",
+      "company": "Amazon",
+      "answer": "Sign in on amazon.com, open Your Memberships and Subscriptions, pick the subscription, tap Manage Subscription and then Cancel Subscription under Advanced Controls. Subscribe & Save and Prime have their own pages.",
+      "tips": [
+        "Subscribe & Save deliveries are cancelled in Manage Your Subscriptions. You can also just skip a delivery there."
+      ],
+      "related": [
+        "amazon-prime",
+        "kindle-unlimited",
+        "amazon-music",
+        "prime-video"
+      ],
+      "quotes": [
+        {
+          "source": "https://www.aboutamazon.com/news/retail/how-you-can-save-time-and-money-with-amazon-subscribe-save",
+          "quote": "Skip your deliveries or cancel your subscriptions at any time by visiting Manage Your Subscriptions."
+        },
+        {
+          "source": "https://www.aboutamazon.com/news/devices/what-is-kindle-unlimited",
+          "quote": "Just go to Manage your Kindle+ Subscription and select “Cancel Kindle+ Subscription.”"
+        }
+      ]
+    }
+  ]
+}

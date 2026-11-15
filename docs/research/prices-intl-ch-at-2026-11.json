@@ -1,0 +1,2356 @@
+{
+ "about": {
+  "what": "Per-country subscription prices for Switzerland and Austria, checked by hand-run scripts on official pricing pages and App Store In-App Purchase lists. Same format as docs/research/prices-mena-2026-11.json.",
+  "checked": "2026-11-15",
+  "amounts": "amountMinor is in the currency's minor unit (Rappen for CHF, cents for EUR). 1490 = 14.90. Prices are the regular price after any free trial or intro offer.",
+  "status": {
+   "verified": "Read today from the official page in 'source'. A plan we couldn't read clearly is left out of the row and the note says so."
+  },
+  "taxes": "Switzerland VAT 8.1%, Austria VAT 20%. Swiss and EU consumer prices are normally shown with VAT included. Apple's iCloud+ page says taxes are included for Switzerland and the Euro row; Oura's page says 'inkl. Steuern'. Netflix's help page says taxes may be charged on top. App Store prices include VAT.",
+  "serviceIds": "Match plan-ref ids (scratchpad plan-ref.json, same ids as prices-2026-11.json).",
+  "countries": {
+   "CH": "CHF",
+   "AT": "EUR"
+  },
+  "method": "Pages read with curl or Playwright (chromium) from a US cloud IP using the country URL (e.g. spotify.com/ch-de/premium, apple.com/chde/..., apple.com/at/...). JS-heavy pages (PlayStation, Xbox, Uber) were rendered. App Store lists read from apps.apple.com/{ch,at}/app/id{ID}?l=en-GB (Apple shows at most 10 items). Pages that pick the country from the visitor's IP (dazn.com, canva.com) couldn't be read for these countries."
+ },
+ "prices": [
+  {
+   "serviceId": "netflix",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic",
+     "name": "Basic",
+     "amountMinor": 1490,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 2290,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2990,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/ch",
+   "checked": "2026-11-15",
+   "note": "No ad tier in Switzerland. Extra member: CHF 6.90/month. The help page says taxes may be charged on top, depending on where you live."
+  },
+  {
+   "serviceId": "netflix",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic",
+     "name": "Basic",
+     "amountMinor": 1099,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2199,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/at",
+   "checked": "2026-11-15",
+   "note": "No ad tier listed for Austria. Extra member: €5.99/month. The help page says taxes may be charged on top, depending on where you live."
+  },
+  {
+   "serviceId": "spotify",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 1595,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 2195,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 2695,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/ch-de/premium/",
+   "checked": "2026-11-15",
+   "note": "Premium Student: CHF 8.95/month (not in plan-ref, so left out of plans). First month free for new Premium Individual users."
+  },
+  {
+   "serviceId": "spotify",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 1699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 2099,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/at/premium/",
+   "checked": "2026-11-15",
+   "note": "Premium Student: €6.99/month (not in plan-ref, so left out of plans). First month free for new Premium Individual users."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 100,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 300,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 1000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 3000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 6000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-15",
+   "note": "Switzerland row (CHF 1 / 3 / 10 / 30 / 60). Apple's footnote 3: taxes are included."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 99,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 2999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 5999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-15",
+   "note": "Austria uses Apple's single 'Euro' row. Apple's footnote 3: taxes are included."
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Einzelperson",
+     "amountMinor": 1490,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Familie",
+     "amountMinor": 2490,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Studierende",
+     "amountMinor": 890,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/chde/apple-music/",
+   "checked": "2026-11-15",
+   "note": "First month free for new subscribers."
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Einzelperson",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Familie",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Studierende",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/at/apple-music/",
+   "checked": "2026-11-15",
+   "note": "First month free for new subscribers."
+  },
+  {
+   "serviceId": "apple-tv",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple TV",
+     "amountMinor": 1090,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/chde/apple-tv/",
+   "checked": "2026-11-15",
+   "note": "After a 7-day free trial."
+  },
+  {
+   "serviceId": "apple-tv",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple TV",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/at/apple-tv/",
+   "checked": "2026-11-15",
+   "note": "After a 7-day free trial."
+  },
+  {
+   "serviceId": "apple-arcade",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 790,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 6000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/chde/apple-arcade/",
+   "checked": "2026-11-15",
+   "note": "Page FAQ: 'CHF 7.90 pro Monat oder CHF 60.00 pro Jahr'."
+  },
+  {
+   "serviceId": "apple-arcade",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 4999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/at/apple-arcade/",
+   "checked": "2026-11-15",
+   "note": "Page FAQ: '6,99 € pro Monat oder 49,99 € pro Jahr'."
+  },
+  {
+   "serviceId": "apple-one",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Einzelperson",
+     "amountMinor": 2390,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Familie",
+     "amountMinor": 3390,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premier",
+     "name": "Premium",
+     "amountMinor": 4290,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/chde/apple-one/",
+   "checked": "2026-11-15",
+   "note": "Apple calls the top tier 'Premium' here (Premier elsewhere)."
+  },
+  {
+   "serviceId": "apple-one",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Einzelperson",
+     "amountMinor": 1995,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Familie",
+     "amountMinor": 2595,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premier",
+     "name": "Premium",
+     "amountMinor": 3495,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/at/apple-one/",
+   "checked": "2026-11-15",
+   "note": "Apple calls the top tier 'Premium' here (Premier elsewhere)."
+  },
+  {
+   "serviceId": "apple-fitness",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 1290,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 9900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/chde/apple-fitness-plus/",
+   "checked": "2026-11-15",
+   "note": "Page: 'CHF 12.90 pro Monat oder CHF 99.– im Jahr' after a 1-month free trial."
+  },
+  {
+   "serviceId": "apple-fitness",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 7999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/at/apple-fitness-plus/",
+   "checked": "2026-11-15",
+   "note": "Page: '9,99 € pro Monat oder 79,99 € im Jahr' after a 1-month free trial."
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard mit Werbung",
+     "amountMinor": 990,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1690,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2340,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (Jahresabo)",
+     "amountMinor": 16900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (Jahresabo)",
+     "amountMinor": 23400,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/de-ch",
+   "checked": "2026-11-15",
+   "note": "Regular prices from the page's terms ('zurzeit: Standard mit Werbung CHF 9.90, Standard CHF 16.90, Premium CHF 23.40'). A 3-month intro offer runs until Nov 24, 2026 (CHF 6.90 / 11.90 / 15.90); ignored. Yearly: no yearly option for Standard mit Werbung."
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard mit Werbung",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1099,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (Jahresabo)",
+     "amountMinor": 10990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (Jahresabo)",
+     "amountMinor": 15990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/de-at",
+   "checked": "2026-11-15",
+   "note": "Regular prices from the page's terms ('zurzeit: Standard mit Werbung 6,99 €, Standard 10,99 €, Premium 15,99 €'). A 3-month intro offer runs until Nov 24, 2026 (€4.99 / 7.99 / 10.99); ignored. Yearly: no yearly option for Standard mit Werbung."
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Single (yearly)",
+     "amountMinor": 9995,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Single (monthly)",
+     "amountMinor": 995,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 13995,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 1395,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 19995,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 1995,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/de-ch/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-15",
+   "note": "Microsoft calls Personal 'Single' here."
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Single (yearly)",
+     "amountMinor": 9900,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Single (monthly)",
+     "amountMinor": 1000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 12900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 1300,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 21900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 2200,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/de-at/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-15",
+   "note": "Microsoft calls Personal 'Single' here."
+  },
+  {
+   "serviceId": "copilot-pro",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Microsoft 365 Premium",
+     "amountMinor": 1995,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Microsoft 365 Premium (yearly)",
+     "amountMinor": 19995,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.microsoft.com/de-ch/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-15",
+   "note": "Copilot Pro is now sold as Microsoft 365 Premium. Read from Microsoft's own page. The App Store lists Premium Annual at CHF 199.00 (web: CHF 199.95)."
+  },
+  {
+   "serviceId": "copilot-pro",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Microsoft 365 Premium",
+     "amountMinor": 2200,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Microsoft 365 Premium (yearly)",
+     "amountMinor": 21900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.microsoft.com/de-at/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-15",
+   "note": "Copilot Pro is now sold as Microsoft 365 Premium. Read from Microsoft's own page."
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-yearly",
+     "name": "Premium (12 Monate)",
+     "amountMinor": 16990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-quarterly",
+     "name": "Premium (3 Monate)",
+     "amountMinor": 6090,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium (1 Monat)",
+     "amountMinor": 2090,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 Monate)",
+     "amountMinor": 13990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 Monate)",
+     "amountMinor": 4990,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 Monat)",
+     "amountMinor": 1690,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 Monate)",
+     "amountMinor": 7890,
+     "cycle": "yearly"
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 Monate)",
+     "amountMinor": 3090,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 Monat)",
+     "amountMinor": 1090,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.playstation.com/de-ch/ps-plus/",
+   "checked": "2026-11-15",
+   "note": "Read from the rendered tier table. The page's embedded product data still says Essential renews at CHF 9.90 a month (older figure); the visible table was used."
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-yearly",
+     "name": "Premium (12 Monate)",
+     "amountMinor": 15199,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-quarterly",
+     "name": "Premium (3 Monate)",
+     "amountMinor": 5499,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium (1 Monat)",
+     "amountMinor": 1899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 Monate)",
+     "amountMinor": 12599,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 Monate)",
+     "amountMinor": 4399,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 Monat)",
+     "amountMinor": 1599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 Monate)",
+     "amountMinor": 7199,
+     "cycle": "yearly"
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 Monate)",
+     "amountMinor": 2799,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 Monat)",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.playstation.com/de-at/ps-plus/",
+   "checked": "2026-11-15",
+   "note": "Read from the rendered tier table. The page's embedded product data still says Essential renews at €8.99 a month (older figure); the visible table was used. Same amounts as Germany."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Essential",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Ultimate",
+     "amountMinor": 2299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pc",
+     "name": "PC Game Pass",
+     "amountMinor": 1399,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.xbox.com/de-CH/xbox-game-pass",
+   "checked": "2026-11-15",
+   "note": "Regular monthly price after the 14-day CHF 1 intro offer. Xbox shows CHF prices ending in .99 here."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Essential",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Ultimate",
+     "amountMinor": 2099,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pc",
+     "name": "PC Game Pass",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.xbox.com/de-AT/xbox-game-pass",
+   "checked": "2026-11-15",
+   "note": "Regular monthly price after the 14-day €1 intro offer."
+  },
+  {
+   "serviceId": "nintendo-online",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Einzelmitgliedschaft",
+     "amountMinor": 1990,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Familienmitgliedschaft",
+     "amountMinor": 3490,
+     "cycle": "yearly"
+    },
+    {
+     "id": "expansion-individual",
+     "name": "+ Erweiterungspaket, Einzel",
+     "amountMinor": 3990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "expansion-family",
+     "name": "+ Erweiterungspaket, Familie",
+     "amountMinor": 6990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.nintendo.com/de-ch/Nintendo-Switch-Online/Nintendo-Switch-Online-Ubersicht-1183143.html",
+   "checked": "2026-11-15",
+   "note": "12-month prices. Shorter memberships (1 and 3 months) exist but aren't on this page."
+  },
+  {
+   "serviceId": "nintendo-online",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Einzelmitgliedschaft",
+     "amountMinor": 1999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Familienmitgliedschaft",
+     "amountMinor": 3499,
+     "cycle": "yearly"
+    },
+    {
+     "id": "expansion-individual",
+     "name": "+ Erweiterungspaket, Einzel",
+     "amountMinor": 3999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "expansion-family",
+     "name": "+ Erweiterungspaket, Familie",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.nintendo.com/de-at/Nintendo-Switch-Online/Nintendo-Switch-Online-Ubersicht-1183143.html",
+   "checked": "2026-11-15",
+   "note": "12-month prices. Shorter memberships (1 and 3 months) exist but aren't on this page."
+  },
+  {
+   "serviceId": "uber-one",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 1490,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 14900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.uber.com/ch/de/uber-one/",
+   "checked": "2026-11-15",
+   "note": "Page: 'danach nur CHF 14.90/Monat oder CHF 149/Jahr' after a 1-month free trial."
+  },
+  {
+   "serviceId": "uber-one",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 6990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.uber.com/at/de/uber-one/",
+   "checked": "2026-11-15",
+   "note": "Page: '6,99 EUR/Monat oder 69,90 EUR/Jahr'."
+  },
+  {
+   "serviceId": "oura",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://ouraring.com/de/membership",
+   "checked": "2026-11-15",
+   "note": "Read from the price list on the membership page: '5,99 CHF/Monat oder 69,99 CHF/Jahr inkl. Steuern für Mitglieder in der Schweiz'."
+  },
+  {
+   "serviceId": "oura",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://ouraring.com/de/membership",
+   "checked": "2026-11-15",
+   "note": "Read from the price list on the membership page (EU row): '5,99 EUR/Monat oder 69,99 EUR/Jahr inkl. Steuern für Mitglieder in der EU'."
+  },
+  {
+   "serviceId": "max",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic-ads",
+     "name": "Basic with Ads",
+     "amountMinor": 990,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1690,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2390,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/ch/app/id1666653815",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Names that don't say the period are monthly. Also 'Premium & Sports' CHF 30.90."
+  },
+  {
+   "serviceId": "max",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic-ads",
+     "name": "Basic with Ads",
+     "amountMinor": 599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1699,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id1666653815",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Names that don't say the period are monthly. Also 'Premium & Sports' €19.99."
+  },
+  {
+   "serviceId": "claude-pro",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Claude Pro - Monthly",
+     "amountMinor": 1800,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Claude Pro - Annual",
+     "amountMinor": 20000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Claude Max - Monthly",
+     "amountMinor": 10000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/ch/app/id6473753684",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Also 'Claude Ultra - Monthly' CHF 200.00."
+  },
+  {
+   "serviceId": "claude-pro",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Claude Pro - Monthly",
+     "amountMinor": 2200,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Claude Pro - Annual",
+     "amountMinor": 24999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Claude Max - Monthly",
+     "amountMinor": 14999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id6473753684",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Also 'Claude Ultra - Monthly' €299.99."
+  },
+  {
+   "serviceId": "chatgpt-plus",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "go",
+     "name": "ChatGPT Go",
+     "amountMinor": 700,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus",
+     "name": "ChatGPT Plus",
+     "amountMinor": 2000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro",
+     "name": "ChatGPT Pro 200",
+     "amountMinor": 20000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/ch/app/id6448311069",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Names that don't say the period are monthly. The list also has 'ChatGPT Pro 100' CHF 83.00, 'ChatGPT Pro 500' CHF 415.00, and a second 'ChatGPT Plus' at CHF 200.00 (period not shown, probably yearly; left out)."
+  },
+  {
+   "serviceId": "chatgpt-plus",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "go",
+     "name": "ChatGPT Go",
+     "amountMinor": 799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus",
+     "name": "ChatGPT Plus",
+     "amountMinor": 2299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro",
+     "name": "ChatGPT Pro 200",
+     "amountMinor": 22900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id6448311069",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Names that don't say the period are monthly. The list also has 'ChatGPT Pro 100' €102.99, 'ChatGPT Pro 500' €509.99, and a second 'ChatGPT Plus' at €229.00 (period not shown, probably yearly; left out)."
+  },
+  {
+   "serviceId": "dropbox",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Dropbox Plus - Monthly",
+     "amountMinor": 1290,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Dropbox Plus - Annual",
+     "amountMinor": 12900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "simple",
+     "name": "Dropbox Simple – Monthly",
+     "amountMinor": 700,
+     "cycle": "monthly"
+    },
+    {
+     "id": "professional",
+     "name": "Dropbox Professional - Monthly",
+     "amountMinor": 2100,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/ch/app/id327630330",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Also 'Dropbox Family - Monthly' CHF 21.00."
+  },
+  {
+   "serviceId": "dropbox",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Dropbox Plus - Monthly",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Dropbox Plus - Annual",
+     "amountMinor": 11999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "simple",
+     "name": "Dropbox Simple – Monthly",
+     "amountMinor": 599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "professional",
+     "name": "Dropbox Professional - Monthly",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id327630330",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Also 'Dropbox Family - Monthly' €21.99."
+  },
+  {
+   "serviceId": "notion",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Notion – Plus Monthly",
+     "amountMinor": 1200,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Notion – Plus Yearly",
+     "amountMinor": 12000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "business",
+     "name": "Notion Business (monthly)",
+     "amountMinor": 2000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "business-yearly",
+     "name": "Notion Business (yearly)",
+     "amountMinor": 20000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/ch/app/id1232780281",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly."
+  },
+  {
+   "serviceId": "notion",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Notion – Plus Monthly",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Notion – Plus Yearly",
+     "amountMinor": 12999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "business",
+     "name": "Notion Business (monthly)",
+     "amountMinor": 2499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "business-yearly",
+     "name": "Notion Business (yearly)",
+     "amountMinor": 24999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id1232780281",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly."
+  },
+  {
+   "serviceId": "paramount-plus",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic-ads",
+     "name": "Basic (with ads) Monthly",
+     "amountMinor": 790,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard Monthly",
+     "amountMinor": 1200,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium Monthly",
+     "amountMinor": 1790,
+     "cycle": "monthly"
+    },
+    {
+     "id": "basic-ads-yearly",
+     "name": "Basic (with ads) Annual",
+     "amountMinor": 7100,
+     "cycle": "yearly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard Annual",
+     "amountMinor": 12000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium Annual",
+     "amountMinor": 16100,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/ch/app/id1340650234",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Also an older 'Paramount+ annual' CHF 120.00."
+  },
+  {
+   "serviceId": "paramount-plus",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic-ads",
+     "name": "Basic (with ads) Monthly",
+     "amountMinor": 599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium Monthly",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "basic-ads-yearly",
+     "name": "Basic (with ads) Annual",
+     "amountMinor": 5299,
+     "cycle": "yearly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard Annual",
+     "amountMinor": 8899,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium Annual",
+     "amountMinor": 11599,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id1340650234",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Also an older 'Paramount+ annual' €79.99."
+  },
+  {
+   "serviceId": "economist",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Premium Monthly",
+     "amountMinor": 4990,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "annual",
+     "name": "Premium Annual",
+     "amountMinor": 49900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/ch/app/id1239397626",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Also 'One year subscription' CHF 429.00 and 'Three month subscription' CHF 130.00 (other products)."
+  },
+  {
+   "serviceId": "economist",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Premium Monthly",
+     "amountMinor": 3890,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "annual",
+     "name": "Premium Annual",
+     "amountMinor": 38900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id1239397626",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Also 'One year subscription' €349.00 and 'Three month subscription' €107.99 (other products)."
+  },
+  {
+   "serviceId": "google-one",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "100gb",
+     "name": "100 GB Month",
+     "amountMinor": 200,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "100gb-yearly",
+     "name": "100 GB Annual",
+     "amountMinor": 2000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB Month",
+     "amountMinor": 300,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb-yearly",
+     "name": "200 GB Annual",
+     "amountMinor": 3000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "ai-plus",
+     "name": "Google AI Plus (2 TB)",
+     "amountMinor": 1000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/ch/app/id1451784328",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Names that don't say the period are monthly."
+  },
+  {
+   "serviceId": "google-one",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "100gb",
+     "name": "100 GB Month",
+     "amountMinor": 199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "100gb-yearly",
+     "name": "100 GB Annual",
+     "amountMinor": 1999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB Month",
+     "amountMinor": 299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ai-plus",
+     "name": "Google AI Plus (2 TB)",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id1451784328",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Names that don't say the period are monthly. 200 GB Annual isn't in the list Apple shows (Apple shows at most 10 items), so it's left out."
+  },
+  {
+   "serviceId": "google-ai-pro",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Google AI Pro (5 TB)",
+     "amountMinor": 1700,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus",
+     "name": "Google AI Plus (400 GB)",
+     "amountMinor": 500,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Google AI Plus (400 GB), yearly",
+     "amountMinor": 5000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/ch/app/id6477489729",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly. Names that don't say the period are monthly. Also 'Google AI Ultra (30 TB)' CHF 170.00."
+  },
+  {
+   "serviceId": "google-ai-pro",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Google AI Pro (5 TB)",
+     "amountMinor": 2199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus",
+     "name": "Google AI Plus (400 GB)",
+     "amountMinor": 499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Google AI Plus (400 GB), yearly",
+     "amountMinor": 4999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id6477489729",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly. Names that don't say the period are monthly. Also 'Google AI Ultra (30 TB)' €219.99."
+  },
+  {
+   "serviceId": "crunchyroll",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "fan",
+     "name": "Fan",
+     "amountMinor": 890,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/ch/app/id329913454",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Names that don't say the period are monthly."
+  },
+  {
+   "serviceId": "crunchyroll",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "fan",
+     "name": "Fan",
+     "amountMinor": 899,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id329913454",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Names that don't say the period are monthly."
+  },
+  {
+   "serviceId": "perplexity",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Perplexity Pro",
+     "amountMinor": 2200,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro-yearly",
+     "name": "Perplexity Pro (yearly)",
+     "amountMinor": 22900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Perplexity Max",
+     "amountMinor": 22900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id1668000334",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly. Names that don't say the period are monthly."
+  },
+  {
+   "serviceId": "grok",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "lite",
+     "name": "SuperGrok Lite",
+     "amountMinor": 900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "supergrok",
+     "name": "SuperGrok",
+     "amountMinor": 3000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "supergrok-yearly",
+     "name": "SuperGrok (yearly)",
+     "amountMinor": 30000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "heavy",
+     "name": "SuperGrok Heavy",
+     "amountMinor": 30000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/ch/app/id6670324846",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly. Names that don't say the period are monthly. Also a new 'SuperGrok Plus' CHF 90.00 (not in plan-ref)."
+  },
+  {
+   "serviceId": "grok",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "lite",
+     "name": "SuperGrok Lite",
+     "amountMinor": 1000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "supergrok",
+     "name": "SuperGrok",
+     "amountMinor": 3500,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "supergrok-yearly",
+     "name": "SuperGrok (yearly)",
+     "amountMinor": 34900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "heavy",
+     "name": "SuperGrok Heavy",
+     "amountMinor": 34900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id6670324846",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly. Names that don't say the period are monthly. Also a new 'SuperGrok Plus' €100.00 (not in plan-ref)."
+  },
+  {
+   "serviceId": "strava",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Subscription (monthly)",
+     "amountMinor": 1195,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Subscription (yearly)",
+     "amountMinor": 7995,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/ch/app/id426826309",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly. Also 'Strava Family Plan Subscription' and 'Strava + Runna Subscription' CHF 139.00, and older '1 Month' CHF 5.00 / '1 Year' CHF 50.00 items."
+  },
+  {
+   "serviceId": "strava",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Subscription (monthly)",
+     "amountMinor": 1099,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Subscription (yearly)",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id426826309",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly. Also 'Strava Family Plan Subscription' €119.99 and 'Strava + Runna Subscription' €149.99."
+  },
+  {
+   "serviceId": "headspace",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly Subscription",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id493145008",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Yearly left out: 'Annual Subscription' shows two prices (€57.99 and €69.99)."
+  },
+  {
+   "serviceId": "snapchat-plus",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Snapchat+ (Monthly Plan)",
+     "amountMinor": 400,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/ch/app/id447188370",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Also 'Snapchat+ Annual Plan' CHF 30.00 (no yearly plan in plan-ref)."
+  },
+  {
+   "serviceId": "discord-nitro",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "nitro",
+     "name": "Nitro Monthly",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "basic",
+     "name": "Nitro Basic Monthly",
+     "amountMinor": 299,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id985746746",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price."
+  },
+  {
+   "serviceId": "1password",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "1Password Individual Monthly",
+     "amountMinor": 500,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "individual-yearly",
+     "name": "1Password Individual Annual",
+     "amountMinor": 5000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family",
+     "name": "1Password Family Monthly",
+     "amountMinor": 800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "1Password Family Annual",
+     "amountMinor": 7000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/ch/app/id1511601750",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price."
+  },
+  {
+   "serviceId": "1password",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "1Password Individual Monthly",
+     "amountMinor": 439,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "individual-yearly",
+     "name": "1Password Individual Annual",
+     "amountMinor": 4390,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family",
+     "name": "1Password Family Monthly",
+     "amountMinor": 749,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "1Password Family Annual",
+     "amountMinor": 6900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id1511601750",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price."
+  },
+  {
+   "serviceId": "deezer",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Deezer Premium",
+     "amountMinor": 1895,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Deezer Family",
+     "amountMinor": 2995,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/ch/app/id292738169",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Names that don't say the period are monthly. Every 'Premium'/'Premium+' item is CHF 18.95."
+  },
+  {
+   "serviceId": "deezer",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Deezer Premium",
+     "amountMinor": 1499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Deezer Family",
+     "amountMinor": 2299,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id292738169",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Names that don't say the period are monthly. Every 'Premium'/'Premium+' item is €14.99."
+  },
+  {
+   "serviceId": "tidal",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "TIDAL Individual",
+     "amountMinor": 2000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "TIDAL Family",
+     "amountMinor": 3550,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/ch/app/id913943275",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Names that don't say the period are monthly."
+  },
+  {
+   "serviceId": "tidal",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "TIDAL Individual",
+     "amountMinor": 1699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "TIDAL Family",
+     "amountMinor": 2999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id913943275",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Names that don't say the period are monthly."
+  },
+  {
+   "serviceId": "nyt",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "all-access",
+     "name": "All Access - Monthly",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id284862083",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Yearly left out: 'All Access - Annual' shows two prices (€89.99 and €109.99)."
+  },
+  {
+   "serviceId": "roblox",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-450",
+     "name": "Roblox Premium 450",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-1000",
+     "name": "Roblox Premium 1000 One Month",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-2200",
+     "name": "Roblox Premium 2200 One Month",
+     "amountMinor": 2299,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id431946152",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Names that don't say the period are monthly."
+  },
+  {
+   "serviceId": "babbel",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "all-yearly",
+     "name": "All Languages – 12-month plan",
+     "amountMinor": 15600,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/ch/app/id829587759",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price."
+  },
+  {
+   "serviceId": "babbel",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "all-yearly",
+     "name": "All Languages – 12-month plan",
+     "amountMinor": 10799,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id829587759",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price."
+  },
+  {
+   "serviceId": "masterclass",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "MasterClass Individual",
+     "amountMinor": 12000,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "MasterClass Duo",
+     "amountMinor": 18000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family",
+     "name": "MasterClass Family",
+     "amountMinor": 25000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/ch/app/id1273867416",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Names don't say the period; MasterClass plans are yearly (same as plan-ref)."
+  },
+  {
+   "serviceId": "masterclass",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "MasterClass Individual",
+     "amountMinor": 12999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "MasterClass Duo",
+     "amountMinor": 19999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family",
+     "name": "MasterClass Family",
+     "amountMinor": 24999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id1273867416",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Names don't say the period; MasterClass plans are yearly (same as plan-ref)."
+  },
+  {
+   "serviceId": "peloton",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "app-plus",
+     "name": "Peloton App+ Monthly",
+     "amountMinor": 2899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "app-one-yearly",
+     "name": "Peloton App One Annual",
+     "amountMinor": 12900,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "app-plus-yearly",
+     "name": "Peloton App+ Annual",
+     "amountMinor": 28900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id792750948",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. App One monthly left out: 'Peloton App One Monthly' shows two prices (€12.99 and €13.99)."
+  },
+  {
+   "serviceId": "proton",
+   "country": "CH",
+   "currency": "CHF",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "unlimited",
+     "name": "Proton Unlimited 1 month",
+     "amountMinor": 1595,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "unlimited-yearly",
+     "name": "Proton Unlimited 1 year",
+     "amountMinor": 12700,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/ch/app/id1509667851",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price."
+  },
+  {
+   "serviceId": "proton",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "unlimited",
+     "name": "Proton Unlimited 1 month",
+     "amountMinor": 1499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "unlimited-yearly",
+     "name": "Proton Unlimited 1 year",
+     "amountMinor": 11900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id1509667851",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price."
+  },
+  {
+   "serviceId": "canva-pro",
+   "country": "AT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro-yearly",
+     "name": "Canva Pro - Yearly",
+     "amountMinor": 10999,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/at/app/id897446215",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Monthly left out: 'Canva Pro - Monthly' shows two prices (€12.00 and €11.99)."
+  }
+ ],
+ "notChecked": {
+  "apple-news": "Not sold in Switzerland or Austria: apple.com/chde/apple-news/ and apple.com/at/apple-news/ return 404.",
+  "amazon-prime": "CH: Amazon has no Swiss store with a local Prime membership; not checked further. AT: Austrians shop on amazon.de; amazon.de/amazonprime shows €8.99/month and €89.90/year but never says it applies to Austria, and the Prime fee help page returned 'page not found'. Left out rather than assume.",
+  "amazon-music": "CH: no Swiss Amazon store. AT: amazon.de/music/unlimited shows €12.99/month (€11.99 for Prime members) but doesn't say it applies to Austria. Left out.",
+  "audible": "audible.de shows €9.95/month (Standard €6.99 after an intro offer) but doesn't say it covers Austria or Switzerland. The App Store lists mix 'DE', 'FR', 'US' and 'UK' products at different prices (CH: CHF 10.00/11.00/11.50). No clear price.",
+  "dazn": "dazn.com sends our cloud browser to the US page (country by IP). App Store lists are messy: CH has 'DAZN' at CHF 34.90, 40.00 and 299.00 plus 'DAZN UNLIMITED' CHF 49.90 and 'DAZN SUPERSPORTS' CHF 34.90; AT has 'DAZN' at €29.99, €45.99 and €239.99 under one name. No clear price.",
+  "perplexity": "CH only: 'Perplexity Pro' shows two monthly-looking prices (CHF 18.00 and CHF 20.00), plus CHF 180.00 (yearly) and 'Perplexity Max' CHF 180.00. Monthly price unclear. AT row is above.",
+  "headspace": "CH only: 'Monthly Subscription' shows CHF 13.00 and CHF 12.90; 'Annual Subscription' CHF 95.00. Monthly unclear. AT row (monthly only) is above.",
+  "myfitnesspal": "Both countries: several yearly prices under one name (CH 'Yearly Premium' CHF 48.00 and 80.00, 'Annual Premium' CHF 86.00; AT 'Yearly Premium' €49.99 and €87.99). No clear price.",
+  "snapchat-plus": "AT only: 'Snapchat+ (Monthly Plan)' shows €3.99 and €4.49. CH row is above.",
+  "discord-nitro": "CH only: 'Nitro Monthly' CHF 9.50 and 'Nitro (1 Month)' CHF 9.00; can't tell which is the regular renewing plan. AT row is above.",
+  "nyt": "CH only: 'All Access - Monthly' shows CHF 12.00 and CHF 10.00. AT row (monthly only) is above.",
+  "roblox": "CH only: 'Roblox Premium 450' CHF 5.00 and 'Roblox Premium 450 One Month' CHF 4.00; can't tell which is the renewing plan. (1000: CHF 9.00, 2200: CHF 18.00.) AT row is above.",
+  "grammarly": "Both countries: several prices under one name (CH 'Monthly Plan' CHF 32.00 and 30.00, 'Annual Plan' CHF 150.00 and 140.00; AT 'Monthly Plan' €31.99 and €29.99, 'Annual Plan' €149.99 and €139.99). No clear price.",
+  "canva-pro": "CH only: 'Canva Pro - Monthly' CHF 16.00 and 13.00, 'Canva Pro - Yearly' CHF 128.00 and 120.00. No clear price. AT row (yearly only) is above. canva.com/pricing picks the country by IP.",
+  "peloton": "CH: the Peloton app isn't on the Swiss App Store (apps.apple.com/ch returns nothing). AT row is above.",
+  "midjourney": "Official plan page shows US dollar prices only ($10 / $30 / $60 / $120 a month). No CHF or EUR price.",
+  "github-copilot": "Official plan page shows US dollar prices only (Pro $10, Pro+ $39 a month). No CHF or EUR price.",
+  "youtube-premium": "Not in plan-ref, so not checked.",
+  "duolingo": "Not in plan-ref, so not checked."
+ }
+}

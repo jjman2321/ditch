@@ -1,0 +1,1938 @@
+{
+ "about": {
+  "what": "Per-country subscription prices for Singapore and Hong Kong, read on official pricing pages and App Store In-App Purchase lists. Same format as docs/research/prices-mena-2026-11.json.",
+  "checked": "2026-11-15",
+  "amounts": "amountMinor is in cents (SGD and HKD both have 2 decimals). 1998 = 19.98, HK$78 = 7800. Prices are the regular price after any free trial or intro offer. No row uses US dollars: every service checked bills both countries in local currency.",
+  "status": {
+   "verified": "Read today from the official page in 'source'."
+  },
+  "taxes": "Singapore GST is 9%. Hong Kong has no VAT or GST. Apple's prices include tax (its iCloud+ price list marks Singapore 'Taxes are included'). Most service pages don't say either way; each SG row's note says what the page says. Netflix's help page says taxes 'may be charged in addition'.",
+  "serviceIds": "serviceId and plan ids come from plan-ref (same plan = same id in every country). 'student' for Spotify is not in plan-ref; it matches the MENA file.",
+  "countries": {
+   "SG": "SGD",
+   "HK": "HKD"
+  },
+  "method": "Service pages read with curl from a US cloud IP using the country URL (e.g. spotify.com/sg-en/premium, help.netflix.com/en/node/24926/hk); Xbox pages rendered with Playwright (chromium). App Store lists read from apps.apple.com/{cc}/app/id{ID}?l=en-GB (Apple shows at most 10 items). Where one name has two different prices with no period and no 6x gap, the service is left in notChecked."
+ },
+ "prices": [
+  {
+   "serviceId": "netflix",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic",
+     "name": "Basic",
+     "amountMinor": 1598,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 2298,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2998,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/sg",
+   "checked": "2026-11-15",
+   "note": "No ad tier and no Mobile plan in this country. Extra member: 7.98 SGD/month. The help page says taxes may be charged on top of the price. The App Store lists the same three amounts."
+  },
+  {
+   "serviceId": "netflix",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic",
+     "name": "Basic",
+     "amountMinor": 7800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 9800,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 11800,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/hk",
+   "checked": "2026-11-15",
+   "note": "No ad tier and no Mobile plan in this country. Extra member: 31 HKD/month. The App Store lists the same three amounts."
+  },
+  {
+   "serviceId": "spotify",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 1198,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 1698,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 2098,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Premium Student",
+     "amountMinor": 648,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/sg-en/premium/",
+   "checked": "2026-11-15",
+   "note": "Regular price after the 1-month free trial. The Singapore page shows '$' with no currency code. 'student' isn't in plan-ref (same id as the MENA file). The page doesn't say whether GST is included."
+  },
+  {
+   "serviceId": "spotify",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 7800,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 9800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 12800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Premium Student",
+     "amountMinor": 4800,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/hk-en/premium/",
+   "checked": "2026-11-15",
+   "note": "Regular price after the 1-month free trial. 'student' isn't in plan-ref (same id as the MENA file)."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 148,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 398,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 1398,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 4298,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 8498,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-15",
+   "note": "Apple says taxes are included for Singapore. In Singapore every iCloud+ plan now includes Apple TV and Apple Arcade (apple.com/sg/icloud: 'Subscribers get Apple TV and Apple Arcade included')."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 2300,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 7800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 23800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 46800,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-15",
+   "note": "Same amounts on apple.com/hk/en/icloud/. In Hong Kong Apple TV is still sold separately (apple.com/hk/en/apple-tv)."
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1198,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 2098,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 648,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/sg/apple-music/",
+   "checked": "2026-11-15",
+   "note": "Regular price after the free month for new subscribers."
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 7800,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 12800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Student",
+     "amountMinor": 4800,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/hk/en/apple-music/",
+   "checked": "2026-11-15",
+   "note": "Regular price after the free month for new subscribers."
+  },
+  {
+   "serviceId": "apple-tv",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple TV",
+     "amountMinor": 6800,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/hk/en/apple-tv/",
+   "checked": "2026-11-15",
+   "note": "Regular price after the 7-day free trial. Unlike Singapore, Hong Kong still sells Apple TV on its own."
+  },
+  {
+   "serviceId": "apple-fitness",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 998,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 7900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/sg/apple-fitness-plus/",
+   "checked": "2026-11-15",
+   "note": "'then pay S$9.98 per month or S$79 annually' after the free month."
+  },
+  {
+   "serviceId": "apple-fitness",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 5800,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 46800,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/hk/en/apple-fitness-plus/",
+   "checked": "2026-11-15",
+   "note": "'then pay HK$58 per month or HK$468 annually' after the free month."
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1898,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2298,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 15998,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 18998,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/en-sg",
+   "checked": "2026-11-15",
+   "note": "FAQ on the page: 'In Singapore Disney+ Standard Plans are at S$18.98/month OR S$159.98/year. Disney+ Premium Plans are at S$22.98/month OR S$189.98/year.' No ad tier. The page doesn't say whether GST is included."
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 8800,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 10800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 88000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 108000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.disneyplus.com/en-hk",
+   "checked": "2026-11-15",
+   "note": "FAQ on the page: 'Disney+ Standard Plans are at HK$88/month or HK$880/year. Disney+ Premium Plans are at HK$108/month or HK$1,080/year.' No ad tier."
+  },
+  {
+   "serviceId": "max",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1448,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1898,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 12998,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 16998,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.hbomax.com/sg/en",
+   "checked": "2026-11-15",
+   "note": "Sold as HBO Max. No Basic with Ads tier. Monthly amounts read from the plan picker's Monthly tab (page data, currencyCode SGD). Also sells an HBO Max & Viu Bundle (S$19.98/month, S$189.98/year), not recorded. Same amounts on the App Store. The page doesn't say whether GST is included."
+  },
+  {
+   "serviceId": "max",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 7800,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 9800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 78000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 98000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.hbomax.com/hk/en",
+   "checked": "2026-11-15",
+   "note": "Sold as HBO Max. No Basic with Ads tier. Monthly amounts read from the plan picker's Monthly tab (page data, currencyCode HKD). Same amounts on the App Store."
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 15499,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 1549,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 18999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 1899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 28999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 2899,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/en-sg/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-15",
+   "note": "Microsoft shows 'SG$'. Regular price after the 1-month free trial. The page doesn't say whether GST is included. The App Store lists Personal at slightly different amounts (S$15.48 and S$154.98)."
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 78000,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 7800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 102000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 10200,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 158000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 15800,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/en-hk/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-15",
+   "note": "Regular price after the 1-month free trial. The App Store lists Family at HK$100 (no period shown) and 'Premium Annual' at HK$1,588."
+  },
+  {
+   "serviceId": "copilot-pro",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Microsoft 365 Premium",
+     "amountMinor": 2899,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Microsoft 365 Premium (yearly)",
+     "amountMinor": 28999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.microsoft.com/en-sg/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-15",
+   "note": "Copilot Pro is now part of Microsoft 365 Premium. Read from Microsoft's own page; the App Store sells it at S$28.98/month and S$289.98/year."
+  },
+  {
+   "serviceId": "copilot-pro",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Microsoft 365 Premium",
+     "amountMinor": 15800,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Microsoft 365 Premium (yearly)",
+     "amountMinor": 158000,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.microsoft.com/en-hk/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-15",
+   "note": "Copilot Pro is now part of Microsoft 365 Premium. Read from Microsoft's own page; the App Store sells it at HK$158/month and HK$1,588/year."
+  },
+  {
+   "serviceId": "amazon-prime",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "prime",
+     "name": "Prime Monthly",
+     "amountMinor": 499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "prime-yearly",
+     "name": "Prime Annual",
+     "amountMinor": 4990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.amazon.sg/prime",
+   "checked": "2026-11-15",
+   "note": "Regular price after the 30-day free trial. Includes Prime Video. The page doesn't say whether GST is included."
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "deluxe-yearly",
+     "name": "Deluxe (12 months)",
+     "amountMinor": 16990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "deluxe-quarterly",
+     "name": "Deluxe (3 months)",
+     "amountMinor": 5990,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "deluxe",
+     "name": "Deluxe (1 month)",
+     "amountMinor": 2090,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 14290,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 4990,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 1790,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 8890,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 3190,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 1190,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.playstation.com/en-sg/ps-plus/",
+   "checked": "2026-11-15",
+   "note": "Read from the page's product data (priceCurrency SGD). The top tier is called Deluxe here (Premium elsewhere). An old product description in the page code still says Essential is 'SGD 8.90' a month; the price on the product itself is SGD 11.90. The page doesn't mention GST."
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "deluxe-yearly",
+     "name": "Deluxe (12 months)",
+     "amountMinor": 100000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "deluxe-quarterly",
+     "name": "Deluxe (3 months)",
+     "amountMinor": 35000,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "deluxe",
+     "name": "Deluxe (1 month)",
+     "amountMinor": 12500,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 83500,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 30000,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 10500,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 50000,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 18000,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 7000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.playstation.com/en-hk/ps-plus/",
+   "checked": "2026-11-15",
+   "note": "Read from the page's product data (priceCurrency HKD). The top tier is called Deluxe here (Premium elsewhere). An old product description in the page code still says Essential is 'HK54' a month; the price on the product itself is HK$70."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Essential",
+     "amountMinor": 1099,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Ultimate",
+     "amountMinor": 2190,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pc",
+     "name": "PC only",
+     "amountMinor": 1390,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.xbox.com/en-SG/xbox-game-pass",
+   "checked": "2026-11-15",
+   "note": "Regular monthly price after the 14-day $1 intro offer. Read from the rendered page, which shows '$' with no currency code; the amounts don't match US dollar prices (US Ultimate is $29.99), so this is the Singapore-dollar price. The page doesn't mention GST."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Essential",
+     "amountMinor": 6000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 9000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Ultimate",
+     "amountMinor": 12000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pc",
+     "name": "PC only",
+     "amountMinor": 10000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.xbox.com/en-HK/xbox-game-pass",
+   "checked": "2026-11-15",
+   "note": "Read from the rendered page ('HK$60/month' etc.). No intro offer shown."
+  },
+  {
+   "serviceId": "chatgpt-plus",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "go",
+     "name": "Go",
+     "amountMinor": 1098,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus",
+     "name": "Plus",
+     "amountMinor": 2998,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro",
+     "name": "Pro",
+     "amountMinor": 29998,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/sg/app/id6448311069",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Apple's Singapore prices include GST (Apple's iCloud+ price list marks Singapore 'Taxes are included'). 'ChatGPT Plus' also appears at S$299.98 (the list doesn't say the period). 'Pro' is the 'ChatGPT Pro 200' product; the list also has Pro 100 (S$137.98) and Pro 500 (S$689.98)."
+  },
+  {
+   "serviceId": "claude-pro",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Pro (monthly)",
+     "amountMinor": 2998,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 29998,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Max",
+     "amountMinor": 17998,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/sg/app/id6473753684",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Apple's Singapore prices include GST (Apple's iCloud+ price list marks Singapore 'Taxes are included'). Names on the list: 'Claude Pro - Monthly', 'Claude Pro - Annual', 'Claude Max - Monthly'. The list also has 'Claude Ultra - Monthly' at S$349.98 (not in plan-ref)."
+  },
+  {
+   "serviceId": "google-one",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "100gb",
+     "name": "100 GB",
+     "amountMinor": 298,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "100gb-yearly",
+     "name": "100 GB (yearly)",
+     "amountMinor": 2798,
+     "cycle": "yearly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 398,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb-yearly",
+     "name": "200 GB (yearly)",
+     "amountMinor": 3998,
+     "cycle": "yearly"
+    },
+    {
+     "id": "ai-plus",
+     "name": "AI Plus (2 TB)",
+     "amountMinor": 1398,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/sg/app/id1451784328",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Apple's Singapore prices include GST (Apple's iCloud+ price list marks Singapore 'Taxes are included')."
+  },
+  {
+   "serviceId": "google-one",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "100gb",
+     "name": "100 GB",
+     "amountMinor": 1500,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "100gb-yearly",
+     "name": "100 GB (yearly)",
+     "amountMinor": 15800,
+     "cycle": "yearly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 2300,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb-yearly",
+     "name": "200 GB (yearly)",
+     "amountMinor": 22800,
+     "cycle": "yearly"
+    },
+    {
+     "id": "ai-plus",
+     "name": "AI Plus (2 TB)",
+     "amountMinor": 7800,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/hk/app/id1451784328",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Hong Kong has no VAT or GST."
+  },
+  {
+   "serviceId": "google-ai-pro",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Google AI Pro",
+     "amountMinor": 2890,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus",
+     "name": "Google AI Plus",
+     "amountMinor": 698,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Google AI Plus (yearly)",
+     "amountMinor": 6998,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/sg/app/id6477489729",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Apple's Singapore prices include GST (Apple's iCloud+ price list marks Singapore 'Taxes are included'). Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly. Listed as 'Google AI Pro (5 TB)' and 'Google AI Plus (400 GB)'. Google AI Ultra (30 TB) is S$289.98."
+  },
+  {
+   "serviceId": "google-ai-pro",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Google AI Pro",
+     "amountMinor": 15800,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus",
+     "name": "Google AI Plus",
+     "amountMinor": 3800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Google AI Plus (yearly)",
+     "amountMinor": 38800,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/hk/app/id6477489729",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Hong Kong has no VAT or GST. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly. Listed as 'Google AI Pro (5 TB)' and 'Google AI Plus (400 GB)'. The list also shows Google AI Pro at HK$1,588 (likely yearly) and Google AI Ultra (30 TB) at HK$1,588."
+  },
+  {
+   "serviceId": "perplexity",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Pro",
+     "amountMinor": 2998,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro-yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 29998,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Max",
+     "amountMinor": 29998,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/sg/app/id1668000334",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Apple's Singapore prices include GST (Apple's iCloud+ price list marks Singapore 'Taxes are included'). Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly. 'Perplexity Max' has one price and no period on the list; taken as monthly, as in the other countries."
+  },
+  {
+   "serviceId": "perplexity",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Pro",
+     "amountMinor": 14800,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro-yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 148800,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Max",
+     "amountMinor": 148800,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/hk/app/id1668000334",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Hong Kong has no VAT or GST. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly. 'Perplexity Max' has one price and no period on the list; taken as monthly, as in the other countries."
+  },
+  {
+   "serviceId": "grok",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "lite",
+     "name": "SuperGrok Lite",
+     "amountMinor": 1498,
+     "cycle": "monthly"
+    },
+    {
+     "id": "supergrok",
+     "name": "SuperGrok",
+     "amountMinor": 3998,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "supergrok-yearly",
+     "name": "SuperGrok (yearly)",
+     "amountMinor": 39998,
+     "cycle": "yearly"
+    },
+    {
+     "id": "heavy",
+     "name": "SuperGrok Heavy",
+     "amountMinor": 39998,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/sg/app/id6670324846",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Apple's Singapore prices include GST (Apple's iCloud+ price list marks Singapore 'Taxes are included'). Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly. The list also has 'SuperGrok Plus' at S$149.98 (not in plan-ref)."
+  },
+  {
+   "serviceId": "grok",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "lite",
+     "name": "SuperGrok Lite",
+     "amountMinor": 8800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "supergrok",
+     "name": "SuperGrok",
+     "amountMinor": 22800,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "supergrok-yearly",
+     "name": "SuperGrok (yearly)",
+     "amountMinor": 228800,
+     "cycle": "yearly"
+    },
+    {
+     "id": "heavy",
+     "name": "SuperGrok Heavy",
+     "amountMinor": 228800,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/hk/app/id6670324846",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Hong Kong has no VAT or GST. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly. The list also has 'SuperGrok Plus' at HK$788 (not in plan-ref)."
+  },
+  {
+   "serviceId": "dropbox",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Plus (monthly)",
+     "amountMinor": 1648,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Plus (yearly)",
+     "amountMinor": 16498,
+     "cycle": "yearly"
+    },
+    {
+     "id": "simple",
+     "name": "Simple (monthly)",
+     "amountMinor": 998,
+     "cycle": "monthly"
+    },
+    {
+     "id": "professional",
+     "name": "Professional (monthly)",
+     "amountMinor": 2698,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/sg/app/id327630330",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Apple's Singapore prices include GST (Apple's iCloud+ price list marks Singapore 'Taxes are included')."
+  },
+  {
+   "serviceId": "dropbox",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Plus (monthly)",
+     "amountMinor": 9300,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Plus (yearly)",
+     "amountMinor": 93800,
+     "cycle": "yearly"
+    },
+    {
+     "id": "simple",
+     "name": "Simple (monthly)",
+     "amountMinor": 5200,
+     "cycle": "monthly"
+    },
+    {
+     "id": "professional",
+     "name": "Professional (monthly)",
+     "amountMinor": 15800,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/hk/app/id327630330",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Hong Kong has no VAT or GST."
+  },
+  {
+   "serviceId": "notion",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Plus (monthly)",
+     "amountMinor": 1798,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Plus (yearly)",
+     "amountMinor": 17998,
+     "cycle": "yearly"
+    },
+    {
+     "id": "business",
+     "name": "Business (monthly)",
+     "amountMinor": 3498,
+     "cycle": "monthly"
+    },
+    {
+     "id": "business-yearly",
+     "name": "Business (yearly)",
+     "amountMinor": 34998,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/sg/app/id1232780281",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Apple's Singapore prices include GST (Apple's iCloud+ price list marks Singapore 'Taxes are included'). Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly. 'Notion Business' has two prices with no period; the rule below applies."
+  },
+  {
+   "serviceId": "notion",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Plus (monthly)",
+     "amountMinor": 8800,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Plus (yearly)",
+     "amountMinor": 88800,
+     "cycle": "yearly"
+    },
+    {
+     "id": "business",
+     "name": "Business (monthly)",
+     "amountMinor": 18800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "business-yearly",
+     "name": "Business (yearly)",
+     "amountMinor": 188800,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/hk/app/id1232780281",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Hong Kong has no VAT or GST. Where one name has two prices and the list doesn't say which is which, the lower one is taken as monthly and the one at least 6x higher as yearly. 'Notion Business' has two prices with no period; the rule below applies."
+  },
+  {
+   "serviceId": "1password",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual (monthly)",
+     "amountMinor": 698,
+     "cycle": "monthly"
+    },
+    {
+     "id": "individual-yearly",
+     "name": "Individual (yearly)",
+     "amountMinor": 6998,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Families (monthly)",
+     "amountMinor": 998,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Families (yearly)",
+     "amountMinor": 9998,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/sg/app/id1511601750",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Apple's Singapore prices include GST (Apple's iCloud+ price list marks Singapore 'Taxes are included')."
+  },
+  {
+   "serviceId": "1password",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual (monthly)",
+     "amountMinor": 3800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "individual-yearly",
+     "name": "Individual (yearly)",
+     "amountMinor": 38800,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Families (monthly)",
+     "amountMinor": 5800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Families (yearly)",
+     "amountMinor": 58800,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/hk/app/id1511601750",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Hong Kong has no VAT or GST."
+  },
+  {
+   "serviceId": "proton",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "unlimited",
+     "name": "Proton Unlimited (monthly)",
+     "amountMinor": 1448,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "unlimited-yearly",
+     "name": "Proton Unlimited (yearly)",
+     "amountMinor": 13298,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/sg/app/id1509667851",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Apple's Singapore prices include GST (Apple's iCloud+ price list marks Singapore 'Taxes are included')."
+  },
+  {
+   "serviceId": "proton",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "unlimited",
+     "name": "Proton Unlimited (monthly)",
+     "amountMinor": 9000,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "unlimited-yearly",
+     "name": "Proton Unlimited (yearly)",
+     "amountMinor": 82900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/hk/app/id1509667851",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Hong Kong has no VAT or GST."
+  },
+  {
+   "serviceId": "snapchat-plus",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Snapchat+ (monthly)",
+     "amountMinor": 598,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/sg/app/id447188370",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Apple's Singapore prices include GST (Apple's iCloud+ price list marks Singapore 'Taxes are included')."
+  },
+  {
+   "serviceId": "snapchat-plus",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Snapchat+ (monthly)",
+     "amountMinor": 3300,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/hk/app/id447188370",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Hong Kong has no VAT or GST."
+  },
+  {
+   "serviceId": "discord-nitro",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "nitro",
+     "name": "Nitro",
+     "amountMinor": 1448,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "basic",
+     "name": "Nitro Basic",
+     "amountMinor": 448,
+     "cycle": "monthly"
+    },
+    {
+     "id": "nitro-yearly",
+     "name": "Nitro (yearly)",
+     "amountMinor": 14498,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/sg/app/id985746746",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Apple's Singapore prices include GST (Apple's iCloud+ price list marks Singapore 'Taxes are included'). From 'Nitro Monthly', 'Nitro Basic Monthly' and 'Nitro Yearly'. The list also has one-off 'Nitro (1 Month)' passes at a different price, not recorded."
+  },
+  {
+   "serviceId": "discord-nitro",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "nitro",
+     "name": "Nitro",
+     "amountMinor": 7800,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "basic",
+     "name": "Nitro Basic",
+     "amountMinor": 2300,
+     "cycle": "monthly"
+    },
+    {
+     "id": "nitro-yearly",
+     "name": "Nitro (yearly)",
+     "amountMinor": 77800,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/hk/app/id985746746",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Hong Kong has no VAT or GST. From 'Nitro Monthly', 'Nitro Basic Monthly' and 'Nitro Yearly'. The list also has one-off 'Nitro (1 Month)' passes at a different price, not recorded."
+  },
+  {
+   "serviceId": "roblox",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-450",
+     "name": "Premium 450",
+     "amountMinor": 698,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-1000",
+     "name": "Premium 1000",
+     "amountMinor": 1498,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-2200",
+     "name": "Premium 2200",
+     "amountMinor": 2998,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/sg/app/id431946152",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Apple's Singapore prices include GST (Apple's iCloud+ price list marks Singapore 'Taxes are included')."
+  },
+  {
+   "serviceId": "roblox",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-450",
+     "name": "Premium 450",
+     "amountMinor": 3800,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-1000",
+     "name": "Premium 1000",
+     "amountMinor": 8800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-2200",
+     "name": "Premium 2200",
+     "amountMinor": 14800,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/hk/app/id431946152",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Hong Kong has no VAT or GST."
+  },
+  {
+   "serviceId": "crunchyroll",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "fan",
+     "name": "Fan",
+     "amountMinor": 548,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/sg/app/id329913454",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Apple's Singapore prices include GST (Apple's iCloud+ price list marks Singapore 'Taxes are included'). 'Fan' has no period on the list; monthly as in the other countries. Mega Fan is S$6.98/month or S$69.98/year (not in plan-ref)."
+  },
+  {
+   "serviceId": "crunchyroll",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "fan",
+     "name": "Fan",
+     "amountMinor": 3800,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/hk/app/id329913454",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Hong Kong has no VAT or GST. 'Fan' has no period on the list; monthly as in the other countries. Mega Fan is HK$48/month or HK$488/year (not in plan-ref)."
+  },
+  {
+   "serviceId": "tidal",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1600,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 2900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/sg/app/id913943275",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Apple's Singapore prices include GST (Apple's iCloud+ price list marks Singapore 'Taxes are included'). 'TIDAL HIFI' and 'TIDAL PREMIUM' are listed at the same price as Individual. Names don't say the period; monthly as in the other countries."
+  },
+  {
+   "serviceId": "tidal",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 9900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 17300,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/hk/app/id913943275",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Hong Kong has no VAT or GST. 'TIDAL HIFI' and 'TIDAL PREMIUM' are listed at the same price as Individual. Names don't say the period; monthly as in the other countries."
+  },
+  {
+   "serviceId": "nyt",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "all-access",
+     "name": "All Access (monthly)",
+     "amountMinor": 1798,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "all-access-yearly",
+     "name": "All Access (yearly)",
+     "amountMinor": 12998,
+     "cycle": "yearly"
+    },
+    {
+     "id": "games",
+     "name": "Games (monthly)",
+     "amountMinor": 298,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/sg/app/id284862083",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Apple's Singapore prices include GST (Apple's iCloud+ price list marks Singapore 'Taxes are included')."
+  },
+  {
+   "serviceId": "nyt",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "all-access",
+     "name": "All Access (monthly)",
+     "amountMinor": 8800,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "all-access-yearly",
+     "name": "All Access (yearly)",
+     "amountMinor": 68800,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/hk/app/id284862083",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Hong Kong has no VAT or GST. Games isn't among the 10 items Apple shows for Hong Kong."
+  },
+  {
+   "serviceId": "economist",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 7390,
+     "cycle": "monthly"
+    },
+    {
+     "id": "annual",
+     "name": "Premium (yearly)",
+     "amountMinor": 73900,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/sg/app/id1239397626",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Apple's Singapore prices include GST (Apple's iCloud+ price list marks Singapore 'Taxes are included'). From 'Premium Monthly' and 'Premium Annual'."
+  },
+  {
+   "serviceId": "economist",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 38800,
+     "cycle": "monthly"
+    },
+    {
+     "id": "annual",
+     "name": "Premium (yearly)",
+     "amountMinor": 384800,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/hk/app/id1239397626",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Hong Kong has no VAT or GST. From 'Premium Monthly' and 'Premium Annual'."
+  },
+  {
+   "serviceId": "babbel",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "all-yearly",
+     "name": "All Languages (12 months)",
+     "amountMinor": 13998,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/sg/app/id829587759",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Apple's Singapore prices include GST (Apple's iCloud+ price list marks Singapore 'Taxes are included'). From 'All Languages – 12-month plan'."
+  },
+  {
+   "serviceId": "babbel",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "all-yearly",
+     "name": "All Languages (12 months)",
+     "amountMinor": 82800,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/hk/app/id829587759",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Hong Kong has no VAT or GST. From 'All Languages – 12-month plan'."
+  },
+  {
+   "serviceId": "headspace",
+   "country": "SG",
+   "currency": "SGD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 1798,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 13898,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/sg/app/id493145008",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Apple's Singapore prices include GST (Apple's iCloud+ price list marks Singapore 'Taxes are included'). From 'Monthly Subscription' and 'Annual Subscription'."
+  },
+  {
+   "serviceId": "grammarly",
+   "country": "HK",
+   "currency": "HKD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Pro (monthly)",
+     "amountMinor": 23300,
+     "cycle": "monthly"
+    },
+    {
+     "id": "quarterly",
+     "name": "Pro (quarterly)",
+     "amountMinor": 47300,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 108800,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/hk/app/id1158877342",
+   "checked": "2026-11-15",
+   "note": "Apple billing: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). App Store price. Hong Kong has no VAT or GST. From 'Monthly Plan', 'Quarterly Plan' and 'Annual Plan'. An 'Annual Plan Mobile Only' (HK$650) is not recorded."
+  }
+ ],
+ "notChecked": {
+  "apple-tv": "SG: not sold on its own. apple.com/sg/apple-tv: 'Apple TV is included with an iCloud+ subscription.' HK row is above.",
+  "apple-arcade": "SG: only with iCloud+ (apple.com/sg/apple-arcade: 'Apple Arcade is only available with an iCloud+ subscription'). HK: apple.com/hk/en/apple-arcade/ and apple.com/hk/apple-arcade/ return 404, so no official price page.",
+  "apple-one": "SG: apple.com/sg/apple-one/ redirects to the iCloud+ page (not offered; TV and Arcade come with iCloud+). HK: apple.com/hk/en/apple-one/ and apple.com/hk/apple-one/ return 404.",
+  "apple-news": "Not sold in Singapore or Hong Kong (apple.com/sg/apple-news/ and apple.com/hk/en/apple-news/ return 404).",
+  "amazon-prime": "HK: no Amazon store with Prime for Hong Kong. Not checked further.",
+  "prime-video": "HK standalone Prime Video: primevideo.com picks the country from the visitor's IP and the App Store page shows no In-App Purchases list. In SG it comes with Amazon Prime (row above).",
+  "chatgpt-plus": "HK: not available. The ChatGPT app isn't on the Hong Kong App Store (404), and OpenAI doesn't support Hong Kong.",
+  "claude-pro": "HK: not available. The Claude app isn't on the Hong Kong App Store (404).",
+  "amazon-music": "Not sold in Singapore or Hong Kong: the Amazon Music app isn't on either App Store (404).",
+  "paramount-plus": "Not sold in Singapore or Hong Kong: the Paramount+ app isn't on either App Store (404).",
+  "peloton": "Not sold in Singapore or Hong Kong: the Peloton app isn't on either App Store (404).",
+  "deezer": "HK: the Deezer app isn't on the Hong Kong App Store (404). SG: the list mixes products at different prices (Deezer Premium S$19.98 and S$21.90; Family S$28.98 and S$32.90), so no clear price.",
+  "canva-pro": "App Store lists show several prices under one name (SG 'Canva Pro - Monthly' S$17.98/S$18.00; HK HK$88/90/120 monthly and HK$818/820/960 yearly). canva.com/pricing picks the country from the visitor's IP.",
+  "audible": "No local Audible store: the App Store lists only US/UK/AU products in both countries (e.g. SG 'US Premium Monthly' S$23.98, 'UK Premium Monthly' S$14.98 and S$16.48). No clear local price.",
+  "dazn": "App Store lists mix several 'Monthly Subscription' prices (SG S$14.98, S$34.98, S$39.98; HK HK$120, HK$228, HK$388), so no clear price.",
+  "strava": "App Store lists show two monthly and two yearly prices (SG 'Strava Subscription' S$9.98/S$69.98 plus '1 Month' S$8.98 and '1 Year' S$89.98; HK HK$53/369 plus HK$48/488). No clear price.",
+  "headspace": "HK: two prices per plan on the App Store list (Monthly Subscription HK$98 and HK$103; Annual Subscription HK$748 and HK$548). SG row is above.",
+  "myfitnesspal": "App Store lists show several yearly prices under one name (SG 'Yearly Premium' S$68.98 and S$118.98, 'Annual Premium' S$68.98 and S$14.98; HK similar). No clear price.",
+  "grammarly": "SG: two prices per plan on the App Store list (Monthly Plan S$40.98 and S$42.98; Annual Plan S$188.98 and S$198.98). HK row is above.",
+  "masterclass": "App Store lists don't say the period: SG Individual S$179.98, Duo S$249.98, Family S$349.98; HK Individual HK$888, Duo HK$1,488, Family HK$1,888. Very likely yearly, but not stated, so not shipped.",
+  "nintendo-online": "No official price page found: nintendo.com/hk switch online URLs return 404, and Nintendo has no Singapore eShop page.",
+  "uber-one": "SG: Uber doesn't run rides or food in Singapore. HK: the Uber App Store page shows no In-App Purchases list and uber.com picks the country from the visitor's IP.",
+  "oura": "The Oura App Store page shows no In-App Purchases list for SG or HK; membership is sold on ouraring.com, which picks the country from the visitor's IP.",
+  "midjourney": "One global US-dollar price, no country page (see the US row).",
+  "github-copilot": "One global US-dollar price, no country page (see the US row).",
+  "youtube-premium": "Not in plan-ref, so not checked.",
+  "duolingo": "Not in plan-ref, so not checked."
+ }
+}

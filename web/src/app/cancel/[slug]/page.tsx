@@ -36,7 +36,10 @@ const cap = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
  */
 function guideTitle(g: NonNullable<ReturnType<typeof guideById>>) {
   const year = g.checkedOn.slice(0, 4);
-  const name = g.name.replace(/^.+?\s*\((.+)\)$/, '$1');
+  // Platform guides ("subscriptions on Android (Google Play)") keep their words; brand guides use the name people search.
+  const platform = /^subscriptions on/i.test(g.name);
+  const name = platform ? g.name.replace(/\s*\(.*\)/, '') : g.name.replace(/^.+?\s*\((.+)\)$/, '$1');
+  if (platform) return pageTitle(`How to cancel ${name} (${year})`);
   const appleOnly = /^https:\/\/(apps|account)\.apple\.com/.test(g.url ?? '') || g.id === 'icloud' || g.id.startsWith('apple-');
   const webish = /safari|website|browser|\.(com|net|tv|co|org)\b|sign in at/i.test(g.steps[0] ?? '');
   const ways = [appleOnly ? 'iPhone' : webish ? 'web' : 'app', ...(!appleOnly && g.appleBilling !== false ? ['iPhone'] : []), ...(g.depth?.googlePlay ? ['Android'] : [])];
@@ -74,6 +77,9 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
   const partnerText = g.partner;
   const app = g.app ?? g.name;
   const company = g.company ?? g.name;
+  // Platform guides (iPhone, Google Play, PayPal, Amazon) cover every subscription billed there, not one brand.
+  const platform = /^subscriptions on/i.test(g.name);
+  const who = platform ? company : g.name;
   const fresh = freshness(g.checkedOn);
   const us = priceFor(g.id, 'US');
   const sameCat = publishedGuides().filter((x) => serviceById(x.id)?.category === s?.category);
@@ -133,7 +139,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
   // Is the main path a website or the service's own app?
   const webish = /safari|website|browser|\.(com|net|tv|co|org)\b|sign in at/i.test(g.steps[0] ?? '');
   const mainWhere = appleOnly ? 'phone' : webish ? 'web' : 'app';
-  const brand = { serviceId: g.id, name: g.name.replace(/\s*\(.*\)/, ''), color: s?.color };
+  const brand = { serviceId: g.id, name: platform ? company : g.name.replace(/\s*\(.*\)/, ''), color: s?.color };
   const finalLabel = [...g.steps].reverse().map(tapLabel).find(Boolean) ?? null;
 
   const stepCards = (steps: { text: React.ReactNode; art: React.ReactNode }[]) => (
@@ -155,7 +161,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
     {
       id: 'direct',
       label: mainWhere === 'phone' ? 'On your iPhone' : mainWhere === 'app' ? `In the ${app} app` : 'Website',
-      hint: appleOnly ? 'Apple bills it' : `You pay ${g.name}`,
+      hint: appleOnly ? 'Apple bills it' : `You pay ${who}`,
       icon: <Logo id={g.id} size={28} />,
       content: (
         <>
@@ -294,7 +300,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
       </nav>
 
       <section className="v4-sec" id="how" aria-labelledby="how-h">
-        <h2 id="how-h">How do you pay for {g.name}?</h2>
+        <h2 id="how-h">{platform ? 'The steps' : <>How do you pay for {g.name}?</>}</h2>
         <p className="g5-sub">Where you cancel depends on who bills you. Pick one.</p>
         <PayTabs tabs={tabs} />
       </section>
@@ -358,7 +364,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/duck.webp" alt="" width={96} height={56} className="duck" />
         <div>
-          <h2 id="remind-h">Keeping {g.name} for now?</h2>
+          <h2 id="remind-h">{platform ? 'Keeping some of them?' : <>Keeping {g.name} for now?</>}</h2>
           <p>Ditch reminds you 3 days and 1 day before it renews, so you decide before the charge.</p>
         </div>
         <EmailBox source={`cancel-${g.id}`} bare />
@@ -394,7 +400,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
           ))}
         </ul>
         <p className="disc">
-          Checked <time dateTime={g.checkedOn}>{formatDate(g.checkedOn)}</time> on {g.name}’s own pages. {g.name} is a trademark of its owner. Ditch isn’t affiliated with or endorsed by {g.name}. <Link href="/how-we-check">How we check guides</Link>. <span className="nw">© {year} {COMPANY}.</span>
+          Checked <time dateTime={g.checkedOn}>{formatDate(g.checkedOn)}</time> on {who}’s own pages. {who} is a trademark of its owner. Ditch isn’t affiliated with or endorsed by {who}. <Link href="/how-we-check">How we check guides</Link>. <span className="nw">© {year} {COMPANY}.</span>
         </p>
       </section>
     </div>

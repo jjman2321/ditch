@@ -1,0 +1,3056 @@
+{
+ "about": {
+  "what": "Per-country subscription prices for Brazil, Portugal and Türkiye, read on Nov 15, 2026 from official pricing pages and App Store In-App Purchase lists. Same format as docs/research/prices-mena-2026-11.json.",
+  "checked": "2026-11-15",
+  "amounts": "amountMinor is in the currency's minor unit (centavos for BRL, cents for EUR, kuruş for TRY, cents for USD). 1999 = 19.99. Pages use comma decimals (R$ 21,90 = 2190; ₺2.999,00 = 299900). Prices are the regular price after any free trial or intro offer.",
+  "status": {
+   "verified": "Read today from the official page in 'source'. Every row here is verified; anything we couldn't read cleanly is in notChecked with the reason."
+  },
+  "taxes": "Brazil: consumer prices include taxes. Portugal: 23% VAT included. Türkiye: 20% VAT included. Apple's iCloud+ page says taxes are included for the euro row and Türkiye (Brazil's row has no footnote). Most service pages don't say either way; each row's note says what the page says. Netflix's help page says taxes 'may be charged in addition'.",
+  "serviceIds": "serviceId and plan ids come from plan-ref (same plan = same id in every country). New ids, flagged in each note: spotify 'family-4' (PT), max 'premium-sports' (PT). 'student' (Spotify) and 'ultra' (Google AI) reuse the MENA file's ids. 'deluxe*' PS Plus ids follow the MENA file.",
+  "countries": {
+   "BR": "BRL",
+   "PT": "EUR",
+   "TR": "TRY"
+  },
+  "currencyExceptions": "Oura has no local price in Brazil or Türkiye; those rows are USD ('rest of world'). Every other row is in local currency: Spotify, Netflix, Xbox, PlayStation, Microsoft, Apple and Uber all bill Türkiye in lira.",
+  "method": "Service pages read with Playwright (chromium) or curl from a US cloud IP using the country URL (e.g. spotify.com/tr-en/premium, help.netflix.com/en/node/24926/tr). App Store lists read from apps.apple.com/{cc}/app/id{ID}?l=en-GB (Apple shows at most 10 items, so some plans are missing; notes say so). Pages that pick the country from the visitor's IP (disneyplus.com, deezer.com, canva.com, primevideo.com) or blocked us (hbomax.com, amazon.com.br, amazon.com.tr) couldn't be read for these countries; Disney+ and HBO Max use the App Store instead."
+ },
+ "prices": [
+  {
+   "serviceId": "netflix",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard with ads",
+     "amountMinor": 2590,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 5190,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 7190,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/br",
+   "checked": "2026-11-15",
+   "note": "Basic is discontinued here. Extra member: R$11.90/month with ads or R$14.90 without. The help page says taxes may be charged on top, depending on where you live. The App Store list still shows older, lower amounts (Standard R$44.90, Premium R$55.90); the help page is newer."
+  },
+  {
+   "serviceId": "netflix",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic",
+     "name": "Basic",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1799,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/pt",
+   "checked": "2026-11-15",
+   "note": "No ad tier in Portugal. Extra member: 4.99€/month. The help page says taxes may be charged on top, depending on where you live. Same amounts on the App Store."
+  },
+  {
+   "serviceId": "netflix",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic",
+     "name": "Basic",
+     "amountMinor": 25999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 38999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 49999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://help.netflix.com/en/node/24926/tr",
+   "checked": "2026-11-15",
+   "note": "No ad tier in Türkiye. Extra member: TRY 129.99/month. The help page says taxes may be charged on top, depending on where you live. The App Store list still shows older, lower amounts (Basic ₺189.99, Standard ₺289.99, Premium ₺379.99); the help page is newer."
+  },
+  {
+   "serviceId": "spotify",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 2390,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 3190,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 4090,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Premium Student",
+     "amountMinor": 1290,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/br-en/premium/",
+   "checked": "2026-11-15",
+   "note": "Regular price after the 1-month free trial. Student uses the same plan id as the MENA file (not in plan-ref). The page doesn't mention taxes."
+  },
+  {
+   "serviceId": "spotify",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 899,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 1199,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family 6",
+     "amountMinor": 1699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-4",
+     "name": "Premium Family 4",
+     "amountMinor": 1549,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Premium Student",
+     "amountMinor": 499,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/pt-en/premium/",
+   "checked": "2026-11-15",
+   "note": "Portugal sells two family plans: Family 4 (up to 4 accounts, 15.49€) and Family 6 (up to 6, 16.99€). Family 6 uses the usual 'family' id; 'family-4' is a new plan id (not in plan-ref). Student id as in the MENA file. The page doesn't mention VAT."
+  },
+  {
+   "serviceId": "spotify",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Premium Individual",
+     "amountMinor": 11500,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Premium Duo",
+     "amountMinor": 15900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family",
+     "name": "Premium Family",
+     "amountMinor": 19900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Premium Student",
+     "amountMinor": 6000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.spotify.com/tr-en/premium/",
+   "checked": "2026-11-15",
+   "note": "The page shows whole lira ('TRY 115'). Regular price after the 1-month free trial. Student id as in the MENA file. The page doesn't mention VAT."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 590,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 1990,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 6690,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 19990,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 39990,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-15",
+   "note": "Brazil's row has no tax footnote on Apple's page."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 99,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 2999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 5999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-15",
+   "note": "Apple lists one 'Euro' row for euro countries and says taxes are included."
+  },
+  {
+   "serviceId": "icloud",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "50gb",
+     "name": "50 GB",
+     "amountMinor": 4999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 16999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "2tb",
+     "name": "2 TB",
+     "amountMinor": 54999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "6tb",
+     "name": "6 TB",
+     "amountMinor": 169999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "12tb",
+     "name": "12 TB",
+     "amountMinor": 339999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://support.apple.com/en-us/108047",
+   "checked": "2026-11-15",
+   "note": "Apple says taxes are included. In Türkiye every iCloud+ plan includes Apple TV and Apple Arcade (apple.com/tr/apple-tv: 'Apple TV, iCloud+ aboneliği ile birlikte sunuluyor')."
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 2390,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Familiar",
+     "amountMinor": 4090,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Universitária",
+     "amountMinor": 1290,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/br/apple-music/",
+   "checked": "2026-11-15"
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 899,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Familiar",
+     "amountMinor": 1499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Estudante",
+     "amountMinor": 499,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/pt/apple-music/",
+   "checked": "2026-11-15"
+  },
+  {
+   "serviceId": "apple-music",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Bireysel",
+     "amountMinor": 8999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Aile",
+     "amountMinor": 14999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "student",
+     "name": "Öğrenci",
+     "amountMinor": 4999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/tr/apple-music/",
+   "checked": "2026-11-15",
+   "note": "iCloud+ subscribers get Apple Music cheaper: ₺79.99 Individual, ₺134.99 Family (page footnote)."
+  },
+  {
+   "serviceId": "apple-tv",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple TV",
+     "amountMinor": 3490,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/br/apple-tv/",
+   "checked": "2026-11-15",
+   "note": "After the 7-day free trial."
+  },
+  {
+   "serviceId": "apple-tv",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Apple TV",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/pt/apple-tv/",
+   "checked": "2026-11-15",
+   "note": "After the 7-day free trial."
+  },
+  {
+   "serviceId": "apple-arcade",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Mensal",
+     "amountMinor": 1490,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.apple.com/br/apple-arcade/",
+   "checked": "2026-11-15",
+   "note": "The Brazilian page only shows a monthly price (no yearly plan listed)."
+  },
+  {
+   "serviceId": "apple-arcade",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Mensal",
+     "amountMinor": 699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Anual",
+     "amountMinor": 4999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/pt/apple-arcade/",
+   "checked": "2026-11-15",
+   "note": "Yearly price from the page's FAQ ('6,99 € por mês ou 49,99 € por ano')."
+  },
+  {
+   "serviceId": "apple-one",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 4790,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Familiar",
+     "amountMinor": 6490,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premier",
+     "name": "Premium",
+     "amountMinor": 10490,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/br/apple-one/",
+   "checked": "2026-11-15",
+   "note": "The top plan is called 'Premium' in Brazil (Premier elsewhere)."
+  },
+  {
+   "serviceId": "apple-one",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1695,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Familiar",
+     "amountMinor": 2395,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premier",
+     "name": "Premium",
+     "amountMinor": 3295,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.apple.com/pt/apple-one/",
+   "checked": "2026-11-15",
+   "note": "The top plan is called 'Premium' in Portugal (Premier elsewhere)."
+  },
+  {
+   "serviceId": "apple-fitness",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Mensal",
+     "amountMinor": 2990,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Anual",
+     "amountMinor": 14990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/br/apple-fitness-plus/",
+   "checked": "2026-11-15"
+  },
+  {
+   "serviceId": "apple-fitness",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Mensal",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Anual",
+     "amountMinor": 5999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.apple.com/pt/apple-fitness-plus/",
+   "checked": "2026-11-15"
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 4990,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 6990,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 58900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id1446075923",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes. disneyplus.com picks the country from the visitor's IP and showed our cloud browser US prices, so the web price wasn't read. A Standard with Ads plan and a Standard yearly price aren't in the 10 items Apple shows. Names don't say the period; where one name has two prices, the lower is monthly and the one about 10x higher is yearly."
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard-ads",
+     "name": "Standard with Ads",
+     "amountMinor": 699,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 1099,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 15999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/pt/app/id1446075923",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Portuguese App Store prices include 23% VAT. disneyplus.com picks the country from the visitor's IP and showed our cloud browser US prices, so the web price wasn't read. The list also has a 'Monthly Basic - US Only' product, ignored. A Standard yearly price isn't in the 10 items shown. Names don't say the period; where one name has two prices, the lower is monthly and the one about 10x higher is yearly."
+  },
+  {
+   "serviceId": "disney-plus",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 44990,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 449900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/tr/app/id1446075923",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Turkish App Store prices include 20% VAT. disneyplus.com picks the country from the visitor's IP and showed our cloud browser US prices, so the web price wasn't read. Only Premium is sold in Türkiye on the App Store. The list also has a 'Monthly Basic - US Only' product, ignored. Names don't say the period; where one name has two prices, the lower is monthly and the one about 10x higher is yearly."
+  },
+  {
+   "serviceId": "max",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic-ads",
+     "name": "Basic with ads",
+     "amountMinor": 2990,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 4490,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Platinum",
+     "amountMinor": 5590,
+     "cycle": "monthly"
+    },
+    {
+     "id": "basic-ads-yearly",
+     "name": "Basic with ads (yearly)",
+     "amountMinor": 27490,
+     "cycle": "yearly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 41990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Platinum (yearly)",
+     "amountMinor": 53990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id1666653815",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes. hbomax.com returned 'Access Denied' to our cloud browser. The top tier is called Platinum in Brazil. 'Legacy Standard' products (same prices, plus a 3-month R$114.90) are for older subscribers, not recorded."
+  },
+  {
+   "serviceId": "max",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic-ads",
+     "name": "Basic with Ads",
+     "amountMinor": 599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 1399,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-sports",
+     "name": "Premium & Sports",
+     "amountMinor": 1899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "basic-ads-yearly",
+     "name": "Basic with Ads (yearly)",
+     "amountMinor": 5990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 9990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 13900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/pt/app/id1666653815",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Portuguese App Store prices include 23% VAT. hbomax.com returned 'Access Denied' to our cloud browser. 'premium-sports' (Premium & Sports) is a new plan id, not in plan-ref. 'Legacy Standard' (same prices) not recorded. Names don't say the period; where one name has two prices, the lower is monthly and the one about 10x higher is yearly."
+  },
+  {
+   "serviceId": "max",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 22990,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 29990,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 229900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 299900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/tr/app/id1666653815",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Turkish App Store prices include 20% VAT. hbomax.com returned 'Access Denied' to our cloud browser. No ad tier in the list. Names don't say the period; where one name has two prices, the lower is monthly and the one about 10x higher is yearly."
+  },
+  {
+   "serviceId": "paramount-plus",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "basic-ads",
+     "name": "Basic",
+     "amountMinor": 2790,
+     "cycle": "monthly"
+    },
+    {
+     "id": "standard",
+     "name": "Standard",
+     "amountMinor": 3490,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 4490,
+     "cycle": "monthly"
+    },
+    {
+     "id": "basic-ads-yearly",
+     "name": "Basic (yearly)",
+     "amountMinor": 24990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "standard-yearly",
+     "name": "Standard (yearly)",
+     "amountMinor": 30990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 39990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id1340650234",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes. The App Store calls the cheapest plan just 'Basic' and doesn't say if it has ads; it's mapped to the basic-ads id. Older 'Paramount+ por ano' products (R$89.00, R$178.90) are legacy, not recorded."
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Personal (yearly)",
+     "amountMinor": 50900,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Personal (monthly)",
+     "amountMinor": 5100,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Family (yearly)",
+     "amountMinor": 59900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Family (monthly)",
+     "amountMinor": 6000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 108900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 10900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/pt-br/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-15",
+   "note": "Regular prices; the page also shows a first-year/first-month promo for Personal and Premium (e.g. Personal R$349 first year), not recorded. The page doesn't mention taxes."
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Pessoal (yearly)",
+     "amountMinor": 9900,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Pessoal (monthly)",
+     "amountMinor": 1000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Familiar (yearly)",
+     "amountMinor": 12900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Familiar (monthly)",
+     "amountMinor": 1300,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 21900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 2200,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/pt-pt/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-15",
+   "note": "The page doesn't mention VAT."
+  },
+  {
+   "serviceId": "microsoft-365",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "personal-yearly",
+     "name": "Bireysel (yearly)",
+     "amountMinor": 329999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "personal-monthly",
+     "name": "Bireysel (monthly)",
+     "amountMinor": 32999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Aile (yearly)",
+     "amountMinor": 409999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family-monthly",
+     "name": "Aile (monthly)",
+     "amountMinor": 40999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-yearly",
+     "name": "Premium (yearly)",
+     "amountMinor": 719999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "premium-monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 71999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.microsoft.com/tr-tr/microsoft-365/buy/compare-all-microsoft-365-products",
+   "checked": "2026-11-15",
+   "note": "Same amounts as the App Store. The page doesn't mention VAT."
+  },
+  {
+   "serviceId": "copilot-pro",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Microsoft 365 Premium",
+     "amountMinor": 10990,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id541164041",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes. Only 'Microsoft 365 Premium Monthly' is in the 10 items Apple shows; no yearly product listed."
+  },
+  {
+   "serviceId": "copilot-pro",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Microsoft 365 Premium",
+     "amountMinor": 2200,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/pt/app/id541164041",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Portuguese App Store prices include 23% VAT. Only 'Microsoft 365 Premium Monthly' is in the 10 items Apple shows; no yearly product listed."
+  },
+  {
+   "serviceId": "copilot-pro",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Microsoft 365 Premium",
+     "amountMinor": 71999,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/tr/app/id541164041",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Turkish App Store prices include 20% VAT. Only 'Microsoft 365 Premium Monthly' is in the 10 items Apple shows; no yearly product listed."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Game Pass Essential",
+     "amountMinor": 4390,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Game Pass Premium",
+     "amountMinor": 5990,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Game Pass Ultimate",
+     "amountMinor": 7690,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pc",
+     "name": "PC Game Pass",
+     "amountMinor": 5999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.xbox.com/pt-BR/xbox-game-pass",
+   "checked": "2026-11-15",
+   "note": "PC Game Pass is R$59.99 (not .90) on the page. The page doesn't mention taxes."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Game Pass Essential",
+     "amountMinor": 899,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Game Pass Premium",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Game Pass Ultimate",
+     "amountMinor": 2099,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pc",
+     "name": "PC Game Pass",
+     "amountMinor": 1299,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.xbox.com/pt-PT/xbox-game-pass",
+   "checked": "2026-11-15",
+   "note": "Regular monthly price after the 14-day 1€ intro offer. The page doesn't mention VAT."
+  },
+  {
+   "serviceId": "xbox-game-pass",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "essential",
+     "name": "Game Pass Essential",
+     "amountMinor": 26900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium",
+     "name": "Game Pass Premium",
+     "amountMinor": 40900,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultimate",
+     "name": "Game Pass Ultimate",
+     "amountMinor": 52900,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pc",
+     "name": "PC Game Pass",
+     "amountMinor": 41900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.xbox.com/tr-TR/xbox-game-pass",
+   "checked": "2026-11-15",
+   "note": "Cards say '₺269 ödeyin' ('pay ₺269'); the page header says plans start at ₺269 a month. Xbox bills Türkiye in lira. The page doesn't mention VAT."
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "deluxe-yearly",
+     "name": "Deluxe (12 months)",
+     "amountMinor": 69190,
+     "cycle": "yearly"
+    },
+    {
+     "id": "deluxe-quarterly",
+     "name": "Deluxe (3 months)",
+     "amountMinor": 24990,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "deluxe",
+     "name": "Deluxe (1 month)",
+     "amountMinor": 8690,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 59290,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 20990,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 7490,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 35990,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 12990,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 4990,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.playstation.com/pt-br/ps-plus/",
+   "checked": "2026-11-15",
+   "note": "The top tier is called Deluxe here (Premium elsewhere); 'deluxe*' ids follow the MENA file. The page doesn't mention taxes."
+  },
+  {
+   "serviceId": "ps-plus",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "deluxe-yearly",
+     "name": "Deluxe (12 months)",
+     "amountMinor": 556000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "deluxe-quarterly",
+     "name": "Deluxe (3 months)",
+     "amountMinor": 196000,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "deluxe",
+     "name": "Deluxe (1 month)",
+     "amountMinor": 71000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "extra-yearly",
+     "name": "Extra (12 months)",
+     "amountMinor": 481000,
+     "cycle": "yearly"
+    },
+    {
+     "id": "extra-quarterly",
+     "name": "Extra (3 months)",
+     "amountMinor": 166000,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "extra",
+     "name": "Extra (1 month)",
+     "amountMinor": 60000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "essential-yearly",
+     "name": "Essential (12 months)",
+     "amountMinor": 289000,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "essential-quarterly",
+     "name": "Essential (3 months)",
+     "amountMinor": 102000,
+     "cycle": "quarterly"
+    },
+    {
+     "id": "essential",
+     "name": "Essential (1 month)",
+     "amountMinor": 40000,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://www.playstation.com/tr-tr/ps-plus/",
+   "checked": "2026-11-15",
+   "note": "The top tier is called Deluxe here (Premium elsewhere); 'deluxe*' ids follow the MENA file. PlayStation bills Türkiye in lira. The page doesn't mention taxes."
+  },
+  {
+   "serviceId": "nintendo-online",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual (12 months)",
+     "amountMinor": 10990,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Familiar (12 months)",
+     "amountMinor": 19490,
+     "cycle": "yearly"
+    },
+    {
+     "id": "expansion-individual",
+     "name": "Individual + Pacote adicional (12 months)",
+     "amountMinor": 27990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "expansion-family",
+     "name": "Familiar + Pacote adicional (12 months)",
+     "amountMinor": 43990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://ec.nintendo.com/BR/pt/membership",
+   "checked": "2026-11-15",
+   "note": "Nintendo's own membership page. Individual is also sold for R$21.90 per 30 days or R$44.90 per 90 days (not recorded). nintendo.com/pt-br/online/compare-memberships shows the same R$109.90 and R$279.90."
+  },
+  {
+   "serviceId": "nintendo-online",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual (12 meses)",
+     "amountMinor": 1999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Familiar (12 meses)",
+     "amountMinor": 3499,
+     "cycle": "yearly"
+    },
+    {
+     "id": "expansion-individual",
+     "name": "Individual + Pack de expansão (12 meses)",
+     "amountMinor": 3999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "expansion-family",
+     "name": "Familiar + Pack de expansão (12 meses)",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://ec.nintendo.com/PT/pt/membership",
+   "checked": "2026-11-15",
+   "note": "Nintendo's own membership page. Individual is also sold for 3.99€ per 30 days or 7.99€ per 90 days (not recorded)."
+  },
+  {
+   "serviceId": "audible",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Mensal",
+     "amountMinor": 1990,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.audible.com.br/ep/memberbenefits",
+   "checked": "2026-11-15",
+   "note": "Regular price after the intro offer (R$0.99/month for 3 months)."
+  },
+  {
+   "serviceId": "uber-one",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 1990,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 19800,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.uber.com/br/en/uber-one/",
+   "checked": "2026-11-15"
+  },
+  {
+   "serviceId": "uber-one",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 499,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://www.uber.com/pt/en/uber-one/",
+   "checked": "2026-11-15",
+   "note": "Only the monthly price is shown on this page."
+  },
+  {
+   "serviceId": "uber-one",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 24999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 249990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://www.uber.com/tr/en/uber-one/",
+   "checked": "2026-11-15",
+   "note": "Page: 'TRY 249.99/month or TRY 2499.9/year'."
+  },
+  {
+   "serviceId": "oura",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 6999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://ouraring.com/membership",
+   "checked": "2026-11-15",
+   "note": "Read from the price list on the membership page (EU row, 'after tax')."
+  },
+  {
+   "serviceId": "oura",
+   "country": "BR",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 7900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://ouraring.com/membership",
+   "checked": "2026-11-15",
+   "note": "Oura has no local price for this country: the membership page's 'rest of world' row is $6.99/month or $79.00/year in US dollars, 'after tax'."
+  },
+  {
+   "serviceId": "oura",
+   "country": "TR",
+   "currency": "USD",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 699,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 7900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://ouraring.com/membership",
+   "checked": "2026-11-15",
+   "note": "Oura has no local price for this country: the membership page's 'rest of world' row is $6.99/month or $79.00/year in US dollars, 'after tax'."
+  },
+  {
+   "serviceId": "chatgpt-plus",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "go",
+     "name": "Go",
+     "amountMinor": 3990,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus",
+     "name": "Plus",
+     "amountMinor": 9990,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro",
+     "name": "Pro",
+     "amountMinor": 99990,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id6448311069",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes. 'ChatGPT Plus' also appears at the Pro price, so Plus is the lower one. 'Pro' is the 'ChatGPT Pro 200' product; the list also has Pro 100 and Pro 500 tiers."
+  },
+  {
+   "serviceId": "chatgpt-plus",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "go",
+     "name": "Go",
+     "amountMinor": 799,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus",
+     "name": "Plus",
+     "amountMinor": 2299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro",
+     "name": "Pro",
+     "amountMinor": 22900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/pt/app/id6448311069",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Portuguese App Store prices include 23% VAT. 'ChatGPT Plus' also appears at the Pro price, so Plus is the lower one. 'Pro' is the 'ChatGPT Pro 200' product; the list also has Pro 100 and Pro 500 tiers."
+  },
+  {
+   "serviceId": "chatgpt-plus",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "go",
+     "name": "Go",
+     "amountMinor": 24999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "plus",
+     "name": "Plus",
+     "amountMinor": 99999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro",
+     "name": "Pro",
+     "amountMinor": 999999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/tr/app/id6448311069",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Turkish App Store prices include 20% VAT. 'ChatGPT Plus' also appears at the Pro price, so Plus is the lower one. 'Pro' is the 'ChatGPT Pro 200' product; the list also has Pro 100 and Pro 500 tiers."
+  },
+  {
+   "serviceId": "claude-pro",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Pro (monthly)",
+     "amountMinor": 12990,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 129990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Max",
+     "amountMinor": 79990,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id6473753684",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes. The list also has a 'Claude Ultra - Monthly' product and usage-credit packs, not recorded."
+  },
+  {
+   "serviceId": "claude-pro",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Pro (monthly)",
+     "amountMinor": 2200,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 24999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Max",
+     "amountMinor": 14999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/pt/app/id6473753684",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Portuguese App Store prices include 23% VAT. The list also has a 'Claude Ultra - Monthly' product and usage-credit packs, not recorded."
+  },
+  {
+   "serviceId": "claude-pro",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Pro (monthly)",
+     "amountMinor": 99999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 1199999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Max",
+     "amountMinor": 699999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/tr/app/id6473753684",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Turkish App Store prices include 20% VAT. The list also has a 'Claude Ultra - Monthly' product and usage-credit packs, not recorded."
+  },
+  {
+   "serviceId": "google-one",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "100gb",
+     "name": "100 GB",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "100gb-yearly",
+     "name": "100 GB (yearly)",
+     "amountMinor": 9999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 1499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb-yearly",
+     "name": "200 GB (yearly)",
+     "amountMinor": 14990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "ai-plus",
+     "name": "AI Plus (2 TB)",
+     "amountMinor": 4999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id1451784328",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes."
+  },
+  {
+   "serviceId": "google-one",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "100gb",
+     "name": "100 GB",
+     "amountMinor": 199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "100gb-yearly",
+     "name": "100 GB (yearly)",
+     "amountMinor": 1999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "200gb-yearly",
+     "name": "200 GB (yearly)",
+     "amountMinor": 2999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "ai-plus",
+     "name": "AI Plus (2 TB)",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/pt/app/id1451784328",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Portuguese App Store prices include 23% VAT."
+  },
+  {
+   "serviceId": "google-one",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "100gb",
+     "name": "100 GB",
+     "amountMinor": 8499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "100gb-yearly",
+     "name": "100 GB (yearly)",
+     "amountMinor": 83999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "200gb",
+     "name": "200 GB",
+     "amountMinor": 12999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ai-plus",
+     "name": "AI Plus (2 TB)",
+     "amountMinor": 35999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/tr/app/id1451784328",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Turkish App Store prices include 20% VAT. 'Google AI Plus (2 TB)' also shows at ₺3,649.99, most likely the yearly price (not recorded). No 200 GB yearly product in the 10 items shown."
+  },
+  {
+   "serviceId": "google-ai-pro",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Google AI Pro (5 TB)",
+     "amountMinor": 9690,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus",
+     "name": "Google AI Plus (400 GB)",
+     "amountMinor": 2499,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id6477489729",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes. Names don't say the period; these plans are monthly."
+  },
+  {
+   "serviceId": "google-ai-pro",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Google AI Pro (5 TB)",
+     "amountMinor": 2199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus",
+     "name": "Google AI Plus (400 GB)",
+     "amountMinor": 499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "ultra",
+     "name": "Google AI Ultra (30 TB)",
+     "amountMinor": 21999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/pt/app/id6477489729",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Portuguese App Store prices include 23% VAT. Names don't say the period; these plans are monthly. 'ultra' id as in the MENA file (not in plan-ref)."
+  },
+  {
+   "serviceId": "perplexity",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Pro",
+     "amountMinor": 2200,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro-yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 22900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Max",
+     "amountMinor": 22900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/pt/app/id1668000334",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Portuguese App Store prices include 23% VAT. Names don't say the period; where one name has two prices, the lower is monthly and the one about 10x higher is yearly."
+  },
+  {
+   "serviceId": "perplexity",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "pro",
+     "name": "Pro",
+     "amountMinor": 99999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "pro-yearly",
+     "name": "Pro (yearly)",
+     "amountMinor": 999999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "max",
+     "name": "Max",
+     "amountMinor": 999999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/tr/app/id1668000334",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Turkish App Store prices include 20% VAT. Names don't say the period; where one name has two prices, the lower is monthly and the one about 10x higher is yearly."
+  },
+  {
+   "serviceId": "grok",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "lite",
+     "name": "SuperGrok Lite",
+     "amountMinor": 5990,
+     "cycle": "monthly"
+    },
+    {
+     "id": "supergrok",
+     "name": "SuperGrok",
+     "amountMinor": 14990,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "supergrok-yearly",
+     "name": "SuperGrok (yearly)",
+     "amountMinor": 149990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "heavy",
+     "name": "SuperGrok Heavy",
+     "amountMinor": 199990,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id6670324846",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes. The list also has 'SuperGrok Plus' (period not stated) and usage-credit packs, not recorded. Names don't say the period; where one name has two prices, the lower is monthly and the one about 10x higher is yearly."
+  },
+  {
+   "serviceId": "grok",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "lite",
+     "name": "SuperGrok Lite",
+     "amountMinor": 1000,
+     "cycle": "monthly"
+    },
+    {
+     "id": "supergrok",
+     "name": "SuperGrok",
+     "amountMinor": 3500,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "supergrok-yearly",
+     "name": "SuperGrok (yearly)",
+     "amountMinor": 34900,
+     "cycle": "yearly"
+    },
+    {
+     "id": "heavy",
+     "name": "SuperGrok Heavy",
+     "amountMinor": 34900,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/pt/app/id6670324846",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Portuguese App Store prices include 23% VAT. The list also has 'SuperGrok Plus' (period not stated) and usage-credit packs, not recorded. Names don't say the period; where one name has two prices, the lower is monthly and the one about 10x higher is yearly."
+  },
+  {
+   "serviceId": "grok",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "lite",
+     "name": "SuperGrok Lite",
+     "amountMinor": 49999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "supergrok",
+     "name": "SuperGrok",
+     "amountMinor": 129999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "supergrok-yearly",
+     "name": "SuperGrok (yearly)",
+     "amountMinor": 1299999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "heavy",
+     "name": "SuperGrok Heavy",
+     "amountMinor": 1299999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/tr/app/id6670324846",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Turkish App Store prices include 20% VAT. The list also has 'SuperGrok Plus' (period not stated) and usage-credit packs, not recorded. Names don't say the period; where one name has two prices, the lower is monthly and the one about 10x higher is yearly."
+  },
+  {
+   "serviceId": "dropbox",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Plus (billed monthly)",
+     "amountMinor": 4590,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Plus (billed yearly)",
+     "amountMinor": 45990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "simple",
+     "name": "Simple (monthly)",
+     "amountMinor": 3990,
+     "cycle": "monthly"
+    },
+    {
+     "id": "professional",
+     "name": "Professional (monthly)",
+     "amountMinor": 6490,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id327630330",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes."
+  },
+  {
+   "serviceId": "dropbox",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Plus (billed monthly)",
+     "amountMinor": 1199,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Plus (billed yearly)",
+     "amountMinor": 11999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "simple",
+     "name": "Simple (monthly)",
+     "amountMinor": 599,
+     "cycle": "monthly"
+    },
+    {
+     "id": "professional",
+     "name": "Professional (monthly)",
+     "amountMinor": 1999,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/pt/app/id327630330",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Portuguese App Store prices include 23% VAT. The list also has 'Dropbox Family - Monthly' at 21.99€ (no family id in plan-ref)."
+  },
+  {
+   "serviceId": "notion",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Plus (billed monthly)",
+     "amountMinor": 5990,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Plus (billed yearly)",
+     "amountMinor": 59990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "business",
+     "name": "Business (monthly)",
+     "amountMinor": 14990,
+     "cycle": "monthly"
+    },
+    {
+     "id": "business-yearly",
+     "name": "Business (yearly)",
+     "amountMinor": 149990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id1232780281",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes. 'Notion Business' has two prices; the one 10x higher is yearly."
+  },
+  {
+   "serviceId": "notion",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Plus (billed monthly)",
+     "amountMinor": 1299,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Plus (billed yearly)",
+     "amountMinor": 12999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "business",
+     "name": "Business (monthly)",
+     "amountMinor": 2499,
+     "cycle": "monthly"
+    },
+    {
+     "id": "business-yearly",
+     "name": "Business (yearly)",
+     "amountMinor": 24999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/pt/app/id1232780281",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Portuguese App Store prices include 23% VAT. 'Notion Business' has two prices; the one 10x higher is yearly."
+  },
+  {
+   "serviceId": "notion",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "plus",
+     "name": "Plus (billed monthly)",
+     "amountMinor": 49999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "plus-yearly",
+     "name": "Plus (billed yearly)",
+     "amountMinor": 499999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "business",
+     "name": "Business (monthly)",
+     "amountMinor": 129999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "business-yearly",
+     "name": "Business (yearly)",
+     "amountMinor": 1299999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/tr/app/id1232780281",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Turkish App Store prices include 20% VAT. 'Notion Business' has two prices; the one 10x higher is yearly."
+  },
+  {
+   "serviceId": "1password",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual (monthly)",
+     "amountMinor": 2990,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "individual-yearly",
+     "name": "Individual (yearly)",
+     "amountMinor": 29990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family",
+     "name": "Families (monthly)",
+     "amountMinor": 4990,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Families (yearly)",
+     "amountMinor": 49990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id1511601750",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes."
+  },
+  {
+   "serviceId": "1password",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual (monthly)",
+     "amountMinor": 439,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "individual-yearly",
+     "name": "Individual (yearly)",
+     "amountMinor": 4390,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family",
+     "name": "Families (monthly)",
+     "amountMinor": 749,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Families (yearly)",
+     "amountMinor": 6900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/pt/app/id1511601750",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Portuguese App Store prices include 23% VAT."
+  },
+  {
+   "serviceId": "1password",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual (monthly)",
+     "amountMinor": 22999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "individual-yearly",
+     "name": "Individual (yearly)",
+     "amountMinor": 199999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family",
+     "name": "Families (monthly)",
+     "amountMinor": 34999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "family-yearly",
+     "name": "Families (yearly)",
+     "amountMinor": 299999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/tr/app/id1511601750",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Turkish App Store prices include 20% VAT."
+  },
+  {
+   "serviceId": "proton",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "unlimited",
+     "name": "Proton Unlimited (monthly)",
+     "amountMinor": 4590,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "unlimited-yearly",
+     "name": "Proton Unlimited (yearly)",
+     "amountMinor": 42490,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id1509667851",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes."
+  },
+  {
+   "serviceId": "proton",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "unlimited",
+     "name": "Proton Unlimited (monthly)",
+     "amountMinor": 1499,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "unlimited-yearly",
+     "name": "Proton Unlimited (yearly)",
+     "amountMinor": 11900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/pt/app/id1509667851",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Portuguese App Store prices include 23% VAT."
+  },
+  {
+   "serviceId": "proton",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "unlimited",
+     "name": "Proton Unlimited (monthly)",
+     "amountMinor": 38999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "unlimited-yearly",
+     "name": "Proton Unlimited (yearly)",
+     "amountMinor": 359900,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/tr/app/id1509667851",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Turkish App Store prices include 20% VAT."
+  },
+  {
+   "serviceId": "amazon-music",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Unlimited Individual",
+     "amountMinor": 2790,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Unlimited Family",
+     "amountMinor": 4890,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id510855668",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes. The App Store doesn't show the cheaper Prime-member price."
+  },
+  {
+   "serviceId": "deezer",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium",
+     "name": "Premium",
+     "amountMinor": 2990,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id292738169",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes. Every Premium product in the list is R$29.90. Family isn't in the 10 items Apple shows. deezer.com/br/offers showed our cloud browser US-dollar prices, so it wasn't used."
+  },
+  {
+   "serviceId": "tidal",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 3090,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 5890,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id913943275",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes."
+  },
+  {
+   "serviceId": "tidal",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual",
+     "amountMinor": 1149,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "family",
+     "name": "Family",
+     "amountMinor": 2349,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/pt/app/id913943275",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Portuguese App Store prices include 23% VAT."
+  },
+  {
+   "serviceId": "discord-nitro",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "nitro",
+     "name": "Nitro",
+     "amountMinor": 2490,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "basic",
+     "name": "Nitro Basic",
+     "amountMinor": 890,
+     "cycle": "monthly"
+    },
+    {
+     "id": "nitro-yearly",
+     "name": "Nitro (yearly)",
+     "amountMinor": 24990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id985746746",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes. '(1 Month)' one-off passes and Nitro Classic not recorded."
+  },
+  {
+   "serviceId": "discord-nitro",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "nitro",
+     "name": "Nitro",
+     "amountMinor": 999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "basic",
+     "name": "Nitro Basic",
+     "amountMinor": 299,
+     "cycle": "monthly"
+    },
+    {
+     "id": "nitro-yearly",
+     "name": "Nitro (yearly)",
+     "amountMinor": 9899,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/pt/app/id985746746",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Portuguese App Store prices include 23% VAT. '(1 Month)' one-off passes and Nitro Classic not recorded."
+  },
+  {
+   "serviceId": "roblox",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-450",
+     "name": "Premium 450",
+     "amountMinor": 2990,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-1000",
+     "name": "Premium 1000",
+     "amountMinor": 5990,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-2200",
+     "name": "Premium 2200",
+     "amountMinor": 12990,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id431946152",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes."
+  },
+  {
+   "serviceId": "roblox",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "premium-450",
+     "name": "Premium 450",
+     "amountMinor": 599,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "premium-1000",
+     "name": "Premium 1000",
+     "amountMinor": 999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "premium-2200",
+     "name": "Premium 2200",
+     "amountMinor": 2299,
+     "cycle": "monthly"
+    }
+   ],
+   "source": "https://apps.apple.com/pt/app/id431946152",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Portuguese App Store prices include 23% VAT."
+  },
+  {
+   "serviceId": "snapchat-plus",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Snapchat+ (monthly)",
+     "amountMinor": 99,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/pt/app/id447188370",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Portuguese App Store prices include 23% VAT. Both monthly Snapchat+ products are 0.99€."
+  },
+  {
+   "serviceId": "snapchat-plus",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Snapchat+ (monthly)",
+     "amountMinor": 4799,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/tr/app/id447188370",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Turkish App Store prices include 20% VAT. Four monthly Snapchat+ products, all ₺47.99."
+  },
+  {
+   "serviceId": "crunchyroll",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "fan",
+     "name": "Fan",
+     "amountMinor": 799,
+     "cycle": "monthly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/pt/app/id329913454",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Portuguese App Store prices include 23% VAT."
+  },
+  {
+   "serviceId": "strava",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 2290,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 14990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id426826309",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes. Two 'Subscription' prices; the lower is monthly, the higher yearly. Strava + Runna bundles and Runna alone not recorded."
+  },
+  {
+   "serviceId": "strava",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 799,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 4999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/pt/app/id426826309",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Portuguese App Store prices include 23% VAT. Two 'Subscription' prices; the lower is monthly, the higher yearly. Strava + Runna bundles and Runna alone not recorded."
+  },
+  {
+   "serviceId": "strava",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 12999,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 79999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/tr/app/id426826309",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Turkish App Store prices include 20% VAT. Two 'Subscription' prices; the lower is monthly, the higher yearly. Strava + Runna bundles and Runna alone not recorded."
+  },
+  {
+   "serviceId": "headspace",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Monthly",
+     "amountMinor": 1990,
+     "cycle": "monthly",
+     "default": true
+    },
+    {
+     "id": "yearly",
+     "name": "Yearly",
+     "amountMinor": 14990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id493145008",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes. From the products named 'Monthly Subscription' and 'Annual Subscription'; other 'Headspace' products at different prices (e.g. R$41.90, R$9.50) are not recorded."
+  },
+  {
+   "serviceId": "babbel",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "all-yearly",
+     "name": "All Languages (12 months)",
+     "amountMinor": 35990,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id829587759",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes. Single-language plans not recorded."
+  },
+  {
+   "serviceId": "babbel",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "all-yearly",
+     "name": "All Languages (12 months)",
+     "amountMinor": 9599,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/pt/app/id829587759",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Portuguese App Store prices include 23% VAT. Single-language plans not recorded."
+  },
+  {
+   "serviceId": "babbel",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "all-yearly",
+     "name": "All Languages (12 months)",
+     "amountMinor": 339900,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/tr/app/id829587759",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Turkish App Store prices include 20% VAT. Single-language plans not recorded."
+  },
+  {
+   "serviceId": "masterclass",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual (yearly)",
+     "amountMinor": 59990,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Duo (yearly)",
+     "amountMinor": 99990,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family",
+     "name": "Family (yearly)",
+     "amountMinor": 119990,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id1273867416",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes. 'Free Upgrade' and 'All-Access Pass upgrade' products are upgrades, not recorded."
+  },
+  {
+   "serviceId": "masterclass",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual (yearly)",
+     "amountMinor": 12999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Duo (yearly)",
+     "amountMinor": 19999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family",
+     "name": "Family (yearly)",
+     "amountMinor": 24999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/pt/app/id1273867416",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Portuguese App Store prices include 23% VAT. 'Free Upgrade' and 'All-Access Pass upgrade' products are upgrades, not recorded."
+  },
+  {
+   "serviceId": "masterclass",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "individual",
+     "name": "Individual (yearly)",
+     "amountMinor": 299999,
+     "cycle": "yearly",
+     "default": true
+    },
+    {
+     "id": "duo",
+     "name": "Duo (yearly)",
+     "amountMinor": 399999,
+     "cycle": "yearly"
+    },
+    {
+     "id": "family",
+     "name": "Family (yearly)",
+     "amountMinor": 599999,
+     "cycle": "yearly"
+    }
+   ],
+   "source": "https://apps.apple.com/tr/app/id1273867416",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Turkish App Store prices include 20% VAT. 'Free Upgrade' and 'All-Access Pass upgrade' products are upgrades, not recorded."
+  },
+  {
+   "serviceId": "economist",
+   "country": "BR",
+   "currency": "BRL",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 14590,
+     "cycle": "monthly"
+    },
+    {
+     "id": "annual",
+     "name": "Premium (yearly)",
+     "amountMinor": 146990,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/br/app/id1239397626",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Brazilian App Store prices include taxes. From 'Premium Monthly' and 'Premium Annual', as in the main file. Podcast-only and fixed-term products not recorded."
+  },
+  {
+   "serviceId": "economist",
+   "country": "PT",
+   "currency": "EUR",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 3890,
+     "cycle": "monthly"
+    },
+    {
+     "id": "annual",
+     "name": "Premium (yearly)",
+     "amountMinor": 38900,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/pt/app/id1239397626",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Portuguese App Store prices include 23% VAT. From 'Premium Monthly' and 'Premium Annual', as in the main file. Podcast-only and fixed-term products not recorded."
+  },
+  {
+   "serviceId": "economist",
+   "country": "TR",
+   "currency": "TRY",
+   "status": "verified",
+   "plans": [
+    {
+     "id": "monthly",
+     "name": "Premium (monthly)",
+     "amountMinor": 155999,
+     "cycle": "monthly"
+    },
+    {
+     "id": "annual",
+     "name": "Premium (yearly)",
+     "amountMinor": 1449900,
+     "cycle": "yearly",
+     "default": true
+    }
+   ],
+   "source": "https://apps.apple.com/tr/app/id1239397626",
+   "checked": "2026-11-15",
+   "note": "App Store price: read from the App Store's In-App Purchases list for this country (what you pay when you subscribe in the iPhone app; the service's own website can charge a different price). Turkish App Store prices include 20% VAT. From 'Premium Monthly' and 'Premium Annual', as in the main file. Podcast-only and fixed-term products not recorded."
+  }
+ ],
+ "notChecked": {
+  "apple-tv": "TR: not sold separately. apple.com/tr/apple-tv FAQ: 'Apple TV, iCloud+ aboneliği ile birlikte sunuluyor' (comes with iCloud+). Point Turkish users to iCloud+.",
+  "apple-arcade": "TR: included with iCloud+ (apple.com/tr/apple-arcade FAQ: 'Apple Arcade, iCloud+ aboneliği ile birlikte sunuluyor'). Not sold separately.",
+  "apple-one": "TR: apple.com/tr/apple-one is 'page not found'. Apple TV and Arcade come with iCloud+ there, same as MENA, so Apple One most likely isn't offered.",
+  "apple-fitness": "TR: apple.com/tr/apple-fitness-plus is 'page not found'.",
+  "apple-news": "Not sold in BR, PT or TR (apple.com/{br,pt,tr}/apple-news is 'page not found').",
+  "amazon-prime": "BR, TR: amazon.com.br and amazon.com.tr blocked our cloud browser and curl ('Request was throttled' / error page), so no price was read. PT: Amazon has no Portuguese store with Prime; Prime Video is sold on primevideo.com, which picks the country from the visitor's IP, and the Prime Video app has no In-App Purchases list. Not checked.",
+  "amazon-music": "PT: no Amazon store in Portugal and the App Store list has two prices under 'Individual' (11.49€ and 10.99€). TR: Amazon Music app isn't on the Turkish App Store (404).",
+  "audible": "PT, TR: no local Audible store. The App Store list there only shows other countries' products ('US Premium Monthly', 'UK Premium Monthly', 'DE - Audible iOS Monthly'). Not recorded.",
+  "disney-plus": "All 3 rows from the App Store (disneyplus.com showed US prices to our cloud IP). BR Standard with Ads isn't in the list.",
+  "max": "All 3 rows from the App Store (hbomax.com returned Access Denied).",
+  "paramount-plus": "PT, TR: Paramount+ app isn't on the Portuguese or Turkish App Store (404). In Portugal Paramount+ content is on SkyShowtime (not in catalog).",
+  "ps-plus": "PT: playstation.com/pt-pt/ps-plus hides plan prices behind sign-in ('Inicia sessão para veres as opções'). The only price on the page is in its product data: Essential 1 month 8.99€. Not enough for a row.",
+  "nintendo-online": "TR: Nintendo has no eShop or Switch Online store for Türkiye. Not sold there.",
+  "google-ai-pro": "TR: two prices under 'Google AI Pro (5 TB)' (₺869.99 four times, ₺539.99 once) and Plus at ₺199.99. Check on a Turkish iPhone before shipping.",
+  "perplexity": "BR: two monthly prices under 'Perplexity Pro' (R$129.90 and R$99.90); yearly R$1,299.90, Max R$1,299.90. Ambiguous.",
+  "dropbox": "TR: the list looks mislabelled (Professional ₺70.99 is cheaper than Plus ₺79.99, and Simple ₺179.99 dearer than Plus). Plus ₺79.99/month and ₺799.99/year look right, but not shipped as a partial row.",
+  "deezer": "PT: 'Deezer Premium' 14.99€ vs 'Deezer Premium Portugal' 13.99€; TR: 'Deezer Premium' ₺74.99 vs 'Deezer Premium Turkey' ₺38.99. Ambiguous. deezer.com/{cc}/offers showed US-dollar prices to our cloud IP.",
+  "tidal": "TR: TIDAL isn't on the Turkish App Store (404).",
+  "discord-nitro": "TR: Discord isn't on the Turkish App Store (404).",
+  "roblox": "TR: Roblox isn't on the Turkish App Store (404).",
+  "snapchat-plus": "BR: two monthly prices (R$5.00 and R$4.90). Ambiguous.",
+  "crunchyroll": "BR, TR: the App Store page shows no In-App Purchases list, and crunchyroll.com/pt-br/premium returned an error page.",
+  "canva-pro": "Two or more prices under 'Canva Pro - Monthly' in every country (BR R$34.90/35.00, PT 12.00€/11.99€, TR ₺239.99/99.99); canva.com picks currency from IP.",
+  "grammarly": "Two prices under 'Monthly Plan' in every country (BR R$114.90/162.90, PT 31.99€/29.99€, TR ₺184.99/309.99) and two 'Annual Plan' prices in PT and TR. Ambiguous.",
+  "headspace": "PT: two 'Annual Subscription' prices (57.99€ three times, 69.99€ once). TR: two 'Monthly Subscription' prices (₺34.99, ₺142.99). Ambiguous.",
+  "myfitnesspal": "Every country lists many different prices under the same 'Annual Premium' / 'Premium' names (e.g. BR R$499.90, 162.90, 31.90). No clear price.",
+  "nyt": "Several prices under 'All Access - Monthly' in every country (e.g. BR R$59.90 and 79.90; TR ₺299.99, 399.99, 599.99). No clear price.",
+  "dazn": "Lists mix several 'Monthly Subscription' prices and pay-per-view events (BR R$34.90 and 44.90; PT 'Passe Mensal DAZN BASE' 24.99€ vs 'DAZN - Monthly Subscription' 51.99€; TR ₺199.99 to ₺1,999.99). No clear price.",
+  "peloton": "Peloton app isn't on the Brazilian, Portuguese or Turkish App Store (404).",
+  "github-copilot": "GitHub bills in US dollars everywhere (see the US row). In the GitHub iPhone app Apple charges local prices: BR Copilot Pro R$49.90, Pro+ R$199.90; PT 10.00€ / 44.99€; TR ₺299.99 / ₺1,799.99. Not recorded as rows.",
+  "midjourney": "Midjourney bills in US dollars everywhere (see the US row); no local price.",
+  "youtube-premium / duolingo": "Not in plan-ref, so not checked."
+ }
+}

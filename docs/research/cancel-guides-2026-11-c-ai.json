@@ -1,0 +1,761 @@
+{
+ "checkedOn": "2026-11-15",
+ "notes": [
+  "Batch c (AI and apps). 12 new guides plus an updated claude-pro entry (owner asked for Claude). Same shape as cancel-guides-2026-11-b.json, with appleBilling and billedBy added.",
+  "billedBy lists every way the service says you can pay, which decides where you cancel: web = the company's own site, apple = App Store in-app purchase, google-play, plus any others named (samsung-galaxy-store, x, premiumbot, microsoft-store, amazon).",
+  "confidence high = every step and button name read on the official page on 2026-11-15. medium = the official page was blocked or vague, see openIssues.",
+  "Discord, Roblox, help.x.com and docs.midjourney.com block our tools with a bot check. Their steps come from search snippets of the official pages and are marked medium."
+ ],
+ "services": [
+  {
+   "id": "claude-pro",
+   "name": "Claude Pro",
+   "url": "https://claude.ai/settings/billing",
+   "helpUrl": "https://support.claude.com/en/articles/8325617-cancel-your-pro-or-max-subscription",
+   "steps": [
+    "Claude app: tap your initials in the top right",
+    "Tap Billing, then Manage subscription",
+    "Follow the prompts to cancel"
+   ],
+   "appleNote": true,
+   "appleBilling": true,
+   "billedBy": [
+    "web",
+    "apple",
+    "google-play"
+   ],
+   "source": "https://support.claude.com/en/articles/8325617-cancel-your-pro-or-max-subscription",
+   "checkedOn": "2026-11-15",
+   "confidence": "high",
+   "openIssues": [
+    "claude.ai/settings/billing isn't linked on Anthropic's page. The page only says Settings > Billing, so check the link still opens the billing page.",
+    "The app steps are the same on iPhone and Android in Anthropic's article. We didn't check on a phone what Manage subscription opens (Apple's sheet or an in-app screen)."
+   ],
+   "note": "Updated Nov 15: Anthropic renamed the article to cover Pro, Max and Ultra, and now says the app button is at the top right. Web and desktop: click your initials or name in the lower left, then Settings > Billing > Cancel. iPhone-app subscriptions are billed by Apple. Cancel 24h before renewal. New on the page: Personal Finance stops working when the plan ends, and your banks stay linked until you unlink them.",
+   "app": "Claude",
+   "company": "Anthropic",
+   "answer": "In the Claude app, tap your initials (top right), then Billing → Manage subscription and follow the prompts. On claude.ai or the desktop app, click your initials or name (lower left), then Settings → Billing → Cancel. Cancel at least 24 hours before your billing date.",
+   "tips": [
+    "Cancel at least 24 hours before it renews. You keep your paid plan until the end of the billing period.",
+    "Use Personal Finance in Claude? Unlink your banks before the plan ends. Anthropic says they stay linked otherwise."
+   ],
+   "partner": "Subscribed in the iPhone app? Apple bills you. Cancel in Settings → your name → Subscriptions.",
+   "related": [
+    "chatgpt-plus",
+    "google-ai-pro",
+    "perplexity",
+    "copilot-pro"
+   ],
+   "changesSincePrevious": [
+    "Article title is now “Cancel your Pro, Max, or Ultra subscription” (Ultra plan added).",
+    "App step now says the initials are in the top right corner.",
+    "Web step: click your initials or name in the lower left corner, select Settings, then Settings > Billing and click Cancel.",
+    "helpUrl was null, now set to the official article.",
+    "New warnings on the page: usage credits, monthly API credits on Max/Ultra, and Personal Finance (banks stay linked)."
+   ],
+   "quotes": [
+    {
+     "source": "https://support.claude.com/en/articles/8325617-cancel-your-pro-or-max-subscription",
+     "quote": "To cancel your subscription, click on your initials in the top right corner of Claude for iOS, and then click “Billing” from the menu options. Select “Manage subscription” and follow the prompts for cancellation."
+    },
+    {
+     "source": "https://support.claude.com/en/articles/8325617-cancel-your-pro-or-max-subscription",
+     "quote": "Click on your initials or name in the lower left corner and select “Settings” from the menu. Navigate to Settings > Billing and click the “Cancel” button."
+    },
+    {
+     "source": "https://support.claude.com/en/articles/8325617-cancel-your-pro-or-max-subscription",
+     "quote": "If you subscribed to a Pro, Max, or Ultra plan via Claude for iOS, your subscription and payment will be handled directly on your iOS device."
+    },
+    {
+     "source": "https://support.claude.com/en/articles/8325617-cancel-your-pro-or-max-subscription",
+     "quote": "To avoid being charged for your next billing period, cancel your subscription at least 24 hours before your next billing date."
+    },
+    {
+     "source": "https://support.claude.com/en/articles/8325617-cancel-your-pro-or-max-subscription",
+     "quote": "If you use Personal Finance, you can’t open it after your paid plan ends, and your banks stay linked until you unlink them."
+    }
+   ]
+  },
+  {
+   "id": "perplexity",
+   "name": "Perplexity Pro",
+   "url": "https://www.perplexity.ai/settings/account",
+   "helpUrl": "https://www.perplexity.ai/help-center/en/articles/10354283-canceling-a-subscription",
+   "steps": [
+    "Open perplexity.ai in a browser and go to Settings",
+    "Scroll to Subscription under Perplexity Pro",
+    "Click Manage Subscription",
+    "Choose Cancel subscription"
+   ],
+   "appleNote": true,
+   "appleBilling": true,
+   "billedBy": [
+    "web",
+    "apple",
+    "google-play",
+    "samsung-galaxy-store"
+   ],
+   "source": "https://www.perplexity.ai/help-center/en/articles/10354283-canceling-a-subscription",
+   "checkedOn": "2026-11-15",
+   "confidence": "high",
+   "openIssues": [
+    "Perplexity's own pages don't agree on the button names. The cancel article (updated Nov 10, 2026) says Manage Subscription → Cancel subscription. The Billing FAQ (Oct 20) says Manage → Manage drop-down → Cancel subscription. The Refunds page says Manage Subscription → Cancel Plan. We used the cancel article.",
+    "perplexity.ai/settings/account is the link Perplexity gives for payment details, not for cancelling. It should be the same Settings page."
+   ],
+   "note": "Subscribed through the App Store, Google Play or Samsung Galaxy Store? The cancel option doesn't appear in Perplexity Settings; cancel with the store. Perplexity's iPhone path: App Store → profile icon → Subscriptions → Perplexity - Ask Anything → Cancel subscription. Deleting your account doesn't cancel. No pausing.",
+   "app": "Perplexity - Ask Anything",
+   "company": "Perplexity AI",
+   "answer": "Subscribed on the web? Go to Settings, find Subscription under Perplexity Pro, click Manage Subscription and choose Cancel subscription. Subscribed in the iPhone app? Apple bills you, so the cancel button won't show in Perplexity; cancel in your Apple subscriptions.",
+   "tips": [
+    "Deleting your Perplexity account doesn't stop the subscription. Cancel first, then delete.",
+    "You keep Pro until the end of the billing cycle, then drop to the free version."
+   ],
+   "partner": "Subscribed in the iPhone app? Apple bills you. Cancel in Settings → your name → Subscriptions.",
+   "related": [
+    "chatgpt-plus",
+    "claude-pro",
+    "google-ai-pro",
+    "grok"
+   ],
+   "quotes": [
+    {
+     "source": "https://www.perplexity.ai/help-center/en/articles/10354283-canceling-a-subscription",
+     "quote": "Go to Settings and scroll down to find “Subscription” under Perplexity Pro. Click “Manage Subscription” to open the current plan page, then choose “Cancel subscription.”"
+    },
+    {
+     "source": "https://www.perplexity.ai/help-center/en/articles/10354283-canceling-a-subscription",
+     "quote": "If you subscribed through the Apple App Store or Google Play Store, the app store controls your billing. The cancel option doesn’t appear in Perplexity Settings."
+    },
+    {
+     "source": "https://www.perplexity.ai/help-center/en/articles/10354283-canceling-a-subscription",
+     "quote": "Open the App Store and tap the profile icon in the upper-right corner. Tap “Subscriptions,” then “Perplexity - Ask Anything.” Choose “Cancel subscription.”"
+    },
+    {
+     "source": "https://www.perplexity.ai/help-center/en/articles/10354283-canceling-a-subscription",
+     "quote": "No. Deleting your account doesn’t terminate your subscription. Cancel your subscription before you delete your account."
+    }
+   ]
+  },
+  {
+   "id": "grok",
+   "name": "SuperGrok",
+   "url": "https://grok.com/?_s=billing",
+   "helpUrl": "https://docs.x.ai/grok/faq",
+   "steps": [
+    "Sign in at grok.com in a browser",
+    "SuperGrok plan: go to Settings → Billing (or grok.com/?_s=billing) and click Manage Subscription, then cancel",
+    "On The X Subscription instead? Open Billing & invoices at grok.com/dashboard/billing",
+    "Open the options on the Current plan card, choose to cancel and confirm"
+   ],
+   "appleNote": true,
+   "appleBilling": true,
+   "billedBy": [
+    "web",
+    "apple",
+    "google-play",
+    "x"
+   ],
+   "source": "https://docs.x.ai/grok/faq",
+   "checkedOn": "2026-11-15",
+   "confidence": "medium",
+   "openIssues": [
+    "xAI's pages never name the final cancel button. They only say “choose to cancel” and “follow the prompts”.",
+    "xAI's FAQ gives two web paths that may be the same page: grok.com/?_s=billing, and Settings → Billing on grok.com.",
+    "Grok is moving to The X Subscription (Grok + Cursor + X in one plan). New customers start on it; existing SuperGrok plans continue until changed. Which one a user has decides the steps.",
+    "help.x.com (for Grok bought as part of X Premium on X) returns 403 to our tools, so X's own steps aren't here. See the x-premium guide."
+   ],
+   "note": "Apple handles App Store purchases, so cancel those in iPhone Settings. Google Play purchases: cancel in Google Play. Bought on X? Cancel it in X. If the Manage Subscription button won't open, xAI says an ad-blocker may be blocking it; try a private window or another browser. Switching to The X Subscription cancels your old SuperGrok and X Premium plans with a prorated refund, but Google Play ones may keep renewing, so check.",
+   "app": "Grok",
+   "company": "xAI",
+   "answer": "Subscribed on the web? Sign in at grok.com, open Settings → Billing, click Manage Subscription and cancel (on The X Subscription it's Billing & invoices → the Current plan card). Subscribed in the iPhone app? Apple bills you, so cancel in iPhone Settings.",
+   "tips": [
+    "Manage Subscription won't open? Turn off your ad-blocker or use a private window.",
+    "Moved to The X Subscription and paid for Grok through Google Play? Check Google Play. xAI says the old plan may still be set to renew."
+   ],
+   "partner": "Subscribed in the iPhone app? Apple bills you. Cancel in Settings → your name → Subscriptions. Paid on Google Play? Cancel in Google Play.",
+   "related": [
+    "x-premium",
+    "chatgpt-plus",
+    "claude-pro",
+    "perplexity"
+   ],
+   "quotes": [
+    {
+     "source": "https://docs.x.ai/grok/faq",
+     "quote": "Web (grok.com): Visit grok.com/?_s=billing while logged in to manage your billing directly from the website (change plan, update payment, or cancel). If the Manage Subscription button doesn't open, ad-blockers or other apps/extensions can block it — try an incognito window or a different browser."
+    },
+    {
+     "source": "https://docs.x.ai/grok/faq",
+     "quote": "Grok Website: On grok.com , go to Settings → Billing to manage your subscription."
+    },
+    {
+     "source": "https://docs.x.ai/grok/faq",
+     "quote": "Apple App Store (iOS): Apple handles the transaction."
+    },
+    {
+     "source": "https://docs.x.ai/x-subscription/manage",
+     "quote": "On Billing & invoices, open the options on the Current plan card and choose to cancel. ... Follow the prompts to confirm."
+    },
+    {
+     "source": "https://docs.x.ai/x-subscription/cancel",
+     "quote": "If you subscribed to The X Subscription on X, cancel it in X. ... If you subscribed through Google Play, cancel it in the Google Play Store."
+    }
+   ]
+  },
+  {
+   "id": "copilot-pro",
+   "name": "Copilot Pro",
+   "url": "https://account.microsoft.com/services",
+   "helpUrl": "https://support.microsoft.com/en-us/accounts-billing/subscriptions/cancel-a-copilot-pro-subscription",
+   "steps": [
+    "Go to account.microsoft.com/services and sign in with the Microsoft account you paid with",
+    "Find Copilot Pro and select Manage",
+    "Select Cancel (it may say Upgrade or Cancel)",
+    "Follow the instructions on the page to finish"
+   ],
+   "appleNote": true,
+   "appleBilling": true,
+   "billedBy": [
+    "web",
+    "apple",
+    "google-play"
+   ],
+   "source": "https://support.microsoft.com/en-us/accounts-billing/subscriptions/cancel-a-copilot-pro-subscription",
+   "checkedOn": "2026-11-15",
+   "confidence": "high",
+   "openIssues": [
+    "Microsoft's Copilot Pro cancel link now opens a general page, “Cancel your Microsoft subscription”, that doesn't mention Copilot Pro by name. The steps are Microsoft's, but we couldn't see the Copilot Pro screen itself.",
+    "Microsoft stopped selling Copilot Pro (Oct 1, 2025) and invites subscribers to switch to Microsoft 365 Premium. Anyone who switched should use the microsoft-365 guide instead.",
+    "The refund policy page lists Microsoft 365 plans by name, not Copilot Pro. The 30-day window is written for Microsoft subscriptions in general."
+   ],
+   "note": "Bought in the Copilot app on iPhone or through Google Play? Microsoft says cancel with Apple or Google. See Turn on recurring billing instead of Manage? It's already set to end. Bought in Germany? Microsoft has a cancel page that works without signing in.",
+   "app": "Microsoft Copilot",
+   "company": "Microsoft",
+   "answer": "Sign in at account.microsoft.com/services with the account you paid with, select Manage next to Copilot Pro, then Cancel. If you bought it in the iPhone app, Apple bills you, so cancel in iPhone Settings.",
+   "tips": [
+    "Seeing Turn on recurring billing instead of Manage? It's already cancelled and ends on the date shown.",
+    "Use the Microsoft account you paid with. Microsoft says that matters."
+   ],
+   "partner": "Bought in the iPhone app? Apple bills you. Cancel in Settings → your name → Subscriptions. Google Play? Cancel in Google Play.",
+   "related": [
+    "microsoft-365",
+    "chatgpt-plus",
+    "claude-pro",
+    "github-copilot"
+   ],
+   "quotes": [
+    {
+     "source": "https://support.microsoft.com/en-us/accounts-billing/subscriptions/cancel-a-copilot-pro-subscription",
+     "quote": "Go to Subscriptions and sign in with the Microsoft account you used to purchase your subscription. It's important to use that account."
+    },
+    {
+     "source": "https://support.microsoft.com/en-us/accounts-billing/subscriptions/cancel-a-copilot-pro-subscription",
+     "quote": "Find your subscription and select Manage ."
+    },
+    {
+     "source": "https://support.microsoft.com/en-us/accounts-billing/subscriptions/cancel-a-copilot-pro-subscription",
+     "quote": "On the next page, select Cancel (or it might say  Upgrade or Cancel , depending on your subscription type)."
+    },
+    {
+     "source": "https://support.microsoft.com/en-us/accounts-billing/subscriptions/cancel-a-copilot-pro-subscription",
+     "quote": "If you purchased a Microsoft subscription from Google Play or the Apple app store, contact their customer support for cancellation or refund."
+    },
+    {
+     "source": "https://www.microsoft.com/en-us/copilot/blog/2025/10/01/meet-microsoft-365-premium-your-ai-and-productivity-powerhouse/",
+     "quote": "As part of this simplification, we’ll no longer sell Copilot Pro—Copilot Pro subscribers can switch to Microsoft 365 Premium for more value."
+    }
+   ]
+  },
+  {
+   "id": "midjourney",
+   "name": "Midjourney",
+   "url": null,
+   "helpUrl": "https://docs.midjourney.com/hc/en-us/articles/25384024738573-Canceling-Your-Subscription",
+   "steps": [
+    "Sign in at midjourney.com",
+    "Open your Manage Subscription page",
+    "Have an upgrade or downgrade scheduled? Click Cancel Change first",
+    "Click Cancel Plan and confirm"
+   ],
+   "appleNote": false,
+   "appleBilling": false,
+   "billedBy": [
+    "web"
+   ],
+   "source": "https://docs.midjourney.com/hc/en-us/articles/25384024738573-Canceling-Your-Subscription",
+   "checkedOn": "2026-11-15",
+   "confidence": "medium",
+   "openIssues": [
+    "docs.midjourney.com shows a bot check to our tools (403). We read the Canceling Your Subscription article through Midjourney's public help-center feed (article last edited Mar 25, 2026). A second request that way was blocked, so the other articles are from search snippets only.",
+    "Where the Manage Subscription page sits on midjourney.com isn't spelled out on the page we read. An older Midjourney page pointed to midjourney.com/account, so url is left empty.",
+    "We found no official Midjourney iPhone app. App Store apps with “Midjourney” in the name are from other developers, so appleBilling is false."
+   ],
+   "note": "Cancelling takes effect at the end of the billing cycle and you keep your features, including leftover Fast time, until then. Your images and history stay. The Midjourney Magazine subscription is separate and cancelled in its own portal (snippet).",
+   "app": null,
+   "company": "Midjourney",
+   "answer": "Sign in at midjourney.com, open your Manage Subscription page and click Cancel Plan. It ends at the end of your billing cycle, and your images stay in your account.",
+   "tips": [
+    "Scheduled a plan change? Click Cancel Change before Cancel Plan.",
+    "Paying for an App Store app called Midjourney? It's probably not Midjourney's own. Cancel it in your Apple subscriptions."
+   ],
+   "partner": null,
+   "related": [
+    "chatgpt-plus",
+    "canva-pro",
+    "adobe-cc",
+    "grok"
+   ],
+   "quotes": [
+    {
+     "source": "https://docs.midjourney.com/hc/en-us/articles/25384024738573-Canceling-Your-Subscription",
+     "quote": "You can cancel your Midjourney subscription at any time by going to your Manage Subscription Page and clicking the Cancel Plan button."
+    },
+    {
+     "source": "https://docs.midjourney.com/hc/en-us/articles/25384024738573-Canceling-Your-Subscription",
+     "quote": "Your cancellation will become effective at the end of your current billing cycle, and you'll still have access to all of your subscription features—including any remaining Fast time—until then."
+    },
+    {
+     "source": "https://docs.midjourney.com/hc/en-us/articles/25384024738573-Canceling-Your-Subscription",
+     "quote": "If you have an upgrade or downgrade scheduled, make sure to cancel that change first by using the Cancel Change button before you proceed with canceling your subscription."
+    }
+   ]
+  },
+  {
+   "id": "github-copilot",
+   "name": "GitHub Copilot",
+   "url": null,
+   "helpUrl": "https://docs.github.com/en/copilot/how-tos/manage-your-account/view-and-change-your-copilot-plan",
+   "steps": [
+    "On github.com, click your profile picture, then Settings",
+    "Under Access, click Billing & licensing, then Licensing (older screen: Plans and usage)",
+    "In the GitHub Copilot section, open the Manage subscription dropdown and click Cancel subscription",
+    "Select Cancel Copilot Pro (or Pro+ or Max) to confirm"
+   ],
+   "appleNote": true,
+   "appleBilling": true,
+   "billedBy": [
+    "web",
+    "apple",
+    "google-play"
+   ],
+   "source": "https://docs.github.com/en/copilot/how-tos/manage-your-account/view-and-change-your-copilot-plan",
+   "checkedOn": "2026-11-15",
+   "confidence": "high",
+   "openIssues": [
+    "GitHub's docs say you can buy Copilot plans as in-app purchases in GitHub Mobile and cancel them in the App Store or Google Play, but don't give the store steps. We used Apple's and Google's own steps.",
+    "No direct settings link for the cancel screen is on GitHub's page, so url is left empty."
+   ],
+   "note": "Free Copilot for verified students, teachers or open source maintainers can't be cancelled, and neither can a seat from your company. You may still get a bill after cancelling for extra AI credits you used before. Bought in GitHub Mobile? Cancel in the App Store or Google Play.",
+   "app": "GitHub",
+   "company": "GitHub (Microsoft)",
+   "answer": "On github.com go to Settings → Billing & licensing → Licensing, open Manage subscription in the GitHub Copilot section and click Cancel subscription. Bought it in the GitHub iPhone app? Apple bills you, so cancel in iPhone Settings.",
+   "tips": [
+    "Extra AI credits are billed after you use them, so one more charge can show up after you cancel.",
+    "Thinking of coming back later? GitHub treats it as a new sign-up, and individual sign-ups can be paused."
+   ],
+   "partner": "Subscribed in the GitHub iPhone app? Apple bills you. Cancel in Settings → your name → Subscriptions.",
+   "related": [
+    "cursor",
+    "chatgpt-plus",
+    "claude-pro",
+    "copilot-pro"
+   ],
+   "quotes": [
+    {
+     "source": "https://docs.github.com/en/copilot/how-tos/manage-your-account/view-and-change-your-copilot-plan",
+     "quote": "In the \"GitHub Copilot\" section, select the Manage subscription dropdown on the right and then click Cancel subscription . Select Cancel Copilot Pro/Copilot Pro+/Copilot Max to cancel your plan at the end of your current billing cycle."
+    },
+    {
+     "source": "https://docs.github.com/en/copilot/how-tos/manage-your-account/view-and-change-your-copilot-plan",
+     "quote": "In the \"Access\" section of the sidebar, click Billing & licensing and then Licensing (new platform). Alternatively, click Billing and licensing , then click Plans and usage (original platform)."
+    },
+    {
+     "source": "https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing",
+     "quote": "To manage all Copilot billing in one place, cancel your mobile subscription in the App Store or Google Play and re-subscribe on GitHub.com."
+    }
+   ]
+  },
+  {
+   "id": "notion",
+   "name": "Notion Plus",
+   "url": null,
+   "helpUrl": "https://www.notion.com/help/upgrade-or-downgrade-your-plan",
+   "steps": [
+    "On a computer, open Notion and click Settings in the sidebar",
+    "Click Billing, then Change plan",
+    "Select the plan you want (Free to stop paying), then click Continue",
+    "Give feedback, then click Downgrade"
+   ],
+   "appleNote": true,
+   "appleBilling": true,
+   "billedBy": [
+    "web",
+    "apple",
+    "google-play"
+   ],
+   "source": "https://www.notion.com/help/upgrade-or-downgrade-your-plan",
+   "checkedOn": "2026-11-15",
+   "confidence": "high",
+   "openIssues": [
+    "Notion's page says to cancel from Settings on a desktop computer. It doesn't say whether the mobile app shows the same Billing screen.",
+    "Plans are billed per workspace. Someone with several paid workspaces has to downgrade each one."
+   ],
+   "note": "Bought Plus in the Notion iPhone app? Notion says contact Apple for cancelling and refunds. Mobile purchases are managed in the App Store or Google Play. You keep paid features until the end of the billing cycle.",
+   "app": "Notion",
+   "company": "Notion Labs",
+   "answer": "On a computer, open Settings in Notion's sidebar, then Billing → Change plan, pick Free and click Downgrade. Bought Plus in the iPhone app? Apple bills you, so cancel in iPhone Settings.",
+   "tips": [
+    "Notion bills each workspace separately. Downgrade every paid workspace you don't want.",
+    "Changed your mind fast? Notion gives a full refund if you downgrade within 3 days of a monthly sign-up or 30 days of a yearly one (ask support)."
+   ],
+   "partner": "Upgraded in the iPhone app? Apple bills you. Cancel in Settings → your name → Subscriptions.",
+   "related": [
+    "evernote",
+    "todoist",
+    "google-workspace",
+    "microsoft-365"
+   ],
+   "quotes": [
+    {
+     "source": "https://www.notion.com/help/upgrade-or-downgrade-your-plan",
+     "quote": "In your sidebar, click Settings → Billing → Change plan . Select the plan you want to change to, then click Continue . Provide some feedback for us, then click Downgrade ."
+    },
+    {
+     "source": "https://www.notion.com/help/upgrade-or-downgrade-your-plan",
+     "quote": "You can cancel your subscription by going to Settings in the left-hand sidebar on a desktop computer, then selecting Billing , then Change plan . After you cancel, you’ll still have access to all the paid features until the end of your billing cycle."
+    },
+    {
+     "source": "https://www.notion.com/help/upgrade-or-downgrade-your-plan",
+     "quote": "If you've purchased a subscription through the Apple App Store, you'll need to contact the Apple App Store directly for any issues with your subscription, including cancellations and refunds."
+    }
+   ]
+  },
+  {
+   "id": "grammarly",
+   "name": "Grammarly Pro",
+   "url": "https://account.grammarly.com/subscription",
+   "helpUrl": "https://support.grammarly.com/hc/en-us/articles/115000090172-How-do-I-cancel-my-subscription",
+   "steps": [
+    "Sign in at account.grammarly.com and click the Account tab",
+    "Click Your account → Subscription",
+    "Click Cancel Subscription at the bottom of the page",
+    "Click Continue, pick a reason and click Cancel Subscription"
+   ],
+   "appleNote": true,
+   "appleBilling": true,
+   "billedBy": [
+    "web",
+    "apple"
+   ],
+   "source": "https://support.grammarly.com/hc/en-us/articles/115000090172-How-do-I-cancel-my-subscription",
+   "checkedOn": "2026-11-15",
+   "confidence": "high",
+   "openIssues": [
+    "Grammarly's cancel page doesn't mention Google Play, so we left it out."
+   ],
+   "note": "Bought in the App Store? Grammarly sends you to Apple's cancel page. Cancelling turns off renewal; you keep paid features to the end of the period. Cancelling a free trial ends it right away. Superhuman users: cancelling through Grammarly applies across the whole Superhuman suite.",
+   "app": "Grammarly",
+   "company": "Grammarly (Superhuman)",
+   "answer": "Sign in at account.grammarly.com, go to Your account → Subscription and click Cancel Subscription at the bottom, then Continue and Cancel Subscription again. Bought it in the App Store? Apple bills you, so cancel in iPhone Settings.",
+   "tips": [
+    "No Cancel Subscription button? Check you're signed in to the account that pays.",
+    "On a free trial, cancelling ends Pro straight away. Your documents stay."
+   ],
+   "partner": "Subscribed through the App Store? Apple bills you. Cancel in Settings → your name → Subscriptions.",
+   "related": [
+    "microsoft-365",
+    "notion",
+    "chatgpt-plus",
+    "canva-pro"
+   ],
+   "quotes": [
+    {
+     "source": "https://support.grammarly.com/hc/en-us/articles/115000090172-How-do-I-cancel-my-subscription",
+     "quote": "Sign in to your account and click on the Account tab in the left sidebar. Click on Your account → Subscription in the menu that appears next. Click Cancel Subscription at the bottom of the page. In the window that appears next, click Continue . Choose a reason for cancellation and click Cancel Subscription ."
+    },
+    {
+     "source": "https://support.grammarly.com/hc/en-us/articles/115000090172-How-do-I-cancel-my-subscription",
+     "quote": "Canceling a subscription stops its automatic renewal, but you will still have access to all paid features for the duration of your current subscription period."
+    },
+    {
+     "source": "https://support.grammarly.com/hc/en-us/articles/115000090172-How-do-I-cancel-my-subscription",
+     "quote": "If you purchased a subscription from the App Store, please visit this page: Cancel a subscription from Apple"
+    }
+   ]
+  },
+  {
+   "id": "1password",
+   "name": "1Password",
+   "url": "https://start.1password.com/signin",
+   "helpUrl": "https://support.1password.com/manage-subscription/",
+   "steps": [
+    "Sign in to your account on 1Password.com",
+    "Select Billing in the sidebar",
+    "Select Cancel subscription (scroll down if you don't see it) and follow the instructions"
+   ],
+   "appleNote": true,
+   "appleBilling": true,
+   "billedBy": [
+    "web",
+    "apple",
+    "google-play"
+   ],
+   "source": "https://support.1password.com/manage-subscription/",
+   "checkedOn": "2026-11-15",
+   "confidence": "high",
+   "openIssues": [
+    "url is the Sign in link on 1Password's support page. Accounts on 1Password.ca or 1Password.eu sign in on those sites instead."
+   ],
+   "note": "Started it with an in-app purchase on iPhone, iPad or Mac? Apple manages it (Settings → your name → Subscriptions → 1Password), and you won't see it on 1Password.com. Android in-app? Google manages it. Family or team members: only the organizer, owner or someone with Manage Billing can cancel. Business: talk to your account manager.",
+   "app": "1Password",
+   "company": "AgileBits (1Password)",
+   "answer": "Sign in on 1Password.com, select Billing in the sidebar and choose Cancel subscription. Started it in the iPhone app? Apple bills you, so cancel in iPhone Settings. When it ends, your account freezes: you can still view and copy passwords, but not add, edit or autofill.",
+   "tips": [
+    "After it ends, your account is frozen, not deleted. Export your passwords before you switch apps.",
+    "Don't see Billing? In a family or team account, only the organizer or owner can cancel."
+   ],
+   "partner": "Started in the iPhone, iPad or Mac app? Apple bills you. Cancel in Settings → your name → Subscriptions → 1Password.",
+   "related": [
+    "bitwarden",
+    "dashlane",
+    "lastpass",
+    "proton"
+   ],
+   "quotes": [
+    {
+     "source": "https://support.1password.com/manage-subscription/",
+     "quote": "Sign in to your account on 1Password.com. Select Billing in the sidebar. Select Cancel subscription and follow the onscreen instructions. You may need to scroll down to see this button."
+    },
+    {
+     "source": "https://support.1password.com/manage-subscription/",
+     "quote": "If you started your subscription using an in-app purchase on your Mac, iPhone, or iPad, you’ll manage your subscription with Apple instead."
+    },
+    {
+     "source": "https://support.1password.com/apple-subscription/",
+     "quote": "Open the Settings app. Select your name at the top of the screen. Select Subscriptions , then choose 1Password ."
+    },
+    {
+     "source": "https://support.1password.com/apple-subscription/",
+     "quote": "You won’t see your subscription details on 1Password.com."
+    }
+   ]
+  },
+  {
+   "id": "proton",
+   "name": "Proton Unlimited",
+   "url": "https://account.proton.me/",
+   "helpUrl": "https://proton.me/support/manage-subscription",
+   "steps": [
+    "Go to account.proton.me, sign in and pick any Proton service",
+    "Go to Settings → All settings → Subscription",
+    "Scroll down to Cancel subscription and click Continue",
+    "Click Cancel subscription again to confirm"
+   ],
+   "appleNote": true,
+   "appleBilling": true,
+   "billedBy": [
+    "web",
+    "apple",
+    "google-play"
+   ],
+   "source": "https://proton.me/support/manage-subscription",
+   "checkedOn": "2026-11-15",
+   "confidence": "high",
+   "openIssues": [
+    "Proton's pages confirm you can subscribe through the App Store or Play Store but don't say how to cancel those. We used Apple's and Google's own steps.",
+    "Proton's pricing FAQ still says “go to your account dashboard and select Downgrade”. The support article (Cancel subscription) is newer and is the one we used.",
+    "The 30-day refund in Proton's terms applies to subscriptions bought “through Proton's official channels (website and apps)”. Whether that covers App Store purchases isn't clear."
+   ],
+   "note": "Your plan stays active until the end of the billing period, then drops to Free. Over the Free limits (for example over 1 GB of Mail storage) and some features stop until you free up space. Proton doesn't delete your data for you. Can't reach your dashboard? Proton's terms say contact Customer Support to cancel.",
+   "app": "Proton Mail",
+   "company": "Proton AG",
+   "answer": "Sign in at account.proton.me, go to Settings → All settings → Subscription, click Cancel subscription, then Continue and confirm. Your plan runs to the end of the period, then drops to Free.",
+   "tips": [
+    "Over 1 GB of mail? After you drop to Free you can't send or receive new email until you clear space.",
+    "Bought it in the iPhone app? Apple bills you, so cancel in iPhone Settings."
+   ],
+   "partner": "Subscribed in a Proton iPhone app? Apple bills you. Cancel in Settings → your name → Subscriptions.",
+   "related": [
+    "proton-vpn",
+    "1password",
+    "google-one",
+    "icloud"
+   ],
+   "quotes": [
+    {
+     "source": "https://proton.me/support/manage-subscription",
+     "quote": "Go to account.proton.me , sign in, and select any Proton service. Navigate to ⚙ ( Settings ) → All settings → Subscription , scroll down to Cancel subscription , and click Continue . If you’re sure you want to cancel, click Cancel subscription again to confirm."
+    },
+    {
+     "source": "https://proton.me/support/manage-subscription",
+     "quote": "If you cancel your subscription and switch to a Proton Free plan, your plan remains active until the end of the current billing period and does not renew."
+    },
+    {
+     "source": "https://proton.me/pricing",
+     "quote": "Yes. However, we highly recommend subscribing through proton.me instead. If you’re an iOS user, we may apply a surcharge to cover Apple’s in-app fees. Your subscription’s terms and conditions may also differ when purchasing a plan through the App Store or Play Store."
+    }
+   ]
+  },
+  {
+   "id": "discord-nitro",
+   "name": "Discord Nitro",
+   "url": null,
+   "helpUrl": "https://support.discord.com/hc/en-us/articles/19580873036695-How-to-Cancel-your-Nitro-Subscription",
+   "steps": [
+    "Desktop or browser: open User Settings (the cog next to your name)",
+    "Go to the Subscriptions tab",
+    "Click Cancel in the Nitro banner and follow the prompts",
+    "Phone: tap your avatar, the cog, then Billing Settings → Manage Nitro"
+   ],
+   "appleNote": true,
+   "appleBilling": true,
+   "billedBy": [
+    "web",
+    "apple",
+    "google-play"
+   ],
+   "source": "https://support.discord.com/hc/en-us/articles/19580873036695-How-to-Cancel-your-Nitro-Subscription",
+   "checkedOn": "2026-11-15",
+   "confidence": "medium",
+   "openIssues": [
+    "support.discord.com returns 403 (bot check) to curl and WebFetch, so every step and button name above comes from search snippets of Discord's article, not the page itself.",
+    "Snippets say Nitro must be cancelled on the same kind of device you bought it on, and that Discord Support can't manage iOS subscriptions. Not read on the page.",
+    "Billing support form for people locked out of their account (dis.gd/billing) is from a snippet only."
+   ],
+   "note": "Bought Nitro on an iPhone? Apple bills you and Discord can't cancel it, so cancel in iPhone Settings. Bought on Android through Google Play? Cancel in Google Play. Nitro ends at the end of the billing period.",
+   "app": "Discord",
+   "company": "Discord",
+   "answer": "On a computer, open User Settings → Subscriptions and click Cancel in the Nitro banner. Bought Nitro on your iPhone? Apple bills you, so cancel in iPhone Settings.",
+   "tips": [
+    "Cancel on the same kind of device you bought Nitro on (snippet).",
+    "On a free trial? Cancel before it ends and you won't be charged (snippet)."
+   ],
+   "partner": "Bought Nitro on your iPhone? Apple bills you. Cancel in Settings → your name → Subscriptions.",
+   "related": [
+    "snapchat-plus",
+    "telegram-premium",
+    "x-premium",
+    "xbox-game-pass"
+   ],
+   "quotes": [
+    {
+     "source": "https://support.apple.com/en-us/118428",
+     "quote": "In Settings, tap your name. Tap Subscriptions. Tap the subscription. Tap Cancel Subscription."
+    }
+   ]
+  },
+  {
+   "id": "telegram-premium",
+   "name": "Telegram Premium",
+   "url": null,
+   "helpUrl": "https://telegram.org/faq_premium",
+   "steps": [
+    "Cancel with whoever you paid: Apple, Google Play or @PremiumBot",
+    "iPhone: open Settings, tap your name, then Subscriptions and pick Telegram",
+    "Paid through @PremiumBot: open the bot in Telegram and send /stop",
+    "Google Play: tap your avatar, then Payments & subscription → Subscriptions"
+   ],
+   "appleNote": true,
+   "appleBilling": true,
+   "billedBy": [
+    "apple",
+    "google-play",
+    "premiumbot"
+   ],
+   "source": "https://telegram.org/faq_premium",
+   "checkedOn": "2026-11-15",
+   "confidence": "high",
+   "openIssues": [
+    "Telegram writes the iPhone path as “Settings > Apple ID Settings > Subscriptions”. Apple's own page says Settings → your name → Subscriptions, which is the same screen; we used Apple's wording."
+   ],
+   "note": "Telegram doesn't bill you directly. Purchases go through Apple, Google Play or @PremiumBot (the bot only works in Telegram's direct Android, Desktop and macOS apps). Deleting your Telegram account or the app doesn't stop Apple or Google charging you.",
+   "app": "Telegram",
+   "company": "Telegram",
+   "answer": "Cancel where you paid: on iPhone that's Settings → your name → Subscriptions; if you paid through @PremiumBot, send it /stop. You keep Premium until the end of the period you paid for.",
+   "tips": [
+    "Deleting Telegram or your account doesn't cancel an Apple or Google subscription. Cancel it there first.",
+    "Uninstalling the app doesn't pause anything. You're still billed on the renewal date."
+   ],
+   "partner": "Subscribed on iPhone? Apple bills you. Cancel in Settings → your name → Subscriptions.",
+   "related": [
+    "discord-nitro",
+    "snapchat-plus",
+    "x-premium",
+    "meta-verified"
+   ],
+   "quotes": [
+    {
+     "source": "https://telegram.org/faq_premium",
+     "quote": "You can cancel your premium subscription via the same provider you used to purchase it. @PremiumBot - Open the bot on Telegram and send the /stop command. Google Play - You can manage your subscription by tapping on your avatar in the top right and navigating to Payments & subscription > Subscriptions . iOS - Go to your iOS Settings > Apple ID Settings > Subscriptions ."
+    },
+    {
+     "source": "https://telegram.org/faq_premium",
+     "quote": "Telegram Premium purchases are handled by third-parties (e.g. @PremiumBot , Google Play, Apple App Store)."
+    },
+    {
+     "source": "https://support.apple.com/en-us/118428",
+     "quote": "In Settings, tap your name. Tap Subscriptions. Tap the subscription. Tap Cancel Subscription."
+    }
+   ]
+  },
+  {
+   "id": "roblox",
+   "name": "Roblox Premium",
+   "url": null,
+   "helpUrl": "https://en.help.roblox.com/hc/en-us/articles/360024256251-Roblox-Premium-Membership",
+   "steps": [
+    "On roblox.com, sign in to the account that has Premium",
+    "Click the gear icon (top right), then Settings",
+    "Select Subscriptions",
+    "Click Cancel Renewal and confirm"
+   ],
+   "appleNote": true,
+   "appleBilling": true,
+   "billedBy": [
+    "web",
+    "apple",
+    "google-play",
+    "microsoft-store",
+    "amazon"
+   ],
+   "source": "https://en.help.roblox.com/hc/en-us/articles/360024256251-Roblox-Premium-Membership",
+   "checkedOn": "2026-11-15",
+   "confidence": "medium",
+   "openIssues": [
+    "en.help.roblox.com returns 403 (bot check) to curl and WebFetch, so the steps and the Cancel Renewal button name come from search snippets of Roblox's help article, not the page itself.",
+    "No direct link to the Subscriptions page appears on any official page we could read, so url is left empty.",
+    "Roblox stopped selling Premium on Apr 30, 2026 and launched Roblox Plus. Snippets say Plus cancels the same way, but we couldn't read Roblox's Plus help page.",
+    "Snippets say Premium bought on Windows or Amazon doesn't renew, so there's no cancel button. Not read on the page."
+   ],
+   "note": "Roblox no longer sells Premium (since Apr 30, 2026). If you cancel, you can't get Premium back; the new plan is Roblox Plus. Bought in the iPhone app? Apple bills you, so cancel in iPhone Settings. Android: cancel in Google Play. Snippets say memberships aren't refundable.",
+   "app": "Roblox",
+   "company": "Roblox Corporation",
+   "answer": "On roblox.com, click the gear icon → Settings → Subscriptions and click Cancel Renewal. Bought it in the iPhone app? Apple bills you, so cancel in iPhone Settings. Heads up: Roblox no longer sells Premium, so once it's gone you can't sign up again.",
+   "tips": [
+    "Roblox stopped selling Premium on Apr 30, 2026. Cancel and it's gone for good; the newer plan is Roblox Plus.",
+    "Paying for both Premium and Plus? Roblox lets you have both, so check you're not paying twice."
+   ],
+   "partner": "Bought in the iPhone app? Apple bills you. Cancel in Settings → your name → Subscriptions. A parent's Apple account may be the one paying.",
+   "related": [
+    "fortnite-crew",
+    "minecraft",
+    "xbox-game-pass",
+    "discord-nitro"
+   ],
+   "quotes": [
+    {
+     "source": "https://about.roblox.com/what-is-roblox-plus",
+     "quote": "We no longer sell Roblox Premium subscriptions as of April 30, 2026. If you previously purchased a Premium subscription, it will remain active on your account.You can choose to stack on Roblox Plus in addition to or replace your Premium subscription at any time."
+    },
+    {
+     "source": "https://about.roblox.com/newsroom/2026/04/introducing-roblox-plus-subscription",
+     "quote": "With the rollout of Roblox Plus, we’ll no longer offer new sign-ups for our existing subscription, Roblox Premium. Existing Premium members can continue their membership."
+    },
+    {
+     "source": "https://support.apple.com/en-us/118428",
+     "quote": "In Settings, tap your name. Tap Subscriptions. Tap the subscription. Tap Cancel Subscription."
+    }
+   ]
+  }
+ ]
+}

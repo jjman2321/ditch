@@ -3,6 +3,8 @@
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
+import { smoothScrollTo } from './SmoothMotion';
+
 /**
  * "Join the waitlist" links point at #join. Jumping straight to the form hid the headline and left half a phone
  * on screen (owner, Nov 14). Instead: bring the whole section that holds the form into view and put the cursor in
@@ -19,7 +21,7 @@ export function JoinFocus() {
       const header = document.querySelector('header')?.getBoundingClientRect().height ?? 0;
       const sectionTop = section.getBoundingClientRect().top + window.scrollY;
       // A section near the top of the page (the hero): show the page from the top. Anything lower: just under the header.
-      window.scrollTo({ top: sectionTop < 200 ? 0 : Math.max(0, sectionTop - header - 8), behavior: 'smooth' });
+      smoothScrollTo(sectionTop < 200 ? 0 : Math.max(0, sectionTop - header - 8));
       form.querySelector('input')?.focus({ preventScroll: true });
     };
     const onClick = (e: MouseEvent) => {

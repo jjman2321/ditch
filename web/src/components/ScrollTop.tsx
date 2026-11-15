@@ -3,6 +3,8 @@
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
+import { smoothScrollTo } from './SmoothMotion';
+
 /**
  * A normal link to another page always opens it at the top (owner, Nov 14: the logo on another page landed
  * half-way down the home page, where it was last scrolled). Back and Forward keep the browser's own position,
@@ -22,7 +24,7 @@ export function ScrollTop() {
       const a = (e.target as Element | null)?.closest?.('a[href]') as HTMLAnchorElement | null;
       if (!a || a.target === '_blank') return;
       const url = new URL(a.href, location.href);
-      if (url.origin === location.origin && url.pathname === location.pathname && !url.hash) window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (url.origin === location.origin && url.pathname === location.pathname && !url.hash) smoothScrollTo(0);
     };
     window.addEventListener('popstate', onPop);
     document.addEventListener('click', onClick);

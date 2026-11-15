@@ -1437,11 +1437,11 @@ img.tv, .tv .logo { width: 44px; height: 44px; border-radius: 12px; }
 }
 /* App Store + Google Play badges (official artwork, never restyled) */
 .app-badges { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-.app-badges .row { display: flex; align-items: center; gap: 10px; }
-.app-badges a { display: inline-flex; align-items: center; min-height: 44px; border-radius: 10px; }
+.app-badges .row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.app-badges a { display: inline-flex; flex: none; align-items: center; min-height: 44px; border-radius: 10px; }
 .app-badges a:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
-.app-badges img { height: 44px; width: auto; display: block; }
-.app-badges img.gp { height: 64px; margin: -10px -9px; } /* Google's PNG has its own clear space around the badge */
+.app-badges img { height: 44px; width: auto; display: block; flex: none; object-fit: contain; }
+.app-badges img.gp { height: 64px; width: auto; max-width: none; margin: -10px -9px; } /* Google's PNG has its own clear space around the badge */
 .app-badges .note { font: 400 12px var(--f-widebold); letter-spacing: .08em; text-transform: uppercase; color: var(--fg2); }
 
 /* the email field and its button always sit on one line, centred, wherever the box is placed */
@@ -1860,3 +1860,25 @@ main > :first-child, main > :first-child > :first-child { scroll-margin-top: 200
   .menu-sheet .menu-top { height: 68px; }
   .cstrip, .tbl thead th, .ch-filter { top: 68px; }
 }
+
+/* ---------- Nov 15: smoother on phones ----------
+   1. The tap ring on step drawings no longer animates a shadow (repainted every frame); a ring layer scales and fades
+      instead, which the phone's graphics chip handles on its own.
+   2. Looping animations pause while off screen (.anim-off, set by SmoothMotion).
+   3. Jump links use an eased scroll in JS, so the CSS smooth scroll is off (it fought the eased one on iPhone).
+   4. Fade-ins travel less and finish sooner. */
+.sa-tap { animation: g5tapDot 1.8s ease-out infinite; box-shadow: none; }
+.sa-tap::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: rgba(22, 20, 15, .35); animation: g5tapRing 1.8s ease-out infinite; }
+@keyframes g5tapDot { 0%, 100% { transform: scale(.9); } 40% { transform: scale(1); } }
+@keyframes g5tapRing { 0% { transform: scale(1); opacity: .9; } 70%, 100% { transform: scale(2.1); opacity: 0; } }
+.anim-off, .anim-off * { animation-play-state: paused !important; }
+@media all { html { scroll-behavior: auto; } }
+@media all {
+  .js [data-reveal]:not(.stamp) { transform: translateY(10px); transition: opacity .5s var(--ease-reveal), transform .5s var(--ease-reveal); transition-delay: calc(var(--i, 0) * 60ms); }
+}
+/* button-name chips in steps may wrap (a long one poked out of its step card on phones and iPad); each line keeps its own chip edges */
+.v4 kbd, .gv3 kbd { white-space: normal; overflow-wrap: break-word; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+/* calculator result cards: the small caption wraps inside its card on narrow phones */
+.v4 .tk .result .cards2 { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+.v4 .tk .result .cards2 > div { min-width: 0; }
+.v4 .tk .result .cards2 small { overflow-wrap: anywhere; }

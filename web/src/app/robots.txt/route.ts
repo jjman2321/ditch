@@ -1,10 +1,10 @@
 import { SITE } from '@/lib/site';
 
-// Plain route so we can add the Content-Signal line (same as ankidecks.ai and peptidetracker.xyz).
+// Plain route. The Content-Signal line was removed (Nov 15): it only said yes to everything, which is the default
+// anyway, and Lighthouse flags it as an unknown directive.
 // Search engines and AI assistants are welcome: being cited is how an organic-only app gets found.
 export function GET() {
   const body = `User-Agent: *
-Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Disallow: /api/
 

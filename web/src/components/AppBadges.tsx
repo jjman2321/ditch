@@ -13,7 +13,7 @@ export function AppBadges({ appStore, googlePlay, note = 'Coming soon', classNam
           <img src="/badges/app-store.svg" alt="" width={120} height={40} />
         </a>
         <a href={googlePlay ?? '#join'} aria-label={googlePlay ? 'Get it on Google Play' : 'Google Play: coming soon. Join the waitlist'}>
-          <img src="/badges/google-play.png" alt="" width={135} height={52} className="gp" />
+          <img src="/badges/google-play.png" alt="" width={134} height={52} className="gp" />
         </a>
       </div>
       {note ? <p className="note">{note}</p> : null}

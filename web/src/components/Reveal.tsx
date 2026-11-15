@@ -43,7 +43,7 @@ export function Reveal() {
           }
         }
       },
-      { threshold: 0, rootMargin: '0px 0px -4% 0px' },
+      { threshold: 0, rootMargin: '0px 0px 8% 0px' },
     );
     els.filter((e) => !e.classList.contains('is-in')).forEach((e) => io.observe(e));
     return () => io.disconnect();

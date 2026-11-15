@@ -4,6 +4,7 @@ import localFont from 'next/font/local';
 import { Reveal } from '@/components/Reveal';
 import { JoinFocus } from '@/components/JoinFocus';
 import { ScrollTop } from '@/components/ScrollTop';
+import { SmoothMotion } from '@/components/SmoothMotion';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { BRAND, COMPANY, SITE } from '@/lib/site';
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         <SiteFooter />
         <JoinFocus />
         <ScrollTop />
+        <SmoothMotion />
         <Reveal />
       </body>
     </html>

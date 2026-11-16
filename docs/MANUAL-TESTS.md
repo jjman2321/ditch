@@ -109,6 +109,18 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 - [ ] Same screen, free: "Yearly would cost less. See how much with Pro" opens the paywall. *Pro: "Paying yearly would be $200.00 a year, $X less than 12 months of this."
 - [ ] A sub you typed in yourself (not picked from our list) never gets a price-watch card.
 
+**Your rights (free, needs the lawyer check before launch)**
+- [ ] Ditched tab → a waiting one → How to cancel: under the steps, "Your rights in the US ›". Closed at first. Tap it: US and California and New York lines, Source links, "Report a company to the FTC", and "The law as we read it. Not legal advice. Checked Nov 16."
+- [ ] Change country (UK, Germany, France, Ireland…) by starting fresh: the row says "in the UK" etc. with that country's lines. Australia, Canada, New Zealand, India: no row at all.
+- [ ] Website: any cancel guide has "Your rights when you cancel" (jump link "Your rights"). "In the UK, the EU, Germany or France +" opens the rest.
+
+**Before payday (free)**
+- [ ] Settings → Payday → tap 25. Back on Home, under Next reminder: "Before payday: $X · N charges until payday, Wed, Nov 25". Add the charges dated before the 25th yourself: they match.
+- [ ] Pick 31 in a 30-day month: payday shows as the 30th. Settings → Payday → Turn off payday: the Home line goes away.
+
+**Add-to-Ditch link (dev build)**
+- [ ] *In Safari, open `ditch://add?service=netflix`: Ditch opens Home with the Add sheet on Netflix. A made-up service just opens Add. Mid-onboarding, it just opens onboarding.
+
 ## 1h. Ditched moment, new billing cycles, Bobby gaps (Nov 15)
 - [ ] Hold a subscription on Home to ditch it. The Ditched screen: no big stamp. The row's DITCHED tag appears with a firm buzz, the logo dims, the duck pops up over the row, then "$X a year you won't pay, once you cancel." fades in. The number never moves.
 - [ ] Turn on Reduce Motion (iPhone Settings → Accessibility → Motion) and ditch another: everything shows finished with a short fade, the buzz still comes.

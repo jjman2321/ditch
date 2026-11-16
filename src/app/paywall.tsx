@@ -20,7 +20,7 @@ import { FitScroll, OnbRoot } from '@/onboarding/Parts';
 import { PURCHASES_LIVE, billedLabel, planById, purchase, restorePurchases, type PlanId } from '@/services/purchases';
 import { onboardingToday, useOnboarding, usePickedList } from '@/state/onboarding';
 import { useApp } from '@/state/app';
-import { Button, Card, Check, Close, Duck, F, IconButton, PlanCard, ProLockup, Txt, brand, haptic, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
+import { Button, Card, Check, Close, Duck, F, IconButton, LogoTile, PlanCard, ProLockup, Txt, brand, haptic, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
 
 const NB = ' ';
 
@@ -143,6 +143,27 @@ function FootLink({ label, onPress }: { label: string; onPress: () => void }) {
   );
 }
 
+/** Up to 5 overlapping logos, then "Netflix, Spotify and 5 more" (names, never "+": Disney+ ends in one). */
+function LogoLine({ items, total, ink, band }: { items: { id: string; name: string; mono: string }[]; total: number; ink: string; band: string }) {
+  const shown = items.slice(0, 5);
+  const [a, b] = items;
+  const words = total === 2 ? `${a.name} and ${b.name}` : `${a.name}, ${b.name} and ${total - 2} more`;
+  return (
+    <View accessible accessibilityLabel={words} style={{ marginBottom: 14 }}>
+      <View style={{ flexDirection: 'row' }}>
+        {shown.map((x, i) => (
+          <View key={`${x.id}-${i}`} style={{ marginLeft: i ? -10 : 0, borderRadius: 13, borderWidth: 2.5, borderColor: band, zIndex: shown.length - i }}>
+            <LogoTile id={x.id} size={40} mono={x.mono} />
+          </View>
+        ))}
+      </View>
+      <Txt v="label" color={ink} style={{ marginTop: 8 }}>
+        {words}
+      </Txt>
+    </View>
+  );
+}
+
 export default function Paywall() {
   const dark = useIsDark();
   const f = useFrame({ maxContent: 440, colH: 740, extraBottom: 0 });
@@ -151,8 +172,10 @@ export default function Paywall() {
   // After onboarding (Settings, a PRO tag, the editor) vs. during onboarding. Decided by
   // whether onboarding is done, never by the link, so no link can rerun onboarding.
   const inApp = app.settings.onboardingDone;
-  const picked = usePickedList().length;
-  const n = inApp ? listedUserSubs(app.subs).length : picked;
+  const pickedList = usePickedList();
+  const n = inApp ? listedUserSubs(app.subs).length : pickedList.length;
+  // The logo line (approved deck, DECISIONS #26): their own services, in the space above the title.
+  const logos = (inApp ? listedUserSubs(app.subs).map((s) => ({ id: s.catalogId ?? s.id, name: s.name, mono: s.name.slice(0, 1).toUpperCase() })) : pickedList.map((x) => ({ id: x.id, name: x.name, mono: x.mono }))).slice(0, 12);
   const many = n > 3;
   const [planId, setPlanId] = useState<PlanId>('yearly');
 
@@ -223,6 +246,8 @@ export default function Paywall() {
           </View>
           {/* Spare height goes here, so the title sits lower instead of a gap under the plans. */}
           <View style={{ flexGrow: 1 }} />
+          {/* Tall phones and iPad: their logos fill that space ("Netflix, Spotify and 5 more"). No room on the SE. */}
+          {n >= 2 && !f.small ? <LogoLine items={logos} total={n} ink={ink} band={dark ? '#2A2516' : brand.sunflower} /> : null}
           <Txt v="title" color={ink} accessibilityRole="header" accessibilityLabel={spokenHead} style={f.tiny ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 } : f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null}>
             {head}
           </Txt>

@@ -17,7 +17,7 @@ It's the owner's first app. The goal is to learn the whole Apple pipeline and st
 - **North star for every change:** does it serve our target user (iPhone, ~23–40, a bit guilty and anxious about money, wants control and reliability; see `docs/research/mascot-or-not.md`) and does it help conversion (onboarding completion, trial starts, trial→paid, retention)? If a change doesn't help either, cut it. Say how each change serves the user and conversions, and back it with research (Mobbin, AppKittie, RevenueCat/Adapty data, competitor reviews) where possible. Honesty rules (paywall, "never claim") still win over conversion.
 - Med student with limited coding experience. Explain in plain language, no jargon.
 - **After every change:** say what changed in plain words, then give a short click-through checklist to test it on the iPhone. Add or update the matching section in `docs/MANUAL-TESTS.md`.
-- **Secrets:** never ask the owner to paste API keys or passwords into chat. Tell them exactly where to put them: EAS environment variables (`eas env:create` or expo.dev → project → Environment variables), the RevenueCat dashboard, or claude.ai environment settings.
+- **Secrets:** never ask the owner to paste API keys or passwords into chat. Tell them exactly where to put them: EAS environment variables (`eas env:create` or expo.dev → project → Environment variables), App Store Connect, or claude.ai environment settings.
 - **Copy:** short, casual, human. No AI-sounding phrases ("seamlessly", "effortlessly", "unlock your potential", em-dash chains). When there's a choice, show options side by side with an honest score out of 10 and a pick.
 - Design before building. Big UI work gets mockups and the owner's approval first.
 - Remind the owner about "only you can do this" tasks when they become needed, with exact steps (list in `docs/STATUS.md`).
@@ -27,7 +27,7 @@ It's the owner's first app. The goal is to learn the whole Apple pipeline and st
 - `expo-sqlite` with numbered migrations from day one.
 - `expo-notifications`: local notifications only. No push, no server.
 - Reanimated for restrained animation. `expo-haptics` for meaningful actions.
-- RevenueCat (`react-native-purchases`): Pro monthly, yearly, lifetime. Milestone 2.
+- Payments straight through Apple's StoreKit 2 (no RevenueCat; owner, Nov 16, DECISIONS #59): Pro monthly, yearly, lifetime. Library picked at Milestone 2 (candidate: `expo-iap`). No third-party payment SDK, no server.
 - WidgetKit through an App Group. Later.
 - EAS Build / TestFlight.
 - On-phone import later: `expo-text-extractor`, `expo-pdf-text-extract`, `expo-share-intent`. **These need an EAS development build, not Expo Go.**
@@ -35,9 +35,8 @@ It's the owner's first app. The goal is to learn the whole Apple pipeline and st
 - **No backend, no bank link, no analytics that collect personal data, no crash reporter that sends subscription contents.**
 
 ### Privacy label
-- Goal was "Data Not Collected". **RevenueCat makes that impossible:** its docs say every app using it must declare **Purchases** (purchase history), for App Functionality and Analytics.
-- With RevenueCat's anonymous user IDs (we never set a custom ID or send email), we answer **Not linked to you** and **Not used for tracking**.
-- Expected label: **"Data Not Linked to You: Purchases"**. Everything else: not collected.
+- Goal and plan: **"Data Not Collected"** (owner, Nov 16, DECISIONS #59: no RevenueCat, so no third party receives purchase data; 7 direct rivals show this label).
+- Purchases go straight through Apple's StoreKit 2. Apple handles them; we run no server and send nothing about the user anywhere.
 - The daily exchange-rate download (DECISIONS #32) is the same public file for everyone and sends nothing about the user, so it doesn't change the label.
 - Re-check this before each App Store submission, and again if any SDK is added.
 
@@ -73,7 +72,7 @@ This is the #1 complaint about Bobby, so it's the product.
 ### 5. Never claim
 - "We cancel for you."
 - Automatic detection we don't have.
-- "Nothing leaves your phone." RevenueCat receives purchase data, so it's false once payments ship. Say "Your list stays on your phone" (true: subs live in local SQLite; iCloud backup goes to the user's own iCloud).
+- "Nothing leaves your phone." Still don't say it: the app downloads public price and rate files, and Apple handles purchases. Say "Your list stays on your phone" (true: subs live in local SQLite; iCloud backup goes to the user's own iCloud).
 
 ### 6. Free tier
 - Unlimited tracking, free forever: full list, real totals, calendar.
@@ -106,5 +105,5 @@ This is the #1 complaint about Bobby, so it's the product.
 
 ## Testing on the owner's iPhone
 - Expo Go while possible.
-- An EAS development build once native modules arrive (RevenueCat, import, widget).
+- An EAS development build once native modules arrive (StoreKit purchases, import, widget).
 - The owner has a Mac but don't assume Xcode is installed. Prefer EAS cloud builds.

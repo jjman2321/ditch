@@ -12,12 +12,12 @@ export const metadata: Metadata = {
 export default function Privacy() {
   return (
     <Doc
-      effective="Effective Nov 12, 2026 · Version 1"
+      effective="Effective Nov 16, 2026 · Version 2"
       title="Privacy"
       short={[
         { t: 'Your list stays on your phone', d: 'Your subscriptions, prices and dates are stored on your iPhone, not on our servers. When iCloud backup arrives for Pro, it will go to your own iCloud.' },
         { t: 'No bank login, no account', d: 'Ditch never asks for your bank, your email password or an account.' },
-        { t: 'Purchases go through Apple and RevenueCat', d: 'If you buy Pro, RevenueCat receives the purchase (not your list) to unlock it. It isn’t linked to your identity.' },
+        { t: 'Purchases go through Apple only', d: 'If you buy Pro, Apple handles the payment. No other company receives it, and we never see your card.' },
         { t: 'No ads, no tracking, no selling', d: 'We don’t use advertising or analytics that follow you, in the app or on this site.' },
       ]}
     >
@@ -27,7 +27,7 @@ export default function Privacy() {
       </p>
       <ul>
         <li>
-          <b>Purchases:</b> Ditch Pro is sold through Apple. We use RevenueCat to check whether you have Pro. RevenueCat receives purchase data (product, price, date) with an anonymous ID. We don’t send your name or email. Apple’s App Store label for Ditch reads “Data Not Linked to You: Purchases”.
+          <b>Purchases:</b> Ditch Pro is sold through Apple. Your iPhone checks with Apple whether you have Pro; no other company is involved and nothing goes to us. Apple’s App Store label for Ditch reads “Data Not Collected”.
         </li>
         <li>
           <b>Exchange rates:</b> once a day the app may download the same public exchange-rate file everyone gets, to show a rough total for mixed currencies. The request carries nothing about you or your list.

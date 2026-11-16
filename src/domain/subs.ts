@@ -477,3 +477,38 @@ export function monthKey(d: DateOnly): number {
   const { y, m } = parseDate(d);
   return y * 12 + m;
 }
+
+// ---------- Year ahead (DECISIONS #60, free) ----------
+
+export type MonthAhead = {
+  /** First day of the month, "2026-12-01". */
+  month: DateOnly;
+  /** What's charged that month, one total per currency (never added across currencies). */
+  totals: { currency: string; amountMinor: number }[];
+  /** Yearly and 6-monthly charges that land this month: the ones that hurt. */
+  big: { sub: PricedSub; charge: DateOnly }[];
+};
+
+/** The next 12 months from today's month: what's charged in each, by currency. Charges before today are left out. */
+export function yearAhead(subs: Sub[], today: DateOnly): MonthAhead[] {
+  const live = listedUserSubs(subs).filter(isPricedSub).filter(hasDate);
+  const { y, m } = parseDate(today);
+  const out: MonthAhead[] = [];
+  for (let i = 0; i < 12; i++) {
+    const yy = y + Math.floor((m - 1 + i) / 12);
+    const mm = ((m - 1 + i) % 12) + 1;
+    const start = `${yy}-${String(mm).padStart(2, '0')}-01`;
+    const end = `${yy}-${String(mm).padStart(2, '0')}-${String(new Date(yy, mm, 0).getDate()).padStart(2, '0')}`;
+    const from = i === 0 ? today : start;
+    const sums = new Map<string, number>();
+    const big: MonthAhead['big'] = [];
+    for (const s of live) {
+      for (const charge of chargesBetween(s, from, end)) {
+        sums.set(s.currency, (sums.get(s.currency) ?? 0) + s.amountMinor);
+        if (s.cycle === 'yearly' || s.cycle === 'semiannual') big.push({ sub: s, charge });
+      }
+    }
+    out.push({ month: start, totals: [...sums.entries()].map(([currency, amountMinor]) => ({ currency, amountMinor })).sort((a, b) => b.amountMinor - a.amountMinor), big: big.sort((a, b) => a.charge.localeCompare(b.charge)) });
+  }
+  return out;
+}

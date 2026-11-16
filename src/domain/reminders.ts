@@ -72,6 +72,14 @@ export function headsUpBody(s: Sub, charge: DateOnly, fireDay: DateOnly, money: 
   return `${s.name} renews ${when}.${price ? ` ${price}.` : ''} ${tail}`;
 }
 
+/** Pro's 30-day warning before a yearly (or 6-monthly) charge (owner, Nov 16; DECISIONS #60): time to decide calmly. */
+export const YEARLY_WARNING_LEAD = 30;
+export function yearlyWarningBody(s: Sub, charge: DateOnly, money: Money): string {
+  const price = priceOf(s, money);
+  const span = s.cycle === 'semiannual' ? 'the next 6 months' : 'the year';
+  return `${s.name} renews in a month, on ${weekdayDate(charge)}.${price ? ` ${price} for ${span}.` : ''} Plenty of time to decide.`;
+}
+
 /** A free trial the user is tracking (counts toward the free 3). */
 export function trialBody(s: Sub, charge: DateOnly, fireDay: DateOnly, money: Money): string {
   const when = whenWords(charge, fireDay);
@@ -169,6 +177,11 @@ export function planReminders(
       const base = s.cycle === 'weekly' ? leads.filter((l) => l < 7) : leads;
       const usable = base.length ? base : [1];
       const theseLeads = trial ? [...new Set([...usable, ...HEADS_UP_LEADS])] : usable;
+      // Pro: one more, a month before big charges (yearly and every 6 months). Not for trial ends.
+      if (settings.pro && !trial && (s.cycle === 'yearly' || s.cycle === 'semiannual') && !theseLeads.includes(YEARLY_WARNING_LEAD)) {
+        const fireDay = addDays(charge, -YEARLY_WARNING_LEAD);
+        add({ id: `sub:${s.id}:${charge}:${YEARLY_WARNING_LEAD}`, subId: s.id, kind: 'heads-up', chargeDate: charge, lead: YEARLY_WARNING_LEAD, fireDay, body: yearlyWarningBody(s, charge, money) });
+      }
       for (const lead of theseLeads) {
         const fireDay = addDays(charge, -lead);
         add({

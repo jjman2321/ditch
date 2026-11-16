@@ -339,3 +339,25 @@ describe('skip this one (DECISIONS #60)', () => {
     expect(plan.some((r) => r.chargeDate === '2026-11-14')).toBe(true);
   });
 });
+
+describe('30-day warning before yearly charges (Pro, DECISIONS #60)', () => {
+  const amazon = () => sub({ id: 'a', name: 'Amazon Prime', amountMinor: 13900, cycle: 'yearly', anchor: '2027-01-20' });
+  it('Pro gets one a month before, in a calm voice', () => {
+    const plan = forSub(planReminders([amazon()], PRO, NOW), 'a');
+    expect(plan[0].fireAt.getTime()).toBe(at(2026, 12, 21));
+    expect(plan[0].body).toBe('Amazon Prime renews in a month, on Wed, Jan 20. $139.00 for the year. Plenty of time to decide.');
+    expect(plan.filter((r) => r.kind === 'heads-up').map((r) => r.lead)).toEqual([30, 3, 1]); // plus Pro's evening nudge
+  });
+  it('free keeps the usual 3 days and 1 day', () => {
+    expect(forSub(planReminders([amazon()], FREE, NOW), 'a').map((r) => r.lead)).toEqual([3, 1]);
+  });
+  it('every 6 months says so; monthly gets none', () => {
+    const plan = forSub(planReminders([sub({ id: 'c', name: 'Car insurance', amountMinor: 59900, cycle: 'semiannual', anchor: '2027-01-20' })], PRO, NOW), 'c');
+    expect(plan[0].body).toContain('for the next 6 months');
+    expect(forSub(planReminders([sub({ id: 'n', name: 'Netflix' })], PRO, NOW), 'n').some((r) => r.lead === 30)).toBe(false);
+  });
+  it('never in the past: a charge 10 days away gets no 30-day one', () => {
+    const plan = forSub(planReminders([sub({ id: 'y', name: 'Yearly thing', cycle: 'yearly', anchor: '2026-11-19' })], PRO, NOW), 'y');
+    expect(plan.filter((r) => r.chargeDate === '2026-11-19' && r.kind === 'heads-up').map((r) => r.lead)).toEqual([3, 1]);
+  });
+});

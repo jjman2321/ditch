@@ -29,6 +29,7 @@ import {
   hasDate,
   inTrial,
   undatedSubs,
+  yearAhead,
 } from '../subs';
 
 const TODAY = '2026-11-09'; // a Monday, like the renders
@@ -326,5 +327,31 @@ describe('trialsAfter', () => {
     expect(trialsAfter([t('a', 1399, 'monthly'), t('b', 999, 'monthly', 'GBP')], '2026-11-11').monthly).toHaveLength(2);
     // Over once the end date has passed.
     expect(trialsAfter([t('a', 1399, 'monthly')], '2026-11-21').count).toBe(0);
+  });
+});
+
+describe('year ahead (DECISIONS #60)', () => {
+  const s = (name: string, amountMinor: number, cycle: Sub['cycle'], anchor: string, currency = 'USD') =>
+    makeSub({ name, amountMinor, currency, cycle, anchor, dateSource: 'next' });
+  it('12 months from this month; this month only counts from today', () => {
+    const months = yearAhead([s('Netflix', 1799, 'monthly', '2026-11-05')], '2026-11-09');
+    expect(months).toHaveLength(12);
+    expect(months[0].month).toBe('2026-11-01');
+    expect(months[0].totals).toEqual([]); // Nov 5 already went
+    expect(months[1].totals).toEqual([{ currency: 'USD', amountMinor: 1799 }]);
+    expect(months[11].month).toBe('2027-10-01');
+  });
+  it('flags yearly and 6-monthly charges in their month, and keeps currencies apart', () => {
+    const months = yearAhead([s('Amazon Prime', 13900, 'yearly', '2027-01-20'), s('Spotify', 1199, 'monthly', '2026-11-16', 'GBP')], '2026-11-09');
+    const jan = months[2];
+    expect(jan.big.map((b) => [b.sub.name, b.charge])).toEqual([['Amazon Prime', '2027-01-20']]);
+    expect(jan.totals).toEqual([
+      { currency: 'USD', amountMinor: 13900 },
+      { currency: 'GBP', amountMinor: 1199 },
+    ]);
+  });
+  it('every 2 weeks can charge 3 times in a month', () => {
+    const months = yearAhead([s('Gym', 1000, 'biweekly', '2026-12-01')], '2026-11-09');
+    expect(months[1].totals).toEqual([{ currency: 'USD', amountMinor: 3000 }]); // Dec 1, 15, 29
   });
 });

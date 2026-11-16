@@ -72,6 +72,7 @@ export function demoData(name: DemoName, today: DateOnly): { subs: Sub[]; settin
   if (name === 'overlap') {
     // Two music services: shows the overlap card (DECISIONS #60).
     list.push(sub('applemusic2', 'Apple Music', 'apple-music', 'Music', 1099, d(9)));
+    list.push({ ...sub('costco', 'Costco', 'costco', 'Shopping', 6500, d(70)), cycle: 'yearly' as const });
     return { subs: list, settings };
   }
   if (name === 'pro') {

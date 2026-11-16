@@ -9,7 +9,7 @@ import { Pressable, ScrollView, View } from 'react-native';
 import { MONTH_LONG, WEEKDAY_LONG, addDays, parseDate, shiftMonth, toDateOnly, weekdayDate, weekdayOf, weekdayShort, type DateOnly } from '@/domain/dates';
 import { HEADS_UP_LEADS } from '@/domain/charges';
 import { effectiveLeads, shortTimeLabel, timeLabel } from '@/domain/settings';
-import { FREE_REMINDERS, calendarMonth, isPending, isPricedSub, isProTrial, monthDue, remindedIds, undatedSubs, yearlyOfSub, type CalendarCharge, type CalendarDay } from '@/domain/subs';
+import { FREE_REMINDERS, calendarMonth, isPending, isPricedSub, isProTrial, monthDue, remindedIds, undatedSubs, yearAhead, yearlyOfSub, type CalendarCharge, type CalendarDay } from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
 import { OffBanner, openPhoneSettings } from '@/home/HomeParts';
 import { SubLogo } from '@/home/SubRow';
@@ -34,6 +34,23 @@ export default function Calendar() {
   const days = useMemo(() => calendarMonth(subs, view.y, view.m, today, reminded, leads), [subs, view, today, reminded, leads]);
   const due = monthDue(days, settings.currency);
   const undated = useMemo(() => undatedSubs(subs).sort((a, b) => yearlyOfSub(b) - yearlyOfSub(a)), [subs]);
+  // The next 12 months at a glance (DECISIONS #60, free): which months are heavy, and the yearly charges in them.
+  const ahead = useMemo(() => yearAhead(subs, today), [subs, today]);
+  // One "Most months" line, then only the months that differ (the yearly and 6-monthly ones), so it isn't 12 identical rows.
+  const aheadRows = useMemo(() => {
+    const fmt = (a: (typeof ahead)[number]) => a.totals.map((x) => money(x.amountMinor, x.currency)).join(' + ') || '–';
+    const counts = new Map<string, number>();
+    ahead.forEach((a) => counts.set(fmt(a), (counts.get(fmt(a)) ?? 0) + 1));
+    const usual = [...counts.entries()].sort((a, b) => b[1] - a[1])[0];
+    if (!usual || ahead.every((a) => !a.totals.length)) return [];
+    const rows = [{ key: 'usual', label: usual[1] === 12 ? 'Every month' : 'Most months', amounts: usual[0], bigs: '', usual: true }];
+    for (const a of ahead) {
+      if (fmt(a) === usual[0] && !a.big.length) continue;
+      const { y, m } = parseDate(a.month);
+      rows.push({ key: a.month, label: `${MONTH_LONG[m - 1]}${y !== t.y ? ` ${y}` : ''}`, amounts: fmt(a), bigs: a.big.map((b) => `${b.sub.name} ${money(b.sub.amountMinor, b.sub.currency)}`).join(' · '), usual: false });
+    }
+    return rows;
+  }, [ahead, money, t.y]);
   const [picked, setPicked] = useState<DateOnly | null>(null);
   const [gridW, setGridW] = useState(345);
 
@@ -165,6 +182,36 @@ export default function Calendar() {
             </Txt>
           </Card>
         )}
+
+        {aheadRows.length ? (
+          <>
+            <SectionHeader title="Year ahead" right="Next 12 months" style={{ marginTop: 20, marginBottom: 8 }} />
+            <Card style={{ paddingVertical: 4 }}>
+              {aheadRows.map((r, i) => (
+                <View
+                  key={r.key}
+                  accessible
+                  accessibilityLabel={`${r.label}: ${r.amounts}${r.bigs ? `. Big ones: ${r.bigs}` : ''}`}
+                  style={{ minHeight: 48, paddingHorizontal: 14, paddingVertical: 10, borderTopWidth: i ? 1 : 0, borderTopColor: p.hair }}
+                >
+                  <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 12 }}>
+                    <Txt v="label" color={r.usual ? p.mute : p.cardFg} style={{ flex: 1, fontSize: 16 }}>
+                      {r.label}
+                    </Txt>
+                    <Txt v="label" num color={r.usual ? p.mute : p.cardFg} style={{ fontSize: 16, fontFamily: r.usual ? undefined : F.bold }}>
+                      {r.amounts}
+                    </Txt>
+                  </View>
+                  {r.bigs ? (
+                    <Txt v="sub" tone="mute" num style={{ marginTop: 2 }} numberOfLines={2}>
+                      {r.bigs}
+                    </Txt>
+                  ) : null}
+                </View>
+              ))}
+            </Card>
+          </>
+        ) : null}
 
         {undated.length ? (
           <>

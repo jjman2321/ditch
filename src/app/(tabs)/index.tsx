@@ -9,10 +9,12 @@ import { ScrollView, View } from 'react-native';
 import { CYCLE_SHORT } from '@/domain/money';
 import { nextReminder, whenLabel } from '@/domain/reminders';
 import { overlapToShow } from '@/domain/overlaps';
+import { priceChanges } from '@/domain/priceWatch';
+import { priceRow } from '@/catalog/prices';
 import { trialsAfter, homeGroups, homeTotals, isPending, isPricedSub, isProTrial, listedUserSubs, remindedIds, undatedSubs, yearlyOfSub } from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
 import { AddDatesSheet } from '@/home/AddDatesSheet';
-import { EmptyHome, ForgottenRow, NextReminderRow, NoDateRow, OffBanner, OverlapCard, TotalCard, openPhoneSettings } from '@/home/HomeParts';
+import { EmptyHome, ForgottenRow, NextReminderRow, NoDateRow, OffBanner, OverlapCard, PriceChangeCard, TotalCard, openPhoneSettings } from '@/home/HomeParts';
 import { PriceColumnMeasure, SubRow, type BellState } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
 import { BottomFade, Card, Chip, Gear, IconButton, Plus, RowDivider, SectionHeader, SurfaceContext, Wordmark, brand, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
@@ -45,6 +47,8 @@ export default function Home() {
   const undated = undatedSubs(subs).sort((a, b) => yearlyOfSub(b) - yearlyOfSub(a));
   const empty = allGroups.length === 0;
   const overlap = useMemo(() => overlapToShow(subs, settings.dismissedOverlaps), [subs, settings.dismissedOverlaps]);
+  // Price watch (Pro): our checked price for their plan changed. Dismissed keys share the overlaps list.
+  const change = useMemo(() => priceChanges(subs, priceRow).find((c) => !settings.dismissedOverlaps.includes(c.key)) ?? null, [subs, settings.dismissedOverlaps]);
   // The very next one, so it's plain that reminders are scheduled.
   const next = blocked ? null : nextReminder(app.plan, subs);
   const money = useAppMoney();
@@ -111,6 +115,19 @@ export default function Home() {
               {undated.length && !blocked ? (
                 <View style={{ marginTop: 10 }}>
                   <NoDateRow count={undated.length} onPress={() => setDatesOpen(true)} />
+                </View>
+              ) : null}
+
+              {change ? (
+                <View style={{ marginTop: 10 }}>
+                  <PriceChangeCard
+                    change={change}
+                    pro={pro}
+                    money={money}
+                    onUpdate={() => void app.saveSub({ ...change.sub, amountMinor: change.now, amountIsEstimate: true })}
+                    onDismiss={() => void app.updateSettings({ dismissedOverlaps: [...settings.dismissedOverlaps, change.key] })}
+                    onPro={() => router.push('/paywall?from=app')}
+                  />
                 </View>
               ) : null}
 

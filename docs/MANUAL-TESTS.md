@@ -86,6 +86,29 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
+## 1i. Card and notes, overlap check, year ahead, price watch (Nov 16)
+**Card, email and notes (free)**
+- [ ] Edit Netflix: near the bottom, "For when you cancel" has Paid with, Account email and Notes. Type "Visa ending 4821" and save.
+- [ ] With 2+ different cards filled in, Home shows chips (All cards · Amex… · Visa…). Tap one: only the subs on that card show, and the totals don't change.
+- [ ] Hold to ditch Netflix: the Ditched screen shows "Paid with Visa ending 4821 · Account: …" so you know where to cancel.
+- [ ] Skip one: edit a sub with a date, turn on "Skip the … reminders". That charge's reminders don't come; the next charge's do. Trial endings are never skipped.
+
+**Overlap check (free)**
+- [ ] Add Spotify and Apple Music: Home shows "2 music services: Spotify and Apple Music. $X a month together." Tap "Got it": it goes away and stays away.
+- [ ] Two AI chats (ChatGPT + Claude) or two cloud storage apps do the same. Video only shows at 4 or more.
+
+**Year ahead (free) and the 30-day yearly warning (Pro)**
+- [ ] Calendar → scroll down to "Year ahead": one "Every month" or "Most months" row, then only the months with an extra yearly or 6-monthly charge, naming it.
+- [ ] *Pro: a yearly sub renewing in 31+ days gets an extra reminder 30 days before: "… renews in a month, on …. Plenty of time to decide."
+
+**Price watch and yearly check (Pro)**
+- [ ] Pick Claude from the list on the Pro (monthly) plan, then type an older price, e.g. $18, and save.
+- [ ] Free: Home shows "A price on your list went up. Price watch is in Pro." Tap it: the paywall opens.
+- [ ] *Pro: Home shows "Claude Pro went up to $20.00. You have $18.00. Checked Nov 15 on Claude's own page." "Update to $20.00" changes the price; "Keep mine" hides the card for good.
+- [ ] Edit that Claude sub: under the price it says "Pro (monthly) is $20.00 now, checked Nov 15. Change yours if it went up." (not "Typical price").
+- [ ] Same screen, free: "Yearly would cost less. See how much with Pro" opens the paywall. *Pro: "Paying yearly would be $200.00 a year, $X less than 12 months of this."
+- [ ] A sub you typed in yourself (not picked from our list) never gets a price-watch card.
+
 ## 1h. Ditched moment, new billing cycles, Bobby gaps (Nov 15)
 - [ ] Hold a subscription on Home to ditch it. The Ditched screen: no big stamp. The row's DITCHED tag appears with a firm buzz, the logo dims, the duck pops up over the row, then "$X a year you won't pay, once you cancel." fades in. The number never moves.
 - [ ] Turn on Reduce Motion (iPhone Settings → Accessibility → Motion) and ditch another: everything shows finished with a short fade, the buzz still comes.

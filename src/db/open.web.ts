@@ -1,6 +1,6 @@
 // Web preview only. SQLite on the web needs extra server headers, so the
 // preview keeps the same repository contract in memory (saved to
-// localStorage). ?seed=demo|pro|off|ditched|empty loads example data.
+// localStorage). ?seed=demo|pro|off|ditched|empty|overlap loads example data; &pro=1 adds Pro.
 
 import { demoData, type DemoName } from '@/dev/demo';
 import { webParam } from '@/dev/webParams';
@@ -26,6 +26,8 @@ export async function openRepo(): Promise<Repo> {
   const seed = webParam('seed') as DemoName | null;
   if (seed) {
     const demo = demoData(seed, today());
+    // ?pro=1 turns Pro on for any seed, for screenshots of the Pro version.
+    if (webParam('pro') === '1') demo.settings = { ...demo.settings, proPlan: 'yearly' };
     const kv = Object.fromEntries(Object.entries(settingsToKv(demo.settings)).filter((e): e is [string, string] => e[1] !== null));
     repo = memoryRepo({ subs: demo.subs, kv });
   } else {

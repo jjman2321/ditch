@@ -7,9 +7,9 @@ import { router } from 'expo-router';
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
 import { AccessibilityInfo, Pressable, ScrollView, TextInput, View } from 'react-native';
 
-import { catalogPrice, planChoices } from '@/catalog/prices';
+import { catalogPrice, planChoices, priceRow } from '@/catalog/prices';
 import { SERVICES, SERVICE_BY_ID, availableIn, popularIn, searchServices, type CatalogService } from '@/catalog/services';
-import { weekdayDate, weekdayShort, type DateOnly } from '@/domain/dates';
+import { shortDate, weekdayDate, weekdayShort, type DateOnly } from '@/domain/dates';
 import { headsUpBody, reminderDaysFor, trialBody } from '@/domain/reminders';
 import { now as clockNow } from '@/services/clock';
 import { shortPlanName } from '@/domain/copy';
@@ -26,6 +26,7 @@ import { useApp, useAppMoney } from '@/state/app';
 import { chooseCycle, choosePlan, newPick, type Picked } from '@/state/picks';
 import { ask } from '@/ui/alert';
 import { suggestService } from '@/settings/feedback';
+import { yearlySaving } from '@/domain/priceWatch';
 import { Button, Card, ChevronRight, Chip, F, KEYBOARD_DONE, KeyboardDone, LogoTile, NotificationPreview, Search, Segmented, Sheet, SunSwitch, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
 
 /**
@@ -347,8 +348,16 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
         }
       : null;
   const canSave = !!(draft.name || query).trim() && (!amount || typed !== null);
+  // If our checked price for their plan has moved since they added it, say so plainly instead of "Typical".
+  const current = draft.catalogId && draft.planId && draft.priceSource === 'catalog' ? catalogPrice(draft.catalogId, draft.priceCountry, draft.planId) : null;
+  const moved = current && current.planId === draft.planId && current.currency === draft.currency && current.amountMinor !== draft.amountMinor ? current : null;
   const catalogLine =
-    draft.priceSource === 'catalog' && draft.amountMinor && draft.currency ? `Typical ${draft.planName ? `${draft.planName} ` : ''}price. Change it if yours is different.` : null;
+    draft.priceSource === 'catalog' && draft.amountMinor && draft.currency
+      ? moved
+        ? `${draft.planName ?? 'This plan'} is ${money(moved.amountMinor, moved.currency)} now, checked ${shortDate(moved.checked)}. Change yours if it went up.`
+        : `Typical ${draft.planName ? `${draft.planName} ` : ''}price. Change it if yours is different.`
+      : null;
+  const saving = trialEntry ? null : yearlySaving({ ...draft, currency: draft.currency ?? currency }, priceRow);
 
   return (
     <View style={{ flex: 1 }}>
@@ -489,6 +498,20 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
               <Txt v="sub" tone="mute" style={{ marginTop: 6, marginHorizontal: 2 }}>
                 {catalogLine}
               </Txt>
+            ) : null}
+            {/* Cheaper-plan check (Pro, DECISIONS #60): the same plan billed yearly, from our checked prices. */}
+            {saving ? (
+              app.pro ? (
+                <Txt v="sub" num color={p.fg} style={{ marginTop: 6, marginHorizontal: 2 }}>
+                  {`Paying yearly would be ${money(saving.yearlyMinor, saving.currency)} a year, ${money(saving.lessBy, saving.currency)} less than 12 months of this.`}
+                </Txt>
+              ) : (
+                <Pressable accessibilityRole="button" accessibilityLabel="Yearly would cost less. See how much with Pro" onPress={() => router.push('/paywall?from=app')} style={{ minHeight: 44, justifyContent: 'center', marginHorizontal: 2 }}>
+                  <Txt v="sub" tone="mute">
+                    Yearly would cost less. <Txt v="sub" style={{ textDecorationLine: 'underline' }}>See how much with Pro</Txt>
+                  </Txt>
+                </Pressable>
+              )
             ) : null}
             {trialEntry ? null : (
               <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8, paddingTop: 10 }}>

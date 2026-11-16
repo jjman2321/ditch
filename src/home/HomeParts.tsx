@@ -2,12 +2,14 @@
 // nudge, and the empty state with the duck and quick add.
 
 import type { Overlap } from '@/domain/overlaps';
+import type { PriceChange } from '@/domain/priceWatch';
 import { Linking, Pressable, View } from 'react-native';
 
 import { POPULAR_ORDER, SERVICE_BY_ID, availableIn } from '@/catalog/services';
 import type { SpendTotal } from '@/domain/money';
 import type { NotifStatus } from '@/services/notifications';
 import { approxLine } from '@/domain/copy';
+import { shortDate } from '@/domain/dates';
 import { useCombinedTotal } from '@/services/fx';
 import { useApp, useAppMoney } from '@/state/app';
 import { Bang, Bell, BellOff, Button, Card, ChevronRight, Duck, F, LogoTile, Plus, Search, Txt, brand, usePalette } from '@/ui/sunflower';
@@ -305,6 +307,61 @@ export function OverlapCard({ overlap, money, onDismiss }: { overlap: Overlap; m
           Got it
         </Txt>
       </Pressable>
+    </Card>
+  );
+}
+
+/**
+ * Price watch (Pro, DECISIONS #60): our checked price for their plan changed.
+ * Pro sees it and can update in one tap; free sees that something changed, with a way to Pro.
+ * Prices sit still (rule 8); the card only appears, it doesn't slide.
+ */
+export function PriceChangeCard({ change, pro, money, onUpdate, onDismiss, onPro }: { change: PriceChange; pro: boolean; money: (minor: number, currency: string) => string; onUpdate: () => void; onDismiss: () => void; onPro: () => void }) {
+  const p = usePalette();
+  const s = change.sub;
+  if (!pro) {
+    return (
+      <Pressable accessibilityRole="button" accessibilityLabel={`A price on your list ${change.up ? 'went up' : 'changed'}. See it with Pro`} onPress={onPro}>
+        {({ pressed }) => (
+          <Card style={{ minHeight: 48, borderRadius: 16, flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 14, paddingVertical: 10, opacity: pressed ? 0.75 : 1 }}>
+            <Txt v="body" color={p.cardFg} style={{ flex: 1, fontSize: 15 }}>
+              <Txt v="body" color={p.cardFg} style={{ fontFamily: F.bold, fontSize: 15 }}>
+                {`A price on your list ${change.up ? 'went up' : 'changed'}.`}
+              </Txt>
+              {' Price watch is in Pro.'}
+            </Txt>
+            <ChevronRight color={p.cardFg} size={16} />
+          </Card>
+        )}
+      </Pressable>
+    );
+  }
+  const was = money(change.was, s.currency);
+  const now = money(change.now, s.currency);
+  const title = `${s.name} ${change.planName.replace(/\s*\((monthly|yearly)\)$/i, '')} ${change.up ? 'went up' : 'went down'} to ${now}.`;
+  const line = `You have ${was}. Checked ${shortDate(change.checked)} on ${s.name}’s own page.`;
+  return (
+    <Card style={{ borderRadius: 16, paddingHorizontal: 14, paddingTop: 12, paddingBottom: 6 }}>
+      <View accessible accessibilityLabel={`${title} ${line}`}>
+        <Txt v="body" color={p.cardFg} num style={{ fontFamily: F.bold, fontSize: 15 }}>
+          {title}
+        </Txt>
+        <Txt v="body" tone="mute" num style={{ fontSize: 14.5, marginTop: 2 }}>
+          {line}
+        </Txt>
+      </View>
+      <View style={{ flexDirection: 'row', gap: 18 }}>
+        <Pressable accessibilityRole="button" accessibilityLabel={`Update ${s.name} to ${now}`} onPress={onUpdate} hitSlop={8} style={{ minHeight: 44, justifyContent: 'center' }}>
+          <Txt v="label" color={p.cardFg} style={{ fontSize: 15, fontFamily: F.bold, textDecorationLine: 'underline' }}>
+            Update to {now}
+          </Txt>
+        </Pressable>
+        <Pressable accessibilityRole="button" accessibilityLabel="Keep my price" accessibilityHint="Hides this for this price" onPress={onDismiss} hitSlop={8} style={{ minHeight: 44, justifyContent: 'center' }}>
+          <Txt v="label" color={p.cardFg} style={{ fontSize: 15, textDecorationLine: 'underline' }}>
+            Keep mine
+          </Txt>
+        </Pressable>
+      </View>
     </Card>
   );
 }

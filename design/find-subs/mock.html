@@ -1,0 +1,126 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:Display;src:url(file:///home/user/ditch/assets/fonts/ArchivoDitch-Display.ttf)}
+@font-face{font-family:Title;src:url(file:///home/user/ditch/assets/fonts/ArchivoDitch-Title.ttf)}
+@font-face{font-family:WideBold;src:url(file:///home/user/ditch/assets/fonts/ArchivoDitch-WideBold.ttf)}
+:root{--sun:#FFCC2E;--ink:#16140F;--cream:#FBF7EE;--fg2:#5A544A;--mute:#6B6559;--hair:#EEE7D8;--chip:#E3DBCA}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#3c3c3c;font:15px/1.35 -apple-system,"Inter",Helvetica,Arial,sans-serif;color:var(--ink);display:flex;gap:28px;padding:28px;flex-wrap:nowrap}
+.col{display:flex;flex-direction:column;gap:10px;align-items:center}
+.cap{color:#ddd;font:600 15px/1.3 Helvetica;width:393px}
+.cap b{color:var(--sun)}
+.phone{width:393px;height:852px;border-radius:48px;background:#6d6a64;position:relative;overflow:hidden}
+.sheet{position:absolute;inset:54px 0 0 0;background:var(--cream);border-radius:22px 22px 0 0;padding:10px 22px 34px;display:flex;flex-direction:column}
+.full{position:absolute;inset:0;background:var(--cream);padding:62px 22px 34px;display:flex;flex-direction:column}
+.grab{width:36px;height:5px;border-radius:3px;background:#D9D1C1;margin:0 auto 14px}
+.x{position:absolute;right:18px;top:20px;width:30px;height:30px;border-radius:15px;background:rgba(22,20,15,.08);display:grid;place-items:center;font-size:14px}
+h1{font:400 27px/1.12 Title;letter-spacing:-.8px}
+h2{font:400 12px/1 WideBold;letter-spacing:1.2px;text-transform:uppercase;color:var(--mute);margin:20px 4px 8px}
+.lead{color:var(--fg2);margin-top:8px;font-size:15.5px}
+.card{background:#fff;border-radius:20px;padding:16px;box-shadow:0 0 0 1px #EFE8DA}
+.route{display:flex;gap:14px;align-items:flex-start;margin-top:12px}
+.ic{width:44px;height:44px;border-radius:13px;background:#FFF1BC;display:grid;place-items:center;font-size:22px;flex:none}
+.route b{font-size:16.5px;display:block}
+.route span{color:var(--fg2);font-size:14px}
+.tag{display:inline-block;margin-top:8px;font:700 11px/1 Helvetica;letter-spacing:.4px;padding:5px 8px;border-radius:7px;background:var(--ink);color:var(--sun)}
+.tag.free{background:#E9F6E7;color:#256B2B}
+.chev{margin-left:auto;align-self:center;color:var(--mute);font-size:20px}
+.row{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--hair)}
+.row:first-child{border-top:0}
+.logo{width:40px;height:40px;border-radius:10px;flex:none;object-fit:cover}
+.mono{width:40px;height:40px;border-radius:10px;background:#6B6559;color:#fff;display:grid;place-items:center;font-weight:700;flex:none}
+.nm{font-weight:600;font-size:16px}
+.sub{color:var(--mute);font-size:13.2px;margin-top:1px}
+.amt{margin-left:auto;font:400 16px WideBold;text-align:right;font-variant-numeric:tabular-nums}
+.tick{width:26px;height:26px;border-radius:13px;border:2px solid var(--ink);display:grid;place-items:center;flex:none;font-size:14px}
+.tick.on{background:var(--ink);color:var(--sun)}
+.tick.off{border-color:#CFC6B4}
+.src{display:inline-block;font:600 10.5px/1 Helvetica;color:var(--fg2);background:#F3EDE0;border-radius:5px;padding:3px 5px;margin-left:4px;vertical-align:1px}
+.btn{margin-top:auto;height:56px;border-radius:28px;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:600;font-size:17px}
+.btn2{height:50px;border-radius:25px;border:2px solid var(--ink);display:grid;place-items:center;font-weight:600;font-size:16px;margin-top:10px}
+.fine{color:var(--mute);font-size:13px;text-align:center;margin-top:10px}
+.note{background:#FFF6D6;border-radius:14px;padding:12px 14px;font-size:13.5px;color:#4B4220;margin-top:12px}
+.steps{margin-top:18px;display:flex;flex-direction:column;gap:14px}
+.st{display:flex;gap:12px;align-items:flex-start}
+.n{width:28px;height:28px;border-radius:14px;background:var(--sun);border:1.5px solid var(--ink);display:grid;place-items:center;font:400 14px WideBold;flex:none}
+.mini{margin:18px auto 0;width:220px;border-radius:26px;background:#fff;box-shadow:0 0 0 6px #1b1b1b;padding:14px 12px;font-size:11px}
+.mini .h{font-weight:700;font-size:15px;margin:2px 0 8px}
+.mini .r{display:flex;gap:8px;align-items:center;padding:6px 0;border-top:1px solid #eee}
+.mini .r img{width:22px;height:22px;border-radius:5px}
+.mini .g{color:#8a8a8a;font-size:10px}
+.shot{position:absolute;right:-6px;top:-8px;background:var(--sun);border:2px solid var(--ink);border-radius:999px;padding:4px 8px;font:700 10px Helvetica;transform:rotate(6deg)}
+.drop{margin-top:18px;border:2px dashed #D3C9B5;border-radius:20px;padding:26px 16px;text-align:center;background:#fff}
+.drop b{font-size:16px}
+.drop span{display:block;color:var(--fg2);font-size:13.5px;margin-top:4px}
+.big{font:400 40px/1 Display;letter-spacing:-1.4px;margin-top:6px}
+</style></head><body>
+
+<div class="col"><div class="cap">1 · <b>Find more</b> (Add sheet + Home "Missing any?"). Two read-for-you routes on top, the old checklist under them.</div>
+<div class="phone"><div class="sheet"><div class="grab"></div><div class="x">✕</div>
+<h1>Find your<br>subscriptions</h1>
+<div class="lead">Pick a way. We show what we spot, you choose what goes in.</div>
+<div class="card route"><div class="ic">📱</div><div><b>Screenshot your Apple list</b><span>Every App Store subscription, with its renewal date. Banks can’t name these.</span><br><span class="tag free">FREE ONCE · THEN PRO</span></div><div class="chev">›</div></div>
+<div class="card route"><div class="ic">🧾</div><div><b>Drop in a statement</b><span>A bank or Apple Card PDF or CSV. We show the charges that repeat.</span><br><span class="tag">PRO</span></div><div class="chev">›</div></div>
+<h2>Or check the usual places</h2>
+<div class="card" style="padding:4px 16px">
+<div class="row"><div class="tick off"></div><div><div class="nm">Google Play</div><div class="sub">Android or Google apps you’ve paid for</div></div></div>
+<div class="row"><div class="tick off"></div><div><div class="nm">PayPal</div><div class="sub">Settings → Payments → Automatic payments</div></div></div>
+<div class="row"><div class="tick off"></div><div><div class="nm">Amazon</div><div class="sub">Memberships &amp; Subscriptions</div></div></div>
+</div>
+<div class="fine" style="margin-top:auto">Read on your iPhone. Screenshots and statements aren’t uploaded.</div>
+</div></div></div>
+
+<div class="col"><div class="cap">2 · <b>Apple screenshot</b>. Three steps, a picture of what to screenshot, then the photo picker (only the photos they pick).</div>
+<div class="phone"><div class="sheet"><div class="grab"></div><div class="x">✕</div>
+<h1>Screenshot your<br>Apple list</h1>
+<div class="steps">
+<div class="st"><div class="n">1</div><div>Open your Apple subscriptions</div></div>
+<div class="st"><div class="n">2</div><div>Screenshot the list. Long list? Scroll and take another.</div></div>
+<div class="st"><div class="n">3</div><div>Come back and pick the screenshots</div></div>
+</div>
+<div class="mini" style="position:relative"><div class="shot">📸 this</div>
+<div class="g">‹ Back</div><div class="h">Subscriptions</div><div class="g">ACTIVE</div>
+<div class="r"><img src="file:///home/user/ditch/assets/logos/netflix.png"><div><b>Netflix</b><div class="g">Renews December 3</div></div></div>
+<div class="r"><img src="file:///home/user/ditch/assets/logos/spotify.png"><div><b>Spotify Premium</b><div class="g">Renews November 28</div></div></div>
+<div class="r"><img src="file:///home/user/ditch/assets/logos/headspace.png"><div><b>Headspace</b><div class="g">Free trial ends Nov 20</div></div></div>
+</div>
+<div class="btn" style="margin-top:auto">Open Apple subscriptions ↗</div>
+<div class="btn2">Pick screenshots</div>
+<div class="fine">Read on your iPhone with Apple’s own text reader.</div>
+</div></div></div>
+
+<div class="col"><div class="cap">3 · <b>Statement</b>. Share from the bank app or Files, or pick here. Apple Card has its own one-line guide.</div>
+<div class="phone"><div class="sheet"><div class="grab"></div><div class="x">✕</div>
+<h1>Drop in a<br>statement</h1>
+<div class="lead">2–3 months finds the most. Monthly ones need at least 2 charges to show.</div>
+<div class="drop"><div style="font-size:30px">🧾</div><b>Pick a PDF or CSV</b><span>Or share it to Ditch from your bank app</span></div>
+<div class="card" style="margin-top:14px;padding:4px 16px">
+<div class="row"><div class="ic" style="width:36px;height:36px;font-size:17px">💳</div><div><div class="nm">Apple Card</div><div class="sub">Wallet → Apple Card → Card Balance → a statement → Export Transactions</div></div></div>
+<div class="row"><div class="ic" style="width:36px;height:36px;font-size:17px">🏦</div><div><div class="nm">Most banks</div><div class="sub">Statements → download PDF, or Transactions → export CSV</div></div></div>
+</div>
+<div class="note">Charges to <b>APPLE.COM/BILL</b> don’t say which app. We’ll count them and point you to the Apple screenshot.</div>
+<div class="fine" style="margin-top:auto">Read on your iPhone. Your statement isn’t uploaded or kept.</div>
+</div></div></div>
+
+<div class="col"><div class="cap">4 · <b>Check and add</b>. Sure ones ticked, “maybe” unticked, cancelled ones shown but off. Evidence on every row.</div>
+<div class="phone"><div class="full">
+<div style="color:var(--fg2);font-size:15px">‹ Back</div>
+<h1 style="margin-top:10px">We spotted 6.<br>Check them.</h1>
+<h2>Still charging</h2>
+<div class="card" style="padding:2px 14px">
+<div class="row"><div class="tick on">✓</div><img class="logo" src="file:///home/user/ditch/assets/logos/netflix.png"><div><div class="nm">Netflix <span class="src">STATEMENT</span></div><div class="sub">Sep 3, Oct 3, Nov 3 · next Dec 3</div></div><div class="amt">$19.99</div></div>
+<div class="row"><div class="tick on">✓</div><img class="logo" src="file:///home/user/ditch/assets/logos/spotify.png"><div><div class="nm">Spotify <span class="src">APPLE</span></div><div class="sub">Renews Nov 28</div></div><div class="amt">$12.99</div></div>
+<div class="row"><div class="tick on">✓</div><img class="logo" src="file:///home/user/ditch/assets/logos/chatgpt-plus.png"><div><div class="nm">ChatGPT <span class="src">APPLE</span></div><div class="sub">Renews Dec 1</div></div><div class="amt">$19.99</div></div>
+<div class="row"><div class="tick on">✓</div><img class="logo" src="file:///home/user/ditch/assets/logos/headspace.png"><div><div class="nm">Headspace <span class="src">APPLE</span></div><div class="sub">Free trial ends Nov 20</div></div><div class="amt" style="font-size:13px">trial</div></div>
+</div>
+<h2>Maybe</h2>
+<div class="card" style="padding:2px 14px">
+<div class="row"><div class="tick off"></div><div class="mono">G</div><div><div class="nm">Gymbox Ltd</div><div class="sub">2 charges: Oct 9, Nov 9</div></div><div class="amt">$30.00</div></div>
+</div>
+<h2>Already cancelled</h2>
+<div class="card" style="padding:2px 14px">
+<div class="row"><div class="tick off"></div><img class="logo" src="file:///home/user/ditch/assets/logos/calm.png"><div><div class="nm">Calm</div><div class="sub">Ends Jan 4. Won’t renew.</div></div></div>
+</div>
+<div class="btn" style="margin-top:auto">Add 4 · $52.97 a month</div>
+<div class="fine">Nothing’s added until you tap Add. Edit any of them after.</div>
+</div></div></div>
+</body></html>

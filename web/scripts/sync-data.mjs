@@ -93,6 +93,8 @@ w('cancel', cancel);
 w('logos', logos);
 w('price-changes', priceChanges);
 w('compare', [...compare.values()]);
+// "Your rights" on cancel guides (same file the app builds from: npm run rights).
+w('rights', latest('rights-'));
 // The build's date, for the stale/expired gates (pages are built ahead of time, so 'today' is the build day).
 w('build', { today: new Date().toISOString().slice(0, 10) });
 console.log(`synced ${services.length} services, ${prices.prices.length} price rows, ${cancel.services.length} cancel guides, ${logos.length} logos`);

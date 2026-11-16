@@ -7,7 +7,7 @@ import { ScrollTop } from '@/components/ScrollTop';
 import { SmoothMotion } from '@/components/SmoothMotion';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
-import { BRAND, COMPANY, SITE } from '@/lib/site';
+import { BRAND, SITE } from '@/lib/site';
 import './globals.css';
 
 // Archivo, cut for Ditch (the same files the app uses). Body text is the phone's own system font: nothing to download.

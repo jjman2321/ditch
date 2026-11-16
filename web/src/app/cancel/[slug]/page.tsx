@@ -14,6 +14,7 @@ import { APPLE_SOURCE, formatDate, freshness, guideById, neighbours, priceFor, p
 import { COMPANY, SITE, SUPPORT_EMAIL, pageTitle, shareImage } from '@/lib/site';
 import { CANCEL_NAME } from '@/lib/searchNames';
 import { JsonLd } from '@/components/JsonLd';
+import { YourRights } from '@/components/guide/YourRights';
 
 
 export function generateStaticParams() {
@@ -283,6 +284,7 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
       <nav className="g5-jump" aria-label="On this page">
         <a href="#how">Steps</a>
         {facts.length ? <a href="#after">After you cancel</a> : null}
+        <a href="#rights">Your rights</a>
         {d?.pause ? <a href="#pause">{/downgrad|smaller plan|switch to|cheaper plan|lower plan/i.test(d.pause.text) ? 'Downgrade' : 'Pause'}</a> : null}
         {faq.length ? <a href="#faq">Questions</a> : null}
         {us ? <a href="#price">Price</a> : null}
@@ -310,6 +312,8 @@ export default async function CancelGuide({ params }: PageProps<'/cancel/[slug]'
           </div>
         </section>
       ) : null}
+
+      <YourRights />
 
       {d?.pause || faq.length ? (
         <section className="v4-sec g5-two" aria-label="More help">

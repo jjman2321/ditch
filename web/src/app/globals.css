@@ -1933,3 +1933,13 @@ main > :first-child, main > :first-child > :first-child { scroll-margin-top: 200
 /* Lock-screen torch and camera (owner, Nov 15: "feels like a real iPhone"). Solid white, drawn in the iOS lock-screen
    style (our own drawing). The circles stay where they were, half hidden by the hero edge: that's what looks natural. */
 .phone .lockbtns span { display: inline-flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, .92); }
+/* your rights (cancel guides) */
+#rights { scroll-margin-top: 96px; }
+.g5-rights p.g5-r-src { margin-top: 12px; font-size: 13.5px; color: var(--mute); line-height: 1.6; }
+.g5-rights p.g5-r-src a { color: var(--fg2); }
+.g5-rights-more { margin-top: 16px; }
+.g5-rights-more summary { cursor: pointer; display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.g5-rights-more summary::-webkit-details-marker { display: none; }
+.g5-rights-more summary::after { content: "+"; margin-left: 8px; text-decoration: none; display: inline-block; }
+.g5-rights-more[open] summary::after { content: "−"; }
+.g5-rights-more .g5-facts { margin-top: 8px; }

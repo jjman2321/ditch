@@ -138,7 +138,8 @@ export default function Home() {
                 </View>
               ) : null}
 
-              {overlap ? (
+              {/* One suggestion card at a time (price watch first), so the list stays on the first screen. */}
+              {overlap && !change ? (
                 <View style={{ marginTop: 10 }}>
                   <OverlapCard overlap={overlap} money={money} onDismiss={() => void app.updateSettings({ dismissedOverlaps: [...settings.dismissedOverlaps, overlap.key].slice(-DISMISSED_KEEP) })} />
                 </View>

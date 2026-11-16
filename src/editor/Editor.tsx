@@ -28,7 +28,7 @@ import { chooseCycle, choosePlan, newPick, type Picked } from '@/state/picks';
 import { ask } from '@/ui/alert';
 import { suggestService } from '@/settings/feedback';
 import { yearlySaving } from '@/domain/priceWatch';
-import { Button, Card, ChevronRight, Chip, F, KEYBOARD_DONE, KeyboardDone, LogoTile, NotificationPreview, Search, Segmented, Sheet, SunSwitch, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
+import { Button, Card, ChevronRight, Chip, F, KEYBOARD_DONE, KeyboardDone, LogoTile, NotificationPreview, Search, Segmented, Sheet, SunSwitch, Txt, brand, haptic, usePalette, useSheetScroll } from '@/ui/sunflower';
 
 /**
  * add: the picker first; `custom` is a name typed there (the full form);
@@ -152,7 +152,7 @@ function DetailInput({ label, placeholder, value, onChange, keyboard, last }: { 
   const p = usePalette();
   return (
     <View style={{ minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 12, borderBottomWidth: last ? 0 : 1, borderBottomColor: p.hair }}>
-      <Txt v="label" style={{ width: 118 }}>
+      <Txt v="label" style={{ width: 92 }}>
         {label}
       </Txt>
       <TextInput
@@ -166,7 +166,10 @@ function DetailInput({ label, placeholder, value, onChange, keyboard, last }: { 
         autoCorrect={!keyboard}
         maxLength={keyboard ? 120 : 200}
         inputAccessoryViewID={KEYBOARD_DONE}
-        style={{ flex: 1, minWidth: 0, minHeight: 48, fontFamily: F.regular, fontSize: 16, color: p.fg, textAlign: 'right', outlineStyle: 'none' } as object}
+        // Long card names and notes wrap instead of being cut mid-letter on small phones.
+        multiline={!keyboard}
+        submitBehavior="blurAndSubmit"
+        style={{ flex: 1, minWidth: 0, minHeight: 48, paddingVertical: 12, fontFamily: F.regular, fontSize: 16, color: p.fg, textAlign: 'right', outlineStyle: 'none' } as object}
       />
     </View>
   );
@@ -184,6 +187,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
   const p = usePalette();
   const app = useApp();
   const money = useAppMoney();
+  const onSheetScroll = useSheetScroll();
   const { settings, today, pro } = app;
   const country = settings.country;
 
@@ -372,7 +376,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
   return (
     <View style={{ flex: 1 }}>
       {/* Drag the form down, or tap Done, to put the keyboard away. */}
-      <ScrollView style={{ flex: 1 }} keyboardShouldPersistTaps="handled" keyboardDismissMode="interactive" automaticallyAdjustKeyboardInsets showsVerticalScrollIndicator={false}>
+      <ScrollView style={{ flex: 1 }} keyboardShouldPersistTaps="handled" keyboardDismissMode="interactive" automaticallyAdjustKeyboardInsets showsVerticalScrollIndicator={false} scrollEventThrottle={32} onScroll={onSheetScroll}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
           {draft.catalogId || draft.name || trialEntry ? <SubLogo sub={{ ...draft, name: draft.name || query || '?' }} size={44} /> : <LogoTile id="?" size={44} mono="+" color={brand.sunflower} ink={brand.ink} />}
           <Txt v="heading" accessibilityRole="header" style={{ flex: 1, marginRight: 40 }} numberOfLines={2}>

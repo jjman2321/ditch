@@ -9,7 +9,7 @@
 // the app that swallows every tap. So a sheet asked to open while another
 // is closing waits its turn (see modalSlot.ts).
 
-import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import { Keyboard, Modal, Platform, Pressable, ScrollView, useColorScheme, useWindowDimensions, View } from 'react-native';
 import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
@@ -20,6 +20,15 @@ import { Close } from './icons';
 import { releaseSlot, requestSlot } from './modalSlot';
 import { useInsets } from './Screen';
 import { EDGE, SurfaceContext, paletteFor, radius } from './tokens';
+
+/** A sheet whose content scrolls itself (the editor) reports it here, so the × can step aside. */
+const SheetScrolled = createContext<(scrolled: boolean) => void>(() => {});
+
+/** onScroll for a ScrollView inside a Sheet: hides the floating × while scrolled down. */
+export function useSheetScroll() {
+  const set = useContext(SheetScrolled);
+  return (e: { nativeEvent: { contentOffset: { y: number } } }) => set(e.nativeEvent.contentOffset.y > 12);
+}
 
 export function Sheet({
   visible,
@@ -62,6 +71,7 @@ export function Sheet({
   const tablet = Math.min(winW, winH) >= 600;
   const side = tablet ? Math.max(EDGE, Math.round((winW - maxContent) / 2)) : EDGE;
   const [mounted, setMounted] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const t = useSharedValue(0);
   const kb = useSharedValue(0);
   const sheetH = useSharedValue(0);
@@ -87,6 +97,7 @@ export function Sheet({
   // (or if the whole screen goes away with it open).
   const closed = useCallback(() => {
     setMounted(false);
+    setScrolled(false); // next time it opens at the top, with the × showing
     letGo();
   }, [letGo]);
   useEffect(() => letGo, [letGo]);
@@ -153,6 +164,7 @@ export function Sheet({
     <Modal transparent visible statusBarTranslucent onRequestClose={onClose} animationType="none">
       <GestureHandlerRootView style={{ flex: 1 }}>
       <SurfaceContext.Provider value="cream">
+      <SheetScrolled.Provider value={setScrolled}>
         <View style={{ flex: 1, justifyContent: 'flex-end' }}>
           <Animated.View style={[{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: p.scrim }, scrim]}>
             <Pressable accessibilityRole="button" accessibilityLabel="Close" style={{ flex: 1 }} onPress={onClose} />
@@ -183,13 +195,15 @@ export function Sheet({
             </GestureDetector>
             {fit ? (
               // Taller than the screen (SE, big text sizes): scroll instead of cutting off.
-              <ScrollView bounces={false} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled" style={{ flexGrow: 0 }}>
+              // The × steps aside once the content scrolls, so it never sits on a field or chip
+              // (the grabber, the scrim and the sheet's own Done still close it).
+              <ScrollView bounces={false} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled" style={{ flexGrow: 0 }} scrollEventThrottle={32} onScroll={(e) => setScrolled(e.nativeEvent.contentOffset.y > 12)}>
                 {children}
               </ScrollView>
             ) : (
               children
             )}
-            {closeButton ? (
+            {closeButton && !scrolled ? (
               <Pressable
                 accessibilityRole="button"
                 accessibilityLabel="Close"
@@ -204,6 +218,7 @@ export function Sheet({
             ) : null}
           </Animated.View>
         </View>
+      </SheetScrolled.Provider>
       </SurfaceContext.Provider>
       </GestureHandlerRootView>
     </Modal>

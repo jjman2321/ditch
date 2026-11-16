@@ -74,16 +74,6 @@ export function TotalCard({
           {trialLine}
         </Txt>
       ) : null}
-      {rest.map((t) => (
-        <Txt key={t.currency} v="label" num color={fg} style={{ marginTop: 2 }}>
-          + {money(t.monthlyMinor, t.currency)} a month · {money(t.yearlyMinor, t.currency, { whole: true })} a year
-        </Txt>
-      ))}
-      {approx ? (
-        <Txt v="sub" num color={fg} style={{ marginTop: 4, opacity: 0.72 }}>
-          {approx.text}
-        </Txt>
-      ) : null}
       <View style={{ height: 1, backgroundColor: p.dark ? p.rule : 'rgba(22,20,15,0.18)', marginTop: 8, marginBottom: 9 }} />
       <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
         {first ? (
@@ -107,6 +97,17 @@ export function TotalCard({
           </Txt>
         )}
       </View>
+      {/* Other currencies after the first one's year, so each total reads in order (never added together). */}
+      {rest.map((t) => (
+        <Txt key={t.currency} v="label" num color={fg} style={{ marginTop: 4 }}>
+          + {money(t.monthlyMinor, t.currency)} a month · {money(t.yearlyMinor, t.currency, { whole: true })} a year
+        </Txt>
+      ))}
+      {approx ? (
+        <Txt v="sub" num color={fg} style={{ marginTop: 4, opacity: 0.72 }}>
+          {approx.text}
+        </Txt>
+      ) : null}
     </View>
   );
 }

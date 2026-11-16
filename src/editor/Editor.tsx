@@ -373,7 +373,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
         {trialEntry ? null : (
           <>
             <FieldLabel>Name</FieldLabel>
-            <View style={{ height: 52, borderRadius: 14, backgroundColor: p.chipBg, borderWidth: 1.5, borderColor: p.chipBorder, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 14, gap: 8 }}>
+            <View style={{ minHeight: 52, borderRadius: 14, backgroundColor: p.chipBg, borderWidth: 1.5, borderColor: p.chipBorder, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 14, gap: 8 }}>
               {isNew ? <Search color={p.mute} /> : null}
               <TextInput
                 value={query}
@@ -388,7 +388,8 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                 accessibilityLabel="Name"
                 returnKeyType="done"
                 onSubmitEditing={() => (searching ? (matches[0] && matches[0].name.toLowerCase() === query.trim().toLowerCase() ? pickService(matches[0]) : keepCustom()) : null)}
-                style={{ flex: 1, minWidth: 0, height: 48, fontFamily: F.semi, fontSize: 17, color: p.fg, outlineStyle: 'none' } as object}
+                maxFontSizeMultiplier={2}
+                style={{ flex: 1, minWidth: 0, minHeight: 48, fontFamily: F.semi, fontSize: 17, color: p.fg, outlineStyle: 'none' } as object}
               />
             </View>
             {searching ? (
@@ -471,7 +472,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
             ) : null}
 
             <FieldLabel>{draft.isTrial ? 'Price after the trial' : 'Price'}</FieldLabel>
-            <View style={{ height: 56, borderRadius: 14, backgroundColor: p.chipBg, borderWidth: 1.5, borderColor: p.chipBorder, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, gap: 6 }}>
+            <View style={{ minHeight: 56, borderRadius: 14, backgroundColor: p.chipBg, borderWidth: 1.5, borderColor: p.chipBorder, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, gap: 6 }}>
               <Txt v="moneyL" tone="mute">
                 {formatMoney(0, currency).replace(/[\d.,\s]/g, '') || currency}
               </Txt>
@@ -484,7 +485,8 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                 placeholder={currencyDigits(currency) ? '0.00' : '0'}
                 placeholderTextColor={p.mute}
                 accessibilityLabel={`Price in ${currency}`}
-                style={{ flex: 1, minWidth: 0, height: 52, fontFamily: F.wideHeavy, fontSize: 22, color: p.fg, outlineStyle: 'none' } as object}
+                maxFontSizeMultiplier={1.6}
+                style={{ flex: 1, minWidth: 0, minHeight: 52, fontFamily: F.wideHeavy, fontSize: 22, fontVariant: ['tabular-nums'], color: p.fg, outlineStyle: 'none' } as object}
               />
               <Txt v="sub" tone="mute">
                 {currency}
@@ -495,7 +497,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                 {parsed !== null && parsed > MAX_MINOR ? 'That looks too big. Check the price.' : 'Check the price.'}
               </Txt>
             ) : catalogLine ? (
-              <Txt v="sub" tone="mute" style={{ marginTop: 6, marginHorizontal: 2 }}>
+              <Txt v="sub" tone="mute" num style={{ marginTop: 6, marginHorizontal: 2 }}>
                 {catalogLine}
               </Txt>
             ) : null}

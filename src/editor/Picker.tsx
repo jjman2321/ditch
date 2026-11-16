@@ -188,7 +188,7 @@ export function Picker({ onCustom, onTrial, onForgotten, onClose }: { onCustom: 
       <View
         style={{
           marginTop: 4,
-          height: 48,
+          minHeight: 48,
           borderRadius: 14,
           backgroundColor: p.chipBg,
           borderWidth: 1.5,
@@ -209,7 +209,8 @@ export function Picker({ onCustom, onTrial, onForgotten, onClose }: { onCustom: 
           returnKeyType="search"
           autoCorrect={false}
           clearButtonMode="while-editing"
-          style={{ flex: 1, minWidth: 0, height: 44, paddingRight: 12, fontFamily: F.regular, fontSize: 16, color: p.fg, outlineStyle: 'none' } as object}
+          maxFontSizeMultiplier={2}
+          style={{ flex: 1, minWidth: 0, minHeight: 44, paddingRight: 12, fontFamily: F.regular, fontSize: 16, color: p.fg, outlineStyle: 'none' } as object}
         />
       </View>
       {query.trim() ? (

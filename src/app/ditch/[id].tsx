@@ -78,7 +78,8 @@ export default function Ditched() {
   // The logo dims as the tag lands, like the website's grey logo.
   const logoStyle = useAnimatedStyle(() => ({ opacity: 1 - 0.55 * tag.get() }));
   const amountStyle = useAnimatedStyle(() => ({ opacity: amount.get() }));
-  const restStyle = useAnimatedStyle(() => ({ opacity: rest.get(), transform: [{ translateY: (1 - rest.get()) * 6 }] }));
+  // Opacity only: nothing slides under the buttons (CLAUDE.md rule 8).
+  const restStyle = useAnimatedStyle(() => ({ opacity: rest.get() }));
 
   const lastCheck = useMemo(() => app.plan.find((r) => r.subId === id && r.kind === 'last-check') ?? null, [app.plan, id]);
 
@@ -241,7 +242,7 @@ export default function Ditched() {
               style={[{ marginTop: compact ? 10 : 12 }, compact && { minHeight: 50, borderRadius: 25 }]}
             />
             <Button kind="secondary" label="I already cancelled" onPress={cancelled} style={[{ marginTop: 8 }, compact && { minHeight: 46, borderRadius: 23 }]} />
-            <Pressable accessibilityRole="link" accessibilityLabel="Billed by Apple? Open Apple subscriptions" onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)} style={{ minHeight: compact ? 30 : 36, justifyContent: 'center', marginTop: 2 }}>
+            <Pressable accessibilityRole="link" accessibilityLabel={trial ? 'Open Apple subscriptions to cancel Ditch Pro' : 'Billed by Apple? Open Apple subscriptions'} hitSlop={{ top: 7, bottom: 7 }} onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)} style={{ minHeight: compact ? 30 : 36, justifyContent: 'center', marginTop: 2 }}>
               <Txt v="body" tone="fg2" center style={{ fontSize: 14 }}>
                 {trial ? 'Settings → your name → Subscriptions → Ditch.' : 'Billed by Apple? Settings → your name → Subscriptions.'}
               </Txt>

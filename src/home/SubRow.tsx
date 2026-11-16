@@ -67,7 +67,7 @@ export function PriceColumnMeasure({ prices, onWidth }: { prices: (string | null
   const longest = prices.reduce<string>((a, b) => (b && b.length > a.length ? b : a), '');
   if (!longest) return null;
   return (
-    <View pointerEvents="none" accessible={false} importantForAccessibility="no-hide-descendants" style={{ position: 'absolute', opacity: 0, left: 0, top: 0, width: 1000, flexDirection: 'row' }}>
+    <View pointerEvents="none" accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ position: 'absolute', opacity: 0, left: 0, top: 0, width: 1000, flexDirection: 'row' }}>
       <Txt v="moneyM" num style={{ fontSize: 17.5 }} onLayout={(e) => onWidth(Math.ceil(e.nativeEvent.layout.width) + 2)}>
         {longest}
       </Txt>

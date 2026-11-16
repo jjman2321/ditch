@@ -174,6 +174,7 @@ export default function DitchedTab() {
                             <View style={{ flexDirection: 'row', gap: 6, rowGap: 10, marginTop: 10, flexWrap: 'wrap' }}>
                               <Pill
                                 label="I cancelled it"
+                                a11y={`I cancelled ${s.name}`}
                                 filled
                                 onPress={async () => {
                                   await app.confirmCancelled(s.id);
@@ -182,7 +183,7 @@ export default function DitchedTab() {
                                   setTimeout(() => app.maybeAskReview('cancelled').catch(() => {}), 1500);
                                 }}
                               />
-                              <Pill label="How to cancel" chevron onPress={() => help.open(s)} />
+                              <Pill label="How to cancel" a11y={`How to cancel ${s.name}`} chevron onPress={() => help.open(s)} />
                             </View>
                           </View>
                         </View>
@@ -257,14 +258,14 @@ export default function DitchedTab() {
   );
 }
 
-function Pill({ label, onPress, filled, chevron }: { label: string; onPress: () => void; filled?: boolean; chevron?: boolean }) {
+function Pill({ label, a11y, onPress, filled, chevron }: { label: string; a11y?: string; onPress: () => void; filled?: boolean; chevron?: boolean }) {
   const p = usePalette();
   const bg = filled ? (p.dark ? brand.sunflower : brand.ink) : 'transparent';
   const fg = filled ? (p.dark ? brand.ink : brand.white) : p.cardFg;
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={label}
+      accessibilityLabel={a11y ?? label}
       onPress={onPress}
       hitSlop={{ top: 5, bottom: 5 }}
       style={({ pressed }) => ({

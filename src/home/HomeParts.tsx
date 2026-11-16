@@ -387,7 +387,7 @@ export function PriceChangeCard({ change, pro, money, onUpdate, onDismiss, onPro
       </View>
       <View style={{ flexDirection: 'row', gap: 18 }}>
         <Pressable accessibilityRole="button" accessibilityLabel={`Update ${s.name} to ${now}`} onPress={onUpdate} hitSlop={8} style={{ minHeight: 44, justifyContent: 'center' }}>
-          <Txt v="label" color={p.cardFg} style={{ fontSize: 15, fontFamily: F.bold, textDecorationLine: 'underline' }}>
+          <Txt v="label" num color={p.cardFg} style={{ fontSize: 15, fontFamily: F.bold, textDecorationLine: 'underline' }}>
             Update to {now}
           </Txt>
         </Pressable>

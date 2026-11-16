@@ -28,7 +28,7 @@ export default function PaydayPage() {
   };
   return (
     <SettingsPage title="Payday" intro="The day your pay usually lands. Home then shows what’s still due before it. Just the day, never an amount.">
-      <View accessibilityRole="radiogroup" onLayout={(e) => setW(e.nativeEvent.layout.width)} style={{ marginTop: 18, flexDirection: 'row', flexWrap: 'wrap', gap: GAP }}>
+      <View accessibilityRole="radiogroup" accessibilityLabel="Payday" onLayout={(e) => setW(e.nativeEvent.layout.width)} style={{ marginTop: 18, flexDirection: 'row', flexWrap: 'wrap', gap: GAP }}>
         {DAYS.map((d) => {
           const on = d === current;
           return (

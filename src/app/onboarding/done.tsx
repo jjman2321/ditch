@@ -181,7 +181,7 @@ export default function Done() {
             <Txt v="eyebrow" num color={sub2} style={{ marginHorizontal: 4, marginBottom: 8 }} importantForAccessibility="no">
               {on ? `First reminder · ${weekdayDate(first.reminder)}` : `Paused · ${weekdayDate(first.reminder)}`}
             </Txt>
-            <View importantForAccessibility="no-hide-descendants">
+            <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
               {f.small ? null : <Duck width={84} right={10} sink={4} delay={reduce ? 0 : 700} />}
               <View style={{ zIndex: 2 }}>
                 <NotificationPreview faded={!on} time="9 AM" message={noOrphan(first.body)} />

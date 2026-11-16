@@ -88,6 +88,7 @@ export function RollingMeasure({ text, style, onWidth }: { text: string; style: 
       pointerEvents="none"
       accessible={false}
       importantForAccessibility="no-hide-descendants"
+      accessibilityElementsHidden
       style={{ position: 'absolute', opacity: 0, left: 0, top: 0, width: 4000, flexDirection: 'row', alignItems: 'flex-start' }}
     >
       <View style={{ flexDirection: 'row' }} onLayout={(e) => onWidth(e.nativeEvent.layout.width)}>

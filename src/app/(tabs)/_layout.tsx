@@ -4,7 +4,7 @@ import { Tabs } from 'expo-router';
 import { type ColorValue } from 'react-native';
 import Svg, { Path, Rect } from 'react-native-svg';
 
-import { F, paletteFor, useInsets, useIsDark } from '@/ui/sunflower';
+import { F, paletteFor, useInsets, useIsDark, usePalette } from '@/ui/sunflower';
 
 type IconProps = { color: ColorValue; focused: boolean };
 
@@ -17,10 +17,11 @@ function HomeIcon({ color, focused }: IconProps) {
 }
 
 function CalendarIcon({ color, focused }: IconProps) {
+  const p = usePalette();
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
       <Rect x={3.5} y={5} width={17} height={15.5} rx={3} stroke={color} strokeWidth={2} fill={focused ? color : 'none'} />
-      <Path d="M3.5 10h17" stroke={focused ? '#FBF7EE' : color} strokeWidth={2} />
+      <Path d="M3.5 10h17" stroke={focused ? p.bg : color} strokeWidth={2} />
       <Path d="M8 3v4M16 3v4" stroke={color} strokeWidth={2} strokeLinecap="round" />
     </Svg>
   );
@@ -51,6 +52,8 @@ export default function TabsLayout() {
         // The built-in item gives the label only 11pt (49pt bar - 28pt icon box - padding),
         // which cut the bottoms off our letters. The bar is 5pt taller here, so a 14pt label fits.
         tabBarLabelStyle: { fontFamily: F.semi, fontSize: 11, lineHeight: 14 },
+        // Like UIKit's tab bar: fixed size (long-press shows the large label), so it never clips.
+        tabBarAllowFontScaling: false,
       }}
     >
       <Tabs.Screen name="index" options={{ title: 'Home', tabBarIcon: (x) => <HomeIcon {...x} /> }} />

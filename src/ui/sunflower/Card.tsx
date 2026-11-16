@@ -31,7 +31,7 @@ export function SectionHeader({ title, right, style }: { title: string; right?: 
         {title}
       </Txt>
       {typeof right === 'string' ? (
-        <Txt v="sub" tone="fg2" style={{ fontFamily: 'Inter_600SemiBold' }}>
+        <Txt v="sub" tone="fg2" num style={{ fontFamily: 'Inter_600SemiBold' }}>
           {right}
         </Txt>
       ) : (

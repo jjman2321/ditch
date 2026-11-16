@@ -85,7 +85,7 @@ function Compare({ rows, width, overlap }: { rows: Row[]; width: number; overlap
   return (
     <Card style={{ marginTop: -overlap, overflow: 'hidden', zIndex: 2 }}>
       {/* Hidden measurements: "Unlimited" sets the Pro column; labels wrap only when they must. */}
-      <View pointerEvents="none" style={{ position: 'absolute', opacity: 0, left: 0, top: 0, width: 2000, alignItems: 'flex-start' }} importantForAccessibility="no-hide-descendants">
+      <View pointerEvents="none" style={{ position: 'absolute', opacity: 0, left: 0, top: 0, width: 2000, alignItems: 'flex-start' }} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
         <Text style={CELL_TEXT} onLayout={(e) => setUnlimitedW(e.nativeEvent.layout.width)} maxFontSizeMultiplier={1.3}>
           Unlimited
         </Text>

@@ -63,7 +63,16 @@
       "expo-image",
       "expo-localization",
       "@react-native-community/datetimepicker",
-      "expo-sharing"
+      "expo-sharing",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Ditch reads the screenshots you pick to find your subscriptions. They're read on your iPhone and not uploaded.",
+          "cameraPermission": false,
+          "microphonePermission": false
+        }
+      ],
+      "expo-document-picker"
     ],
     "experiments": {
       "typedRoutes": true,

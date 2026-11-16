@@ -88,6 +88,18 @@ describe('Apple subscriptions screenshot', () => {
   it('two overlapping screenshots don’t double up', () => {
     expect(readAppleSubscriptions([...lines, ...lines], TODAY, 'USD')).toHaveLength(found.length);
   });
+  it('rows with a plan and price line, "Renews on", a Sort button', () => {
+    const rows = readAppleSubscriptions(
+      ['Subscriptions', 'Sort', 'Active', 'Netflix', 'Standard (Monthly)', '$17.99/month', 'Renews on December 3, 2026', 'YouTube Premium', 'Individual · $13.99 per month', 'Renews 21 November', 'Apple One', 'Expires on 4 January 2027'],
+      TODAY,
+      'USD',
+    );
+    expect(rows.map((f) => [f.catalogId, f.date, f.state, f.price?.amountMinor ?? null, f.cycle])).toEqual([
+      ['netflix', '2026-12-03', 'renews', 1799, 'monthly'],
+      ['youtube-premium', '2026-11-21', 'renews', 1399, 'monthly'],
+      ['apple-one', '2027-01-04', 'ends', null, null],
+    ]);
+  });
   it('UK layout (day first) and an unknown app', () => {
     const uk = readAppleSubscriptions(['Active', 'Duolingo', 'Renews 5 December 2026', 'Tiny Habit Timer', 'Renews 1 January 2027'], TODAY, 'GBP', 'dmy');
     expect(uk.map((f) => [f.catalogId, f.date])).toEqual([['duolingo', '2026-12-05'], [null, '2027-01-01']]);

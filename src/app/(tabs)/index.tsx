@@ -11,10 +11,10 @@ import { nextReminder, whenLabel } from '@/domain/reminders';
 import { overlapToShow } from '@/domain/overlaps';
 import { priceChanges } from '@/domain/priceWatch';
 import { priceRow } from '@/catalog/prices';
-import { trialsAfter, homeGroups, homeTotals, isPending, isPricedSub, isProTrial, listedUserSubs, remindedIds, undatedSubs, yearlyOfSub } from '@/domain/subs';
+import { beforePayday, trialsAfter, homeGroups, homeTotals, isPending, isPricedSub, isProTrial, listedUserSubs, remindedIds, undatedSubs, yearlyOfSub } from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
 import { AddDatesSheet } from '@/home/AddDatesSheet';
-import { EmptyHome, ForgottenRow, NextReminderRow, NoDateRow, OffBanner, OverlapCard, PriceChangeCard, TotalCard, openPhoneSettings } from '@/home/HomeParts';
+import { EmptyHome, ForgottenRow, NextReminderRow, NoDateRow, OffBanner, OverlapCard, PaydayRow, PriceChangeCard, TotalCard, openPhoneSettings } from '@/home/HomeParts';
 import { PriceColumnMeasure, SubRow, type BellState } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
 import { BottomFade, Card, Chip, Gear, IconButton, Plus, RowDivider, SectionHeader, SurfaceContext, Wordmark, brand, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
@@ -47,6 +47,7 @@ export default function Home() {
   const undated = undatedSubs(subs).sort((a, b) => yearlyOfSub(b) - yearlyOfSub(a));
   const empty = allGroups.length === 0;
   const overlap = useMemo(() => overlapToShow(subs, settings.dismissedOverlaps), [subs, settings.dismissedOverlaps]);
+  const payday = useMemo(() => beforePayday(subs, today, settings.payday), [subs, today, settings.payday]);
   // Price watch (Pro): our checked price for their plan changed. Dismissed keys share the overlaps list.
   const change = useMemo(() => priceChanges(subs, priceRow).find((c) => !settings.dismissedOverlaps.includes(c.key)) ?? null, [subs, settings.dismissedOverlaps]);
   // The very next one, so it's plain that reminders are scheduled.
@@ -110,6 +111,11 @@ export default function Home() {
               {next ? (
                 <View style={{ marginTop: 10 }}>
                   <NextReminderRow when={whenLabel(next.fireAt, today, settings.reminderTime)} name={next.name} onPress={() => router.push('/calendar')} />
+                </View>
+              ) : null}
+              {payday ? (
+                <View style={{ marginTop: 10 }}>
+                  <PaydayRow before={payday} money={money} onPress={() => router.push('/calendar')} />
                 </View>
               ) : null}
               {undated.length && !blocked ? (

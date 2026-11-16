@@ -3,7 +3,7 @@
 // Money is whole minor units, dates are "YYYY-MM-DD", currencies never mix.
 
 import { chargeFrom, type DateSource } from './charges';
-import { addDays, daysBetween, monthGrid, occurrence, parseDate, weekdayOf, type DateOnly } from './dates';
+import { addDays, daysBetween, daysInMonth, monthGrid, occurrence, parseDate, weekdayOf, type DateOnly } from './dates';
 import { monthlyMinorExact, roundMinor, spendTotals, yearlyMinor, type Cycle, type SpendTotal } from './money';
 
 export type SubStatus = 'active' | 'ditched-pending' | 'ditched-confirmed' | 'deleted';
@@ -511,4 +511,38 @@ export function yearAhead(subs: Sub[], today: DateOnly): MonthAhead[] {
     out.push({ month: start, totals: [...sums.entries()].map(([currency, amountMinor]) => ({ currency, amountMinor })).sort((a, b) => b.amountMinor - a.amountMinor), big: big.sort((a, b) => a.charge.localeCompare(b.charge)) });
   }
   return out;
+}
+
+// ---------- Before payday (DECISIONS #60, free) ----------
+
+/** The next payday after today. The day clamps to short months (31 → Feb 28) and never sticks there. Today's payday counts as paid, so the next one is next month. */
+export function nextPayday(payday: number, today: DateOnly): DateOnly {
+  const { y, m, d } = parseDate(today);
+  const on = (yy: number, mm: number) => `${yy}-${String(mm).padStart(2, '0')}-${String(Math.min(payday, daysInMonth(yy, mm))).padStart(2, '0')}`;
+  const here = on(y, m);
+  if (Number(here.slice(8)) > d) return here;
+  return m === 12 ? on(y + 1, 1) : on(y, m + 1);
+}
+
+export type BeforePayday = {
+  payday: DateOnly;
+  /** What's charged from today until the day before payday, one total per currency. */
+  totals: { currency: string; amountMinor: number }[];
+  count: number;
+};
+
+/** What still leaves your account before your next payday. Only a day of the month is ever stored, never pay. */
+export function beforePayday(subs: Sub[], today: DateOnly, payday: number | null): BeforePayday | null {
+  if (!payday) return null;
+  const next = nextPayday(payday, today);
+  const until = addDays(next, -1);
+  const sums = new Map<string, number>();
+  let count = 0;
+  for (const s of listedUserSubs(subs).filter(isPricedSub).filter(hasDate)) {
+    for (let n = chargesBetween(s, today, until).length; n > 0; n--) {
+      sums.set(s.currency, (sums.get(s.currency) ?? 0) + s.amountMinor);
+      count++;
+    }
+  }
+  return { payday: next, count, totals: [...sums.entries()].map(([currency, amountMinor]) => ({ currency, amountMinor })).sort((a, b) => b.amountMinor - a.amountMinor) };
 }

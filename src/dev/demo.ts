@@ -75,7 +75,8 @@ export function demoData(name: DemoName, today: DateOnly): { subs: Sub[]; settin
     list.push({ ...sub('costco', 'Costco', 'costco', 'Shopping', 6500, d(70)), cycle: 'yearly' as const });
     // An old checked price on a real plan: shows Price watch (Pro) and the yearly check (Claude has a yearly plan).
     list.push(sub('claude', 'Claude', 'claude-pro', 'AI', 1800, d(20), { planId: 'monthly', planName: 'Pro (monthly)', priceSource: 'catalog', priceCountry: 'US' }));
-    return { subs: list, settings };
+    // Paid on the 25th: shows Before payday on Home.
+    return { subs: list, settings: { ...settings, payday: 25 } };
   }
   if (name === 'pro') {
     list.push({ ...proTrialSub(today, NOW), id: 'trial' });

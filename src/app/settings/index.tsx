@@ -12,6 +12,7 @@ import { nextReminder } from '@/domain/reminders';
 import { effectiveLeads, formatTime, leadsLabel, shortTimeLabel } from '@/domain/settings';
 import { FREE_REMINDERS, hasDate, listedUserSubs, remindedIds, runningProTrial } from '@/domain/subs';
 import { pendingCount } from '@/services/notifications';
+import { ordinal } from '@/domain/copy';
 import { Group, Row, SettingsPage } from '@/settings/Parts';
 import { SUPPORT_EMAIL, rateDitch, reportProblem, suggestFeature, suggestService } from '@/settings/feedback';
 import { SHORT_VERSION } from '@/settings/version';
@@ -74,6 +75,7 @@ export default function Settings() {
 
       <Group>
         <Row label="Currency" value={`${settings.currency} ${symbolOf(settings.currency)}`} onPress={() => router.push('/settings/currency')} />
+        <Row label="Payday" value={settings.payday ? `The ${ordinal(settings.payday)}` : 'Off'} onPress={() => router.push('/settings/payday')} />
         <Row label="Your data" onPress={() => router.push('/settings/data')} />
       </Group>
 

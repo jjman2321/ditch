@@ -9,7 +9,8 @@ import { POPULAR_ORDER, SERVICE_BY_ID, availableIn } from '@/catalog/services';
 import type { SpendTotal } from '@/domain/money';
 import type { NotifStatus } from '@/services/notifications';
 import { approxLine } from '@/domain/copy';
-import { shortDate } from '@/domain/dates';
+import { shortDate, weekdayDate } from '@/domain/dates';
+import type { BeforePayday } from '@/domain/subs';
 import { useCombinedTotal } from '@/services/fx';
 import { useApp, useAppMoney } from '@/state/app';
 import { Bang, Bell, BellOff, Button, Card, ChevronRight, Duck, F, LogoTile, Plus, Search, Txt, brand, usePalette } from '@/ui/sunflower';
@@ -167,6 +168,37 @@ export function NextReminderRow({ when, name, onPress }: { when: string; name: s
             </Txt>
             <Txt v="sub" tone="mute" num numberOfLines={1}>
               {when}
+            </Txt>
+          </View>
+          <ChevronRight color={p.cardFg} size={16} />
+        </Card>
+      )}
+    </Pressable>
+  );
+}
+
+/**
+ * Before payday (DECISIONS #60, free): what still leaves the account before
+ * the next payday. Currencies stay apart (CLAUDE.md rule 1).
+ */
+export function PaydayRow({ before, money, onPress }: { before: BeforePayday; money: (minor: number, currency: string) => string; onPress: () => void }) {
+  const p = usePalette();
+  const amounts = before.totals.map((t) => money(t.amountMinor, t.currency)).join(' · ');
+  const title = before.count ? amounts : 'nothing due';
+  const line = before.count ? `${before.count} ${before.count === 1 ? 'charge' : 'charges'} until payday, ${weekdayDate(before.payday)}` : `Payday is ${weekdayDate(before.payday)}`;
+  return (
+    <Pressable accessibilityRole="button" accessibilityLabel={`Before payday: ${title}. ${line}`} accessibilityHint="Opens the calendar" onPress={onPress}>
+      {({ pressed }) => (
+        <Card style={{ minHeight: 56, borderRadius: 16, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, paddingVertical: 9, opacity: pressed ? 0.75 : 1 }}>
+          <View style={{ flex: 1, minWidth: 0 }}>
+            <Txt v="body" color={p.cardFg} num numberOfLines={1} style={{ fontSize: 15 }}>
+              <Txt v="body" color={p.cardFg} style={{ fontFamily: F.bold, fontSize: 15 }}>
+                Before payday:
+              </Txt>
+              {` ${title}`}
+            </Txt>
+            <Txt v="sub" tone="mute" num numberOfLines={1}>
+              {line}
             </Txt>
           </View>
           <ChevronRight color={p.cardFg} size={16} />

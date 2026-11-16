@@ -30,6 +30,8 @@ import {
   inTrial,
   undatedSubs,
   yearAhead,
+  beforePayday,
+  nextPayday,
 } from '../subs';
 
 const TODAY = '2026-11-09'; // a Monday, like the renders
@@ -353,5 +355,38 @@ describe('year ahead (DECISIONS #60)', () => {
   it('every 2 weeks can charge 3 times in a month', () => {
     const months = yearAhead([s('Gym', 1000, 'biweekly', '2026-12-01')], '2026-11-09');
     expect(months[1].totals).toEqual([{ currency: 'USD', amountMinor: 3000 }]); // Dec 1, 15, 29
+  });
+});
+
+describe('before payday (DECISIONS #60)', () => {
+  const s = (name: string, amountMinor: number, cycle: Sub['cycle'], anchor: string, currency = 'USD') =>
+    makeSub({ name, amountMinor, currency, cycle, anchor, dateSource: 'next' });
+  it('next payday is later this month, or next month once it has come', () => {
+    expect(nextPayday(25, '2026-11-09')).toBe('2026-11-25');
+    expect(nextPayday(9, '2026-11-09')).toBe('2026-12-09'); // paid today
+    expect(nextPayday(1, '2026-12-15')).toBe('2027-01-01');
+  });
+  it('31 clamps to short months and comes back', () => {
+    expect(nextPayday(31, '2027-02-10')).toBe('2027-02-28');
+    expect(nextPayday(31, '2027-02-28')).toBe('2027-03-31');
+    expect(nextPayday(30, '2028-02-01')).toBe('2028-02-29');
+  });
+  it('adds charges from today until the day before payday, per currency', () => {
+    const subs = [
+      s('Netflix', 1799, 'monthly', '2026-11-09'), // today: counts
+      s('Spotify', 1199, 'monthly', '2026-11-24'), // day before payday: counts
+      s('Disney+', 999, 'monthly', '2026-11-25'), // on payday: after the money lands
+      s('BBC', 500, 'weekly', '2026-11-10', 'GBP'), // Nov 10, 17, 24
+    ];
+    const b = beforePayday(subs, '2026-11-09', 25)!;
+    expect(b.payday).toBe('2026-11-25');
+    expect(b.count).toBe(5);
+    expect(b.totals).toEqual([
+      { currency: 'USD', amountMinor: 2998 },
+      { currency: 'GBP', amountMinor: 1500 },
+    ]);
+  });
+  it('is off until a payday is set', () => {
+    expect(beforePayday([s('Netflix', 1799, 'monthly', '2026-11-10')], '2026-11-09', null)).toBeNull();
   });
 });

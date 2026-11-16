@@ -84,16 +84,16 @@ This is the #1 complaint about Bobby, so it's the product.
 - $49.99 one-time, covers **Pro only**. Future bank sync would be a separate plan.
 - Never write "all future features included".
 
-### 8. Ditch the duck, the stamp and the voice
+### 8. Ditch the duck, the Ditched moment and the voice
 - **Look: Sunflower** (DECISIONS #14, `design/v9/`): sunflower yellow, ink, cream, Archivo display, the duck with a tangerine bill.
 - **Ditch the duck** (owner decision, Nov 9) replaces the retired raccoon. He only appears where he has a job: welcome, the notification icon, watching your trial, celebrating a ditch, empty states. Never next to a moving price. Needs a professional redraw before launch.
 - Ditch's personality comes from four things:
-  - the **DITCHED stamp** moment: hold to ditch, the ring fills, a hand-drawn ink stamp lands with a firm haptic, then "$X a year you won't pay" (never "saved" or "back")
+  - the **Ditched moment** (DECISIONS #58, matches the website): hold to ditch, the ring fills, the row's DITCHED tag lands with a firm haptic, the logo dims, the duck pops up, then "$X a year you won't pay" (never "saved" or "back"). No big stamp.
   - the **yearly total reveal** in onboarding
   - **real service logos** as the illustration
   - a **short, dry voice** in copy and notifications that's on the user's side and never shames them ("Netflix renews in 3 days. $17.99. Still watching?")
-- The stamp is hand-drawn (not a font). It can also be the app icon motif, the widget accent and the App Store screenshot device.
-- Nothing moves near a price. Never on top of an action. With Reduce Motion: show the stamp, skip the motion.
+- The DITCHED mark can still be the app icon motif, the widget accent and the App Store screenshot device.
+- Nothing moves near a price. Never on top of an action. With Reduce Motion: show the finished state, skip the motion.
 
 ### 9. Accessibility
 - Tap targets ≥ 44pt. Dynamic Type. VoiceOver labels on every control. Dark mode. Tabular figures for money.

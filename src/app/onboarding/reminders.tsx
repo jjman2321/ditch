@@ -98,7 +98,7 @@ export default function Reminders() {
         <StepHeader step={4} />
         {/* SE: the paywall's smaller title size, so no word sits alone on a line. */}
         <Txt v="title" accessibilityRole="header" style={[{ marginTop: f.tiny ? 10 : 16 }, f.tiny ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 } : f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null]}>
-          {f.tiny ? `Get a heads-up\nbefore you’re${NB}charged.` : f.small ? `Get a heads-up before\nyou’re${NB}charged.` : `Get a heads-up before you’re${NB}charged.`}
+          {f.tiny ? `Get a reminder\nbefore you’re${NB}charged.` : f.small ? `Get a reminder before\nyou’re${NB}charged.` : `Get a reminder before you’re${NB}charged.`}
         </Txt>
         <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
           {'3 days and 1 day before, at 9 AM.\nOnly about your subscriptions.'}

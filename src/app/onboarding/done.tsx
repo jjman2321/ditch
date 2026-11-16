@@ -145,7 +145,8 @@ export default function Done() {
   return (
     <OnbRoot surface="sun">
       <FitScroll style={{ paddingTop: f.top, paddingHorizontal: f.edge, paddingBottom: f.bottom }}>
-        <View style={{ height: f.tiny ? 4 : f.small ? 16 : 56 }} />
+        {/* Tall phones: the spare height splits above the title and above the reminder, so no one big gap. */}
+        <View style={{ flex: 1, minHeight: f.tiny ? 4 : f.small ? 16 : 56, maxHeight: 150 }} />
         <View pointerEvents="none" style={{ position: 'absolute', opacity: 0, width: 2000, alignItems: 'flex-start' }}>
           <Text allowFontScaling={false} onLayout={(e) => onTitle(e.nativeEvent.layout.width)} style={{ fontFamily: F.display, fontSize: titleBase, letterSpacing: -0.04 * titleBase }}>
             {title}

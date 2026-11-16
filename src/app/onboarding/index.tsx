@@ -45,7 +45,7 @@ export default function Welcome() {
           </Txt>
         </Txt>
         <Txt v="lead" tone="fg2" style={[{ marginTop: f.tiny ? 10 : 16, maxWidth: f.tablet ? 420 : 320 }, f.tablet && { fontSize: 20, lineHeight: 28 }]}>
-          {'See everything you pay for. Get a heads-up before you’re charged.'}
+          {'See everything you pay for. Get a reminder before you’re charged.'}
         </Txt>
 
         <View style={{ flex: 1, minHeight: f.tiny ? 12 : f.small ? 24 : 96 }} />

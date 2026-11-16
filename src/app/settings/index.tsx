@@ -4,7 +4,7 @@
 
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import { AccessibilityInfo, Linking, View } from 'react-native';
+import { AccessibilityInfo, Linking, View, useWindowDimensions } from 'react-native';
 
 import { DEV_TOOLS } from '@/dev/flags';
 import { weekdayDate, toDateOnly } from '@/domain/dates';
@@ -23,11 +23,15 @@ import { Bang, Bell, Button, Card, Check, F, ProLockup, SunSwitch, Txt, brand, h
 
 
 export default function Settings() {
+  // 320pt wide: "3 days, 1 day" (the row already says Remind me), so it never gets cut.
+  const narrow = useWindowDimensions().width < 350;
   const app = useApp();
   const { settings, pro, subs } = app;
   const listed = listedUserSubs(subs);
   const reminded = remindedIds(subs, pro);
   const trial = runningProTrial(subs, app.today);
+  const leadWords = leadsLabel(effectiveLeads(settings, pro)).replace(/ and (?=[^,]*$)/, ', ');
+  const remindValue = narrow ? leadWords.replace(/ before$/, '') : leadWords;
 
   // Health check every time Settings opens.
   const { recheck } = app;
@@ -46,7 +50,7 @@ export default function Settings() {
       <HealthCard />
 
       <Group header="Reminders" note={pro ? undefined : 'Free covers 3 subscriptions. Pro covers all of them, on your own timing.'}>
-        <Row label="Remind me" value={leadsLabel(effectiveLeads(settings, pro)).replace(/ and (?=[^,]*$)/, ', ')} onPress={() => router.push('/settings/remind-me')} />
+        <Row label="Remind me" value={remindValue} onPress={() => router.push('/settings/remind-me')} />
         <Row label="Time" right={<TimeField value={settings.reminderTime} onChange={(t) => app.updateSettings({ reminderTime: t })} />} a11yValue={`, ${shortTimeLabel(settings.reminderTime)}`} />
         <Row label="Which subscriptions" value={whichValue} onPress={() => router.push('/settings/which')} />
       </Group>

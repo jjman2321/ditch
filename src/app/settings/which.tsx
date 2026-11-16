@@ -4,11 +4,11 @@
 
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { AccessibilityInfo, Pressable, View } from 'react-native';
+import { AccessibilityInfo, Pressable, View, useWindowDimensions } from 'react-native';
 import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withSequence, withTiming } from 'react-native-reanimated';
 
-import { weekdayDate } from '@/domain/dates';
-import { CYCLE_WORDS } from '@/domain/money';
+import { shortDate, weekdayDate } from '@/domain/dates';
+import { CYCLE_SHORT, CYCLE_WORDS } from '@/domain/money';
 import { FREE_REMINDERS, chargeOfSub, isPricedSub, listedUserSubs, remindedIds, yearlyOfSub } from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
 import { SubLogo } from '@/home/SubRow';
@@ -18,6 +18,7 @@ import { useApp, useAppMoney } from '@/state/app';
 import { Bell, BellMark, SunSwitch, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
 
 export default function Which() {
+  const narrow = useWindowDimensions().width < 400;
   const p = usePalette();
   const app = useApp();
   const money = useAppMoney();
@@ -74,7 +75,10 @@ export default function Which() {
           {list.map((s) => {
             const isOn = on.has(s.id);
             const next = chargeOfSub(s, today);
-            const line = `${isPricedSub(s) ? `${money(s.amountMinor, s.currency)} ${CYCLE_WORDS[s.cycle]} · ` : ''}${next ? weekdayDate(next) : 'No date yet'}`;
+            // SE-sized phones: "$20.00/mo · Nov 21" so the date isn't cut off.
+            const line = narrow
+              ? `${isPricedSub(s) ? `${money(s.amountMinor, s.currency)}${CYCLE_SHORT[s.cycle]} · ` : ''}${next ? shortDate(next) : 'No date yet'}`
+              : `${isPricedSub(s) ? `${money(s.amountMinor, s.currency)} ${CYCLE_WORDS[s.cycle]} · ` : ''}${next ? weekdayDate(next) : 'No date yet'}`;
             const body = (
               <>
                 <SubLogo sub={s} />

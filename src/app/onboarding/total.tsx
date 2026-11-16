@@ -77,14 +77,14 @@ export default function Total() {
   const restStyle = useReveal(play, landed + 120, 220);
 
   // 104pt (80 on SE, 128 on iPad), shrunk only if a big total won't fit.
-  const base = f.tablet ? 128 : f.small ? 80 : 104;
+  const base = f.tablet ? 128 : f.tiny ? 56 : f.small ? 80 : 104;
   // A little air on the right so the last digit never touches the edge.
   const [size, onMeasure] = useFitSize(base, f.content - 4);
   const lh = Math.round((size * 0.8) / 4) * 4;
   const heroStyle = { fontFamily: F.display, fontSize: size, letterSpacing: -0.045 * size, color: p.money };
 
   // How many rows fit before "N more · Show all": 4 on iPhone 12 and up, 3 on smaller, 2 on SE, all on iPad.
-  const shown = showAll || f.tablet ? sorted.length : f.small ? 2 : f.height >= 800 ? 4 : 3;
+  const shown = showAll || f.tablet ? sorted.length : f.tiny ? 1 : f.small ? 2 : f.height >= 800 ? 4 : 3;
   const rows = sorted.slice(0, shown);
   const rest = sorted.slice(shown);
   const rest1 = rest.length === 1 ? rest : [];
@@ -98,7 +98,7 @@ export default function Total() {
     <OnbRoot surface="sun">
       <FitScroll style={{ paddingTop: f.top, paddingHorizontal: f.edge, paddingBottom: f.tablet ? f.bottom : 0 }}>
         <StepHeader step={2} />
-        <Txt v="label" style={{ marginTop: f.small ? 8 : 24, fontSize: 17, lineHeight: 24 }}>
+        <Txt v="label" style={{ marginTop: f.tiny ? 4 : f.small ? 8 : 24, fontSize: 17, lineHeight: 24 }}>
           {main ? 'You pay' : 'Add your prices to see your total'}
         </Txt>
 
@@ -143,7 +143,7 @@ export default function Total() {
           </Txt>
         </Animated.View>
 
-        <View style={{ height: f.small ? 16 : 24 }} />
+        <View style={{ height: f.tiny ? 10 : f.small ? 16 : 24 }} />
 
         <View style={[{ flex: 1, backgroundColor: cream.sheet }, sheetPad, dark && { borderTopWidth: 1, borderColor: '#2C2924' }]}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 16 }}>
@@ -210,7 +210,7 @@ export default function Total() {
             ) : null}
           </View>
           <Txt v="strong" color={cream.fg} style={{ marginTop: f.small ? 12 : 16 }}>
-            {`Not using one? Ditch it before it${NB}renews.`}
+            {f.tiny ? 'Not using one? Ditch it.' : `Not using one? Ditch it before it${NB}renews.`}
           </Txt>
           {f.tablet ? (
             <>

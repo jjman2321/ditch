@@ -117,7 +117,7 @@ function Compare({ rows, width, overlap, tiny }: { rows: Row[]; width: number; o
             key={r.label}
             accessible
             accessibilityLabel={`${r.label}: Free, ${spoken(r.free)}. Pro, ${spoken(r.pro)}.`}
-            style={{ flexDirection: 'row', alignItems: 'center', minHeight: two ? 42 : 32 }}
+            style={{ flexDirection: 'row', alignItems: 'center', minHeight: two ? 42 : tiny ? 28 : 32 }}
           >
             {i ? <View style={{ position: 'absolute', top: 0, left: 16, right: 0, height: 1, backgroundColor: p.hair }} /> : null}
             <Txt v="sub" color={p.cardFg} style={[LABEL_TEXT, tiny && { fontSize: 13 }, { flex: 1, paddingLeft: 16, paddingRight: 8, paddingVertical: two ? 4 : 6, lineHeight: two ? 17 : 20 }]} maxFontSizeMultiplier={1.4}>
@@ -236,9 +236,9 @@ export default function Paywall() {
 
   return (
     <OnbRoot surface="cream">
-      <FitScroll style={{ paddingHorizontal: f.edge, paddingBottom: f.bottom }}>
-        <View style={{ flexGrow: 1, marginHorizontal: -f.edge, paddingTop: f.top, paddingHorizontal: f.edge, paddingBottom: f.tablet ? 80 : f.tiny ? 50 : f.small ? 52 : 48, backgroundColor: dark ? '#2A2516' : brand.sunflower }}>
-          <View style={{ height: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+      <FitScroll style={{ paddingHorizontal: f.edge, paddingBottom: f.tiny ? 4 : f.bottom }}>
+        <View style={{ flexGrow: 1, marginHorizontal: -f.edge, paddingTop: f.top, paddingHorizontal: f.edge, paddingBottom: f.tablet ? 80 : f.tiny ? 46 : f.small ? 52 : 48, backgroundColor: dark ? '#2A2516' : brand.sunflower }}>
+          <View style={{ height: f.tiny ? 40 : 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <ProLockup size={f.small ? 20 : 22} color={ink} />
             <IconButton label="Close, continue free" onPress={leaveFree} size={32} bg={dark ? '#3A3424' : 'rgba(22,20,15,0.12)'} style={{ marginRight: -6 }}>
               <Close color={ink} />
@@ -247,7 +247,7 @@ export default function Paywall() {
           {/* Spare height goes here, so the title sits lower instead of a gap under the plans. */}
           <View style={{ flexGrow: 1 }} />
           {/* Tall phones and iPad: their logos fill that space ("Netflix, Spotify and 5 more"). No room on the SE. */}
-          {n >= 2 && !f.small ? <LogoLine items={logos} total={n} ink={ink} band={dark ? '#2A2516' : brand.sunflower} /> : null}
+          {n >= 2 && (f.tablet || f.height >= 900) ? <LogoLine items={logos} total={n} ink={ink} band={dark ? '#2A2516' : brand.sunflower} /> : null}
           <Txt v="title" color={ink} accessibilityRole="header" accessibilityLabel={spokenHead} style={f.tiny ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 } : f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null}>
             {head}
           </Txt>
@@ -259,7 +259,7 @@ export default function Paywall() {
 
         <Compare rows={rows} width={f.content} overlap={overlap} tiny={f.tiny} />
 
-        <View accessibilityRole="radiogroup" accessibilityLabel="Plans" style={{ gap: 8, marginTop: f.small ? 16 : 20 }}>
+        <View accessibilityRole="radiogroup" accessibilityLabel="Plans" style={{ gap: f.tiny ? 6 : 8, marginTop: f.tiny ? 10 : f.small ? 16 : 20 }}>
           <PlanCard
             title="Yearly"
             // 320pt wide: the tag would squeeze "Yearly" to "Y."; the button and the line under it say the trial.
@@ -310,7 +310,7 @@ export default function Paywall() {
         <Button label={cta} onPress={buy} height={f.tiny ? 44 : f.small ? 48 : 56} />
         {/* A fixed slot, so the button never moves when the plan changes. Price and the real start date by the
             button (App Review); no reminder text (owner, Nov 10). */}
-        <View style={{ height: f.tiny ? 42 : 48, alignItems: 'center', justifyContent: 'center', paddingHorizontal: planId === 'yearly' ? 0 : 4 }}>
+        <View style={{ height: f.tiny ? 38 : 48, alignItems: 'center', justifyContent: 'center', paddingHorizontal: planId === 'yearly' ? 0 : 4 }}>
           <Txt v="fine" tone="fg2" num center accessibilityLiveRegion="polite">
             {planId === 'yearly' ? (
               <>

@@ -3,7 +3,7 @@
 
 import type { Overlap } from '@/domain/overlaps';
 import type { PriceChange } from '@/domain/priceWatch';
-import { Linking, Pressable, View } from 'react-native';
+import { Linking, Pressable, View, useWindowDimensions } from 'react-native';
 
 import { POPULAR_ORDER, SERVICE_BY_ID, availableIn } from '@/catalog/services';
 import type { SpendTotal } from '@/domain/money';
@@ -35,6 +35,8 @@ export function TotalCard({
   const money = useAppMoney();
   const [first, ...rest] = totals;
   const fg = p.dark ? p.fg : brand.ink;
+  // 320pt wide (SE with Display Zoom): a smaller total so "a month" and the reminder line stay on one line each.
+  const tiny = useWindowDimensions().width < 350;
   // 2+ currencies: one rough line in their own currency. Never replaces the real totals.
   const combined = useCombinedTotal(totals, useApp().settings.currency);
   const approx = combined ? approxLine(money(combined.monthlyMinor, combined.currency, { whole: true }), 'a month', combined.date) : null;
@@ -57,7 +59,7 @@ export function TotalCard({
     >
       {first ? (
         <View style={{ flexDirection: 'row', alignItems: 'baseline', flexWrap: 'wrap', columnGap: 8 }}>
-          <Txt v="displayM" num color={p.dark ? brand.sunflower : brand.ink} style={{ fontSize: 42, lineHeight: 44, letterSpacing: -1.6 }}>
+          <Txt v="displayM" num color={p.dark ? brand.sunflower : brand.ink} style={tiny ? { fontSize: 32, lineHeight: 36, letterSpacing: -1.2 } : { fontSize: 42, lineHeight: 44, letterSpacing: -1.6 }}>
             {money(first.monthlyMinor, first.currency)}
           </Txt>
           <Txt v="lead" color={fg} style={{ fontFamily: F.semi, fontSize: 17 }}>
@@ -77,8 +79,8 @@ export function TotalCard({
       <View style={{ height: 1, backgroundColor: p.dark ? p.rule : 'rgba(22,20,15,0.18)', marginTop: 8, marginBottom: 9 }} />
       <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
         {first ? (
-          <Txt v="body" num color={fg} style={{ fontSize: 15.5 }}>
-            <Txt v="body" num color={fg} style={{ fontFamily: F.bold, fontSize: 15.5 }}>
+          <Txt v="body" num color={fg} style={{ fontSize: tiny ? 14 : 15.5 }}>
+            <Txt v="body" num color={fg} style={{ fontFamily: F.bold, fontSize: tiny ? 14 : 15.5 }}>
               {money(first.yearlyMinor, first.currency, { whole: true })}
             </Txt>{' '}
             a year ·
@@ -87,10 +89,10 @@ export function TotalCard({
         {/* Everything ditched: no "Reminders on 0 of 0". */}
         {of === 0 ? null : blocked ? <BellOff color={fg} size={16} /> : <Bell color={p.dark ? brand.sunflower : brand.ink} fill={p.dark ? brand.sunflower : brand.ink} size={15} />}
         {of === 0 ? null : (
-          <Txt v="body" color={fg} style={{ fontSize: 15.5, fontFamily: blocked ? F.bold : F.regular }}>
-            {blocked ? 'Reminders off' : 'Reminders on '}
+          <Txt v="body" color={fg} style={{ fontSize: tiny ? 14 : 15.5, fontFamily: blocked ? F.bold : F.regular }}>
+            {blocked ? 'Reminders off' : tiny ? '' : 'Reminders on '}
             {blocked ? null : (
-              <Txt v="body" num color={fg} style={{ fontFamily: F.bold, fontSize: 15.5 }}>
+              <Txt v="body" num color={fg} style={{ fontFamily: F.bold, fontSize: tiny ? 14 : 15.5 }}>
                 {reminders}
               </Txt>
             )}
@@ -189,7 +191,9 @@ export function PaydayRow({ before, money, onPress }: { before: BeforePayday; mo
   const p = usePalette();
   const amounts = before.totals.map((t) => money(t.amountMinor, t.currency)).join(' · ');
   const title = before.count ? amounts : 'nothing due';
-  const line = before.count ? `${before.count} ${before.count === 1 ? 'charge' : 'charges'} until payday, ${weekdayDate(before.payday)}` : `Payday is ${weekdayDate(before.payday)}`;
+  // Small phones: "Nov 25" so the date (the point of the line) never gets cut.
+  const day = useWindowDimensions().width < 380 ? shortDate(before.payday) : weekdayDate(before.payday);
+  const line = before.count ? `${before.count} ${before.count === 1 ? 'charge' : 'charges'} until payday, ${day}` : `Payday is ${day}`;
   return (
     <Pressable accessibilityRole="button" accessibilityLabel={`Before payday: ${title}. ${line}`} accessibilityHint="Opens the calendar" onPress={onPress}>
       {({ pressed }) => (
@@ -276,7 +280,7 @@ export function EmptyHome({ country, onAdd }: { country: string | null; onAdd: (
             {'Nothing to watch\u00A0yet.'}
           </Txt>
           <Txt v="leadS" center color={p.dark ? p.fg2 : '#4B4220'} style={{ marginTop: 10 }}>
-            Add what you pay for. Ditch reminds you before each charge.
+            Add what you pay for. Ditch reminds you before it charges.
           </Txt>
           <Button
             label="Add a subscription"

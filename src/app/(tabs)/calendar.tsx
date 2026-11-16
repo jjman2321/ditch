@@ -96,7 +96,7 @@ export default function Calendar() {
     <View style={{ flex: 1, backgroundColor: p.bg }}>
       <ScrollView contentContainerStyle={{ paddingTop: insets.top + 8, paddingHorizontal: edge, paddingBottom: 28 }} showsVerticalScrollIndicator={false}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Txt v="displayM" accessibilityRole="header" style={{ flex: 1, fontSize: 32, lineHeight: 40 }} numberOfLines={1}>
+          <Txt v="displayM" accessibilityRole="header" style={{ flex: 1, fontSize: 32, lineHeight: 40 }} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
             {title}
           </Txt>
           <IconButton label="Previous month" onPress={() => move(-1)}>

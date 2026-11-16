@@ -363,13 +363,18 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
       : null;
   const canSave = !!(draft.name || query).trim() && (!amount || typed !== null);
   // If our checked price for their plan has moved since they added it, say so plainly instead of "Typical".
-  const current = draft.catalogId && draft.planId && draft.priceSource === 'catalog' ? catalogPrice(draft.catalogId, draft.priceCountry, draft.planId) : null;
-  const moved = current && current.planId === draft.planId && current.currency === draft.currency && current.amountMinor !== draft.amountMinor ? current : null;
+  const current = draft.catalogId && draft.priceSource === 'catalog' ? catalogPrice(draft.catalogId, draft.priceCountry, draft.planId) : null;
+  const samePlan = !!current && !!draft.planId && current.planId === draft.planId && current.currency === draft.currency;
+  const moved = samePlan && current!.amountMinor !== draft.amountMinor ? current : null;
+  // "Typical" only when it really is our checked price for that plan (audit, Nov 16: it showed for $17.99 Netflix, which matches no plan).
+  const typical = !!current && current.currency === draft.currency && current.amountMinor === draft.amountMinor && (!draft.planId || samePlan);
   const catalogLine =
     draft.priceSource === 'catalog' && draft.amountMinor && draft.currency
       ? moved
         ? `${draft.planName ?? 'This plan'} is ${money(moved.amountMinor, moved.currency)} now, checked ${shortDate(moved.checked)}. Change yours if it went up.`
-        : `Typical ${draft.planName ? `${draft.planName} ` : ''}price. Change it if yours is different.`
+        : typical
+          ? `Typical ${draft.planName ? `${draft.planName} ` : ''}price. Change it if yours is different.`
+          : null
       : null;
   const saving = trialEntry ? null : yearlySaving({ ...draft, currency: draft.currency ?? currency }, priceRow);
 

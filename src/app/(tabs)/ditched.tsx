@@ -4,7 +4,7 @@
 
 import { Image } from 'expo-image';
 import { useMemo } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { Pressable, ScrollView, View, useWindowDimensions } from 'react-native';
 
 import { MONTH_LONG, parseDate, weekdayDate } from '@/domain/dates';
 import { CYCLE_WORDS } from '@/domain/money';
@@ -21,6 +21,8 @@ export default function DitchedTab() {
   const p = usePalette();
   const insets = useInsets();
   const edge = usePageEdge();
+  // SE-sized screens: the shorter section title, so it and the amount share one line.
+  const narrow = useWindowDimensions().width < 400;
   const app = useApp();
   const money = useAppMoney();
   const help = useCancelHelp();
@@ -54,13 +56,14 @@ export default function DitchedTab() {
 
   return (
     <View style={{ flex: 1, backgroundColor: p.bg }}>
-      <ScrollView contentContainerStyle={{ paddingTop: insets.top + 8, paddingHorizontal: edge, paddingBottom: 28 }} showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: insets.top + 8, paddingHorizontal: edge, paddingBottom: 28 }} showsVerticalScrollIndicator={false}>
         <Txt v="displayM" accessibilityRole="header" style={{ fontSize: 32, lineHeight: 40 }}>
           Ditched
         </Txt>
 
         {nothing ? (
-          <View style={{ alignItems: 'center', marginTop: 56 }}>
+          // Sits a little above the middle of the space, not stuck under the title with a blank screen below.
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', minHeight: 360, paddingBottom: 48 }}>
             {/* Empty state: the duck (CLAUDE.md rule 8: he has a job here), not the old stamp (DECISIONS #58). */}
             <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ width: 260, alignItems: 'center' }}>
               <Image source={p.dark ? DUCK_DARK : DUCK_LIGHT} style={{ width: 150, height: 88, marginBottom: -3 }} contentFit="contain" />
@@ -143,7 +146,7 @@ export default function DitchedTab() {
             {pending.length ? (
               <>
                 <SectionHeader
-                  title="Waiting for you to cancel"
+                  title={narrow ? 'To cancel' : 'Waiting for you to cancel'}
                   right={waiting[0] ? `+${money(waiting[0].yearlyMinor, waiting[0].currency)} a year` : undefined}
                   style={{ marginTop: 24, marginBottom: 8 }}
                 />

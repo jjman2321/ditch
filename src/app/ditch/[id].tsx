@@ -5,8 +5,8 @@
 // last check reminder stays, and "I already cancelled" is what confirms it.
 
 import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useMemo } from 'react';
-import { Linking, Platform, Pressable, ScrollView, useWindowDimensions, View } from 'react-native';
+import { useEffect, useMemo, useRef } from 'react';
+import { AppState, Linking, Platform, Pressable, ScrollView, useWindowDimensions, View } from 'react-native';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -17,7 +17,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { APPLE_SUBSCRIPTIONS_URL } from '@/catalog/cancel';
-import { toDateOnly, weekdayDate } from '@/domain/dates';
+import { shortDate, toDateOnly, weekdayDate } from '@/domain/dates';
 import { CYCLE_WORDS, yearlyMinor } from '@/domain/money';
 import { shortTimeLabel } from '@/domain/settings';
 import { chargeOfSub, confirmedSavings, isPending, isPricedSub, isProTrial } from '@/domain/subs';
@@ -37,9 +37,13 @@ export default function Ditched() {
   const money = useAppMoney();
   const insets = useInsets();
   const edge = usePageEdge();
-  const { height } = useWindowDimensions();
+  const { height, width } = useWindowDimensions();
   const reduce = useReducedMotion();
   const compact = height < 720;
+  // 320pt wide (SE with Display Zoom): tighter still, so the buttons sit on the first screen.
+  const tiny = width < 350;
+  // iPad and the open Duo: keep the card, the amount and the buttons together, centred, not split by a gap.
+  const wide = Math.min(width, height) >= 600;
   const sub = app.subs.find((s) => s.id === id) ?? null;
   const help = useCancelHelp();
   const p = paletteFor('sun', useIsDark());
@@ -83,6 +87,25 @@ export default function Ditched() {
 
   const lastCheck = useMemo(() => app.plan.find((r) => r.subId === id && r.kind === 'last-check') ?? null, [app.plan, id]);
 
+  // Back from the service's cancel page: ask once whether it went through, so "ditched" can become "cancelled".
+  const away = useRef<{ name: string; done: () => void } | null>(null);
+  useEffect(() => {
+    const s = AppState.addEventListener('change', (state) => {
+      const left = away.current;
+      if (state !== 'active' || !left) return;
+      away.current = null;
+      setTimeout(
+        () =>
+          ask('Did it go through?', `Did you finish cancelling ${left.name}?`, [
+            { text: 'Not yet', style: 'cancel' },
+            { text: 'Yes, cancelled', onPress: left.done },
+          ]),
+        400,
+      );
+    });
+    return () => s.remove();
+  }, []);
+
   if (!sub) return <Gone />;
 
   const trial = isProTrial(sub);
@@ -117,7 +140,7 @@ export default function Ditched() {
       : { title: 'Reminders aren’t on yet', line: 'Tap to turn them on, so the last check can reach\u00A0you.' }
     : lastCheck
       ? {
-          title: `One last check: ${weekdayDate(toDateOnly(lastCheck.fireAt))} · ${shortTimeLabel(app.settings.reminderTime)}`,
+          title: `One last check: ${(tiny ? shortDate : weekdayDate)(toDateOnly(lastCheck.fireAt))} · ${shortTimeLabel(app.settings.reminderTime)}`,
           line: `“${lastCheck.body}”`.replace(/ (\S+)$/, '\u00A0$1'),
         }
       : charge
@@ -127,7 +150,7 @@ export default function Ditched() {
   return (
     <SurfaceContext.Provider value="sun">
       <View style={{ flex: 1, backgroundColor: p.bg }}>
-        <ScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, 12), paddingHorizontal: edge }} showsVerticalScrollIndicator={false}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: wide ? 'center' : undefined, paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, 12), paddingHorizontal: edge }} showsVerticalScrollIndicator={false}>
           {/* Done leaves it ditched (cancel later, the last check still comes). Undo only right
               after ditching; reopened, it's "Put it back", which asks first. */}
           <View style={{ height: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -149,8 +172,8 @@ export default function Ditched() {
             </Pressable>
           </View>
 
-          <Animated.View style={[{ marginTop: compact ? 62 : 86 }, cardStyle]}>
-            <Duck width={compact ? 84 : 114} left={20} sink={2} delay={animate ? DUCK_MS : 0} />
+          <Animated.View style={[{ marginTop: tiny ? 22 : compact ? 62 : 86 }, cardStyle]}>
+            <Duck width={tiny ? 68 : compact ? 84 : 114} left={20} sink={2} delay={animate ? DUCK_MS : 0} />
             <Card style={{ flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, paddingVertical: compact ? 11 : 14 }}>
               <Animated.View style={logoStyle}>
                 <SubLogo sub={sub} size={compact ? 36 : 40} />
@@ -164,7 +187,7 @@ export default function Ditched() {
                   </Txt>
                 )}
                 <Txt v="body" tone="mute" num style={{ fontSize: compact ? 13.5 : 14, marginTop: 2 }} numberOfLines={2}>
-                  {charge ? `${trial ? 'Charges' : 'Cancel by'} ${weekdayDate(charge)}` : 'Cancel before it renews'}
+                  {charge ? `${trial ? 'Charges' : 'Cancel by'} ${(tiny ? shortDate : weekdayDate)(charge)}` : 'Cancel before it renews'}
                   {priceLine ? ` · ${priceLine}` : ''}
                 </Txt>
               </View>
@@ -181,13 +204,13 @@ export default function Ditched() {
             </Txt>
           ) : null}
 
-          <Animated.View style={[{ alignItems: 'center', marginTop: compact ? 28 : 40 }, amountStyle]}>
+          <Animated.View style={[{ alignItems: 'center', marginTop: tiny ? 10 : compact ? 28 : 40 }, amountStyle]}>
             {yearly !== null && sub.currency ? (
               <>
-                <Txt v="displayXL" num center color={p.dark ? brand.sunflower : brand.ink} style={{ fontSize: compact ? 54 : 66, lineHeight: compact ? 58 : 70 }} adjustsFontSizeToFit numberOfLines={1}>
+                <Txt v="displayXL" num center color={p.dark ? brand.sunflower : brand.ink} style={{ fontSize: tiny ? 44 : compact ? 54 : 66, lineHeight: tiny ? 48 : compact ? 58 : 70 }} adjustsFontSizeToFit numberOfLines={1}>
                   {money(yearly, sub.currency)}
                 </Txt>
-                <Txt v="title" center style={{ fontSize: compact ? 20 : 24, lineHeight: compact ? 23 : 28, marginTop: 2 }}>
+                <Txt v="title" center style={{ fontSize: tiny ? 18 : compact ? 20 : 24, lineHeight: tiny ? 21 : compact ? 23 : 28, marginTop: 2 }}>
                   {'a year you won’t pay,\nonce you cancel.'}
                 </Txt>
               </>
@@ -207,7 +230,7 @@ export default function Ditched() {
             ) : null}
           </Animated.View>
 
-          <View style={{ flex: 1, minHeight: compact ? 10 : 14 }} />
+          <View style={wide ? { height: 40 } : { flex: 1, minHeight: compact ? 10 : 14 }} />
 
           <Animated.View style={restStyle}>
             {isPending(sub) ? (
@@ -219,7 +242,7 @@ export default function Ditched() {
                 accessibilityHint={app.notif === 'denied' ? 'Opens iPhone Settings' : 'Shows the iPhone permission prompt'}
                 onPress={() => (app.notif === 'denied' ? Linking.openSettings().catch(() => {}) : void app.askNotif())}
               >
-                <Card style={{ flexDirection: 'row', alignItems: 'center', gap: compact ? 12 : 14, paddingHorizontal: compact ? 14 : 16, paddingVertical: compact ? 10 : 13 }}>
+                <Card style={{ flexDirection: 'row', alignItems: 'center', gap: compact ? 12 : 14, paddingHorizontal: compact ? 14 : 16, paddingVertical: tiny ? 8 : compact ? 10 : 13 }}>
                   <View style={{ width: compact ? 32 : 36, height: compact ? 32 : 36, borderRadius: 18, backgroundColor: brand.sunflower, borderWidth: p.dark ? 0 : 2, borderColor: brand.ink, alignItems: 'center', justifyContent: 'center' }}>
                     <Bell color={brand.ink} fill={brand.ink} size={16} />
                   </View>
@@ -237,7 +260,10 @@ export default function Ditched() {
             <Button
               label={help1.label}
               hint={help1.kind === 'steps' ? 'Shows the steps' : 'Opens outside Ditch'}
-              onPress={() => help.go(sub)}
+              onPress={() => {
+                if (help1.kind !== 'steps') away.current = { name: sub.name, done: () => void cancelled() };
+                help.go(sub);
+              }}
               right={help1.kind === 'steps' ? undefined : <External color={p.dark ? brand.ink : brand.sunflower} size={19} />}
               style={[{ marginTop: compact ? 10 : 12 }, compact && { minHeight: 50, borderRadius: 25 }]}
             />

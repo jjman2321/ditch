@@ -186,7 +186,8 @@ export function SubRow({
 
   const price = isPricedSub(sub) ? money(sub.amountMinor, sub.currency) : null;
   const yearly = isPricedSub(sub) ? money(yearlyMinor(sub.amountMinor, sub.cycle), sub.currency) : null;
-  const narrow = useWindowDimensions().width < 380;
+  // Short date line when the row is tight: small phones, or a wide price column ("$65.00/yr", "US$20.00").
+  const narrow = useWindowDimensions().width < 380 || (priceWidth ?? 0) > 80;
   const line = rowLine(sub, charge, today, narrow);
   const per = sub.cycle === 'monthly' ? '' : CYCLE_SHORT[sub.cycle];
   const on = holding && !p.dark;

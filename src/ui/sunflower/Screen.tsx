@@ -64,6 +64,8 @@ export function useFrame({ maxContent = 512, colH = 880, extraBottom = 16 }: { m
   // Short screens get the compact layout: the SE and the folded iPhone Duo (under 700pt),
   // and the 12/13 mini (375pt wide, so titles take more lines; 812pt tall).
   const small = !tablet && (height < 700 || (width < 380 && height < 830));
+  // The SE with Display Zoom (320 x 568): the tightest layout. Everything still fits without scrolling.
+  const tiny = !tablet && width < 350;
   const edge = tablet ? Math.max(EDGE, Math.round((width - maxContent) / 2)) : EDGE;
   let top = insets.top;
   let bottom = insets.bottom + extraBottom;
@@ -72,7 +74,7 @@ export function useFrame({ maxContent = 512, colH = 880, extraBottom = 16 }: { m
     top = Math.max(top, v);
     bottom = Math.max(bottom, v);
   }
-  return { width, height, fontScale, tablet, small, edge, top, bottom, insets, content: width - edge * 2 };
+  return { width, height, fontScale, tablet, small, tiny, edge, top, bottom, insets, content: width - edge * 2 };
 }
 
 /**

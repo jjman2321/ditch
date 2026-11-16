@@ -8,7 +8,7 @@ import { catalogPrice } from '@/catalog/prices';
 import { SERVICE_BY_ID } from '@/catalog/services';
 import { headsUpDates } from '@/domain/charges';
 import { stillUsingIt } from '@/domain/copy';
-import { addDays, weekdayDate, weekdayName, weekdayShort } from '@/domain/dates';
+import { addDays, shortDate, weekdayDate, weekdayName, weekdayShort } from '@/domain/dates';
 import { FitScroll, OnbRoot } from '@/onboarding/Parts';
 import { onboardingToday, useMoney, useOnboarding } from '@/state/onboarding';
 import { Button, Duck, HeadsUpTimeline, NotificationPreview, Txt, Wordmark, brand, paletteFor, useFrame, useIsDark } from '@/ui/sunflower';
@@ -28,7 +28,7 @@ export default function Welcome() {
 
   // 70/64 on phones (60/56 on SE, 88/80 on iPad), never wider than the column:
   // "before it" is the longest line, 342pt wide at 70pt.
-  const base = f.tablet ? 88 : f.small ? 60 : 70;
+  const base = f.tablet ? 88 : f.tiny ? 50 : f.small ? 60 : 70;
   const fs = Math.min(base, Math.floor((70 * f.content) / 342));
   const head = { fontSize: fs, lineHeight: Math.round((fs * 64) / 70 / 4) * 4, letterSpacing: -0.04 * fs };
 
@@ -38,17 +38,17 @@ export default function Welcome() {
         <View style={{ height: 28, marginTop: 16, justifyContent: 'center' }}>
           <Wordmark size={24} />
         </View>
-        <Txt v="displayXL" accessibilityRole="header" accessibilityLabel="Ditch it before it renews." style={[{ marginTop: f.small ? 24 : 32 }, head]}>
+        <Txt v="displayXL" accessibilityRole="header" accessibilityLabel="Ditch it before it renews." style={[{ marginTop: f.tiny ? 14 : f.small ? 24 : 32 }, head]}>
           {'Ditch it\nbefore it\n'}
           <Txt v="displayXL" color={dark ? brand.sunflower : p.fg} style={head}>
             renews.
           </Txt>
         </Txt>
-        <Txt v="lead" tone="fg2" style={[{ marginTop: 16, maxWidth: f.tablet ? 420 : 320 }, f.tablet && { fontSize: 20, lineHeight: 28 }]}>
+        <Txt v="lead" tone="fg2" style={[{ marginTop: f.tiny ? 10 : 16, maxWidth: f.tablet ? 420 : 320 }, f.tablet && { fontSize: 20, lineHeight: 28 }]}>
           {'See everything you pay for. Get a heads-up before you’re charged.'}
         </Txt>
 
-        <View style={{ flex: 1, minHeight: f.small ? 24 : 96 }} />
+        <View style={{ flex: 1, minHeight: f.tiny ? 12 : f.small ? 24 : 96 }} />
 
         <View>
           {f.small ? null : <Duck width={f.tablet ? 160 : 136} right={16} sink={6} />}
@@ -78,14 +78,15 @@ export default function Welcome() {
           <HeadsUpTimeline
             behind={p.bg}
             stops={[
-              { kind: 'bell', title: weekdayDate(early), sub: '9 AM reminder' },
-              { kind: 'bell', title: weekdayDate(late), sub: '9 AM reminder' },
-              { kind: 'charge', title: weekdayDate(charge), sub: price ? `${price} charge` : 'charge day' },
+              // 320pt wide: shorter words, so the three captions never run together.
+              { kind: 'bell', title: f.tiny ? shortDate(early) : weekdayDate(early), sub: f.tiny ? 'Reminder' : '9 AM reminder' },
+              { kind: 'bell', title: f.tiny ? shortDate(late) : weekdayDate(late), sub: f.tiny ? 'Reminder' : '9 AM reminder' },
+              { kind: 'charge', title: f.tiny ? shortDate(charge) : weekdayDate(charge), sub: price ? (f.tiny ? price : `${price} charge`) : 'charge day' },
             ]}
           />
         </View>
 
-        <View style={{ height: f.small ? 24 : 32 }} />
+        <View style={{ height: f.tiny ? 14 : f.small ? 24 : 32 }} />
         <Button label="See what I pay" onPress={() => router.push('/onboarding/services')} />
         {/* The deal, before any work (review research: ~155 "told me after I typed it all"). */}
         <Txt v="sub" tone="fg2" center style={{ marginTop: 12 }}>

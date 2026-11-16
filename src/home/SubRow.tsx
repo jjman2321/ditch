@@ -175,10 +175,9 @@ export function SubRow({
     const v = reduce ? Math.floor(progress.get() * 4 + 0.0001) / 4 : progress.get();
     return { strokeDashoffset: CIRC * (1 - v) };
   });
-  const rowStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: 1 + 0.02 * lift.get() }],
-    opacity: 1 - 0.45 * dim.get(),
-  }));
+  // Only the logo and its ring grow while you hold; the name and price never move (owner, Nov 16; CLAUDE.md rule 8).
+  const rowStyle = useAnimatedStyle(() => ({ opacity: 1 - 0.45 * dim.get() }));
+  const logoLift = useAnimatedStyle(() => ({ transform: [{ scale: 1 + 0.08 * lift.get() }] }));
   const fill = useAnimatedStyle(() =>
     p.dark
       ? { borderColor: interpolateColor(lift.get(), [0, 1], ['rgba(255,204,46,0)', brand.sunflower]) }
@@ -212,7 +211,7 @@ export function SubRow({
         ]}
       >
         <View style={{ minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 10, paddingLeft: 14, paddingRight: 14, paddingVertical: 7 }}>
-          <View style={{ width: TILE, height: TILE, alignItems: 'center', justifyContent: 'center' }}>
+          <Animated.View style={[{ width: TILE, height: TILE, alignItems: 'center', justifyContent: 'center' }, logoLift]}>
             <SubLogo sub={sub} />
             {holding ? (
               <Svg width={RING_BOX} height={RING_BOX} style={{ position: 'absolute', left: (TILE - RING_BOX) / 2, top: (TILE - RING_BOX) / 2 }}>
@@ -231,7 +230,7 @@ export function SubRow({
                 />
               </Svg>
             ) : null}
-          </View>
+          </Animated.View>
           <View style={{ flex: 1, minWidth: 0 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
               {isProTrial(sub) ? (

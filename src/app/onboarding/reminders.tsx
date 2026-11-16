@@ -97,8 +97,8 @@ export default function Reminders() {
       <FitScroll style={{ paddingTop: f.top, paddingHorizontal: f.edge, paddingBottom: f.bottom }}>
         <StepHeader step={4} />
         {/* SE: the paywall's smaller title size, so no word sits alone on a line. */}
-        <Txt v="title" accessibilityRole="header" style={[{ marginTop: 16 }, f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null]}>
-          {f.small ? `Get a heads-up before\nyou’re${NB}charged.` : `Get a heads-up before you’re${NB}charged.`}
+        <Txt v="title" accessibilityRole="header" style={[{ marginTop: f.tiny ? 10 : 16 }, f.tiny ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 } : f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null]}>
+          {f.tiny ? `Get a heads-up\nbefore you’re${NB}charged.` : f.small ? `Get a heads-up before\nyou’re${NB}charged.` : `Get a heads-up before you’re${NB}charged.`}
         </Txt>
         <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
           {'3 days and 1 day before, at 9 AM.\nOnly about your subscriptions.'}
@@ -110,9 +110,9 @@ export default function Reminders() {
             accessible
             accessibilityLabel={`${example ? 'An example reminder' : 'Your first reminders'}: ${shown.map((s) => `${weekdayDate(s.day)}, 9 AM: ${s.body}`).join('. ')}`}
             style={{
-              marginTop: 20,
+              marginTop: f.tiny ? 12 : 20,
               flex: 1,
-              minHeight: f.small ? 238 : 390,
+              minHeight: f.tiny ? 196 : f.small ? 238 : 390,
               borderRadius: 34,
               backgroundColor: brand.sunflower,
               overflow: 'hidden',
@@ -127,7 +127,7 @@ export default function Reminders() {
               <Txt v="label" color={brand.ink} style={{ marginTop: 6 }} maxFontSizeMultiplier={1.2}>
                 {longDate(newest.day)}
               </Txt>
-              <Txt v="label" color={brand.ink} num style={{ fontFamily: F.wideHeavy, fontSize: f.small ? 48 : 72, lineHeight: f.small ? 52 : 76, letterSpacing: -2 }} maxFontSizeMultiplier={1}>
+              <Txt v="label" color={brand.ink} num style={{ fontFamily: F.wideHeavy, fontSize: f.tiny ? 40 : f.small ? 48 : 72, lineHeight: f.tiny ? 44 : f.small ? 52 : 76, letterSpacing: -2 }} maxFontSizeMultiplier={1}>
                 9:00
               </Txt>
             </View>
@@ -171,9 +171,9 @@ export default function Reminders() {
         {status === 'denied' ? (
           <Button label="Open iPhone Settings" hint="Turn on notifications for Ditch there" left={<Bell color={p.ctaFg} size={20} />} onPress={() => (setNotifications('denied'), Linking.openSettings().catch(() => {}), go())} style={{ marginTop: 16 }} />
         ) : (
-          <Button label={decided ? 'Continue' : 'Turn on reminders'} hint={decided ? undefined : 'Shows the iPhone permission prompt'} left={decided ? undefined : <Bell color={p.ctaFg} size={20} />} onPress={turnOn} style={{ marginTop: 16 }} />
+          <Button label={decided ? 'Continue' : 'Turn on reminders'} hint={decided ? undefined : 'Shows the iPhone permission prompt'} left={decided ? undefined : <Bell color={p.ctaFg} size={20} />} onPress={turnOn} style={{ marginTop: f.tiny ? 10 : 16 }} />
         )}
-        <Txt v="sub" tone="mute" center style={{ marginTop: 8 }}>
+        <Txt v="sub" tone="mute" center style={{ marginTop: f.tiny ? 4 : 8 }}>
           {status === 'denied' ? 'Notifications for Ditch are off on this iPhone.' : decided ? 'Reminders are already on.' : 'Tap “Allow” on the next screen.'}
         </Txt>
         {status === 'granted' || status === 'quiet' ? null : (
@@ -184,7 +184,7 @@ export default function Reminders() {
               setNotifications('later');
               go();
             }}
-            style={{ marginTop: 4 }}
+            style={{ marginTop: f.tiny ? 0 : 4 }}
           />
         )}
       </FitScroll>

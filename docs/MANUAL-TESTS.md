@@ -109,6 +109,11 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 - [ ] Same screen, free: "Yearly would cost less. See how much with Pro" opens the paywall. *Pro: "Paying yearly would be $200.00 a year, $X less than 12 months of this."
 - [ ] A sub you typed in yourself (not picked from our list) never gets a price-watch card.
 
+**Audit calls (Nov 16, DECISIONS #62)**
+- [ ] Hold a row on Home: only the logo and ring grow; the name and price stay still.
+- [ ] Paywall: the table has a "Price watch" row (Free —, Pro ✓). On an SE: Track, Reminders, Pick reminder days, Price watch.
+- [ ] iPhone SE, Settings → Display & Brightness → Display Zoom → Larger Text: Welcome, every onboarding step and the paywall fit with no scrolling; the paywall's × is at the top and Restore at the bottom. Turn Display Zoom back off after.
+
 **Your rights (free, needs the lawyer check before launch)**
 - [ ] Ditched tab → a waiting one → How to cancel: under the steps, "Your rights in the US ›". Closed at first. Tap it: US and California and New York lines, Source links, "Report a company to the FTC", and "The law as we read it. Not legal advice. Checked Nov 16."
 - [ ] Change country (UK, Germany, France, Ireland…) by starting fresh: the row says "in the UK" etc. with that country's lines. Australia, Canada, New Zealand, India: no row at all.

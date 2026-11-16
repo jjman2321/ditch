@@ -51,16 +51,21 @@ const ROWS: Row[] = [
   // Free can change the time of day; Pro picks the days before (and up to 3 of them).
   { label: 'Pick reminder days', free: 'no', pro: 'yes' },
   { label: 'Nudge if you miss one', free: 'no', pro: 'yes' },
+  // Owner, Nov 16: price watch works in this build (DECISIONS #60), so it gets a row.
+  { label: 'Price watch', free: 'no', pro: 'yes' },
   ...(WIDGET_READY ? [{ label: `Lock${NB}Screen widget`, free: 'no', pro: 'yes' }] : []),
   // The first import (onboarding) is free, so "anytime" keeps this row true (DECISIONS #34).
   ...(showImport() ? [{ label: 'Import anytime', free: 'no', pro: 'yes' }] : []),
 ];
 
+/** 320pt wide: the same rows in fewer words, so each stays on one line. */
+const SHORT: Record<string, string> = { 'Track every subscription': 'Track every sub', 'Subscriptions with reminders': 'Reminders on', 'Pick reminder days': 'Pick the days' };
+
 const CELL_TEXT = { fontFamily: F.semi, fontSize: 14, lineHeight: 20 } as const;
 const LABEL_TEXT = { fontFamily: F.medium, fontSize: 14, letterSpacing: -0.1 } as const;
 
 /** Free vs Pro. Fixed columns: Free 56pt; Pro fits "Unlimited" with 12pt either side. */
-function Compare({ rows, width, overlap }: { rows: Row[]; width: number; overlap: number }) {
+function Compare({ rows, width, overlap, tiny }: { rows: Row[]; width: number; overlap: number; tiny?: boolean }) {
   const p = usePalette();
   const dark = p.dark;
   const ink = dark ? '#F6F0E3' : brand.ink;
@@ -90,8 +95,8 @@ function Compare({ rows, width, overlap }: { rows: Row[]; width: number; overlap
           Unlimited
         </Text>
         {rows.map((r) => (
-          <Text key={r.label} style={LABEL_TEXT} maxFontSizeMultiplier={1.4} onLayout={(e) => setLabelW((m) => (m[r.label] === e.nativeEvent.layout.width ? m : { ...m, [r.label]: e.nativeEvent.layout.width }))}>
-            {r.label}
+          <Text key={r.label} style={tiny ? [LABEL_TEXT, { fontSize: 13 }] : LABEL_TEXT} maxFontSizeMultiplier={1.4} onLayout={(e) => setLabelW((m) => (m[r.label] === e.nativeEvent.layout.width ? m : { ...m, [r.label]: e.nativeEvent.layout.width }))}>
+            {tiny ? (SHORT[r.label] ?? r.label) : r.label}
           </Text>
         ))}
       </View>
@@ -115,8 +120,8 @@ function Compare({ rows, width, overlap }: { rows: Row[]; width: number; overlap
             style={{ flexDirection: 'row', alignItems: 'center', minHeight: two ? 42 : 32 }}
           >
             {i ? <View style={{ position: 'absolute', top: 0, left: 16, right: 0, height: 1, backgroundColor: p.hair }} /> : null}
-            <Txt v="sub" color={p.cardFg} style={[LABEL_TEXT, { flex: 1, paddingLeft: 16, paddingRight: 8, paddingVertical: two ? 4 : 6, lineHeight: two ? 17 : 20 }]} maxFontSizeMultiplier={1.4}>
-              {two ? balanceLines(r.label) : r.label}
+            <Txt v="sub" color={p.cardFg} style={[LABEL_TEXT, tiny && { fontSize: 13 }, { flex: 1, paddingLeft: 16, paddingRight: 8, paddingVertical: two ? 4 : 6, lineHeight: two ? 17 : 20 }]} maxFontSizeMultiplier={1.4}>
+              {two ? balanceLines(tiny ? (SHORT[r.label] ?? r.label) : r.label) : tiny ? (SHORT[r.label] ?? r.label) : r.label}
             </Txt>
             <View style={{ width: colF, alignItems: 'center', justifyContent: 'center' }}>{cell(r.free, false)}</View>
             <View style={{ width: colP, alignItems: 'center', justifyContent: 'center' }}>{cell(r.pro, true)}</View>
@@ -197,10 +202,10 @@ export default function Paywall() {
 
   // Phones: forced breaks so the last line is short and the duck sits beside it (v10). iPad wraps by itself.
   const what = many ? `all ${n}${NB}renewals.` : `every${NB}renewal.`;
-  const head = f.tablet ? `Get a reminder before ${what}` : f.small ? `Get a reminder before\n${what}` : many ? `Get a reminder\nbefore all\n${n}${NB}renewals.` : `Get a reminder\nbefore every\nrenewal.`;
+  const head = f.tiny ? `Get a reminder before ${what}` : f.tablet ? `Get a reminder before ${what}` : f.small ? `Get a reminder before\n${what}` : many ? `Get a reminder\nbefore all\n${n}${NB}renewals.` : `Get a reminder\nbefore every\nrenewal.`;
   const spokenHead = `Get a reminder before ${many ? `all ${n} renewals` : 'every renewal'}.`;
   // SE drops the last row so everything fits without scrolling (the widget row stays).
-  const rows = f.small ? ROWS.slice(0, 4) : ROWS;
+  const rows = f.small ? ROWS.filter((r) => r.label !== 'Nudge if you miss one').slice(0, 4) : ROWS;
   const tight = f.small && f.height - f.insets.top < 640;
   const overlap = f.tablet ? 48 : 40;
   const duckW = f.small ? 68 : f.tablet ? 104 : 96;
@@ -209,7 +214,7 @@ export default function Paywall() {
   return (
     <OnbRoot surface="cream">
       <FitScroll style={{ paddingHorizontal: f.edge, paddingBottom: f.bottom }}>
-        <View style={{ flexGrow: 1, marginHorizontal: -f.edge, paddingTop: f.top, paddingHorizontal: f.edge, paddingBottom: f.tablet ? 80 : f.small ? 52 : 48, backgroundColor: dark ? '#2A2516' : brand.sunflower }}>
+        <View style={{ flexGrow: 1, marginHorizontal: -f.edge, paddingTop: f.top, paddingHorizontal: f.edge, paddingBottom: f.tablet ? 80 : f.tiny ? 50 : f.small ? 52 : 48, backgroundColor: dark ? '#2A2516' : brand.sunflower }}>
           <View style={{ height: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <ProLockup size={f.small ? 20 : 22} color={ink} />
             <IconButton label="Close, continue free" onPress={leaveFree} size={32} bg={dark ? '#3A3424' : 'rgba(22,20,15,0.12)'} style={{ marginRight: -6 }}>
@@ -218,26 +223,28 @@ export default function Paywall() {
           </View>
           {/* Spare height goes here, so the title sits lower instead of a gap under the plans. */}
           <View style={{ flexGrow: 1 }} />
-          <Txt v="title" color={ink} accessibilityRole="header" accessibilityLabel={spokenHead} style={f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null}>
+          <Txt v="title" color={ink} accessibilityRole="header" accessibilityLabel={spokenHead} style={f.tiny ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 } : f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null}>
             {head}
           </Txt>
           {/* Nudged left so his bill points at the Pro column, never over the title. Only the base of
               his neck tucks behind the table, so the whole bill shows on every size. */}
-          <Duck width={duckW} right={f.edge + (f.small ? 20 : f.tablet ? 48 : 36)} bottom={overlap - 4} />
+          {/* 320pt wide: no room beside the title, so he sits this one out. */}
+          {f.tiny ? null : <Duck width={duckW} right={f.edge + (f.small ? 20 : f.tablet ? 48 : 36)} bottom={overlap - 4} />}
         </View>
 
-        <Compare rows={rows} width={f.content} overlap={overlap} />
+        <Compare rows={rows} width={f.content} overlap={overlap} tiny={f.tiny} />
 
         <View accessibilityRole="radiogroup" accessibilityLabel="Plans" style={{ gap: 8, marginTop: f.small ? 16 : 20 }}>
           <PlanCard
             title="Yearly"
-            tag={`${yearly.trialDays} days free`}
+            // 320pt wide: the tag would squeeze "Yearly" to "Y."; the button and the line under it say the trial.
+            tag={f.tiny ? undefined : `${yearly.trialDays} days free`}
             badge={badge}
             price={billedLabel(yearly)}
             sub={`${perMonth} a month`}
             selected={planId === 'yearly'}
             onPress={() => select('yearly')}
-            height={f.small ? 48 : 56}
+            height={f.tiny ? 44 : f.small ? 48 : 56}
             a11y={`Yearly, ${yearly.priceString} a year, ${perMonth} a month, ${yearly.trialDays} days free, ${badge.toLowerCase()}`}
           />
           <PlanCard
@@ -246,7 +253,7 @@ export default function Paywall() {
             sub="No free trial"
             selected={planId === 'monthly'}
             onPress={() => select('monthly')}
-            height={f.small ? 48 : 56}
+            height={f.tiny ? 44 : f.small ? 48 : 56}
             a11y={`Monthly, ${monthly.priceString} a month, no free trial`}
           />
           <PlanCard
@@ -255,7 +262,7 @@ export default function Paywall() {
             sub="Pay once"
             selected={planId === 'lifetime'}
             onPress={() => select('lifetime')}
-            height={f.small ? 48 : 56}
+            height={f.tiny ? 44 : f.small ? 48 : 56}
             a11y={`Lifetime, ${lifetime.priceString}, pay once`}
           />
         </View>
@@ -263,8 +270,8 @@ export default function Paywall() {
         {/* For people who'd rather not add another subscription (review research, DECISIONS #42). A fixed slot,
             so the button never moves; empty once Lifetime is picked. */}
         {/* The folded iPhone Duo (short, with a notch) has no room for it: the Lifetime card is right above. */}
-        <View style={{ height: tight ? 12 : f.small ? 30 : 40, justifyContent: 'center' }}>
-          {planId === 'lifetime' || tight ? null : (
+        <View style={{ height: tight || f.tiny ? 12 : f.small ? 30 : 40, justifyContent: 'center' }}>
+          {planId === 'lifetime' || tight || f.tiny ? null : (
             <Pressable accessibilityRole="button" accessibilityLabel={`Rather pay once? Lifetime, ${lifetime.priceString}`} accessibilityHint="Picks Lifetime" onPress={() => select('lifetime')} hitSlop={8} style={({ pressed }) => ({ alignSelf: 'center', minHeight: 30, justifyContent: 'center', opacity: pressed ? 0.6 : 1 })}>
               <Txt v="sub" tone="fg2" num center>
                 {'Rather pay once? '}
@@ -275,10 +282,10 @@ export default function Paywall() {
             </Pressable>
           )}
         </View>
-        <Button label={cta} onPress={buy} height={f.small ? 48 : 56} />
+        <Button label={cta} onPress={buy} height={f.tiny ? 44 : f.small ? 48 : 56} />
         {/* A fixed slot, so the button never moves when the plan changes. Price and the real start date by the
             button (App Review); no reminder text (owner, Nov 10). */}
-        <View style={{ height: 48, alignItems: 'center', justifyContent: 'center', paddingHorizontal: planId === 'yearly' ? 0 : 4 }}>
+        <View style={{ height: f.tiny ? 42 : 48, alignItems: 'center', justifyContent: 'center', paddingHorizontal: planId === 'yearly' ? 0 : 4 }}>
           <Txt v="fine" tone="fg2" num center accessibilityLiveRegion="polite">
             {planId === 'yearly' ? (
               <>

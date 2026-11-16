@@ -145,7 +145,7 @@ export default function Done() {
   return (
     <OnbRoot surface="sun">
       <FitScroll style={{ paddingTop: f.top, paddingHorizontal: f.edge, paddingBottom: f.bottom }}>
-        <View style={{ height: f.small ? 16 : 56 }} />
+        <View style={{ height: f.tiny ? 4 : f.small ? 16 : 56 }} />
         <View pointerEvents="none" style={{ position: 'absolute', opacity: 0, width: 2000, alignItems: 'flex-start' }}>
           <Text allowFontScaling={false} onLayout={(e) => onTitle(e.nativeEvent.layout.width)} style={{ fontFamily: F.display, fontSize: titleBase, letterSpacing: -0.04 * titleBase }}>
             {title}
@@ -159,7 +159,7 @@ export default function Done() {
           {items.map((it, i) => (
             // No dividers on the yellow: spacing separates the items. They fade in one by one (no motion near a price).
             <Animated.View key={it.title} entering={reduce ? undefined : FadeIn.delay(150 + i * 160).duration(260)}>
-            <View accessible accessibilityLabel={`${it.mark === 'ok' ? 'Done' : it.mark === 'warn' ? 'Needs you' : 'To do'}: ${it.title}. ${it.sub}`} style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 12, paddingVertical: f.small ? 8 : 10, marginTop: i ? 4 : 0 }}>
+            <View accessible accessibilityLabel={`${it.mark === 'ok' ? 'Done' : it.mark === 'warn' ? 'Needs you' : 'To do'}: ${it.title}. ${it.sub}`} style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 12, paddingVertical: f.tiny ? 5 : f.small ? 8 : 10, marginTop: i ? (f.tiny ? 2 : 4) : 0 }}>
               <MarkIcon kind={it.mark} />
               <View style={{ flex: 1 }}>
                 <Txt v="strong">{it.title}</Txt>
@@ -172,7 +172,7 @@ export default function Done() {
           ))}
         </View>
 
-        <View style={{ flex: 1, minHeight: f.small ? 16 : 32 }} />
+        <View style={{ flex: 1, minHeight: f.tiny ? 8 : f.small ? 16 : 32 }} />
 
         {/* What happens next (design/v14 option A): the first real reminder, in the lock-screen look
             from step 4, with Ditch peeking over it. "See all" opens the pick-3 sheet. */}

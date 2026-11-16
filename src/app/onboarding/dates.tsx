@@ -6,7 +6,7 @@
 
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { Pressable, ScrollView, View, useWindowDimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { ordinal } from '@/domain/charges';
@@ -28,19 +28,21 @@ function setLabel(x: Picked): string {
 }
 
 /** "Next: Thu, Nov 19" (the pill says which day), or the cycle while there's no date. */
-function subLine(x: Picked): string {
+function subLine(x: Picked, narrow = false): string {
   const next = chargeOf(x);
-  return next ? `Next: ${weekdayDate(next)}` : CYCLE_LABEL[x.cycle];
+  // 320pt wide: "Next: Nov 19" so the date never gets cut off.
+  return next ? `Next: ${narrow ? shortDate(next) : weekdayDate(next)}` : CYCLE_LABEL[x.cycle];
 }
 
 function DateRow({ x, first, onPress }: { x: Picked; first: boolean; onPress: () => void }) {
   const p = usePalette();
   const set = pickHasDate(x);
+  const narrow = useWindowDimensions().width < 350;
   const ask = x.cycle === 'monthly' ? 'Pick day' : 'Pick date';
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={`${x.name}, ${set ? `${x.cycle === 'monthly' ? `every ${setLabel(x)}` : setLabel(x)}. ${subLine(x)}` : `no date yet. ${ask}`}`}
+      accessibilityLabel={`${x.name}, ${set ? `${x.cycle === 'monthly' ? `every ${setLabel(x)}` : setLabel(x)}. ${subLine(x, narrow)}` : `no date yet. ${ask}`}`}
       accessibilityHint={set ? 'Change the day' : undefined}
       onPress={() => {
         haptic.select();
@@ -55,7 +57,7 @@ function DateRow({ x, first, onPress }: { x: Picked; first: boolean; onPress: ()
           {x.name}
         </Txt>
         <Txt v="sub" tone="mute" num numberOfLines={1}>
-          {subLine(x)}
+          {subLine(x, narrow)}
         </Txt>
       </View>
       {set ? (
@@ -98,13 +100,13 @@ export default function Dates() {
       <View style={{ flex: 1, paddingTop: f.top, paddingHorizontal: f.edge }}>
         <StepHeader step={3} />
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: footerH + 8 }}>
-          <Txt v="title" accessibilityRole="header" style={{ marginTop: 16 }}>
+          <Txt v="title" accessibilityRole="header" style={[{ marginTop: f.tiny ? 10 : 16 }, f.tiny && { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 }]}>
             {'Which day does each one\u00A0charge?'}
           </Txt>
           <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
             It’s on your bank app or the receipt email. Skip any you’re not sure of.
           </Txt>
-          <View style={{ marginTop: f.small ? 16 : 20, backgroundColor: p.card, borderRadius: 20, paddingHorizontal: 16 }}>
+          <View style={{ marginTop: f.tiny ? 12 : f.small ? 16 : 20, backgroundColor: p.card, borderRadius: 20, paddingHorizontal: 16 }}>
             {sorted.map((x, i) => (
               <DateRow key={x.id} x={x} first={i === 0} onPress={() => setDayFor(x.id)} />
             ))}

@@ -229,7 +229,7 @@ export default function Services() {
     <OnbRoot surface="cream">
       <View style={{ flex: 1, paddingTop: f.top, paddingHorizontal: f.edge }}>
         <StepHeader step={1} />
-        <Txt v="title" accessibilityRole="header" style={{ marginTop: 16 }}>
+        <Txt v="title" accessibilityRole="header" style={[{ marginTop: f.tiny ? 10 : 16 }, f.tiny && { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 }]}>
           {`What do you pay${NB}for?`}
         </Txt>
         <CountryLine onChange={() => setCountryOpen(true)} />

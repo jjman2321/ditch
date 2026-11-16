@@ -83,7 +83,7 @@ describe('price lookup by country', () => {
   it('"Add your price" fallback: no checked price means null, not another country’s', () => {
     expect(catalogPrice('duolingo', 'US')).toBeNull(); // no public price page
     expect(catalogPrice('youtube-premium', 'US')).toBeNull(); // unverified, not shipped
-    expect(catalogPrice('max', 'GB')).toBeNull(); // US-only row
+    expect(catalogPrice('hulu', 'GB')).toBeNull(); // US-only service (HBO Max is now checked in the UK too)
     expect(catalogPrice('netflix', null)).toBeNull(); // region we don't cover
     expect(priceRow('netflix', 'JP')).toBeNull();
   });
@@ -101,11 +101,14 @@ describe('price lookup by country', () => {
 
   it('offers plan choices only when there is more than one plan', () => {
     expect(planChoices('netflix', 'US').map((p) => p.id)).toEqual(['standard-ads', 'standard', 'premium']);
-    expect(planChoices('apple-tv', 'US')).toEqual([]);
+    expect(planChoices('apple-tv', 'GB')).toEqual([]); // one plan (the US now also sells Peacock bundles)
     expect(planChoices('duolingo', 'US')).toEqual([]);
     expect(planChoices('amazon-prime', 'US').map((p) => [p.id, p.cycle])).toEqual([
       ['prime', 'monthly'],
       ['prime-yearly', 'yearly'],
+      ['student', 'monthly'],
+      ['student-yearly', 'yearly'],
+      ['access', 'monthly'],
     ]);
   });
 

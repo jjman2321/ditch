@@ -55,7 +55,7 @@ describe('changing country', () => {
   });
 
   it('falls back to "Add your price" where the country has no price', () => {
-    const p = repriceForCountry(newPick(svc('max'), 'US', TODAY), 'GB');
+    const p = repriceForCountry(newPick(svc('hulu'), 'US', TODAY), 'GB'); // Hulu is US-only
     expect(isPriced(p)).toBe(false);
   });
 

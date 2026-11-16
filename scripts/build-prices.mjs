@@ -5,7 +5,7 @@
 // we haven't checked on the official page). Pass --include-partial to also
 // ship "partial" rows.
 
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -15,6 +15,18 @@ const OUT = join(root, 'src/catalog/prices.data.ts');
 const keep = new Set(['verified', ...(process.argv.includes('--include-partial') ? ['partial'] : [])]);
 
 const data = JSON.parse(readFileSync(SRC, 'utf8'));
+// Full tier lists (Nov 15, same as the website's sync): each verified prices-tiers-*.json row replaces our
+// row for that service and country (it lists every plan, old and new, read from the official page).
+const RESEARCH = join(root, 'docs/research');
+for (const f of readdirSync(RESEARCH).filter((n) => n.startsWith('prices-tiers-') && n.endsWith('.json')).sort()) {
+  const x = JSON.parse(readFileSync(join(RESEARCH, f), 'utf8'));
+  const fresh = x.prices.filter((r) => r.status === 'verified');
+  const keys = new Set(fresh.map((r) => `${r.serviceId}|${r.country}`));
+  data.prices = [...data.prices.filter((r) => !keys.has(`${r.serviceId}|${r.country}`)), ...fresh];
+}
+// The app's 12 launch countries (src/catalog/prices.ts COUNTRIES). The website covers more.
+const APP_COUNTRIES = new Set(['US', 'GB', 'CA', 'AU', 'IE', 'NZ', 'DE', 'NL', 'FR', 'IT', 'ES', 'IN']);
+data.prices = data.prices.filter((r) => APP_COUNTRIES.has(r.country));
 const rows = data.prices
   .filter((r) => keep.has(r.status))
   .map((r) => ({
@@ -25,7 +37,10 @@ const rows = data.prices
     plans: r.plans.map((p) => ({ id: p.id, name: p.name, amountMinor: p.amountMinor, cycle: p.cycle, ...(p.default ? { default: true } : {}) })),
     source: r.source,
     checked: r.checked,
-    ...(r.note ? { note: r.note } : {}),
+    // App Store rows always start "Apple billing:" (the app shows that label); newer research files wrote "App Store price".
+    ...(r.note || r.source.startsWith('https://apps.apple.com/')
+      ? { note: r.source.startsWith('https://apps.apple.com/') && !/^Apple billing/.test(r.note ?? '') ? `Apple billing: ${(r.note ?? '').replace(/^App Store price[.:]?\s*/i, '')}`.trim() : r.note }
+      : {}),
   }))
   .sort((a, b) => (a.serviceId + a.country).localeCompare(b.serviceId + b.country));
 

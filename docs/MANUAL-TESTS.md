@@ -109,6 +109,17 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 - [ ] Same screen, free: "Yearly would cost less. See how much with Pro" opens the paywall. *Pro: "Paying yearly would be $200.00 a year, $X less than 12 months of this."
 - [ ] A sub you typed in yourself (not picked from our list) never gets a price-watch card.
 
+## 1j. Find your subscriptions (Nov 16, DECISIONS #63)
+Web preview: add `&import=1` to the address. On the iPhone this needs the development build.
+- [ ] Add (+) → "Find your subscriptions" opens the Find page. Home → Missing any? → "Or let Ditch read a list for you" does too.
+- [ ] Free: both routes say "Free once · then Pro". After one Add, they say "Pro" and lead to the paywall.
+- [ ] Screenshot your Apple list → "Open Apple subscriptions" opens Apple's page. Take a screenshot of the list, come back, "Pick screenshots", pick it: the check list shows each subscription with "Renews …", trials with "Free trial ends …", cancelled ones under "Already cancelled".
+- [ ] Ones already on your list are greyed "Already on your list" and can't be added twice.
+- [ ] Drop in a statement → pick an Apple Card CSV (Wallet → Apple Card → Card Balance → a statement → Export Transactions): repeats show with their dates ("Sep 3, Oct 3, Nov 3"). APPLE.COM/BILL charges are counted with a link to the Apple screenshot.
+- [ ] Untick one, tap Add: only the ticked ones appear on Home. Free: the first 3 with dates get reminders (trials first).
+- [ ] A PDF statement works in the development build; in Expo Go it says PDFs need the new build and a CSV works now.
+- [ ] Nothing about the screenshot or file is kept: close the app mid-way and reopen, the check list is gone.
+
 **Full sweep fixes (Nov 16, late)**
 - [ ] Edit a sub → Next charge on an SE: the calendar scrolls and "Set next charge …" can always be tapped.
 - [ ] Edit → turn on "Skip the … reminders": the Remind me line says "Skipping Sat, Nov 21. Back on for the next one." and the Calendar has no dots for that charge.

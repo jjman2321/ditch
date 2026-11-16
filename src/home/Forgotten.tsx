@@ -4,10 +4,12 @@
 // From review research (docs/research/reviews-niche-2026-11.md): "If I knew
 // all the subscriptions I had, I wouldn't need the app."
 
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 
 import { APPLE_SUBSCRIPTIONS_URL } from '@/catalog/cancel';
+import { showImport } from '@/config/features';
 import { openUrl } from '@/ditch/CancelHelp';
 import { Button, External, Tick, Txt, haptic, usePalette } from '@/ui/sunflower';
 
@@ -65,6 +67,9 @@ export function ForgottenBody({ onAdd, onDone }: { onAdd: () => void; onDone: ()
         <Txt v="leadS" tone="fg2" style={{ marginTop: 6 }}>
           Subscriptions hide in a few places. Check each one, then add what you find.
         </Txt>
+        {showImport() ? (
+          <Button kind="secondary" label="Or let Ditch read a list for you" hint="Your Apple list or a statement, read on your phone" onPress={() => (onDone(), router.push('/find'))} style={{ marginTop: 14 }} />
+        ) : null}
         <View style={{ marginTop: 16, backgroundColor: p.card, borderRadius: 20, paddingHorizontal: 16 }}>
           {PLACES.map((pl, i) => (
             <PlaceRow key={pl.id} place={pl} first={i === 0} done={done.includes(pl.id)} onPress={() => tap(pl)} />

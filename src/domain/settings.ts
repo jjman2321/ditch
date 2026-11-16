@@ -29,6 +29,8 @@ export type Settings = {
   dismissedOverlaps: string[];
   /** Day of the month they get paid (1–31), for "before payday". Null = not set. Never an amount. */
   payday: number | null;
+  /** The one free find (Apple screenshot or statement) has been used (DECISIONS #34, #63). After that it's Pro. */
+  freeFindUsed: boolean;
 };
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -43,6 +45,7 @@ export const DEFAULT_SETTINGS: Settings = {
   review: EMPTY_REVIEW,
   dismissedOverlaps: [],
   payday: null,
+  freeFindUsed: false,
 };
 
 /** Lead days people can choose (Remind me page). */
@@ -127,6 +130,7 @@ export function parseSettings(kv: Record<string, string>): Settings {
     forgottenDone: kv.forgotten_done === '1',
     review: parseReview(kv.review),
     dismissedOverlaps: parseList(kv.dismissed_overlaps),
+    freeFindUsed: kv.free_find_used === '1',
     payday: kv.payday && /^\d{1,2}$/.test(kv.payday) && Number(kv.payday) >= 1 && Number(kv.payday) <= 31 ? Number(kv.payday) : null,
   };
 }
@@ -146,6 +150,7 @@ export function settingsToKv(patch: Partial<Settings>): Record<string, string | 
   // Keep the newest 50 so the setting can't grow forever.
   if (patch.dismissedOverlaps !== undefined) out.dismissed_overlaps = JSON.stringify(patch.dismissedOverlaps.slice(-DISMISSED_KEEP));
   if (patch.payday !== undefined) out.payday = patch.payday === null ? null : String(patch.payday);
+  if (patch.freeFindUsed !== undefined) out.free_find_used = patch.freeFindUsed ? '1' : '0';
   return out;
 }
 

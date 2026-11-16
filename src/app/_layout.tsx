@@ -94,6 +94,7 @@ function Navigator({ dark, bg }: { dark: boolean; bg: string }) {
           <Stack.Screen name="(tabs)" options={{ animation: 'fade' }} />
           <Stack.Screen name="ditch/[id]" options={{ presentation: 'fullScreenModal', animation: 'fade', contentStyle: { backgroundColor: dark ? brand.night : brand.sunflower } }} />
           <Stack.Screen name="settings" />
+          <Stack.Screen name="find" />
         </Stack>
       </EditorProvider>
     </OnboardingProvider>

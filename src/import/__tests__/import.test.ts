@@ -1,4 +1,6 @@
 import { SERVICE_BY_ID } from '@/catalog/services';
+import { makeSub } from '@/domain/subs';
+import { alreadyOnList, foundToSub } from '../toSubs';
 import { readAppleSubscriptions } from '../appleScreenshot';
 import { matchMerchant, matchName } from '../match';
 import { MERCHANT_ALIASES } from '../merchants';
@@ -167,5 +169,27 @@ describe('bank statements', () => {
     const r = findRepeats([{ date: '2026-11-01', text: 'AUDIBLE*AB12CD', amountMinor: 1495, currency: 'USD' }], TODAY);
     expect(r.found[0]).toMatchObject({ catalogId: 'audible', confidence: 'maybe' });
     expect(preTicked(r.found[0])).toBe(false);
+  });
+});
+
+
+describe('adding what was found', () => {
+  const base = { country: 'US', currency: 'USD', today: TODAY, nowIso: '2026-11-16T00:00:00Z' };
+  it('uses the price we read, else our checked price marked as an estimate', () => {
+    const read = foundToSub({ key: 'a', name: 'ChatGPT', catalogId: 'chatgpt-plus', date: '2026-12-01', state: 'renews', price: { amountMinor: 1999, currency: 'USD' }, cycle: 'monthly', evidence: '', confidence: 'high', source: 'apple' }, base);
+    expect(read).toMatchObject({ catalogId: 'chatgpt-plus', amountMinor: 1999, priceSource: 'user', anchor: '2026-12-01', dateSource: 'next', source: 'import' });
+    const guess = foundToSub({ key: 'b', name: 'Netflix', catalogId: 'netflix', date: '2026-12-03', state: 'renews', price: null, cycle: null, evidence: '', confidence: 'high', source: 'apple' }, base);
+    expect(guess.priceSource).toBe('catalog');
+    expect(guess.amountIsEstimate).toBe(true);
+    expect(guess.amountMinor).toBeGreaterThan(0);
+  });
+  it('a trial stays a trial; no date means no date yet', () => {
+    const t = foundToSub({ key: 'c', name: 'Headspace', catalogId: 'headspace', date: null, state: 'trial', price: null, cycle: null, evidence: '', confidence: 'medium', source: 'apple' }, base);
+    expect(t).toMatchObject({ isTrial: true, dateSource: 'none' });
+  });
+  it('knows what is already on the list', () => {
+    const subs = [makeSub({ name: 'Netflix', catalogId: 'netflix', cycle: 'monthly', anchor: '2026-12-03' })];
+    expect(alreadyOnList({ key: 'x', name: 'Netflix', catalogId: 'netflix', date: null, state: 'renews', price: null, cycle: null, evidence: '', confidence: 'high', source: 'apple' }, subs)).toBe(true);
+    expect(alreadyOnList({ key: 'y', name: 'Gymbox', catalogId: null, date: null, state: 'renews', price: null, cycle: null, evidence: '', confidence: 'maybe', source: 'statement' }, subs)).toBe(false);
   });
 });

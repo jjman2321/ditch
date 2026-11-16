@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>Ditch phone preview</title>
+<style>
+  :root { --bg: #1b1a17; --panel: #262420; --fg: #f6f0e3; --mute: #a49c8c; --sun: #ffcc2e; --ink: #16140f; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg); font: 14px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif; }
+  body { display: flex; flex-direction: column; }
+  header { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; padding: 12px 16px; background: var(--panel); border-bottom: 1px solid #34312b; }
+  header b { font-size: 15px; margin-right: 6px; }
+  label { display: flex; align-items: center; gap: 6px; color: var(--mute); }
+  select, button { font: inherit; color: var(--fg); background: #33302a; border: 1px solid #45413a; border-radius: 10px; padding: 7px 10px; min-height: 36px; cursor: pointer; }
+  button.primary { background: var(--sun); color: var(--ink); border-color: var(--sun); font-weight: 600; }
+  .note { color: var(--mute); font-size: 12.5px; margin-left: auto; }
+  main { flex: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 20px; }
+  .stage { transform-origin: center center; }
+  .device { position: relative; background: #0b0b0a; border-radius: 62px; padding: 14px; box-shadow: 0 0 0 2px #3a3833, 0 30px 80px rgba(0,0,0,.55); }
+  .device.ipad { border-radius: 36px; padding: 22px; }
+  .device.home { border-radius: 48px; padding: 64px 14px 72px; }
+  .device.home::after { content: ""; position: absolute; left: 50%; bottom: 14px; width: 48px; height: 48px; margin-left: -24px; border-radius: 50%; border: 2px solid #3a3833; }
+  .screen { position: relative; overflow: hidden; border-radius: 48px; background: #faf6ec; }
+  .device.ipad .screen { border-radius: 18px; }
+  .device.home .screen { border-radius: 4px; }
+  .island { position: absolute; top: 11px; left: 50%; width: 120px; height: 34px; margin-left: -60px; border-radius: 20px; background: #000; z-index: 3; pointer-events: none; }
+  .bar { position: absolute; bottom: 8px; left: 50%; width: 134px; height: 5px; margin-left: -67px; border-radius: 3px; background: rgba(0,0,0,.75); z-index: 3; pointer-events: none; }
+  iframe { display: block; border: 0; width: 100%; height: 100%; }
+  .size { text-align: center; color: var(--mute); font-size: 12px; margin-top: 12px; }
+</style>
+</head>
+<body>
+<header>
+  <b>Ditch</b>
+  <label>Phone
+    <select id="device">
+      <option value="i15">iPhone 15 / 16</option>
+      <option value="max">iPhone Pro Max</option>
+      <option value="i12">iPhone 12 / 13 / 14</option>
+      <option value="se">iPhone SE</option>
+      <option value="sezoom">iPhone SE, Display Zoom</option>
+      <option value="ipad">iPad 11"</option>
+    </select>
+  </label>
+  <label>List
+    <select id="seed">
+      <option value="demo">Example list</option>
+      <option value="overlap">Example + price watch, overlap, payday</option>
+      <option value="mixed">Two currencies (UK)</option>
+      <option value="ditched">Just ditched one</option>
+      <option value="empty">Empty list</option>
+      <option value="onboarding">First launch (onboarding)</option>
+      <option value="">My own list (kept in this browser)</option>
+    </select>
+  </label>
+  <label>Start on
+    <select id="route">
+      <option value="/">Home</option>
+      <option value="/calendar">Calendar</option>
+      <option value="/ditched">Ditched</option>
+      <option value="/paywall">Paywall</option>
+      <option value="/settings">Settings</option>
+    </select>
+  </label>
+  <label><input type="checkbox" id="pro" /> Pro</label>
+  <button class="primary" id="reload">Restart app</button>
+  <span class="note">Click = tap. Click and hold a row to ditch it. Dark mode follows your computer.</span>
+</header>
+<main>
+  <div class="stage" id="stage">
+    <div class="device" id="device-frame">
+      <div class="screen" id="screen">
+        <div class="island" id="island"></div>
+        <iframe id="app" title="Ditch app"></iframe>
+        <div class="bar" id="bar"></div>
+      </div>
+    </div>
+    <div class="size" id="size"></div>
+  </div>
+</main>
+<script>
+  // Real screen sizes in points. The app inside sees exactly this width and height.
+  const DEVICES = {
+    i15: { w: 393, h: 852, phone: '', kind: 'island', name: 'iPhone 15 / 16, 393 × 852' },
+    max: { w: 430, h: 932, phone: 'max', kind: 'island', name: 'iPhone Pro Max, 430 × 932' },
+    i12: { w: 390, h: 844, phone: 'i12', kind: 'notch', name: 'iPhone 12 / 13 / 14, 390 × 844' },
+    se: { w: 375, h: 667, phone: 'se', kind: 'home', name: 'iPhone SE, 375 × 667' },
+    sezoom: { w: 320, h: 568, phone: 'se', kind: 'home', name: 'iPhone SE with Display Zoom, 320 × 568' },
+    ipad: { w: 834, h: 1194, phone: 'ipad', kind: 'ipad', name: 'iPad 11", 834 × 1194' },
+  };
+  const $ = (id) => document.getElementById(id);
+  const saved = (() => { try { return JSON.parse(localStorage.getItem('ditch-preview') || '{}'); } catch { return {}; } })();
+  for (const k of ['device', 'seed', 'route']) if (saved[k] !== undefined && [...$(k).options].some((o) => o.value === saved[k])) $(k).value = saved[k];
+  $('pro').checked = !!saved.pro;
+
+  function fit() {
+    const d = DEVICES[$('device').value];
+    const frame = $('device-frame');
+    const fw = frame.offsetWidth, fh = frame.offsetHeight + 30;
+    const main = document.querySelector('main');
+    const s = Math.min(1, (main.clientWidth - 40) / fw, (main.clientHeight - 40) / fh);
+    $('stage').style.transform = `scale(${s})`;
+    $('size').textContent = d.name + (s < 1 ? ` · shown at ${Math.round(s * 100)}%` : '');
+  }
+
+  function load() {
+    const d = DEVICES[$('device').value];
+    const seed = $('seed').value;
+    const route = seed === 'onboarding' ? '/' : $('route').value;
+    const frame = $('device-frame');
+    frame.className = 'device' + (d.kind === 'home' ? ' home' : d.kind === 'ipad' ? ' ipad' : '');
+    $('island').style.display = d.kind === 'island' ? '' : 'none';
+    $('bar').style.display = d.kind === 'home' ? 'none' : '';
+    $('island').style.width = d.kind === 'notch' ? '160px' : '120px';
+    $('screen').style.width = d.w + 'px';
+    $('screen').style.height = d.h + 'px';
+    const q = new URLSearchParams();
+    q.set('phone', d.phone);
+    if (seed) q.set('seed', seed);
+    if ($('pro').checked) q.set('pro', '1');
+    $('app').src = `${route}?${q.toString()}`;
+    try { localStorage.setItem('ditch-preview', JSON.stringify({ device: $('device').value, seed, route: $('route').value, pro: $('pro').checked })); } catch {}
+    requestAnimationFrame(fit);
+  }
+
+  for (const id of ['device', 'seed', 'route', 'pro']) $(id).addEventListener('change', load);
+  $('reload').addEventListener('click', load);
+  window.addEventListener('resize', fit);
+  load();
+</script>
+</body>
+</html>

@@ -2,11 +2,14 @@
 // 50, generic ones otherwise). Shared by the Ditched screen and the Ditched tab.
 
 import { useState } from 'react';
-import { Linking, View } from 'react-native';
+import { Linking, Pressable, View } from 'react-native';
 
 import { APPLE_SUBSCRIPTIONS_URL, cancelHelp } from '@/catalog/cancel';
+import { RIGHTS_CHECKED, RIGHTS_DISCLAIMER, rightsFor, rightsPlace } from '@/catalog/rights';
+import { shortDate } from '@/domain/dates';
 import { isProTrial, type Sub } from '@/domain/subs';
-import { Button, External, F, Sheet, Txt, brand, usePalette } from '@/ui/sunflower';
+import { useApp } from '@/state/app';
+import { Button, ChevronRight, External, F, Sheet, Txt, brand, usePalette } from '@/ui/sunflower';
 
 export function openUrl(url: string) {
   Linking.openURL(url).catch(() => {});
@@ -71,6 +74,7 @@ export function HowToSheet({ sub, visible, onClose }: { sub: Sub | null; visible
               Paying through Apple? It’s in iPhone Settings → your name → Subscriptions.
             </Txt>
           ) : null}
+          <YourRights />
           <View style={{ marginTop: 20, gap: 8 }}>
             {page && h.url ? <Button label={page} hint="Opens outside Ditch" right={<External color={p.ctaFg} size={19} />} onPress={() => openUrl(h.url!)} /> : null}
             {h.appleNote ? <Button kind={page ? 'text' : 'secondary'} label="Open Apple subscriptions" hint="Opens outside Ditch" onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)} /> : null}
@@ -79,5 +83,69 @@ export function HowToSheet({ sub, visible, onClose }: { sub: Sub | null; visible
         </View>
       ) : null}
     </Sheet>
+  );
+}
+
+/**
+ * "Your rights in the US": closed by default so the steps stay first. The law
+ * as we read it, with a source and a date; never a promise (CLAUDE.md rule 5).
+ */
+function YourRights() {
+  const p = usePalette();
+  const country = useApp().settings.country;
+  const [open, setOpen] = useState(false);
+  const regions = rightsFor(country);
+  if (!country || !regions.length) return null;
+  const title = `Your rights in ${rightsPlace(country)}`;
+  return (
+    <View style={{ marginTop: 18, borderTopWidth: 1, borderColor: p.rule }}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={title}
+        accessibilityState={{ expanded: open }}
+        onPress={() => setOpen(!open)}
+        style={{ minHeight: 48, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
+      >
+        <Txt v="label" style={{ fontFamily: F.bold }}>
+          {title}
+        </Txt>
+        <View style={{ transform: [{ rotate: open ? '90deg' : '0deg' }] }}>
+          <ChevronRight color={p.fg2} size={18} />
+        </View>
+      </Pressable>
+      {open ? (
+        <View style={{ gap: 14, paddingBottom: 4 }}>
+          {regions.map((r) => (
+            <View key={r.id}>
+              <Txt v="body">
+                <Txt v="body" style={{ fontFamily: F.bold }}>
+                  {r.title}:{' '}
+                </Txt>
+                {r.text}
+              </Txt>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', columnGap: 16 }}>
+                {r.sources.map((src, i) => (
+                  <Link key={src.url} label={r.sources.length > 1 ? `Source ${i + 1}` : 'Source'} spoken={`Source: ${src.label}`} url={src.url} />
+                ))}
+                {r.help ? <Link label={r.help.label} url={r.help.url} /> : null}
+              </View>
+            </View>
+          ))}
+          <Txt v="sub" tone="mute">
+            {`${RIGHTS_DISCLAIMER} Checked ${shortDate(RIGHTS_CHECKED)}.`}
+          </Txt>
+        </View>
+      ) : null}
+    </View>
+  );
+}
+
+function Link({ label, spoken, url }: { label: string; spoken?: string; url: string }) {
+  return (
+    <Pressable accessibilityRole="link" accessibilityLabel={spoken ?? label} accessibilityHint="Opens outside Ditch" onPress={() => openUrl(url)} style={{ minHeight: 44, justifyContent: 'center' }}>
+      <Txt v="sub" tone="fg2" style={{ textDecorationLine: 'underline' }}>
+        {label}
+      </Txt>
+    </Pressable>
   );
 }

@@ -15,12 +15,12 @@ Rules: only features that ship in that build, no "we cancel for you", no "nothin
 Words already in the name and subtitle (ditch, subscription, tracker, renews) count anyway, so they're not repeated. 98 characters.
 
 ## Promotional text (170, can change without a review)
-`Every card, every App Store sub, every trial in one list. A heads-up 3 days and 1 day before each charge, and help cancelling the ones you don't want.` (152)
+`Every card, every App Store sub, every trial in one list. A heads-up 3 days and 1 day before a charge, and help cancelling the ones you don't want.` (149)
 
 ## Description
-Every card. Every App Store subscription. Every free trial. One list, and a heads-up before each charge.
+Every card. Every App Store subscription. Every free trial. One list, and a heads-up before they charge.
 
-Add what you pay for in a few taps: pick from hundreds of services with checked prices, or type your own. Ditch shows what it costs you a month and a year, and reminds you 3 days and 1 day before each renewal at 9 AM. Then you decide: keep it, or ditch it.
+Add what you pay for in a few taps: pick from 200+ services (checked prices for the popular ones), or type your own. Ditch shows what it costs you a month and a year, and reminds you 3 days and 1 day before a renewal, at 9 AM. Then you decide: keep it, or ditch it.
 
 WHAT YOU GET FREE, FOREVER
 • Track as many subscriptions as you like, on any card or account
@@ -34,10 +34,10 @@ WHAT YOU GET FREE, FOREVER
 • Export your list as a spreadsheet
 
 DITCH PRO
-• Reminders on every subscription, at the times you choose
+• Reminders on every subscription, on the days you choose
 • A second nudge if you miss one
-• An extra reminder a month before big yearly renewals
-• Price watch: when a service on your list raises its price, you'll see it
+• An extra reminder a month before yearly and 6-monthly renewals
+• Price watch: when our checked price for your plan changes, you'll see it and can update it in one tap
 • Shows when paying yearly would cost you less
 Pro is $4.99 a month, $29.99 a year (7 days free) or $49.99 once. Cancel anytime in iPhone Settings.
 

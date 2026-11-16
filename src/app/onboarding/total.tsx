@@ -139,7 +139,7 @@ export default function Total() {
             </Txt>
           ) : null}
           <Txt v="body" tone="fg2" style={{ marginTop: 8, maxWidth: 340 }}>
-            {`Most people think it’s way less. In one study, the real total was 2.5× what people${NB}thought.`}
+            {`People often guess low. In one study, the real total was 2.5× what people${NB}thought.`}
           </Txt>
         </Animated.View>
 

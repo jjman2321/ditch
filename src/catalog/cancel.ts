@@ -33,7 +33,7 @@ const APPLE_STEPS = ['Open iPhone Settings and tap your name', 'Tap Subscription
 
 /** The main button on the Ditched screen, and the how-to sheet. */
 export function cancelHelp({ name, catalogId, proTrial }: { name: string; catalogId: string | null; proTrial?: boolean }): CancelHelp {
-  const apple: CancelHelp = { kind: 'apple', url: APPLE_SUBSCRIPTIONS_URL, label: 'Cancel in iPhone Settings', steps: APPLE_STEPS, appleNote: false };
+  const apple: CancelHelp = { kind: 'apple', url: APPLE_SUBSCRIPTIONS_URL, label: 'Cancel in Apple subscriptions', steps: APPLE_STEPS, appleNote: false };
   if (proTrial) return apple;
   const svc = catalogId ? SERVICE_BY_ID[catalogId] : undefined;
   const guide = catalogId ? CANCEL_GUIDES[catalogId] : undefined;

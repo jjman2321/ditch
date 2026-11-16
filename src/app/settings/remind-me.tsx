@@ -15,7 +15,7 @@ export default function RemindMe() {
   const app = useApp();
   const { settings, pro, plan } = app;
   const leads = effectiveLeads(settings, pro);
-  const example = plan.find((r) => r.kind === 'heads-up')?.body ?? 'Netflix renews in 3 days. $17.99. Still watching?';
+  const example = plan.find((r) => r.kind === 'heads-up')?.body ?? 'Netflix renews Saturday. $17.99. Still watching?';
 
   const toggle = (d: number) => {
     if (!pro) {
@@ -33,11 +33,11 @@ export default function RemindMe() {
   };
 
   return (
-    <SettingsPage title="Remind me" intro={`When should Ditch remind you? Every reminder lands at ${shortTimeLabel(settings.reminderTime)}.`}>
+    <SettingsPage title="Remind me" intro={`When should Ditch remind you? Reminders land at ${shortTimeLabel(settings.reminderTime)}.`}>
       <View style={{ marginTop: 18 }}>
         <NotificationPreview time={timeLabel(settings.reminderTime)} message={example} />
       </View>
-      <Group note={pro ? 'Pick as many as you like. Free trials always get the 3 day and 1 day ones too.' : 'Custom timing comes with Pro. Free keeps 3 days and 1 day before.'}>
+      <Group note={pro ? 'Pick as many as you like. Free trials always get the 3-day and 1-day ones too.' : 'Custom timing comes with Pro. Free keeps 3 days and 1 day before.'}>
         {LEAD_CHOICES.map((d) => {
           const on = leads.includes(d);
           const locked = !pro && !on;

@@ -98,10 +98,10 @@ export default function Reminders() {
         <StepHeader step={4} />
         {/* SE: the paywall's smaller title size, so no word sits alone on a line. */}
         <Txt v="title" accessibilityRole="header" style={[{ marginTop: 16 }, f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null]}>
-          {f.small ? `Get a reminder before\neach${NB}charge.` : `Get a reminder before each${NB}charge.`}
+          {f.small ? `Get a heads-up before\nyou’re${NB}charged.` : `Get a heads-up before you’re${NB}charged.`}
         </Txt>
         <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
-          {'3 days and 1 day before, at 9:00 AM.\nOnly about your subscriptions.'}
+          {'3 days and 1 day before, at 9 AM.\nOnly about your subscriptions.'}
         </Txt>
 
         {/* A picture of the lock screen, always in the sunflower look (dark mode too). */}

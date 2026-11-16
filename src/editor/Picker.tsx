@@ -69,7 +69,7 @@ function TrialRow({ onPress }: { onPress: () => void }) {
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel="Track a free trial. We'll remind you before it ends"
+      accessibilityLabel="Track a free trial. Get a reminder before it ends"
       onPress={() => {
         haptic.select();
         onPress();
@@ -96,7 +96,7 @@ function TrialRow({ onPress }: { onPress: () => void }) {
           Track a free trial
         </Txt>
         <Txt v="sub" tone="mute">
-          We’ll remind you before it ends
+          Get a reminder before it ends
         </Txt>
       </View>
       <ChevronRight color={p.mute} />

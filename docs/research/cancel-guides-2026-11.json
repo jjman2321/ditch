@@ -348,13 +348,13 @@
    "steps": [
     "Open account.microsoft.com/services in Safari",
     "Sign in, then tap Cancel subscription (or Upgrade or Cancel)",
-    "Scroll down and tap I don't want my subscription"
+    "Scroll down and tap I don’t want my subscription"
    ],
    "appleNote": true,
    "source": "https://support.microsoft.com/en-us/office/cancel-a-microsoft-subscription-46e2634c-c64b-4c65-94b9-2cc9c960e91b",
    "checkedOn": "2026-11-10",
    "confidence": "high",
-   "note": "Bought in the iPhone app: Apple bills it, Microsoft can't cancel. Turn on recurring billing showing = already set to expire. Storage drops to free; OneDrive may stop syncing.",
+   "note": "Bought in the iPhone app: Apple bills it, Microsoft can’t cancel. Turn on recurring billing showing = already set to expire. Storage drops to free; OneDrive may stop syncing.",
    "app": "Microsoft 365",
    "company": "Microsoft",
    "answer": "Open account.microsoft.com/services in Safari and sign in. Tap Cancel subscription, then scroll down and tap I don’t want my subscription. If you bought it in the iPhone app, Apple bills you, so cancel in iPhone Settings.",
@@ -444,7 +444,7 @@
    "source": "https://help.audible.com/s/article/cancel-membership",
    "checkedOn": "2026-11-10",
    "confidence": "medium",
-   "note": "Help page needed sign-in for automated fetch; steps from official snippets. The iPhone app can't cancel. Apple-billed memberships cancel in iPhone Settings. Unused credits are lost at the end, so spend them first."
+   "note": "Help page needed sign-in for automated fetch; steps from official snippets. The iPhone app can’t cancel. Apple-billed memberships cancel in iPhone Settings. Unused credits are lost at the end, so spend them first."
   },
   {
    "id": "paramount-plus",
@@ -460,7 +460,7 @@
    "source": "https://support.paramountplus.com/s/article/PI-How-do-I-cancel-my-subscription",
    "checkedOn": "2026-11-10",
    "confidence": "medium",
-   "note": "Help page wouldn't render for automated fetch; from official snippets. Apple, Google, Amazon or Roku billing: cancel there."
+   "note": "Help page wouldn’t render for automated fetch; from official snippets. Apple, Google, Amazon or Roku billing: cancel there."
   },
   {
    "id": "peacock",
@@ -506,7 +506,7 @@
    "source": "https://www.duolingo.com/help/cancel-my-super-duolingo-subscription",
    "checkedOn": "2026-11-10",
    "confidence": "medium",
-   "note": "Help page rendered empty for automated fetch; from official snippets. Usually Apple-billed on iPhone. Deleting the account doesn't stop App Store charges."
+   "note": "Help page rendered empty for automated fetch; from official snippets. Usually Apple-billed on iPhone. Deleting the account doesn’t stop App Store charges."
   },
   {
    "id": "apple-one",
@@ -551,7 +551,7 @@
    "source": "https://www.help.tinder.com/hc/en-us/articles/115003554466-Cancel-your-subscription",
    "checkedOn": "2026-11-10",
    "confidence": "medium",
-   "note": "help.tinder.com returned 403; from official snippets. Order number starting MK = Apple, GPA = Google, TNDR = Tinder. Deleting the app or account doesn't cancel."
+   "note": "help.tinder.com returned 403; from official snippets. Order number starting MK = Apple, GPA = Google, TNDR = Tinder. Deleting the app or account doesn’t cancel."
   },
   {
    "id": "canva-pro",
@@ -567,7 +567,7 @@
    "source": "https://www.canva.com/help/cancel-canva-plan/",
    "checkedOn": "2026-11-10",
    "confidence": "medium",
-   "note": "canva.com returned 403; from official snippets. App Store purchases can't be cancelled in Canva. Canva offers a 3-month pause instead. Designs stay on the free plan."
+   "note": "canva.com returned 403; from official snippets. App Store purchases can’t be cancelled in Canva. Canva offers a 3-month pause instead. Designs stay on the free plan."
   },
   {
    "id": "youtube-music",
@@ -612,7 +612,7 @@
    "source": "https://en-americas-support.nintendo.com/app/answers/detail/a_id/41196/",
    "checkedOn": "2026-11-10",
    "confidence": "high",
-   "note": "Do it at least 48 hours before expiry. Auto-renew can't be turned back on once off. No refunds for unused time.",
+   "note": "Do it at least 48 hours before expiry. Auto-renew can’t be turned back on once off. No refunds for unused time.",
    "app": "Nintendo",
    "company": "Nintendo",
    "appleBilling": false,
@@ -643,7 +643,7 @@
    "source": "https://www.amazon.com/gp/help/customer/display.html?nodeId=GCRZL3F2UZMNP3T3",
    "checkedOn": "2026-11-10",
    "confidence": "medium",
-   "note": "amazon.com returned 503; from official snippets. Apple, Google or carrier billing: cancel there (Amazon can't). Monthly plans may offer pause."
+   "note": "amazon.com returned 503; from official snippets. Apple, Google or carrier billing: cancel there (Amazon can’t). Monthly plans may offer pause."
   },
   {
    "id": "crunchyroll",
@@ -653,13 +653,13 @@
    "steps": [
     "Bought in the app? Settings → your name → Subscriptions",
     "Else open crunchyroll.com in Safari and sign in",
-    "Open your account's membership page and cancel"
+    "Open your account’s membership page and cancel"
    ],
    "appleNote": true,
    "source": "https://help.crunchyroll.com/hc/en-us/articles/46070271612820-How-can-I-cancel-my-Premium-Membership",
    "checkedOn": "2026-11-10",
    "confidence": "medium",
-   "note": "Article body didn't load for automated fetch; snippets confirm cancel-anytime and Apple route but not current web menu names. The app may have no cancel option."
+   "note": "Article body didn’t load for automated fetch; snippets confirm cancel-anytime and Apple route but not current web menu names. The app may have no cancel option."
   },
   {
    "id": "uber-one",
@@ -785,7 +785,7 @@
    "source": "https://helpx.adobe.com/account/individual/subscriptions-and-plans/renewals-and-cancellations/cancel-adobe-subscription.html",
    "checkedOn": "2026-11-10",
    "confidence": "medium",
-   "note": "helpx.adobe.com returned 403; from official snippets. Annual plans paid monthly can charge an early-cancel fee after 14 days. Each plan cancels separately. Can't cancel with a failed payment pending."
+   "note": "helpx.adobe.com returned 403; from official snippets. Annual plans paid monthly can charge an early-cancel fee after 14 days. Each plan cancels separately. Can’t cancel with a failed payment pending."
   },
   {
    "id": "claude-pro",
@@ -859,7 +859,7 @@
    "source": "https://support.google.com/youtubetv/answer/7129668?hl=en&co=GENIE.Platform%3DiOS",
    "checkedOn": "2026-11-10",
    "confidence": "high",
-   "note": "URL is the one Google's help page links to. A Pause (up to 6 months) is offered first. Recordings expire 21 days after it ends. Apple billing not mentioned on the official page.",
+   "note": "URL is the one Google’s help page links to. A Pause (up to 6 months) is offered first. Recordings expire 21 days after it ends. Apple billing not mentioned on the official page.",
    "app": "YouTube TV",
    "company": "YouTube",
    "appleBilling": false,
@@ -906,7 +906,7 @@
    "source": "https://support.bumble.com/hc/articles/28534541366045-Canceling-subscriptions",
    "checkedOn": "2026-11-10",
    "confidence": "medium",
-   "note": "support.bumble.com returned 403; from official snippets. Deleting the app or account doesn't cancel. Cancel 24h before renewal."
+   "note": "support.bumble.com returned 403; from official snippets. Deleting the app or account doesn’t cancel. Cancel 24h before renewal."
   },
   {
    "id": "dropbox",
@@ -922,7 +922,7 @@
    "source": "https://help.dropbox.com/plans/downgrade-dropbox-individual-plans",
    "checkedOn": "2026-11-10",
    "confidence": "high",
-   "note": "No Cancel plan button = bought in the app, so cancel in iPhone Settings. You drop to Basic (2 GB) and syncing stops if you're over.",
+   "note": "No Cancel plan button = bought in the app, so cancel in iPhone Settings. You drop to Basic (2 GB) and syncing stops if you’re over.",
    "app": "Dropbox",
    "company": "Dropbox",
    "answer": "Open dropbox.com in Safari and sign in. Tap your avatar, then Manage account, and tap Cancel plan at the bottom. No Cancel plan button means you bought it in the iPhone app, so cancel in iPhone Settings.",
@@ -1019,14 +1019,14 @@
    "helpUrl": null,
    "steps": [
     "Open the NYT site in Safari and sign in",
-    "Go to your account's subscription page",
+    "Go to your account’s subscription page",
     "Look for the cancel option or ask in chat"
    ],
    "appleNote": true,
    "source": null,
    "checkedOn": "2026-11-10",
    "confidence": "none",
-   "note": "Couldn't tie to an official source: nytimes.com blocks our search and fetch tools, and the help pages only showed up on third-party mirrors, which we don't use. Owner should check help.nytimes.com by hand. App Store subs cancel in iPhone Settings."
+   "note": "Couldn’t tie to an official source: nytimes.com blocks our search and fetch tools, and the help pages only showed up on third-party mirrors, which we don’t use. Owner should check help.nytimes.com by hand. App Store subs cancel in iPhone Settings."
   },
   {
    "id": "strava",
@@ -1133,7 +1133,7 @@
    "source": "https://support.apple.com/guide/fitness-plus/subscribe-to-apple-fitness-apdcd321df40/ios",
    "checkedOn": "2026-11-10",
    "confidence": "medium",
-   "note": "Read via official-domain snippets. Settings → your name → Subscriptions works too. If it's part of Apple One Premier, cancel Apple One instead."
+   "note": "Read via official-domain snippets. Settings → your name → Subscriptions works too. If it’s part of Apple One Premier, cancel Apple One instead."
   },
   {
    "id": "siriusxm",

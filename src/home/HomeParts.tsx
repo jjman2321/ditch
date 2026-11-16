@@ -66,7 +66,7 @@ export function TotalCard({
         </View>
       ) : (
         <Txt v="heading" color={fg}>
-          {trialLine ? 'Nothing charging yet' : 'Add prices to see your total'}
+          {trialLine ? 'Nothing charging yet' : of === 0 ? 'Nothing active right now' : 'Add prices to see your total'}
         </Txt>
       )}
       {trialLine ? (
@@ -94,15 +94,18 @@ export function TotalCard({
             a year ·
           </Txt>
         ) : null}
-        {blocked ? <BellOff color={fg} size={16} /> : <Bell color={p.dark ? brand.sunflower : brand.ink} fill={p.dark ? brand.sunflower : brand.ink} size={15} />}
-        <Txt v="body" color={fg} style={{ fontSize: 15.5, fontFamily: blocked ? F.bold : F.regular }}>
-          {blocked ? 'Reminders off' : 'Reminders on '}
-          {blocked ? null : (
-            <Txt v="body" num color={fg} style={{ fontFamily: F.bold, fontSize: 15.5 }}>
-              {reminders}
-            </Txt>
-          )}
-        </Txt>
+        {/* Everything ditched: no "Reminders on 0 of 0". */}
+        {of === 0 ? null : blocked ? <BellOff color={fg} size={16} /> : <Bell color={p.dark ? brand.sunflower : brand.ink} fill={p.dark ? brand.sunflower : brand.ink} size={15} />}
+        {of === 0 ? null : (
+          <Txt v="body" color={fg} style={{ fontSize: 15.5, fontFamily: blocked ? F.bold : F.regular }}>
+            {blocked ? 'Reminders off' : 'Reminders on '}
+            {blocked ? null : (
+              <Txt v="body" num color={fg} style={{ fontFamily: F.bold, fontSize: 15.5 }}>
+                {reminders}
+              </Txt>
+            )}
+          </Txt>
+        )}
       </View>
     </View>
   );

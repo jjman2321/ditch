@@ -45,7 +45,7 @@ export default function Welcome() {
           </Txt>
         </Txt>
         <Txt v="lead" tone="fg2" style={[{ marginTop: 16, maxWidth: f.tablet ? 420 : 320 }, f.tablet && { fontSize: 20, lineHeight: 28 }]}>
-          {'See everything you pay for. Get a reminder before every charge.'}
+          {'See everything you pay for. Get a heads-up before you’re charged.'}
         </Txt>
 
         <View style={{ flex: 1, minHeight: f.small ? 24 : 96 }} />
@@ -54,7 +54,7 @@ export default function Welcome() {
           {f.small ? null : <Duck width={f.tablet ? 160 : 136} right={16} sink={6} />}
           <View style={{ zIndex: 2 }}>
             <NotificationPreview
-              time={`${weekdayShort(early)} 9:00 AM`}
+              time={`${weekdayShort(early)} 9 AM`}
               message={`Netflix renews ${weekdayName(charge)}.${price ? ` ${price}.` : ''} ${stillUsingIt(SERVICE_BY_ID['netflix'].category).replace(' ', ' ')}`}
             />
           </View>

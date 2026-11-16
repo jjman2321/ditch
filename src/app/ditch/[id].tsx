@@ -243,7 +243,7 @@ export default function Ditched() {
             <Button kind="secondary" label="I already cancelled" onPress={cancelled} style={[{ marginTop: 8 }, compact && { minHeight: 46, borderRadius: 23 }]} />
             <Pressable accessibilityRole="link" accessibilityLabel="Billed by Apple? Open Apple subscriptions" onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)} style={{ minHeight: compact ? 30 : 36, justifyContent: 'center', marginTop: 2 }}>
               <Txt v="body" tone="fg2" center style={{ fontSize: 14 }}>
-                {trial ? 'Settings → your name → Subscriptions → Ditch.' : 'Billed by Apple? Settings → Subscriptions.'}
+                {trial ? 'Settings → your name → Subscriptions → Ditch.' : 'Billed by Apple? Settings → your name → Subscriptions.'}
               </Txt>
             </Pressable>
           </Animated.View>

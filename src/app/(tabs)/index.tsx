@@ -145,7 +145,7 @@ export default function Home() {
 
               {cards.length >= 2 ? (
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 16, marginHorizontal: -edge }} contentContainerStyle={{ gap: 8, paddingHorizontal: edge }} accessibilityLabel="Filter by card">
-                  <Chip label="All cards" selected={!cardOn} onPress={() => setCard(null)} />
+                  <Chip label="All" selected={!cardOn} onPress={() => setCard(null)} />
                   {cards.map((c) => (
                     <Chip key={c} label={c} selected={cardOn === c} onPress={() => setCard(cardOn === c ? null : c)} />
                   ))}

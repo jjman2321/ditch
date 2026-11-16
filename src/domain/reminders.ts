@@ -94,7 +94,7 @@ export function proTrialBody(s: Sub, charge: DateOnly, fireDay: DateOnly, money:
   const price = priceOf(s, money);
   if (daysBetween(fireDay, charge) <= 1)
     return `Your Ditch Pro trial ends ${when}.${price ? ` ${price} ${CYCLE_WORDS[s.cycle]} after that.` : ''} Cancel in iPhone Settings if you’re done.`;
-  return `Your Ditch Pro trial ends ${when}.${price ? ` Then it’s ${price} ${CYCLE_WORDS[s.cycle]}.` : ''} Keep it or ditch it.`;
+  return `Your Ditch Pro trial ends ${when}.${price ? ` Then it’s ${price} ${CYCLE_WORDS[s.cycle]}.` : ''} Keep it, or cancel in iPhone Settings.`;
 }
 
 /** The one reminder a ditched-but-not-cancelled sub gets. */
@@ -108,7 +108,9 @@ export function nudgeBody(s: Sub, charge: DateOnly, fireDay: DateOnly, money: Mo
   const when = whenWords(charge, fireDay);
   if (isProTrial(s)) return `Your Ditch Pro trial ends ${when}.${price ? ` ${price} ${CYCLE_WORDS[s.cycle]} after that.` : ''} Last call to cancel in iPhone Settings.`;
   const what = s.isTrial ? `Your ${s.name} trial ends` : `${s.name} charges`;
-  return `${what} ${when}.${price ? ` ${price}.` : ''} Last call.`;
+  // "Last call" only when it really is the last day; Pro can pick leads a week or more out.
+  const tail = daysBetween(fireDay, charge) <= 1 ? 'Last call.' : 'Still using it?';
+  return `${what} ${when}.${price ? ` ${price}.` : ''} ${tail}`;
 }
 
 /** The second nudge goes out at 7 PM, if that's at least 2 hours after the reminder. */

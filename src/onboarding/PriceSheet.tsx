@@ -94,7 +94,7 @@ function Body({ sub, onSave }: { sub: Picked; onSave: (amountMinor: number, curr
       </Txt>
       <Button
         style={{ marginTop: 20 }}
-        label={amount ? `Save ${formatMoney(amount, currency)} ${CYCLE_WORDS[cycle]}` : text.trim() ? 'Check the price' : 'Type what you pay'}
+        label={amount ? `Use ${formatMoney(amount, currency)} ${CYCLE_WORDS[cycle]}` : text.trim() ? 'Check the price' : 'Type what you pay'}
         disabled={!amount}
         onPress={() => amount && onSave(amount, currency, cycle)}
       />

@@ -2,13 +2,13 @@
 // Official cancel pages and steps, checked 2026-11-10. Don't edit by hand.
 
 export type CancelGuide = {
-  /** The service's own cancel or manage page. */
+  /** The service’s own cancel or manage page. */
   url?: string;
   /** Only a help article (no direct page). */
   helpUrl?: string;
-  /** Apple's own service: cancel in Apple's subscriptions page. */
+  /** Apple’s own service: cancel in Apple’s subscriptions page. */
   apple?: boolean;
-  /** Could also be billed through Apple (then it's in iPhone Settings). */
+  /** Could also be billed through Apple (then it’s in iPhone Settings). */
   appleNote?: boolean;
   steps: string[];
 };
@@ -136,7 +136,7 @@ export const CANCEL_GUIDES: Record<string, CancelGuide> = {
     steps: [
       "Open account.microsoft.com/services in Safari",
       "Sign in, then tap Cancel subscription (or Upgrade or Cancel)",
-      "Scroll down and tap I don't want my subscription",
+      "Scroll down and tap I don’t want my subscription",
     ],
     url: "https://account.microsoft.com/services/microsoft365",
     appleNote: true,
@@ -253,7 +253,7 @@ export const CANCEL_GUIDES: Record<string, CancelGuide> = {
     steps: [
       "Bought in the app? Settings → your name → Subscriptions",
       "Else open crunchyroll.com in Safari and sign in",
-      "Open your account's membership page and cancel",
+      "Open your account’s membership page and cancel",
     ],
     helpUrl:
       "https://help.crunchyroll.com/hc/en-us/articles/46070271612820-How-can-I-cancel-my-Premium-Membership",

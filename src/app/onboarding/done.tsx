@@ -115,12 +115,12 @@ export default function Done() {
   const items: { mark: Mark; title: string; sub: string }[] = [
     n
       ? { mark: 'ok', title: `${n} ${n === 1 ? 'subscription' : 'subscriptions'} on your list`, sub: yearly ? `${yearly} a year` : 'Add prices to see your total' }
-      : { mark: 'todo', title: 'Your list is ready', sub: 'Add what you pay for, and we’ll remind you before each charge.' },
+      : { mark: 'todo', title: 'Your list is ready', sub: 'Add what you pay for, and we’ll remind you before it charges.' },
     on
       ? pro
-        ? { mark: 'ok', title: undated.length ? `Reminders on all ${n - undated.length} with a date` : `Reminders on all ${n}`, sub: '3 days and 1 day before, at 9:00 AM' }
+        ? { mark: 'ok', title: undated.length ? `Reminders on all ${n - undated.length} with a date` : `Reminders on all ${n}`, sub: '3 days and 1 day before, at 9 AM' }
         : remindedIds.length
-          ? { mark: 'ok', title: remindedIds.length < n ? `Reminders on ${remindedIds.length} of ${n}` : 'Reminders are on', sub: '3 days and 1 day before, at 9:00 AM' }
+          ? { mark: 'ok', title: remindedIds.length < n ? `Reminders on ${remindedIds.length} of ${n}` : 'Reminders are on', sub: '3 days and 1 day before, at 9 AM' }
           : { mark: 'todo', title: 'No reminders picked yet', sub: 'Pick up to 3 from your list. Free covers 3.' }
       : { mark: 'warn', title: 'Reminders are off', sub: 'Nothing can reach you until you turn them\u00A0on.' },
   ];
@@ -184,12 +184,12 @@ export default function Done() {
             <View importantForAccessibility="no-hide-descendants">
               {f.small ? null : <Duck width={84} right={10} sink={4} delay={reduce ? 0 : 700} />}
               <View style={{ zIndex: 2 }}>
-                <NotificationPreview faded={!on} time="9:00 AM" message={noOrphan(first.body)} />
+                <NotificationPreview faded={!on} time="9 AM" message={noOrphan(first.body)} />
               </View>
             </View>
             {!pro && many ? (
               <View style={{ alignItems: 'center', marginTop: 8 }}>
-                <TextLink label={`See all ${Math.min(3, remindedIds.length)} reminders`} a11y="See and change which 3 get reminders" onPress={() => setPicking(true)} style={{ fontSize: 15 }} />
+                <TextLink label={remindedIds.length === 1 ? 'See your reminder' : `See all ${Math.min(3, remindedIds.length)} reminders`} a11y="See and change which 3 get reminders" onPress={() => setPicking(true)} style={{ fontSize: 15 }} />
               </View>
             ) : remindedIds.length > 1 ? (
               <Txt v="sub" num color={sub2} center style={{ marginTop: 10 }}>

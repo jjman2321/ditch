@@ -42,7 +42,7 @@ export function useFirstReminders(max: number) {
       // Ditch's own trial: worded like its real reminder (src/domain/reminders.ts).
       if (r.trial) {
         const plan = planById('yearly');
-        return { ...r, body: `Your Ditch Pro trial ends ${weekdayName(r.charge)}. Then it’s ${plan.priceString} a year. Keep it or ditch it.` };
+        return { ...r, body: `Your Ditch Pro trial ends ${weekdayName(r.charge)}. Then it’s ${plan.priceString} a year. Keep it, or cancel in iPhone Settings.` };
       }
       if (!pick) return { ...r, body: '' };
       const sub = subFromPick(pick, { freePick: true, nowIso: '', id: pick.id });

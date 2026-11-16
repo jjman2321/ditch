@@ -14,7 +14,7 @@ import { Button, External, Tick, Txt, haptic, usePalette } from '@/ui/sunflower'
 type Place = { id: string; title: string; where: string; url?: string };
 
 export const PLACES: Place[] = [
-  { id: 'apple', title: 'Apple subscriptions', where: 'Everything billed to your Apple ID', url: APPLE_SUBSCRIPTIONS_URL },
+  { id: 'apple', title: 'Apple subscriptions', where: 'Everything billed to your Apple Account', url: APPLE_SUBSCRIPTIONS_URL },
   { id: 'google', title: 'Google Play', where: 'Android or Google apps you’ve paid for', url: 'https://play.google.com/store/account/subscriptions' },
   { id: 'paypal', title: 'PayPal', where: 'Settings → Payments → Automatic payments' },
   { id: 'amazon', title: 'Amazon', where: 'Your Account → Memberships & Subscriptions' },

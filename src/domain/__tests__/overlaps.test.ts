@@ -38,6 +38,11 @@ describe('overlaps (DECISIONS #60)', () => {
     expect(overlapToShow(two, [first.key])).toBeNull();
     expect(overlapToShow([...two, sub('t', 'TIDAL', 'tidal')], [first.key])?.subs).toHaveLength(3);
   });
+  it('one leaving a dismissed group does not bring the card back (audit, Nov 16)', () => {
+    const three = [sub('s', 'Spotify', 'spotify'), sub('m', 'Apple Music', 'apple-music'), sub('t', 'TIDAL', 'tidal')];
+    const key = overlapToShow(three, [])!.key;
+    expect(overlapToShow(three.slice(0, 2), [key])).toBeNull();
+  });
 });
 
 

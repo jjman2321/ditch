@@ -25,6 +25,7 @@ export type Settings = {
   /** When we last offered Apple's rating prompt (src/domain/review.ts). */
   review: ReviewState;
   /** Overlap cards the user tapped "Got it" on (keys from domain/overlaps). */
+  /** Dismissed overlap and price-change cards, newest DISMISSED_KEEP kept. */
   dismissedOverlaps: string[];
   /** Day of the month they get paid (1–31), for "before payday". Null = not set. Never an amount. */
   payday: number | null;
@@ -45,6 +46,9 @@ export const DEFAULT_SETTINGS: Settings = {
 };
 
 /** Lead days people can choose (Remind me page). */
+/** How many dismissed cards we remember (short keys; plenty for years of use). */
+export const DISMISSED_KEEP = 300;
+
 export const LEAD_CHOICES = [14, 7, 3, 2, 1, 0] as const;
 
 const TIME = /^([01]\d|2[0-3]):([0-5]\d)$/;
@@ -140,7 +144,7 @@ export function settingsToKv(patch: Partial<Settings>): Record<string, string | 
   if (patch.forgottenDone !== undefined) out.forgotten_done = patch.forgottenDone ? '1' : '0';
   if (patch.review !== undefined) out.review = JSON.stringify(patch.review);
   // Keep the newest 50 so the setting can't grow forever.
-  if (patch.dismissedOverlaps !== undefined) out.dismissed_overlaps = JSON.stringify(patch.dismissedOverlaps.slice(-50));
+  if (patch.dismissedOverlaps !== undefined) out.dismissed_overlaps = JSON.stringify(patch.dismissedOverlaps.slice(-DISMISSED_KEEP));
   if (patch.payday !== undefined) out.payday = patch.payday === null ? null : String(patch.payday);
   return out;
 }

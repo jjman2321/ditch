@@ -188,6 +188,8 @@ export function spendTotals(
 export function parseAmountInput(text: string, currency: string): number | null {
   const digits = currencyDigits(currency);
   let t = text.replace(/[^\d.,]/g, '');
+  // Mid-typing "12." or "12,": the cents aren't in yet, so read it as 12.
+  if (digits > 0 && /^\d+[.,]$/.test(t)) t = t.slice(0, -1);
   if (!t) return null;
   const lastDot = t.lastIndexOf('.');
   const lastComma = t.lastIndexOf(',');

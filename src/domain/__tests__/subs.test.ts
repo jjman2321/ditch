@@ -337,8 +337,9 @@ describe('year ahead (DECISIONS #60)', () => {
     makeSub({ name, amountMinor, currency, cycle, anchor, dateSource: 'next' });
   it('12 months from this month; this month only counts from today', () => {
     const months = yearAhead([s('Netflix', 1799, 'monthly', '2026-11-05')], '2026-11-09');
-    expect(months).toHaveLength(12);
+    expect(months).toHaveLength(13); // Nov 9 through Nov 8 next year
     expect(months[0].month).toBe('2026-11-01');
+    expect(months[12].month).toBe('2027-11-01');
     expect(months[0].totals).toEqual([]); // Nov 5 already went
     expect(months[1].totals).toEqual([{ currency: 'USD', amountMinor: 1799 }]);
     expect(months[11].month).toBe('2027-10-01');
@@ -351,6 +352,11 @@ describe('year ahead (DECISIONS #60)', () => {
       { currency: 'USD', amountMinor: 13900 },
       { currency: 'GBP', amountMinor: 1199 },
     ]);
+  });
+  it('a yearly charge earlier this month shows next year (audit, Nov 16)', () => {
+    const months = yearAhead([s('Domain', 9900, 'yearly', '2026-11-05')], '2026-11-16');
+    const hits = months.flatMap((m) => m.big.map((b) => b.charge));
+    expect(hits).toEqual(['2027-11-05']);
   });
   it('every 2 weeks can charge 3 times in a month', () => {
     const months = yearAhead([s('Gym', 1000, 'biweekly', '2026-12-01')], '2026-11-09');
@@ -388,5 +394,14 @@ describe('before payday (DECISIONS #60)', () => {
   });
   it('is off until a payday is set', () => {
     expect(beforePayday([s('Netflix', 1799, 'monthly', '2026-11-10')], '2026-11-09', null)).toBeNull();
+  });
+});
+
+describe('CSV safety (audit, Nov 16)', () => {
+  it('quotes carriage returns and never lets a name run as a formula', () => {
+    const s = makeSub({ name: '=HYPERLINK("http://x")', amountMinor: 100, currency: 'USD', cycle: 'monthly', anchor: '2026-11-20', dateSource: 'next', notes: 'line1\rline2' });
+    const csv = toCsv([s], TODAY, currencyDigits);
+    expect(csv).toContain(`"'=HYPERLINK(""http://x"")"`);
+    expect(csv).toContain('"line1\rline2"');
   });
 });

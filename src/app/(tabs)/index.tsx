@@ -7,6 +7,7 @@ import { useMemo, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
 import { CYCLE_SHORT } from '@/domain/money';
+import { DISMISSED_KEEP } from '@/domain/settings';
 import { nextReminder, whenLabel } from '@/domain/reminders';
 import { overlapToShow } from '@/domain/overlaps';
 import { priceChanges } from '@/domain/priceWatch';
@@ -131,7 +132,7 @@ export default function Home() {
                     pro={pro}
                     money={money}
                     onUpdate={() => void app.saveSub({ ...change.sub, amountMinor: change.now, amountIsEstimate: true })}
-                    onDismiss={() => void app.updateSettings({ dismissedOverlaps: [...settings.dismissedOverlaps, change.key] })}
+                    onDismiss={() => void app.updateSettings({ dismissedOverlaps: [...settings.dismissedOverlaps, change.key].slice(-DISMISSED_KEEP) })}
                     onPro={() => router.push('/paywall?from=app')}
                   />
                 </View>
@@ -139,7 +140,7 @@ export default function Home() {
 
               {overlap ? (
                 <View style={{ marginTop: 10 }}>
-                  <OverlapCard overlap={overlap} money={money} onDismiss={() => void app.updateSettings({ dismissedOverlaps: [...settings.dismissedOverlaps, overlap.key] })} />
+                  <OverlapCard overlap={overlap} money={money} onDismiss={() => void app.updateSettings({ dismissedOverlaps: [...settings.dismissedOverlaps, overlap.key].slice(-DISMISSED_KEEP) })} />
                 </View>
               ) : null}
 

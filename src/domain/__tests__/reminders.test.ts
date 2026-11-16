@@ -212,13 +212,25 @@ describe('no duplicates, at most 64, soonest first', () => {
     const all = planReminders(many, PRO, NOW, { cap: 10_000 });
     const plan = planReminders(many, PRO, NOW);
     expect(all.length).toBeGreaterThan(MAX_PENDING);
-    expect(plan).toHaveLength(MAX_PENDING);
-    expect(plan.slice(0, -1)).toEqual(all.slice(0, MAX_PENDING - 1));
-    const last = plan[plan.length - 1];
-    expect(last.kind).toBe('keep-going');
-    expect(last.id).toMatch(/^keep:/);
-    expect(last.fireAt.getTime()).toBeGreaterThan(plan[plan.length - 2].fireAt.getTime());
+    expect(plan.length).toBeLessThanOrEqual(MAX_PENDING);
+    const keep = plan.filter((r) => r.kind === 'keep-going');
+    expect(keep).toHaveLength(1);
+    expect(keep[0].id).toMatch(/^keep:/);
+    // Everything kept is the soonest, in order; nothing that didn't fit is due before the ask.
+    const kept = plan.filter((r) => r.kind !== 'keep-going');
+    expect(kept).toEqual(all.slice(0, kept.length));
+    for (const r of all.slice(kept.length)) expect(r.fireAt.getTime()).toBeGreaterThan(keep[0].fireAt.getTime());
     for (let i = 1; i < plan.length; i++) expect(plan[i].fireAt.getTime()).toBeGreaterThanOrEqual(plan[i - 1].fireAt.getTime());
+  });
+
+  it('a full plan never drops a reminder that is due before "Open Ditch" (audit, Nov 16)', () => {
+    // Pro, 31 monthly subs all on Dec 1: the 60th reminder falls in the middle of Nov 30, 9 AM.
+    const many = Array.from({ length: 31 }, (_, i) => sub({ id: `m${i}`, name: `Sub ${i}`, anchor: '2026-12-01' }));
+    const all = planReminders(many, PRO, NOW, { cap: 10_000 });
+    const plan = planReminders(many, PRO, NOW);
+    const keep = plan.find((r) => r.kind === 'keep-going')!;
+    const planned = new Set(plan.map((r) => r.id));
+    for (const r of all) if (!planned.has(r.id)) expect(r.fireAt.getTime()).toBeGreaterThan(keep.fireAt.getTime());
   });
 
   it('no keep-going reminder when everything fits', () => {
@@ -359,5 +371,28 @@ describe('30-day warning before yearly charges (Pro, DECISIONS #60)', () => {
   it('never in the past: a charge 10 days away gets no 30-day one', () => {
     const plan = forSub(planReminders([sub({ id: 'y', name: 'Yearly thing', cycle: 'yearly', anchor: '2026-11-19' })], PRO, NOW), 'y');
     expect(plan.filter((r) => r.chargeDate === '2026-11-19' && r.kind === 'heads-up').map((r) => r.lead)).toEqual([3, 1]);
+  });
+});
+
+describe('Pro evening nudge follows the real last reminder (audit, Nov 16)', () => {
+  const yearly = () => [sub({ id: 'a', name: 'Adobe', anchor: '2027-01-20', cycle: 'yearly' })];
+  it('no nudge when the last reminder is on the day, and never after the 30-day warning', () => {
+    const plan = planReminders(yearly(), { ...PRO, leadDays: [0] }, NOW);
+    expect(plan.filter((r) => r.kind === 'nudge')).toEqual([]);
+  });
+  it('with 3 days and on the day, the 3-day one gets no "Last call"', () => {
+    const plan = planReminders(yearly(), { ...PRO, leadDays: [3, 0] }, NOW);
+    expect(plan.filter((r) => r.kind === 'nudge')).toEqual([]);
+  });
+  it('with 3 days and 1 day, the nudge is the evening before and says Last call', () => {
+    const nudges = planReminders(yearly(), { ...PRO, leadDays: [3, 1] }, NOW).filter((r) => r.kind === 'nudge');
+    expect(nudges).toHaveLength(1);
+    expect(nudges[0].fireAt.getTime()).toBe(at(2027, 1, 19, 19));
+    expect(nudges[0].body).toMatch(/Last call\.$/);
+  });
+  it('every 2 weeks never gets a 2-week lead (it would land on the last charge)', () => {
+    const s = sub({ id: 'g', name: 'Gym', anchor: '2026-11-20', cycle: 'biweekly' });
+    const plan = planReminders([s], { ...PRO, leadDays: [14, 0] }, NOW);
+    expect(plan.filter((r) => r.kind === 'heads-up').every((r) => r.lead < 14)).toBe(true);
   });
 });

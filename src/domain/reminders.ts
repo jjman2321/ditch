@@ -176,7 +176,8 @@ export function planReminders(
       const trial = s.isTrial && charge === s.anchor;
       // A trial's end always gets the 3-day and 1-day ones too, whatever days they picked.
       // Weekly: a lead of a week or more would land on (or before) the last charge, so skip those.
-      const base = s.cycle === 'weekly' ? leads.filter((l) => l < 7) : leads;
+      // Every 2 weeks: the same for a lead of 2 weeks.
+      const base = s.cycle === 'weekly' ? leads.filter((l) => l < 7) : s.cycle === 'biweekly' ? leads.filter((l) => l < 14) : leads;
       const usable = base.length ? base : [1];
       const theseLeads = trial ? [...new Set([...usable, ...HEADS_UP_LEADS])] : usable;
       // Pro: one more, a month before big charges (yearly and every 6 months). Not for trial ends.
@@ -207,12 +208,13 @@ export function planReminders(
     const lastOf = new Map<string, PlannedReminder>();
     for (const r of out.values()) {
       if (r.kind !== 'heads-up' && r.kind !== 'trial' && r.kind !== 'pro-trial') continue;
-      if (r.lead < 1) continue;
+      if (r.lead >= YEARLY_WARNING_LEAD) continue; // the month-ahead warning is never "the last one"
       const key = `${r.subId}:${r.chargeDate}`;
       const prev = lastOf.get(key);
       if (!prev || r.lead < prev.lead) lastOf.set(key, r);
     }
     for (const r of lastOf.values()) {
+      if (r.lead < 1) continue; // an on-the-day reminder is the last one: no evening nudge after the charge
       const s = subs.find((x) => x.id === r.subId);
       if (!s) continue;
       const day = toDateOnly(r.fireAt);
@@ -224,11 +226,16 @@ export function planReminders(
   if (sorted.length <= cap) return sorted;
   // More than fit: keep the soonest, and use the last slot to ask them to open Ditch,
   // so a long list never just goes quiet (reminders are only lined up when the app opens).
-  const kept = sorted.slice(0, Math.max(0, cap - 1));
-  const last = kept[kept.length - 1];
-  if (!last) return kept;
-  const day = toDateOnly(last.fireAt);
-  return [...kept, { id: `keep:${day}`, subId: '', kind: 'keep-going', fireAt: atTime(addDays(day, 1), time), chargeDate: day, lead: 0, title: '', body: KEEP_GOING_BODY }];
+  // The cut falls between whole days, and the ask comes the day BEFORE the first day we
+  // couldn't fit, so opening Ditch then lines those up before any of them is due.
+  const firstOut = sorted[Math.max(0, cap - 1)];
+  const cutDay = toDateOnly(firstOut.fireAt);
+  const kept = sorted.filter((r) => toDateOnly(r.fireAt) < cutDay);
+  let at = atTime(addDays(cutDay, -1), time);
+  if (at.getTime() <= now.getTime()) at = new Date(firstOut.fireAt.getTime() - 30 * 60_000);
+  if (at.getTime() <= now.getTime()) return kept;
+  const keep: PlannedReminder = { id: `keep:${cutDay}`, subId: '', kind: 'keep-going', fireAt: at, chargeDate: cutDay, lead: 0, title: '', body: KEEP_GOING_BODY };
+  return [...kept, keep].sort((a, b) => a.fireAt.getTime() - b.fireAt.getTime() || (a.id < b.id ? -1 : 1));
 }
 
 export const KEEP_GOING_BODY = 'Open Ditch so your next reminders get lined up. Takes a second.';

@@ -50,5 +50,17 @@ export function overlaps(subs: Sub[]): Overlap[] {
 
 /** The first one they haven't dismissed, or null. */
 export function overlapToShow(subs: Sub[], dismissed: readonly string[]): Overlap | null {
-  return overlaps(subs).find((o) => !dismissed.includes(o.key)) ?? null;
+  return overlaps(subs).find((o) => !isDismissed(o.key, dismissed)) ?? null;
+}
+
+/** Dismissed, or a smaller set of one they dismissed (one left the group): it only comes back when something new joins. */
+function isDismissed(key: string, dismissed: readonly string[]): boolean {
+  const [kind, ids] = key.split(':');
+  const mine = ids.split(',');
+  return dismissed.some((d) => {
+    const [k, rest] = d.split(':');
+    if (k !== kind || rest === undefined) return false;
+    const theirs = new Set(rest.split(','));
+    return mine.every((id) => theirs.has(id));
+  });
 }

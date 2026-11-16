@@ -69,3 +69,11 @@ describe('parseAmountInput typos', () => {
     expect(parseAmountInput('1,299.00', 'GBP')).toBe(129900);
   });
 });
+
+describe('parseAmountInput while typing (audit, Nov 16)', () => {
+  it('a trailing separator reads as the whole amount so far', () => {
+    expect(parseAmountInput('12.', 'USD')).toBe(1200);
+    expect(parseAmountInput('12,', 'EUR')).toBe(1200);
+    expect(parseAmountInput('1,299', 'USD')).toBe(129900);
+  });
+});

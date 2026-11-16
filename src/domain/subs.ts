@@ -451,8 +451,10 @@ export function monthDue(days: (CalendarDay | null)[], home?: string): { totals:
 // ---------- Export ----------
 
 function csvCell(v: string | number | null): string {
-  const s = v === null ? '' : String(v);
-  return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  let s = v === null ? '' : String(v);
+  // Text that starts like a formula (=, +, -, @) would run in Excel or Numbers: show it as text.
+  if (typeof v === 'string' && /^[=+\-@\t]/.test(s)) s = `'${s}`;
+  return /[",\r\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 }
 
 /** Plain words for the Billed column (Nov 15: readable in any spreadsheet). */
@@ -494,11 +496,16 @@ export function yearAhead(subs: Sub[], today: DateOnly): MonthAhead[] {
   const live = listedUserSubs(subs).filter(isPricedSub).filter(hasDate);
   const { y, m } = parseDate(today);
   const out: MonthAhead[] = [];
-  for (let i = 0; i < 12; i++) {
+  // Up to the day before the same date next year, so a yearly charge earlier this month (next
+  // due in 11.5 months) still shows: 12 full months plus the start of the 13th.
+  const last = addDays(`${y + 1}-${String(m).padStart(2, '0')}-${String(Math.min(parseDate(today).d, daysInMonth(y + 1, m))).padStart(2, '0')}`, -1);
+  for (let i = 0; i <= 12; i++) {
     const yy = y + Math.floor((m - 1 + i) / 12);
     const mm = ((m - 1 + i) % 12) + 1;
     const start = `${yy}-${String(mm).padStart(2, '0')}-01`;
-    const end = `${yy}-${String(mm).padStart(2, '0')}-${String(new Date(yy, mm, 0).getDate()).padStart(2, '0')}`;
+    if (start > last) break;
+    const monthEnd = `${yy}-${String(mm).padStart(2, '0')}-${String(new Date(yy, mm, 0).getDate()).padStart(2, '0')}`;
+    const end = monthEnd < last ? monthEnd : last;
     const from = i === 0 ? today : start;
     const sums = new Map<string, number>();
     const big: MonthAhead['big'] = [];

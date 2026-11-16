@@ -39,13 +39,16 @@ export default function Calendar() {
   // One "Most months" line, then only the months that differ (the yearly and 6-monthly ones), so it isn't 12 identical rows.
   const aheadRows = useMemo(() => {
     const fmt = (a: (typeof ahead)[number]) => a.totals.map((x) => money(x.amountMinor, x.currency)).join(' + ') || '–';
+    // The 13th month is only its first days (up to a year from today): it shows only for a yearly or 6-monthly charge.
+    const full = ahead.length > 12 ? ahead.slice(0, 12) : ahead;
     const counts = new Map<string, number>();
-    ahead.forEach((a) => counts.set(fmt(a), (counts.get(fmt(a)) ?? 0) + 1));
+    full.forEach((a) => counts.set(fmt(a), (counts.get(fmt(a)) ?? 0) + 1));
     const usual = [...counts.entries()].sort((a, b) => b[1] - a[1])[0];
     if (!usual || ahead.every((a) => !a.totals.length)) return [];
     const rows = [{ key: 'usual', label: usual[1] === 12 ? 'Every month' : 'Most months', amounts: usual[0], bigs: '', usual: true }];
-    for (const a of ahead) {
+    for (const [i, a] of ahead.entries()) {
       if (fmt(a) === usual[0] && !a.big.length) continue;
+      if (i >= 12 && !a.big.length) continue;
       const { y, m } = parseDate(a.month);
       rows.push({ key: a.month, label: `${MONTH_LONG[m - 1]}${y !== t.y ? ` ${y}` : ''}`, amounts: fmt(a), bigs: a.big.map((b) => `${b.sub.name} ${money(b.sub.amountMinor, b.sub.currency)}`).join(' · '), usual: false });
     }

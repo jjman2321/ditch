@@ -15,6 +15,7 @@ import { now as clockNow } from '@/services/clock';
 import { shortPlanName } from '@/domain/copy';
 import { CYCLE_SHORT, CYCLE_WORDS, currencyDigits, formatMoney, parseAmountInput, type Cycle } from '@/domain/money';
 import { leadsLabel, shortTimeLabel, effectiveLeads } from '@/domain/settings';
+import { previousCharge } from '@/domain/charges';
 import { FREE_REMINDERS, chargeOfSub, isActive, isProTrial, makeSub, remindedIds, type Sub } from '@/domain/subs';
 import { rowLine, SubLogo } from '@/home/SubRow';
 import { DateBody } from '@/onboarding/DateSheet';
@@ -256,13 +257,14 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
     if (draft.priceSource === 'catalog') {
       const moved = chooseCycle(asPick(draft), c);
       if (moved.cycle === c) {
-        const next = fromPick(draft, moved);
+        // A new cycle moves the charges, so a "skip this one" date no longer means anything.
+        const next = { ...fromPick(draft, moved), skipCharge: null };
         setDraft(next);
         setAmount(amountText(next));
         return;
       }
     }
-    setDraft({ ...draft, cycle: c, priceSource: draft.amountMinor ? 'user' : 'none', amountIsEstimate: false, planId: null, planName: null });
+    setDraft({ ...draft, cycle: c, priceSource: draft.amountMinor ? 'user' : 'none', amountIsEstimate: false, planId: null, planName: null, skipCharge: null });
   };
 
   const plans = draft.catalogId && draft.priceSource === 'catalog' ? planChoices(draft.catalogId, draft.priceCountry) : [];
@@ -311,18 +313,26 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
   };
 
   if (step === 'date') {
+    // A stored date that has passed shows as the real next charge (or the receipt before it),
+    // not the old day. Saving it unchanged keeps the original billing day (Jan 31 stays the 31st).
+    const shown = asPick(draft);
+    if (draft.dateSource !== 'none' && draft.anchor < today) {
+      const next = chargeOfSub(draft, today);
+      if (next) shown.anchor = draft.dateSource === 'receipt' ? previousCharge(next, draft.cycle) : next;
+    }
     return (
       <View style={{ flex: 1 }}>
         <Button kind="text" label="Back" onPress={() => setStep('form')} style={{ alignSelf: 'flex-start', marginTop: -8, marginLeft: -12 }} />
         <DateBody
-          sub={asPick(draft)}
+          sub={shown}
           trial={draft.isTrial}
           leads={effectiveLeads(settings, pro)}
           reminderTime={settings.reminderTime}
           off={remindOn || trialEntry ? undefined : atLimit ? 'No reminder: your free 3 are in use.' : 'Reminders are off for this one.'}
           onSave={(anchor, source, cycle) => {
             const moved = cycle !== draft.cycle ? fromPick(draft, chooseCycle(asPick(draft), cycle)) : draft;
-            setDraft({ ...moved, cycle, anchor, dateSource: source });
+            const same = anchor === shown.anchor && source === draft.dateSource && cycle === draft.cycle;
+            setDraft(same ? draft : { ...moved, cycle, anchor, dateSource: source, skipCharge: null });
             setAmount(amountText(moved));
             setStep('form');
           }}

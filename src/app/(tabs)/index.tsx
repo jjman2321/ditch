@@ -4,7 +4,7 @@
 
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, useWindowDimensions } from 'react-native';
 
 import { CYCLE_SHORT } from '@/domain/money';
 import { DISMISSED_KEEP } from '@/domain/settings';
@@ -23,6 +23,9 @@ import { BottomFade, Card, Chip, Gear, IconButton, Plus, RowDivider, SectionHead
 export default function Home() {
   const p = usePalette();
   const insets = useInsets();
+  // Short screens (SE, Display Zoom): at most one card under Next reminder, so the list starts on the first screen.
+  // Priority: dates missing (they block reminders), then a suggestion, then payday. The rest show on taller phones.
+  const short = useWindowDimensions().height < 700;
   const edge = usePageEdge();
   const app = useApp();
   const editor = useEditor();
@@ -51,6 +54,9 @@ export default function Home() {
   const payday = useMemo(() => beforePayday(subs, today, settings.payday), [subs, today, settings.payday]);
   // Price watch (Pro): our checked price for their plan changed. Dismissed keys share the overlaps list.
   const change = useMemo(() => priceChanges(subs, priceRow).find((c) => !settings.dismissedOverlaps.includes(c.key)) ?? null, [subs, settings.dismissedOverlaps]);
+  const undatedShown = undated.length > 0 && !blocked;
+  const showSuggest = !short || !undatedShown;
+  const showPayday = !short || (!undatedShown && !(overlap || change));
   // The very next one, so it's plain that reminders are scheduled.
   const next = blocked ? null : nextReminder(app.plan, subs);
   const money = useAppMoney();
@@ -114,7 +120,7 @@ export default function Home() {
                   <NextReminderRow when={whenLabel(next.fireAt, today, settings.reminderTime)} name={next.name} onPress={() => router.push('/calendar')} />
                 </View>
               ) : null}
-              {payday ? (
+              {payday && showPayday ? (
                 <View style={{ marginTop: 10 }}>
                   <PaydayRow before={payday} money={money} onPress={() => router.push('/calendar')} />
                 </View>
@@ -125,7 +131,7 @@ export default function Home() {
                 </View>
               ) : null}
 
-              {change && !overlap ? (
+              {change && !overlap && showSuggest ? (
                 <View style={{ marginTop: 10 }}>
                   <PriceChangeCard
                     change={change}
@@ -139,7 +145,7 @@ export default function Home() {
               ) : null}
 
               {/* One suggestion card at a time: the free overlap win first (shortest path to a ditch), then price watch. */}
-              {overlap ? (
+              {overlap && showSuggest ? (
                 <View style={{ marginTop: 10 }}>
                   <OverlapCard overlap={overlap} money={money} onDismiss={() => void app.updateSettings({ dismissedOverlaps: [...settings.dismissedOverlaps, overlap.key].slice(-DISMISSED_KEEP) })} />
                 </View>

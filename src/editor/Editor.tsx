@@ -271,7 +271,9 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
     setDraft({ ...draft, cycle: c, priceSource: draft.amountMinor ? 'user' : 'none', amountIsEstimate: false, planId: null, planName: null, skipCharge: null });
   };
 
-  const plans = draft.catalogId && draft.priceSource === 'catalog' ? planChoices(draft.catalogId, draft.priceCountry) : [];
+  // Plans stay on screen after the price is edited (audit, Nov 16), so a plan can always be re-picked.
+  const planRow = draft.catalogId && draft.priceCountry ? priceRow(draft.catalogId, draft.priceCountry) : null;
+  const plans = draft.catalogId ? planChoices(draft.catalogId, draft.priceCountry) : [];
 
   // Reminders: free covers 3 (the Pro trial entry is always on).
   const othersOn = remindedIds(app.subs.filter((s) => s.id !== draft.id), false).size;
@@ -325,7 +327,8 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
       if (next) shown.anchor = draft.dateSource === 'receipt' ? previousCharge(next, draft.cycle) : next;
     }
     return (
-      <View style={{ flex: 1 }}>
+      // Scrolls when the sheet is shorter than the calendar (SE, Display Zoom, big text), so the Set button is always reachable.
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false} scrollEventThrottle={32} onScroll={onSheetScroll}>
         <Button kind="text" label="Back" onPress={() => setStep('form')} style={{ alignSelf: 'flex-start', marginTop: -8, marginLeft: -12 }} />
         <DateBody
           sub={shown}
@@ -345,14 +348,16 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
             setStep('form');
           }}
         />
-      </View>
+      </ScrollView>
     );
   }
 
   const charge = chargeOfSub(draft, today);
   // When the reminders land, and a preview of the first one, worded like the real notification.
   const leadsNow = trialEntry ? [3, 1] : effectiveLeads(settings, pro);
-  const heads = charge ? reminderDaysFor(charge, clockNow(), leadsNow, settings.reminderTime) : [];
+  // Skipped this one: no reminders for this charge, so say so instead of listing days.
+  const skippedNow = !!charge && draft.skipCharge === charge && !draft.isTrial;
+  const heads = charge && !skippedNow ? reminderDaysFor(charge, clockNow(), leadsNow, settings.reminderTime) : [];
   const previewName = (draft.name || query).trim();
   const preview =
     remindOn && charge && heads[0] && previewName && !trialEntry
@@ -365,7 +370,8 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
   // If our checked price for their plan has moved since they added it, say so plainly instead of "Typical".
   const current = draft.catalogId && draft.priceSource === 'catalog' ? catalogPrice(draft.catalogId, draft.priceCountry, draft.planId) : null;
   const samePlan = !!current && !!draft.planId && current.planId === draft.planId && current.currency === draft.currency;
-  const moved = samePlan && current!.amountMinor !== draft.amountMinor ? current : null;
+  // Price watch is Pro (DECISIONS #60): free users don't get the 'is $X now' line here either.
+  const moved = pro && samePlan && current!.amountMinor !== draft.amountMinor ? current : null;
   // "Typical" only when it really is our checked price for that plan (audit, Nov 16: it showed for $17.99 Netflix, which matches no plan).
   const typical = !!current && current.currency === draft.currency && current.amountMinor === draft.amountMinor && (!draft.planId || samePlan);
   const catalogLine =
@@ -476,8 +482,9 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                   {plans.map((pl) => (
                     <Chip
                       key={pl.id}
-                      label={`${shortPlanName(pl.name, draft.name, plans.map((x) => x.name)).replace(/\s*\((yearly|monthly|annual)\)$/i, '')} ${money(pl.amountMinor, draft.currency ?? settings.currency)}${CYCLE_SHORT[pl.cycle]}`}
-                      selected={pl.id === draft.planId}
+                      label={`${shortPlanName(pl.name, draft.name, plans.map((x) => x.name)).replace(/\s*\((yearly|monthly|annual)\)$/i, '')} ${money(pl.amountMinor, planRow?.currency ?? draft.currency ?? settings.currency)}${CYCLE_SHORT[pl.cycle]}`}
+                      // The plan they picked, or the one their price matches.
+                      selected={draft.planId ? pl.id === draft.planId : pl.amountMinor === draft.amountMinor && pl.cycle === draft.cycle && planRow?.currency === draft.currency}
                       onPress={() => {
                         haptic.select();
                         const next = fromPick(draft, choosePlan(asPick(draft), pl.id));
@@ -602,9 +609,11 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                   <Txt v="label">Remind me</Txt>
                   <Txt v="sub" tone="mute" num>
                     {atLimit
-                      ? `Free covers ${FREE_REMINDERS}. Turn one off in Settings, or try Pro.`
+                      ? `Free covers ${FREE_REMINDERS}. Turn one off in Settings → Which subscriptions, or try Pro.`
                       : !charge && !trialEntry
                         ? 'Starts once it has a date'
+                        : skippedNow && remindOn
+                          ? `Skipping ${weekdayDate(charge)}. Back on for the next one.`
                         : remindOn && heads.length
                           ? `${heads.slice(0, -1).map(weekdayDate).join(', ')}${heads.length > 1 ? ' and ' : ''}${weekdayDate(heads[heads.length - 1])} at ${shortTimeLabel(settings.reminderTime)}`
                           : remindOn && charge

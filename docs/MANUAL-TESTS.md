@@ -109,6 +109,17 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 - [ ] Same screen, free: "Yearly would cost less. See how much with Pro" opens the paywall. *Pro: "Paying yearly would be $200.00 a year, $X less than 12 months of this."
 - [ ] A sub you typed in yourself (not picked from our list) never gets a price-watch card.
 
+**Full sweep fixes (Nov 16, late)**
+- [ ] Edit a sub → Next charge on an SE: the calendar scrolls and "Set next charge …" can always be tapped.
+- [ ] Edit → turn on "Skip the … reminders": the Remind me line says "Skipping Sat, Nov 21. Back on for the next one." and the Calendar has no dots for that charge.
+- [ ] Edit Netflix and type a different price: the plan chips stay, and tapping one sets that plan again. "Typical price" only shows when the price matches a plan.
+- [ ] Add → search "hbo": HBO Max is first; "Add 'hbo' as your own" is under it. Search "Paramount+ with SHOWTIME Essential": Paramount+ shows.
+- [ ] Tap "Cancel in Netflix" on the Ditched screen, come back to Ditch: it asks "Did it go through?". "Yes, cancelled" moves it to Cancelled.
+- [ ] SE: Home shows at most one card under Next reminder, so your first subscriptions are on the first screen.
+- [ ] Open ditch://add?service=netflix with Netflix already on your list: it opens your Netflix, not a second copy.
+- [ ] Calendar this month: "$X still to come" once some of the month's charges have passed.
+- [ ] Paywall in dark mode: black top with a yellow headline (no olive). Pro Max and iPad: your logos fill the space above the headline.
+
 **Audit calls (Nov 16, DECISIONS #62)**
 - [ ] Hold a row on Home: only the logo and ring grow; the name and price stay still.
 - [ ] Paywall: the table has a "Price watch" row (Free —, Pro ✓). On an SE: Track, Reminders, Pick reminder days, Price watch.

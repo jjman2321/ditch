@@ -131,9 +131,12 @@ export function searchServices(query: string, list: CatalogService[] = SERVICES)
   const words = normalizeSearch(query);
   if (!words) return [];
   const tight = words.replace(/ /g, '');
-  return list
+  const found = list
     .map((s, i) => ({ s, i, score: matchScore(s, words, tight) }))
     .filter((x) => x.score > 0)
     .sort((a, b) => b.score - a.score || (a.s.rank ?? 999) - (b.s.rank ?? 999) || a.i - b.i)
     .map((x) => x.s);
+  // A full plan name ("Paramount+ with SHOWTIME Essential"): drop words from the end until the service turns up.
+  if (!found.length && words.includes(' ')) return searchServices(words.split(' ').slice(0, -1).join(' '), list);
+  return found;
 }

@@ -412,7 +412,9 @@ export function calendarMonth(
         list.push({ sub: s, date: d, pending, reminded: reminded.has(s.id) });
         byDay.set(d, list);
       }
-      if (reminded.has(s.id) && !pending) {
+      // "Skip this one": no dots for that charge (a trial's end is never skipped).
+      const skipped = s.skipCharge === d && !(s.isTrial && d === s.anchor);
+      if (reminded.has(s.id) && !pending && !skipped) {
         for (const l of leads) {
           const h = addDays(d, -l);
           if (h >= from && h <= to && h >= today) heads.add(h);
@@ -469,7 +471,7 @@ export function toCsv(subs: Sub[], today: DateOnly, digitsOf: (currency: string)
       const digits = s.currency ? digitsOf(s.currency) : 2;
       const amount = s.amountMinor === null ? '' : (s.amountMinor / 10 ** digits).toFixed(digits);
       const status = s.status === 'active' ? 'Active' : s.status === 'ditched-pending' ? 'Ditched, not cancelled yet' : 'Cancelled';
-      return [s.name, amount, s.currency ?? '', BILLED[s.cycle], s.status === 'active' ? (chargeOfSub(s, today) ?? '') : (s.cancelBy ?? ''), status, s.ditchedOn, s.confirmedOn, s.paidWith, s.accountEmail, s.notes];
+      return [s.name, amount, s.currency ?? '', BILLED[s.cycle], s.status === 'active' ? (chargeOfSub(s, today) ?? '') : s.confirmedOn ? '' : (s.cancelBy ?? ''), status, s.ditchedOn, s.confirmedOn, s.paidWith, s.accountEmail, s.notes];
     });
   return [head, ...rows].map((r) => r.map(csvCell).join(',')).join('\n') + '\n';
 }

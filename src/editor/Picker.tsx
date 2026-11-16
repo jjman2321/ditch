@@ -170,6 +170,39 @@ export function Picker({ onCustom, onTrial, onForgotten, onClose }: { onCustom: 
     onClose();
   };
 
+  // Typing something we don't have (Nov 15): add it as your own, or ask us to add it.
+  const ownRows = (
+    <>
+      {query.trim() ? (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`Add ${query.trim()} as your own`}
+          onPress={() => onCustom(query.trim())}
+          style={({ pressed }) => ({ minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 12, opacity: pressed ? 0.7 : 1, marginTop: 4 })}
+        >
+          <LogoTile id="custom" size={40} mono={query.trim().slice(0, 1).toUpperCase()} color="#6B6559" />
+          <Txt v="label" numberOfLines={1} style={{ flex: 1, fontSize: 16 }}>
+            {`Add “${query.trim()}” as your own`}
+          </Txt>
+        </Pressable>
+      ) : null}
+      {/* Not on our list (Nov 15): one tap emails us, and we add it with its real price for everyone. */}
+      {query.trim() && !data.some((x) => x.name.toLowerCase() === query.trim().toLowerCase()) ? (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`Ask us to add ${query.trim()} to the list`}
+          accessibilityHint="Opens an email"
+          onPress={() => suggestService(query)}
+          style={{ minHeight: 44, justifyContent: 'center' }}
+        >
+          <Txt v="sub" tone="mute">
+            Not on our list? <Txt v="sub" style={{ textDecorationLine: 'underline' }}>Ask us to add it</Txt>
+          </Txt>
+        </Pressable>
+      ) : null}
+    </>
+  );
+
   const header = (
     <View>
       <Txt v="title" accessibilityRole="header" style={{ fontSize: 26, lineHeight: 32, marginRight: 44 }}>
@@ -213,33 +246,8 @@ export function Picker({ onCustom, onTrial, onForgotten, onClose }: { onCustom: 
           style={{ flex: 1, minWidth: 0, minHeight: 44, paddingRight: 12, fontFamily: F.regular, fontSize: 16, color: p.fg, outlineStyle: 'none' } as object}
         />
       </View>
-      {query.trim() ? (
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={`Add ${query.trim()} as your own`}
-          onPress={() => onCustom(query.trim())}
-          style={({ pressed }) => ({ minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 12, opacity: pressed ? 0.7 : 1, marginTop: 4 })}
-        >
-          <LogoTile id="custom" size={40} mono={query.trim().slice(0, 1).toUpperCase()} color="#6B6559" />
-          <Txt v="label" numberOfLines={1} style={{ flex: 1, fontSize: 16 }}>
-            {`Add “${query.trim()}” as your own`}
-          </Txt>
-        </Pressable>
-      ) : null}
-      {/* Not on our list (Nov 15): one tap emails us, and we add it with its real price for everyone. */}
-      {query.trim() && !data.some((x) => x.name.toLowerCase() === query.trim().toLowerCase()) ? (
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={`Ask us to add ${query.trim()} to the list`}
-          accessibilityHint="Opens an email"
-          onPress={() => suggestService(query)}
-          style={{ minHeight: 44, justifyContent: 'center' }}
-        >
-          <Txt v="sub" tone="mute">
-            Not on our list? <Txt v="sub" style={{ textDecorationLine: 'underline' }}>Ask us to add it</Txt>
-          </Txt>
-        </Pressable>
-      ) : null}
+      {/* No match: the 'add your own' rows go right under the search. With matches, they go under the list. */}
+      {query.trim() && !data.length ? ownRows : null}
       {query.trim() ? null : (
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 8, flexGrow: 0 }} contentContainerStyle={{ gap: 8 }} keyboardShouldPersistTaps="handled">
           {FILTERS.map((x) => {
@@ -275,6 +283,7 @@ export function Picker({ onCustom, onTrial, onForgotten, onClose }: { onCustom: 
         data={data}
         keyExtractor={(s) => s.id}
         ListHeaderComponent={header}
+        ListFooterComponent={query.trim() && data.length ? <View style={{ marginTop: 8 }}>{ownRows}</View> : undefined}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
         showsVerticalScrollIndicator={false}

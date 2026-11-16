@@ -135,7 +135,8 @@ export default function Total() {
               <Txt v="lead" num style={{ fontFamily: F.semi }}>
                 {money(main.monthlyMinor, main.currency)}
               </Txt>
-              {' a month.'}
+              {/* Other currencies stay separate (CLAUDE.md rule 1), same as the yearly lines above. */}
+              {others.length ? ` a month, plus ${others.map((t) => money(t.monthlyMinor, t.currency)).join(' and ')}.` : ' a month.'}
             </Txt>
           ) : null}
           <Txt v="body" tone="fg2" style={{ marginTop: 8, maxWidth: 340 }}>

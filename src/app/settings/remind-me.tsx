@@ -3,7 +3,7 @@
 // only in the voice (docs/research/settings.md).
 
 import { router } from 'expo-router';
-import { Pressable, View } from 'react-native';
+import { AccessibilityInfo, Pressable, View } from 'react-native';
 
 import { LEAD_CHOICES, cleanLeads, effectiveLeads, leadWord, shortTimeLabel, timeLabel } from '@/domain/settings';
 import { Group, SettingsPage } from '@/settings/Parts';
@@ -26,6 +26,7 @@ export default function RemindMe() {
     const on = leads.includes(d);
     if (on && leads.length === 1) {
       haptic.warning();
+      AccessibilityInfo.announceForAccessibility('Keep at least one reminder day.');
       return; // keep at least one
     }
     haptic.select();
@@ -37,7 +38,7 @@ export default function RemindMe() {
       <View style={{ marginTop: 18 }}>
         <NotificationPreview time={timeLabel(settings.reminderTime)} message={example} />
       </View>
-      <Group note={pro ? 'Pick as many as you like. Free trials always get the 3-day and 1-day ones too.' : 'Custom timing comes with Pro. Free keeps 3 days and 1 day before.'}>
+      <Group note={pro ? 'Pick as many as you like (at least one). Free trials always get the 3-day and 1-day ones too.' : 'Custom timing comes with Pro. Free keeps 3 days and 1 day before.'}>
         {LEAD_CHOICES.map((d) => {
           const on = leads.includes(d);
           const locked = !pro && !on;

@@ -8,10 +8,11 @@ import { useEffect } from 'react';
 
 import { SERVICE_BY_ID } from '@/catalog/services';
 import { useEditor } from '@/editor/Editor';
+import { isActive, isPending } from '@/domain/subs';
 import { useApp } from '@/state/app';
 
 export default function AddLink() {
-  const { ready, settings } = useApp();
+  const { ready, settings, subs } = useApp();
   const editor = useEditor();
   const { service } = useLocalSearchParams<{ service?: string }>();
   const id = typeof service === 'string' && SERVICE_BY_ID[service] ? service : undefined;
@@ -20,7 +21,11 @@ export default function AddLink() {
     if (!go) return;
     // After Home has mounted, so the sheet opens over it. No cleanup: this
     // screen redirects away at once, and the editor lives above the router.
-    setTimeout(() => editor.openAdd(id), 350);
+    // Already on the list: open that one instead of making a second copy.
+    const existing = id ? subs.find((s) => s.catalogId === id && (isActive(s) || isPending(s))) : undefined;
+    setTimeout(() => (existing ? editor.openEdit(existing.id) : editor.openAdd(id)), 350);
+    // Only once per link: not again when the list changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [go, id, editor]);
   if (!ready) return null;
   // Mid-onboarding: their list comes first; the link just starts the app.

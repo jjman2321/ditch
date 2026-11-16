@@ -10,10 +10,10 @@ import { Pressable, ScrollView, View, useWindowDimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { ordinal } from '@/domain/charges';
-import { parseDate, shortDate, weekdayDate } from '@/domain/dates';
+import { addDays, parseDate, shortDate, weekdayDate } from '@/domain/dates';
 import { DaySheet } from '@/onboarding/DaySheet';
 import { OnbRoot } from '@/onboarding/Parts';
-import { byYearlyDesc, chargeOf, pickHasDate, useOnboarding, usePickedList, type Picked } from '@/state/onboarding';
+import { byYearlyDesc, chargeOf, onboardingToday, pickHasDate, useOnboarding, usePickedList, type Picked } from '@/state/onboarding';
 import { Button, F, LogoTile, StepHeader, Txt, brand, haptic, useFrame, usePalette } from '@/ui/sunflower';
 
 const CYCLE_LABEL = { weekly: 'Weekly', biweekly: 'Every 2 weeks', monthly: 'Monthly', quarterly: 'Every 3 months', semiannual: 'Every 6 months', yearly: 'Yearly' } as const;
@@ -31,7 +31,11 @@ function setLabel(x: Picked): string {
 function subLine(x: Picked, narrow = false): string {
   const next = chargeOf(x);
   // 320pt wide: "Next: Nov 19" so the date never gets cut off.
-  return next ? `Next: ${narrow ? shortDate(next) : weekdayDate(next)}` : CYCLE_LABEL[x.cycle];
+  if (!next) return CYCLE_LABEL[x.cycle];
+  const today = onboardingToday();
+  if (next === today) return 'Next: today';
+  if (next === addDays(today, 1)) return 'Next: tomorrow';
+  return `Next: ${narrow ? shortDate(next) : weekdayDate(next)}`;
 }
 
 function DateRow({ x, first, onPress }: { x: Picked; first: boolean; onPress: () => void }) {

@@ -23,7 +23,6 @@ const SOURCES: Source[] = [
     who: 'Self Financial, 2026',
     found: '70% have forgotten to cancel a free trial at least once.',
     sample: '1,272 US adults, March 2026',
-    where: 'Reminders: forgotten free trials',
     url: 'https://www.self.inc/info/cost-of-unused-paid-subscriptions/',
     host: 'self.inc',
   },

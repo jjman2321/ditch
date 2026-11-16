@@ -88,3 +88,12 @@ describe('search', () => {
     expect(first('hulu', 'US')).toBe('hulu');
   });
 });
+
+describe('search finds a service from a full plan name (audit, Nov 16)', () => {
+  it('Paramount+ with SHOWTIME Essential → Paramount+', () => {
+    expect(first('Paramount+ with SHOWTIME Essential')).toBe('paramount-plus');
+  });
+  it('nonsense still finds nothing', () => {
+    expect(first('zzqx wobble')).toBeUndefined();
+  });
+});

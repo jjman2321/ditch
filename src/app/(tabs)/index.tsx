@@ -8,10 +8,11 @@ import { ScrollView, View } from 'react-native';
 
 import { CYCLE_SHORT } from '@/domain/money';
 import { nextReminder, whenLabel } from '@/domain/reminders';
+import { overlapToShow } from '@/domain/overlaps';
 import { trialsAfter, homeGroups, homeTotals, isPending, isPricedSub, isProTrial, listedUserSubs, remindedIds, undatedSubs, yearlyOfSub } from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
 import { AddDatesSheet } from '@/home/AddDatesSheet';
-import { EmptyHome, ForgottenRow, NextReminderRow, NoDateRow, OffBanner, TotalCard, openPhoneSettings } from '@/home/HomeParts';
+import { EmptyHome, ForgottenRow, NextReminderRow, NoDateRow, OffBanner, OverlapCard, TotalCard, openPhoneSettings } from '@/home/HomeParts';
 import { PriceColumnMeasure, SubRow, type BellState } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
 import { BottomFade, Card, Chip, Gear, IconButton, Plus, RowDivider, SectionHeader, SurfaceContext, Wordmark, brand, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
@@ -43,6 +44,7 @@ export default function Home() {
   // No date yet: no reminders until they add one (DECISIONS #33). Biggest first.
   const undated = undatedSubs(subs).sort((a, b) => yearlyOfSub(b) - yearlyOfSub(a));
   const empty = allGroups.length === 0;
+  const overlap = useMemo(() => overlapToShow(subs, settings.dismissedOverlaps), [subs, settings.dismissedOverlaps]);
   // The very next one, so it's plain that reminders are scheduled.
   const next = blocked ? null : nextReminder(app.plan, subs);
   const money = useAppMoney();
@@ -109,6 +111,12 @@ export default function Home() {
               {undated.length && !blocked ? (
                 <View style={{ marginTop: 10 }}>
                   <NoDateRow count={undated.length} onPress={() => setDatesOpen(true)} />
+                </View>
+              ) : null}
+
+              {overlap ? (
+                <View style={{ marginTop: 10 }}>
+                  <OverlapCard overlap={overlap} money={money} onDismiss={() => void app.updateSettings({ dismissedOverlaps: [...settings.dismissedOverlaps, overlap.key] })} />
                 </View>
               ) : null}
 

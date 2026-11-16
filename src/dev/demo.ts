@@ -7,7 +7,7 @@ import type { Settings } from '@/domain/settings';
 import { makeSub, type Sub } from '@/domain/subs';
 import { proTrialSub } from '@/state/fromOnboarding';
 
-export type DemoName = 'demo' | 'pro' | 'off' | 'ditched' | 'empty' | 'onboarding' | 'mixed';
+export type DemoName = 'demo' | 'pro' | 'off' | 'ditched' | 'empty' | 'onboarding' | 'mixed' | 'overlap';
 
 const NOW = '2026-11-09T09:41:00.000Z';
 
@@ -68,6 +68,11 @@ export function demoData(name: DemoName, today: DateOnly): { subs: Sub[]; settin
     const gbp = (id: string, amountMinor: number) => ({ id, amountMinor, currency: 'GBP', priceCountry: 'GB' });
     const uk: Record<string, ReturnType<typeof gbp>> = { netflix: gbp('netflix', 1299), spotify: gbp('spotify', 1199), disney: gbp('disney', 999), amazon: gbp('amazon', 899) };
     return { subs: list.map((x) => (uk[x.id] ? { ...x, ...uk[x.id] } : x)), settings: { ...settings, country: 'GB', currency: 'GBP' } };
+  }
+  if (name === 'overlap') {
+    // Two music services: shows the overlap card (DECISIONS #60).
+    list.push(sub('applemusic2', 'Apple Music', 'apple-music', 'Music', 1099, d(9)));
+    return { subs: list, settings };
   }
   if (name === 'pro') {
     list.push({ ...proTrialSub(today, NOW), id: 'trial' });

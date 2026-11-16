@@ -24,6 +24,10 @@ export type Settings = {
   forgottenDone: boolean;
   /** When we last offered Apple's rating prompt (src/domain/review.ts). */
   review: ReviewState;
+  /** Overlap cards the user tapped "Got it" on (keys from domain/overlaps). */
+  dismissedOverlaps: string[];
+  /** Day of the month they get paid (1–31), for "before payday". Null = not set. Never an amount. */
+  payday: number | null;
 };
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -36,6 +40,8 @@ export const DEFAULT_SETTINGS: Settings = {
   holdHintDone: false,
   forgottenDone: false,
   review: EMPTY_REVIEW,
+  dismissedOverlaps: [],
+  payday: null,
 };
 
 /** Lead days people can choose (Remind me page). */
@@ -90,6 +96,15 @@ export function leadWord(d: number): string {
 
 const PLANS: ProPlan[] = ['yearly', 'monthly', 'lifetime'];
 
+function parseList(v: string | undefined): string[] {
+  try {
+    const x: unknown = v ? JSON.parse(v) : [];
+    return Array.isArray(x) ? x.filter((k): k is string => typeof k === 'string') : [];
+  } catch {
+    return [];
+  }
+}
+
 export function parseSettings(kv: Record<string, string>): Settings {
   let leads: unknown = null;
   try {
@@ -107,6 +122,8 @@ export function parseSettings(kv: Record<string, string>): Settings {
     holdHintDone: kv.hold_hint_done === '1',
     forgottenDone: kv.forgotten_done === '1',
     review: parseReview(kv.review),
+    dismissedOverlaps: parseList(kv.dismissed_overlaps),
+    payday: kv.payday && /^\d{1,2}$/.test(kv.payday) && Number(kv.payday) >= 1 && Number(kv.payday) <= 31 ? Number(kv.payday) : null,
   };
 }
 
@@ -122,6 +139,9 @@ export function settingsToKv(patch: Partial<Settings>): Record<string, string | 
   if (patch.holdHintDone !== undefined) out.hold_hint_done = patch.holdHintDone ? '1' : '0';
   if (patch.forgottenDone !== undefined) out.forgotten_done = patch.forgottenDone ? '1' : '0';
   if (patch.review !== undefined) out.review = JSON.stringify(patch.review);
+  // Keep the newest 50 so the setting can't grow forever.
+  if (patch.dismissedOverlaps !== undefined) out.dismissed_overlaps = JSON.stringify(patch.dismissedOverlaps.slice(-50));
+  if (patch.payday !== undefined) out.payday = patch.payday === null ? null : String(patch.payday);
   return out;
 }
 

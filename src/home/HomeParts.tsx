@@ -1,6 +1,7 @@
 // Home's top: the yellow total card, the reminders-off banner, the guesses
 // nudge, and the empty state with the duck and quick add.
 
+import type { Overlap } from '@/domain/overlaps';
 import { Linking, Pressable, View } from 'react-native';
 
 import { POPULAR_ORDER, SERVICE_BY_ID, availableIn } from '@/catalog/services';
@@ -272,5 +273,38 @@ export function EmptyHome({ country, onAdd }: { country: string | null; onAdd: (
         ))}
       </View>
     </View>
+  );
+}
+
+/**
+ * "Netflix is on your list twice" / "2 music services" (DECISIONS #60). Free. A nudge toward the
+ * ditch moment, never a scold: it states what they pay together and lets them decide.
+ * "Got it" hides it until the set changes.
+ */
+export function OverlapCard({ overlap, money, onDismiss }: { overlap: Overlap; money: (minor: number, currency: string) => string; onDismiss: () => void }) {
+  const p = usePalette();
+  const names = overlap.subs.map((s) => s.name);
+  const listed = names.length > 2 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names.join(' and ');
+  const title = overlap.kind === 'twice' ? `${overlap.label} is on your list ${overlap.subs.length === 2 ? 'twice' : `${overlap.subs.length} times`}.` : `${overlap.subs.length} ${overlap.label}: ${listed}.`;
+  const together = overlap.totals.map((t) => money(Math.round(t.monthlyMinor), t.currency)).join(' + ');
+  const line = together ? `${together} a month together.${overlap.kind === 'twice' ? ' Same account twice, or one to ditch?' : ''}` : overlap.kind === 'twice' ? 'Same account twice, or one to ditch?' : '';
+  return (
+    <Card style={{ borderRadius: 16, paddingHorizontal: 14, paddingTop: 12, paddingBottom: 6 }}>
+      <View accessible accessibilityLabel={`${title} ${line}`}>
+        <Txt v="body" color={p.cardFg} num style={{ fontFamily: F.bold, fontSize: 15 }}>
+          {title}
+        </Txt>
+        {line ? (
+          <Txt v="body" tone="mute" num style={{ fontSize: 14.5, marginTop: 2 }}>
+            {line}
+          </Txt>
+        ) : null}
+      </View>
+      <Pressable accessibilityRole="button" accessibilityLabel="Got it" accessibilityHint="Hides this until the list changes" onPress={onDismiss} hitSlop={8} style={{ alignSelf: 'flex-start', minHeight: 44, justifyContent: 'center' }}>
+        <Txt v="label" color={p.cardFg} style={{ fontSize: 15, textDecorationLine: 'underline' }}>
+          Got it
+        </Txt>
+      </Pressable>
+    </Card>
   );
 }

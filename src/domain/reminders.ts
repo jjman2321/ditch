@@ -161,6 +161,8 @@ export function planReminders(
     if (!first) continue; // remindedIds already skips these; belt and braces
     const charges = chargesBetween(s, first, until);
     for (const charge of charges) {
+      // "Skip this one" (DECISIONS #60): no reminders for that one charge; a trial's end is never skipped.
+      if (s.skipCharge === charge && !(s.isTrial && charge === s.anchor)) continue;
       const trial = s.isTrial && charge === s.anchor;
       // A trial's end always gets the 3-day and 1-day ones too, whatever days they picked.
       // Weekly: a lead of a week or more would land on (or before) the last charge, so skip those.

@@ -173,6 +173,13 @@ export default function Ditched() {
             </Card>
           </Animated.View>
 
+          {/* What the cancel page will ask for (DECISIONS #60). */}
+          {sub.paidWith || sub.accountEmail ? (
+            <Txt v="sub" tone="fg2" center num style={{ marginTop: 10 }} numberOfLines={2}>
+              {[sub.paidWith ? `Paid with ${sub.paidWith}` : null, sub.accountEmail ? `Account:\u00A0${sub.accountEmail}` : null].filter(Boolean).join(' · ')}
+            </Txt>
+          ) : null}
+
           <Animated.View style={[{ alignItems: 'center', marginTop: compact ? 28 : 40 }, amountStyle]}>
             {yearly !== null && sub.currency ? (
               <>

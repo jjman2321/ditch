@@ -76,20 +76,37 @@ describe('migrations', () => {
     const db = nodeSqlite();
     await migrate(db, MIGRATIONS.filter((m) => m.version <= 2));
     const before = [netflix(), netflix({ id: 'sub-ditched', name: 'Hulu', status: 'ditched-pending', ditchedOn: '2026-11-10', snapAmountMinor: 1899, snapCurrency: 'USD', snapCycle: 'monthly' })];
+    // Only the columns that existed at version 2 (migration 4 added more).
+    const cols2 = SUB_COLUMNS.filter((c) => !['paid_with', 'account_email', 'notes', 'skip_charge'].includes(c));
     for (const sub of before) {
       const row = subToRow(sub);
-      await db.runAsync(`INSERT INTO subscriptions (${SUB_COLUMNS.join(', ')}) VALUES (${SUB_COLUMNS.map(() => '?').join(', ')})`, ...SUB_COLUMNS.map((c) => row[c]));
+      await db.runAsync(`INSERT INTO subscriptions (${cols2.join(', ')}) VALUES (${cols2.map(() => '?').join(', ')})`, ...cols2.map((c) => row[c]));
     }
     // A biweekly row is refused before the migration…
     await expect(db.runAsync("UPDATE subscriptions SET cycle = 'biweekly' WHERE id = 'sub-netflix'")).rejects.toThrow();
-    const repo = await sqlRepo(db); // …opening the app runs migration 3
-    expect(await schemaVersion(db)).toBe(3);
+    const repo = await sqlRepo(db); // …opening the app runs migration 3 (and any later ones)
+    expect(await schemaVersion(db)).toBe(MIGRATIONS[MIGRATIONS.length - 1].version);
     const byId = (list: Sub[]) => [...list].sort((a, b) => a.id.localeCompare(b.id));
     expect(byId(await repo.loadSubs())).toEqual(byId(before));
     await repo.saveSubs([netflix({ id: 'sub-gym', name: 'Gym', cycle: 'biweekly' }), netflix({ id: 'sub-car', name: 'Car insurance', cycle: 'semiannual' })]);
     expect((await repo.loadSubs()).map((x) => x.cycle).sort()).toEqual(['biweekly', 'monthly', 'monthly', 'semiannual']);
     await expect(db.runAsync("UPDATE subscriptions SET cycle = 'daily' WHERE id = 'sub-gym'")).rejects.toThrow();
     expect(await db.getAllAsync("SELECT name FROM sqlite_master WHERE type = 'index' AND name = 'subscriptions_status'")).toHaveLength(1);
+    db.close();
+  });
+
+  it('migration 4 adds card, account email, notes and skip, and keeps every row (DECISIONS #60)', async () => {
+    const db = nodeSqlite();
+    await migrate(db, MIGRATIONS.filter((m) => m.version <= 3));
+    const cols3 = SUB_COLUMNS.filter((c) => !['paid_with', 'account_email', 'notes', 'skip_charge'].includes(c));
+    const row = subToRow(netflix());
+    await db.runAsync(`INSERT INTO subscriptions (${cols3.join(', ')}) VALUES (${cols3.map(() => '?').join(', ')})`, ...cols3.map((c) => row[c]));
+    const repo = await sqlRepo(db);
+    const [loaded] = await repo.loadSubs();
+    expect(loaded).toEqual(netflix());
+    await repo.saveSubs([netflix({ paidWith: 'Visa ending 4821', accountEmail: 'me@example.com', notes: 'Shared with Sam', skipCharge: '2026-11-14' })]);
+    const [after] = await repo.loadSubs();
+    expect([after.paidWith, after.accountEmail, after.notes, after.skipCharge]).toEqual(['Visa ending 4821', 'me@example.com', 'Shared with Sam', '2026-11-14']);
     db.close();
   });
 

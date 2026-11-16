@@ -104,6 +104,17 @@ export const MIGRATIONS: Migration[] = [
       `CREATE INDEX subscriptions_status ON subscriptions (status)`,
     ],
   },
+  {
+    version: 4,
+    name: 'card, account email, notes, skip this one (DECISIONS #60)',
+    // New columns only, all nullable: every saved row stays as it was.
+    up: [
+      `ALTER TABLE subscriptions ADD COLUMN paid_with TEXT`,
+      `ALTER TABLE subscriptions ADD COLUMN account_email TEXT`,
+      `ALTER TABLE subscriptions ADD COLUMN notes TEXT`,
+      `ALTER TABLE subscriptions ADD COLUMN skip_charge TEXT`,
+    ],
+  },
 ];
 
 export async function schemaVersion(db: SqlDb): Promise<number> {

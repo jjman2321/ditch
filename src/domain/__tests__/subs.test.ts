@@ -226,9 +226,9 @@ describe('CSV export', () => {
   it('writes plain decimals in each sub’s own currency and quotes commas', () => {
     const subs = [makeSub({ name: 'Gym, downtown', amountMinor: 4500, currency: 'USD', cycle: 'monthly', anchor: '2026-11-20' }), makeSub({ name: 'Netflix JP', amountMinor: 980, currency: 'JPY', cycle: 'monthly', anchor: '2026-11-12', dateSource: 'none' })];
     const csv = toCsv(subs, TODAY, currencyDigits).split('\n');
-    expect(csv[0]).toBe('Name,Amount,Currency,Billed,Next charge,Status,Ditched on,Cancelled on');
-    expect(csv[1]).toBe('"Gym, downtown",45.00,USD,Monthly,2026-11-20,Active,,');
-    expect(csv[2]).toBe('Netflix JP,980,JPY,Monthly,,Active,,'); // no date yet: blank
+    expect(csv[0]).toBe('Name,Amount,Currency,Billed,Next charge,Status,Ditched on,Cancelled on,Paid with,Account email,Notes');
+    expect(csv[1]).toBe('"Gym, downtown",45.00,USD,Monthly,2026-11-20,Active,,,,,');
+    expect(csv[2]).toBe('Netflix JP,980,JPY,Monthly,,Active,,,,,'); // no date yet: blank
   });
 });
 

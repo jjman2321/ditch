@@ -145,6 +145,31 @@ const OTHER_CYCLES: { value: Cycle; label: string }[] = [
 
 const COMMON = ['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'NZD', 'INR', 'JPY'];
 
+/** One labelled line in "For when you cancel". Empty saves as nothing, not "". */
+function DetailInput({ label, placeholder, value, onChange, keyboard, last }: { label: string; placeholder: string; value: string | null; onChange: (v: string | null) => void; keyboard?: 'email-address'; last?: boolean }) {
+  const p = usePalette();
+  return (
+    <View style={{ minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 12, borderBottomWidth: last ? 0 : 1, borderBottomColor: p.hair }}>
+      <Txt v="label" style={{ width: 118 }}>
+        {label}
+      </Txt>
+      <TextInput
+        value={value ?? ''}
+        onChangeText={(t) => onChange(t.trim() ? t : null)}
+        placeholder={placeholder}
+        placeholderTextColor={p.mute}
+        accessibilityLabel={label}
+        keyboardType={keyboard ?? 'default'}
+        autoCapitalize={keyboard ? 'none' : 'sentences'}
+        autoCorrect={!keyboard}
+        maxLength={keyboard ? 120 : 200}
+        inputAccessoryViewID={KEYBOARD_DONE}
+        style={{ flex: 1, minWidth: 0, minHeight: 48, fontFamily: F.regular, fontSize: 16, color: p.fg, textAlign: 'right', outlineStyle: 'none' } as object}
+      />
+    </View>
+  );
+}
+
 function FieldLabel({ children }: { children: string }) {
   return (
     <Txt v="eyebrow" tone="mute" style={{ marginTop: 18, marginBottom: 8, marginHorizontal: 2 }}>
@@ -576,6 +601,31 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                 />
               ) : null}
             </Card>
+
+            {/* Card, account email and notes (DECISIONS #60): what you need on the cancel page. */}
+            {trialEntry ? null : (
+              <>
+                <FieldLabel>For when you cancel</FieldLabel>
+                <Card style={{ paddingHorizontal: 16, paddingVertical: 4 }}>
+                  <DetailInput label="Paid with" placeholder="Visa ending 4821" value={draft.paidWith} onChange={(v) => setDraft({ ...draft, paidWith: v })} />
+                  <DetailInput label="Account email" placeholder="you@email.com" value={draft.accountEmail} onChange={(v) => setDraft({ ...draft, accountEmail: v })} keyboard="email-address" />
+                  <DetailInput label="Notes" placeholder="Shared with Sam, cancel in the app…" value={draft.notes} onChange={(v) => setDraft({ ...draft, notes: v })} last />
+                </Card>
+              </>
+            )}
+
+            {/* Skip this one: quiet the next charge's reminders once, without turning them off. */}
+            {!trialEntry && remindOn && charge && !draft.isTrial ? (
+              <Card style={{ marginTop: 12, paddingHorizontal: 16, paddingVertical: 4 }}>
+                <View style={{ minHeight: 60, flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 8 }}>
+                  <View style={{ flex: 1 }}>
+                    <Txt v="label">Skip the {weekdayDate(charge)} reminders</Txt>
+                    <Txt v="sub" tone="mute">Already paid or sorted? The next charge gets them again.</Txt>
+                  </View>
+                  <SunSwitch label={`Skip the reminders for ${weekdayDate(charge)}`} value={draft.skipCharge === charge} onValueChange={(v) => setDraft({ ...draft, skipCharge: v ? charge : null })} />
+                </View>
+              </Card>
+            ) : null}
 
             {!isNew && existing && isActive(existing) ? (
               <View style={{ marginTop: 18, gap: 4 }}>

@@ -14,7 +14,7 @@ import { AddDatesSheet } from '@/home/AddDatesSheet';
 import { EmptyHome, ForgottenRow, NextReminderRow, NoDateRow, OffBanner, TotalCard, openPhoneSettings } from '@/home/HomeParts';
 import { PriceColumnMeasure, SubRow, type BellState } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
-import { BottomFade, Card, Gear, IconButton, Plus, RowDivider, SectionHeader, SurfaceContext, Wordmark, brand, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
+import { BottomFade, Card, Chip, Gear, IconButton, Plus, RowDivider, SectionHeader, SurfaceContext, Wordmark, brand, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
 
 export default function Home() {
   const p = usePalette();
@@ -26,7 +26,15 @@ export default function Home() {
   const [holding, setHolding] = useState<string | null>(null);
   const [datesOpen, setDatesOpen] = useState(false);
 
-  const groups = useMemo(() => homeGroups(subs, today), [subs, today]);
+  const allGroups = useMemo(() => homeGroups(subs, today), [subs, today]);
+  // Filter by card (DECISIONS #60): only once 2+ different cards are noted, so it never clutters a simple list.
+  const cards = useMemo(() => [...new Set(listedUserSubs(subs).map((s) => s.paidWith?.trim()).filter((c): c is string => !!c))].sort(), [subs]);
+  const [card, setCard] = useState<string | null>(null);
+  const cardOn = card && cards.includes(card) ? card : null;
+  const groups = useMemo(
+    () => (cardOn ? allGroups.map((g) => ({ ...g, rows: g.rows.filter((r) => r.sub.paidWith?.trim() === cardOn) })).filter((g) => g.rows.length) : allGroups),
+    [allGroups, cardOn],
+  );
   const totals = useMemo(() => homeTotals(subs, today, settings.currency), [subs, today, settings.currency]);
   const trials = useMemo(() => trialsAfter(subs, today), [subs, today]);
   const reminded = useMemo(() => remindedIds(subs, pro), [subs, pro]);
@@ -34,7 +42,7 @@ export default function Home() {
   const blocked = notif === 'denied' || notif === 'undetermined';
   // No date yet: no reminders until they add one (DECISIONS #33). Biggest first.
   const undated = undatedSubs(subs).sort((a, b) => yearlyOfSub(b) - yearlyOfSub(a));
-  const empty = groups.length === 0;
+  const empty = allGroups.length === 0;
   // The very next one, so it's plain that reminders are scheduled.
   const next = blocked ? null : nextReminder(app.plan, subs);
   const money = useAppMoney();
@@ -102,6 +110,15 @@ export default function Home() {
                 <View style={{ marginTop: 10 }}>
                   <NoDateRow count={undated.length} onPress={() => setDatesOpen(true)} />
                 </View>
+              ) : null}
+
+              {cards.length >= 2 ? (
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 16, marginHorizontal: -edge }} contentContainerStyle={{ gap: 8, paddingHorizontal: edge }} accessibilityLabel="Filter by card">
+                  <Chip label="All cards" selected={!cardOn} onPress={() => setCard(null)} />
+                  {cards.map((c) => (
+                    <Chip key={c} label={c} selected={cardOn === c} onPress={() => setCard(cardOn === c ? null : c)} />
+                  ))}
+                </ScrollView>
               ) : null}
 
               {groups.map((g, gi) => (

@@ -326,3 +326,16 @@ describe('weekly subs with long Pro lead days', () => {
     expect(new Set(plan.map((r) => r.lead))).toEqual(new Set([1]));
   });
 });
+
+describe('skip this one (DECISIONS #60)', () => {
+  it('drops only that charge’s reminders; the next charge gets them again', () => {
+    const plan = forSub(planReminders([sub({ id: 'n', name: 'Netflix', skipCharge: '2026-11-14' })], FREE, NOW), 'n');
+    expect(plan.some((r) => r.chargeDate === '2026-11-14')).toBe(false);
+    expect(plan[0].chargeDate).toBe('2026-12-14');
+    expect(plan).toHaveLength(22);
+  });
+  it('never skips a trial’s end', () => {
+    const plan = forSub(planReminders([sub({ id: 't', name: 'Trial', isTrial: true, skipCharge: '2026-11-14' })], FREE, NOW), 't');
+    expect(plan.some((r) => r.chargeDate === '2026-11-14')).toBe(true);
+  });
+});

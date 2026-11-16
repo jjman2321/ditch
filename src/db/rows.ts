@@ -33,6 +33,10 @@ export type SubRow = {
   ditched_currency: string | null;
   ditched_cycle: string | null;
   source: string;
+  paid_with: string | null;
+  account_email: string | null;
+  notes: string | null;
+  skip_charge: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -64,6 +68,10 @@ export const SUB_COLUMNS: (keyof SubRow)[] = [
   'ditched_currency',
   'ditched_cycle',
   'source',
+  'paid_with',
+  'account_email',
+  'notes',
+  'skip_charge',
   'created_at',
   'updated_at',
 ];
@@ -100,6 +108,10 @@ export function rowToSub(r: SubRow): Sub {
     snapCurrency: r.ditched_currency,
     snapCycle: r.ditched_cycle ? oneOf(r.ditched_cycle, CYCLES, 'monthly') : null,
     source: oneOf<SubSource>(r.source, ['onboarding', 'manual', 'catalog', 'import', 'trial'], 'manual'),
+    paidWith: r.paid_with ?? null,
+    accountEmail: r.account_email ?? null,
+    notes: r.notes ?? null,
+    skipCharge: r.skip_charge ?? null,
     createdAt: r.created_at,
     updatedAt: r.updated_at,
   };
@@ -134,6 +146,10 @@ export function subToRow(s: Sub): SubRow {
     ditched_currency: s.snapCurrency,
     ditched_cycle: s.snapCycle,
     source: s.source,
+    paid_with: s.paidWith,
+    account_email: s.accountEmail,
+    notes: s.notes,
+    skip_charge: s.skipCharge,
     created_at: s.createdAt,
     updated_at: s.updatedAt,
   };

@@ -52,6 +52,13 @@ export type Sub = {
   snapCurrency: string | null;
   snapCycle: Cycle | null;
   source: SubSource;
+  /** Which card or account pays it, as the user writes it ("Visa ending 4821"). Shown when cancelling (DECISIONS #60). */
+  paidWith: string | null;
+  /** The email the account is under; the first thing a cancel page asks for. */
+  accountEmail: string | null;
+  notes: string | null;
+  /** "Skip this one": no reminders for this one charge date; the next charge gets them again. */
+  skipCharge: DateOnly | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -93,6 +100,10 @@ export function makeSub(fields: Partial<Sub> & Pick<Sub, 'name' | 'cycle' | 'anc
     snapCurrency: null,
     snapCycle: null,
     source: 'manual',
+    paidWith: null,
+    accountEmail: null,
+    notes: null,
+    skipCharge: null,
     createdAt: nowIso,
     updatedAt: nowIso,
     ...fields,
@@ -449,14 +460,14 @@ const BILLED: Record<Sub['cycle'], string> = { weekly: 'Weekly', biweekly: 'Ever
 
 /** A spreadsheet of the list. Amounts are plain decimals in each sub's own currency. */
 export function toCsv(subs: Sub[], today: DateOnly, digitsOf: (currency: string) => number): string {
-  const head = ['Name', 'Amount', 'Currency', 'Billed', 'Next charge', 'Status', 'Ditched on', 'Cancelled on'];
+  const head = ['Name', 'Amount', 'Currency', 'Billed', 'Next charge', 'Status', 'Ditched on', 'Cancelled on', 'Paid with', 'Account email', 'Notes'];
   const rows = subs
     .filter((s) => s.status !== 'deleted' && !isProTrial(s))
     .map((s) => {
       const digits = s.currency ? digitsOf(s.currency) : 2;
       const amount = s.amountMinor === null ? '' : (s.amountMinor / 10 ** digits).toFixed(digits);
       const status = s.status === 'active' ? 'Active' : s.status === 'ditched-pending' ? 'Ditched, not cancelled yet' : 'Cancelled';
-      return [s.name, amount, s.currency ?? '', BILLED[s.cycle], s.status === 'active' ? (chargeOfSub(s, today) ?? '') : (s.cancelBy ?? ''), status, s.ditchedOn, s.confirmedOn];
+      return [s.name, amount, s.currency ?? '', BILLED[s.cycle], s.status === 'active' ? (chargeOfSub(s, today) ?? '') : (s.cancelBy ?? ''), status, s.ditchedOn, s.confirmedOn, s.paidWith, s.accountEmail, s.notes];
     });
   return [head, ...rows].map((r) => r.map(csvCell).join(',')).join('\n') + '\n';
 }

@@ -237,7 +237,7 @@ export default function Paywall() {
   return (
     <OnbRoot surface="cream">
       <FitScroll style={{ paddingHorizontal: f.edge, paddingBottom: f.tiny ? 4 : f.bottom }}>
-        <View style={{ flexGrow: 1, marginHorizontal: -f.edge, paddingTop: f.top, paddingHorizontal: f.edge, paddingBottom: f.tablet ? 80 : f.tiny ? 46 : f.small ? 52 : 48, backgroundColor: dark ? '#2A2516' : brand.sunflower }}>
+        <View style={{ flexGrow: 1, marginHorizontal: -f.edge, paddingTop: f.top, paddingHorizontal: f.edge, paddingBottom: f.tablet ? 80 : f.tiny ? 46 : f.small ? 52 : 48, backgroundColor: dark ? brand.night : brand.sunflower }}>
           <View style={{ height: f.tiny ? 40 : 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <ProLockup size={f.small ? 20 : 22} color={ink} />
             <IconButton label="Close, continue free" onPress={leaveFree} size={32} bg={dark ? '#3A3424' : 'rgba(22,20,15,0.12)'} style={{ marginRight: -6 }}>
@@ -247,8 +247,9 @@ export default function Paywall() {
           {/* Spare height goes here, so the title sits lower instead of a gap under the plans. */}
           <View style={{ flexGrow: 1 }} />
           {/* Tall phones and iPad: their logos fill that space ("Netflix, Spotify and 5 more"). No room on the SE. */}
-          {n >= 2 && (f.tablet || f.height >= 900) ? <LogoLine items={logos} total={n} ink={ink} band={dark ? '#2A2516' : brand.sunflower} /> : null}
-          <Txt v="title" color={ink} accessibilityRole="header" accessibilityLabel={spokenHead} style={f.tiny ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 } : f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null}>
+          {n >= 2 && (f.tablet || f.height >= 900) ? <LogoLine items={logos} total={n} ink={ink} band={dark ? brand.night : brand.sunflower} /> : null}
+          {/* Dark mode: night like the other yellow screens (Almost set, Ditched), with a sunflower headline. */}
+          <Txt v="title" color={dark ? brand.sunflower : ink} accessibilityRole="header" accessibilityLabel={spokenHead} style={f.tiny ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 } : f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null}>
             {head}
           </Txt>
           {/* Nudged left so his bill points at the Pro column, never over the title. Only the base of

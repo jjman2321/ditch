@@ -4,7 +4,7 @@
 
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { Pressable, ScrollView, View, useWindowDimensions } from 'react-native';
 
 import { MONTH_LONG, WEEKDAY_LONG, addDays, parseDate, shiftMonth, toDateOnly, weekdayDate, weekdayOf, weekdayShort, type DateOnly } from '@/domain/dates';
 import { HEADS_UP_LEADS } from '@/domain/charges';
@@ -23,6 +23,8 @@ export default function Calendar() {
   const p = usePalette();
   const insets = useInsets();
   const edge = usePageEdge();
+  // 320pt wide (SE with Display Zoom): "September" fits next to the arrows.
+  const narrow = useWindowDimensions().width < 350;
   const app = useApp();
   const money = useAppMoney();
   const editor = useEditor();
@@ -33,6 +35,12 @@ export default function Calendar() {
   const leads = useMemo(() => effectiveLeads(settings, pro), [settings, pro]);
   const days = useMemo(() => calendarMonth(subs, view.y, view.m, today, reminded, leads), [subs, view, today, reminded, leads]);
   const due = monthDue(days, settings.currency);
+  // This month only: what's still to come from today (Monzo/Orbit-style "still to pay"). One currency only, so nothing is added across currencies.
+  const isThisMonth = view.y === t.y && view.m === t.m;
+  const left = isThisMonth ? monthDue(days.map((d) => (d && d.date >= today ? d : null)), settings.currency) : null;
+  const stillLine = left && due.totals.length === 1 && left.totals.length <= 1 && left.count < due.count
+    ? left.count ? `${money(left.totals[0].amountMinor, left.totals[0].currency)} still to come` : 'All paid for this month'
+    : null;
   const undated = useMemo(() => undatedSubs(subs).sort((a, b) => yearlyOfSub(b) - yearlyOfSub(a)), [subs]);
   // The next 12 months at a glance (DECISIONS #60, free): which months are heavy, and the yearly charges in them.
   const ahead = useMemo(() => yearAhead(subs, today), [subs, today]);
@@ -96,7 +104,7 @@ export default function Calendar() {
     <View style={{ flex: 1, backgroundColor: p.bg }}>
       <ScrollView contentContainerStyle={{ paddingTop: insets.top + 8, paddingHorizontal: edge, paddingBottom: 28 }} showsVerticalScrollIndicator={false}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Txt v="displayM" accessibilityRole="header" style={{ flex: 1, fontSize: 32, lineHeight: 40 }} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
+          <Txt v="displayM" accessibilityRole="header" style={{ flex: 1, fontSize: narrow ? 26 : 32, lineHeight: 40 }} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
             {title}
           </Txt>
           <IconButton label="Previous month" onPress={() => move(-1)}>
@@ -129,6 +137,11 @@ export default function Calendar() {
             {due.totals.slice(1).map((x) => `+ ${money(x.amountMinor, x.currency)} `)}due in {MONTH_LONG[view.m - 1]} · {due.count} {due.count === 1 ? 'charge' : 'charges'}
           </Txt>
         </View>
+        {stillLine ? (
+          <Txt v="sub" tone="fg2" num style={{ marginTop: 2 }}>
+            {stillLine}
+          </Txt>
+        ) : null}
 
         <View style={{ flexDirection: 'row', marginTop: 16, marginBottom: 6 }} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
           {WEEK.map((w, i) => (

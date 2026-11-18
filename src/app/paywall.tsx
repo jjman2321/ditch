@@ -6,11 +6,15 @@
 // Plans (DECISIONS #66, owner Nov 18): Yearly with 7 days free (pre-selected,
 // "$0.97 a week", saving vs Weekly), Lifetime ("Pay once. No subscription.")
 // for people tired of subscriptions, Weekly with no trial. No monthly.
-// Fits without scrolling on iPhone 12 (390×844) and SE (375×667).
+// Layout (owner, Nov 18: "always fits, any screen"): like AllTrails, Smart Receipts, Quizlet and
+// Trade AI on Mobbin/AppKittie, the plans, button, price line and links are pinned to the bottom
+// and look the same on every phone. Above them scrolls the hero, the Free vs Pro table and "How
+// the free week works". That part is always taller than the space, so a bigger phone shows more
+// of it and a small one scrolls: never an empty gap.
 
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Alert, Linking, Platform, Pressable, Text, View } from 'react-native';
+import { Alert, Linking, Platform, Pressable, ScrollView, Text, View } from 'react-native';
 
 import { WIDGET_READY, showImport } from '@/config/features';
 import { DEV_TOOLS } from '@/dev/flags';
@@ -19,11 +23,11 @@ import { balanceLines } from '@/domain/copy';
 import { formatWholeMoney } from '@/domain/money';
 import { perWeekFromYearly, yearlyBadgeVsWeekly } from '@/domain/pricing';
 import { homeTotals, listedUserSubs } from '@/domain/subs';
-import { FitScroll, OnbRoot } from '@/onboarding/Parts';
+import { OnbRoot } from '@/onboarding/Parts';
 import { PURCHASES_LIVE, billedLabel, planById, purchase, restorePurchases, type PlanId } from '@/services/purchases';
 import { onboardingToday, totalsFor, useCountry, useOnboarding, usePickedList } from '@/state/onboarding';
 import { useApp } from '@/state/app';
-import { Button, Card, Check, Close, Duck, F, IconButton, LogoTile, PlanCard, ProLockup, Txt, brand, haptic, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
+import { Bell, BottomFade, Button, Card, CardIcon, Check, Close, Duck, F, IconButton, LogoTile, PlanCard, ProLockup, Txt, brand, haptic, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
 
 const NB = ' ';
 
@@ -56,6 +60,9 @@ const ROWS: Row[] = [
   { label: 'Nudge if you miss one', free: 'no', pro: 'yes' },
   // Owner, Nov 16: price watch works in this build (DECISIONS #60), so it gets a row.
   { label: 'Price watch', free: 'no', pro: 'yes' },
+  // Built Nov 16 (DECISIONS #60): Pro only.
+  { label: 'Heads-up a month before yearly charges', free: 'no', pro: 'yes' },
+  { label: 'Cheaper plan check', free: 'no', pro: 'yes' },
   ...(WIDGET_READY ? [{ label: `Lock${NB}Screen widget`, free: 'no', pro: 'yes' }] : []),
   // The first import (onboarding) is free, so "anytime" keeps this row true (DECISIONS #34).
   ...(showImport() ? [{ label: 'Import anytime', free: 'no', pro: 'yes' }] : []),
@@ -93,12 +100,22 @@ function Compare({ rows, width, overlap, tiny }: { rows: Row[]; width: number; o
   return (
     <Card style={{ marginTop: -overlap, overflow: 'hidden', zIndex: 2 }}>
       {/* Hidden measurements: "Unlimited" sets the Pro column; labels wrap only when they must. */}
-      <View pointerEvents="none" style={{ position: 'absolute', opacity: 0, left: 0, top: 0, width: 2000, alignItems: 'flex-start' }} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+      <View
+        pointerEvents="none"
+        style={{ position: 'absolute', opacity: 0, left: 0, top: 0, width: 2000, alignItems: 'flex-start' }}
+        importantForAccessibility="no-hide-descendants"
+        accessibilityElementsHidden
+      >
         <Text style={CELL_TEXT} onLayout={(e) => setUnlimitedW(e.nativeEvent.layout.width)} maxFontSizeMultiplier={1.3}>
           Unlimited
         </Text>
         {rows.map((r) => (
-          <Text key={r.label} style={tiny ? [LABEL_TEXT, { fontSize: 13 }] : LABEL_TEXT} maxFontSizeMultiplier={1.4} onLayout={(e) => setLabelW((m) => (m[r.label] === e.nativeEvent.layout.width ? m : { ...m, [r.label]: e.nativeEvent.layout.width }))}>
+          <Text
+            key={r.label}
+            style={tiny ? [LABEL_TEXT, { fontSize: 13 }] : LABEL_TEXT}
+            maxFontSizeMultiplier={1.4}
+            onLayout={(e) => setLabelW((m) => (m[r.label] === e.nativeEvent.layout.width ? m : { ...m, [r.label]: e.nativeEvent.layout.width }))}
+          >
             {tiny ? (SHORT[r.label] ?? r.label) : r.label}
           </Text>
         ))}
@@ -123,7 +140,12 @@ function Compare({ rows, width, overlap, tiny }: { rows: Row[]; width: number; o
             style={{ flexDirection: 'row', alignItems: 'center', minHeight: two ? 42 : tiny ? 28 : 32 }}
           >
             {i ? <View style={{ position: 'absolute', top: 0, left: 16, right: 0, height: 1, backgroundColor: p.hair }} /> : null}
-            <Txt v="sub" color={p.cardFg} style={[LABEL_TEXT, tiny && { fontSize: 13 }, { flex: 1, paddingLeft: 16, paddingRight: 8, paddingVertical: two ? 4 : 6, lineHeight: two ? 17 : 20 }]} maxFontSizeMultiplier={1.4}>
+            <Txt
+              v="sub"
+              color={p.cardFg}
+              style={[LABEL_TEXT, tiny && { fontSize: 13 }, { flex: 1, paddingLeft: 16, paddingRight: 8, paddingVertical: two ? 4 : 6, lineHeight: two ? 17 : 20 }]}
+              maxFontSizeMultiplier={1.4}
+            >
               {two ? balanceLines(tiny ? (SHORT[r.label] ?? r.label) : r.label) : tiny ? (SHORT[r.label] ?? r.label) : r.label}
             </Txt>
             <View style={{ width: colF, alignItems: 'center', justifyContent: 'center' }}>{cell(r.free, false)}</View>
@@ -136,9 +158,54 @@ function Compare({ rows, width, overlap, tiny }: { rows: Row[]; width: number; o
   );
 }
 
+/** "How the free week works": the real dates, like Quizlet, Mobills and Smart Receipts. */
+function TrialSteps({ n, charge, price, days }: { n: number; charge: string; price: string; days: number }) {
+  const p = usePalette();
+  const ink = p.dark ? brand.sunflower : brand.ink;
+  const steps = [
+    {
+      icon: <Check color={ink} size={14} />,
+      title: 'Today',
+      line: n >= 2 ? `Pro is on: reminders on all ${n}, trial ends and price rises.` : 'Pro is on: reminders on everything, trial ends and price rises.',
+    },
+    { icon: <Bell color={ink} size={14} />, title: shortDate(addDays(charge, -3)), line: 'We remind you your trial is ending.' },
+    { icon: <CardIcon color={ink} size={14} />, title: shortDate(charge), line: `${price} for the year. Cancel before and pay${NB}nothing.` },
+  ];
+  return (
+    <View style={{ marginTop: 22 }}>
+      <Txt v="eyebrow" tone="mute" style={{ marginLeft: 4, marginBottom: 10 }}>
+        {`How the ${days}-day free trial works`}
+      </Txt>
+      <View style={{ backgroundColor: p.card, borderRadius: 20, paddingHorizontal: 16, paddingVertical: 6, borderWidth: p.dark ? 1 : 0, borderColor: p.cardBorder }}>
+        {steps.map((x, i) => (
+          <View key={x.title} accessible accessibilityLabel={`${x.title}: ${x.line}`} style={{ flexDirection: 'row', gap: 12, paddingVertical: 10 }}>
+            <View style={{ alignItems: 'center' }}>
+              <View style={{ width: 28, height: 28, borderRadius: 14, backgroundColor: p.dark ? '#332B12' : '#FFF1BC', alignItems: 'center', justifyContent: 'center' }}>{x.icon}</View>
+              {i < steps.length - 1 ? <View style={{ width: 2, flex: 1, minHeight: 10, marginTop: 4, marginBottom: -14, backgroundColor: p.hair }} /> : null}
+            </View>
+            <View style={{ flex: 1, paddingTop: 3 }}>
+              <Txt v="bodyStrong" color={p.cardFg}>
+                {x.title}
+              </Txt>
+              <Txt v="sub" tone="fg2" style={{ marginTop: 2 }}>
+                {x.line}
+              </Txt>
+            </View>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+}
+
 function FootLink({ label, onPress }: { label: string; onPress: () => void }) {
   return (
-    <Pressable accessibilityRole="link" accessibilityLabel={label} onPress={onPress} style={({ pressed }) => ({ height: 44, minWidth: 44, paddingHorizontal: 4, alignItems: 'center', justifyContent: 'center', opacity: pressed ? 0.6 : 1 })}>
+    <Pressable
+      accessibilityRole="link"
+      accessibilityLabel={label}
+      onPress={onPress}
+      style={({ pressed }) => ({ height: 44, minWidth: 44, paddingHorizontal: 4, alignItems: 'center', justifyContent: 'center', opacity: pressed ? 0.6 : 1 })}
+    >
       <Txt v="sub" tone="fg2" style={{ textDecorationLine: 'underline' }}>
         {label}
       </Txt>
@@ -185,7 +252,9 @@ export default function Paywall() {
   const pickedList = usePickedList();
   const n = inApp ? listedUserSubs(app.subs).length : pickedList.length;
   // The logo line (approved deck, DECISIONS #26): their own services, in the space above the title.
-  const logos = (inApp ? listedUserSubs(app.subs).map((s) => ({ id: s.catalogId ?? s.id, name: s.name, mono: s.name.slice(0, 1).toUpperCase() })) : pickedList.map((x) => ({ id: x.id, name: x.name, mono: x.mono }))).slice(0, 12);
+  const logos = (
+    inApp ? listedUserSubs(app.subs).map((s) => ({ id: s.catalogId ?? s.id, name: s.name, mono: s.name.slice(0, 1).toUpperCase() })) : pickedList.map((x) => ({ id: x.id, name: x.name, mono: x.mono }))
+  ).slice(0, 12);
   const many = n > 3;
   // Their yearly total, for the logo line: one currency only (never added across currencies).
   const home = useCountry()?.currency;
@@ -237,62 +306,86 @@ export default function Paywall() {
   const perWeek = perWeekFromYearly({ amountMinor: yearly.priceMinor, currency: yearly.currency });
   // A true comparison with the Weekly plan we sell: $6.99 × 52 = $363.48 vs $49.99 (rounded down).
   const badge = yearlyBadgeVsWeekly({ amountMinor: weekly.priceMinor, currency: weekly.currency }, { amountMinor: yearly.priceMinor, currency: yearly.currency }).toUpperCase();
-  const cardH = f.tiny ? 44 : f.small ? 52 : 60;
+  const cardH = f.tiny ? 44 : f.small ? 50 : 56;
 
   // Phones: forced breaks so the last line is short and the duck sits beside it (v10). iPad wraps by itself.
   const what = many ? `all ${n}${NB}renewals.` : `every${NB}renewal.`;
-  const head = f.tiny ? `Get a reminder before ${what}` : f.tablet ? `Get a reminder before ${what}` : f.small ? `Get a reminder before\n${what}` : many ? `Get a reminder\nbefore all\n${n}${NB}renewals.` : `Get a reminder\nbefore every\nrenewal.`;
+  const head = f.tiny
+    ? `Get a reminder before ${what}`
+    : f.tablet
+      ? `Get a reminder before ${what}`
+      : f.small
+        ? `Get a reminder before\n${what}`
+        : many
+          ? `Get a reminder\nbefore all\n${n}${NB}renewals.`
+          : `Get a reminder\nbefore every\nrenewal.`;
   const spokenHead = `Get a reminder before ${many ? `all ${n} renewals` : 'every renewal'}.`;
-  // SE drops the last row so everything fits without scrolling (the widget row stays).
-  const rows = f.small ? ROWS.filter((r) => r.label !== 'Nudge if you miss one').slice(0, 4) : ROWS;
+  const rows = ROWS;
   const overlap = f.tablet ? 48 : 40;
   const duckW = f.small ? 68 : f.tablet ? 104 : 96;
   const ink = dark ? '#F6F0E3' : brand.ink;
-  // Spare height is filled with content, step by step, never left blank (owner, Nov 18):
-  // 0 = logos and names, 1 = + their yearly total, 2 = bigger logos (Plus / Pro Max). Anything left
-  // is shared between the gaps below (each capped), so big phones breathe evenly instead of one block.
-  // Measured from the gap itself, so it adapts to every phone and text size. It only steps up,
-  // and starts again when the window changes, so it never flickers.
-  const sizeKey = `${f.width}x${f.height}x${f.fontScale}`;
-  const [fillState, setFillState] = useState({ key: sizeKey, level: 0 });
-  const fill = fillState.key === sizeKey ? fillState.level : 0;
-  const setFill = (level: number) => setFillState({ key: sizeKey, level });
-  const showLogos = n >= 2 && (f.tablet || f.height >= 760);
-  const onGap = (h: number) => {
-    if (!showLogos || !yearlyTotal) return;
-    if (fill === 0 && h >= 44) setFill(1);
-    else if (fill === 1 && h >= 40) setFill(2);
-  };
+  const showLogos = n >= 2 && !f.tiny;
 
   return (
     <OnbRoot surface="cream">
-      <FitScroll style={{ paddingHorizontal: f.edge, paddingBottom: f.tiny ? 4 : f.bottom }}>
-        <View style={{ flexGrow: 1, marginHorizontal: -f.edge, paddingTop: f.top, paddingHorizontal: f.edge, paddingBottom: f.tablet ? 80 : f.tiny ? 46 : f.small ? 52 : 48, backgroundColor: dark ? brand.night : brand.sunflower }}>
-          <View style={{ height: f.tiny ? 40 : 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-            <ProLockup size={f.small ? 20 : 22} color={ink} />
-            <IconButton label="Close, continue free" onPress={leaveFree} size={32} bg={dark ? '#3A3424' : 'rgba(22,20,15,0.12)'} style={{ marginRight: -6 }}>
-              <Close color={ink} />
-            </IconButton>
-          </View>
-          {/* Content starts right under the bar, like the top paywalls on Mobbin (Headway, Bevel, Tide Guide).
-              Spare height is filled with their own logos, never left as an empty yellow block. */}
-          <View onLayout={(e) => onGap(e.nativeEvent.layout.height)} style={{ flexGrow: 1, minHeight: f.small ? 4 : 12 }} />
-          {/* Their logos ("Netflix, Spotify and 5 more"): every phone taller than the SE. */}
-          {showLogos ? <LogoLine items={logos} total={n} ink={ink} band={dark ? brand.night : brand.sunflower} yearly={fill >= 1 ? yearlyTotal : null} big={fill >= 2} /> : null}
-          {/* Dark mode: night like the other yellow screens (Almost set, Ditched), with a sunflower headline. */}
-          <Txt v="title" color={dark ? brand.sunflower : ink} accessibilityRole="header" accessibilityLabel={spokenHead} style={f.tiny ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 } : f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null}>
-            {head}
-          </Txt>
-          {/* Nudged left so his bill points at the Pro column, never over the title. Only the base of
+      <View style={{ flex: 1 }}>
+        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingHorizontal: f.edge, paddingBottom: 28 }} showsVerticalScrollIndicator={false}>
+          <View
+            style={{
+              marginHorizontal: -f.edge,
+              paddingTop: f.top,
+              paddingHorizontal: f.edge,
+              paddingBottom: f.tablet ? 80 : f.tiny ? 46 : f.small ? 52 : 48,
+              backgroundColor: dark ? brand.night : brand.sunflower,
+            }}
+          >
+            <View style={{ height: f.tiny ? 40 : 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+              <ProLockup size={f.small ? 20 : 22} color={ink} />
+              <IconButton label="Close, continue free" onPress={leaveFree} size={32} bg={dark ? '#3A3424' : 'rgba(22,20,15,0.12)'} style={{ marginRight: -6 }}>
+                <Close color={ink} />
+              </IconButton>
+            </View>
+            <View style={{ height: f.small ? 8 : 16 }} />
+            {/* Their logos ("Netflix, Spotify and 5 more"): every phone taller than the SE. */}
+            {showLogos ? <LogoLine items={logos} total={n} ink={ink} band={dark ? brand.night : brand.sunflower} /> : null}
+            {/* Dark mode: night like the other yellow screens (Almost set, Ditched), with a sunflower headline. */}
+            <Txt
+              v="title"
+              color={dark ? brand.sunflower : ink}
+              accessibilityRole="header"
+              accessibilityLabel={spokenHead}
+              style={f.tiny ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 } : f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null}
+            >
+              {head}
+            </Txt>
+            {/* Nudged left so his bill points at the Pro column, never over the title. Only the base of
               his neck tucks behind the table, so the whole bill shows on every size. */}
-          {/* 320pt wide: no room beside the title, so he sits this one out. */}
-          {f.tiny ? null : <Duck width={duckW} right={f.edge + (f.small ? 20 : f.tablet ? 48 : 36)} bottom={overlap - 4} />}
-        </View>
+            {/* 320pt wide: no room beside the title, so he sits this one out. */}
+            {f.tiny ? null : <Duck width={duckW} right={f.edge + (f.small ? 20 : f.tablet ? 48 : 36)} bottom={overlap - 4} />}
+          </View>
 
-        <Compare rows={rows} width={f.content} overlap={overlap} tiny={f.tiny} />
-        <View style={{ flexGrow: 1, maxHeight: 20 }} />
+          <Compare rows={rows} width={f.content} overlap={overlap} tiny={f.tiny} />
 
-        <View accessibilityRole="radiogroup" accessibilityLabel="Plans" style={{ gap: f.tiny ? 6 : 8, marginTop: f.tiny ? 10 : f.small ? 16 : 20 }}>
+          <TrialSteps n={n} charge={charge} price={yearly.priceString} days={yearly.trialDays} />
+          <Txt v="sub" tone="fg2" center style={{ marginTop: 18 }}>
+            {`Your list stays on your phone. Cancel anytime in iPhone${NB}Settings.`}
+          </Txt>
+        </ScrollView>
+        <BottomFade height={36} />
+      </View>
+
+      {/* Pinned: the same on every phone. */}
+      <View
+        style={{
+          paddingHorizontal: f.edge,
+          paddingTop: f.tiny ? 14 : 18,
+          paddingBottom: f.tiny ? 4 : f.bottom,
+          backgroundColor: dark ? brand.night : brand.cream,
+          borderTopWidth: 1,
+          borderTopColor: dark ? '#2B2823' : '#EEE7D8',
+        }}
+      >
+        <View accessibilityRole="radiogroup" accessibilityLabel="Plans" style={{ gap: f.tiny ? 6 : 8 }}>
           <PlanCard
             title="Yearly"
             // 320pt wide: the tag would squeeze "Yearly" to "Y."; the button and the line under it say the trial.
@@ -326,8 +419,7 @@ export default function Paywall() {
           />
         </View>
 
-        <View style={{ height: f.tiny ? 12 : f.small ? 16 : 20 }} />
-        <View style={{ flexGrow: 1, maxHeight: 20 }} />
+        <View style={{ height: f.tiny ? 10 : 14 }} />
         <Button label={cta} onPress={buy} height={f.tiny ? 44 : f.small ? 48 : 56} />
         {/* A fixed slot, so the button never moves when the plan changes. Price and the real start date by the
             button (App Review); no reminder text (owner, Nov 10). */}
@@ -358,7 +450,7 @@ export default function Paywall() {
           </Txt>
           <FootLink label="Privacy" onPress={() => Linking.openURL('https://ditchsubs.app/privacy')} />
         </View>
-      </FitScroll>
+      </View>
     </OnbRoot>
   );
 }

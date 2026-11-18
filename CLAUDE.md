@@ -63,11 +63,11 @@ This is the #1 complaint about Bobby, so it's the product.
 - iOS keeps at most **64** pending local notifications per app. Schedule the soonest ones first, inside that cap.
 - Test the scheduling logic in Jest **and** delivery on a real iPhone.
 
-### 4. Honest paywall
-- Close button (×) visible from the first frame, 44pt, and it always leads to the free app. It is the only "continue free" control (owner decision Nov 10, DECISIONS #29); the Free | Pro table shows what Free includes.
-- Restore purchases.
-- One short line under the button with the price and the real start date: "$0 today · $29.99/yr from Nov 17 · Cancel anytime" (owner Nov 10: no reminder text, no visual timeline). Apple expects the renewal price next to the buy button.
-- No weekly plan, no countdown timers, no fake discounts, no free-trial toggle.
+### 4. Paywall: monetization first, legal only (owner, Nov 18, DECISIONS #66)
+- The model and plans live in DECISIONS #66 and `design/model/model.png`: trial-gated bank scan, weekly + yearly + lifetime, exit offer, locked details, and more paywall moments later.
+- Psychology is welcome: anchoring, per-week framing, decoys, badges, loss aversion, curiosity gaps, real time-limited offers.
+- Never: fake timers or fake "was" prices, fake reviews or ratings, unclear price or renewal terms, trial toggles, hard-to-cancel flows. These break Apple 3.1.2 and FTC/state auto-renewal law and get the app pulled.
+- Restore purchases is always visible. The price and the real charge date are shown next to the buy button.
 
 ### 5. Never claim
 - "We cancel for you."

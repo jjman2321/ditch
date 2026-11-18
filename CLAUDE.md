@@ -14,6 +14,7 @@ It's the owner's first app. The goal is to learn the whole Apple pipeline and st
 5. `docs/reference/BUILDOUT-ORIGINAL.md`: older plan. Only for money/date/reminder/paywall rules and acceptance checks. DECISIONS.md wins wherever they disagree.
 
 ## How the owner likes to work
+- **Whole-app principles (DECISIONS #67):** structure beats price, weekly with a trial, the first session is the whole game, short onboarding, do the job (get useless subs cancelled), the stake not the stat, one point of view then cut, test the paywall constantly. Apply them to every screen.
 - **North star for every change:** does it serve our target user (iPhone, ~23–40, a bit guilty and anxious about money, wants control and reliability; see `docs/research/mascot-or-not.md`) and does it help conversion (onboarding completion, trial starts, trial→paid, retention)? If a change doesn't help either, cut it. Say how each change serves the user and conversions, and back it with research (Mobbin, AppKittie, RevenueCat/Adapty data, competitor reviews) where possible. Honesty rules (paywall, "never claim") still win over conversion.
 - Med student with limited coding experience. Explain in plain language, no jargon.
 - **After every change:** say what changed in plain words, then give a short click-through checklist to test it on the iPhone. Add or update the matching section in `docs/MANUAL-TESTS.md`.

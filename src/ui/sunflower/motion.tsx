@@ -10,10 +10,18 @@
 // finger frame by frame, not a timer.
 // Reduce Motion: every one of these shows its end state (Reanimated skips them on its own).
 
-import { useNavigation } from 'expo-router';
-import { useCallback, useEffect, useState, type ReactNode } from 'react';
-import { Platform, type StyleProp, type ViewStyle } from 'react-native';
-import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withSpring, withTiming } from 'react-native-reanimated';
+import { useNavigation } from "expo-router";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { Platform, type StyleProp, type ViewStyle } from "react-native";
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useReducedMotion,
+  useSharedValue,
+  withDelay,
+  withSpring,
+  withTiming,
+} from "react-native-reanimated";
 
 export const EASE_OUT = Easing.out(Easing.cubic);
 export const PRESS = { scale: 0.97, in: 80, out: 180 } as const;
@@ -35,14 +43,19 @@ export const RELEASE = { duration: 260, dampingRatio: 0.75 } as const;
 export function useScreenArrived(fallback = 650): boolean {
   const reduce = useReducedMotion();
   const navigation = useNavigation();
-  const instant = reduce || Platform.OS === 'web';
+  const instant = reduce || Platform.OS === "web";
   const [arrived, setArrived] = useState(instant);
   useEffect(() => {
     if (instant || arrived) return;
     const done = () => setArrived(true);
     const t = setTimeout(done, fallback);
-    const nav = navigation as unknown as { addListener?: (type: 'transitionEnd', cb: (e: { data?: { closing?: boolean } }) => void) => () => void };
-    const off = nav.addListener?.('transitionEnd', (e) => {
+    const nav = navigation as unknown as {
+      addListener?: (
+        type: "transitionEnd",
+        cb: (e: { data?: { closing?: boolean } }) => void,
+      ) => () => void;
+    };
+    const off = nav.addListener?.("transitionEnd", (e) => {
       if (!e.data?.closing) done();
     });
     return () => {
@@ -57,7 +70,8 @@ export function useScreenArrived(fallback = 650): boolean {
 export function usePressScale(disabled?: boolean) {
   const s = useSharedValue(1);
   const onPressIn = useCallback(() => {
-    if (!disabled) s.set(withTiming(PRESS.scale, { duration: PRESS.in, easing: EASE_OUT }));
+    if (!disabled)
+      s.set(withTiming(PRESS.scale, { duration: PRESS.in, easing: EASE_OUT }));
   }, [disabled, s]);
   const onPressOut = useCallback(() => {
     s.set(withSpring(1, RELEASE));
@@ -99,19 +113,29 @@ export function Stage({
   useEffect(() => {
     if (reduce || !show) return;
     t.set(withDelay(delay, withTiming(1, { duration, easing: EASE_OUT })));
-    y.set(withDelay(delay, spring ? withSpring(0, SETTLE) : withTiming(0, { duration, easing: EASE_OUT })));
+    y.set(
+      withDelay(
+        delay,
+        spring
+          ? withSpring(0, SETTLE)
+          : withTiming(0, { duration, easing: EASE_OUT }),
+      ),
+    );
     if (!action) return;
     // A real timer, never the animation's end (§1.6). Tappable once it's mostly there.
     const h = setTimeout(() => setLive(true), delay + duration * 0.6);
     return () => clearTimeout(h);
   }, [reduce, show, delay, duration, spring, action, t, y]);
-  const anim = useAnimatedStyle(() => ({ opacity: t.get(), transform: [{ translateY: y.get() }] }));
+  const anim = useAnimatedStyle(() => ({
+    opacity: t.get(),
+    transform: [{ translateY: y.get() }],
+  }));
   return (
     <Animated.View
       style={[style, anim]}
-      pointerEvents={live ? 'auto' : 'none'}
+      pointerEvents={live ? "auto" : "none"}
       accessibilityElementsHidden={!live}
-      importantForAccessibility={live ? 'auto' : 'no-hide-descendants'}
+      importantForAccessibility={live ? "auto" : "no-hide-descendants"}
     >
       {children}
     </Animated.View>

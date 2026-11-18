@@ -4,39 +4,103 @@
 // button. Prices are the local ones for the iPhone's Region (DECISIONS #17);
 // no checked local price means "Add your price", never a converted one.
 
-import { router } from 'expo-router';
-import { useMemo, useState } from 'react';
-import { FlatList, Pressable, ScrollView, TextInput, View } from 'react-native';
+import { router } from "expo-router";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { FlatList, Pressable, ScrollView, TextInput, View } from "react-native";
+import Animated, {
+  useAnimatedStyle,
+  useReducedMotion,
+  useSharedValue,
+  withSequence,
+  withSpring,
+  withTiming,
+} from "react-native-reanimated";
 
-import { catalogPrice, defaultPlan, planChoices, priceRow } from '@/catalog/prices';
-import { CHIP, FILTERS, type Filter } from '@/catalog/filters';
-import { showImport } from '@/config/features';
-import { SERVICES, availableIn, popularIn, searchServices, type CatalogService } from '@/catalog/services';
-import { shortPlanName } from '@/domain/copy';
-import { CYCLE_SHORT } from '@/domain/money';
-import { CountrySheet } from '@/onboarding/CountrySheet';
-import { LinkButton, OnbRoot, TextLink } from '@/onboarding/Parts';
-import { PlanSheet } from '@/onboarding/PlanSheet';
-import { PriceSheet } from '@/onboarding/PriceSheet';
-import { isPriced, totalsFor, useCountry, useMoney, useOnboarding, usePickedList, type Picked } from '@/state/onboarding';
-import { Button, Camera, ChevronRight, F, LogoTile, Search, StepHeaderSpace, Tick, Txt, haptic, radius, useFrame, usePalette } from '@/ui/sunflower';
+import {
+  catalogPrice,
+  defaultPlan,
+  planChoices,
+  priceRow,
+} from "@/catalog/prices";
+import { CHIP, FILTERS, type Filter } from "@/catalog/filters";
+import { showImport } from "@/config/features";
+import {
+  SERVICES,
+  availableIn,
+  popularIn,
+  searchServices,
+  type CatalogService,
+} from "@/catalog/services";
+import { shortPlanName } from "@/domain/copy";
+import { CYCLE_SHORT } from "@/domain/money";
+import { CountrySheet } from "@/onboarding/CountrySheet";
+import { LinkButton, OnbRoot, TextLink } from "@/onboarding/Parts";
+import { PlanSheet } from "@/onboarding/PlanSheet";
+import { PriceSheet } from "@/onboarding/PriceSheet";
+import {
+  isPriced,
+  totalsFor,
+  useCountry,
+  useMoney,
+  useOnboarding,
+  usePickedList,
+  type Picked,
+} from "@/state/onboarding";
+import {
+  Button,
+  Camera,
+  ChevronRight,
+  EASE_OUT,
+  F,
+  LogoTile,
+  POP,
+  PRESS,
+  RELEASE,
+  Search,
+  StepHeaderSpace,
+  TickPop,
+  Txt,
+  haptic,
+  radius,
+  useFrame,
+  usePalette,
+} from "@/ui/sunflower";
 
-const NB = ' ';
+const NB = " ";
 
 /** The second line of a row. Returns the text and whether "Change" / "Add your price" shows. */
 function useRowLine() {
   const money = useMoney();
   const { country } = useOnboarding();
-  return (s: CatalogService, pick: Picked | undefined): { text: string; link: 'plan' | 'price' | null } => {
+  return (
+    s: CatalogService,
+    pick: Picked | undefined,
+  ): { text: string; link: "plan" | "price" | null } => {
     if (pick) {
-      if (!isPriced(pick)) return { text: '', link: 'price' };
+      if (!isPriced(pick)) return { text: "", link: "price" };
       const amount = `${money(pick.amountMinor, pick.currency)}${CYCLE_SHORT[pick.cycle]}`;
-      if (pick.priceSource === 'user') return { text: `Your price · ${amount}`, link: 'price' };
+      if (pick.priceSource === "user")
+        return { text: `Your price · ${amount}`, link: "price" };
       const plans = planChoices(s.id, pick.priceCountry);
-      const short = pick.planName ? shortPlanName(pick.planName, s.name, plans.map((x) => x.name)) : null;
+      const short = pick.planName
+        ? shortPlanName(
+            pick.planName,
+            s.name,
+            plans.map((x) => x.name),
+          )
+        : null;
       // "Monthly · $14.99/mo" says it twice: drop a plan name that's only a cycle word.
-      const name = short && /^(monthly|yearly|annual|annually|weekly|quarterly)$/i.test(short.trim()) ? null : short;
-      return { text: name ? `${name} · ${amount}` : amount, link: plans.length > 1 ? 'plan' : null };
+      const name =
+        short &&
+        /^(monthly|yearly|annual|annually|weekly|quarterly)$/i.test(
+          short.trim(),
+        )
+          ? null
+          : short;
+      return {
+        text: name ? `${name} · ${amount}` : amount,
+        link: plans.length > 1 ? "plan" : null,
+      };
     }
     // Not ticked yet: show the plan and price a tick will give, so ticking
     // only adds the tick and "Change" instead of changing the whole line.
@@ -44,11 +108,59 @@ function useRowLine() {
     const row = plans.length > 1 ? priceRow(s.id, country) : null;
     if (row) {
       const d = defaultPlan(row);
-      const name = shortPlanName(d.name, s.name, plans.map((x) => x.name));
-      return { text: `${name} · ${money(d.amountMinor, row.currency)}${CYCLE_SHORT[d.cycle]}`, link: null };
+      const name = shortPlanName(
+        d.name,
+        s.name,
+        plans.map((x) => x.name),
+      );
+      return {
+        text: `${name} · ${money(d.amountMinor, row.currency)}${CYCLE_SHORT[d.cycle]}`,
+        link: null,
+      };
     }
     const c = catalogPrice(s.id, country);
-    return { text: c ? `${money(c.amountMinor, c.currency)}${CYCLE_SHORT[c.cycle]}` : 'Add your price', link: null };
+    return {
+      text: c
+        ? `${money(c.amountMinor, c.currency)}${CYCLE_SHORT[c.cycle]}`
+        : "Add your price",
+      link: null,
+    };
+  };
+}
+
+/**
+ * The logo's answer to a touch: it sinks a little while your finger is down, then pops past full
+ * size and settles on a spring when it's ticked, or dips and settles when it's unticked.
+ * Nothing on first show; Reduce Motion: no movement (the tick still switches).
+ */
+function useLogoPop(on: boolean) {
+  const reduce = useReducedMotion();
+  const s = useSharedValue(1);
+  const first = useRef(true);
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    if (reduce) return;
+    s.set(
+      withSequence(
+        withTiming(on ? 1.12 : 0.9, { duration: 90, easing: EASE_OUT }),
+        withSpring(1, POP),
+      ),
+    );
+  }, [on, reduce, s]);
+  const style = useAnimatedStyle(() => ({ transform: [{ scale: s.get() }] }));
+  return {
+    style,
+    pressIn: () => {
+      if (!reduce)
+        s.set(withTiming(0.92, { duration: PRESS.in, easing: EASE_OUT }));
+    },
+    // A scroll that cancels the tap: spring back to rest.
+    pressOut: () => {
+      if (!reduce) s.set(withSpring(1, RELEASE));
+    },
   };
 }
 
@@ -63,47 +175,106 @@ function Row({
   pick: Picked | undefined;
   first: boolean;
   onToggle: () => void;
-  onChange: (kind: 'plan' | 'price') => void;
+  onChange: (kind: "plan" | "price") => void;
 }) {
   const p = usePalette();
   const line = useRowLine()(s, pick);
   const on = !!pick;
-  const spoken = line.text || 'no local price yet';
+  const spoken = line.text || "no local price yet";
+  const logo = useLogoPop(on);
   return (
     <Pressable
       accessibilityRole="checkbox"
       accessibilityLabel={`${s.name}, ${spoken}`}
       accessibilityState={{ checked: on }}
       // VoiceOver can't reach the "Change" link inside the row, so it's an action on the row too.
-      accessibilityActions={line.link ? [{ name: 'activate' }, { name: 'change', label: line.link === 'plan' ? 'Change plan' : line.text ? 'Change price' : 'Add your price' }] : undefined}
-      onAccessibilityAction={(e) => (e.nativeEvent.actionName === 'change' && line.link ? onChange(line.link) : onToggle())}
+      accessibilityActions={
+        line.link
+          ? [
+              { name: "activate" },
+              {
+                name: "change",
+                label:
+                  line.link === "plan"
+                    ? "Change plan"
+                    : line.text
+                      ? "Change price"
+                      : "Add your price",
+              },
+            ]
+          : undefined
+      }
+      onAccessibilityAction={(e) =>
+        e.nativeEvent.actionName === "change" && line.link
+          ? onChange(line.link)
+          : onToggle()
+      }
       onPress={onToggle}
-      style={({ pressed }) => ({ minHeight: 64, flexDirection: 'row', alignItems: 'center', gap: 12, opacity: pressed ? 0.7 : 1 })}
+      onPressIn={logo.pressIn}
+      onPressOut={logo.pressOut}
+      style={{
+        minHeight: 64,
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 12,
+      }}
     >
-      {first ? null : <View style={{ position: 'absolute', top: 0, left: 52, right: 0, height: 1, backgroundColor: p.hair }} />}
-      <LogoTile id={s.id} size={40} />
+      {first ? null : (
+        <View
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 52,
+            right: 0,
+            height: 1,
+            backgroundColor: p.hair,
+          }}
+        />
+      )}
+      <Animated.View style={logo.style}>
+        <LogoTile id={s.id} size={40} />
+      </Animated.View>
       <View style={{ flex: 1, minWidth: 0, paddingVertical: 12 }}>
         <Txt v="bodyStrong" numberOfLines={1}>
           {s.name}
         </Txt>
-        <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', columnGap: 4 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            flexWrap: "wrap",
+            columnGap: 4,
+          }}
+        >
           {line.text ? (
             <Txt v="sub" tone="mute" num>
               {line.text}
-              {line.link ? ' ·' : ''}
+              {line.link ? " ·" : ""}
             </Txt>
           ) : null}
           {line.link ? (
             <TextLink
-              label={line.text ? 'Change' : 'Add your price'}
-              a11y={line.link === 'plan' ? `Change ${s.name} plan` : `${line.text ? 'Change' : 'Add'} your price for ${s.name}`}
+              label={line.text ? "Change" : "Add your price"}
+              a11y={
+                line.link === "plan"
+                  ? `Change ${s.name} plan`
+                  : `${line.text ? "Change" : "Add"} your price for ${s.name}`
+              }
               onPress={() => onChange(line.link!)}
             />
           ) : null}
         </View>
       </View>
-      <View style={{ width: 44, height: 44, marginRight: -8, alignItems: 'center', justifyContent: 'center' }}>
-        <Tick on={on} />
+      <View
+        style={{
+          width: 44,
+          height: 44,
+          marginRight: -8,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <TickPop on={on} />
       </View>
     </Pressable>
   );
@@ -126,7 +297,7 @@ function ImportCard() {
     <Pressable
       accessibilityRole="button"
       accessibilityLabel="Add them all at once. Snap a screenshot or upload a bank statement. We fill in the prices and dates."
-      onPress={() => router.push('/paywall?from=import')}
+      onPress={() => router.push("/paywall?from=import")}
       style={({ pressed }) => ({
         marginTop: 14,
         minHeight: 64,
@@ -136,13 +307,22 @@ function ImportCard() {
         borderColor: p.chipBorder,
         paddingHorizontal: 14,
         paddingVertical: 12,
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: "row",
+        alignItems: "center",
         gap: 12,
         opacity: pressed ? 0.75 : 1,
       })}
     >
-      <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: p.dark ? '#2A2721' : '#FFF1BC', alignItems: 'center', justifyContent: 'center' }}>
+      <View
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: 12,
+          backgroundColor: p.dark ? "#2A2721" : "#FFF1BC",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <Camera color={p.fg} />
       </View>
       <View style={{ flex: 1, minWidth: 0 }}>
@@ -150,7 +330,8 @@ function ImportCard() {
           Add them all at once
         </Txt>
         <Txt v="sub" tone="mute" style={{ marginTop: 2 }}>
-          Snap a screenshot or upload a bank statement. We fill in the prices and dates.
+          Snap a screenshot or upload a bank statement. We fill in the prices
+          and dates.
         </Txt>
       </View>
       <ChevronRight color={p.mute} />
@@ -162,12 +343,58 @@ function ImportCard() {
 function CountryLine({ onChange }: { onChange: () => void }) {
   const country = useCountry();
   return (
-    <View style={{ marginTop: 8, flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}>
+    <View
+      style={{
+        marginTop: 8,
+        flexDirection: "row",
+        alignItems: "center",
+        flexWrap: "wrap",
+      }}
+    >
       <Txt v="sub" tone="fg2">
-        {country ? `Tick each one. Prices for ${country.flag} ${country.code === 'GB' ? 'UK' : country.code} · ` : 'Tick each one. No local prices here · '}
+        {country
+          ? `Tick each one. Prices for ${country.flag} ${country.code === "GB" ? "UK" : country.code} · `
+          : "Tick each one. No local prices here · "}
       </Txt>
-      <TextLink label={country ? 'Change' : 'Choose'} a11y={country ? `Prices for ${country.name}. Change country` : 'Choose a country for prices'} onPress={onChange} />
+      <TextLink
+        label={country ? "Change" : "Choose"}
+        a11y={
+          country
+            ? `Prices for ${country.name}. Change country`
+            : "Choose a country for prices"
+        }
+        onPress={onChange}
+      />
     </View>
+  );
+}
+
+/**
+ * "6 picked": the count gives a small springy nudge each time it changes, so a tick far down the
+ * list still shows up here. Only the count moves; the monthly total beside it just switches (rule 8).
+ */
+function Count({ n }: { n: number }) {
+  const reduce = useReducedMotion();
+  const s = useSharedValue(1);
+  const first = useRef(true);
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    if (reduce || n === 0) return;
+    s.set(
+      withSequence(
+        withTiming(1.14, { duration: 80, easing: EASE_OUT }),
+        withSpring(1, POP),
+      ),
+    );
+  }, [n, reduce, s]);
+  const style = useAnimatedStyle(() => ({ transform: [{ scale: s.get() }] }));
+  return (
+    <Animated.View style={[{ transformOrigin: "left" }, style]}>
+      <Txt v="label">{n === 0 ? "Tick what you pay for" : `${n} picked`}</Txt>
+    </Animated.View>
   );
 }
 
@@ -178,20 +405,48 @@ function PickBar({ list, onSkip }: { list: Picked[]; onSkip: () => void }) {
   const n = list.length;
   const unpriced = list.filter((x) => !isPriced(x)).length;
   const totals = totalsFor(list, home);
-  const spoken = `${n} picked${totals.length ? `, ${totals.map((t) => money(t.monthlyMinor, t.currency)).join(' plus ')} a month` : ''}${unpriced ? `, ${unpriced} without a price yet` : ''}`;
+  const spoken = `${n} picked${totals.length ? `, ${totals.map((t) => money(t.monthlyMinor, t.currency)).join(" plus ")} a month` : ""}${unpriced ? `, ${unpriced} without a price yet` : ""}`;
   return (
-    <View accessible accessibilityLabel={spoken} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', minHeight: 24, marginBottom: 12, gap: 12 }}>
-      <Txt v="label">
-        {n === 0 ? 'Tick what you pay for' : `${n} picked`}
-        {unpriced ? <Txt v="sub" tone="mute">{` · ${unpriced} need${unpriced === 1 ? 's' : ''} a price`}</Txt> : null}
-      </Txt>
+    <View
+      accessible
+      accessibilityLabel={spoken}
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        minHeight: 24,
+        marginBottom: 12,
+        gap: 12,
+      }}
+    >
+      <View
+        style={{ flexDirection: "row", alignItems: "baseline", flexShrink: 1 }}
+      >
+        <Count n={n} />
+        {unpriced ? (
+          <Txt
+            v="sub"
+            tone="mute"
+          >{` · ${unpriced} need${unpriced === 1 ? "s" : ""} a price`}</Txt>
+        ) : null}
+      </View>
       {totals.length ? (
-        <Txt v="label" num numberOfLines={1} style={{ flexShrink: 1, fontFamily: F.medium }}>
+        <Txt
+          v="label"
+          num
+          numberOfLines={1}
+          style={{ flexShrink: 1, fontFamily: F.medium }}
+        >
           <Txt v="moneyS" num>
             {money(totals[0].monthlyMinor, totals[0].currency)}
           </Txt>
-          {totals.length > 1 ? ` + ${totals.slice(1).map((t) => money(t.monthlyMinor, t.currency)).join(' + ')}` : ''}
-          {' a month'}
+          {totals.length > 1
+            ? ` + ${totals
+                .slice(1)
+                .map((t) => money(t.monthlyMinor, t.currency))
+                .join(" + ")}`
+            : ""}
+          {" a month"}
         </Txt>
       ) : n === 0 ? (
         <LinkButton label="Skip for now" onPress={onSkip} />
@@ -200,25 +455,52 @@ function PickBar({ list, onSkip }: { list: Picked[]; onSkip: () => void }) {
   );
 }
 
+/** "See my total" wakes up on the first tick: it fades to full (Button) and swells once on a spring. */
+function WakeUp({ on, children }: { on: boolean; children: ReactNode }) {
+  const reduce = useReducedMotion();
+  const s = useSharedValue(1);
+  const was = useRef(on);
+  useEffect(() => {
+    if (on && !was.current && !reduce)
+      s.set(
+        withSequence(
+          withTiming(1.04, { duration: 110, easing: EASE_OUT }),
+          withSpring(1, POP),
+        ),
+      );
+    was.current = on;
+  }, [on, reduce, s]);
+  const style = useAnimatedStyle(() => ({ transform: [{ scale: s.get() }] }));
+  return <Animated.View style={style}>{children}</Animated.View>;
+}
+
 export default function Services() {
   const p = usePalette();
   const f = useFrame();
   const list = usePickedList();
-  const { picked, toggleService, country, setCountry, setPrice, setPlan } = useOnboarding();
-  const [filter, setFilter] = useState<Filter>('Popular');
-  const [query, setQuery] = useState('');
+  const { picked, toggleService, country, setCountry, setPrice, setPlan } =
+    useOnboarding();
+  const [filter, setFilter] = useState<Filter>("Popular");
+  const [query, setQuery] = useState("");
   const [countryOpen, setCountryOpen] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
-  const [sheet, setSheet] = useState<'plan' | 'price' | null>(null);
+  const [sheet, setSheet] = useState<"plan" | "price" | null>(null);
   const [footerH, setFooterH] = useState(140);
 
   const data = useMemo(() => {
     // Anything already ticked stays findable (and untickable) even after a country change.
-    const here = SERVICES.filter((s) => availableIn(s, country) || picked[s.id]);
+    const here = SERVICES.filter(
+      (s) => availableIn(s, country) || picked[s.id],
+    );
     if (query.trim()) return searchServices(query, here);
-    if (filter !== 'Popular') return here.filter((s) => s.category === filter);
+    if (filter !== "Popular") return here.filter((s) => s.category === filter);
     const popular = popularIn(country);
-    const stray = here.filter((s) => picked[s.id] && !availableIn(s, country) && !popular.some((x) => x.id === s.id));
+    const stray = here.filter(
+      (s) =>
+        picked[s.id] &&
+        !availableIn(s, country) &&
+        !popular.some((x) => x.id === s.id),
+    );
     return [...popular, ...stray];
   }, [filter, query, country, picked]);
   const total = SERVICES.filter((s) => availableIn(s, country)).length;
@@ -229,7 +511,14 @@ export default function Services() {
     <OnbRoot surface="cream">
       <View style={{ flex: 1, paddingTop: f.top, paddingHorizontal: f.edge }}>
         <StepHeaderSpace />
-        <Txt v="title" accessibilityRole="header" style={[{ marginTop: f.tiny ? 10 : 16 }, f.tiny && { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 }]}>
+        <Txt
+          v="title"
+          accessibilityRole="header"
+          style={[
+            { marginTop: f.tiny ? 10 : 16 },
+            f.tiny && { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 },
+          ]}
+        >
           {`What do you pay${NB}for?`}
         </Txt>
         <CountryLine onChange={() => setCountryOpen(true)} />
@@ -242,8 +531,8 @@ export default function Services() {
             backgroundColor: p.chipBg,
             borderWidth: 1.5,
             borderColor: p.chipBorder,
-            flexDirection: 'row',
-            alignItems: 'center',
+            flexDirection: "row",
+            alignItems: "center",
             gap: 8,
             paddingLeft: 16,
           }}
@@ -258,7 +547,18 @@ export default function Services() {
             returnKeyType="search"
             autoCorrect={false}
             clearButtonMode="while-editing"
-            style={{ flex: 1, minWidth: 0, height: 44, paddingRight: 12, fontFamily: F.regular, fontSize: 16, color: p.fg, outlineStyle: 'none' } as object}
+            style={
+              {
+                flex: 1,
+                minWidth: 0,
+                height: 44,
+                paddingRight: 12,
+                fontFamily: F.regular,
+                fontSize: 16,
+                color: p.fg,
+                outlineStyle: "none",
+              } as object
+            }
           />
         </View>
         {query.trim() ? null : (
@@ -280,20 +580,28 @@ export default function Services() {
                     if (!on) haptic.select();
                     setFilter(x);
                   }}
-                  style={({ pressed }) => ({ height: 44, justifyContent: 'center', opacity: pressed ? 0.75 : 1 })}
+                  style={({ pressed }) => ({
+                    height: 44,
+                    justifyContent: "center",
+                    opacity: pressed ? 0.75 : 1,
+                  })}
                 >
                   <View
                     style={{
                       height: 36,
                       paddingHorizontal: 16,
                       borderRadius: radius.chip,
-                      justifyContent: 'center',
+                      justifyContent: "center",
                       backgroundColor: on ? p.chipOnBg : p.chipBg,
                       borderWidth: on ? 0 : 1.5,
                       borderColor: p.chipBorder,
                     }}
                   >
-                    <Txt v="label" color={on ? p.chipOnFg : p.fg} maxFontSizeMultiplier={1.3}>
+                    <Txt
+                      v="label"
+                      color={on ? p.chipOnFg : p.fg}
+                      maxFontSizeMultiplier={1.3}
+                    >
                       {CHIP[x] ?? x}
                     </Txt>
                   </View>
@@ -336,7 +644,7 @@ export default function Services() {
       <View
         onLayout={(e) => setFooterH(e.nativeEvent.layout.height)}
         style={{
-          position: 'absolute',
+          position: "absolute",
           left: 0,
           right: 0,
           bottom: 0,
@@ -348,8 +656,18 @@ export default function Services() {
           borderTopColor: p.rule,
         }}
       >
-        <PickBar list={list} onSkip={() => router.push('/onboarding/reminders')} />
-        <Button label="See my total" disabled={n === 0} onPress={() => router.push('/onboarding/total')} />
+        <PickBar
+          list={list}
+          onSkip={() => router.push("/onboarding/reminders")}
+        />
+        <WakeUp on={n > 0}>
+          <Button
+            label="See my total"
+            disabled={n === 0}
+            tapHaptic
+            onPress={() => router.push("/onboarding/total")}
+          />
+        </WakeUp>
       </View>
 
       <CountrySheet
@@ -363,14 +681,14 @@ export default function Services() {
       />
       <PlanSheet
         pick={editPick}
-        visible={sheet === 'plan'}
+        visible={sheet === "plan"}
         onClose={() => setSheet(null)}
         onPick={(planId) => editing && setPlan(editing, planId)}
-        onOwnPrice={() => setSheet('price')}
+        onOwnPrice={() => setSheet("price")}
       />
       <PriceSheet
         sub={editPick}
-        visible={sheet === 'price'}
+        visible={sheet === "price"}
         onClose={() => setSheet(null)}
         onSave={(amount, currency, cycle) => {
           if (editing) setPrice(editing, amount, currency, cycle);

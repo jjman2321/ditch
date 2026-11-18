@@ -6,7 +6,7 @@
 // Order (owner, Nov 18): Weekly / Yearly / Lifetime, cheapest first, so Yearly sits in the middle,
 // pre-selected (the "compromise" pick, right under the weekly price it beats by 86%).
 // Plans (DECISIONS #66, owner Nov 18): Yearly with 7 days free (pre-selected,
-// "$0.97 a week", saving vs Weekly), Lifetime ("Pay once. No subscription.")
+// "$0.96 a week", saving vs Weekly), Lifetime ("Pay once. Costs the same as 2 years.")
 // for people tired of subscriptions, Weekly with no trial. No monthly.
 // Layout (owner, Nov 18: "always fits, any screen"): like AllTrails, Smart Receipts, Quizlet and
 // Trade AI on Mobbin/AppKittie, the plans, button, price line and links are pinned to the bottom
@@ -67,7 +67,7 @@ function rowsFor(n: number): Row[] {
     { label: 'You pick the days', sub: '1, 3 or 7 days before', free: 'no', pro: 'yes' },
     ...(WIDGET_READY ? [{ label: `Lock${NB}Screen widget`, free: 'no', pro: 'yes' }] : []),
     // The first import (onboarding) is free, so "anytime" keeps this row true (DECISIONS #34).
-    ...(showImport() ? [{ label: 'Add from a screenshot', sub: 'Read right on your phone', free: 'no', pro: 'yes' }] : []),
+    ...(showImport() ? [{ label: 'Add from a screenshot', sub: 'Snap your Apple list, we add them', free: 'no', pro: 'yes' }] : []),
   ];
 }
 
@@ -86,8 +86,8 @@ const EDGE_W = 24;
 /** Everything on the canvas except the table rows (hero, table header, plans, button, price line, links). */
 const CANVAS_BASE = 570;
 /** Table row height range: 52pt (SE) to 66pt (fewer rows get more air). Each row has a label and a line under it. */
-const ROW_MIN = 52;
-const ROW_MAX = 66;
+const ROW_MIN = 46;
+const ROW_MAX = 58;
 
 const CELL_TEXT = { fontFamily: F.semi, fontSize: 14, lineHeight: 20 } as const;
 const LABEL_TEXT = { fontFamily: F.medium, fontSize: 14, letterSpacing: -0.1 } as const;
@@ -249,7 +249,7 @@ export default function Paywall() {
   const cta = { yearly: `Start ${yearly.trialDays}-day free trial`, weekly: `Subscribe for ${weekly.priceString} a week`, lifetime: `Pay ${lifetime.priceString} once` }[planId];
   const perWeek = perWeekFromYearly({ amountMinor: yearly.priceMinor, currency: yearly.currency });
   // A true comparison with the Weekly plan we sell: $6.99 × 52 = $363.48 vs $49.99 (rounded down).
-  const badge = yearlyBadgeVsWeekly({ amountMinor: weekly.priceMinor, currency: weekly.currency }, { amountMinor: yearly.priceMinor, currency: yearly.currency }).toUpperCase();
+  const badge = yearlyBadgeVsWeekly({ amountMinor: weekly.priceMinor, currency: weekly.currency }, { amountMinor: yearly.priceMinor, currency: yearly.currency }).toUpperCase().replace(/^SAVE (\d+%)$/, 'SAVE $1 VS WEEKLY');
 
   const what = many ? `all ${n}${NB}renewals.` : `every${NB}renewal.`;
   const head = `Get a reminder before\n${what}`;
@@ -341,19 +341,19 @@ export default function Paywall() {
             />
             <PlanCard
               title="Lifetime"
-              note="Pay once. No subscription."
+              note="Pay once. Costs the same as 2 years."
               price={lifetime.priceString}
               sub="one time"
               selected={planId === 'lifetime'}
               onPress={() => select('lifetime')}
               height={58}
               tint={dark ? '#2A2410' : '#FFF4C8'}
-              a11y={`Lifetime, ${lifetime.priceString} one time. Pay once, no subscription.`}
+              a11y={`Lifetime, ${lifetime.priceString} one time. Pay once, costs the same as 2 years.`}
             />
           </View>
 
           <View style={{ height: 14 }} />
-          <Button label={cta} sub={planId === 'yearly' ? `${formatWholeMoney(0, yearly.currency)} today · Cancel anytime` : undefined} onPress={buy} height={60} />
+          <Button label={cta} sub={planId === 'yearly' ? `${formatWholeMoney(0, yearly.currency)} today · Cancel anytime in Settings` : undefined} onPress={buy} height={60} />
           {/* A fixed slot, so the button never moves when the plan changes. Price and the real start date by the
             button (App Review); no reminder text (owner, Nov 10). */}
           <View style={{ height: 44, alignItems: 'center', justifyContent: 'center', paddingHorizontal: planId === 'yearly' ? 0 : 4 }}>

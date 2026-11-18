@@ -140,8 +140,8 @@ describe('paywall plans (DECISIONS #66)', () => {
     expect(yearlyBadgeVsWeekly(weekly, { amountMinor: 4999, currency: 'EUR' })).toBe('Best value');
   });
 
-  it('per-week rounds UP: $49.99 → $0.97 a week, never $0.96', () => {
-    expect(perWeekFromYearly(yearly)).toBe('$0.97');
+  it('per-week rounds to the nearest cent: $49.99 → $0.96 a week', () => {
+    expect(perWeekFromYearly(yearly)).toBe('$0.96');
   });
 });
 

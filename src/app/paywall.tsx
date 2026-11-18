@@ -49,26 +49,27 @@ function notice(title: string, message: string, buttons: { text: string; onPress
 }
 
 type Cell = 'yes' | 'no' | string;
-type Row = { label: string; free: Cell; pro: Cell };
+type Row = { label: string; free: Cell; pro: Cell; /** One plain line under the label: what it means for you. */ sub?: string };
 
 // DECISIONS #26, #27, #30. Only Pro features that work in this build (App Review 2.1, 3.1.2):
 // a row appears when its feature does. The Lock Screen widget is v1.1 (#27).
-// Owner, Nov 18 ("polish it, less cluttered"): the 6 strongest rows, each short enough for one line.
-// Only features that work in this build (App Review 2.1, 3.1.2).
-const ROWS: Row[] = [
-  // From the approved deck (#26): says up front that tracking is free and unlimited.
-  { label: 'Track every subscription', free: 'yes', pro: 'yes' },
-  { label: 'Reminders', free: '3', pro: 'Unlimited' },
-  // Free can change the time of day; Pro picks the days before (and up to 3 of them).
-  { label: 'Pick your reminder days', free: 'no', pro: 'yes' },
-  // Price watch (DECISIONS #60).
-  { label: 'Price rise alerts', free: 'no', pro: 'yes' },
-  // The 30-day warning before yearly charges (DECISIONS #60).
-  { label: 'Heads-up before yearly charges', free: 'no', pro: 'yes' },
-  ...(WIDGET_READY ? [{ label: `Lock${NB}Screen widget`, free: 'no', pro: 'yes' }] : []),
-  // The first import (onboarding) is free, so "anytime" keeps this row true (DECISIONS #34).
-  ...(showImport() ? [{ label: 'Import from a screenshot', free: 'no', pro: 'yes' }] : []),
-];
+// Only rows where Pro is different, in Ditch's own words (owner, Nov 18: the table sells; "track every
+// subscription" is free on both sides, so it said nothing). Only features that work in this build (App Review 2.1).
+function rowsFor(n: number): Row[] {
+  return [
+    // Personal: "All 6" when they track more than the free 3.
+    { label: 'Reminders', sub: 'A heads-up before each renewal', free: '3', pro: n > 3 ? `All ${n}` : 'Unlimited' },
+    // Price watch (DECISIONS #60).
+    { label: 'Price hike alerts', sub: 'Know the day a price goes up', free: 'no', pro: 'yes' },
+    // The 30-day warning before yearly charges (DECISIONS #60).
+    { label: 'Yearly bills, a month early', sub: 'Time to cancel before it hits', free: 'no', pro: 'yes' },
+    // Free can change the time of day; Pro picks the days before.
+    { label: 'You pick the days', sub: '1, 3 or 7 days before', free: 'no', pro: 'yes' },
+    ...(WIDGET_READY ? [{ label: `Lock${NB}Screen widget`, free: 'no', pro: 'yes' }] : []),
+    // The first import (onboarding) is free, so "anytime" keeps this row true (DECISIONS #34).
+    ...(showImport() ? [{ label: 'Add from a screenshot', sub: 'Read right on your phone', free: 'no', pro: 'yes' }] : []),
+  ];
+}
 
 /** 320pt wide: the same rows in fewer words, so each stays on one line. */
 const SHORT: Record<string, string> = {
@@ -84,9 +85,9 @@ const HERO_H = 190;
 const EDGE_W = 24;
 /** Everything on the canvas except the table rows (hero, table header, plans, button, price line, links). */
 const CANVAS_BASE = 570;
-/** Table row height range: 38pt (SE) to 54pt. */
-const ROW_MIN = 38;
-const ROW_MAX = 54;
+/** Table row height range: 52pt (SE) to 66pt (fewer rows get more air). Each row has a label and a line under it. */
+const ROW_MIN = 52;
+const ROW_MAX = 66;
 
 const CELL_TEXT = { fontFamily: F.semi, fontSize: 14, lineHeight: 20 } as const;
 const LABEL_TEXT = { fontFamily: F.medium, fontSize: 14, letterSpacing: -0.1 } as const;
@@ -143,7 +144,7 @@ function Compare({ rows, width, overlap, tiny, grow = 0 }: { rows: Row[]; width:
         <Txt v="eyebrow" tone="mute" center style={{ width: colF }}>
           Free
         </Txt>
-        <Txt v="eyebrow" color={ink} center style={{ width: colP }}>
+        <Txt v="eyebrow" color={dark ? brand.sunflower : ink} center style={{ width: colP }}>
           Pro
         </Txt>
       </View>
@@ -153,18 +154,20 @@ function Compare({ rows, width, overlap, tiny, grow = 0 }: { rows: Row[]; width:
           <View
             key={r.label}
             accessible
-            accessibilityLabel={`${r.label}: Free, ${spoken(r.free)}. Pro, ${spoken(r.pro)}.`}
-            style={{ flexDirection: 'row', alignItems: 'center', minHeight: (two ? 42 : tiny ? 30 : 38) + grow }}
+            accessibilityLabel={`${r.label}${r.sub ? `, ${r.sub}` : ''}: Free, ${spoken(r.free)}. Pro, ${spoken(r.pro)}.`}
+            style={{ flexDirection: 'row', alignItems: 'center', minHeight: ROW_MIN + grow }}
           >
             {i ? <View style={{ position: 'absolute', top: 0, left: 16, right: 0, height: 1, backgroundColor: p.hair }} /> : null}
-            <Txt
-              v="sub"
-              color={p.cardFg}
-              style={[LABEL_TEXT, tiny && { fontSize: 13 }, { flex: 1, paddingLeft: 16, paddingRight: 8, paddingVertical: two ? 4 : 6, lineHeight: two ? 17 : 20 }]}
-              maxFontSizeMultiplier={1.4}
-            >
-              {two ? balanceLines(tiny ? (SHORT[r.label] ?? r.label) : r.label) : tiny ? (SHORT[r.label] ?? r.label) : r.label}
-            </Txt>
+            <View style={{ flex: 1, paddingLeft: 16, paddingRight: 8, paddingVertical: 6 }}>
+              <Txt v="sub" color={p.cardFg} style={[LABEL_TEXT, { fontFamily: F.semi }, tiny && { fontSize: 13 }, { lineHeight: two ? 17 : 20 }]} maxFontSizeMultiplier={1.4}>
+                {two ? balanceLines(tiny ? (SHORT[r.label] ?? r.label) : r.label) : tiny ? (SHORT[r.label] ?? r.label) : r.label}
+              </Txt>
+              {r.sub ? (
+                <Txt v="fine" tone="fg2" style={{ marginTop: 1 }} maxFontSizeMultiplier={1.3}>
+                  {r.sub}
+                </Txt>
+              ) : null}
+            </View>
             <View style={{ width: colF, alignItems: 'center', justifyContent: 'center' }}>{cell(r.free, false)}</View>
             <View style={{ width: colP, alignItems: 'center', justifyContent: 'center' }}>{cell(r.pro, true)}</View>
           </View>
@@ -251,7 +254,7 @@ export default function Paywall() {
   const what = many ? `all ${n}${NB}renewals.` : `every${NB}renewal.`;
   const head = `Get a reminder before\n${what}`;
   const spokenHead = `Get a reminder before ${many ? `all ${n} renewals` : 'every renewal'}.`;
-  const rows = ROWS;
+  const rows = rowsFor(n);
   const ink = dark ? '#F6F0E3' : brand.ink;
   // One fixed design, scaled to fit (owner, Nov 18: "how it looks on other devices"). The paywall is laid
   // out once on a 440 x 860 canvas (Pro Max proportions) and the whole canvas is shrunk to fit the
@@ -319,17 +322,21 @@ export default function Paywall() {
               selected={planId === 'weekly'}
               onPress={() => select('weekly')}
               height={58}
+              tint={dark ? '#2A2410' : '#FFF4C8'}
               a11y={`Weekly, ${weekly.priceString} a week, no free trial`}
             />
             <PlanCard
               title="Yearly"
               tag={`${yearly.trialDays} days free`}
               badge={badge}
+              badgeBg={brand.bill}
+              badgeFg={brand.ink}
               price={billedLabel(yearly)}
               sub={`${perWeek} a week`}
               selected={planId === 'yearly'}
               onPress={() => select('yearly')}
               height={58}
+              tint={dark ? '#2A2410' : '#FFF4C8'}
               a11y={`Yearly, ${yearly.priceString} a year, ${perWeek} a week, ${yearly.trialDays} days free, ${badge.toLowerCase()}`}
             />
             <PlanCard
@@ -340,28 +347,22 @@ export default function Paywall() {
               selected={planId === 'lifetime'}
               onPress={() => select('lifetime')}
               height={58}
+              tint={dark ? '#2A2410' : '#FFF4C8'}
               a11y={`Lifetime, ${lifetime.priceString} one time. Pay once, no subscription.`}
             />
           </View>
 
           <View style={{ height: 14 }} />
-          <Button label={cta} onPress={buy} height={56} />
+          <Button label={cta} sub={planId === 'yearly' ? `${formatWholeMoney(0, yearly.currency)} today · Cancel anytime` : undefined} onPress={buy} height={60} />
           {/* A fixed slot, so the button never moves when the plan changes. Price and the real start date by the
             button (App Review); no reminder text (owner, Nov 10). */}
           <View style={{ height: 44, alignItems: 'center', justifyContent: 'center', paddingHorizontal: planId === 'yearly' ? 0 : 4 }}>
             <Txt v="fine" tone="fg2" num center accessibilityLiveRegion="polite">
-              {planId === 'yearly' ? (
-                <>
-                  <Txt v="fine" num style={{ fontFamily: F.semi }}>
-                    {`${formatWholeMoney(0, yearly.currency)} today`}
-                  </Txt>
-                  {` · ${yearly.priceString}/yr from ${shortDate(charge)}\nRenews yearly · Cancel${NB}anytime`}
-                </>
-              ) : planId === 'weekly' ? (
-                `${weekly.priceString} today, then every week. Cancel${NB}anytime.`
-              ) : (
-                `${lifetime.priceString} once. Pro for good, nothing${NB}renews.`
-              )}
+              {planId === 'yearly'
+                ? `We’ll remind you before your trial ends. Then ${yearly.priceString}/yr from ${shortDate(charge).replace(' ', NB)}. Renews${NB}yearly.`
+                : planId === 'weekly'
+                  ? `${weekly.priceString} today, then every week. Renews weekly. Cancel${NB}anytime.`
+                  : `${lifetime.priceString} once. Pro for good, nothing${NB}renews.`}
             </Txt>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 4 }}>

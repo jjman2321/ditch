@@ -42,9 +42,9 @@ export function yearlyBadgeVsWeekly(weekly: StorePrice, yearly: StorePrice): str
   return pct === null || pct < 10 ? 'Best value' : `Save ${pct}%`;
 }
 
-/** Yearly price per week, rounded UP so we never understate it: $49.99 → "$0.97". */
+/** Yearly price per week, rounded to the nearest cent (owner, Nov 18): $49.99 ÷ 52 = $0.961 → "$0.96". */
 export function perWeekFromYearly(yearly: StorePrice, locale = 'en-US'): string {
-  return formatMoney(Math.ceil(yearly.amountMinor / 52), yearly.currency, { locale });
+  return formatMoney(Math.round(yearly.amountMinor / 52), yearly.currency, { locale });
 }
 
 /** Yearly price per month, rounded UP to the currency's smallest unit: $29.99 → "$2.50". */

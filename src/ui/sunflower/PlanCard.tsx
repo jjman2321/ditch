@@ -21,7 +21,15 @@ export function PlanCard({
   onPress,
   a11y,
   height = 56,
+  tint,
+  badgeBg,
+  badgeFg,
 }: {
+  /** Fill for the selected card (the plan we want picked). */
+  tint?: string;
+  /** Badge colours (default: ink on cream, sunflower in dark mode). */
+  badgeBg?: string;
+  badgeFg?: string;
   title: string;
   /** The billed price, e.g. "$29.99/yr". */
   price: string;
@@ -42,7 +50,7 @@ export function PlanCard({
   const border = selected ? (p.dark ? brand.sunflower : p.fg) : p.dark ? '#3A3630' : p.controlBorder;
   return (
     <Pressable accessibilityRole="radio" accessibilityState={{ selected }} accessibilityLabel={a11y} onPress={onPress} style={({ pressed }) => ({ opacity: pressed ? 0.9 : 1 })}>
-      <View style={{ minHeight: height, borderRadius: radius.plan, backgroundColor: p.card, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 16 }}>
+      <View style={{ minHeight: height, borderRadius: radius.plan, backgroundColor: selected && tint ? tint : p.card, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 16 }}>
         <Radio on={selected} />
         <View style={{ flex: 1, minWidth: 0 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
@@ -80,10 +88,10 @@ export function PlanCard({
             borderRadius: 10,
             paddingHorizontal: 8,
             justifyContent: 'center',
-            backgroundColor: p.dark ? brand.sunflower : p.fg,
+            backgroundColor: badgeBg ?? (p.dark ? brand.sunflower : p.fg),
           }}
         >
-          <Txt v="fine" color={p.dark ? brand.ink : p.bg} style={{ fontFamily: F.bold, fontSize: 11, lineHeight: 20, letterSpacing: 0.4 }} maxFontSizeMultiplier={1.2}>
+          <Txt v="fine" color={badgeFg ?? (p.dark ? brand.ink : p.bg)} style={{ fontFamily: F.bold, fontSize: 11, lineHeight: 20, letterSpacing: 0.4 }} maxFontSizeMultiplier={1.2}>
             {badge}
           </Txt>
         </View>

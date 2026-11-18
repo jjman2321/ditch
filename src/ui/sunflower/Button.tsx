@@ -9,7 +9,7 @@ import { haptic } from './haptics';
 import { EASE_OUT, PRESS, RELEASE } from './motion';
 
 import { TAP, usePalette } from './tokens';
-import { Txt } from './type';
+import { F, Txt } from './type';
 
 type Kind = 'primary' | 'secondary' | 'text';
 
@@ -27,7 +27,10 @@ export function Button({
   danger,
   height,
   tapHaptic,
+  sub,
 }: {
+  /** A small second line inside the button ("$0 today · Cancel anytime"). */
+  sub?: string;
   /** A light tap on press: for the main "go on" button of a step (onboarding), so moving forward feels physical. */
   tapHaptic?: boolean;
   /** Overrides the kind's height (the paywall's 48pt button on small phones). */
@@ -82,7 +85,7 @@ export function Button({
   return (
     <AnimatedPressable
       accessibilityRole="button"
-      accessibilityLabel={label}
+      accessibilityLabel={sub ? `${label}. ${sub}` : label}
       accessibilityHint={hint}
       accessibilityState={{ disabled: !!disabled }}
       disabled={disabled}
@@ -107,9 +110,20 @@ export function Button({
       ]}
     >
       {left}
-      <Txt v="button" color={fg} center style={kind === 'secondary' ? { fontSize: 16 } : kind === 'text' ? { fontSize: 16 } : null}>
-        {label}
-      </Txt>
+      {sub ? (
+        <View style={{ alignItems: 'center' }}>
+          <Txt v="button" color={fg} center style={{ lineHeight: 22 }}>
+            {label}
+          </Txt>
+          <Txt v="fine" color={fg} center style={{ opacity: 0.78, fontFamily: F.medium }} maxFontSizeMultiplier={1.3}>
+            {sub}
+          </Txt>
+        </View>
+      ) : (
+        <Txt v="button" color={fg} center style={kind === 'secondary' ? { fontSize: 16 } : kind === 'text' ? { fontSize: 16 } : null}>
+          {label}
+        </Txt>
+      )}
       {right}
     </AnimatedPressable>
   );

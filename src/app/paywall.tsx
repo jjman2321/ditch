@@ -18,7 +18,7 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { Alert, Linking, Platform, Pressable, Text, View } from 'react-native';
 
-import { WIDGET_READY, showImport } from '@/config/features';
+import { WIDGET_READY, showBankScan, showImport } from '@/config/features';
 import { DEV_TOOLS } from '@/dev/flags';
 import { addDays, shortDate } from '@/domain/dates';
 import { balanceLines } from '@/domain/copy';
@@ -57,6 +57,8 @@ type Row = { label: string; free: Cell; pro: Cell; /** One plain line under the 
 // subscription" is free on both sides, so it said nothing). Only features that work in this build (App Review 2.1).
 function rowsFor(n: number): Row[] {
   return [
+    // The headline feature once it ships (DECISIONS #64, trial-gated). Test builds only until then.
+    ...(showBankScan() ? [{ label: 'Scan your bank', sub: 'Finds them all in about a minute', free: 'no', pro: 'yes' }] : []),
     // Personal: "All 6" when they track more than the free 3.
     { label: 'Reminders', sub: 'A heads-up before each renewal', free: '3', pro: n > 3 ? `All ${n}` : 'Unlimited' },
     // Price watch (DECISIONS #60).
@@ -318,7 +320,6 @@ export default function Paywall() {
             <PlanCard
               title="Weekly"
               price={billedLabel(weekly)}
-              sub="No free trial"
               selected={planId === 'weekly'}
               onPress={() => select('weekly')}
               height={58}

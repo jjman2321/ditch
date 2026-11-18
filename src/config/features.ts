@@ -5,11 +5,23 @@
 // buttons stay hidden: Apple rejects apps that show features that don't
 // exist yet. The web preview can show them with ?import=1 for screenshots.
 
+import { DEV_TOOLS } from '@/dev/flags';
 import { webParam } from '@/dev/webParams';
 
 // On in test builds (TestFlight has the on-phone text reader since build 5); off in the App Store
 // build until it's been checked on a real iPhone.
 export const IMPORT_READY = process.env.EXPO_PUBLIC_APP_ENV !== 'production';
+
+/**
+ * The bank scan (DECISIONS #64). Not built yet, so it's off in the App Store build (Apple 2.1: no selling
+ * features that don't exist; CLAUDE.md "never claim" detection we don't have). Test builds show it so the
+ * owner can see the paywall with it (owner, Nov 18: "it should be one of the selling points").
+ * The bank's provider is never named in the app.
+ */
+export const BANK_READY = false;
+export function showBankScan(): boolean {
+  return BANK_READY || DEV_TOOLS;
+}
 
 /** The Home and Lock Screen widget (WidgetKit, v1.1, DECISIONS #27). Its paywall row shows once it exists. */
 export const WIDGET_READY = false;

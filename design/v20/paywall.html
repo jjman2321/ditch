@@ -21,13 +21,13 @@ body{background:#E7E2D6;font-family:Inter,sans-serif;letter-spacing:-.2px;-webki
 .icon{width:40px;height:40px;border-radius:11px;background:#FFCC2E;overflow:hidden;position:relative}
 .icon img{position:absolute;width:48px;left:-4px;top:7px}
 .eyebrow{font:600 15px Inter;color:var(--fg2);padding:8px 24px 0}
-.title{font:900 29px/34px Archivo;font-stretch:125%;letter-spacing:-1px;padding:4px 24px 0}
+.title{font:900 32px/38px Archivo;font-stretch:125%;letter-spacing:-1px;padding:4px 24px 0}
 .stats{display:flex;gap:10px;padding:16px 24px 0}
 .stat{flex:1;background:var(--card);border-radius:18px;padding:12px 14px;box-shadow:0 0 0 1px var(--line) inset}
 .si{width:28px;height:28px;border-radius:14px;background:var(--chip);display:flex;align-items:center;justify-content:center;font:800 14px Inter;color:var(--chipFg)}
 .sv{font:900 26px/30px Archivo;font-stretch:115%;margin-top:8px;letter-spacing:-.6px}
 .sl{font:400 13px/17px Inter;color:var(--fg2);margin-top:2px}
-.bens{padding:16px 24px 0;display:flex;flex-direction:column;gap:12px}
+.bens{padding:0 24px;display:flex;flex-direction:column;gap:24px}
 .ben{display:flex;gap:12px}
 .ck{width:24px;height:24px;border-radius:12px;background:var(--tick);display:flex;align-items:center;justify-content:center;flex:none;margin-top:1px}
 .ben b{display:block;font:700 16px/21px Inter}
@@ -50,12 +50,8 @@ body{background:#E7E2D6;font-family:Inter,sans-serif;letter-spacing:-.2px;-webki
 <template id="screen">
  <div class="sb"><span>9:41</span><span>●●● ▮</span></div>
  <div class="bar"><span class="x"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span class="icon"><img src="../v12/duck.png"></span><span class="restore">Restore</span></div>
- <div class="eyebrow">Ditch Pro</div>
- <h1 class="title">Ditch it before<br>it renews.</h1>
- <div class="stats">
-  <div class="stat"><div class="si">$</div><div class="sv">$1,091</div><div class="sl">a year on your 6 subscriptions</div></div>
-  <div class="stat"><div class="si"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/></svg></div><div class="sv">4</div><div class="sl">renew in the next 30 days</div></div>
- </div>
+ <h1 class="title" style="padding-top:22px">Ditch it before<br>it renews.</h1>
+ <div class="grow"></div>
  <div class="bens">
   <div class="ben"><span class="ck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--tickFg)" stroke-width="4"><path d="M5 12l5 5 9-10"/></svg></span><div><b>A heads-up before every charge.</b><span>On all 6, not just 3. Days before, your pick.</span></div></div>
   <div class="ben"><span class="ck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--tickFg)" stroke-width="4"><path d="M5 12l5 5 9-10"/></svg></span><div><b>Catch sneaky price rises.</b><span>We tell you when your plan costs more.</span></div></div>

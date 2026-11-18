@@ -1,0 +1,41 @@
+# Secrets
+.env
+.env*.local
+.env.*
+!.env.example
+*.p8
+*.p12
+*.mobileprovision
+*.key
+credentials.json
+
+# Dependencies and builds
+node_modules/
+.expo/
+dist/
+web-build/
+ios/
+android/
+*.tsbuildinfo
+coverage/
+
+# OS / editor
+.DS_Store
+*.log
+.idea/
+.vscode/
+expo-env.d.ts
+.metro-health-check*
+*.jks
+*.pem
+.kotlin/
+__pycache__/
+*.part[0-9]*
+dist-web/
+
+# Not needed by the app build (EAS)
+web/
+design/
+docs/
+dist-web/
+preview-site/

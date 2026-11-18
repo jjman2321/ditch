@@ -339,13 +339,13 @@ export default function Paywall() {
             />
             <PlanCard
               title="Lifetime"
-              note="Pay once."
+              note="Pay once. No subscription."
               price={lifetime.priceString}
               sub="one time"
               selected={planId === 'lifetime'}
               onPress={() => select('lifetime')}
               height={58}
-              a11y={`Lifetime, ${lifetime.priceString} one time. Pay once.`}
+              a11y={`Lifetime, ${lifetime.priceString} one time. Pay once, no subscription.`}
             />
           </View>
 

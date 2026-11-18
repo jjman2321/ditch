@@ -88,7 +88,7 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 
 ## 1o. Paywall v22: the table, short (Nov 18)
 - [ ] Headline "Get a reminder before all N renewals." with the duck, then a Free vs Pro table with one short name per row: (TestFlight only) Scan your bank · Reminders 3 vs All N · Price hike alerts · Yearly bill warnings · Pick your reminder days · Screenshot import (Free: Once).
-- [ ] Weekly $6.99/wk; Yearly picked (white card, black border) with a black strip on top: "7 DAYS FREE · SAVE 86%", and "$0.96 a week"; Lifetime $99.99 "Pay once."
+- [ ] Weekly $6.99/wk; Yearly picked (white card, black border) with a black strip on top: "7 DAYS FREE · SAVE 86%", and "$0.96 a week"; Lifetime $99.99 "Pay once. No subscription."
 - [ ] Button: "Start my free week" with "$0 today · Cancel anytime" inside. Under it one line: "Then $49.99/yr from (date). Renews yearly."
 - [ ] Tap Weekly / Lifetime: the button and the line under it change; the button never moves.
 - [ ] Same picture on every iPhone; dark mode readable.

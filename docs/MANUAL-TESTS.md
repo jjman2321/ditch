@@ -86,6 +86,16 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
+## 1n2. Onboarding motion v2 (Nov 18)
+1. Fresh onboarding (Settings → Your data → Delete all my data): logos spring in, the reminder drops in like a banner, the duck peeks up. Drag a finger across the logos and let go: they lean and spring back.
+2. Tap "Find my subscriptions": the button stays put while the screen fades to the slides.
+3. Swipe slowly between slides: pictures lag and fade, words cross-fade, dots stretch with your finger. Each picture plays once you let go.
+4. Slide 3: the Planet Fitness row lights up, a ring fills, DITCHED lands with a strong buzz, then "$299.88 a year you won't pay".
+5. Pick services: ticking pops the logo and draws the check; "See my total" wakes up on the first tick.
+6. Steps 1–4: the top bar stays still and fills as you go forward, drains when you go back.
+7. Your total: the number counts up and lands with a buzz while the list builds biggest first. Then nothing moves.
+8. Repeat with Reduce Motion on: everything appears finished, slides page plainly.
+
 ## 1m. New onboarding + paywall (Nov 18, design v16/v17)
 Reset first: Settings → Your data → Delete all my data → Delete.
 - [ ] **First screen:** "Ditch it before it renews.", real logos (Netflix, Spotify, Disney+, ChatGPT, YouTube) scattered above the duck and a Netflix reminder, "Find my subscriptions", "Free forever for tracking. No account."

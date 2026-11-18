@@ -17,7 +17,7 @@ import { useFirstReminders } from '@/onboarding/useFirstReminders';
 import { getNotifStatus, requestNotifPermission, type NotifStatus } from '@/services/notifications';
 import { isPriced as isPricedPick } from '@/state/picks';
 import { byYearlyDesc, onboardingToday, useMoney, useOnboarding, usePickedList } from '@/state/onboarding';
-import { Bell, Button, Camera, Duck, F, Flashlight, ForceLightContext, Lock, NotificationPreview, StepHeader, Txt, brand, useFrame, usePalette } from '@/ui/sunflower';
+import { Bell, Button, Camera, Duck, F, Flashlight, ForceLightContext, Lock, NotificationPreview, STEP_HEADER_H, Txt, brand, useFrame, usePalette } from '@/ui/sunflower';
 
 const NB = ' ';
 
@@ -31,6 +31,9 @@ function LockButton({ children }: { children: React.ReactNode }) {
     <View style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: 'rgba(22,20,15,0.14)', alignItems: 'center', justifyContent: 'center' }}>{children}</View>
   );
 }
+
+// The cards land 600 ms apart (motion doc fix 11: 900 kept you waiting before the duck).
+const GAP = 600;
 
 export default function Reminders() {
   const p = usePalette();
@@ -74,7 +77,7 @@ export default function Reminders() {
   const [arrived, setArrived] = useState(reduce ? count : 0);
   useEffect(() => {
     if (reduce) return;
-    const timers = Array.from({ length: count }, (_, i) => setTimeout(() => setArrived((a) => Math.max(a, i + 1)), 400 + i * 900));
+    const timers = Array.from({ length: count }, (_, i) => setTimeout(() => setArrived((a) => Math.max(a, i + 1)), 400 + i * GAP));
     return () => timers.forEach(clearTimeout);
   }, [reduce, count]);
   const stack = (reduce ? shown : shown.slice(0, arrived)).slice().reverse();
@@ -94,8 +97,9 @@ export default function Reminders() {
 
   return (
     <OnbRoot surface="cream">
-      <FitScroll style={{ paddingTop: f.top, paddingHorizontal: f.edge, paddingBottom: f.bottom }}>
-        <StepHeader step={4} />
+      {/* The step header is drawn once by onboarding/_layout.tsx and stays still; this strip keeps its place, outside the scroll. */}
+      <View style={{ height: f.top + STEP_HEADER_H }} />
+      <FitScroll style={{ paddingHorizontal: f.edge, paddingBottom: f.bottom }}>
         {/* SE: the paywall's smaller title size, so no word sits alone on a line. */}
         <Txt v="title" accessibilityRole="header" style={[{ marginTop: f.tiny ? 10 : 16 }, f.tiny ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 } : f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null]}>
           {f.tiny ? `Get a reminder\nbefore you’re${NB}charged.` : f.small ? `Get a reminder before\nyou’re${NB}charged.` : `Get a reminder before you’re${NB}charged.`}
@@ -152,7 +156,7 @@ export default function Reminders() {
             {/* The wallpaper: Ditch, rising once the reminders are in. SE: no room, so no duck. */}
             {f.small ? null : (
               <View pointerEvents="none" style={{ position: 'absolute', left: 0, right: 0, bottom: -4, alignItems: 'center' }}>
-                <Duck width={128} bottom={0} delay={reduce ? 0 : 400 + count * 900} style={{ position: 'relative' }} />
+                <Duck width={128} bottom={0} delay={reduce ? 0 : 400 + count * GAP} style={{ position: 'relative' }} />
               </View>
             )}
             <View pointerEvents="none" style={{ position: 'absolute', left: 16, bottom: 16 }}>

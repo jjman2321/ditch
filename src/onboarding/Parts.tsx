@@ -7,6 +7,9 @@ import { Pressable, ScrollView, View, type StyleProp, type TextStyle, type ViewS
 
 import { Close, F, IconButton, SurfaceContext, Txt, paletteFor, useIsDark, usePalette, type Surface } from '@/ui/sunflower';
 
+/** Under the Welcome button. The slides keep an invisible copy in the same spot, so both buttons sit at exactly the same height. */
+export const FREE_LINE = 'Free forever for tracking. No\u00A0account.';
+
 /** The screen's background, status bar and surface (sun or cream). */
 export function OnbRoot({ surface, children, bg }: { surface: Surface; children: ReactNode; bg?: string }) {
   const dark = useIsDark();

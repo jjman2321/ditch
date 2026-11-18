@@ -2,11 +2,14 @@
 // (MOTION.md §1): the yearly total of the user's own picks, then the month,
 // one fact, the biggest charges first, and a nudge to ditch what they don't use.
 // One total per currency, never added together, never converted.
+// The reveal (once per session, after the screen has slid in): the total counts up and
+// decelerates onto the real value while the list below builds one row at a time, biggest
+// first; a success haptic as it lands. After that nothing on the screen moves.
 
 import { router } from 'expo-router';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { Pressable, View } from 'react-native';
-import Animated, { Easing, FadeIn, useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
+import Animated, { Easing, FadeIn, useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withSpring, withTiming } from 'react-native-reanimated';
 
 import { approxLine } from '@/domain/copy';
 import { yearlyMinor } from '@/domain/money';
@@ -19,9 +22,11 @@ import {
   ChevronDown,
   F,
   LogoTile,
+  POP,
+  ROLL,
   RollingMeasure,
   RollingNumber,
-  StepHeader,
+  STEP_HEADER_H,
   Txt,
   haptic,
   paletteFor,
@@ -35,13 +40,43 @@ import {
 
 const NB = ' ';
 
-/** Fades content up 6pt, `delay` ms after `go` (instant when not playing). */
+/** Fades content in, `delay` ms after `go` (instant when not playing). Fade only: these lines hold prices (CLAUDE.md rule 8). */
 function useReveal(play: boolean, go: boolean, delay: number, duration = 200) {
   const t = useSharedValue(play ? 0 : 1);
   useEffect(() => {
-    if (play && go) t.set(withDelay(delay, withTiming(1, { duration, easing: Easing.out(Easing.cubic) })));
+    if (!play) t.set(1);
+    else if (go) t.set(withDelay(delay, withTiming(1, { duration, easing: Easing.out(Easing.cubic) })));
   }, [play, go, delay, duration, t]);
-  return useAnimatedStyle(() => ({ opacity: t.get(), transform: [{ translateY: (1 - t.get()) * 6 }] }));
+  return useAnimatedStyle(() => ({ opacity: t.get() }));
+}
+
+// The list builds while the total counts: one row every 110 ms, biggest first, starting just after the count does.
+const ROW = { first: ROLL.start + 120, gap: 110 } as const;
+
+/**
+ * One row of the list, building in: its logo pops in on a spring (the one thing that moves),
+ * then the name and the yearly amount fade in beside it. The amount never slides (rule 8).
+ */
+function BuildRow({ play, go, delay, children, logo }: { play: boolean; go: boolean; delay: number; children: ReactNode; logo: ReactNode }) {
+  const pop = useSharedValue(play ? 0 : 1);
+  const fade = useSharedValue(play ? 0 : 1);
+  useEffect(() => {
+    if (!play) {
+      pop.set(1);
+      fade.set(1);
+    } else if (go) {
+      pop.set(withDelay(delay, withSpring(1, POP)));
+      fade.set(withDelay(delay + 40, withTiming(1, { duration: 200, easing: Easing.out(Easing.cubic) })));
+    }
+  }, [play, go, delay, pop, fade]);
+  const logoStyle = useAnimatedStyle(() => ({ opacity: Math.min(1, pop.get() * 3), transform: [{ scale: 0.5 + 0.5 * pop.get() }] }));
+  const restStyle = useAnimatedStyle(() => ({ opacity: fade.get() }));
+  return (
+    <>
+      <Animated.View style={logoStyle}>{logo}</Animated.View>
+      <Animated.View style={[{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: 12 }, restStyle]}>{children}</Animated.View>
+    </>
+  );
 }
 
 export default function Total() {
@@ -79,8 +114,20 @@ export default function Total() {
     const t = setTimeout(() => haptic.success(), landed);
     return () => clearTimeout(t);
   }, [play, arrived, landed]);
-  const yearStyle = useReveal(play, arrived, landed);
-  const restStyle = useReveal(play, arrived, landed + 120, 220);
+  // "a year." arrives as the count settles; the month line and the rest just after it lands.
+  const yearStyle = useReveal(play, arrived, landed - 220);
+  const restStyle = useReveal(play, arrived, landed - 40, 220);
+  // Rows added later (Show all) just appear: the build plays once.
+  const build = play && !showAll;
+  // "N more" and the nudge come in right after the last row. "N more" can't be tapped until it shows (rule 8).
+  const lastRowAt = ROW.first + Math.min(sorted.length, 4) * ROW.gap;
+  const moreStyle = useReveal(play, arrived, lastRowAt);
+  const [moreLive, setMoreLive] = useState(!play);
+  useEffect(() => {
+    if (!play || !arrived) return;
+    const t = setTimeout(() => setMoreLive(true), lastRowAt + 120);
+    return () => clearTimeout(t);
+  }, [play, arrived, lastRowAt]);
 
   // 104pt (80 on SE, 128 on iPad), shrunk only if a big total won't fit.
   const base = f.tablet ? 128 : f.tiny ? 56 : f.small ? 80 : 104;
@@ -102,8 +149,9 @@ export default function Total() {
 
   return (
     <OnbRoot surface="sun">
-      <FitScroll style={{ paddingTop: f.top, paddingHorizontal: f.edge, paddingBottom: f.tablet ? f.bottom : 0 }}>
-        <StepHeader step={2} />
+      {/* The step header is drawn once by onboarding/_layout.tsx and stays still; this strip keeps its place, outside the scroll. */}
+      <View style={{ height: f.top + STEP_HEADER_H }} />
+      <FitScroll style={{ paddingHorizontal: f.edge, paddingBottom: f.tablet ? f.bottom : 0 }}>
         <Txt v="label" style={{ marginTop: f.tiny ? 4 : f.small ? 8 : 24, fontSize: 17, lineHeight: 24 }}>
           {main ? 'You pay' : 'Add your prices to see your total'}
         </Txt>
@@ -169,21 +217,23 @@ export default function Total() {
                   style={{ flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 52 }}
                 >
                   {i ? <View style={{ position: 'absolute', top: 0, left: 44, right: 0, height: 1, backgroundColor: cream.hair }} /> : null}
-                  <LogoTile id={x.id} size={32} />
-                  <Txt v="label" color={cream.fg} numberOfLines={1} style={{ flex: 1, fontSize: 16 }}>
-                    {x.name}
-                  </Txt>
-                  {amount ? (
-                    <Txt v="moneyM" num color={cream.money}>
-                      {amount}
+                  <BuildRow play={build} go={arrived} delay={ROW.first + i * ROW.gap} logo={<LogoTile id={x.id} size={32} />}>
+                    <Txt v="label" color={cream.fg} numberOfLines={1} style={{ flex: 1, fontSize: 16 }}>
+                      {x.name}
                     </Txt>
-                  ) : (
-                    <TextLink label="Add your price" a11y={`Add your price for ${x.name}`} onPress={() => setPriceFor(x.id)} color={cream.fg} />
-                  )}
+                    {amount ? (
+                      <Txt v="moneyM" num color={cream.money}>
+                        {amount}
+                      </Txt>
+                    ) : (
+                      <TextLink label="Add your price" a11y={`Add your price for ${x.name}`} onPress={() => setPriceFor(x.id)} color={cream.fg} />
+                    )}
+                  </BuildRow>
                 </View>
               );
             })}
             {restMany.length ? (
+              <Animated.View style={moreStyle} pointerEvents={moreLive ? 'auto' : 'none'}>
               <Pressable
                 accessibilityRole="button"
                 accessibilityLabel={`${restMany.length} more. Show all`}
@@ -211,11 +261,14 @@ export default function Total() {
                   <ChevronDown color={cream.fg} size={14} />
                 </View>
               </Pressable>
+              </Animated.View>
             ) : null}
           </View>
-          <Txt v="strong" color={cream.fg} style={{ marginTop: f.small ? 12 : 16 }}>
-            {f.tiny ? 'Not using one? Ditch it.' : `Not using one? Ditch it before it${NB}renews.`}
-          </Txt>
+          <Animated.View style={moreStyle}>
+            <Txt v="strong" color={cream.fg} style={{ marginTop: f.small ? 12 : 16 }}>
+              {f.tiny ? 'Not using one? Ditch it.' : `Not using one? Ditch it before it${NB}renews.`}
+            </Txt>
+          </Animated.View>
           {f.tablet ? (
             <>
               <View style={{ flex: 1, minHeight: 16 }} />

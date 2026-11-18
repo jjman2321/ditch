@@ -9,21 +9,27 @@ import { router } from 'expo-router';
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, {
+  Easing,
   Extrapolation,
+  cancelAnimation,
   interpolate,
   interpolateColor,
+  useAnimatedProps,
+  useAnimatedReaction,
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useReducedMotion,
   useSharedValue,
   withDelay,
+  withSpring,
   withTiming,
   type SharedValue,
 } from 'react-native-reanimated';
+import Svg, { Circle } from 'react-native-svg';
 import { scheduleOnRN } from 'react-native-worklets';
 
-import { OnbRoot } from '@/onboarding/Parts';
-import { Button, DitchedTag, EASE_OUT, F, LogoTile, NotificationPreview, Stage, Txt, brand, haptic, useFrame, usePalette, useScreenArrived } from '@/ui/sunflower';
+import { FREE_LINE, OnbRoot } from '@/onboarding/Parts';
+import { Button, DitchedTag, EASE_OUT, F, LAND, LogoTile, NotificationPreview, POP, Txt, brand, haptic, useFrame, usePalette, useScreenArrived } from '@/ui/sunflower';
 
 const NB = ' ';
 
@@ -57,22 +63,62 @@ const SLIDES: Slide[] = [
   },
 ];
 
-/** Fades 0 → 1 after `delay` ms once `play` is true; at rest from the start with Reduce Motion. */
-function useFadeIn(play: boolean, delay: number, duration = 220) {
-  const reduce = useReducedMotion();
-  const t = useSharedValue(reduce ? 1 : 0);
-  useEffect(() => {
-    if (reduce) t.set(1);
-    else if (play) t.set(withDelay(delay, withTiming(1, { duration, easing: EASE_OUT })));
-  }, [reduce, play, delay, duration, t]);
-  return t;
+// How the slides move (motion pass 2, Nov 18). Everything here follows the scroll offset `x`,
+// frame by frame on the UI thread, so it moves exactly with your finger and stops when you stop:
+//   · the picture lags behind its page (parallax), shrinks a little and fades as it leaves;
+//   · the words move with the page, a touch faster than the picture, and cross-fade;
+//   · the dots stretch with the offset.
+// Each picture's little "play" (markers, notifications, the mini ditch) starts once its slide has
+// settled, and quietly resets once it's fully off screen, so swiping back plays it again.
+// Reduce Motion: plain paging, every picture shown finished.
+
+/** The share of a page the picture lags behind (0 = moves with the page). */
+const ART_LAG = 0.42;
+
+/**
+ * 1 once slide `i` has settled in the middle (and the screen has arrived), 0 once it's fully off
+ * screen; in between it keeps its last value, so a half swipe that comes back doesn't replay.
+ */
+function useSlideCue(i: number, x: SharedValue<number>, width: number, arrived: SharedValue<number>, reduce: boolean) {
+  const cue = useSharedValue(reduce ? 1 : 0);
+  useAnimatedReaction(
+    () => {
+      if (reduce) return 1;
+      if (!arrived.get() || width <= 0) return -1;
+      const d = Math.abs(x.get() - i * width);
+      return d < 1.5 ? 1 : d >= width * 0.98 ? 0 : -1;
+    },
+    (now, prev) => {
+      if (now === -1 || now === prev) return;
+      cue.set(now);
+    },
+    [i, width, reduce],
+  );
+  return cue;
 }
 
-/** One statement line. A subscription gets its yellow marker, faded in (the amount itself never moves). */
-function StatementRow({ d, m, a, sub, play, delay }: { d: string; m: string; a: string; sub: boolean; play: boolean; delay: number }) {
+/** Runs `play` when the cue turns on and `reset` when it turns off (both worklets, on the UI thread). */
+function useOnCue(cue: SharedValue<number>, play: () => void, reset: () => void) {
+  useAnimatedReaction(
+    () => cue.get(),
+    (now, prev) => {
+      if (now === prev) return;
+      if (now === 1) play();
+      else reset();
+    },
+  );
+}
+
+const MARK_GROW = { duration: 300, dampingRatio: 1 } as const;
+const SCAN_MS = 460;
+
+/** One statement line. A subscription gets its yellow marker, swept in left to right behind the text (the amount itself never moves). */
+function StatementRow({ d, m, a, sub, mark }: { d: string; m: string; a: string; sub: boolean; mark?: SharedValue<number> }) {
   const p = usePalette();
-  const t = useFadeIn(play && sub, delay);
-  const mark = useAnimatedStyle(() => ({ opacity: t.get() }));
+  const style = useAnimatedStyle(() => {
+    const k = mark ? mark.get() : 1;
+    return { opacity: Math.min(1, k * 2), transform: [{ scaleX: 0.04 + 0.96 * k }] };
+  });
   return (
     <View
       style={{
@@ -85,7 +131,7 @@ function StatementRow({ d, m, a, sub, play, delay }: { d: string; m: string; a: 
         marginVertical: 1,
       }}
     >
-      {sub ? <Animated.View style={[StyleSheet.absoluteFill, { borderRadius: 9, backgroundColor: p.dark ? '#3A3220' : '#FFF1BC' }, mark]} /> : null}
+      {sub ? <Animated.View style={[StyleSheet.absoluteFill, { borderRadius: 9, backgroundColor: p.dark ? '#3A3220' : '#FFF1BC', transformOrigin: 'left' }, style]} /> : null}
       <Txt v="fine" tone="mute" num numberOfLines={1} style={{ width: 54, fontFamily: F.semi }}>
         {d}
       </Txt>
@@ -108,22 +154,55 @@ function StatementRow({ d, m, a, sub, play, delay }: { d: string; m: string; a: 
   );
 }
 
-/** Slide 1: a statement where Ditch marks the subscriptions, one after another, top to bottom. */
-function Statement({ play }: { play: boolean }) {
+const STATEMENT: [string, string, string, boolean][] = [
+  ['DEC 08', 'PLANET FITNESS', '24.99', true],
+  ['DEC 07', 'SHELL OIL 5741', '48.22', false],
+  ['DEC 05', 'APPLE.COM/BILL', '27.97', true],
+  ['DEC 03', 'SPOTIFY USA', '11.99', true],
+  ['DEC 02', 'TRADER JOE’S #552', '64.10', false],
+  ['DEC 01', 'NETFLIX.COM', '17.99', true],
+];
+
+/** Slide 1: a statement. Once the slide settles, a scan line runs down it and marks each subscription as it passes. */
+function Statement({ cue, reduce }: { cue: SharedValue<number>; reduce: boolean }) {
   const p = usePalette();
-  const rows: [string, string, string, boolean][] = [
-    ['DEC 08', 'PLANET FITNESS', '24.99', true],
-    ['DEC 07', 'SHELL OIL 5741', '48.22', false],
-    ['DEC 05', 'APPLE.COM/BILL', '27.97', true],
-    ['DEC 03', 'SPOTIFY USA', '11.99', true],
-    ['DEC 02', 'TRADER JOE’S #552', '64.10', false],
-    ['DEC 01', 'NETFLIX.COM', '17.99', true],
-  ];
-  let k = 0;
+  const [h, setH] = useState(0);
+  const scan = useSharedValue(0);
+  const m0 = useSharedValue(reduce ? 1 : 0);
+  const m1 = useSharedValue(reduce ? 1 : 0);
+  const m2 = useSharedValue(reduce ? 1 : 0);
+  const m3 = useSharedValue(reduce ? 1 : 0);
+  const marks = [m0, m1, m2, m3];
+  // Where each subscription sits, as a share of the way down: the marker lands as the line passes it.
+  const at = STATEMENT.map((r, i) => (r[3] ? (i + 0.5) / STATEMENT.length : -1)).filter((v) => v >= 0);
+  useOnCue(
+    cue,
+    () => {
+      'worklet';
+      if (reduce) return;
+      scan.set(0);
+      scan.set(withTiming(1, { duration: SCAN_MS, easing: Easing.inOut(Easing.quad) }));
+      [m0, m1, m2, m3].forEach((m, k) => m.set(withDelay(at[k] * SCAN_MS * 0.9, withSpring(1, MARK_GROW))));
+    },
+    () => {
+      'worklet';
+      if (reduce) return;
+      [scan, m0, m1, m2, m3].forEach((v) => {
+        cancelAnimation(v);
+        v.set(0);
+      });
+    },
+  );
+  const line = useAnimatedStyle(() => {
+    const k = scan.get();
+    return { opacity: k <= 0 || k >= 1 ? 0 : Math.sin(Math.PI * k), transform: [{ translateY: 8 + k * Math.max(0, h - 16) }] };
+  });
+  let n = 0;
   return (
     <View
       accessible
       accessibilityLabel="A bank statement with the subscriptions marked"
+      onLayout={(e) => setH(e.nativeEvent.layout.height)}
       style={{
         backgroundColor: p.card,
         borderRadius: 20,
@@ -131,52 +210,118 @@ function Statement({ play }: { play: boolean }) {
         paddingHorizontal: 12,
         borderWidth: p.dark ? 1 : 0,
         borderColor: p.cardBorder,
+        overflow: 'hidden',
       }}
     >
-      {rows.map(([d, m, a, sub]) => (
-        <StatementRow key={m} d={d} m={m} a={a} sub={sub} play={play} delay={sub ? 120 + k++ * 120 : 0} />
+      {STATEMENT.map(([d, m, a, sub]) => (
+        <StatementRow key={m} d={d} m={m} a={a} sub={sub} mark={sub ? marks[n++] : undefined} />
       ))}
+      <Animated.View pointerEvents="none" style={[{ position: 'absolute', left: 0, right: 0, top: 0, height: 2, backgroundColor: brand.sunflower, shadowColor: brand.sunflower, shadowOpacity: 0.9, shadowRadius: 8, shadowOffset: { width: 0, height: 0 } }, line]} />
     </View>
   );
 }
 
-/** Slide 2: the reminders drop in one by one, like they do on the lock screen. Each card moves as a whole. */
-function Notes({ play }: { play: boolean }) {
-  const notes = [
-    { time: 'Sat 9 AM', message: 'Netflix renews Tuesday. $17.99. Still watching?' },
-    { time: 'Mon 9 AM', message: 'Your ChatGPT trial ends Friday. Then $20.00 a month.' },
-    { time: 'Wed 9 AM', message: 'Spotify went up to $12.99. You were paying $11.99.', faded: true },
-  ];
+const NOTES = [
+  { time: 'Sat 9 AM', message: 'Netflix renews Tuesday. $17.99. Still watching?' },
+  { time: 'Mon 9 AM', message: 'Your ChatGPT trial ends Friday. Then $20.00 a month.' },
+  { time: 'Wed 9 AM', message: 'Spotify went up to $12.99. You were paying $11.99.', faded: true },
+];
+
+/** One reminder card. It drops in from just above and lands on a spring, as a whole (the price inside never moves on its own). */
+function Note({ k, children }: { k: SharedValue<number>; children: ReactNode }) {
+  const style = useAnimatedStyle(() => {
+    const v = k.get();
+    return { opacity: Math.min(1, v * 3), transform: [{ translateY: (1 - v) * -22 }, { scale: 0.95 + 0.05 * Math.min(1, v) }] };
+  });
+  return <Animated.View style={style}>{children}</Animated.View>;
+}
+
+/** Slide 2: the first reminder is already there; once the slide settles the next two land one after another, like the lock screen. */
+function Notes({ cue, reduce }: { cue: SharedValue<number>; reduce: boolean }) {
+  const one = useSharedValue(1);
+  const two = useSharedValue(reduce ? 1 : 0);
+  const three = useSharedValue(reduce ? 1 : 0);
+  useOnCue(
+    cue,
+    () => {
+      'worklet';
+      if (reduce) return;
+      two.set(withDelay(60, withSpring(1, LAND)));
+      three.set(withDelay(200, withSpring(1, LAND)));
+    },
+    () => {
+      'worklet';
+      if (reduce) return;
+      [two, three].forEach((v) => {
+        cancelAnimation(v);
+        v.set(0);
+      });
+    },
+  );
+  const ks = [one, two, three];
   return (
     <View style={{ gap: 10 }}>
-      {notes.map((n, i) => (
-        <Stage key={n.time} show={play} delay={100 + i * 150} rise={-12} spring>
+      {NOTES.map((n, i) => (
+        <Note key={n.time} k={ks[i]}>
           <NotificationPreview time={n.time} message={n.message} faded={n.faded} />
-        </Stage>
+        </Note>
       ))}
     </View>
   );
 }
 
-// Slide 3's mini Ditched moment, in ms after the slide shows: the row dims and the DITCHED tag lands
-// (with the same firm haptic as the real one), then the money line fades in. Fade only: no price moves.
-const DITCH = { tag: 280, amount: 620 } as const;
+// Slide 3's mini Ditched moment, in ms after the slide settles. Like the real one (SubRow + ditch/[id]):
+// the row lifts and turns sunflower while a ring fills around the logo (a hold), then the DITCHED tag
+// lands with the same firm haptic, the logo dims, and the money line fades in. Fade only near prices.
+const DITCH = { hold: 520, tag: 560, amount: 760 } as const;
+const RING_R = 24.5;
+const RING_BOX = 56;
+const CIRC = 2 * Math.PI * RING_R;
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 /** Slide 3: a mini Ditched moment on Planet Fitness. */
-function DitchRows({ play }: { play: boolean }) {
+function DitchRows({ cue, reduce }: { cue: SharedValue<number>; reduce: boolean }) {
   const p = usePalette();
-  const reduce = useReducedMotion();
-  const tag = useFadeIn(play, DITCH.tag, 200);
-  const amount = useFadeIn(play, DITCH.amount, 260);
-  useEffect(() => {
-    if (!play || reduce) return;
-    const h = setTimeout(haptic.heavy, DITCH.tag);
-    return () => clearTimeout(h);
-  }, [play, reduce]);
-  // Like the real moment (ditch/[id].tsx): the logo dims as the tag lands.
-  const logoStyle = useAnimatedStyle(() => ({ opacity: 1 - 0.55 * tag.get() }));
-  const nameStyle = useAnimatedStyle(() => ({ opacity: 1 - tag.get() }));
-  const tagStyle = useAnimatedStyle(() => ({ opacity: tag.get() }));
+  const hold = useSharedValue(0); // the ring, 0 → 1
+  const lift = useSharedValue(0); // the row is held: logo up, row sunflower
+  const tag = useSharedValue(reduce ? 1 : 0);
+  const amount = useSharedValue(reduce ? 1 : 0);
+  const buzz = useCallback(() => haptic.heavy(), []);
+  useOnCue(
+    cue,
+    () => {
+      'worklet';
+      if (reduce) return;
+      lift.set(withSpring(1, { duration: 260, dampingRatio: 1 }));
+      hold.set(
+        withTiming(1, { duration: DITCH.hold, easing: Easing.inOut(Easing.quad) }, (done) => {
+          if (!done) return;
+          // Let go: the tag lands, with the real moment's firm haptic.
+          lift.set(withTiming(0, { duration: 180, easing: EASE_OUT }));
+          scheduleOnRN(buzz);
+        }),
+      );
+      tag.set(withDelay(DITCH.tag, withSpring(1, POP)));
+      amount.set(withDelay(DITCH.amount, withTiming(1, { duration: 240, easing: EASE_OUT })));
+    },
+    () => {
+      'worklet';
+      if (reduce) return;
+      [hold, lift, tag, amount].forEach((v) => {
+        cancelAnimation(v);
+        v.set(0);
+      });
+    },
+  );
+  const ring = useAnimatedProps(() => ({ strokeDashoffset: CIRC * (1 - hold.get()) }));
+  const ringBox = useAnimatedStyle(() => ({ opacity: tag.get() > 0.05 ? Math.max(0, 1 - tag.get() * 2) : Math.min(1, hold.get() * 6) }));
+  const rowStyle = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(lift.get(), [0, 1], [p.dark ? 'rgba(255,204,46,0)' : 'rgba(255,204,46,0)', p.dark ? 'rgba(255,204,46,0.18)' : brand.sunflower]),
+  }));
+  // Like the real moment: the logo grows while held, then dims as the tag lands.
+  const logoStyle = useAnimatedStyle(() => ({ opacity: 1 - 0.55 * Math.min(1, tag.get()), transform: [{ scale: 1 + 0.08 * lift.get() }] }));
+  const nameStyle = useAnimatedStyle(() => ({ opacity: 1 - Math.min(1, tag.get()) }));
+  const tagStyle = useAnimatedStyle(() => ({ opacity: Math.min(1, tag.get() * 2.5), transform: [{ scale: 1.35 - 0.35 * tag.get() }] }));
   const amountStyle = useAnimatedStyle(() => ({ opacity: amount.get() }));
   const rows: {
     id: string;
@@ -201,25 +346,47 @@ function DitchRows({ play }: { play: boolean }) {
         style={{
           backgroundColor: p.card,
           borderRadius: 20,
-          paddingHorizontal: 14,
+          paddingHorizontal: 6,
           borderWidth: p.dark ? 1 : 0,
           borderColor: p.cardBorder,
         }}
       >
         {rows.map((r, i) => (
-          <View
+          <Animated.View
             key={r.id}
-            style={{
-              minHeight: 62,
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: 12,
-              borderTopWidth: i ? 1 : 0,
-              borderTopColor: p.hair,
-            }}
+            style={[
+              {
+                minHeight: 62,
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 12,
+                paddingHorizontal: 8,
+                borderRadius: 16,
+              },
+              r.ditched ? rowStyle : null,
+            ]}
           >
+            {i ? <View style={{ position: 'absolute', top: 0, left: 8, right: 8, height: 1, backgroundColor: p.hair }} /> : null}
             <Animated.View style={r.ditched ? logoStyle : null}>
               <LogoTile id={r.id} size={38} mono={r.name.slice(0, 1)} />
+              {r.ditched ? (
+                <Animated.View pointerEvents="none" style={[{ position: 'absolute', left: (38 - RING_BOX) / 2, top: (38 - RING_BOX) / 2 }, ringBox]}>
+                  <Svg width={RING_BOX} height={RING_BOX}>
+                    <AnimatedCircle
+                      cx={RING_BOX / 2}
+                      cy={RING_BOX / 2}
+                      r={RING_R}
+                      stroke={p.dark ? brand.sunflower : brand.ink}
+                      strokeWidth={3}
+                      strokeLinecap="round"
+                      fill="none"
+                      strokeDasharray={`${CIRC} ${CIRC}`}
+                      animatedProps={ring}
+                      transform={`rotate(-90 ${RING_BOX / 2} ${RING_BOX / 2})`}
+                    />
+                  </Svg>
+                </Animated.View>
+              ) : null}
             </Animated.View>
             <View style={{ flex: 1 }}>
               <View>
@@ -248,7 +415,7 @@ function DitchRows({ play }: { play: boolean }) {
                 {r.price}
               </Txt>
             )}
-          </View>
+          </Animated.View>
         ))}
       </View>
       <Animated.View style={amountStyle}>
@@ -260,20 +427,83 @@ function DitchRows({ play }: { play: boolean }) {
   );
 }
 
-/** A slide's words: fully there when its slide is centred, faded out half a swipe away, so they cross-fade as you swipe. */
-function SlideWords({ i, x, width, children }: { i: number; x: SharedValue<number>; width: number; children: ReactNode }) {
-  const reduce = useReducedMotion();
-  const anim = useAnimatedStyle(() => {
-    if (reduce || width <= 0) return { opacity: 1 };
-    return { opacity: interpolate(x.get(), [(i - 0.6) * width, i * width, (i + 0.6) * width], [0, 1, 0], Extrapolation.CLAMP) };
+/** A slide's words ride the page, `ahead` (a share of a page) faster than it, and cross-fade by half a swipe. */
+function Words({ x, i, width, reduce, ahead, children }: { x: SharedValue<number>; i: number; width: number; reduce: boolean; ahead: number; children: ReactNode }) {
+  const style = useAnimatedStyle(() => {
+    if (reduce || width <= 0) return {};
+    const t = Math.max(-1, Math.min(1, (x.get() - i * width) / width));
+    return {
+      opacity: interpolate(Math.abs(t), [0, 0.55], [1, 0], Extrapolation.CLAMP),
+      transform: [{ translateX: -t * width * ahead }],
+    };
   });
-  return <Animated.View style={anim}>{children}</Animated.View>;
+  return <Animated.View style={style}>{children}</Animated.View>;
 }
 
-/** A page dot: it widens and darkens as its slide comes in, following your finger. */
-function Dot({ i, x, width, on, off }: { i: number; x: SharedValue<number>; width: number; on: string; off: string }) {
+/** One slide. Its picture and words follow the scroll offset; its picture plays once the slide settles. */
+function SlidePage({
+  s,
+  i,
+  x,
+  width,
+  arrived,
+  reduce,
+  f,
+}: {
+  s: Slide;
+  i: number;
+  x: SharedValue<number>;
+  width: number;
+  arrived: SharedValue<number>;
+  reduce: boolean;
+  f: ReturnType<typeof useFrame>;
+}) {
+  const p = usePalette();
+  const cue = useSlideCue(i, x, width, arrived, reduce);
+  // How far this slide is from the middle, in pages: 0 centred, -1 one page to the right (coming in), +1 gone left.
+  const artStyle = useAnimatedStyle(() => {
+    if (reduce || width <= 0) return {};
+    const t = Math.max(-1, Math.min(1, (x.get() - i * width) / width));
+    const a = Math.abs(t);
+    return {
+      opacity: interpolate(a, [0, 0.85], [1, 0], Extrapolation.CLAMP),
+      transform: [{ translateX: t * width * ART_LAG }, { scale: 1 - 0.1 * a }],
+    };
+  });
+  return (
+    <View style={{ width, paddingHorizontal: f.edge, flex: 1 }}>
+      {/* Picture and words stay together, centred in the page: spare height splits evenly above and below. */}
+      <View style={{ flex: 1, justifyContent: 'center', paddingBottom: f.small ? 8 : 16 }}>
+        <Animated.View style={[{ marginBottom: f.small ? 20 : 36 }, artStyle]}>
+          {s.art === 'statement' ? <Statement cue={cue} reduce={reduce} /> : s.art === 'notes' ? <Notes cue={cue} reduce={reduce} /> : <DitchRows cue={cue} reduce={reduce} />}
+        </Animated.View>
+        {s.big ? (
+          <Words x={x} i={i} width={width} reduce={reduce} ahead={0}>
+            <Txt v="displayL" num color={p.fg} accessibilityRole="header" style={f.small ? { fontSize: 52, lineHeight: 52 } : null}>
+              {s.big}
+            </Txt>
+          </Words>
+        ) : null}
+        <Words x={x} i={i} width={width} reduce={reduce} ahead={0.06}>
+          <Txt v="title" accessibilityRole={s.big ? undefined : 'header'} style={[{ marginTop: s.big ? 2 : 0 }, f.small && { fontSize: 26, lineHeight: 31 }]}>
+            {s.title}
+          </Txt>
+        </Words>
+        <Words x={x} i={i} width={width} reduce={reduce} ahead={0.14}>
+          <Txt v="lead" tone="fg2" style={{ marginTop: 8 }}>
+            {s.body}
+          </Txt>
+        </Words>
+      </View>
+    </View>
+  );
+}
+
+/** A page dot: it stretches and darkens as its slide comes in, following your finger. Reduce Motion: it just switches. */
+function Dot({ i, x, width, on, off, reduce }: { i: number; x: SharedValue<number>; width: number; on: string; off: string; reduce: boolean }) {
   const anim = useAnimatedStyle(() => {
-    const at = width > 0 ? x.get() / width : 0;
+    const raw = width > 0 ? x.get() / width : 0;
+    const at = reduce ? Math.round(raw) : raw;
     const k = interpolate(at, [i - 1, i, i + 1], [0, 1, 0], Extrapolation.CLAMP);
     return { width: 6 + 14 * k, backgroundColor: interpolateColor(k, [0, 1], [off, on]) };
   });
@@ -283,23 +513,26 @@ function Dot({ i, x, width, on, off }: { i: number; x: SharedValue<number>; widt
 export default function How() {
   const p = usePalette();
   const f = useFrame({ maxContent: 480, colH: 820 });
+  const reduce = useReducedMotion();
   const scroller = useRef<{
     scrollTo: (o: { x: number; animated: boolean }) => void;
   } | null>(null);
   const [page, setPage] = useState(0);
-  // The furthest slide reached: its picture plays once, the first time it shows (after the screen has slid in).
-  const [seen, setSeen] = useState(0);
-  const arrived = useScreenArrived();
+  // The first slide's picture plays once the screen has faded in.
+  const arrivedJS = useScreenArrived(320);
+  const arrived = useSharedValue(0);
+  useEffect(() => {
+    arrived.set(arrivedJS ? 1 : 0);
+  }, [arrivedJS, arrived]);
   const last = page === SLIDES.length - 1;
   const next = () => router.push('/onboarding/where');
 
-  // The scroll position lives on the UI thread; the dots and words follow it frame by frame.
+  // The scroll position lives on the UI thread; everything on the slides follows it frame by frame.
   const x = useSharedValue(0);
   const shown = useSharedValue(0);
   const onPage = useCallback((i: number) => {
     haptic.select();
     setPage(i);
-    setSeen((s) => Math.max(s, i));
   }, []);
   const width = f.width;
   const count = SLIDES.length;
@@ -358,54 +591,29 @@ export default function How() {
         </View>
 
         <Animated.ScrollView ref={scroller as never} horizontal pagingEnabled showsHorizontalScrollIndicator={false} onScroll={onScroll} scrollEventThrottle={16} style={{ flex: 1 }}>
-          {SLIDES.map((s, i) => {
-            const play = arrived && seen >= i;
-            return (
-              <View key={s.key} style={{ width: f.width, paddingHorizontal: f.edge, flex: 1 }}>
-                {/* Picture and words stay together, centred in the page: spare height splits evenly above and below. */}
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    paddingBottom: f.small ? 8 : 16,
-                  }}
-                >
-                  <View style={{ marginBottom: f.small ? 20 : 36 }}>{s.art === 'statement' ? <Statement play={play} /> : s.art === 'notes' ? <Notes play={play} /> : <DitchRows play={play} />}</View>
-                  <SlideWords i={i} x={x} width={width}>
-                    {s.big ? (
-                      <Txt v="displayL" num color={p.fg} accessibilityRole="header" style={f.small ? { fontSize: 52, lineHeight: 52 } : null}>
-                        {s.big}
-                      </Txt>
-                    ) : null}
-                    <Txt v="title" accessibilityRole={s.big ? undefined : 'header'} style={[{ marginTop: s.big ? 2 : 0 }, f.small && { fontSize: 26, lineHeight: 31 }]}>
-                      {s.title}
-                    </Txt>
-                    <Txt v="lead" tone="fg2" style={{ marginTop: 8 }}>
-                      {s.body}
-                    </Txt>
-                  </SlideWords>
-                </View>
-              </View>
-            );
-          })}
+          {SLIDES.map((s, i) => (
+            <SlidePage key={s.key} s={s} i={i} x={x} width={width} arrived={arrived} reduce={reduce} f={f} />
+          ))}
         </Animated.ScrollView>
 
+        {/* The footer matches Welcome's exactly (button, then a line-high slot), so the button
+            doesn't move when you come here. The dots sit in the slot where Welcome has its small print. */}
         <View style={{ paddingHorizontal: f.edge, paddingBottom: f.bottom }}>
-          <View
-            accessible
-            accessibilityLabel={`Slide ${page + 1} of ${SLIDES.length}`}
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              gap: 6,
-              marginBottom: f.small ? 14 : 20,
-            }}
-          >
-            {SLIDES.map((s, i) => (
-              <Dot key={s.key} i={i} x={x} width={width} on={dotOn} off={dotOff} />
-            ))}
+          <Button label={last ? 'Find my subscriptions' : 'Next'} tapHaptic onPress={go} />
+          <View style={{ marginTop: 12, justifyContent: 'center' }}>
+            <Txt v="sub" center accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={{ opacity: 0 }}>
+              {FREE_LINE}
+            </Txt>
+            <View
+              accessible
+              accessibilityLabel={`Slide ${page + 1} of ${SLIDES.length}`}
+              style={[StyleSheet.absoluteFill, { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 6 }]}
+            >
+              {SLIDES.map((s, i) => (
+                <Dot key={s.key} i={i} x={x} width={width} on={dotOn} off={dotOff} reduce={reduce} />
+              ))}
+            </View>
           </View>
-          <Button label={last ? 'Find my subscriptions' : 'Next'} onPress={go} />
         </View>
       </View>
     </OnbRoot>

@@ -7,13 +7,16 @@
 import { Image } from 'expo-image';
 import { useEffect } from 'react';
 import { type StyleProp, type ViewStyle } from 'react-native';
-import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
+import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withSpring, withTiming } from 'react-native-reanimated';
 
 import { DUCK_DARK, DUCK_H, DUCK_INK, DUCK_LIGHT, DUCK_PAD, DUCK_W } from './duckAsset';
 import { useIsDark } from './tokens';
 
 const RISE = 12;
 const EASE = { duration: 420, easing: Easing.out(Easing.cubic) };
+// `spring`: he peeks up on a critically damped spring (no overshoot, so still never clipped) and fades in fast.
+const PEEK = { duration: 380, dampingRatio: 1 };
+const PEEK_FADE = { duration: 180, easing: Easing.out(Easing.cubic) };
 
 /**
  * `width` is how wide the duck itself looks. The image box is a little
@@ -31,7 +34,10 @@ export function Duck({
   bottom,
   style,
   play = true,
+  spring,
 }: {
+  /** Peek up on a spring (Welcome) instead of the slower eased rise. */
+  spring?: boolean;
   width: number;
   right?: number;
   left?: number;
@@ -53,9 +59,9 @@ export function Duck({
 
   useEffect(() => {
     if (reduce || !play) return;
-    rise.set(withDelay(delay, withTiming(0, EASE)));
-    fade.set(withDelay(delay, withTiming(1, EASE)));
-  }, [reduce, play, delay, rise, fade]);
+    rise.set(withDelay(delay, spring ? withSpring(0, PEEK) : withTiming(0, EASE)));
+    fade.set(withDelay(delay, withTiming(1, spring ? PEEK_FADE : EASE)));
+  }, [reduce, play, delay, spring, rise, fade]);
 
   const anim = useAnimatedStyle(() => ({
     opacity: fade.get(),

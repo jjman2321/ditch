@@ -27,8 +27,8 @@ const STICKERS = [
 ] as const;
 
 // The entrance (motion.tsx `stage`), in ms after the screen is up. All of it lands by ~900 ms:
-// headline lines 0/70/140 · stickers 200 + 70 each · reminder 380 · duck 520 · button 620.
-const T = { line: 70, sticker: 200, stickerGap: 70, note: 380, duck: 520, button: 620 } as const;
+// headline lines 0/70/140 · stickers 200 + 70 each · reminder 380 · duck 480 · button 620.
+const T = { line: 70, sticker: 200, stickerGap: 70, note: 380, duck: 480, button: 620 } as const;
 
 /**
  * One sticker: pops in (fade, and grows from 70% with `settle`, no overshoot),
@@ -129,7 +129,8 @@ export default function Welcome() {
   const [art, setArt] = useState({ w: 0, h: 0 });
   const head = { fontSize: fs, lineHeight: Math.round((fs * 64) / 70 / 4) * 4, letterSpacing: -0.04 * fs };
   // The entrance starts once the screen is up (at once with Reduce Motion: everything shown at rest).
-  const arrived = useScreenArrived();
+  // It's the first screen, often with no push before it, so it waits at most 300 ms for one.
+  const arrived = useScreenArrived(300);
 
   return (
     <OnbRoot surface="sun">

@@ -95,7 +95,19 @@ Reset first: Settings → Your data → Delete all my data → Delete.
 - [ ] **A bank statement:** pick a PDF or CSV from Files. Same check list, then your total.
 - [ ] **Pick them myself:** the usual list → your total.
 - [ ] The total screen no longer shows the "2.5×, one study" line.
-- [ ] **Paywall:** no logos at the top. Title and duck, then the Free vs Pro table and "How the 7-day free trial works", which scroll. Weekly / Yearly / Lifetime, the button, the price line and Restore/Terms/Privacy stay pinned at the bottom on every phone.
+- [ ] **Paywall:** no logos at the top. A 2-line title and the duck, then a 6-row Free vs Pro table (no trial timeline). On bigger phones the rows open up a little; on the SE the table scrolls. Weekly / Yearly / Lifetime, the button, the price line and Restore/Terms/Privacy stay pinned at the bottom on every phone.
+
+## 1n. Onboarding motion (Nov 18, docs/research/motion-flow-2026-11-18.md)
+Reset first: Settings → Your data → Delete all my data → Delete. Do it once with Reduce Motion off, then once with it on (Settings → Accessibility → Motion → Reduce Motion).
+- [ ] **First screen:** the headline comes in one line at a time, the logos pop in one by one, the Netflix reminder slides up a little and stops, the duck rises behind it, the button fades in last. All done in under a second.
+- [ ] Wait 10 seconds: the logos drift a few points up and down, slowly, each on its own beat. The reminder (with the price) never moves once it has landed.
+- [ ] Tap the button the instant the screen opens: nothing happens until it's visible.
+- [ ] **Slides:** slide 1's statement marks the 4 subscriptions one after another. Swipe: you feel a light tick as the next slide takes over, the words cross-fade and the long dot slides across with your finger. Slide 2: the three reminders drop in one by one. Slide 3: Planet Fitness greys out, DITCHED lands with a firm buzz, then "$299.88 a year you won't pay" fades in. Swipe back: they stay finished (each plays once).
+- [ ] **Where should we look?:** the cards come in one after another. Drawn icons (bank, phone with a list, page with lines, checklist), no emoji. Same icons on Home → Find your subscriptions.
+- [ ] **Buttons and cards:** press and hold any big button or route card: it shrinks slightly and springs back when you let go.
+- [ ] **Step bar:** on each step (pick, total, dates, reminders) the new segment fills from the left just after the screen arrives.
+- [ ] **Your total:** the number starts rolling only once the screen has stopped sliding, and you feel a success buzz the moment the last digit lands.
+- [ ] **Reduce Motion on:** every screen appears finished: no rising, no popping, no floating, no rolling. The buttons work right away. DITCHED still shows on slide 3 (no buzz).
 
 ## 1k. Paywall plans: Yearly, Lifetime, Weekly (Nov 18, DECISIONS #66)
 Open the paywall (finish onboarding, or Settings → Ditch Pro → Try Pro free).

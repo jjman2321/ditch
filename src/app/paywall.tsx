@@ -29,7 +29,7 @@ import { OnbRoot } from '@/onboarding/Parts';
 import { PURCHASES_LIVE, billedLabel, planById, purchase, restorePurchases, type PlanId } from '@/services/purchases';
 import { onboardingToday, useOnboarding, usePickedList } from '@/state/onboarding';
 import { useApp } from '@/state/app';
-import { Bell, BottomFade, Button, Card, CardIcon, Check, Close, Duck, F, IconButton, PlanCard, ProLockup, Txt, brand, haptic, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
+import { BottomFade, Button, Card, Check, Close, Duck, F, IconButton, PlanCard, ProLockup, Txt, brand, haptic, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
 
 const NB = ' ';
 
@@ -53,31 +53,36 @@ type Row = { label: string; free: Cell; pro: Cell };
 
 // DECISIONS #26, #27, #30. Only Pro features that work in this build (App Review 2.1, 3.1.2):
 // a row appears when its feature does. The Lock Screen widget is v1.1 (#27).
+// Owner, Nov 18 ("polish it, less cluttered"): the 6 strongest rows, each short enough for one line.
+// Only features that work in this build (App Review 2.1, 3.1.2).
 const ROWS: Row[] = [
   // From the approved deck (#26): says up front that tracking is free and unlimited.
   { label: 'Track every subscription', free: 'yes', pro: 'yes' },
-  { label: 'Subscriptions with reminders', free: '3', pro: 'Unlimited' },
+  { label: 'Reminders', free: '3', pro: 'Unlimited' },
   // Free can change the time of day; Pro picks the days before (and up to 3 of them).
-  { label: 'Pick reminder days', free: 'no', pro: 'yes' },
-  { label: 'Nudge if you miss one', free: 'no', pro: 'yes' },
-  // Owner, Nov 16: price watch works in this build (DECISIONS #60), so it gets a row.
-  { label: 'Price watch', free: 'no', pro: 'yes' },
-  // Built Nov 16 (DECISIONS #60): Pro only.
-  { label: 'Heads-up a month before yearly charges', free: 'no', pro: 'yes' },
-  { label: 'Cheaper plan check', free: 'no', pro: 'yes' },
+  { label: 'Pick your reminder days', free: 'no', pro: 'yes' },
+  // Price watch (DECISIONS #60).
+  { label: 'Price rise alerts', free: 'no', pro: 'yes' },
+  // The 30-day warning before yearly charges (DECISIONS #60).
+  { label: 'Heads-up before yearly charges', free: 'no', pro: 'yes' },
   ...(WIDGET_READY ? [{ label: `Lock${NB}Screen widget`, free: 'no', pro: 'yes' }] : []),
   // The first import (onboarding) is free, so "anytime" keeps this row true (DECISIONS #34).
-  ...(showImport() ? [{ label: 'Import anytime', free: 'no', pro: 'yes' }] : []),
+  ...(showImport() ? [{ label: 'Import from a screenshot', free: 'no', pro: 'yes' }] : []),
 ];
 
 /** 320pt wide: the same rows in fewer words, so each stays on one line. */
-const SHORT: Record<string, string> = { 'Track every subscription': 'Track every sub', 'Subscriptions with reminders': 'Reminders on', 'Pick reminder days': 'Pick the days' };
+const SHORT: Record<string, string> = {
+  'Track every subscription': 'Track every sub',
+  'Pick your reminder days': 'Pick the days',
+  'Heads-up before yearly charges': 'Yearly heads-up',
+  'Import from a screenshot': 'Screenshot import',
+};
 
 const CELL_TEXT = { fontFamily: F.semi, fontSize: 14, lineHeight: 20 } as const;
 const LABEL_TEXT = { fontFamily: F.medium, fontSize: 14, letterSpacing: -0.1 } as const;
 
 /** Free vs Pro. Fixed columns: Free 56pt; Pro fits "Unlimited" with 12pt either side. */
-function Compare({ rows, width, overlap, tiny }: { rows: Row[]; width: number; overlap: number; tiny?: boolean }) {
+function Compare({ rows, width, overlap, tiny, grow = 0 }: { rows: Row[]; width: number; overlap: number; tiny?: boolean; grow?: number }) {
   const p = usePalette();
   const dark = p.dark;
   const ink = dark ? '#F6F0E3' : brand.ink;
@@ -139,7 +144,7 @@ function Compare({ rows, width, overlap, tiny }: { rows: Row[]; width: number; o
             key={r.label}
             accessible
             accessibilityLabel={`${r.label}: Free, ${spoken(r.free)}. Pro, ${spoken(r.pro)}.`}
-            style={{ flexDirection: 'row', alignItems: 'center', minHeight: two ? 42 : tiny ? 28 : 32 }}
+            style={{ flexDirection: 'row', alignItems: 'center', minHeight: (two ? 42 : tiny ? 30 : 38) + grow }}
           >
             {i ? <View style={{ position: 'absolute', top: 0, left: 16, right: 0, height: 1, backgroundColor: p.hair }} /> : null}
             <Txt
@@ -155,48 +160,8 @@ function Compare({ rows, width, overlap, tiny }: { rows: Row[]; width: number; o
           </View>
         );
       })}
-      <View style={{ height: 4 }} />
+      <View style={{ height: 6 }} />
     </Card>
-  );
-}
-
-/** "How the free week works": the real dates, like Quizlet, Mobills and Smart Receipts. */
-function TrialSteps({ n, charge, price, days }: { n: number; charge: string; price: string; days: number }) {
-  const p = usePalette();
-  const ink = p.dark ? brand.sunflower : brand.ink;
-  const steps = [
-    {
-      icon: <Check color={ink} size={14} />,
-      title: 'Today',
-      line: n >= 2 ? `Pro is on: reminders on all ${n}, trial ends and price rises.` : 'Pro is on: reminders on everything, trial ends and price rises.',
-    },
-    { icon: <Bell color={ink} size={14} />, title: shortDate(addDays(charge, -3)), line: 'We remind you your trial is ending.' },
-    { icon: <CardIcon color={ink} size={14} />, title: shortDate(charge), line: `${price} for the year. Cancel before and pay${NB}nothing.` },
-  ];
-  return (
-    <View style={{ marginTop: 22 }}>
-      <Txt v="eyebrow" tone="mute" style={{ marginLeft: 4, marginBottom: 10 }}>
-        {`How the ${days}-day free trial works`}
-      </Txt>
-      <View style={{ backgroundColor: p.card, borderRadius: 20, paddingHorizontal: 16, paddingVertical: 6, borderWidth: p.dark ? 1 : 0, borderColor: p.cardBorder }}>
-        {steps.map((x, i) => (
-          <View key={x.title} accessible accessibilityLabel={`${x.title}: ${x.line}`} style={{ flexDirection: 'row', gap: 12, paddingVertical: 10 }}>
-            <View style={{ alignItems: 'center' }}>
-              <View style={{ width: 28, height: 28, borderRadius: 14, backgroundColor: p.dark ? '#332B12' : '#FFF1BC', alignItems: 'center', justifyContent: 'center' }}>{x.icon}</View>
-              {i < steps.length - 1 ? <View style={{ width: 2, flex: 1, minHeight: 10, marginTop: 4, marginBottom: -14, backgroundColor: p.hair }} /> : null}
-            </View>
-            <View style={{ flex: 1, paddingTop: 3 }}>
-              <Txt v="bodyStrong" color={p.cardFg}>
-                {x.title}
-              </Txt>
-              <Txt v="sub" tone="fg2" style={{ marginTop: 2 }}>
-                {x.line}
-              </Txt>
-            </View>
-          </View>
-        ))}
-      </View>
-    </View>
   );
 }
 
@@ -276,24 +241,41 @@ export default function Paywall() {
 
   // Phones: forced breaks so the last line is short and the duck sits beside it (v10). iPad wraps by itself.
   const what = many ? `all ${n}${NB}renewals.` : `every${NB}renewal.`;
-  const head = f.tiny
-    ? `Get a reminder before ${what}`
-    : f.tablet
-      ? `Get a reminder before ${what}`
-      : f.small
-        ? `Get a reminder before\n${what}`
-        : many
-          ? `Get a reminder\nbefore all\n${n}${NB}renewals.`
-          : `Get a reminder\nbefore every\nrenewal.`;
+  // Two lines on every phone, so the table and plans get the room. iPad wraps by itself.
+  const head = f.tablet || f.tiny ? `Get a reminder before ${what}` : `Get a reminder before\n${what}`;
+  // Sized so "Get a reminder before" stays on one line: 30pt at 392pt wide (Pro Max), smaller on narrower phones.
+  const headSize = f.tablet ? 30 : Math.min(30, Math.floor((30 * f.content) / 392));
   const spokenHead = `Get a reminder before ${many ? `all ${n} renewals` : 'every renewal'}.`;
   const rows = ROWS;
+  // Taller phones: the table rows open up a little (up to 10pt each) instead of leaving a gap. Measured
+  // from the scroll area vs its natural content; starts again when the window changes, so it never flickers.
+  const sizeKey = `${f.width}x${f.height}x${f.fontScale}`;
+  // `natural` is the content's height with no extra space added, so the result never feeds back on itself.
+  const [fit, setFit] = useState({ key: sizeKey, view: 0, natural: 0 });
+  const cur = fit.key === sizeKey ? fit : { key: sizeKey, view: 0, natural: 0 };
+  const leftover = cur.view && cur.natural ? Math.max(0, cur.view - cur.natural) : 0;
+  const grow = Math.min(14, Math.floor(leftover / rows.length));
+  const lift = Math.min(160, leftover - grow * rows.length);
+  // Functional updates: the two measurements can land in the same frame, so neither may overwrite the other.
+  const base = (prev: typeof fit) => (prev.key === sizeKey ? prev : { key: sizeKey, view: 0, natural: 0 });
+  const onView = (view: number) => setFit((prev) => (base(prev).view === view ? prev : { ...base(prev), view }));
+  const onContent = (h: number) => {
+    const natural = Math.round(h - grow * rows.length - lift);
+    setFit((prev) => (Math.abs(base(prev).natural - natural) <= 1 ? prev : { ...base(prev), natural }));
+  };
   const overlap = f.tablet ? 48 : 40;
-  const duckW = f.small ? 68 : f.tablet ? 104 : 96;
+  const duckW = f.small ? 60 : f.tablet ? 96 : 76;
   const ink = dark ? '#F6F0E3' : brand.ink;
   return (
     <OnbRoot surface="cream">
       <View style={{ flex: 1 }}>
-        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingHorizontal: f.edge, paddingBottom: 28 }} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{ paddingHorizontal: f.edge, paddingBottom: 20 }}
+          showsVerticalScrollIndicator={false}
+          onLayout={(e) => onView(e.nativeEvent.layout.height)}
+          onContentSizeChange={(_, h) => onContent(h)}
+        >
           <View
             style={{
               marginHorizontal: -f.edge,
@@ -309,14 +291,15 @@ export default function Paywall() {
                 <Close color={ink} />
               </IconButton>
             </View>
-            <View style={{ height: f.small ? 8 : 16 }} />
+            {/* What's left after the rows open up sits here, above the headline (never a gap under the table). */}
+            <View style={{ height: (f.small ? 8 : 16) + lift }} />
             {/* Dark mode: night like the other yellow screens (Almost set, Ditched), with a sunflower headline. */}
             <Txt
               v="title"
               color={dark ? brand.sunflower : ink}
               accessibilityRole="header"
               accessibilityLabel={spokenHead}
-              style={f.tiny ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 } : f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null}
+              style={{ fontSize: headSize, lineHeight: Math.round(headSize * 1.2), letterSpacing: -headSize / 30 }}
             >
               {head}
             </Txt>
@@ -326,12 +309,7 @@ export default function Paywall() {
             {f.tiny ? null : <Duck width={duckW} right={f.edge + (f.small ? 20 : f.tablet ? 48 : 36)} bottom={overlap - 4} />}
           </View>
 
-          <Compare rows={rows} width={f.content} overlap={overlap} tiny={f.tiny} />
-
-          <TrialSteps n={n} charge={charge} price={yearly.priceString} days={yearly.trialDays} />
-          <Txt v="sub" tone="fg2" center style={{ marginTop: 18 }}>
-            {`Your list stays on your phone. Cancel anytime in iPhone${NB}Settings.`}
-          </Txt>
+          <Compare rows={rows} width={f.content} overlap={overlap} tiny={f.tiny} grow={grow} />
         </ScrollView>
         <BottomFade height={36} />
       </View>

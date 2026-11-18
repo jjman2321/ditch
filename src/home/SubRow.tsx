@@ -11,6 +11,7 @@ import { GestureDetector, useExclusiveGestures, useLongPressGesture, useTapGestu
 import Animated, {
   Easing,
   interpolateColor,
+  ReduceMotion,
   useAnimatedProps,
   useAnimatedStyle,
   useReducedMotion,
@@ -136,7 +137,9 @@ export function SubRow({
     onHoldStart(sub.id);
     if (!reduce) lift.set(withSpring(1, { damping: 20, stiffness: 220 }));
     progress.set(
-      withTiming(1, { duration: HOLD_MS, easing: Easing.linear }, (finished) => {
+      // The hold is a timer, not decoration: it must take the full HOLD_MS even with Reduce Motion on.
+      // (Reanimated would otherwise jump to the end and ditch on a short press; the ring steps instead.)
+      withTiming(1, { duration: HOLD_MS, easing: Easing.linear, reduceMotion: ReduceMotion.Never }, (finished) => {
         if (finished) scheduleOnRN(complete);
       }),
     );

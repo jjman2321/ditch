@@ -95,6 +95,12 @@ Open the paywall (finish onboarding, or Settings → Ditch Pro → Try Pro free)
 - [ ] Everything fits without scrolling. Restore, Terms and Privacy are at the bottom. The × still closes it.
 - [ ] VoiceOver on a card reads the plan, price and trial.
 
+## 1l. Hold to ditch with Reduce Motion on (bug fix, Nov 18)
+iPhone Settings → Accessibility → Motion → Reduce Motion **on**.
+- [ ] On Home, press a row briefly and let go. Nothing is ditched.
+- [ ] Hold the row. The ring fills in 4 steps over the same time as usual, then it's ditched.
+- [ ] Turn Reduce Motion off again afterwards.
+
 ## 1i. Card and notes, overlap check, year ahead, price watch (Nov 16)
 **Card, email and notes (free)**
 - [ ] Edit Netflix: near the bottom, "For when you cancel" has Paid with, Account email and Notes. Type "Visa ending 4821" and save.

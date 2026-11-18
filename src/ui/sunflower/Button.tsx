@@ -1,7 +1,7 @@
 // Buttons. Primary: ink (sunflower in dark), 56pt. Secondary: outline, 52pt.
 // Text: 44pt. Every one has a VoiceOver label (its text) and a 44pt+ target.
 
-import { useRef, type ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import { Pressable, View, type StyleProp, type ViewStyle } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 
@@ -52,9 +52,15 @@ export function Button({
   const pressIn = () => down.set(withTiming(1, { duration: PRESS.in, easing: EASE_OUT }));
   const pressOut = () => down.set(withSpring(0, RELEASE));
   const text = kind === 'text';
-  const pressStyle = useAnimatedStyle(() =>
-    text ? { opacity: (disabled ? 0.4 : 1) * (1 - 0.4 * down.get()) } : { transform: [{ scale: 1 - (1 - PRESS.scale) * down.get() }] },
-  );
+  // Turning on or off is a quick fade, not a jump (e.g. "See my total" waking up after the first tick).
+  const off = useSharedValue(disabled ? 1 : 0);
+  useEffect(() => {
+    off.set(withTiming(disabled ? 1 : 0, { duration: 160, easing: EASE_OUT }));
+  }, [disabled, off]);
+  const pressStyle = useAnimatedStyle(() => {
+    const o = 1 - 0.6 * off.get();
+    return text ? { opacity: o * (1 - 0.4 * down.get()) } : { opacity: o, transform: [{ scale: 1 - (1 - PRESS.scale) * down.get() }] };
+  });
   const press = () => {
     if (busy.current) return;
     busy.current = true;
@@ -95,7 +101,6 @@ export function Button({
           flexDirection: 'row',
           gap: 8,
           paddingHorizontal: 20,
-          opacity: disabled ? 0.4 : 1,
         },
         style,
         pressStyle,

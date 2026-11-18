@@ -3,10 +3,16 @@
 
 import { useEffect, useRef } from 'react';
 import { Switch, View } from 'react-native';
-import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withSequence, withSpring, withTiming } from 'react-native-reanimated';
+import Animated, { useAnimatedProps, useAnimatedStyle, useReducedMotion, useSharedValue, withSequence, withSpring, withTiming } from 'react-native-reanimated';
+import Svg, { Path } from 'react-native-svg';
 
 import { Bell, Check } from './icons';
+import { EASE_OUT, POP } from './motion';
 import { brand, usePalette } from './tokens';
+
+const AnimatedPath = Animated.createAnimatedComponent(Path);
+// The check's stroke length in its 24pt box (two legs: 6.4 + 13.8), so it can draw itself on.
+const CHECK_LEN = 21;
 
 export function Tick({ on, size = 28 }: { on: boolean; size?: number }) {
   const p = usePalette();
@@ -24,6 +30,59 @@ export function Tick({ on, size = 28 }: { on: boolean; size?: number }) {
       }}
     >
       {on ? <Check color={p.dark ? brand.ink : brand.sunflower} size={16} /> : null}
+    </View>
+  );
+}
+
+/**
+ * The round tick, animated (onboarding's service list): ticking fills the circle from the
+ * middle on a spring with a little give, then the check draws itself left to right.
+ * Unticking reverses quickly. Nothing moves on first show. Reduce Motion: it just switches.
+ */
+export function TickPop({ on, size = 28 }: { on: boolean; size?: number }) {
+  const p = usePalette();
+  const reduce = useReducedMotion();
+  const k = useSharedValue(on ? 1 : 0);
+  const draw = useSharedValue(on ? 1 : 0);
+  const first = useRef(true);
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    if (reduce) {
+      k.set(on ? 1 : 0);
+      draw.set(on ? 1 : 0);
+      return;
+    }
+    if (on) {
+      k.set(withSpring(1, POP));
+      draw.set(withSequence(withTiming(0, { duration: 60 }), withTiming(1, { duration: 200, easing: EASE_OUT })));
+    } else {
+      k.set(withTiming(0, { duration: 140, easing: EASE_OUT }));
+      draw.set(withTiming(0, { duration: 100, easing: EASE_OUT }));
+    }
+  }, [on, reduce, k, draw]);
+  const fill = useAnimatedStyle(() => ({ opacity: Math.min(1, k.get() * 2.5), transform: [{ scale: 0.3 + 0.7 * k.get() }] }));
+  const ring = useAnimatedStyle(() => ({ opacity: 1 - Math.min(1, k.get()) }));
+  const check = useAnimatedProps(() => ({ strokeDashoffset: CHECK_LEN * (1 - Math.max(0, Math.min(1, draw.get()))) }));
+  const ink = p.dark ? brand.sunflower : brand.ink;
+  return (
+    <View style={{ width: size, height: size }}>
+      <Animated.View style={[{ position: 'absolute', width: size, height: size, borderRadius: size / 2, borderWidth: 2, borderColor: p.tickBorder }, ring]} />
+      <Animated.View style={[{ position: 'absolute', width: size, height: size, borderRadius: size / 2, backgroundColor: ink, alignItems: 'center', justifyContent: 'center' }, fill]}>
+        <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+          <AnimatedPath
+            d="M5 12.5l4.5 4.5L19 7.5"
+            stroke={p.dark ? brand.ink : brand.sunflower}
+            strokeWidth={3}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeDasharray={`${CHECK_LEN} ${CHECK_LEN}`}
+            animatedProps={check}
+          />
+        </Svg>
+      </Animated.View>
     </View>
   );
 }

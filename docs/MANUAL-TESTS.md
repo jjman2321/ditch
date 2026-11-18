@@ -86,6 +86,17 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
+## 1m. New onboarding + paywall (Nov 18, design v16/v17)
+Reset first: Settings → Your data → Delete all my data → Delete.
+- [ ] **First screen:** "Ditch it before it renews.", real logos (Netflix, Spotify, Disney+, ChatGPT, YouTube) scattered above the duck and a Netflix reminder, "Find my subscriptions", "Free forever for tracking. No account."
+- [ ] **3 slides:** swipe or tap Next. 1) $2,628 a year with a statement where the subscriptions are marked, 2) three reminder notifications, 3) a list with Planet Fitness DITCHED and "$299.88 a year you won't pay". Skip (top right) jumps ahead.
+- [ ] **Where should we look?:** My bank (greyed, "Coming soon", test builds only), Apple subscriptions, A bank statement, Pick them myself.
+- [ ] **Apple subscriptions:** Open Apple subscriptions → screenshot your list → back in Ditch → Pick screenshots. It should read them and show "We spotted N. Check them." Tap Add → you land on your yearly total.
+- [ ] **A bank statement:** pick a PDF or CSV from Files. Same check list, then your total.
+- [ ] **Pick them myself:** the usual list → your total.
+- [ ] The total screen no longer shows the "2.5×, one study" line.
+- [ ] **Paywall:** your own upcoming reminders fill the yellow top (soonest first). The plans, button, price line and Restore/Terms/Privacy are pinned at the bottom. No big empty space on any phone.
+
 ## 1k. Paywall plans: Yearly, Lifetime, Weekly (Nov 18, DECISIONS #66)
 Open the paywall (finish onboarding, or Settings → Ditch Pro → Try Pro free).
 - [ ] Three cards, in this order: **Yearly** (picked already, "SAVE 86%" ribbon, "7 days free", $49.99/yr, "$0.97 a week"), **Lifetime** ($99.99, "Pay once. No subscription.", "one time"), **Weekly** ($6.99/wk, "No free trial"). No Monthly.

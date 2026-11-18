@@ -7,18 +7,45 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
-      "env": { "EXPO_PUBLIC_APP_ENV": "development", "EXPO_PUBLIC_DEV_TOOLS": "1" }
+      "env": {
+        "EXPO_PUBLIC_APP_ENV": "development",
+        "EXPO_PUBLIC_DEV_TOOLS": "1"
+      },
+      "channel": "development"
     },
     "preview": {
       "distribution": "internal",
-      "env": { "EXPO_PUBLIC_APP_ENV": "preview", "EXPO_PUBLIC_DEV_TOOLS": "1" }
+      "env": {
+        "EXPO_PUBLIC_APP_ENV": "preview",
+        "EXPO_PUBLIC_DEV_TOOLS": "1"
+      },
+      "channel": "preview"
     },
     "production": {
       "autoIncrement": true,
-      "env": { "EXPO_PUBLIC_APP_ENV": "production", "EXPO_PUBLIC_DEV_TOOLS": "0" }
+      "env": {
+        "EXPO_PUBLIC_APP_ENV": "production",
+        "EXPO_PUBLIC_DEV_TOOLS": "0"
+      },
+      "channel": "production"
+    },
+    "testflight": {
+      "distribution": "store",
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_APP_ENV": "testflight",
+        "EXPO_PUBLIC_DEV_TOOLS": "1"
+      },
+      "channel": "testflight",
+      "ios": {
+        "resourceClass": "default"
+      }
     }
   },
   "submit": {
-    "production": {}
+    "production": {},
+    "testflight": {
+      "ios": {}
+    }
   }
 }

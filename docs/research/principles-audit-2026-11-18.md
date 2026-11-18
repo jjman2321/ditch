@@ -1,5 +1,7 @@
 # Ditch vs the 8 principles: audit and change plan (Nov 18, 2026)
 
+_Input for discussion, not a to-do list: the 8 points are talking points, not rules (owner, Nov 18). See `discussion-points-2026-11-18.md`._
+
 Read-only audit of the app as built today, against the whole-app principles in DECISIONS #67. Nothing was changed. Checked in the code (`src/app/**`) and in the web preview at iPhone 12 size (Home, Calendar, Ditched, onboarding, paywall).
 
 **One thing comes before all of this:** purchases are still switched off (`PURCHASES_LIVE = false` in `src/services/purchases.ts`). The best paywall in the world earns $0 until StoreKit 2 is in (Milestone 2). Several changes below (exit offer, paywall tests) need it too.

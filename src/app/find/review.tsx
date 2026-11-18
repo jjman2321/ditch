@@ -11,10 +11,12 @@ import { shortDate } from '@/domain/dates';
 import { CYCLE_SHORT, monthlyMinorExact, roundMinor } from '@/domain/money';
 import { FREE_REMINDERS, remindedIds, yearlyOfSub } from '@/domain/subs';
 import { FindPage } from '@/find/Parts';
-import { useFindResult, setFindResult } from '@/import/session';
+import { findTarget, setFindResult, setFindTarget, useFindResult } from '@/import/session';
 import { alreadyOnList, foundToSub } from '@/import/toSubs';
 import { preTicked, type Found } from '@/import/types';
 import { useApp, useAppMoney } from '@/state/app';
+import { onboardingToday, useOnboarding } from '@/state/onboarding';
+import { pickFromFound } from '@/state/picks';
 import { Button, F, LogoTile, Tick, Txt, haptic, usePalette } from '@/ui/sunflower';
 
 function line(f: Found): string {
@@ -50,8 +52,19 @@ export default function Review() {
     ['Already cancelled', found.filter((f) => f.state === 'ends' || f.state === 'expired')],
   ];
 
+  const onboarding = useOnboarding();
   const add = async () => {
     if (!picked.length) return;
+    if (findTarget() === 'onboarding') {
+      // During onboarding: they join the picks, then the total. This was their free find.
+      onboarding.addPicks(picked.map((f) => pickFromFound(f, onboarding.country, onboardingToday())));
+      await app.updateSettings({ freeFindUsed: true });
+      haptic.success();
+      setFindResult(null);
+      setFindTarget('app');
+      router.replace('/onboarding/total');
+      return;
+    }
     let subs = picked.map((f) => foundToSub(f, opts));
     if (!app.pro) {
       // Free: fill the free reminder slots that are left, trials first (they're the surprise charges), then the biggest.

@@ -2,7 +2,8 @@
 // it. Kept free of React so Jest can test it.
 
 import { catalogPrice, priceRow } from '@/catalog/prices';
-import type { CatalogService } from '@/catalog/services';
+import { SERVICE_BY_ID, type CatalogService } from '@/catalog/services';
+import type { Found } from '@/import/types';
 import { type DateSource } from '@/domain/charges';
 import type { DateOnly } from '@/domain/dates';
 import { yearlyMinor, type Cycle } from '@/domain/money';
@@ -35,6 +36,8 @@ export type Picked = {
   anchor: DateOnly;
   /** 'none' until the user picks a day ("No date yet", DECISIONS #33). */
   dateSource: DateSource;
+  /** Found on a screenshot or statement but not in our catalog: saved without a catalog id. */
+  custom?: boolean;
 };
 
 export type PricedPick = Picked & { amountMinor: number; currency: string };
@@ -152,4 +155,37 @@ export function chooseCycle(p: Picked, cycle: Cycle): Picked {
 
 function priceRowFor(p: Picked) {
   return priceRow(p.id, p.priceCountry);
+}
+
+/**
+ * A subscription read from an Apple screenshot or a statement during onboarding,
+ * as a pick: catalog services keep their logo and plans; the rest are saved by name.
+ * The price and date that were read win over the catalog's.
+ */
+export function pickFromFound(f: Found, country: string | null, today: DateOnly): Picked {
+  const svc = f.catalogId ? SERVICE_BY_ID[f.catalogId] : undefined;
+  let p: Picked = svc
+    ? newPick(svc, country, today)
+    : {
+        id: `custom:${f.name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+        name: f.name,
+        color: '#E9E2D2',
+        ink: '#16140F',
+        mono: f.name.trim().slice(0, 1).toUpperCase() || '?',
+        cycle: f.cycle ?? 'monthly',
+        amountMinor: null,
+        currency: null,
+        planId: null,
+        planName: null,
+        priceSource: 'none',
+        priceCountry: null,
+        amountIsEstimate: false,
+        anchor: today,
+        dateSource: 'none',
+        custom: true,
+      };
+  if (f.price) p = setOwnPrice(p, f.price.amountMinor, f.price.currency, f.cycle ?? p.cycle);
+  else if (f.cycle) p = chooseCycle(p, f.cycle);
+  if (f.date) p = { ...p, anchor: f.date, dateSource: 'next' };
+  return p;
 }

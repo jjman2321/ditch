@@ -139,9 +139,6 @@ export default function Total() {
               {others.length ? ` a month, plus ${others.map((t) => money(t.monthlyMinor, t.currency)).join(' and ')}.` : ' a month.'}
             </Txt>
           ) : null}
-          <Txt v="body" tone="fg2" style={{ marginTop: 8, maxWidth: 340 }}>
-            {`People often guess low. In one study, the real total was 2.5× what people${NB}thought.`}
-          </Txt>
         </Animated.View>
 
         <View style={{ height: f.tiny ? 10 : f.small ? 16 : 24 }} />

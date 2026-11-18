@@ -7,7 +7,9 @@
 
 import { webParam } from '@/dev/webParams';
 
-export const IMPORT_READY = false;
+// On in test builds (TestFlight has the on-phone text reader since build 5); off in the App Store
+// build until it's been checked on a real iPhone.
+export const IMPORT_READY = process.env.EXPO_PUBLIC_APP_ENV !== 'production';
 
 /** The Home and Lock Screen widget (WidgetKit, v1.1, DECISIONS #27). Its paywall row shows once it exists. */
 export const WIDGET_READY = false;

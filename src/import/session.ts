@@ -22,3 +22,12 @@ export function useFindResult(): FindResult | null {
     () => current,
   );
 }
+
+/** Where "Add" puts what was found: the saved list, or the onboarding picks (then on to the total). */
+let target: 'app' | 'onboarding' = 'app';
+export function setFindTarget(t: 'app' | 'onboarding') {
+  target = t;
+}
+export function findTarget(): 'app' | 'onboarding' {
+  return target;
+}

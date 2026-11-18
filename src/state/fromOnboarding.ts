@@ -12,7 +12,7 @@ export function subFromPick(p: Picked, opts: { freePick: boolean; nowIso: string
   return makeSub(
     {
       id: opts.id ?? newId(),
-      catalogId: p.id,
+      catalogId: p.custom ? null : p.id,
       name: p.name,
       category: p.category ?? null,
       amountMinor: p.amountMinor,

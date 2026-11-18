@@ -45,6 +45,8 @@ type Actions = {
   /** Each onboarding screen reports itself, so a relaunch can resume there. */
   setStep: (path: string) => void;
   toggleService: (service: CatalogService) => void;
+  /** Adds picks found on a screenshot or statement (already-ticked ones are kept as they are). */
+  addPicks: (list: Picked[]) => void;
   setCountry: (code: string) => void;
   setPlan: (id: string, planId: string) => void;
   setPrice: (id: string, amountMinor: number, currency: string, cycle: Cycle) => void;
@@ -167,6 +169,19 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const addPicks = useCallback((list: Picked[]) => {
+    setState((s) => {
+      const picked = { ...s.picked };
+      const order = [...s.order];
+      for (const x of list) {
+        if (picked[x.id]) continue;
+        picked[x.id] = x;
+        order.push(x.id);
+      }
+      return { ...s, picked, order };
+    });
+  }, []);
+
   const change = useCallback((id: string, fn: (p: Picked) => Picked) => {
     setState((s) => (s.picked[id] ? { ...s, picked: { ...s.picked, [id]: fn(s.picked[id]) } } : s));
   }, []);
@@ -196,6 +211,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       resumePath,
       setStep,
       toggleService,
+      addPicks,
       setCountry,
       setPlan,
       setPrice,
@@ -207,7 +223,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       setPro,
       markTotalShown,
     }),
-    [state, draftReady, resumePath, setStep, toggleService, setCountry, setPlan, setPrice, setDate, clearDate, setCycle, setReminderPicks, setNotifications, setPro, markTotalShown],
+    [state, draftReady, resumePath, setStep, toggleService, addPicks, setCountry, setPlan, setPrice, setDate, clearDate, setCycle, setReminderPicks, setNotifications, setPro, markTotalShown],
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

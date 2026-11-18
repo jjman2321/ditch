@@ -1,5 +1,6 @@
-// 1 · Welcome (design/v12 render 01). The product in one picture: a real
-// reminder for a Netflix charge next week and the days that lead to it.
+// 1 · Welcome (design/v12 render 01, cleaned Nov 18). Like the top finance apps
+// on Mobbin and AppKittie (Monarch, Rocket Money, One, bunq): one picture, one
+// headline, one button. The picture is the product: a real reminder, the duck behind it.
 
 import { router } from 'expo-router';
 import { View } from 'react-native';
@@ -8,10 +9,10 @@ import { catalogPrice } from '@/catalog/prices';
 import { SERVICE_BY_ID } from '@/catalog/services';
 import { headsUpDates } from '@/domain/charges';
 import { stillUsingIt } from '@/domain/copy';
-import { addDays, shortDate, weekdayDate, weekdayName, weekdayShort } from '@/domain/dates';
+import { addDays, weekdayName, weekdayShort } from '@/domain/dates';
 import { FitScroll, OnbRoot } from '@/onboarding/Parts';
 import { onboardingToday, useMoney, useOnboarding } from '@/state/onboarding';
-import { Button, Duck, HeadsUpTimeline, NotificationPreview, Txt, Wordmark, brand, paletteFor, useFrame, useIsDark } from '@/ui/sunflower';
+import { Button, Duck, NotificationPreview, Txt, Wordmark, brand, paletteFor, useFrame, useIsDark } from '@/ui/sunflower';
 
 export default function Welcome() {
   const dark = useIsDark();
@@ -20,7 +21,7 @@ export default function Welcome() {
   const today = onboardingToday();
   // A charge next week, so the first reminder ("renews Thursday") is 3 days before it.
   const charge = addDays(today, 9);
-  const [early, late] = headsUpDates(charge, today);
+  const [early] = headsUpDates(charge, today);
   const money = useMoney();
   const { country } = useOnboarding();
   const local = catalogPrice('netflix', country);
@@ -44,11 +45,8 @@ export default function Welcome() {
             renews.
           </Txt>
         </Txt>
-        <Txt v="lead" tone="fg2" style={[{ marginTop: f.tiny ? 10 : 16, maxWidth: f.tablet ? 420 : 320 }, f.tablet && { fontSize: 20, lineHeight: 28 }]}>
-          {'See everything you pay for. Get a reminder before you’re charged.'}
-        </Txt>
-
-        <View style={{ flex: 1, minHeight: f.tiny ? 12 : f.small ? 24 : 96 }} />
+        {/* The picture sits centred in the space under the headline (like One, bunq, Monarch): never one big gap. */}
+        <View style={{ flex: 1, minHeight: f.tiny ? 16 : f.small ? 24 : 40 }} />
 
         <View>
           {f.small ? null : <Duck width={f.tablet ? 160 : 136} right={16} sink={6} />}
@@ -74,23 +72,11 @@ export default function Welcome() {
           />
         </View>
 
-        <View style={{ marginTop: 16 }}>
-          <HeadsUpTimeline
-            behind={p.bg}
-            stops={[
-              // 320pt wide: shorter words, so the three captions never run together.
-              { kind: 'bell', title: f.tiny ? shortDate(early) : weekdayDate(early), sub: f.tiny ? 'Reminder' : '9 AM reminder' },
-              { kind: 'bell', title: f.tiny ? shortDate(late) : weekdayDate(late), sub: f.tiny ? 'Reminder' : '9 AM reminder' },
-              { kind: 'charge', title: f.tiny ? shortDate(charge) : weekdayDate(charge), sub: price ? (f.tiny ? price : `${price} charge`) : 'charge day' },
-            ]}
-          />
-        </View>
-
-        <View style={{ height: f.tiny ? 14 : f.small ? 24 : 32 }} />
-        <Button label="See what I pay" onPress={() => router.push('/onboarding/services')} />
+        <View style={{ flex: 1, minHeight: f.tiny ? 14 : f.small ? 24 : 32 }} />
+        <Button label="Find my subscriptions" onPress={() => router.push('/onboarding/how')} />
         {/* The deal, before any work (review research: ~155 "told me after I typed it all"). */}
         <Txt v="sub" tone="fg2" center style={{ marginTop: 12 }}>
-          {'Free forever for tracking. Reminders on\u00A03.'}
+          {'Free forever for tracking. No\u00A0account.'}
         </Txt>
       </FitScroll>
     </OnbRoot>

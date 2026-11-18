@@ -1,0 +1,186 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Paywall directions v19</title>
+<style>
+@font-face{font-family:Archivo;src:url(../v12/fonts/archivo-wdth.woff2) format('woff2');font-weight:100 900;font-stretch:62% 125%}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_400Regular.ttf);font-weight:400}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_500Medium.ttf);font-weight:500}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_600SemiBold.ttf);font-weight:600}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_700Bold.ttf);font-weight:700}
+:root{--sun:#FFCC2E;--ink:#16140F;--cream:#FBF7EE;--mute:#6B6559;--fg2:#5A544A;--hair:#EEE7D8;--tint:#FFF1BC;--night:#12110E}
+*{box-sizing:border-box;margin:0}
+body{background:#E7E2D6;font-family:Inter,sans-serif;color:var(--ink);letter-spacing:-.2px;-webkit-font-smoothing:antialiased;padding:36px 40px}
+.row{display:flex;gap:40px;align-items:flex-start}
+.cell{display:flex;flex-direction:column;align-items:center;gap:14px}
+.cap{font:800 20px Archivo;font-stretch:115%;text-align:center}
+.cap small{display:block;font:500 14px Inter;color:#4A463E;margin-top:4px;max-width:390px}
+.phone{width:390px;height:844px;border-radius:46px;overflow:hidden;box-shadow:0 0 0 10px #121110,0 30px 60px rgba(40,30,0,.2);background:var(--cream);display:flex;flex-direction:column;position:relative}
+.sb{height:47px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 30px 0 34px;font:600 16px Inter}
+.bar{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex:none}
+.lock{display:flex;align-items:center;gap:8px;font:900 24px Archivo;font-stretch:115%;letter-spacing:-.7px}
+.pro{font:700 12px Inter;border:1.8px solid currentColor;border-radius:20px;padding:1px 8px}
+.x{width:32px;height:32px;border-radius:16px;background:rgba(22,20,15,.12);display:flex;align-items:center;justify-content:center}
+.title{font:900 30px/35px Archivo;font-stretch:125%;letter-spacing:-1px}
+.grow{flex:1}
+.cta{height:56px;border-radius:28px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font:600 17px Inter}
+.fine{text-align:center;font:400 13px/17px Inter;color:var(--fg2);margin-top:9px}.fine b{color:var(--ink);font-weight:600}
+.links{display:flex;justify-content:center;gap:16px;margin-top:6px;font:400 13px Inter;color:var(--fg2);text-decoration:underline}
+.plan{position:relative;height:58px;background:#fff;border:1.5px solid #D9D0BD;border-radius:16px;display:flex;align-items:center;gap:12px;padding:0 16px;margin-top:10px}
+.plan.on{border:2.5px solid var(--ink);padding:0 15px}
+.radio{width:22px;height:22px;border-radius:11px;border:2px solid #C9BFA9;flex:none}
+.on .radio{border:0;background:var(--ink);display:flex;align-items:center;justify-content:center}
+.nm{flex:1}.nm b{font:600 16px Inter;display:flex;align-items:center;gap:8px}.nm small{display:block;font:400 13px Inter;color:var(--fg2)}
+.tag{background:var(--sun);color:var(--ink);border-radius:8px;padding:2px 7px;font:700 12px Inter}
+.pr{text-align:right}.pr b{display:block;font:900 18px/22px Archivo;font-stretch:115%}.pr small{font:400 13px Inter;color:var(--mute)}
+.rib{position:absolute;top:-11px;left:48px;background:var(--ink);color:#FBF7EE;border-radius:10px;padding:0 8px;height:20px;font:700 11px/20px Inter;letter-spacing:.4px}
+.safe{display:flex;align-items:center;justify-content:center;gap:6px;font:600 13px Inter;color:var(--ink);margin:10px 0 0}
+.lt{width:var(--s,44px);height:var(--s,44px);border-radius:calc(var(--s,44px)*.24);overflow:hidden;flex:none;box-shadow:0 0 0 2.5px #fff}
+.lt img{width:100%;height:100%;object-fit:cover}
+/* 1 Me+ table */
+.t1{position:relative;margin:0 24px;background:#fff;border-radius:22px;padding:4px 0 8px;box-shadow:0 10px 30px rgba(40,30,0,.10)}
+.t1 .pcol{position:absolute;top:-14px;bottom:-14px;right:14px;width:92px;border-radius:20px;background:var(--ink);box-shadow:0 12px 26px rgba(22,20,15,.28);z-index:1}
+.t1 .r{position:relative;display:flex;align-items:center;height:58px;padding:0 120px 0 18px;font:500 16px Inter}
+.t1 .r+.r{border-top:1px solid var(--hair)}
+.t1 .r span:first-child{flex:1}
+.t1 .f{width:44px;text-align:center;color:#B9B0A0;font:700 17px Inter}
+.t1 .p{position:absolute;right:14px;width:92px;text-align:center;color:var(--sun);font:700 18px Inter;z-index:2}
+.t1 .hd{height:44px}
+/* 3 dark */
+.dark{background:radial-gradient(120% 60% at 50% 0%,#3A2E08 0%,#12110E 55%);color:#F6F0E3}
+.dark .x{background:rgba(246,240,227,.12)}
+.dark .plan{background:rgba(255,255,255,.05);border-color:rgba(246,240,227,.16)}
+.dark .plan.on{border-color:var(--sun);box-shadow:0 0 0 4px rgba(255,204,46,.15),0 10px 30px rgba(255,204,46,.18)}
+.dark .on .radio{background:var(--sun)}
+.dark .radio{border-color:rgba(246,240,227,.35)}
+.dark .nm small,.dark .pr small,.dark .fine,.dark .links{color:#BFB7A7}
+.dark .fine b{color:#F6F0E3}
+.dark .rib{background:var(--sun);color:var(--ink)}
+.dark .cta{background:var(--sun);color:var(--ink)}
+.dark .safe{color:#F6F0E3}
+.b3{display:flex;gap:14px;align-items:center;font:500 16px Inter;padding:11px 0}
+.b3 i{width:34px;height:34px;border-radius:10px;background:rgba(255,204,46,.14);display:flex;align-items:center;justify-content:center;flex:none}
+/* 4 Buddy cards */
+.cards{display:flex;gap:10px;padding:0 20px;align-items:flex-end}
+.card{flex:1;background:#fff;border:1.5px solid #D9D0BD;border-radius:18px;text-align:center;padding:20px 6px 18px;position:relative}
+.card.on{border:2.5px solid var(--ink);padding:30px 6px 24px;box-shadow:0 12px 26px rgba(40,30,0,.14)}
+.card .big{font:900 34px/36px Archivo;font-stretch:115%}
+.card .u{font:700 11px Inter;letter-spacing:1px;color:var(--mute);margin-top:2px}
+.card .pp{font:900 18px Archivo;font-stretch:115%;margin-top:12px}
+.card .s{font:400 12px/15px Inter;color:var(--mute);margin-top:3px}
+.card .rb{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--ink);color:#FBF7EE;border-radius:10px;padding:0 10px;height:22px;font:700 11px/22px Inter;letter-spacing:.4px;white-space:nowrap}
+.box{margin:16px 20px 0;background:#fff;border-radius:16px;padding:14px 16px;font:400 14px/20px Inter;color:var(--fg2);text-align:center}
+.box b{color:var(--ink)}
+</style></head><body>
+<div class="row">
+
+<!-- 1 -->
+<div class="cell"><div class="cap">1 · Bold table (like Me+)<small>Your table, made to pop: a raised black Pro column with yellow ticks.</small></div>
+<div class="phone">
+ <div style="background:var(--sun);padding-bottom:48px;position:relative">
+  <div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+  <div class="bar"><span class="lock">ditch <span class="pro">Pro</span></span><span class="x"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></div>
+  <h1 class="title" style="padding:10px 24px 0">Never miss a<br>renewal again.</h1>
+  <img src="../v12/duck.png" style="position:absolute;left:250px;bottom:-6px;width:90px;z-index:0">
+ </div>
+ <div class="t1" style="margin-top:-30px"><div class="pcol"></div>
+  <div class="r hd"><span></span><span class="f" style="font:700 12px Inter;letter-spacing:1.2px;color:var(--mute)">FREE</span><span class="p" style="font:900 14px Archivo;font-stretch:115%;letter-spacing:.5px">PRO</span></div>
+  <div class="r"><span>Reminders on</span><span class="f" style="color:var(--ink);font:600 15px Inter">3</span><span class="p" style="font:700 15px Inter">All 6</span></div>
+  <div class="r"><span>Price rise alerts</span><span class="f">✕</span><span class="p">✓</span></div>
+  <div class="r"><span>Yearly charge warnings</span><span class="f">✕</span><span class="p">✓</span></div>
+  <div class="r"><span>Pick your reminder days</span><span class="f">✕</span><span class="p">✓</span></div>
+ </div>
+ <div class="grow"></div>
+ <div style="padding:0 24px 30px">
+  <div class="plan"><span class="radio"></span><span class="nm"><b>Weekly</b></span><span class="pr"><b>$6.99/wk</b><small>No free trial</small></span></div>
+  <div class="plan on" style="margin-top:14px"><span class="rib">SAVE 86%</span><span class="radio"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4"><path d="M5 12l5 5 9-10"/></svg></span><span class="nm"><b>Yearly <span class="tag">7 days free</span></b></span><span class="pr"><b>$49.99/yr</b><small>$0.97 a week</small></span></div>
+  <div class="plan"><span class="radio"></span><span class="nm"><b>Lifetime</b><small>Pay once. No subscription.</small></span><span class="pr"><b>$99.99</b><small>one time</small></span></div>
+  <div class="cta" style="margin-top:14px">Start 7-day free trial</div>
+  <div class="fine"><b>$0 today</b> · $49.99/yr from Nov 25 · Cancel anytime</div>
+  <div class="links"><span>Restore</span><span>Terms</span><span>Privacy</span></div>
+ </div>
+</div></div>
+
+<!-- 2 -->
+<div class="cell"><div class="cap">2 · Your subs as the picture (like Cal AI)<small>A big picture of their own 6 subscriptions, each with when it renews.</small></div>
+<div class="phone">
+ <div style="background:linear-gradient(#FFCC2E 0%,#FFCC2E 78%,#FBF7EE 100%);padding-bottom:6px;position:relative">
+  <div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+  <div class="bar"><span class="lock">ditch <span class="pro">Pro</span></span><span class="x"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px 10px;padding:14px 26px 18px">
+   <div style="text-align:center"><span class="lt" style="--s:64px;display:inline-block"><img src="../../assets/logos/netflix.png"></span><div style="font:700 12px Inter;margin-top:6px">in 3 days</div></div>
+   <div style="text-align:center"><span class="lt" style="--s:64px;display:inline-block"><img src="../../assets/logos/spotify.png"></span><div style="font:700 12px Inter;margin-top:6px">in 6 days</div></div>
+   <div style="text-align:center"><span class="lt" style="--s:64px;display:inline-block"><img src="../../assets/logos/chatgpt-plus.png"></span><div style="font:700 12px Inter;margin-top:6px">in 9 days</div></div>
+   <div style="text-align:center"><span class="lt" style="--s:64px;display:inline-block"><img src="../../assets/logos/disney-plus.png"></span><div style="font:700 12px Inter;margin-top:6px">in 12 days</div></div>
+   <div style="text-align:center"><span class="lt" style="--s:64px;display:inline-block"><img src="../../assets/logos/youtube-premium.png"></span><div style="font:700 12px Inter;margin-top:6px">in 17 days</div></div>
+   <div style="text-align:center"><span class="lt" style="--s:64px;display:inline-block"><img src="../../assets/logos/planet-fitness.png"></span><div style="font:700 12px Inter;margin-top:6px">in 21 days</div></div>
+  </div>
+ </div>
+ <div style="padding:6px 24px 0"><h1 class="title">Get a heads-up before<br>all 6 renew.</h1>
+  <p style="font:500 15px/21px Inter;color:var(--fg2);margin-top:8px">Free covers 3. Pro covers every one, plus price rises.</p></div>
+ <div class="grow"></div>
+ <div style="padding:0 24px 30px">
+  <div class="plan"><span class="radio"></span><span class="nm"><b>Weekly</b></span><span class="pr"><b>$6.99/wk</b><small>No free trial</small></span></div>
+  <div class="plan on" style="margin-top:14px"><span class="rib">SAVE 86%</span><span class="radio"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4"><path d="M5 12l5 5 9-10"/></svg></span><span class="nm"><b>Yearly <span class="tag">7 days free</span></b></span><span class="pr"><b>$49.99/yr</b><small>$0.97 a week</small></span></div>
+  <div class="plan"><span class="radio"></span><span class="nm"><b>Lifetime</b><small>Pay once. No subscription.</small></span><span class="pr"><b>$99.99</b><small>one time</small></span></div>
+  <div class="cta" style="margin-top:14px">Start 7-day free trial</div>
+  <div class="fine"><b>$0 today</b> · $49.99/yr from Nov 25 · Cancel anytime</div>
+  <div class="links"><span>Restore</span><span>Terms</span><span>Privacy</span></div>
+ </div>
+</div></div>
+
+<!-- 3 -->
+<div class="cell"><div class="cap">3 · Dark premium (like Calm, Hypelist)<small>Night background, warm yellow glow, the chosen plan lights up.</small></div>
+<div class="phone dark">
+ <div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+ <div class="bar"><span class="lock" style="color:#F6F0E3">ditch <span class="pro" style="color:var(--sun)">Pro</span></span><span class="x"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#F6F0E3" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></div>
+ <div style="padding:10px 24px 0;position:relative">
+  <h1 class="title" style="color:var(--sun)">Every renewal,<br>covered.</h1>
+  <p style="font:500 15px/21px Inter;color:#BFB7A7;margin-top:8px">Reminders on all 6 of yours, not just 3.</p>
+  <div style="margin-top:14px">
+   <div class="b3"><i><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FFCC2E" stroke-width="2.2"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/></svg></i>A heads-up before every charge</div>
+   <div class="b3"><i><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FFCC2E" stroke-width="2.2"><path d="M4 17l6-6 4 4 6-8"/><path d="M14 7h6v6"/></svg></i>Price rise alerts</div>
+   <div class="b3"><i><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FFCC2E" stroke-width="2.2"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16"/></svg></i>A month's warning on yearly ones</div>
+   <div class="b3"><i><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FFCC2E" stroke-width="2.2"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></i>Pick your reminder days</div>
+  </div>
+  <img src="../v12/duck-dark.png" onerror="this.src='../v12/duck.png'" style="position:absolute;right:20px;top:34px;width:84px">
+ </div>
+ <div class="grow"></div>
+ <div style="padding:0 24px 30px">
+  <div class="plan"><span class="radio"></span><span class="nm"><b>Weekly</b></span><span class="pr"><b>$6.99/wk</b><small>No free trial</small></span></div>
+  <div class="plan on" style="margin-top:14px"><span class="rib">SAVE 86%</span><span class="radio"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="4"><path d="M5 12l5 5 9-10"/></svg></span><span class="nm"><b>Yearly <span class="tag">7 days free</span></b></span><span class="pr"><b>$49.99/yr</b><small>$0.97 a week</small></span></div>
+  <div class="plan"><span class="radio"></span><span class="nm"><b>Lifetime</b><small>Pay once. No subscription.</small></span><span class="pr"><b>$99.99</b><small>one time</small></span></div>
+  <div class="cta" style="margin-top:14px">Start 7-day free trial</div>
+  <div class="fine"><b>$0 today</b> · $49.99/yr from Nov 25 · Cancel anytime</div>
+  <div class="links"><span>Restore</span><span>Terms</span><span>Privacy</span></div>
+ </div>
+</div></div>
+
+<!-- 4 -->
+<div class="cell"><div class="cap">4 · Three big cards (like Buddy)<small>Plans side by side, Yearly raised in the middle, a trial promise under it.</small></div>
+<div class="phone">
+ <div style="background:var(--sun);padding-bottom:22px;position:relative">
+  <div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+  <div class="bar"><span class="lock">ditch <span class="pro">Pro</span></span><span class="x"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></div>
+  <h1 class="title" style="padding:16px 24px 0;font-size:28px;line-height:34px">Reminders on all 6,<br>not just 3.</h1>
+  <div style="display:flex;padding:18px 24px 14px">
+   <span class="lt" style="--s:40px"><img src="../../assets/logos/netflix.png"></span><span class="lt" style="--s:40px;margin-left:-8px"><img src="../../assets/logos/spotify.png"></span><span class="lt" style="--s:40px;margin-left:-8px"><img src="../../assets/logos/chatgpt-plus.png"></span><span class="lt" style="--s:40px;margin-left:-8px"><img src="../../assets/logos/disney-plus.png"></span><span class="lt" style="--s:40px;margin-left:-8px"><img src="../../assets/logos/youtube-premium.png"></span><span class="lt" style="--s:40px;margin-left:-8px"><img src="../../assets/logos/planet-fitness.png"></span>
+  </div>
+  <img src="../v12/duck.png" style="position:absolute;right:24px;bottom:-4px;width:88px">
+ </div>
+ <div style="padding:26px 24px 0;display:flex;flex-direction:column;gap:20px;font:500 17px Inter">
+  <div>✓&nbsp; Free trial alerts on all of them</div><div>✓&nbsp; Price rise alerts</div><div>✓&nbsp; A month's warning on yearly ones</div><div>✓&nbsp; Pick your reminder days</div>
+ </div>
+ <div class="grow"></div>
+ <div class="cards">
+  <div class="card"><div class="big">1</div><div class="u">WEEK</div><div class="pp">$6.99</div><div class="s">no free trial</div></div>
+  <div class="card on"><span class="rb">SAVE 86%</span><div class="big">12</div><div class="u">MONTHS</div><div class="pp">$49.99</div><div class="s">$0.97 a week<br><b style="color:var(--ink)">7 days free</b></div></div>
+  <div class="card"><div class="big">∞</div><div class="u">LIFETIME</div><div class="pp">$99.99</div><div class="s">pay once</div></div>
+ </div>
+ <div style="padding:16px 24px 30px">
+  <div class="cta">Start 7-day free trial</div>
+  <div class="fine"><b>$0 today</b> · We remind you before the trial ends · Cancel anytime</div>
+  <div class="links"><span>Restore</span><span>Terms</span><span>Privacy</span></div>
+ </div>
+</div></div>
+
+</div>
+</body></html>

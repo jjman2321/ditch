@@ -1,6 +1,6 @@
 # Plan: Ditch UX overhaul + Plaid in v1 (Nov 18, 2026)
 
-Built from `docs/research/ux-overhaul/A-niche-flows.md` (in-niche flows on Mobbin), `B-best-in-class.md` (outside the niche, plus the slop checklist) and `C-ditch-audit.md` (audit of the current app). Mockups: `design/v15-overhaul/` (`mock.html`, `overhaul-v1.png`). **Waiting for owner approval before building.**
+Built from `docs/research/ux-overhaul/A-niche-flows.md` (in-niche flows on Mobbin), `B-best-in-class.md` (outside the niche, plus the slop checklist) and `C-ditch-audit.md` (audit of the current app). Mockups: **`design/v16/` (`mock.html`, `v16.png`), built on the v12 design system** (v15 was rejected as still "slop"). **Waiting for owner approval before building.**
 
 ## The diagnosis
 - **The app never shows the product before asking for things.** Clear rivals open on a real product shot or a real number (Rocket Money, Monarch).

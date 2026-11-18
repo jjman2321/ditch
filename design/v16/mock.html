@@ -1,0 +1,304 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Ditch v16</title>
+<link rel="stylesheet" href="base.css">
+<style>
+.stage{display:grid;grid-template-columns:repeat(5,390px);gap:72px 48px;padding:56px;width:max-content}
+.cell .cap{max-width:390px;height:88px;text-align:left;font-size:15px;line-height:21px;margin:0 0 16px}
+.cell .cap b{color:#16140F}
+.phone{width:390px;height:844px}
+.scr{padding:59px 24px 34px}
+.sb{height:47px;padding:0 32px}
+.gap8{height:8px}.gap12{height:12px}.gap16{height:16px}.gap24{height:24px}.gap32{height:32px}.gap48{height:48px}
+.grow{flex:1}
+.hair{height:1px;background:var(--hair)}
+.mono{font-family:"SF Mono",Menlo,ui-monospace,monospace;font-size:12.5px;letter-spacing:0}
+.stmt{background:#fff;border-radius:20px;padding:12px 16px;box-shadow:0 1px 0 rgba(0,0,0,.03),0 6px 20px rgba(70,50,0,.07)}
+.sl{display:flex;align-items:center;gap:8px;height:32px;position:relative}
+.sl .d{width:46px;color:#8A8372}
+.sl .m{flex:1;min-width:0;white-space:nowrap;overflow:hidden}
+.sl .a{width:56px;text-align:right}
+.sl.hl:before{content:"";position:absolute;left:-6px;right:-6px;top:4px;bottom:4px;background:#FFE58A;border-radius:6px;z-index:0}
+.sl.hl>*{position:relative;z-index:1}
+.sl .lt{width:20px;height:20px}
+.opt{border-radius:24px;padding:16px;background:#fff;box-shadow:0 1px 0 rgba(0,0,0,.03),0 6px 20px rgba(70,50,0,.07)}
+.opt.on{box-shadow:inset 0 0 0 2.5px #16140F}
+.num3{font-family:Archivo;font-stretch:118%;font-weight:900;font-size:28px;line-height:32px;width:32px;flex:none}
+.prow{display:flex;gap:16px;padding:16px 0;align-items:flex-start}
+.prow+.prow{border-top:1px solid var(--hair)}
+.stepl{display:flex;align-items:center;gap:12px;height:40px;font:600 15px/20px Inter}
+.dot{width:22px;height:22px;border-radius:11px;flex:none;display:flex;align-items:center;justify-content:center}
+.dot.ok{background:#16140F}
+.dot.now{box-shadow:inset 0 0 0 2px #16140F;background:#FFCC2E}
+.dot.wait{box-shadow:inset 0 0 0 2px #C4BBA8}
+.pill{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:14px;background:rgba(22,20,15,.08);font:600 13px/16px Inter}
+.hrow{display:flex;align-items:center;gap:12px;height:64px}
+.hrow .n{flex:1;min-width:0}.hrow .n b{display:block;font:600 16px/20px Inter}.hrow .n span{display:block;font-size:14px;line-height:20px;color:var(--mute)}
+.hrow+.hrow{border-top:1px solid var(--hair)}
+.iconsq{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:none;background:#F3EDE0}
+</style></head><body>
+<div class="stage">
+
+<!-- 1 WELCOME -->
+<div class="cell"><div class="cap"><b>1 · Welcome.</b> v12's approved hero stays: the promise, the duck, a real reminder and its timeline. New: the subhead names finding, and the button starts it.</div>
+<div class="phone i12 sun" style="--tlc:#16140F;--tlbg:#FFCC2E;--tlm:#5C5230;--note:rgba(255,255,255,.97);--notefg:#1C1B19;--notemute:#6E6A62">
+<div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+<div class="scr">
+ <div class="wm" style="margin-top:12px">ditch</div>
+ <div class="gap32"></div>
+ <h1 class="disp" style="font-size:58px;line-height:56px;letter-spacing:-2.2px">Ditch it before it renews.</h1>
+ <div class="gap16"></div>
+ <p class="lead" style="color:#4B4220">We find what you pay for, then remind you before every charge.</p>
+ <div class="grow"></div>
+ <div style="position:relative">
+  <img src="../v12/duck.png" style="position:absolute;right:16px;top:-74px;width:120px;z-index:0">
+  <div class="note" style="position:relative;z-index:1"><div class="duckicon" style="width:38px;height:38px"><img src="../v12/duck.png" style="width:44px;left:-2px;top:6px"></div>
+   <div style="flex:1"><div class="h">Ditch<span>Sat 9:00 AM</span></div><div class="m">Netflix renews Tuesday. $17.99. Still watching?</div></div></div>
+ </div>
+ <div class="gap24"></div>
+ <div class="tl"><div class="ln"></div>
+  <div class="st"><div class="dot"></div><b>Sat, Dec 13</b><small>reminder</small></div>
+  <div class="st"><div class="dot"></div><b>Mon, Dec 15</b><small>reminder</small></div>
+  <div class="st"><div class="dot f"></div><b>Tue, Dec 16</b><small>$17.99 charge</small></div>
+ </div>
+ <div class="gap32"></div>
+ <div class="cta">Find my subscriptions</div>
+ <div class="gap12"></div>
+ <p class="sub" style="text-align:center;color:#5C5230">Free forever for tracking. No account.</p>
+</div></div></div>
+
+<!-- 2 HOW TO START -->
+<div class="cell"><div class="cap"><b>2 · Where should we look?</b> Each option shows what it actually does: a strip of your statement with the subscriptions marked, or logos to tick. No feature-list cards.</div>
+<div class="phone i12 cream">
+<div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+<div class="scr">
+ <div class="nav"><div class="steps"><i class="on"></i><i></i><i></i><i></i></div></div>
+ <div class="gap16"></div>
+ <h1 class="title">Where should we look?</h1>
+ <div class="gap8"></div>
+ <p class="lead">You check everything before it's added.</p>
+ <div class="gap24"></div>
+ <div class="opt on">
+  <div class="mono" style="background:#FBF7EE;border-radius:12px;padding:6px 12px">
+   <div class="sl hl"><span class="d">DEC 01</span><span class="m">NETFLIX.COM</span><span class="a">17.99</span></div>
+   <div class="sl"><span class="d">DEC 02</span><span class="m">TRADER JOE'S #552</span><span class="a">64.10</span></div>
+   <div class="sl hl"><span class="d">DEC 03</span><span class="m">SPOTIFY USA</span><span class="a">11.99</span></div>
+  </div>
+  <div class="gap12"></div>
+  <div style="display:flex;align-items:center;gap:8px"><b style="font:800 20px/28px Archivo;font-stretch:110%;letter-spacing:-.4px">Scan my bank</b><span class="tag">Fastest</span></div>
+  <p class="sub" style="margin-top:2px">About a minute. US &amp; Canada. First scan free.</p>
+ </div>
+ <div class="gap12"></div>
+ <div class="opt" style="display:flex;align-items:center;gap:16px">
+  <div style="flex:1"><b style="font:800 20px/28px Archivo;font-stretch:110%;letter-spacing:-.4px">Pick them myself</b><p class="sub" style="margin-top:2px">Tick from 176 services.</p></div>
+  <div class="stack"><span class="lt" style="width:32px;height:32px"><img src="../../assets/logos/netflix.png"></span><span class="lt" style="width:32px;height:32px"><img src="../../assets/logos/spotify.png"></span><span class="lt" style="width:32px;height:32px"><img src="../../assets/logos/hulu.png"></span></div>
+ </div>
+ <div class="gap12"></div>
+ <div style="display:flex;gap:12px;align-items:flex-start;padding:16px;border-radius:24px;box-shadow:inset 0 0 0 1.5px #E3DBCA">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2" style="flex:none;margin-top:1px"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 18h4"/></svg>
+  <div><p class="bs">Pay through Apple too?</p><p class="sub">Your bank only shows "APPLE.COM/BILL". A screenshot of your Apple subscriptions names each one. <span class="lnk">How</span></p></div>
+ </div>
+ <div class="grow"></div>
+ <div class="cta">Scan my bank</div>
+</div></div></div>
+
+<!-- 3 TRUST -->
+<div class="cell"><div class="cap"><b>3 · We look once, then let go.</b> Typography, not boxes. Three numbered promises answer the three fears. Plaid's own screens come next.</div>
+<div class="phone i12 cream">
+<div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+<div class="scr">
+ <div class="nav"><div class="back">‹</div><div class="steps"><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+ <div class="gap16"></div>
+ <h1 class="disp" style="font-size:40px;line-height:44px;letter-spacing:-1.4px">We look once, then let go.</h1>
+ <div class="gap24"></div>
+ <div class="prow"><span class="num3">1</span><div><p class="bs">Read-only</p><p class="sub">We see your charges. We can't move money.</p></div></div>
+ <div class="prow"><span class="num3">2</span><div><p class="bs">You log in with Plaid</p><p class="sub">Your bank password never reaches us.</p></div></div>
+ <div class="prow"><span class="num3">3</span><div><p class="bs">We disconnect right after</p><p class="sub">We keep the subscriptions you add. Not your transactions.</p></div></div>
+ <div class="grow"></div>
+ <p class="sub" style="text-align:center">Works with Chase, Bank of America, Wells Fargo<br>and 12,000+ US and Canadian banks.</p>
+ <div class="gap16"></div>
+ <div class="cta">Continue to Plaid</div>
+ <div class="txtbtn">Not now</div>
+</div></div></div>
+
+<!-- 4 SCANNING -->
+<div class="cell"><div class="cap"><b>4 · Scanning.</b> Your real statement, with the subscriptions highlighted as they're found. Steps report real work. The last step proves the disconnect.</div>
+<div class="phone i12 cream">
+<div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+<div class="scr">
+ <div class="gap24"></div>
+ <h1 class="title">Reading 12 months of charges</h1>
+ <div class="gap24"></div>
+ <div class="stmt mono">
+  <div class="sl hl"><span class="d">DEC 08</span><span class="m">PLANET FITNESS</span><span class="a">24.99</span><span class="lt"><img src="../../assets/logos/planet-fitness.png"></span></div>
+  <div class="sl"><span class="d">DEC 07</span><span class="m">SHELL OIL 5741</span><span class="a">48.22</span><span style="width:20px"></span></div>
+  <div class="sl hl"><span class="d">DEC 05</span><span class="m">APPLE.COM/BILL</span><span class="a">27.97</span><span style="font:700 10px/16px Inter;background:#16140F;color:#FFCC2E;border-radius:6px;padding:2px 5px;white-space:nowrap">3 apps</span></div>
+  <div class="sl"><span class="d">DEC 04</span><span class="m">UBER *TRIP</span><span class="a">18.40</span><span style="width:20px"></span></div>
+  <div class="sl hl"><span class="d">DEC 03</span><span class="m">SPOTIFY USA</span><span class="a">11.99</span><span class="lt"><img src="../../assets/logos/spotify.png"></span></div>
+  <div class="sl"><span class="d">DEC 02</span><span class="m">TRADER JOE'S #552</span><span class="a">64.10</span><span style="width:20px"></span></div>
+  <div class="sl hl"><span class="d">DEC 01</span><span class="m">NETFLIX.COM</span><span class="a">17.99</span><span class="lt"><img src="../../assets/logos/netflix.png"></span></div>
+ </div>
+ <div class="gap24"></div>
+ <div class="stepl"><span class="dot ok"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFCC2E" stroke-width="4"><path d="M5 12l5 5 9-10"/></svg></span>Connected to Chase</div>
+ <div class="stepl"><span class="dot ok"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFCC2E" stroke-width="4"><path d="M5 12l5 5 9-10"/></svg></span>Read 1,284 charges</div>
+ <div class="stepl"><span class="dot now"></span>Finding the ones that repeat</div>
+ <div class="stepl" style="color:#8A8372"><span class="dot wait"></span>Disconnecting from Chase</div>
+ <div class="grow"></div>
+ <p class="sub" style="text-align:center">About a minute. You can leave this screen.</p>
+</div></div></div>
+
+<!-- 5 REVEAL -->
+<div class="cell"><div class="cap"><b>5 · The reveal.</b> v12's total screen, now from your bank. One huge number, biggest first, trials flagged. "Add all 9" carries the count.</div>
+<div class="phone i12 sun">
+<div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+<div class="scr">
+ <div class="gap16"></div>
+ <p class="bs">We found 9 subscriptions</p>
+ <div class="disp num" style="font-size:84px;line-height:84px;letter-spacing:-3.4px">$1,140</div>
+ <p class="heading" style="font-size:24px">a year.</p>
+ <div class="gap12"></div>
+ <p class="lead" style="color:#4B4220">That's $95.00 a month. <b style="color:#16140F">2 free trials</b> end this week.</p>
+ <div class="gap24"></div>
+ <div class="card" style="padding:4px 16px 0">
+  <div style="display:flex;justify-content:space-between;padding:12px 0 4px"><span class="eyebrow">Biggest first</span><span class="eyebrow">Per year</span></div>
+  <div class="lrow"><span class="lt" style="width:36px;height:36px"><img src="../../assets/logos/planet-fitness.png"></span><div class="n"><b>Planet Fitness</b><span>Monthly · Mon, Dec 15</span></div><span class="moneyM num">$299.88</span></div>
+  <div class="lrow"><span class="lt" style="width:36px;height:36px"><img src="../../assets/logos/chatgpt-plus.png"></span><div class="n"><b>ChatGPT Plus</b><span style="color:#B5450F;font-weight:600">Trial ends Fri, Dec 19</span></div><span class="moneyM num">$240.00</span></div>
+  <div class="lrow"><span class="lt" style="width:36px;height:36px"><img src="../../assets/logos/netflix.png"></span><div class="n"><b>Netflix</b><span>Monthly · Tue, Dec 16</span></div><span class="moneyM num">$215.88</span></div>
+  <div class="lrow"><span class="lt" style="width:36px;height:36px"><img src="../../assets/logos/spotify.png"></span><div class="n"><b>Spotify</b><span>Monthly · Mon, Dec 22</span></div><span class="moneyM num">$143.88</span></div>
+  <div class="lrow"><span class="lt" style="width:36px;height:36px"><img src="../../assets/logos/hulu.png"></span><div class="n"><b>Hulu</b><span>Monthly · Sat, Dec 20</span></div><span class="moneyM num">$119.88</span></div>
+  <div class="lrow" style="min-height:52px"><div class="n"><b>4 more</b></div><span class="label">Show all</span></div>
+ </div>
+ <div class="grow"></div>
+ <p class="sub" style="text-align:center;color:#5C5230">Chase disconnected. We kept only these.</p>
+ <div class="gap12"></div>
+ <div class="cta">Add all 9</div>
+</div></div></div>
+
+<!-- 6 REMINDERS -->
+<div class="cell"><div class="cap"><b>6 · Reminders, from your own list.</b> v12's pre-ask, now with your real charges and dates. The arrow points at the button iOS is about to show.</div>
+<div class="phone i12 cream" style="--note:#fff;--notefg:#1C1B19;--notemute:#6E6A62">
+<div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+<div class="scr">
+ <div class="nav"><div class="back">‹</div><div class="steps"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+ <div class="gap16"></div>
+ <h1 class="title">Get a reminder before each charge.</h1>
+ <div class="gap8"></div>
+ <p class="lead">3 days and 1 day before, at 9:00 AM.</p>
+ <div class="gap24"></div>
+ <div style="background:#FFCC2E;border-radius:28px;padding:16px 16px 20px">
+  <p class="eyebrow" style="color:#5C5230;padding:4px 4px 12px">Sat, Dec 13</p>
+  <div class="note"><div class="duckicon" style="width:38px;height:38px"><img src="../v12/duck.png" style="width:44px;left:-2px;top:6px"></div><div style="flex:1"><div class="h">Ditch<span>9:00 AM</span></div><div class="m">Netflix renews Tuesday. $17.99. Still watching?</div></div></div>
+  <p class="eyebrow" style="color:#5C5230;padding:16px 4px 12px">Tue, Dec 16</p>
+  <div class="note"><div class="duckicon" style="width:38px;height:38px"><img src="../v12/duck.png" style="width:44px;left:-2px;top:6px"></div><div style="flex:1"><div class="h">Ditch<span>9:00 AM</span></div><div class="m">Your ChatGPT Plus trial ends Friday. Then $20.00 a month.</div></div></div>
+ </div>
+ <div class="grow"></div>
+ <p class="sub" style="text-align:center">Tap "Allow" on the next screen. ↗</p>
+ <div class="gap12"></div>
+ <div class="cta">Turn on reminders</div>
+ <div class="txtbtn">Maybe later</div>
+</div></div></div>
+
+<!-- 7 PAYWALL -->
+<div class="cell"><div class="cap"><b>7 · Paywall.</b> v12's paywall, now selling your list: "all 9 renewals", trial alerts, bank rescans. × from frame one. Real date under the button.</div>
+<div class="phone i12 cream" style="--ctl:#E3DBCA">
+<div class="sb" style="z-index:50"><span>9:41</span><span>●●● ▮</span></div>
+<div class="scr" style="padding:0">
+ <div class="band" style="padding:59px 24px 0">
+  <div style="display:flex;align-items:center;justify-content:space-between"><span class="lockup"><span class="w" style="font-size:22px">ditch</span><span class="pp">Pro</span></span><div class="xbtn" style="margin-right:-10px"><i>✕</i></div></div>
+  <div class="gap8"></div>
+  <h1 class="title" style="font-size:28px;line-height:32px;max-width:268px">Get a reminder before all 9 renew.</h1>
+  <img src="../v12/duck.png" style="position:absolute;right:16px;bottom:-6px;width:96px;z-index:1">
+  <div class="gap24"></div>
+ </div>
+ <div style="padding:0 24px;margin-top:-4px">
+  <div class="card cmp" style="border-radius:20px">
+   <div class="procol" style="width:96px"></div>
+   <div class="tr hd" style="height:36px"><span class="f"></span><span class="c eyebrow" style="width:64px">Free</span><span class="c eyebrow" style="width:96px;color:#16140F">Pro</span></div>
+   <div class="tr" style="height:40px"><span class="f">Reminders before charges</span><span class="c" style="width:64px">3</span><span class="c" style="width:96px">All 9</span></div>
+   <div class="tr" style="height:40px"><span class="f">Free-trial end alerts</span><span class="c" style="width:64px;color:#B9B09D">–</span><span class="c" style="width:96px">✓</span></div>
+   <div class="tr" style="height:40px"><span class="f">Rescan your bank</span><span class="c" style="width:64px;color:#B9B09D">–</span><span class="c" style="width:96px">✓</span></div>
+   <div class="tr" style="height:40px"><span class="f">Price-rise alerts</span><span class="c" style="width:64px;color:#B9B09D">–</span><span class="c" style="width:96px">✓</span></div>
+  </div>
+  <div class="gap16"></div>
+  <div class="plan on"><span class="radio"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4"><path d="M5 12l5 5 9-10"/></svg></span><span class="nm">Yearly <span class="tag">7 days free</span></span><span class="pr"><b class="num">$29.99</b><small>$2.50 a month</small></span></div>
+  <div class="gap8"></div>
+  <div class="plan"><span class="radio"></span><span class="nm">Monthly</span><span class="pr"><b class="num">$4.99</b><small>No free trial</small></span></div>
+  <div class="gap8"></div>
+  <div class="plan"><span class="radio"></span><span class="nm">Lifetime</span><span class="pr"><b class="num">$49.99</b><small>Pay once</small></span></div>
+  <div class="gap16"></div>
+  <div class="cta">Start 7-day free trial</div>
+  <div class="gap8"></div>
+  <p class="sub" style="text-align:center;color:#16140F;font-size:13px;white-space:nowrap"><b>$0 today</b> · $29.99/yr from Sat, Dec 20 · Cancel anytime</p>
+  <p class="links" style="margin-top:-4px"><u>Restore</u>·<u>Terms</u>·<u>Privacy</u></p>
+ </div>
+</div></div></div>
+
+<!-- 8 YOU'RE SET -->
+<div class="cell"><div class="cap"><b>8 · You're set.</b> v12's ending, honest numbers. The reminders card shows exactly which 3 are covered, with a swap.</div>
+<div class="phone i12 sun" style="--note:#fff">
+<div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+<div class="scr">
+ <div class="gap24"></div>
+ <h1 class="disp" style="font-size:52px;line-height:56px;letter-spacing:-2px">You're set.</h1>
+ <div class="gap24"></div>
+ <div class="chk" style="display:flex;gap:12px;padding:12px 0"><span class="dot ok"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFCC2E" stroke-width="4"><path d="M5 12l5 5 9-10"/></svg></span><div><p class="bs">9 subscriptions on your list</p><p class="sub" style="color:#5C5230">$1,140 a year</p></div></div>
+ <div class="hair" style="background:rgba(22,20,15,.14)"></div>
+ <div class="chk" style="display:flex;gap:12px;padding:12px 0"><span class="dot ok"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFCC2E" stroke-width="4"><path d="M5 12l5 5 9-10"/></svg></span><div><p class="bs">Reminders on your 3 biggest</p><p class="sub" style="color:#5C5230">3 days and 1 day before, at 9:00 AM</p></div></div>
+ <div class="grow"></div>
+ <div style="position:relative">
+  <img src="../v12/duck.png" style="position:absolute;right:16px;top:-62px;width:104px;z-index:0">
+  <div class="card" style="padding:12px 16px 4px;position:relative;z-index:1">
+   <div style="display:flex;justify-content:space-between;align-items:center"><span class="label">Reminders on</span><span class="lnk" style="font-size:15px">Swap</span></div>
+   <div class="lrow" style="min-height:52px"><span class="lt" style="width:32px;height:32px"><img src="../../assets/logos/planet-fitness.png"></span><div class="n"><b style="font-size:15px">Planet Fitness</b><span>renews Mon, Dec 15</span></div></div>
+   <div class="lrow" style="min-height:52px"><span class="lt" style="width:32px;height:32px"><img src="../../assets/logos/chatgpt-plus.png"></span><div class="n"><b style="font-size:15px">ChatGPT Plus</b><span>trial ends Fri, Dec 19</span></div></div>
+   <div class="lrow" style="min-height:52px"><span class="lt" style="width:32px;height:32px"><img src="../../assets/logos/netflix.png"></span><div class="n"><b style="font-size:15px">Netflix</b><span>renews Tue, Dec 16</span></div></div>
+  </div>
+ </div>
+ <div class="gap24"></div>
+ <div class="cta">Go to my list</div>
+</div></div></div>
+
+<!-- 9 HOME -->
+<div class="cell"><div class="cap"><b>9 · Home.</b> The list is the hero, above the fold. The next reminder lives inside the total. One nudge at a time. Lists run edge to edge, no card-in-card.</div>
+<div class="phone i12 cream">
+<div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+<div class="scr" style="padding-bottom:84px">
+ <div style="display:flex;align-items:center;justify-content:space-between;height:44px"><span class="wm">ditch</span><div style="display:flex;gap:8px"><span class="xbtn"><i style="background:#fff;box-shadow:inset 0 0 0 1.5px #E3DBCA"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg></i></span><span class="xbtn"><i style="background:#16140F;color:#fff;font-size:20px">+</i></span></div></div>
+ <div class="gap12"></div>
+ <div style="background:#FFCC2E;border-radius:20px;padding:16px">
+  <div style="display:flex;align-items:baseline;gap:8px"><span class="disp num" style="font-size:40px;line-height:44px;letter-spacing:-1.2px">$95.00</span><span class="bs">a month</span></div>
+  <p class="sub" style="color:#5C5230">$1,140 a year · 9 subscriptions</p>
+  <div style="height:1px;background:rgba(22,20,15,.16);margin:12px 0"></div>
+  <p class="body"><b>Next reminder</b> · Planet Fitness, Sun, Dec 14</p>
+ </div>
+ <div class="gap12"></div>
+ <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:16px;background:#fff;box-shadow:inset 0 0 0 1.5px #F2C9AF">
+  <span class="lt" style="width:28px;height:28px"><img src="../../assets/logos/chatgpt-plus.png"></span><p class="body" style="flex:1"><b>ChatGPT Plus trial ends Fri.</b> Keep or ditch?</p><span style="color:#8A8372">›</span></div>
+ <div class="gap24"></div>
+ <p class="eyebrow">This week</p>
+ <div class="hrow"><span class="lt" style="width:40px;height:40px"><img src="../../assets/logos/planet-fitness.png"></span><div class="n"><b>Planet Fitness</b><span>Mon, Dec 15 · in 2 days</span></div><span class="moneyS num">$24.99</span></div>
+ <div class="hrow"><span class="lt" style="width:40px;height:40px"><img src="../../assets/logos/netflix.png"></span><div class="n"><b>Netflix</b><span>Tue, Dec 16</span></div><span class="moneyS num">$17.99</span></div>
+ <div class="hrow"><span class="lt" style="width:40px;height:40px"><img src="../../assets/logos/chatgpt-plus.png"></span><div class="n"><b>ChatGPT Plus</b><span>Fri, Dec 19 · trial ends</span></div><span class="moneyS num">$20.00</span></div>
+ <div class="gap16"></div>
+ <p class="eyebrow">Later</p>
+ <div class="hrow"><span class="lt" style="width:40px;height:40px"><img src="../../assets/logos/spotify.png"></span><div class="n"><b>Spotify</b><span>Mon, Dec 22</span></div><span class="moneyS num">$11.99</span></div>
+</div>
+<div style="position:absolute;left:0;right:0;bottom:0;height:84px;background:rgba(251,247,238,.96);border-top:1px solid #EEE7D8;display:flex;justify-content:space-around;padding-top:8px;font:600 11px Inter;color:#8A8372"><span style="color:#16140F;display:flex;flex-direction:column;align-items:center;gap:2px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg>Home</span><span style="display:flex;flex-direction:column;align-items:center;gap:2px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8A8372" stroke-width="2" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Calendar</span><span style="display:flex;flex-direction:column;align-items:center;gap:2px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8A8372" stroke-width="2" stroke-linejoin="round"><path d="M5 7h14l-1 13H6zM9 7V4h6v3"/></svg>Ditched</span></div>
+</div></div>
+
+<!-- 10 ADD -->
+<div class="cell"><div class="cap"><b>10 · The + button.</b> Finding first, typing second. Each row says what it can see that the others can't.</div>
+<div class="phone i12 cream" style="--sheet:#FBF7EE">
+<div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+<div class="scrim"></div>
+<div class="sheet" style="height:520px;padding:0 24px 34px">
+ <div class="grab"></div>
+ <div class="gap16"></div>
+ <h2 class="title" style="font-size:26px;line-height:32px">Add subscriptions</h2>
+ <div class="gap16"></div>
+ <div class="hrow" style="height:72px"><span class="iconsq" style="background:#FFCC2E"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2"><path d="M3 10h18M5 10v8M9 10v8M15 10v8M19 10v8M2 20h20M12 3l9 5H3z"/></svg></span><div class="n"><b>Scan my bank</b><span>Last scan Nov 18 · rescan with Pro</span></div><span style="color:#8A8372">›</span></div>
+ <div class="hrow" style="height:72px"><span class="iconsq"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 18h4"/></svg></span><div class="n"><b>Screenshot of Apple subscriptions</b><span>Splits APPLE.COM/BILL into each app</span></div><span style="color:#8A8372">›</span></div>
+ <div class="hrow" style="height:72px"><span class="iconsq"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg></span><div class="n"><b>Bank statement</b><span>PDF or CSV, from any country</span></div><span style="color:#8A8372">›</span></div>
+ <div class="hrow" style="height:72px"><span class="iconsq"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></span><div class="n"><b>Add one myself</b><span>Search 176 services</span></div><span style="color:#8A8372">›</span></div>
+</div>
+</div></div>
+
+</div></body></html>

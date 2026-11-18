@@ -19,7 +19,7 @@ export default function ProPage() {
   const app = useApp();
   const { pro, settings, subs } = app;
   const trial = runningProTrial(subs, app.today);
-  const plan = settings.proPlan ? planById(settings.proPlan) : null;
+  const plan = settings.proPlan && settings.proPlan !== 'monthly' ? planById(settings.proPlan) : null;
   const restore = async () => {
     const r = await restorePurchases();
     tell(r.restored ? 'Restored' : 'Nothing to restore', r.restored ? 'Ditch Pro is back on.' : 'We couldn’t find a Ditch Pro purchase on this Apple Account.');

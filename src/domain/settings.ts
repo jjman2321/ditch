@@ -4,7 +4,8 @@
 import { HEADS_UP_HOUR, HEADS_UP_LEADS } from './charges';
 import { EMPTY_REVIEW, parseReview, type ReviewState } from './review';
 
-export type ProPlan = 'yearly' | 'monthly' | 'lifetime';
+/** 'monthly' is no longer sold (DECISIONS #66); still read so an old test value keeps Pro on. */
+export type ProPlan = 'yearly' | 'weekly' | 'lifetime' | 'monthly';
 
 export type Settings = {
   /** Wall-clock time for every reminder, "HH:MM" (24h). */
@@ -101,7 +102,7 @@ export function leadWord(d: number): string {
   return d === 0 ? 'On the day' : d === 14 ? '2 weeks' : d === 7 ? '1 week' : d === 1 ? '1 day' : `${d} days`;
 }
 
-const PLANS: ProPlan[] = ['yearly', 'monthly', 'lifetime'];
+const PLANS: ProPlan[] = ['yearly', 'weekly', 'lifetime', 'monthly'];
 
 function parseList(v: string | undefined): string[] {
   try {

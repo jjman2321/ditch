@@ -1,8 +1,11 @@
 // 6 · Paywall (design/v12 render 06, v10 structure). Honest by design
 // (CLAUDE.md rule 4): the × is visible from the first frame and is the way
 // to the free app (DECISIONS #29: no "Continue free" button); Restore;
-// the trial line has real dates; no weekly plan, no countdowns, no fake
-// discounts, no trial toggle. The billed price is always the biggest price.
+// the trial line has real dates; no countdowns, no fake discounts, no trial
+// toggle. The billed price is always the biggest price.
+// Plans (DECISIONS #66, owner Nov 18): Yearly with 7 days free (pre-selected,
+// "$0.97 a week", saving vs Weekly), Lifetime ("Pay once. No subscription.")
+// for people tired of subscriptions, Weekly with no trial. No monthly.
 // Fits without scrolling on iPhone 12 (390×844) and SE (375×667).
 
 import { router } from 'expo-router';
@@ -14,7 +17,7 @@ import { DEV_TOOLS } from '@/dev/flags';
 import { addDays, shortDate } from '@/domain/dates';
 import { balanceLines } from '@/domain/copy';
 import { formatWholeMoney } from '@/domain/money';
-import { perMonthFromYearly, yearlyBadge } from '@/domain/pricing';
+import { perWeekFromYearly, yearlyBadgeVsWeekly } from '@/domain/pricing';
 import { listedUserSubs } from '@/domain/subs';
 import { FitScroll, OnbRoot } from '@/onboarding/Parts';
 import { PURCHASES_LIVE, billedLabel, planById, purchase, restorePurchases, type PlanId } from '@/services/purchases';
@@ -180,7 +183,7 @@ export default function Paywall() {
   const [planId, setPlanId] = useState<PlanId>('yearly');
 
   const yearly = planById('yearly');
-  const monthly = planById('monthly');
+  const weekly = planById('weekly');
   const lifetime = planById('lifetime');
   const today = onboardingToday();
   const charge = addDays(today, yearly.trialDays);
@@ -219,9 +222,11 @@ export default function Paywall() {
     notice(r.restored ? 'Restored' : 'Nothing to restore', r.restored ? 'Ditch Pro is back on.' : 'We couldn’t find a Ditch Pro purchase on this Apple Account.');
   };
 
-  const cta = { yearly: `Start ${yearly.trialDays}-day free trial`, monthly: `Subscribe for ${monthly.priceString} a month`, lifetime: `Pay ${lifetime.priceString} once` }[planId];
-  const perMonth = perMonthFromYearly({ amountMinor: yearly.priceMinor, currency: yearly.currency });
-  const badge = yearlyBadge({ amountMinor: monthly.priceMinor, currency: monthly.currency }, { amountMinor: yearly.priceMinor, currency: yearly.currency }).toUpperCase();
+  const cta = { yearly: `Start ${yearly.trialDays}-day free trial`, weekly: `Subscribe for ${weekly.priceString} a week`, lifetime: `Pay ${lifetime.priceString} once` }[planId];
+  const perWeek = perWeekFromYearly({ amountMinor: yearly.priceMinor, currency: yearly.currency });
+  // A true comparison with the Weekly plan we sell: $6.99 × 52 = $363.48 vs $49.99 (rounded down).
+  const badge = yearlyBadgeVsWeekly({ amountMinor: weekly.priceMinor, currency: weekly.currency }, { amountMinor: yearly.priceMinor, currency: yearly.currency }).toUpperCase();
+  const cardH = f.tiny ? 44 : f.small ? 52 : 60;
 
   // Phones: forced breaks so the last line is short and the duck sits beside it (v10). iPad wraps by itself.
   const what = many ? `all ${n}${NB}renewals.` : `every${NB}renewal.`;
@@ -229,7 +234,6 @@ export default function Paywall() {
   const spokenHead = `Get a reminder before ${many ? `all ${n} renewals` : 'every renewal'}.`;
   // SE drops the last row so everything fits without scrolling (the widget row stays).
   const rows = f.small ? ROWS.filter((r) => r.label !== 'Nudge if you miss one').slice(0, 4) : ROWS;
-  const tight = f.small && f.height - f.insets.top < 640;
   const overlap = f.tablet ? 48 : 40;
   const duckW = f.small ? 68 : f.tablet ? 104 : 96;
   const ink = dark ? '#F6F0E3' : brand.ink;
@@ -267,47 +271,34 @@ export default function Paywall() {
             tag={f.tiny ? undefined : `${yearly.trialDays} days free`}
             badge={badge}
             price={billedLabel(yearly)}
-            sub={`${perMonth} a month`}
+            sub={`${perWeek} a week`}
             selected={planId === 'yearly'}
             onPress={() => select('yearly')}
-            height={f.tiny ? 44 : f.small ? 48 : 56}
-            a11y={`Yearly, ${yearly.priceString} a year, ${perMonth} a month, ${yearly.trialDays} days free, ${badge.toLowerCase()}`}
-          />
-          <PlanCard
-            title="Monthly"
-            price={billedLabel(monthly)}
-            sub="No free trial"
-            selected={planId === 'monthly'}
-            onPress={() => select('monthly')}
-            height={f.tiny ? 44 : f.small ? 48 : 56}
-            a11y={`Monthly, ${monthly.priceString} a month, no free trial`}
+            height={cardH}
+            a11y={`Yearly, ${yearly.priceString} a year, ${perWeek} a week, ${yearly.trialDays} days free, ${badge.toLowerCase()}`}
           />
           <PlanCard
             title="Lifetime"
+            note={f.tiny ? undefined : 'Pay once. No subscription.'}
             price={lifetime.priceString}
-            sub="Pay once"
+            sub="one time"
             selected={planId === 'lifetime'}
             onPress={() => select('lifetime')}
-            height={f.tiny ? 44 : f.small ? 48 : 56}
-            a11y={`Lifetime, ${lifetime.priceString}, pay once`}
+            height={cardH}
+            a11y={`Lifetime, ${lifetime.priceString} one time. Pay once, no subscription.`}
+          />
+          <PlanCard
+            title="Weekly"
+            price={billedLabel(weekly)}
+            sub="No free trial"
+            selected={planId === 'weekly'}
+            onPress={() => select('weekly')}
+            height={cardH}
+            a11y={`Weekly, ${weekly.priceString} a week, no free trial`}
           />
         </View>
 
-        {/* For people who'd rather not add another subscription (review research, DECISIONS #42). A fixed slot,
-            so the button never moves; empty once Lifetime is picked. */}
-        {/* The folded iPhone Duo (short, with a notch) has no room for it: the Lifetime card is right above. */}
-        <View style={{ height: tight || f.tiny ? 12 : f.small ? 30 : 40, justifyContent: 'center' }}>
-          {planId === 'lifetime' || tight || f.tiny ? null : (
-            <Pressable accessibilityRole="button" accessibilityLabel={`Rather pay once? Lifetime, ${lifetime.priceString}`} accessibilityHint="Picks Lifetime" onPress={() => select('lifetime')} hitSlop={8} style={({ pressed }) => ({ alignSelf: 'center', minHeight: 30, justifyContent: 'center', opacity: pressed ? 0.6 : 1 })}>
-              <Txt v="sub" tone="fg2" num center>
-                {'Rather pay once? '}
-                <Txt v="sub" num style={{ fontFamily: F.semi, textDecorationLine: 'underline' }}>
-                  {`Lifetime, ${lifetime.priceString}`}
-                </Txt>
-              </Txt>
-            </Pressable>
-          )}
-        </View>
+        <View style={{ height: f.tiny ? 12 : f.small ? 16 : 20 }} />
         <Button label={cta} onPress={buy} height={f.tiny ? 44 : f.small ? 48 : 56} />
         {/* A fixed slot, so the button never moves when the plan changes. Price and the real start date by the
             button (App Review); no reminder text (owner, Nov 10). */}
@@ -320,10 +311,10 @@ export default function Paywall() {
                 </Txt>
                 {` · ${yearly.priceString}/yr from ${shortDate(charge)}\nRenews yearly · Cancel${NB}anytime`}
               </>
-            ) : planId === 'monthly' ? (
-              `${monthly.priceString} today, then every month. Cancel anytime.`
+            ) : planId === 'weekly' ? (
+              `${weekly.priceString} today, then every week. Cancel${NB}anytime.`
             ) : (
-              `Everything in Pro, forever. Bank sync, if we add it, is a separate plan because it costs us money every${NB}month.`
+              `${lifetime.priceString} once. Pro for good, nothing${NB}renews.`
             )}
           </Txt>
         </View>

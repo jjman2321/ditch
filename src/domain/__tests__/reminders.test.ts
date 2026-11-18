@@ -104,10 +104,10 @@ describe('the Ditch Pro trial (DECISIONS #15)', () => {
   it('Mon, Nov 16 charge → heads-ups Fri, Nov 13 and Sun, Nov 15 at 9:00', () => {
     const plan = planReminders([trial], PRO, NOW);
     expect(plan.map((r) => [r.fireAt.getTime(), r.body])).toEqual([
-      [at(2026, 11, 13), 'Your Ditch Pro trial ends Monday. Then it’s $29.99 a year. Keep it, or cancel in iPhone Settings.'],
-      [at(2026, 11, 15), 'Your Ditch Pro trial ends tomorrow. $29.99 a year after that. Cancel in iPhone Settings if you’re done.'],
+      [at(2026, 11, 13), 'Your Ditch Pro trial ends Monday. Then it’s $49.99 a year. Keep it, or cancel in iPhone Settings.'],
+      [at(2026, 11, 15), 'Your Ditch Pro trial ends tomorrow. $49.99 a year after that. Cancel in iPhone Settings if you’re done.'],
       // The second nudge, that evening (DECISIONS #27: always on for Ditch's own trial).
-      [new Date(2026, 10, 15, 19, 0).getTime(), 'Your Ditch Pro trial ends tomorrow. $29.99 a year after that. Last call to cancel in iPhone Settings.'],
+      [new Date(2026, 10, 15, 19, 0).getTime(), 'Your Ditch Pro trial ends tomorrow. $49.99 a year after that. Last call to cancel in iPhone Settings.'],
     ]);
   });
 

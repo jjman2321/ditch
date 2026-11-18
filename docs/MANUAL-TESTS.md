@@ -86,6 +86,15 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
+## 1k. Paywall plans: Yearly, Lifetime, Weekly (Nov 18, DECISIONS #66)
+Open the paywall (finish onboarding, or Settings → Ditch Pro → Try Pro free).
+- [ ] Three cards, in this order: **Yearly** (picked already, "SAVE 86%" ribbon, "7 days free", $49.99/yr, "$0.97 a week"), **Lifetime** ($99.99, "Pay once. No subscription.", "one time"), **Weekly** ($6.99/wk, "No free trial"). No Monthly.
+- [ ] Tap Lifetime: the button says "Pay $99.99 once", and the line under it says "$99.99 once. Pro for good, nothing renews."
+- [ ] Tap Weekly: the button says "Subscribe for $6.99 a week", and the line under it says "$6.99 today, then every week. Cancel anytime."
+- [ ] Tap Yearly again: "Start 7-day free trial", "$0 today · $49.99/yr from (date a week from today)".
+- [ ] Everything fits without scrolling. Restore, Terms and Privacy are at the bottom. The × still closes it.
+- [ ] VoiceOver on a card reads the plan, price and trial.
+
 ## 1i. Card and notes, overlap check, year ahead, price watch (Nov 16)
 **Card, email and notes (free)**
 - [ ] Edit Netflix: near the bottom, "For when you cancel" has Paid with, Account email and Notes. Type "Visa ending 4821" and save.

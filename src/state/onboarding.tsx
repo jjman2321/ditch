@@ -110,7 +110,7 @@ function seededState(): OnboardingState {
     order: ids,
     totalShown: true,
     notifications: notif === 'later' || notif === 'denied' ? notif : seed === 'v12' ? 'granted' : 'unasked',
-    pro: pro === 'yearly' || pro === 'monthly' || pro === 'lifetime' ? pro : null,
+    pro: pro === 'yearly' || pro === 'weekly' || pro === 'lifetime' ? pro : null,
   };
 }
 

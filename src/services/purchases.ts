@@ -4,7 +4,7 @@
 // use priceString (the store's own text) and the minor-unit amounts, never
 // a typed "$".
 
-export type PlanId = 'yearly' | 'monthly' | 'lifetime';
+export type PlanId = 'yearly' | 'weekly' | 'lifetime';
 
 export type Plan = {
   id: PlanId;
@@ -12,14 +12,15 @@ export type Plan = {
   priceString: string; // what the store says, e.g. "$29.99"
   priceMinor: number;
   currency: string;
-  period: 'year' | 'month' | 'once';
+  period: 'year' | 'week' | 'once';
   trialDays: number; // 0 = no trial (or not eligible)
 };
 
 export const PLANS: Plan[] = [
-  { id: 'yearly', title: 'Yearly', priceString: '$29.99', priceMinor: 2999, currency: 'USD', period: 'year', trialDays: 7 },
-  { id: 'monthly', title: 'Monthly', priceString: '$4.99', priceMinor: 499, currency: 'USD', period: 'month', trialDays: 0 },
-  { id: 'lifetime', title: 'Lifetime', priceString: '$49.99', priceMinor: 4999, currency: 'USD', period: 'once', trialDays: 0 },
+// DECISIONS #66 (owner, Nov 18): Yearly with a 7-day trial, Lifetime on the main paywall, Weekly. No monthly.
+  { id: 'yearly', title: 'Yearly', priceString: '$49.99', priceMinor: 4999, currency: 'USD', period: 'year', trialDays: 7 },
+  { id: 'lifetime', title: 'Lifetime', priceString: '$99.99', priceMinor: 9999, currency: 'USD', period: 'once', trialDays: 0 },
+  { id: 'weekly', title: 'Weekly', priceString: '$6.99', priceMinor: 699, currency: 'USD', period: 'week', trialDays: 0 },
 ];
 
 export const PURCHASES_LIVE = false;
@@ -28,9 +29,9 @@ export function planById(id: PlanId): Plan {
   return PLANS.find((p) => p.id === id)!;
 }
 
-/** "$29.99/yr", "$4.99/mo", "$49.99". */
+/** "$49.99/yr", "$6.99/wk", "$99.99". */
 export function billedLabel(plan: Plan): string {
-  return plan.priceString + (plan.period === 'year' ? '/yr' : plan.period === 'month' ? '/mo' : '');
+  return plan.priceString + (plan.period === 'year' ? '/yr' : plan.period === 'week' ? '/wk' : '');
 }
 
 export type PurchaseResult = { status: 'purchased' | 'cancelled' | 'unavailable' };

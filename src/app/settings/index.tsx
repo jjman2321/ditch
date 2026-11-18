@@ -43,7 +43,7 @@ export default function Settings() {
   );
 
   const whichValue = pro ? (reminded.size === listed.length ? `All ${listed.length}` : `${reminded.size} of ${listed.length}`) : `${reminded.size} of ${FREE_REMINDERS}`;
-  const proValue = !pro ? null : trial ? `Trial, ends ${weekdayDate(trial.anchor).split(', ')[1]}` : settings.proPlan === 'lifetime' ? 'Lifetime' : settings.proPlan === 'monthly' ? 'Monthly' : 'Yearly';
+  const proValue = !pro ? null : trial ? `Trial, ends ${weekdayDate(trial.anchor).split(', ')[1]}` : settings.proPlan === 'lifetime' ? 'Lifetime' : settings.proPlan === 'weekly' ? 'Weekly' : settings.proPlan === 'monthly' ? 'Monthly' : 'Yearly';
 
   return (
     <SettingsPage title="Settings" back="Home">

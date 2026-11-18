@@ -14,6 +14,7 @@ export function PlanCard({
   title,
   price,
   sub,
+  note,
   tag,
   badge,
   selected,
@@ -25,6 +26,8 @@ export function PlanCard({
   /** The billed price, e.g. "$29.99/yr". */
   price: string;
   sub?: string;
+  /** Small line under the name, e.g. "Pay once. No subscription." */
+  note?: string;
   /** Pill next to the name, e.g. "7 days free". */
   tag?: string;
   /** Ribbon on the card's top edge, e.g. "SAVE 49%". */
@@ -41,11 +44,18 @@ export function PlanCard({
     <Pressable accessibilityRole="radio" accessibilityState={{ selected }} accessibilityLabel={a11y} onPress={onPress} style={({ pressed }) => ({ opacity: pressed ? 0.9 : 1 })}>
       <View style={{ minHeight: height, borderRadius: radius.plan, backgroundColor: p.card, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 16 }}>
         <Radio on={selected} />
-        <View style={{ flex: 1, minWidth: 0, flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-          <Txt v="bodyStrong" color={p.cardFg} numberOfLines={1}>
-            {title}
-          </Txt>
-          {tag ? <Tag label={tag} /> : null}
+        <View style={{ flex: 1, minWidth: 0 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <Txt v="bodyStrong" color={p.cardFg} numberOfLines={1}>
+              {title}
+            </Txt>
+            {tag ? <Tag label={tag} /> : null}
+          </View>
+          {note ? (
+            <Txt v="fine" tone="fg2" numberOfLines={1} maxFontSizeMultiplier={1.3}>
+              {note}
+            </Txt>
+          ) : null}
         </View>
         <View style={{ alignItems: 'flex-end' }}>
           <Txt v="moneyM" num color={p.cardFg}>

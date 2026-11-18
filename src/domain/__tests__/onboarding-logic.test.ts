@@ -9,7 +9,7 @@ import {
 import { balanceLines, joinNames, namesLine, possessive, shortPlanName, stillUsingIt } from '../copy';
 import { anchorForDayOfMonth, longDate, nextChargeDate, monthGrid, monthTitle, shiftMonth, weekdayDate, weekdayName } from '../dates';
 import { formatMoney, formatWholeMoney, spendTotals, type Cycle } from '../money';
-import { perMonthFromYearly, yearlyBadge, yearlySavingsPercent } from '../pricing';
+import { perMonthFromYearly, perWeekFromYearly, yearlyBadge, yearlyBadgeVsWeekly, yearlySavingsPercent, yearlySavingsVsWeekly } from '../pricing';
 
 const TODAY = '2026-11-09'; // a Monday
 
@@ -124,6 +124,24 @@ describe('onboarding: heads-ups', () => {
   it('first heads-up', () => {
     expect(firstHeadsUp('2026-11-21', TODAY)).toBe('2026-11-18');
     expect(firstHeadsUp('2026-11-09', TODAY)).toBeNull();
+  });
+});
+
+describe('paywall plans (DECISIONS #66)', () => {
+  const weekly = { amountMinor: 699, currency: 'USD' };
+  const yearly = { amountMinor: 4999, currency: 'USD' };
+
+  it('yearly vs 52 weeks of $6.99: $363.48 vs $49.99 → save 86% (rounded down)', () => {
+    expect(yearlySavingsVsWeekly(weekly, yearly)).toBe(86);
+    expect(yearlyBadgeVsWeekly(weekly, yearly)).toBe('Save 86%');
+  });
+
+  it('falls back to "Best value" across currencies', () => {
+    expect(yearlyBadgeVsWeekly(weekly, { amountMinor: 4999, currency: 'EUR' })).toBe('Best value');
+  });
+
+  it('per-week rounds UP: $49.99 → $0.97 a week, never $0.96', () => {
+    expect(perWeekFromYearly(yearly)).toBe('$0.97');
   });
 });
 

@@ -1,0 +1,132 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Paywall options v18</title>
+<style>
+@font-face{font-family:Archivo;src:url(../v12/fonts/archivo-wdth.woff2) format('woff2');font-weight:100 900;font-stretch:62% 125%}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_400Regular.ttf);font-weight:400}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_500Medium.ttf);font-weight:500}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_600SemiBold.ttf);font-weight:600}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_700Bold.ttf);font-weight:700}
+:root{--sun:#FFCC2E;--ink:#16140F;--cream:#FBF7EE;--mute:#6B6559;--fg2:#5A544A;--hair:#EEE7D8;--tint:#FFF1BC}
+*{box-sizing:border-box;margin:0}
+body{background:#E7E2D6;font-family:Inter,sans-serif;color:var(--ink);letter-spacing:-.2px;-webkit-font-smoothing:antialiased;padding:36px 40px}
+.row{display:flex;gap:44px;align-items:flex-start}
+.cell{display:flex;flex-direction:column;align-items:center;gap:16px}
+.cap{font:700 20px Archivo;font-stretch:115%;text-align:center}
+.cap small{display:block;font:500 14px Inter;color:#4A463E;margin-top:4px;max-width:390px}
+.phone{width:390px;height:844px;border-radius:46px;overflow:hidden;box-shadow:0 0 0 10px #121110,0 30px 60px rgba(40,30,0,.2);background:var(--cream);display:flex;flex-direction:column;position:relative}
+.sb{height:47px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 30px 0 34px;font:600 16px Inter}
+.bar{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.lock{display:flex;align-items:center;gap:8px;font:900 24px Archivo;font-stretch:115%;letter-spacing:-.7px}
+.pro{font:700 12px Inter;border:1.8px solid var(--ink);border-radius:20px;padding:1px 8px}
+.x{width:32px;height:32px;border-radius:16px;background:rgba(22,20,15,.12);display:flex;align-items:center;justify-content:center}
+.sun{background:var(--sun)}
+.title{font:900 30px/36px Archivo;font-stretch:125%;letter-spacing:-1px}
+.lead{font:500 15px/21px Inter;color:#4B4220;margin-top:8px}
+.grow{flex:1}
+/* plans block (same in all) */
+.panel{padding:0 24px 34px}
+.plan{position:relative;height:58px;background:#fff;border:1.5px solid #D9D0BD;border-radius:16px;display:flex;align-items:center;gap:12px;padding:0 16px;margin-top:10px}
+.plan.on{border:2.5px solid var(--ink);padding:0 15px}
+.radio{width:22px;height:22px;border-radius:11px;border:2px solid #C9BFA9;flex:none}
+.on .radio{border:0;background:var(--ink);display:flex;align-items:center;justify-content:center}
+.nm{flex:1}.nm b{font:600 16px Inter;display:flex;align-items:center;gap:8px}.nm small{display:block;font:400 13px Inter;color:var(--fg2)}
+.tag{background:var(--sun);border-radius:8px;padding:2px 7px;font:700 12px Inter}
+.pr{text-align:right}.pr b{display:block;font:900 18px/22px Archivo;font-stretch:115%}.pr small{font:400 13px Inter;color:var(--mute)}
+.rib{position:absolute;top:-11px;left:48px;background:var(--ink);color:#FBF7EE;border-radius:10px;padding:0 8px;height:20px;font:700 11px/20px Inter;letter-spacing:.4px}
+.cta{margin-top:14px;height:56px;border-radius:28px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font:600 17px Inter}
+.fine{text-align:center;font:400 13px/17px Inter;color:var(--fg2);margin-top:9px}.fine b{color:var(--ink);font-weight:600}
+.links{display:flex;justify-content:center;gap:16px;margin-top:8px;font:400 13px Inter;color:var(--fg2);text-decoration:underline}
+/* A: table */
+.tbl{margin:-36px 24px 0;background:#fff;border-radius:20px;overflow:hidden;position:relative;box-shadow:0 1px 0 rgba(0,0,0,.03)}
+.tbl .pcol{position:absolute;top:0;bottom:0;right:0;width:104px;background:var(--tint)}
+.th,.tr{display:flex;align-items:center;position:relative}
+.th{height:30px;font:700 11px Inter;letter-spacing:1.2px;color:var(--mute)}
+.tr{height:62px;font:500 15px Inter;border-top:1px solid var(--hair);margin-left:16px}
+.tr span:first-child{flex:1}
+.c1{width:64px;text-align:center}.c2{width:104px;text-align:center;font-weight:600}
+.dash{display:inline-block;width:12px;height:2.2px;background:#8C8576;border-radius:2px;vertical-align:middle}
+/* B: benefits */
+.ben{display:flex;gap:14px;align-items:center;padding:15px 0;border-top:1px solid var(--hair)}
+.ben:first-child{border-top:0}
+.bi{width:40px;height:40px;border-radius:12px;background:var(--tint);display:flex;align-items:center;justify-content:center;flex:none}
+.ben b{display:block;font:600 16px Inter}.ben span{font:400 14px/19px Inter;color:var(--fg2)}
+/* C: notifications hero */
+.note{background:rgba(255,255,255,.96);border-radius:18px;padding:11px 12px;display:flex;gap:10px;align-items:center}
+.app{width:34px;height:34px;border-radius:9px;background:var(--sun);position:relative;overflow:hidden;flex:none}
+.app img{position:absolute;width:40px;left:-3px;top:5px}
+.note .h{display:flex;justify-content:space-between;font:600 13px Inter}.note .h span{font:400 12px Inter;color:#6E6A62}
+.note .m{font:400 14px/18px Inter}
+.chk{display:flex;gap:10px;align-items:center;font:500 16px Inter;margin-top:12px}
+.chk i{width:22px;height:22px;border-radius:11px;background:var(--ink);display:flex;align-items:center;justify-content:center;flex:none}
+</style></head><body>
+
+<template id="panel"><div class="panel">
+ <div class="plan"><span class="radio"></span><span class="nm"><b>Weekly</b></span><span class="pr"><b>$6.99/wk</b><small>No free trial</small></span></div>
+ <div class="plan on" style="margin-top:14px"><span class="rib">SAVE 86%</span><span class="radio"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4"><path d="M5 12l5 5 9-10"/></svg></span><span class="nm"><b>Yearly <span class="tag">7 days free</span></b></span><span class="pr"><b>$49.99/yr</b><small>$0.97 a week</small></span></div>
+ <div class="plan"><span class="radio"></span><span class="nm"><b>Lifetime</b><small>Pay once. No subscription.</small></span><span class="pr"><b>$99.99</b><small>one time</small></span></div>
+ <div class="cta">Start 7-day free trial</div>
+ <div class="fine"><b>$0 today</b> · $49.99/yr from Nov 25 · Cancel anytime</div>
+ <div class="links"><span>Restore</span><span>Terms</span><span>Privacy</span></div>
+</div></template>
+<template id="head"><div class="sb"><span>9:41</span><span>●●● ▮</span></div><div class="bar"><span class="lock">ditch <span class="pro">Pro</span></span><span class="x"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></div></template>
+
+<div class="row">
+ <!-- A -->
+ <div class="cell"><div class="cap">A · Clean table<small>4 rows that answer "what do I get?" in plain words. Only rows where Pro is different.</small></div>
+ <div class="phone">
+  <div class="sun" style="padding-bottom:52px;position:relative" data-head>
+   <div style="padding:14px 24px 0"><h1 class="title">Never get caught<br>by a renewal.</h1></div>
+   <img src="../v12/duck.png" style="position:absolute;right:46px;bottom:14px;width:82px">
+  </div>
+  <div class="tbl"><div class="pcol"></div>
+   <div class="th"><span style="flex:1"></span><span class="c1">FREE</span><span class="c2" style="color:var(--ink)">PRO</span></div>
+   <div class="tr"><span>Reminders on</span><span class="c1">3 subs</span><span class="c2">All of them</span></div>
+   <div class="tr"><span>Price rise alerts</span><span class="c1"><i class="dash"></i></span><span class="c2">✓</span></div>
+   <div class="tr"><span>A month's warning on<br>yearly ones</span><span class="c1"><i class="dash"></i></span><span class="c2">✓</span></div>
+   <div class="tr"><span>Choose when you're<br>reminded</span><span class="c1"><i class="dash"></i></span><span class="c2">✓</span></div>
+  </div>
+  <div class="grow"></div>
+ </div></div>
+
+ <!-- B -->
+ <div class="cell"><div class="cap">B · Duck + 4 benefits<small>Like Calm, Headspace, Bevel. No table. Each benefit says what it does for you.</small></div>
+ <div class="phone">
+  <div class="sun" style="padding-bottom:20px;position:relative" data-head>
+   <div style="padding:14px 24px 0;display:flex;align-items:flex-end;justify-content:space-between"><h1 class="title">Ditch Pro</h1></div>
+   <p class="lead" style="padding:0 24px;margin-top:6px">Reminders on all 6, not just 3.</p>
+   <img src="../v12/duck.png" style="position:absolute;right:30px;bottom:-14px;width:96px">
+  </div>
+  <div style="padding:6px 24px 0">
+   <div class="ben"><div class="bi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2.2"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg></div><div><b>Every renewal, covered</b><span>A heads-up before each one, not just 3.</span></div></div>
+   <div class="ben"><div class="bi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2.2"><path d="M4 17l6-6 4 4 6-8"/><path d="M14 7h6v6"/></svg></div><div><b>Price rises, caught</b><span>We tell you when your plan costs more.</span></div></div>
+   <div class="ben"><div class="bi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2.2"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></div><div><b>Yearly ones, a month early</b><span>Time to cancel before the big charge.</span></div></div>
+   <div class="ben"><div class="bi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2.2"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></div><div><b>Your days, your time</b><span>Pick how many days before, and when.</span></div></div>
+  </div>
+  <div class="grow"></div>
+ </div></div>
+
+ <!-- C -->
+ <div class="cell"><div class="cap">C · The product as the picture<small>Like Cal AI, VSCO. Real reminders up top, 3 short ticks.</small></div>
+ <div class="phone">
+  <div class="sun" style="padding-bottom:22px" data-head>
+   <div style="padding:12px 16px 0;display:flex;flex-direction:column;gap:8px">
+    <div class="note"><span class="app"><img src="../v12/duck.png"></span><div style="flex:1"><div class="h">Ditch<span>Sat 9:00 AM</span></div><div class="m">Netflix renews Tuesday. $17.99. Still watching?</div></div></div>
+    <div class="note" style="opacity:.92"><span class="app"><img src="../v12/duck.png"></span><div style="flex:1"><div class="h">Ditch<span>Mon 9:00 AM</span></div><div class="m">Spotify went up to $12.99. You were paying $11.99.</div></div></div>
+   </div>
+   <div style="padding:18px 24px 0"><h1 class="title">Never get caught<br>by a renewal.</h1></div>
+  </div>
+  <div style="padding:6px 24px 0">
+   <div class="chk"><i><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFCC2E" stroke-width="4"><path d="M5 12l5 5 9-10"/></svg></i>Reminders on all 6, not just 3</div>
+   <div class="chk"><i><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFCC2E" stroke-width="4"><path d="M5 12l5 5 9-10"/></svg></i>Price rise alerts</div>
+   <div class="chk"><i><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFCC2E" stroke-width="4"><path d="M5 12l5 5 9-10"/></svg></i>A month's warning on yearly ones</div>
+  </div>
+  <div class="grow"></div>
+ </div></div>
+</div>
+<script>
+document.querySelectorAll('.phone').forEach(ph=>{
+  const h=ph.querySelector('[data-head]'); h.prepend(document.getElementById('head').content.cloneNode(true));
+  ph.append(document.getElementById('panel').content.cloneNode(true));
+});
+</script>
+</body></html>

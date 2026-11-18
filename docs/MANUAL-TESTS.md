@@ -86,13 +86,18 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
-## 1o. Paywall v22: the table, reworded (Nov 18)
-- [ ] TestFlight only: the first row is "Scan your bank · Finds them all in about a minute" (hidden in the App Store build until the bank scan is built). Weekly shows just $6.99/wk, no "No free trial" line.
-- [ ] Headline "Get a reminder before all N renewals." with the duck; a Free vs Pro table with a soft yellow Pro column. Each row has a bold name and one plain line: Reminders (3 vs All N), Price hike alerts, Yearly bills a month early, You pick the days, Add from a screenshot.
-- [ ] Weekly / Yearly / Lifetime. Yearly is picked, filled soft yellow, with a yellow "SAVE 86%" and "$0.96 a week".
-- [ ] The button reads "Start 7-day free trial" with "$0 today · Cancel anytime in Settings" inside it. Under it: "We'll remind you before your trial ends. Then $49.99/yr from (date a week away). Renews yearly."
+## 1o. Paywall v22: the table, wording B (Nov 18)
+- [ ] Headline "Get a reminder before all N renewals." with the duck, then the Free vs Pro table (soft yellow Pro column):
+  - (TestFlight only) Find the forgotten ones · Your bank, scanned in a minute
+  - Reminders · A heads-up before each charge · 3 vs All N
+  - Price hikes · We tell you when yours go up
+  - Yearly bills · A month's notice to bail
+  - Your call · Remind me 1, 3 or 7 days before
+  - Screenshot import · Snap your Apple list, done · Free: Once
+- [ ] Weekly $6.99/wk; Yearly picked, soft yellow, yellow "SAVE 86%", "7 days free", "$0.96 a week"; Lifetime $99.99 "Pay once."
+- [ ] Button: "Start 7-day free trial" with "$0 today · Cancel anytime in Settings" inside. Under it: "We'll remind you before your trial ends. Then $49.99/yr from (date). Renews yearly."
 - [ ] Tap Weekly / Lifetime: the button and the line under it change; the button never moves.
-- [ ] Same picture on every iPhone (scaled), dark mode readable.
+- [ ] Same picture on every iPhone; dark mode readable.
 
 ## 1n2. Onboarding motion v2 (Nov 18)
 1. Fresh onboarding (Settings → Your data → Delete all my data): logos spring in, the reminder drops in like a banner, the duck peeks up. Drag a finger across the logos and let go: they lean and spring back.

@@ -56,29 +56,27 @@ type Row = { label: string; free: Cell; pro: Cell; /** One plain line under the 
 // Only rows where Pro is different, in Ditch's own words (owner, Nov 18: the table sells; "track every
 // subscription" is free on both sides, so it said nothing). Only features that work in this build (App Review 2.1).
 function rowsFor(n: number): Row[] {
+  // Wording B (owner, Nov 18): short, dry, on your side. Only real, working features; nothing overclaims.
   return [
-    // The headline feature once it ships (DECISIONS #64, trial-gated). Test builds only until then.
-    ...(showBankScan() ? [{ label: 'Scan your bank', sub: 'Finds them all in about a minute', free: 'no', pro: 'yes' }] : []),
+    // The headline feature once it ships (DECISIONS #64, trial-gated). Test builds only until then. Provider never named.
+    ...(showBankScan() ? [{ label: 'Find the forgotten ones', sub: 'Your bank, scanned in a minute', free: 'no', pro: 'yes' }] : []),
     // Personal: "All 6" when they track more than the free 3.
-    { label: 'Reminders', sub: 'A heads-up before each renewal', free: '3', pro: n > 3 ? `All ${n}` : 'Unlimited' },
-    // Price watch (DECISIONS #60).
-    { label: 'Price hike alerts', sub: 'We flag it when a plan costs more', free: 'no', pro: 'yes' },
+    { label: 'Reminders', sub: 'A heads-up before each charge', free: '3', pro: n > 3 ? `All ${n}` : 'Unlimited' },
+    // Price watch (DECISIONS #60): our checked price for their plan went up.
+    { label: 'Price hikes', sub: 'We tell you when yours go up', free: 'no', pro: 'yes' },
     // The 30-day warning before yearly charges (DECISIONS #60).
-    { label: 'Yearly bills, a month early', sub: 'Time to cancel before it hits', free: 'no', pro: 'yes' },
+    { label: 'Yearly bills', sub: 'A month’s notice to bail', free: 'no', pro: 'yes' },
     // Free can change the time of day; Pro picks the days before.
-    { label: 'You pick the days', sub: '1, 3 or 7 days before', free: 'no', pro: 'yes' },
+    { label: 'Your call', sub: 'Remind me 1, 3 or 7 days before', free: 'no', pro: 'yes' },
     ...(WIDGET_READY ? [{ label: `Lock${NB}Screen widget`, free: 'no', pro: 'yes' }] : []),
-    // The first import (onboarding) is free, so "anytime" keeps this row true (DECISIONS #34).
-    ...(showImport() ? [{ label: 'Add from a screenshot', sub: 'Snap your Apple list, we add them', free: 'no', pro: 'yes' }] : []),
+    // The first import is free (DECISIONS #34), so Free says "Once" and Pro is any time.
+    ...(showImport() ? [{ label: 'Screenshot import', sub: 'Snap your Apple list, done', free: 'Once', pro: 'yes' }] : []),
   ];
 }
 
 /** 320pt wide: the same rows in fewer words, so each stays on one line. */
 const SHORT: Record<string, string> = {
-  'Track every subscription': 'Track every sub',
-  'Pick your reminder days': 'Pick the days',
-  'Heads-up before yearly charges': 'Yearly heads-up',
-  'Import from a screenshot': 'Screenshot import',
+  'Find the forgotten ones': 'Forgotten ones',
 };
 
 // The fixed paywall canvas (see the scaling note in Paywall).

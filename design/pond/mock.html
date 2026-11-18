@@ -1,0 +1,229 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:Display;src:url(file:///home/user/ditch/assets/fonts/ArchivoDitch-Display.ttf)}
+@font-face{font-family:Title;src:url(file:///home/user/ditch/assets/fonts/ArchivoDitch-Title.ttf)}
+@font-face{font-family:WideBold;src:url(file:///home/user/ditch/assets/fonts/ArchivoDitch-WideBold.ttf)}
+:root{--sun:#FFCC2E;--ink:#16140F;--cream:#FBF7EE;--fg2:#5A544A;--mute:#6B6559;--hair:#EEE7D8;--water:#9ED8E6;--leaf:#86C96F;--bill:#FF6B2C}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#2e2d2a;font:15px/1.35 -apple-system,"Inter",Helvetica,Arial,sans-serif;color:var(--ink);display:grid;grid-template-columns:repeat(4,393px);gap:34px 26px;padding:30px}
+.col{display:flex;flex-direction:column;gap:10px}
+.cap{color:#ddd;font:600 14.5px/1.35 Helvetica;min-height:40px}
+.cap b{color:var(--sun)}
+.phone{width:393px;height:852px;border-radius:48px;overflow:hidden;position:relative;background:var(--cream);box-shadow:0 0 0 10px #111}
+.full{position:absolute;inset:0;padding:64px 22px 34px;display:flex;flex-direction:column}
+.status{position:absolute;top:16px;left:34px;right:30px;display:flex;justify-content:space-between;font:600 15px Helvetica;z-index:5}
+h1{font:400 30px/1.08 Title;letter-spacing:-.9px}
+.lead{color:var(--fg2);margin-top:8px;font-size:15.5px}
+.prog{display:flex;gap:5px;margin-bottom:22px}.prog i{flex:1;height:4px;border-radius:2px;background:#E6DECD}.prog i.on{background:var(--ink)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+.chip{background:#fff;border-radius:18px;padding:14px;box-shadow:0 0 0 1.5px #ECE4D4;font-weight:600;font-size:16px;min-height:76px;display:flex;flex-direction:column;justify-content:space-between}
+.chip small{color:var(--mute);font-weight:500;font-size:12.5px}
+.chip.on{box-shadow:0 0 0 2.5px var(--ink);background:#FFF4CC}
+.btn{margin-top:auto;height:56px;border-radius:28px;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:600;font-size:17px}
+.fine{color:var(--mute);font-size:13px;text-align:center;margin-top:10px}
+.big{font:400 64px/0.95 Display;letter-spacing:-2.5px;font-variant-numeric:tabular-nums}
+.card{background:#fff;border-radius:20px;padding:16px;box-shadow:0 0 0 1px #EFE8DA}
+.row{display:flex;align-items:center;gap:12px}
+.pill{display:inline-block;font:700 11px/1 Helvetica;letter-spacing:.5px;padding:6px 9px;border-radius:8px;background:var(--ink);color:var(--sun);text-transform:uppercase}
+.src{display:inline-block;font:600 10.5px/1 Helvetica;color:var(--fg2);background:#F3EDE0;border-radius:5px;padding:3px 5px;margin-left:4px}
+.tabs{position:absolute;left:0;right:0;bottom:0;height:84px;background:rgba(251,247,238,.96);border-top:1px solid var(--hair);display:flex;justify-content:space-around;padding-top:10px;font:600 11px Helvetica;color:var(--mute)}
+.tabs div{display:flex;flex-direction:column;align-items:center;gap:4px}.tabs .on{color:var(--ink)}
+.tabs i{width:24px;height:24px;border-radius:7px;border:2px solid currentColor;display:block}
+.stat{font:400 34px/1 Display;letter-spacing:-1px;font-variant-numeric:tabular-nums}
+.statl{color:var(--mute);font-size:12.5px;margin-top:4px;font-weight:600}
+.dim{position:absolute;inset:0;background:rgba(22,20,15,.45)}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--cream);border-radius:26px 26px 0 0;padding:12px 22px 34px}
+.grab{width:36px;height:5px;border-radius:3px;background:#D9D1C1;margin:0 auto 16px}
+.x{position:absolute;width:44px;height:44px;display:grid;place-items:center;font-size:17px;border-radius:22px}
+.ring{width:150px;height:150px;border-radius:50%;margin:0 auto;display:grid;place-items:center;background:conic-gradient(var(--ink) 0 62%,#E6DECD 62% 100%);position:relative}
+.ring::after{content:"";position:absolute;inset:9px;border-radius:50%;background:var(--sun)}
+.ring span{position:relative;z-index:1;font:400 22px/1 WideBold;letter-spacing:.5px}
+table{width:100%;border-collapse:collapse;margin-top:14px;font-size:14.5px}
+td{padding:9px 4px;border-top:1px solid var(--hair)}td.c{text-align:center;width:62px;font-weight:700}
+.plan{border-radius:18px;padding:14px 16px;background:#fff;box-shadow:0 0 0 1.5px #E3DBCA;display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-weight:600}
+.plan.on{box-shadow:0 0 0 2.5px var(--ink)}
+.plan small{display:block;color:var(--mute);font-weight:500;font-size:12.5px;margin-top:2px}
+.tag7{font:700 11px Helvetica;background:var(--sun);border:1.5px solid var(--ink);border-radius:999px;padding:4px 8px}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute">
+ <defs>
+  <symbol id="duck" viewBox="0 0 140 100">
+   <path d="M18,58 C14,50 22,44 30,48 C40,52 50,50 60,48 C58,24 70,8 88,8 C106,8 116,22 113,40 C122,56 116,78 98,86 C78,96 40,94 26,84 C14,76 12,66 18,58 Z" fill="#fff" stroke="#16140F" stroke-width="5" stroke-linejoin="round"/>
+   <path d="M108,30 C120,25 136,28 136,36 C136,44 120,46 108,42 Z" fill="#FF6B2C" stroke="#16140F" stroke-width="5" stroke-linejoin="round"/>
+   <circle cx="94" cy="27" r="4.8" fill="#16140F"/>
+   <path d="M46,64 C56,74 74,74 82,62" fill="none" stroke="#16140F" stroke-width="4.5" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="pad" viewBox="0 0 60 30"><path d="M30,15 L58,9 C56,24 44,29 30,29 C14,29 2,23 2,15 C2,6 14,1 30,1 C38,1 46,3 52,6 Z" fill="#86C96F" stroke="#16140F" stroke-width="3" stroke-linejoin="round"/></symbol>
+  <symbol id="frog" viewBox="0 0 40 30"><ellipse cx="20" cy="20" rx="16" ry="9" fill="#5FB35A" stroke="#16140F" stroke-width="3"/><circle cx="12" cy="10" r="6" fill="#5FB35A" stroke="#16140F" stroke-width="3"/><circle cx="28" cy="10" r="6" fill="#5FB35A" stroke="#16140F" stroke-width="3"/><circle cx="12" cy="10" r="2.2" fill="#16140F"/><circle cx="28" cy="10" r="2.2" fill="#16140F"/></symbol>
+  <symbol id="reed" viewBox="0 0 20 80"><path d="M10,80 L10,18" stroke="#16140F" stroke-width="3"/><rect x="5" y="4" width="10" height="24" rx="5" fill="#9A6B3E" stroke="#16140F" stroke-width="3"/><path d="M10,60 C2,50 0,40 2,32" fill="none" stroke="#4E9A47" stroke-width="4" stroke-linecap="round"/></symbol>
+  <symbol id="egg" viewBox="0 0 40 48"><path d="M20,2 C32,2 38,22 38,30 C38,40 30,46 20,46 C10,46 2,40 2,30 C2,22 8,2 20,2 Z" fill="#FFF6DA" stroke="#16140F" stroke-width="3"/><circle cx="14" cy="22" r="3" fill="#FFCC2E"/><circle cx="25" cy="32" r="4" fill="#FFCC2E"/><circle cx="27" cy="15" r="2.5" fill="#FFCC2E"/></symbol>
+  <symbol id="fly" viewBox="0 0 60 40"><ellipse cx="18" cy="12" rx="14" ry="7" fill="#BFE6F5" stroke="#16140F" stroke-width="2.5"/><ellipse cx="42" cy="12" rx="14" ry="7" fill="#BFE6F5" stroke="#16140F" stroke-width="2.5"/><ellipse cx="30" cy="22" rx="4.5" ry="15" fill="#3B7BD8" stroke="#16140F" stroke-width="2.5"/></symbol>
+ </defs>
+</svg>
+
+<!-- 1 PICK -->
+<div class="col"><div class="cap">1 · <b>Pick what you're ditching.</b> One tap. Every habit works; the store page you came from pre-selects it.</div>
+<div class="phone"><div class="status"><span>9:41</span><span>●●● ▮</span></div><div class="full">
+<div class="prog"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
+<h1>What are you<br>ditching?</h1>
+<div class="lead">Pick one. You can add more later.</div>
+<div class="grid">
+ <div class="chip on">Vaping<small>Pods, disposables</small></div>
+ <div class="chip">Pouches<small>Zyn, snus</small></div>
+ <div class="chip">Drinking<small>Beer, wine, spirits</small></div>
+ <div class="chip">Smoking<small>Cigarettes</small></div>
+ <div class="chip">Weed<small>Any form</small></div>
+ <div class="chip">Scrolling<small>TikTok, Reels</small></div>
+ <div class="chip">Sugar<small>Sweets, soda</small></div>
+ <div class="chip">Something else<small>Name it</small></div>
+</div>
+<div class="btn">Next</div>
+</div></div></div>
+
+<!-- 2 REVEAL -->
+<div class="col"><div class="cap">2 · <b>The money reveal.</b> They type what a week costs; the yearly number lands. Same moment as Ditch's total.</div>
+<div class="phone" style="background:var(--sun)"><div class="status"><span>9:41</span><span>●●● ▮</span></div><div class="full">
+<div class="prog"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
+<div style="font:600 16px Helvetica;color:#3b3110">You spend $25 a week on vapes.</div>
+<div style="margin-top:26px;font:400 22px/1.1 Title">That's</div>
+<div class="big" style="font-size:84px;margin-top:6px">$1,300</div>
+<div style="font:400 26px/1.1 Title;margin-top:6px">a year.</div>
+<div class="card" style="margin-top:30px;background:#FFF8DD;box-shadow:0 0 0 2px var(--ink)">
+ <div style="font-weight:700;font-size:15px">That's a flight to Lisbon.</div>
+ <div style="color:#5b4f22;font-size:14px;margin-top:3px">Or 2 new pairs of trainers. Or a lot of rent.</div>
+</div>
+<svg style="width:170px;height:122px;margin:26px auto 0;display:block" viewBox="0 0 140 100"><use href="#duck"/></svg>
+<div class="btn">Let's ditch it</div>
+</div></div></div>
+
+<!-- 3 HOLD -->
+<div class="col"><div class="cap">3 · <b>Hold to ditch.</b> The ring fills, DITCHED lands, firm haptic. That's quit day, and the duck gets a puddle.</div>
+<div class="phone"><div class="status"><span>9:41</span><span>●●● ▮</span></div><div class="full" style="text-align:center">
+<div class="prog"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+<h1>Ready when<br>you are.</h1>
+<div class="lead">Quit day: today, Wed Nov 18</div>
+<svg style="width:300px;height:170px;margin:34px auto 0" viewBox="0 0 300 170">
+ <ellipse cx="150" cy="128" rx="120" ry="30" fill="#9ED8E6" stroke="#16140F" stroke-width="3.5"/>
+ <use href="#duck" x="78" y="38" width="140" height="100"/>
+ <ellipse cx="150" cy="128" rx="120" ry="30" fill="#9ED8E6" opacity=".55" clip-path="inset(50% 0 0 0)"/>
+</svg>
+<div style="margin-top:40px" class="ring"><span>HOLD</span></div>
+<div class="fine" style="margin-top:16px">Keep holding…</div>
+</div></div></div>
+
+<!-- 4 POND HOME -->
+<div class="col"><div class="cap">4 · <b>The pond, day 12.</b> Days off and money up top, the pond in the middle, today's find and the next surprise below.</div>
+<div class="phone"><div class="status"><span>9:41</span><span>●●● ▮</span></div><div class="full" style="padding-bottom:96px">
+<div class="row" style="justify-content:space-between"><div style="font:400 15px WideBold;letter-spacing:1px;color:var(--mute)">VAPING</div><div style="font-size:14px;font-weight:600;color:var(--mute)">Nov 30 · Winter pond</div></div>
+<div class="row" style="margin-top:12px;gap:26px">
+ <div><div class="stat">12</div><div class="statl">days off</div></div>
+ <div><div class="stat">$43</div><div class="statl">kept</div></div>
+ <div><div class="stat">96</div><div class="statl">pods skipped</div></div>
+</div>
+<svg style="width:349px;height:300px;margin-top:14px;border-radius:24px;background:#EAF4E4;box-shadow:0 0 0 1.5px #E1E8D8" viewBox="0 0 349 300">
+ <path d="M0,70 C60,58 120,66 180,60 C240,54 300,62 349,58 L349,0 L0,0 Z" fill="#F4EEDC"/>
+ <circle cx="290" cy="34" r="16" fill="#FFCC2E" stroke="#16140F" stroke-width="3"/>
+ <ellipse cx="174" cy="186" rx="150" ry="84" fill="#9ED8E6" stroke="#16140F" stroke-width="3.5"/>
+ <path d="M70,170 C90,166 110,168 124,170 M220,214 C236,210 254,212 266,214" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+ <use href="#reed" x="34" y="92" width="22" height="88"/><use href="#reed" x="52" y="104" width="18" height="72"/>
+ <use href="#reed" x="290" y="110" width="20" height="78"/>
+ <use href="#pad" x="64" y="200" width="62" height="31"/><use href="#pad" x="236" y="160" width="52" height="26"/><use href="#pad" x="200" y="232" width="44" height="22"/>
+ <use href="#frog" x="76" y="186" width="36" height="27"/>
+ <use href="#duck" x="118" y="130" width="112" height="80"/>
+ <path d="M130,196 C160,204 200,204 226,196" fill="none" stroke="#9ED8E6" stroke-width="10"/>
+ <use href="#fly" x="250" y="96" width="40" height="27"/>
+ <use href="#egg" x="38" y="226" width="22" height="27"/>
+</svg>
+<div class="card" style="margin-top:14px;display:flex;align-items:center;gap:12px;box-shadow:0 0 0 2px var(--ink);background:#FFF4CC">
+ <svg width="46" height="46" viewBox="0 0 40 48"><use href="#egg"/></svg>
+ <div style="flex:1"><div style="font-weight:700;font-size:16px">Today's pond find</div><div style="color:var(--fg2);font-size:13.5px">Tap to see what washed up.</div></div>
+ <div style="font:700 13px Helvetica;background:var(--ink);color:var(--sun);border-radius:999px;padding:9px 12px">Open</div>
+</div>
+<div class="row" style="margin-top:10px;gap:10px">
+ <div class="card" style="flex:1;padding:12px 14px"><div style="font-weight:700;font-size:14.5px">Day 14</div><div style="color:var(--fg2);font-size:13px">Something's wobbling in the reeds.</div></div>
+ <div class="card" style="flex:1;padding:12px 14px;background:var(--ink);color:#fff"><div style="font-weight:700;font-size:14.5px;color:var(--sun)">I want one</div><div style="font-size:13px;color:#cfc8b8">2 minutes with the duck</div></div>
+</div>
+</div>
+<div class="tabs"><div class="on"><i></i>Pond</div><div><i></i>Progress</div><div><i></i>Finds</div><div><i></i>Me</div></div>
+</div></div>
+
+<!-- 5 FIND -->
+<div class="col"><div class="cap">5 · <b>A surprise find.</b> One free draw per day off. Odds are public, nothing is ever sold, and every draw gives something.</div>
+<div class="phone"><div class="status" style="color:#fff"><span>9:41</span><span>●●● ▮</span></div>
+<div class="full" style="background:#1d2b33;color:#fff;text-align:center;align-items:center">
+<div class="x" style="right:14px;top:52px;color:#fff;background:rgba(255,255,255,.12)">✕</div>
+<div style="margin-top:70px" class="pill" >Rare find</div>
+<div style="width:230px;height:230px;border-radius:50%;margin-top:30px;background:radial-gradient(circle,#3a5f73 0,#1d2b33 70%);display:grid;place-items:center">
+ <svg width="150" height="100" viewBox="0 0 60 40"><use href="#fly"/></svg>
+</div>
+<div style="font:400 32px/1.05 Title;margin-top:22px">Blue dragonfly</div>
+<div style="color:#b9c9d1;margin-top:8px;font-size:15px">It'll hang around the reeds from now on.</div>
+<div style="color:#8fa5b0;margin-top:22px;font-size:13px">Find 12 of 36 this month · Rare chance 7%</div>
+<div class="btn" style="width:100%;background:var(--sun);color:var(--ink)">Put it in the pond</div>
+<div class="fine" style="color:#8fa5b0;text-decoration:underline">How finds work</div>
+</div></div></div>
+
+<!-- 6 SLIP -->
+<div class="col"><div class="cap">6 · <b>A slip.</b> Nothing dies, nothing resets. The days-off total stays. Today just has no find, and the egg waits.</div>
+<div class="phone"><div class="status"><span>9:41</span><span>●●● ▮</span></div>
+<div class="full" style="opacity:.5"><div class="stat" style="margin-top:20px">12</div></div>
+<div class="dim"></div>
+<div class="sheet">
+<div class="grab"></div>
+<svg style="width:120px;height:86px;display:block;margin:0 auto" viewBox="0 0 140 100"><use href="#duck"/></svg>
+<h1 style="text-align:center;margin-top:10px">Happens.</h1>
+<div class="lead" style="text-align:center">One day isn't the story. You've still got 12 days off, and the pond keeps everything.</div>
+<div style="margin-top:20px;font-weight:700;font-size:14px;color:var(--mute);text-transform:uppercase;letter-spacing:.6px">What was going on? (optional)</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">
+ <span class="chip" style="min-height:0;padding:10px 14px;font-size:15px">Stress</span><span class="chip on" style="min-height:0;padding:10px 14px;font-size:15px">Friends</span><span class="chip" style="min-height:0;padding:10px 14px;font-size:15px">Bored</span><span class="chip" style="min-height:0;padding:10px 14px;font-size:15px">Drinking</span><span class="chip" style="min-height:0;padding:10px 14px;font-size:15px">Just habit</span>
+</div>
+<div class="card" style="margin-top:16px;font-size:14px;color:var(--fg2)">Today: no pond find. Your egg waits a day. <b style="color:var(--ink)">3 days off in a row</b> brings your run back.</div>
+<div class="btn" style="margin-top:20px">Back to the pond</div>
+</div></div></div>
+
+<!-- 7 PROGRESS -->
+<div class="col"><div class="cap">7 · <b>Progress.</b> Real health milestones (sourced), money as real things, and what's coming next.</div>
+<div class="phone"><div class="status"><span>9:41</span><span>●●● ▮</span></div><div class="full" style="padding-bottom:96px">
+<h1>Your body,<br>12 days in</h1>
+<div class="card" style="margin-top:16px;padding:6px 16px">
+ <div class="row" style="padding:12px 0;border-bottom:1px solid var(--hair)"><span class="tag7" style="background:#E9F6E7;border-color:#256B2B;color:#256B2B">Done</span><div style="flex:1"><b>Day 3</b> · nicotine out of your system<span class="src">NHS</span></div></div>
+ <div class="row" style="padding:12px 0;border-bottom:1px solid var(--hair)"><span class="tag7" style="background:#E9F6E7;border-color:#256B2B;color:#256B2B">Done</span><div style="flex:1"><b>Day 7</b> · cravings usually ease<span class="src">NHS</span></div></div>
+ <div class="row" style="padding:12px 0"><span class="tag7">Next</span><div style="flex:1"><b>Week 2–12</b> · breathing gets easier<span class="src">CDC</span></div></div>
+</div>
+<div style="margin-top:18px;font:400 13px WideBold;letter-spacing:1px;color:var(--mute)">MONEY KEPT</div>
+<div class="card" style="margin-top:8px">
+ <div class="row"><div class="stat">$43</div><div style="color:var(--fg2);font-size:14px">so far · $1,300 by next November</div></div>
+ <div style="height:10px;border-radius:5px;background:#EEE7D8;margin-top:14px;overflow:hidden"><div style="width:36%;height:100%;background:var(--sun);border-right:2px solid var(--ink)"></div></div>
+ <div class="row" style="justify-content:space-between;margin-top:8px;font-size:13.5px;color:var(--fg2)"><span>Your goal: trainers</span><b style="color:var(--ink)">$43 of $120</b></div>
+</div>
+<div style="margin-top:18px;font:400 13px WideBold;letter-spacing:1px;color:var(--mute)">COMING UP</div>
+<div class="card" style="margin-top:8px;padding:6px 16px">
+ <div style="padding:11px 0;border-bottom:1px solid var(--hair)"><b>Day 14</b> · the egg hatches</div>
+ <div style="padding:11px 0;border-bottom:1px solid var(--hair)"><b>Day 30</b> · the reed bed opens</div>
+ <div style="padding:11px 0"><b>Sunday</b> · a new visitor</div>
+</div>
+</div>
+<div class="tabs"><div><i></i>Pond</div><div class="on"><i></i>Progress</div><div><i></i>Finds</div><div><i></i>Me</div></div>
+</div></div>
+
+<!-- 8 PAYWALL -->
+<div class="col"><div class="cap">8 · <b>Honest paywall.</b> × from the first frame, Free | Pro table, real price and start date, reminder before the trial ends.</div>
+<div class="phone"><div class="status"><span>9:41</span><span>●●● ▮</span></div><div class="full">
+<div class="x" style="right:14px;top:52px;background:rgba(22,20,15,.07)">✕</div>
+<h1 style="margin-top:24px">Grow the<br>whole pond.</h1>
+<table>
+ <tr><td style="border:0"></td><td class="c" style="border:0;color:var(--mute);font-size:12px">FREE</td><td class="c" style="border:0;font-size:12px">PRO</td></tr>
+ <tr><td>Days off, money, milestones</td><td class="c">✓</td><td class="c">✓</td></tr>
+ <tr><td>Daily finds and craving help</td><td class="c">✓</td><td class="c">✓</td></tr>
+ <tr><td>Pond areas</td><td class="c" style="font-weight:600">3</td><td class="c">All 7</td></tr>
+ <tr><td>More than one habit</td><td class="c" style="color:#bbb">–</td><td class="c">✓</td></tr>
+ <tr><td>Widget and iCloud backup</td><td class="c" style="color:#bbb">–</td><td class="c">✓</td></tr>
+</table>
+<div class="plan on"><div>Yearly<small>$4.17 a month</small></div><div style="text-align:right">$49.99 <span class="tag7" style="margin-left:6px">7 days free</span></div></div>
+<div class="plan"><div>Monthly</div><div>$9.99</div></div>
+<div class="plan"><div>Once<small>Keep the pond for good</small></div><div>$99.99</div></div>
+<div class="btn" style="margin-top:20px">Start 7 days free</div>
+<div class="fine" style="color:var(--ink)">$0 today · $49.99/yr from Nov 25 · Cancel anytime</div>
+<div class="fine" style="margin-top:4px">We'll remind you 2 days before. · <u>Restore</u></div>
+</div></div></div>
+
+</body></html>

@@ -20,3 +20,14 @@ Method: take 2025–26 apps already in the top-grossing charts (`fn/new_in_chart
   - scholarly accuracy (needs a reviewer)
   - **mascot conflict**: many Muslim users avoid animal characters in religious apps, so the duck likely stays out of this app
 - Next: owner decides on the mascot question; then a deep dive (Scroll The Bible's exact loop, paywall, reviews; Muslim willingness to pay; Ramadan spikes; licensing).
+
+## Round 2 (more winners from the 2025–26 top-grossing list)
+| Winner | Est./mo | Mechanic | Transfer | Now |
+|---|---|---|---|---|
+| Military Benefits App (May 2026) | ~$177k | "Money you're leaving on the table": every discount + benefit for one identity group, mapped | Healthcare workers / med students (PSLF, discounts, free tools), teachers (educator deduction, loan forgiveness, discounts), new parents (freebies, credits, WIC), first responders | NursePerks (69 ratings), teacher-discount apps 0 ratings: empty |
+| Scroll The Bible (Dec 2025) | ~$882k | Faith short-form feed | Scroll the Quran | ~8 clones at ~$0 |
+| SocialLite (Jan 2026) | ~$175k | Keep Instagram/YouTube, strip Reels/Shorts | (it's already the doomscroll fix) | clones 2–169 ratings |
+| Scholarly (Apr 2026) | ~$40k | Swipe to match + AI essay drafts for scholarships | Grants for med/nursing students, residency/fellowship applications | not checked |
+| Localize (Dec 2025) | ~$287k | Map of direct-from-farm food (raw milk, tallow) | Rides a cultural wave; transfer unclear | – |
+| Peptide trackers (2026) | ~$230k pool | Shotsy for peptides | – | gray-market risk |
+| Restock alerts (NeeDoh, Jellycat, Pokémon) | $0–4k | Restock pings for hype items | next hype item | small, fad-driven |

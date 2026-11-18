@@ -10,3 +10,19 @@ Endpoint: `GET /api/v1/onboarding/screens` (1 credit per app; 10 credits used). 
 | Subtrack, ReSubs, SubTracky, Cancel Subscriptions & Refund | 5–11 | Simpler feature carousels and paywalls | — |
 
 Not copied: fake urgency, weekly-first plans, email gates before value, unearned social proof (we add ratings only once they're real).
+
+## Top-earning finance paywalls (AppKittie, `label=paywall`, Finance, by revenue; 15 credits)
+Contact sheet: `appkittie-onboarding/fin_paywalls.jpg` (LifeLock, Settlemate, Cashably, CoinKeeper, Collect, Subpilot, Wallet, ClaimHunt, Mobills, Spending Tracker, Smart Receipts, Trade AI, Hammer).
+- **A trial timeline is the norm among the top earners:**
+  - Mobills: Today / In 5 days reminder / In 7 days charge
+  - Smart Receipts: Today / Day 5 reminder / Day 7 plan begins, plus a "Remind me before trial ends" toggle
+  - Trade AI: "How your free trial works"
+  - Cashably: "14-day free trial, then…"
+- **Yearly is pre-selected and marked "Most popular"** almost everywhere. Lifetime appears as one card (Wallet $49.99, CoinKeeper $49.99 forever).
+- **Social proof** (laurels, ratings, download counts) sits near the plans in about half of them. We add it only once it's real.
+- **Tricks we skip:**
+  - per-week price framing ($0.96/week)
+  - "SAVE 75%" against weekly anchors
+  - "Limited time offer, price will increase soon"
+  - trial toggles (Trade AI; Apple rejects these now)
+- Applied to v16 screen 7: the timeline with real dates, the reminder promise, yearly pre-selected, and lifetime as the 3rd card.

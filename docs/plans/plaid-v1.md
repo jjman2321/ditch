@@ -11,7 +11,7 @@
 ## Pieces to build
 | # | Piece | Where | Notes |
 |---|---|---|---|
-| 1 | StoreKit 2 purchases (needed anyway) | app (`expo-iap`) | Yearly, monthly, lifetime; restore; entitlement on the phone; receipt check on the server for bank scans |
+| 1 | StoreKit 2 purchases (needed anyway) | app (`expo-iap`) | Yearly, lifetime, weekly (+ exit-offer intro price); restore; entitlement on the phone; receipt check on the server for bank scans |
 | 2 | Supabase project `ditch-api` | owner creates (or OKs it) | Edge Functions only; no transactions stored |
 | 3 | `plaid-link-token` | Edge Function | Creates a Link token (products: transactions; countries: US, CA) |
 | 4 | `plaid-exchange` | Edge Function | public_token → access_token (encrypted at rest, short TTL) |

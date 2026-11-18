@@ -27,7 +27,7 @@ It's the owner's first app. The goal is to learn the whole Apple pipeline and st
 - `expo-sqlite` with numbered migrations from day one.
 - `expo-notifications`: local notifications only. No push, no server.
 - Reanimated for restrained animation. `expo-haptics` for meaningful actions.
-- Payments straight through Apple's StoreKit 2 (no RevenueCat; owner, Nov 16, DECISIONS #59): Pro monthly, yearly, lifetime. Library picked at Milestone 2 (candidate: `expo-iap`). No third-party payment SDK, no server.
+- Payments straight through Apple's StoreKit 2 (no RevenueCat; owner, Nov 16, DECISIONS #59): Pro yearly, lifetime, weekly (DECISIONS #66). Library picked at Milestone 2 (candidate: `expo-iap`). No third-party payment SDK, no server.
 - WidgetKit through an App Group. Later.
 - EAS Build / TestFlight.
 - On-phone import later: `expo-text-extractor`, `expo-pdf-text-extract`, `expo-share-intent`. **These need an EAS development build, not Expo Go.**
@@ -81,7 +81,7 @@ This is the #1 complaint about Bobby, so it's the product.
 - **Never delete or hide data when Pro lapses.** Reminders drop back to 3.
 
 ### 7. Lifetime
-- $49.99 one-time, covers **Pro only**. Future bank sync would be a separate plan.
+- $99.99 one-time (DECISIONS #66), shown on the main paywall. Covers **Pro** with one bank scan a year; always-on bank sync is not included.
 - Never write "all future features included".
 
 ### 8. Ditch the duck, the Ditched moment and the voice

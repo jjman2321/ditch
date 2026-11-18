@@ -24,6 +24,8 @@ export function PlanCard({
   tint,
   banner,
   badgeBg,
+  badgeRight,
+  noteStrong,
   badgeFg,
 }: {
   /** Fill for the selected card (the plan we want picked). */
@@ -32,6 +34,10 @@ export function PlanCard({
   banner?: string;
   /** Badge colours (default: ink on cream, sunflower in dark mode). */
   badgeBg?: string;
+  /** Put the badge on the top-right edge instead of over the name. */
+  badgeRight?: boolean;
+  /** Show the note line in bold ink (e.g. "Free for 7 days"). */
+  noteStrong?: boolean;
   badgeFg?: string;
   title: string;
   /** The billed price, e.g. "$29.99/yr". */
@@ -90,7 +96,14 @@ export function PlanCard({
             {tag ? <Tag label={tag} /> : null}
           </View>
           {note ? (
-            <Txt v="fine" tone="fg2" numberOfLines={1} maxFontSizeMultiplier={1.3}>
+            <Txt
+              v="fine"
+              tone={noteStrong ? undefined : 'fg2'}
+              color={noteStrong ? p.cardFg : undefined}
+              style={noteStrong ? { fontFamily: F.bold } : undefined}
+              numberOfLines={1}
+              maxFontSizeMultiplier={1.3}
+            >
               {note}
             </Txt>
           ) : null}
@@ -113,7 +126,7 @@ export function PlanCard({
           style={{
             position: 'absolute',
             top: -10,
-            left: 52,
+            ...(badgeRight ? { right: 16 } : { left: 52 }),
             height: 20,
             borderRadius: 10,
             paddingHorizontal: 8,

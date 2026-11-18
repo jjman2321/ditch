@@ -81,10 +81,12 @@ const SHORT: Record<string, string> = {
 
 // The fixed paywall canvas (see the scaling note in Paywall).
 const CANVAS_W = 440;
+/** Gap between the raised Pro column and the table's right edge. */
+const PRO_INSET = 10;
 const HERO_H = 190;
 const EDGE_W = 24;
 /** Everything on the canvas except the table rows (hero, table header, plans, button, price line, links). */
-const CANVAS_BASE = 596;
+const CANVAS_BASE = 600;
 /** Table row height range: 52pt (SE) to 66pt (fewer rows get more air). Each row has a label and a line under it. */
 const ROW_MIN = 40;
 const ROW_MAX = 50;
@@ -101,7 +103,7 @@ function Compare({ rows, width, overlap, tiny, grow = 0 }: { rows: Row[]; width:
   const [labelW, setLabelW] = useState<Record<string, number>>({});
   const colF = 56;
   const colP = Math.ceil(unlimitedW) + 24;
-  const room = width - 16 - 8 - colF - colP;
+  const room = width - 16 - 8 - colF - colP - PRO_INSET;
 
   const cell = (v: Cell, pro: boolean) => {
     const c = pro && dark ? brand.sunflower : ink;
@@ -116,7 +118,7 @@ function Compare({ rows, width, overlap, tiny, grow = 0 }: { rows: Row[]; width:
   const spoken = (v: Cell) => (v === 'yes' ? 'included' : v === 'no' ? 'not included' : v);
 
   return (
-    <Card style={{ marginTop: -overlap, overflow: 'hidden', zIndex: 2 }}>
+    <Card style={{ marginTop: -overlap, overflow: 'visible', zIndex: 2 }}>
       {/* Hidden measurements: "Unlimited" sets the Pro column; labels wrap only when they must. */}
       <View
         pointerEvents="none"
@@ -138,15 +140,32 @@ function Compare({ rows, width, overlap, tiny, grow = 0 }: { rows: Row[]; width:
           </Text>
         ))}
       </View>
-      <View style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: colP, backgroundColor: dark ? '#332B12' : '#FFF1BC' }} />
-      <View style={{ flexDirection: 'row', alignItems: 'center', height: 24, paddingTop: 4 }} importantForAccessibility="no-hide-descendants">
+      {/* Pro gets its own raised, yellow-edged column with a PRO pill on top (owner's pick, Nov 18: "B"). */}
+      <View
+        style={{
+          position: 'absolute',
+          top: -14,
+          bottom: -8,
+          right: PRO_INSET,
+          width: colP,
+          borderRadius: 16,
+          backgroundColor: dark ? '#332B12' : '#FFF1BC',
+          borderWidth: 2,
+          borderColor: brand.sunflower,
+        }}
+      />
+      <View style={{ flexDirection: 'row', alignItems: 'center', height: 40 }} importantForAccessibility="no-hide-descendants">
         <View style={{ flex: 1 }} />
-        <Txt v="eyebrow" tone="mute" center style={{ width: colF }}>
+        <Txt v="sub" tone="mute" center style={{ width: colF, fontFamily: F.semi }} maxFontSizeMultiplier={1.2}>
           Free
         </Txt>
-        <Txt v="eyebrow" color={dark ? brand.sunflower : ink} center style={{ width: colP }}>
-          Pro
-        </Txt>
+        <View style={{ width: colP, marginRight: PRO_INSET, alignItems: 'center' }}>
+          <View style={{ backgroundColor: dark ? brand.sunflower : brand.ink, borderRadius: 999, paddingHorizontal: 12, paddingVertical: 3 }}>
+            <Txt v="fine" color={dark ? brand.ink : brand.sunflower} style={{ fontFamily: F.wideHeavy, fontSize: 12, lineHeight: 16, letterSpacing: 1 }} maxFontSizeMultiplier={1.2}>
+              PRO
+            </Txt>
+          </View>
+        </View>
       </View>
       {rows.map((r, i) => {
         const two = (labelW[r.label] ?? 0) > room;
@@ -157,7 +176,7 @@ function Compare({ rows, width, overlap, tiny, grow = 0 }: { rows: Row[]; width:
             accessibilityLabel={`${r.label}${r.sub ? `, ${r.sub}` : ''}: Free, ${spoken(r.free)}. Pro, ${spoken(r.pro)}.`}
             style={{ flexDirection: 'row', alignItems: 'center', minHeight: ROW_MIN + grow }}
           >
-            {i ? <View style={{ position: 'absolute', top: 0, left: 16, right: 0, height: 1, backgroundColor: p.hair }} /> : null}
+            {i ? <View style={{ position: 'absolute', top: 0, left: 16, right: colP + PRO_INSET, height: 1, backgroundColor: p.hair }} /> : null}
             <View style={{ flex: 1, paddingLeft: 16, paddingRight: 8, paddingVertical: 6 }}>
               <Txt v="sub" color={p.cardFg} style={[LABEL_TEXT, { fontFamily: F.semi }, tiny && { fontSize: 13 }, { lineHeight: two ? 17 : 20 }]} maxFontSizeMultiplier={1.4}>
                 {two ? balanceLines(tiny ? (SHORT[r.label] ?? r.label) : r.label) : tiny ? (SHORT[r.label] ?? r.label) : r.label}
@@ -169,7 +188,7 @@ function Compare({ rows, width, overlap, tiny, grow = 0 }: { rows: Row[]; width:
               ) : null}
             </View>
             <View style={{ width: colF, alignItems: 'center', justifyContent: 'center' }}>{cell(r.free, false)}</View>
-            <View style={{ width: colP, alignItems: 'center', justifyContent: 'center' }}>{cell(r.pro, true)}</View>
+            <View style={{ width: colP, marginRight: PRO_INSET, alignItems: 'center', justifyContent: 'center' }}>{cell(r.pro, true)}</View>
           </View>
         );
       })}
@@ -311,8 +330,8 @@ export default function Paywall() {
             >
               {head}
             </Txt>
-            {/* His bill points at the Pro column; only the base of his neck tucks behind the table. */}
-            <Duck width={84} right={EDGE_W + 30} bottom={36} />
+            {/* He sits on top of the raised Pro column, peeking over it. */}
+            <Duck width={80} right={EDGE_W + PRO_INSET} bottom={50} />
           </View>
 
           <Compare rows={rows} width={CANVAS_W - EDGE_W * 2} overlap={40} grow={rowGrow} />
@@ -329,7 +348,12 @@ export default function Paywall() {
             />
             <PlanCard
               title="Yearly"
-              banner={`${yearly.trialDays} DAYS FREE · ${badge}`}
+              note={`Free for ${yearly.trialDays} days`}
+              noteStrong
+              badge={badge}
+              badgeBg={brand.sunflower}
+              badgeFg={brand.ink}
+              badgeRight
               price={billedLabel(yearly)}
               sub={`${perWeek} a week`}
               selected={planId === 'yearly'}

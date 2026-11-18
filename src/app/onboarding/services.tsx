@@ -19,7 +19,7 @@ import { LinkButton, OnbRoot, TextLink } from '@/onboarding/Parts';
 import { PlanSheet } from '@/onboarding/PlanSheet';
 import { PriceSheet } from '@/onboarding/PriceSheet';
 import { isPriced, totalsFor, useCountry, useMoney, useOnboarding, usePickedList, type Picked } from '@/state/onboarding';
-import { Button, Camera, ChevronRight, F, LogoTile, Search, StepHeader, Tick, Txt, haptic, radius, useFrame, usePalette } from '@/ui/sunflower';
+import { Button, Camera, ChevronRight, F, LogoTile, Search, StepHeaderSpace, Tick, Txt, haptic, radius, useFrame, usePalette } from '@/ui/sunflower';
 
 const NB = ' ';
 
@@ -228,7 +228,7 @@ export default function Services() {
   return (
     <OnbRoot surface="cream">
       <View style={{ flex: 1, paddingTop: f.top, paddingHorizontal: f.edge }}>
-        <StepHeader step={1} />
+        <StepHeaderSpace />
         <Txt v="title" accessibilityRole="header" style={[{ marginTop: f.tiny ? 10 : 16 }, f.tiny && { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 }]}>
           {`What do you pay${NB}for?`}
         </Txt>

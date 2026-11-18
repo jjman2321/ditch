@@ -3,6 +3,11 @@
 //   quick  · a state flips: 160 ms ease-out
 //   settle · something arrives: a spring with no bounce, looks done at ~300 ms
 //   stage  · a first-run screen builds up: fade plus at most an 8pt rise, 60–100 ms apart, done within 900 ms
+// Plus two springs for things that land (Nov 18, motion pass 2: "physics, not curves"):
+//   land   · a card or banner arrives and comes to rest: barely any bounce (damping ratio 0.82)
+//   pop    · a small thing you just touched answers back (tick, logo, tag): a touch livelier (0.7)
+// And the rule that matters most: where a finger drives it (the slides), motion follows the
+// finger frame by frame, not a timer.
 // Reduce Motion: every one of these shows its end state (Reanimated skips them on its own).
 
 import { useNavigation } from 'expo-router';
@@ -15,6 +20,10 @@ export const PRESS = { scale: 0.97, in: 80, out: 180 } as const;
 export const QUICK = { duration: 160, easing: EASE_OUT } as const;
 export const SETTLE = { duration: 300, dampingRatio: 1 } as const;
 export const STAGE = { rise: 8, gap: 80, fade: 320 } as const;
+export const LAND = { duration: 420, dampingRatio: 0.82 } as const;
+export const POP = { duration: 320, dampingRatio: 0.7 } as const;
+/** Letting go of a press: springs back with the faintest give, like a real key. */
+export const RELEASE = { duration: 260, dampingRatio: 0.75 } as const;
 
 /**
  * True once this screen has finished sliding in (the native push's
@@ -51,7 +60,7 @@ export function usePressScale(disabled?: boolean) {
     if (!disabled) s.set(withTiming(PRESS.scale, { duration: PRESS.in, easing: EASE_OUT }));
   }, [disabled, s]);
   const onPressOut = useCallback(() => {
-    s.set(withTiming(1, { duration: PRESS.out, easing: EASE_OUT }));
+    s.set(withSpring(1, RELEASE));
   }, [s]);
   const style = useAnimatedStyle(() => ({ transform: [{ scale: s.get() }] }));
   return { handlers: { onPressIn, onPressOut }, style };

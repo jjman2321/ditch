@@ -3,9 +3,10 @@
 
 import { useRef, type ReactNode } from 'react';
 import { Pressable, View, type StyleProp, type ViewStyle } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 
-import { EASE_OUT, PRESS } from './motion';
+import { haptic } from './haptics';
+import { EASE_OUT, PRESS, RELEASE } from './motion';
 
 import { TAP, usePalette } from './tokens';
 import { Txt } from './type';
@@ -25,7 +26,10 @@ export function Button({
   left,
   danger,
   height,
+  tapHaptic,
 }: {
+  /** A light tap on press: for the main "go on" button of a step (onboarding), so moving forward feels physical. */
+  tapHaptic?: boolean;
   /** Overrides the kind's height (the paywall's 48pt button on small phones). */
   height?: number;
   label: string;
@@ -43,10 +47,10 @@ export function Button({
   const p = usePalette();
   // One press at a time: a quick double tap must never add twice or open a screen twice.
   const busy = useRef(false);
-  // The `press` motion (motion.tsx): buttons scale to 0.97, in 80 ms, out 180 ms. Text buttons dim instead.
+  // The `press` motion (motion.tsx): buttons scale to 0.97 in 80 ms and spring back on release. Text buttons dim instead.
   const down = useSharedValue(0);
   const pressIn = () => down.set(withTiming(1, { duration: PRESS.in, easing: EASE_OUT }));
-  const pressOut = () => down.set(withTiming(0, { duration: PRESS.out, easing: EASE_OUT }));
+  const pressOut = () => down.set(withSpring(0, RELEASE));
   const text = kind === 'text';
   const pressStyle = useAnimatedStyle(() =>
     text ? { opacity: (disabled ? 0.4 : 1) * (1 - 0.4 * down.get()) } : { transform: [{ scale: 1 - (1 - PRESS.scale) * down.get() }] },
@@ -54,6 +58,7 @@ export function Button({
   const press = () => {
     if (busy.current) return;
     busy.current = true;
+    if (tapHaptic) haptic.light();
     let out: unknown;
     try {
       out = onPress();

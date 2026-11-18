@@ -14,7 +14,7 @@ import { addDays, parseDate, shortDate, weekdayDate } from '@/domain/dates';
 import { DaySheet } from '@/onboarding/DaySheet';
 import { OnbRoot } from '@/onboarding/Parts';
 import { byYearlyDesc, chargeOf, onboardingToday, pickHasDate, useOnboarding, usePickedList, type Picked } from '@/state/onboarding';
-import { Button, F, LogoTile, StepHeader, Txt, brand, haptic, useFrame, usePalette } from '@/ui/sunflower';
+import { Button, F, LogoTile, StepHeaderSpace, Txt, brand, haptic, useFrame, usePalette } from '@/ui/sunflower';
 
 const CYCLE_LABEL = { weekly: 'Weekly', biweekly: 'Every 2 weeks', monthly: 'Monthly', quarterly: 'Every 3 months', semiannual: 'Every 6 months', yearly: 'Yearly' } as const;
 
@@ -102,7 +102,7 @@ export default function Dates() {
   return (
     <OnbRoot surface="cream">
       <View style={{ flex: 1, paddingTop: f.top, paddingHorizontal: f.edge }}>
-        <StepHeader step={3} />
+        <StepHeaderSpace />
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: footerH + 8 }}>
           <Txt v="title" accessibilityRole="header" style={[{ marginTop: f.tiny ? 10 : 16 }, f.tiny && { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 }]}>
             {'Which day does each one\u00A0charge?'}

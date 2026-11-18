@@ -1,0 +1,286 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:Display;src:url(file:///home/user/ditch/assets/fonts/ArchivoDitch-Display.ttf)}
+@font-face{font-family:Title;src:url(file:///home/user/ditch/assets/fonts/ArchivoDitch-Title.ttf)}
+@font-face{font-family:WideBold;src:url(file:///home/user/ditch/assets/fonts/ArchivoDitch-WideBold.ttf)}
+:root{--sun:#FFCC2E;--ink:#16140F;--cream:#FBF7EE;--fg2:#5A544A;--fg2s:#4B4220;--mute:#6B6559;--hair:#EEE7D8;--bill:#FF6C2C;--ok:#1E7A41}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#2b2a27;font:16px/1.38 -apple-system,"Inter",Helvetica,Arial,sans-serif;color:var(--ink);padding:30px;display:grid;grid-template-columns:repeat(4,393px);gap:36px 26px}
+.cap{color:#ddd;font:600 14px/1.35 Helvetica;margin-bottom:10px;min-height:56px}.cap b{color:var(--sun)}
+.phone{width:393px;height:852px;border-radius:48px;overflow:hidden;position:relative;background:var(--cream);box-shadow:0 0 0 10px #111}
+.phone.sun{background:var(--sun)}
+.status{position:absolute;top:16px;left:34px;right:30px;display:flex;justify-content:space-between;font:600 15px Helvetica;z-index:9}
+.full{position:absolute;inset:0;padding:62px 24px 34px;display:flex;flex-direction:column}
+.prog{display:flex;gap:5px;margin:6px 0 22px}.prog i{flex:1;height:4px;border-radius:2px;background:rgba(22,20,15,.14)}.prog i.on{background:var(--ink)}
+h1{font:400 32px/1.06 Title;letter-spacing:-.9px;text-wrap:balance}
+.lead{color:var(--fg2);margin-top:10px;font-size:17px;line-height:1.4}
+.sun .lead{color:var(--fg2s)}
+.btn{height:56px;border-radius:28px;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:600;font-size:17px}
+.sun .btn{color:var(--sun)}
+.ghost{height:50px;display:grid;place-items:center;font-weight:600;font-size:16px;color:var(--ink)}
+.fine{color:var(--mute);font-size:13px;text-align:center;margin-top:8px}
+.logo{width:40px;height:40px;border-radius:10px;flex:none;object-fit:cover}
+.card{background:#fff;border-radius:18px;box-shadow:0 0 0 1px #ECE4D4}
+.row{display:flex;align-items:center;gap:12px;padding:11px 14px;border-top:1px solid var(--hair)}.row:first-child{border-top:0}
+.nm{font-weight:600;font-size:16px}.sub{color:var(--mute);font-size:13.5px}
+.amt{margin-left:auto;font:400 16px WideBold;font-variant-numeric:tabular-nums;text-align:right}
+.lbl{font:400 12px WideBold;letter-spacing:1.1px;color:var(--mute)}
+.pick{border-radius:20px;padding:16px;display:flex;gap:14px;align-items:center;background:#fff;box-shadow:0 0 0 1.5px #E5DDCC}
+.pick.main{box-shadow:0 0 0 2.5px var(--ink)}
+.ic{width:46px;height:46px;border-radius:14px;background:var(--sun);display:grid;place-items:center;flex:none;border:1.5px solid var(--ink)}
+.tag{display:inline-block;font:700 11px Helvetica;letter-spacing:.3px;background:var(--ink);color:var(--sun);padding:4px 8px;border-radius:7px;margin-left:6px;vertical-align:2px}
+.chev{margin-left:auto;font-size:22px;color:var(--mute)}
+.promise{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-top:1px solid var(--hair)}.promise:first-child{border-top:0}
+.pi{width:36px;height:36px;border-radius:12px;background:var(--cream);display:grid;place-items:center;flex:none;box-shadow:0 0 0 1px #E5DDCC}
+.check{width:26px;height:26px;border-radius:13px;background:var(--ink);color:var(--sun);display:grid;place-items:center;font-size:14px;flex:none}
+.check.wait{background:transparent;box-shadow:inset 0 0 0 2px #CFC6B4;color:transparent}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:7px 12px;font:600 13.5px Helvetica;background:#fff;box-shadow:0 0 0 1px #E5DDCC}
+.big{font:400 76px/0.92 Display;letter-spacing:-2.6px;font-variant-numeric:tabular-nums}
+.notif{background:rgba(255,255,255,.92);border-radius:20px;padding:12px 14px;display:flex;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.notif img{width:38px;height:38px;border-radius:9px}
+.x{position:absolute;right:16px;top:54px;width:44px;height:44px;border-radius:22px;display:grid;place-items:center;font-size:17px;background:rgba(22,20,15,.07);z-index:5}
+.plan{border-radius:16px;padding:13px 15px;background:#fff;box-shadow:0 0 0 1.5px #E3DBCA;display:flex;justify-content:space-between;align-items:center;margin-top:9px;font-weight:600}
+.plan.on{box-shadow:0 0 0 2.5px var(--ink)}.plan small{display:block;color:var(--mute);font-weight:500;font-size:12.5px;margin-top:2px}
+table{width:100%;border-collapse:collapse;font-size:15px}td{padding:9px 4px;border-top:1px solid var(--hair)}td.c{text-align:center;width:66px;font-weight:700}
+.tl{display:flex;flex-direction:column;gap:0;margin-top:14px}
+.tl .s{display:flex;gap:12px;align-items:flex-start;position:relative;padding-bottom:12px}
+.tl .d{width:28px;height:28px;border-radius:14px;background:var(--ink);color:var(--sun);display:grid;place-items:center;font-size:13px;flex:none;z-index:1}
+.tl .s:not(:last-child)::after{content:"";position:absolute;left:13px;top:28px;bottom:0;width:2px;background:#D9D0BE}
+.tabs{position:absolute;left:0;right:0;bottom:0;height:84px;background:rgba(251,247,238,.97);border-top:1px solid var(--hair);display:flex;justify-content:space-around;padding-top:10px;font:600 11px Helvetica;color:var(--mute)}
+.tabs div{display:flex;flex-direction:column;align-items:center;gap:4px}.tabs .on{color:var(--ink)}.tabs i{width:24px;height:24px;border-radius:7px;border:2px solid currentColor;display:block}
+.dim{position:absolute;inset:0;background:rgba(22,20,15,.42);z-index:6}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--cream);border-radius:26px 26px 0 0;padding:12px 22px 34px;z-index:7}
+.grab{width:36px;height:5px;border-radius:3px;background:#D9D1C1;margin:0 auto 16px}
+.ditched{font:700 10.5px Helvetica;letter-spacing:.8px;color:#fff;background:var(--ink);border-radius:5px;padding:3px 6px}
+</style></head><body>
+
+<!-- 1 WELCOME -->
+<div><div class="cap">1 · <b>Welcome shows the real product.</b> A real Ditch list (logos, dates, a reminder, one DITCHED row) instead of a slogan. One line says both jobs.</div>
+<div class="phone sun"><div class="status"><span>9:41</span><span>●●● ▮</span></div><div class="full">
+<div style="font:400 26px Display;letter-spacing:-.5px;margin-top:8px">ditch</div>
+<div class="card" style="margin-top:22px;transform:rotate(-1.2deg)">
+ <div class="row"><img class="logo" src="file:///home/user/ditch/assets/logos/netflix.png"><div><div class="nm">Netflix</div><div class="sub">Tue, Dec 16 · <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" style="vertical-align:-1px"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg> reminder on</div></div><div class="amt">$17.99</div></div>
+ <div class="row"><img class="logo" src="file:///home/user/ditch/assets/logos/chatgpt-plus.png"><div><div class="nm">ChatGPT Plus</div><div class="sub">Trial ends Fri, Dec 19</div></div><div class="amt">$20.00</div></div>
+ <div class="row"><img class="logo" src="file:///home/user/ditch/assets/logos/planet-fitness.png" style="opacity:.45"><div style="opacity:.55"><div class="nm">Planet Fitness</div><div class="sub">$299.88 a year you won't pay</div></div><div style="margin-left:auto"><span class="ditched">DITCHED</span></div></div>
+ <div class="row"><img class="logo" src="file:///home/user/ditch/assets/logos/spotify.png"><div><div class="nm">Spotify</div><div class="sub">Mon, Dec 22</div></div><div class="amt">$11.99</div></div>
+</div>
+<h1 style="margin-top:34px;font-size:36px">Find every subscription. Get a reminder before each charge.</h1>
+<div style="margin-top:auto"></div>
+<div class="btn">Find my subscriptions</div>
+<div class="fine" style="color:var(--fg2s)">Free to track · No account needed</div>
+</div></div></div>
+
+<!-- 2 HOW TO START -->
+<div><div class="cap">2 · <b>Pick how to start.</b> Bank scan is the big, obvious choice (US &amp; Canada). Picking from a list stays one tap away. Outside US/CA the screenshot card takes the top spot.</div>
+<div class="phone"><div class="status"><span>9:41</span><span>●●● ▮</span></div><div class="full">
+<div class="prog"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+<h1>How should we find them?</h1>
+<div class="lead">You check everything before it's added.</div>
+<div style="display:flex;flex-direction:column;gap:12px;margin-top:24px">
+ <div class="pick main"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2"><path d="M3 10h18M5 10v8M9 10v8M15 10v8M19 10v8M2 20h20M12 3l9 5H3z"/></svg></div>
+  <div><div class="nm">Scan my bank <span class="tag">FASTEST</span></div><div class="sub" style="margin-top:3px">Finds them in about a minute. First scan free. US &amp; Canada.</div></div></div>
+ <div class="pick"><div class="ic" style="background:#fff"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></div>
+  <div><div class="nm">Pick from a list</div><div class="sub" style="margin-top:3px">Tick the ones you pay for. 176 services.</div></div><div class="chev">›</div></div>
+</div>
+<div class="card" style="margin-top:22px;padding:14px 16px;display:flex;gap:12px;align-items:center;box-shadow:none;background:transparent;border:1.5px dashed #D6CCB8">
+ <svg width="22" height="22" style="flex:none" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 18h4"/></svg>
+ <div style="font-size:14.5px"><b>Paying through Apple?</b> <span style="color:var(--fg2)">Screenshot your Apple subscriptions. Banks only see "APPLE.COM/BILL".</span></div></div>
+<div style="margin-top:auto"></div>
+<div class="btn">Scan my bank</div>
+<div class="ghost">Pick from a list instead</div>
+</div></div></div>
+
+<!-- 3 TRUST -->
+<div><div class="cap">3 · <b>Trust screen: "We look once, then let go."</b> Three fears, three lines. Plaid's own consent comes next, so we don't repeat it. "Not now" never shames.</div>
+<div class="phone"><div class="status"><span>9:41</span><span>●●● ▮</span></div><div class="full">
+<div class="prog"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
+<h1>We look once, then let go.</h1>
+<div class="lead">One scan of your charges. Then we disconnect.</div>
+<div class="card" style="margin-top:24px;padding:4px 16px">
+ <div class="promise"><div class="pi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2.2"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></div><div><div class="nm">Read-only</div><div class="sub">We can see charges. We can't move money.</div></div></div>
+ <div class="promise"><div class="pi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2.2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><div><div class="nm">Your login goes to Plaid</div><div class="sub">We never see your bank password.</div></div></div>
+ <div class="promise"><div class="pi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2.2"><path d="M9 15l6-6M7 11l-2 2a4 4 0 0 0 6 6l2-2M17 13l2-2a4 4 0 0 0-6-6l-2 2"/><path d="M3 3l18 18"/></svg></div><div><div class="nm">Disconnected after the scan</div><div class="sub">We don't keep your transactions.</div></div></div>
+</div>
+<div style="text-align:center;margin-top:20px;font-size:13.5px;color:var(--fg2)">Works with Chase, Bank of America, Wells Fargo<br>and 12,000+ US &amp; Canadian banks</div>
+<div style="margin-top:auto"></div>
+<div class="btn">Connect with Plaid</div>
+<div class="ghost">Not now</div>
+<div class="fine" style="margin-top:0">Secured by Plaid · <u>How it works</u></div>
+</div></div></div>
+
+<!-- 4 SCANNING -->
+<div><div class="cap">4 · <b>Scanning shows real steps, not a fake bar.</b> Logos drop in as they're found. The last tick proves the disconnect, which no rival can say.</div>
+<div class="phone"><div class="status"><span>9:41</span><span>●●● ▮</span></div><div class="full">
+<div style="margin-top:40px"></div>
+<h1>Looking through 12 months of charges…</h1>
+<div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:30px">
+ <img class="logo" style="width:52px;height:52px;border-radius:13px" src="file:///home/user/ditch/assets/logos/netflix.png">
+ <img class="logo" style="width:52px;height:52px;border-radius:13px" src="file:///home/user/ditch/assets/logos/spotify.png">
+ <img class="logo" style="width:52px;height:52px;border-radius:13px" src="file:///home/user/ditch/assets/logos/chatgpt-plus.png">
+ <img class="logo" style="width:52px;height:52px;border-radius:13px" src="file:///home/user/ditch/assets/logos/hulu.png">
+ <img class="logo" style="width:52px;height:52px;border-radius:13px" src="file:///home/user/ditch/assets/logos/planet-fitness.png">
+ <img class="logo" style="width:52px;height:52px;border-radius:13px;opacity:.35" src="file:///home/user/ditch/assets/logos/nyt.png">
+</div>
+<div class="card" style="margin-top:34px;padding:4px 16px">
+ <div class="promise"><div class="check">✓</div><div class="nm" style="padding-top:2px">Connected to Chase</div></div>
+ <div class="promise"><div class="check">✓</div><div class="nm" style="padding-top:2px">Read 1,284 charges</div></div>
+ <div class="promise"><div class="check" style="background:var(--sun);color:var(--ink)">•</div><div class="nm" style="padding-top:2px">Spotting the ones that repeat</div></div>
+ <div class="promise"><div class="check wait">✓</div><div class="nm" style="padding-top:2px;color:var(--mute)">Disconnecting from Chase</div></div>
+</div>
+<div style="margin-top:auto"></div>
+<div class="fine">This takes about a minute. You can leave this screen.</div>
+</div></div></div>
+
+<!-- 5 FOUND -->
+<div><div class="cap">5 · <b>The reveal: the money moment.</b> Count, yearly total and trials first. Grouped list, count in the button. "Chase disconnected" chip as proof.</div>
+<div class="phone sun"><div class="status"><span>9:41</span><span>●●● ▮</span></div><div class="full" style="padding-bottom:30px">
+<div><span class="chip">✓ Chase disconnected</span></div>
+<div style="font:400 22px Title;margin-top:18px">We found 9 subscriptions</div>
+<div class="big" style="margin-top:8px">$1,140</div>
+<div style="font:400 22px/1.1 Title;margin-top:6px">a year.</div>
+<div style="margin-top:12px;font-weight:600;color:var(--fg2s)">2 free trials end this week.</div>
+<div class="card" style="margin-top:16px">
+ <div class="row" style="padding:9px 14px"><div class="lbl">STILL CHARGING · 7</div></div>
+ <div class="row"><img class="logo" src="file:///home/user/ditch/assets/logos/netflix.png"><div><div class="nm">Netflix</div><div class="sub">Monthly · Tue, Dec 16</div></div><div class="amt">$17.99</div></div>
+ <div class="row"><img class="logo" src="file:///home/user/ditch/assets/logos/chatgpt-plus.png"><div><div class="nm">ChatGPT Plus</div><div class="sub" style="color:#B5450F;font-weight:600">Trial ends Fri, Dec 19</div></div><div class="amt">$20.00</div></div>
+ <div class="row"><img class="logo" src="file:///home/user/ditch/assets/logos/planet-fitness.png"><div><div class="nm">Planet Fitness</div><div class="sub">Monthly · Mon, Dec 15</div></div><div class="amt">$24.99</div></div>
+ <div class="row" style="justify-content:center;color:var(--fg2);font-weight:600;font-size:14.5px">+ 6 more</div>
+</div>
+<div style="margin-top:auto"></div>
+<div class="btn">Add all 9</div>
+<div class="ghost" style="height:40px">Review one by one</div>
+</div></div></div>
+
+<!-- 6 NOTIF ASK -->
+<div><div class="cap">6 · <b>Reminder ask built from their own data.</b> The real banner they'll get, then "Tap Allow on the next screen" with an arrow. Skip without guilt.</div>
+<div class="phone"><div class="status"><span>9:41</span><span>●●● ▮</span></div><div class="full">
+<div class="prog"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+<h1>Netflix charges you Tue, Dec 16.</h1>
+<div class="lead">Want a heads-up 3 days before? We'll do the same for the others.</div>
+<div style="margin-top:34px;border-radius:30px;background:linear-gradient(160deg,#2c3a4f,#6b7f9a);padding:22px 14px 26px">
+ <div style="color:#fff;text-align:center;font:600 15px Helvetica;opacity:.85">Saturday, December 13</div>
+ <div style="color:#fff;text-align:center;font:300 64px/1 Helvetica;margin:4px 0 18px">9:00</div>
+ <div class="notif"><img src="file:///home/user/ditch/assets/images/icon.png"><div style="flex:1"><div style="display:flex;justify-content:space-between"><b style="font-size:14.5px">Ditch</b><span class="sub">now</span></div><div style="font-size:14.5px">Netflix charges Tuesday. $17.99. Still watching?</div></div></div>
+</div>
+<div style="margin-top:auto"></div>
+<div style="display:flex;align-items:center;gap:8px;justify-content:center;font:600 14px Helvetica;color:var(--fg2);margin-bottom:12px">Tap "Allow" on the next screen <span style="font-size:18px">↗</span></div>
+<div class="btn">Turn on reminders</div>
+<div class="ghost">Not now</div>
+</div></div></div>
+
+<!-- 7 PAYWALL A -->
+<div><div class="cap">7a · <b>Paywall, today's one-line style.</b> Anchored on THEIR money: their logos and total up top. Pro = reminders on all 9, rescans, trial and price alerts. × from frame one.</div>
+<div class="phone"><div class="status"><span>9:41</span><span>●●● ▮</span></div><div class="x">✕</div><div class="full">
+<div style="display:flex;margin-top:30px">
+ <img class="logo" style="box-shadow:0 0 0 3px var(--cream)" src="file:///home/user/ditch/assets/logos/netflix.png"><img class="logo" style="margin-left:-8px;box-shadow:0 0 0 3px var(--cream)" src="file:///home/user/ditch/assets/logos/chatgpt-plus.png"><img class="logo" style="margin-left:-8px;box-shadow:0 0 0 3px var(--cream)" src="file:///home/user/ditch/assets/logos/spotify.png"><img class="logo" style="margin-left:-8px;box-shadow:0 0 0 3px var(--cream)" src="file:///home/user/ditch/assets/logos/hulu.png"><div style="margin-left:8px;align-self:center;font-weight:600;color:var(--fg2)">+5</div>
+</div>
+<h1 style="margin-top:14px">Get a reminder before all 9 renew.</h1>
+<div class="lead" style="font-size:15.5px">$1,140 a year · next charge Mon, Dec 15</div>
+<table style="margin-top:14px">
+ <tr><td style="border:0"></td><td class="c" style="border:0;font-size:12px;color:var(--mute)">FREE</td><td class="c" style="border:0;font-size:12px">PRO</td></tr>
+ <tr><td>Your full list and totals</td><td class="c">✓</td><td class="c">✓</td></tr>
+ <tr><td>Reminders before charges</td><td class="c" style="font-weight:600">3</td><td class="c">All</td></tr>
+ <tr><td>Free-trial alerts</td><td class="c" style="color:#bbb">–</td><td class="c">✓</td></tr>
+ <tr><td>Rescan your bank</td><td class="c" style="color:#bbb">–</td><td class="c">✓</td></tr>
+ <tr><td>Price-rise alerts</td><td class="c" style="color:#bbb">–</td><td class="c">✓</td></tr>
+</table>
+<div class="plan on"><div>Yearly<small>$2.50 a month</small></div><div>$29.99</div></div>
+<div class="plan"><div>Monthly</div><div>$4.99</div></div>
+<div style="margin-top:auto"></div>
+<div class="btn">Start 7-day free trial</div>
+<div class="fine" style="color:var(--ink)">$0 today · $29.99/yr from Dec 20 · Cancel anytime</div>
+<div class="fine" style="margin-top:4px">Paid through Apple · <u>Restore</u> · <u>Lifetime $49.99</u></div>
+</div></div></div>
+
+<!-- 7b PAYWALL B -->
+<div><div class="cap">7b · <b>Same paywall with a trial timeline</b> (Blinkist +23%). Needs your OK: on Nov 10 you chose no timeline. Real dates, no countdown.</div>
+<div class="phone"><div class="status"><span>9:41</span><span>●●● ▮</span></div><div class="x">✕</div><div class="full">
+<h1 style="margin-top:34px">Get a reminder before all 9 renew.</h1>
+<div class="lead" style="font-size:15.5px">$1,140 a year · next charge Mon, Dec 15</div>
+<div class="tl">
+ <div class="s"><div class="d">✓</div><div><div class="nm">Today</div><div class="sub">Reminders on all 9, trial alerts, rescans.</div></div></div>
+ <div class="s"><div class="d"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" style="vertical-align:-1px"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg></div><div><div class="nm">Thu, Dec 18</div><div class="sub">We remind you your trial ends soon.</div></div></div>
+ <div class="s"><div class="d" style="font:700 14px Helvetica">$</div><div><div class="nm">Sat, Dec 20</div><div class="sub">$29.99 for the year. Cancel before and pay nothing.</div></div></div>
+</div>
+<div class="plan on" style="margin-top:6px"><div>Yearly<small>$2.50 a month</small></div><div>$29.99</div></div>
+<div class="plan"><div>Monthly</div><div>$4.99</div></div>
+<div class="plan"><div>Once<small>Keep Pro for good</small></div><div>$49.99</div></div>
+<div style="margin-top:auto"></div>
+<div class="btn">Start 7-day free trial</div>
+<div class="fine" style="color:var(--ink)">$0 today · $29.99/yr from Dec 20 · Cancel anytime</div>
+<div class="fine" style="margin-top:4px">Paid through Apple · <u>Restore</u></div>
+</div></div></div>
+
+<!-- 8 YOU'RE SET -->
+<div><div class="cap">8 · <b>"You're set" tells the truth simply.</b> What's covered, what isn't, one next step. No "2 of 5" surprise.</div>
+<div class="phone sun"><div class="status"><span>9:41</span><span>●●● ▮</span></div><div class="full">
+<h1 style="font-size:40px;margin-top:40px">You're set.</h1>
+<div class="card" style="margin-top:26px;padding:4px 16px">
+ <div class="promise"><div class="check">✓</div><div><div class="nm">9 on your list</div><div class="sub">$1,140 a year</div></div></div>
+ <div class="promise"><div class="check">✓</div><div><div class="nm">Reminders on your 3 biggest</div><div class="sub">Planet Fitness, ChatGPT Plus, Netflix · 3 days before, 9 AM</div></div></div>
+ <div class="promise"><div class="check wait">✓</div><div><div class="nm">6 without reminders</div><div class="sub">Swap which 3 anytime, or cover all with Pro.</div></div></div>
+</div>
+<div style="margin-top:auto"></div>
+<div class="btn">Go to my list</div>
+</div></div></div>
+
+<!-- 9 HOME -->
+<div><div class="cap">9 · <b>Home: list above the fold.</b> Next reminder lives inside the total card. One nudge slot (here: a trial). Card chips and payday move off Home.</div>
+<div class="phone"><div class="status"><span>9:41</span><span>●●● ▮</span></div><div class="full" style="padding-bottom:96px">
+<div style="display:flex;align-items:center;justify-content:space-between"><div style="font:400 26px Display;letter-spacing:-.5px">ditch</div><div style="display:flex;gap:10px"><div style="width:40px;height:40px;border-radius:20px;background:#fff;box-shadow:0 0 0 1px #E5DDCC;display:grid;place-items:center">⚙︎</div><div style="width:40px;height:40px;border-radius:20px;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:22px">+</div></div></div>
+<div style="margin-top:14px;border-radius:22px;background:var(--sun);padding:16px 18px">
+ <div style="display:flex;align-items:baseline;gap:8px"><span style="font:400 40px/1 Display;letter-spacing:-1px">$95.00</span><span style="font-weight:600">a month</span></div>
+ <div style="font-size:14px;color:var(--fg2s);margin-top:4px">$1,140 a year · 9 subscriptions</div>
+ <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(22,20,15,.15);font-size:14.5px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" style="vertical-align:-1px"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg> <b>Next:</b> Planet Fitness, Mon, Dec 15 · $24.99</div>
+</div>
+<div class="card" style="margin-top:10px;padding:12px 14px;display:flex;gap:10px;align-items:center;background:#FFF1E8;box-shadow:0 0 0 1px #F6D6C2">
+ <img class="logo" style="width:32px;height:32px;border-radius:8px" src="file:///home/user/ditch/assets/logos/chatgpt-plus.png"><div style="font-size:14.5px"><b>ChatGPT Plus trial ends Fri.</b> <span style="color:var(--fg2)">Keep or ditch?</span></div><div class="chev">›</div></div>
+<div class="lbl" style="margin:16px 2px 8px">THIS WEEK</div>
+<div class="card">
+ <div class="row"><img class="logo" src="file:///home/user/ditch/assets/logos/planet-fitness.png"><div><div class="nm">Planet Fitness</div><div class="sub">Mon, Dec 15 · in 2 days</div></div><div class="amt">$24.99</div></div>
+ <div class="row"><img class="logo" src="file:///home/user/ditch/assets/logos/netflix.png"><div><div class="nm">Netflix</div><div class="sub">Tue, Dec 16</div></div><div class="amt">$17.99</div></div>
+</div>
+<div class="lbl" style="margin:16px 2px 8px">LATER</div>
+<div class="card">
+ <div class="row"><img class="logo" src="file:///home/user/ditch/assets/logos/chatgpt-plus.png"><div><div class="nm">ChatGPT Plus</div><div class="sub">Fri, Dec 19 · trial</div></div><div class="amt">$20.00</div></div>
+ <div class="row"><img class="logo" src="file:///home/user/ditch/assets/logos/spotify.png"><div><div class="nm">Spotify</div><div class="sub">Mon, Dec 22</div></div><div class="amt">$11.99</div></div>
+</div>
+</div>
+<div class="tabs"><div class="on"><i></i>Home</div><div><i></i>Calendar</div><div><i></i>Ditched</div></div>
+</div></div>
+
+<!-- 10 + CHOOSER -->
+<div><div class="cap">10 · <b>The + button opens a chooser.</b> Finding is never buried again: bank, Apple screenshot, statement, or add one yourself.</div>
+<div class="phone"><div class="status"><span>9:41</span><span>●●● ▮</span></div><div class="full" style="opacity:.6"><div style="font:400 26px Display">ditch</div></div><div class="dim"></div>
+<div class="sheet"><div class="grab"></div>
+<h1 style="font-size:26px">Add subscriptions</h1>
+<div class="lbl" style="margin:18px 2px 8px">FIND THEM FOR ME</div>
+<div class="card">
+ <div class="row" style="padding:14px"><div class="ic" style="width:40px;height:40px;border-radius:12px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2"><path d="M3 10h18M5 10v8M9 10v8M15 10v8M19 10v8M2 20h20M12 3l9 5H3z"/></svg></div><div><div class="nm">Scan my bank</div><div class="sub">Last scan Nov 18 · rescan with Pro</div></div><div class="chev">›</div></div>
+ <div class="row" style="padding:14px"><div class="ic" style="width:40px;height:40px;border-radius:12px;background:#fff"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 18h4"/></svg></div><div><div class="nm">Apple subscriptions screenshot</div><div class="sub">Names what banks show as APPLE.COM/BILL</div></div><div class="chev">›</div></div>
+ <div class="row" style="padding:14px"><div class="ic" style="width:40px;height:40px;border-radius:12px;background:#fff"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="2"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg></div><div><div class="nm">Bank statement</div><div class="sub">PDF or CSV · any country</div></div><div class="chev">›</div></div>
+</div>
+<div class="lbl" style="margin:18px 2px 8px">OR</div>
+<div class="card"><div class="row" style="padding:14px"><div class="ic" style="width:40px;height:40px;border-radius:12px;background:#fff;font-size:20px">+</div><div><div class="nm">Add one myself</div><div class="sub">Search 176 services</div></div><div class="chev">›</div></div></div>
+</div></div></div>
+
+<!-- 11 EMPTY HOME -->
+<div><div class="cap">11 · <b>Empty Home is a hero, not a blank.</b> Faint real-logo rows behind, one clear action, manual as the second door.</div>
+<div class="phone"><div class="status"><span>9:41</span><span>●●● ▮</span></div><div class="full" style="padding-bottom:96px">
+<div style="font:400 26px Display;letter-spacing:-.5px">ditch</div>
+<div style="position:relative;margin-top:40px">
+ <div class="card" style="opacity:.28">
+  <div class="row"><img class="logo" src="file:///home/user/ditch/assets/logos/netflix.png"><div><div class="nm">Netflix</div><div class="sub">—</div></div></div>
+  <div class="row"><img class="logo" src="file:///home/user/ditch/assets/logos/spotify.png"><div><div class="nm">Spotify</div><div class="sub">—</div></div></div>
+  <div class="row"><img class="logo" src="file:///home/user/ditch/assets/logos/hulu.png"><div><div class="nm">Hulu</div><div class="sub">—</div></div></div>
+ </div>
+</div>
+<h1 style="margin-top:30px">What are you paying for?</h1>
+<div class="lead">Most people find 2–3 they forgot. Scan your bank and see in a minute.</div>
+<div style="margin-top:auto"></div>
+<div class="btn">Scan my bank</div>
+<div class="ghost">Add one myself</div>
+</div>
+<div class="tabs"><div class="on"><i></i>Home</div><div><i></i>Calendar</div><div><i></i>Ditched</div></div>
+</div></div>
+
+</body></html>

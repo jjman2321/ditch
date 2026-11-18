@@ -95,7 +95,7 @@ Reset first: Settings → Your data → Delete all my data → Delete.
 - [ ] **A bank statement:** pick a PDF or CSV from Files. Same check list, then your total.
 - [ ] **Pick them myself:** the usual list → your total.
 - [ ] The total screen no longer shows the "2.5×, one study" line.
-- [ ] **Paywall:** your own upcoming reminders fill the yellow top (soonest first). The plans, button, price line and Restore/Terms/Privacy are pinned at the bottom. No big empty space on any phone.
+- [ ] **Paywall:** the Free vs Pro table is back (owner, Nov 18), with your logos at the top and Yearly / Lifetime / Weekly under it.
 
 ## 1k. Paywall plans: Yearly, Lifetime, Weekly (Nov 18, DECISIONS #66)
 Open the paywall (finish onboarding, or Settings → Ditch Pro → Try Pro free).

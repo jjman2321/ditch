@@ -86,16 +86,10 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
-## 1o. Paywall v22: the table, wording B (Nov 18)
-- [ ] Headline "Get a reminder before all N renewals." with the duck, then the Free vs Pro table (soft yellow Pro column):
-  - (TestFlight only) Find the forgotten ones · Your bank, scanned in a minute
-  - Reminders · A heads-up before each charge · 3 vs All N
-  - Price hikes · We flag it when a price goes up
-  - Yearly bills · A month's notice to bail
-  - Your call · Remind me 1, 3 or 7 days before
-  - Screenshot import · Snap your Apple list, done · Free: Once
+## 1o. Paywall v22: the table, short (Nov 18)
+- [ ] Headline "Get a reminder before all N renewals." with the duck, then a Free vs Pro table with one short name per row: (TestFlight only) Scan your bank · Reminders 3 vs All N · Price hike alerts · Yearly bill warnings · Pick your reminder days · Screenshot import (Free: Once).
 - [ ] Weekly $6.99/wk; Yearly picked, soft yellow, yellow "SAVE 86%", "7 days free", "$0.96 a week"; Lifetime $99.99 "Pay once."
-- [ ] Button: "Start 7-day free trial" with "$0 today · Cancel anytime in Settings" inside. Under it: "We'll remind you before your trial ends. Then $49.99/yr from (date). Renews yearly."
+- [ ] Button: "Start 7-day free trial" with "$0 today · Cancel anytime" inside. Under it one line: "Then $49.99/yr from (date). Renews yearly."
 - [ ] Tap Weekly / Lifetime: the button and the line under it change; the button never moves.
 - [ ] Same picture on every iPhone; dark mode readable.
 

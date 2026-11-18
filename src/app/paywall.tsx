@@ -56,27 +56,27 @@ type Row = { label: string; free: Cell; pro: Cell; /** One plain line under the 
 // Only rows where Pro is different, in Ditch's own words (owner, Nov 18: the table sells; "track every
 // subscription" is free on both sides, so it said nothing). Only features that work in this build (App Review 2.1).
 function rowsFor(n: number): Row[] {
-  // Wording B (owner, Nov 18): short, dry, on your side. Only real, working features; nothing overclaims.
+  // Owner, Nov 18: "way too much text". One short name per row, no second line. Only real, working features.
   return [
     // The headline feature once it ships (DECISIONS #64, trial-gated). Test builds only until then. Provider never named.
-    ...(showBankScan() ? [{ label: 'Find the forgotten ones', sub: 'Your bank, scanned in a minute', free: 'no', pro: 'yes' }] : []),
+    ...(showBankScan() ? [{ label: 'Scan your bank', free: 'no', pro: 'yes' }] : []),
     // Personal: "All 6" when they track more than the free 3.
-    { label: 'Reminders', sub: 'A heads-up before each charge', free: '3', pro: n > 3 ? `All ${n}` : 'Unlimited' },
-    // Price watch (DECISIONS #60): our checked price for their plan went up.
-    { label: 'Price hikes', sub: 'We flag it when a price goes up', free: 'no', pro: 'yes' },
+    { label: 'Reminders', free: '3', pro: n > 3 ? `All ${n}` : 'Unlimited' },
+    // Price watch (DECISIONS #60).
+    { label: 'Price hike alerts', free: 'no', pro: 'yes' },
     // The 30-day warning before yearly charges (DECISIONS #60).
-    { label: 'Yearly bills', sub: 'A month’s notice to bail', free: 'no', pro: 'yes' },
+    { label: 'Yearly bill warnings', free: 'no', pro: 'yes' },
     // Free can change the time of day; Pro picks the days before.
-    { label: 'Your call', sub: 'Remind me 1, 3 or 7 days before', free: 'no', pro: 'yes' },
+    { label: 'Pick your reminder days', free: 'no', pro: 'yes' },
     ...(WIDGET_READY ? [{ label: `Lock${NB}Screen widget`, free: 'no', pro: 'yes' }] : []),
-    // The first import is free (DECISIONS #34), so Free says "Once" and Pro is any time.
-    ...(showImport() ? [{ label: 'Screenshot import', sub: 'Snap your Apple list, done', free: 'Once', pro: 'yes' }] : []),
+    // The first import is free (DECISIONS #34), so Free says "Once".
+    ...(showImport() ? [{ label: 'Screenshot import', free: 'Once', pro: 'yes' }] : []),
   ];
 }
 
 /** 320pt wide: the same rows in fewer words, so each stays on one line. */
 const SHORT: Record<string, string> = {
-  'Find the forgotten ones': 'Forgotten ones',
+  'Pick your reminder days': 'Pick the days',
 };
 
 // The fixed paywall canvas (see the scaling note in Paywall).
@@ -86,8 +86,8 @@ const EDGE_W = 24;
 /** Everything on the canvas except the table rows (hero, table header, plans, button, price line, links). */
 const CANVAS_BASE = 570;
 /** Table row height range: 52pt (SE) to 66pt (fewer rows get more air). Each row has a label and a line under it. */
-const ROW_MIN = 46;
-const ROW_MAX = 58;
+const ROW_MIN = 40;
+const ROW_MAX = 50;
 
 const CELL_TEXT = { fontFamily: F.semi, fontSize: 14, lineHeight: 20 } as const;
 const LABEL_TEXT = { fontFamily: F.medium, fontSize: 14, letterSpacing: -0.1 } as const;
@@ -352,13 +352,13 @@ export default function Paywall() {
           </View>
 
           <View style={{ height: 14 }} />
-          <Button label={cta} sub={planId === 'yearly' ? `${formatWholeMoney(0, yearly.currency)} today · Cancel anytime in Settings` : undefined} onPress={buy} height={60} />
+          <Button label={cta} sub={planId === 'yearly' ? `${formatWholeMoney(0, yearly.currency)} today · Cancel anytime` : undefined} onPress={buy} height={60} />
           {/* A fixed slot, so the button never moves when the plan changes. Price and the real start date by the
             button (App Review); no reminder text (owner, Nov 10). */}
           <View style={{ height: 44, alignItems: 'center', justifyContent: 'center', paddingHorizontal: planId === 'yearly' ? 0 : 4 }}>
             <Txt v="fine" tone="fg2" num center accessibilityLiveRegion="polite">
               {planId === 'yearly'
-                ? `We’ll remind you before your trial ends. Then ${yearly.priceString}/yr from ${shortDate(charge).replace(' ', NB)}. Renews${NB}yearly.`
+                ? `Then ${yearly.priceString}/yr from ${shortDate(charge).replace(' ', NB)}. Renews${NB}yearly.`
                 : planId === 'weekly'
                   ? `${weekly.priceString} today, then every week. Renews weekly. Cancel${NB}anytime.`
                   : `${lifetime.priceString} once. Pro for good, nothing${NB}renews.`}

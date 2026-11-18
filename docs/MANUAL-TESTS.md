@@ -95,11 +95,11 @@ Reset first: Settings → Your data → Delete all my data → Delete.
 - [ ] **A bank statement:** pick a PDF or CSV from Files. Same check list, then your total.
 - [ ] **Pick them myself:** the usual list → your total.
 - [ ] The total screen no longer shows the "2.5×, one study" line.
-- [ ] **Paywall:** the Free vs Pro table is back (owner, Nov 18), with your logos at the top and Yearly / Lifetime / Weekly under it.
+- [ ] **Paywall:** no logos at the top. Title and duck, then the Free vs Pro table and "How the 7-day free trial works", which scroll. Weekly / Yearly / Lifetime, the button, the price line and Restore/Terms/Privacy stay pinned at the bottom on every phone.
 
 ## 1k. Paywall plans: Yearly, Lifetime, Weekly (Nov 18, DECISIONS #66)
 Open the paywall (finish onboarding, or Settings → Ditch Pro → Try Pro free).
-- [ ] Three cards, in this order: **Yearly** (picked already, "SAVE 86%" ribbon, "7 days free", $49.99/yr, "$0.97 a week"), **Lifetime** ($99.99, "Pay once. No subscription.", "one time"), **Weekly** ($6.99/wk, "No free trial"). No Monthly.
+- [ ] Three cards, in this order (owner, Nov 18): **Weekly** first, then **Yearly** (picked already) in the middle, then **Lifetime**. Details: **Yearly** (picked already, "SAVE 86%" ribbon, "7 days free", $49.99/yr, "$0.97 a week"), **Lifetime** ($99.99, "Pay once. No subscription.", "one time"), **Weekly** ($6.99/wk, "No free trial"). No Monthly.
 - [ ] Tap Lifetime: the button says "Pay $99.99 once", and the line under it says "$99.99 once. Pro for good, nothing renews."
 - [ ] Tap Weekly: the button says "Subscribe for $6.99 a week", and the line under it says "$6.99 today, then every week. Cancel anytime."
 - [ ] Tap Yearly again: "Start 7-day free trial", "$0 today · $49.99/yr from (date a week from today)".

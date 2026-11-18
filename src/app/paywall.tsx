@@ -3,6 +3,8 @@
 // to the free app (DECISIONS #29: no "Continue free" button); Restore;
 // the trial line has real dates; no countdowns, no fake discounts, no trial
 // toggle. The billed price is always the biggest price.
+// Order (owner, Nov 18): Weekly / Yearly / Lifetime, cheapest first, so Yearly sits in the middle,
+// pre-selected (the "compromise" pick, right under the weekly price it beats by 86%).
 // Plans (DECISIONS #66, owner Nov 18): Yearly with 7 days free (pre-selected,
 // "$0.97 a week", saving vs Weekly), Lifetime ("Pay once. No subscription.")
 // for people tired of subscriptions, Weekly with no trial. No monthly.
@@ -22,12 +24,12 @@ import { addDays, shortDate } from '@/domain/dates';
 import { balanceLines } from '@/domain/copy';
 import { formatWholeMoney } from '@/domain/money';
 import { perWeekFromYearly, yearlyBadgeVsWeekly } from '@/domain/pricing';
-import { homeTotals, listedUserSubs } from '@/domain/subs';
+import { listedUserSubs } from '@/domain/subs';
 import { OnbRoot } from '@/onboarding/Parts';
 import { PURCHASES_LIVE, billedLabel, planById, purchase, restorePurchases, type PlanId } from '@/services/purchases';
-import { onboardingToday, totalsFor, useCountry, useOnboarding, usePickedList } from '@/state/onboarding';
+import { onboardingToday, useOnboarding, usePickedList } from '@/state/onboarding';
 import { useApp } from '@/state/app';
-import { Bell, BottomFade, Button, Card, CardIcon, Check, Close, Duck, F, IconButton, LogoTile, PlanCard, ProLockup, Txt, brand, haptic, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
+import { Bell, BottomFade, Button, Card, CardIcon, Check, Close, Duck, F, IconButton, PlanCard, ProLockup, Txt, brand, haptic, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
 
 const NB = ' ';
 
@@ -213,34 +215,6 @@ function FootLink({ label, onPress }: { label: string; onPress: () => void }) {
   );
 }
 
-/** Up to 5 overlapping logos, then "Netflix, Spotify and 5 more" (names, never "+": Disney+ ends in one). */
-function LogoLine({ items, total, ink, band, yearly, big }: { items: { id: string; name: string; mono: string }[]; total: number; ink: string; band: string; yearly?: string | null; big?: boolean }) {
-  const shown = items.slice(0, 5);
-  const size = big ? 48 : 40;
-  const [a, b] = items;
-  const words = total === 2 ? `${a.name} and ${b.name}` : `${a.name}, ${b.name} and ${total - 2} more`;
-  return (
-    <View accessible accessibilityLabel={yearly ? `${words}. ${yearly} a year.` : words} style={{ marginBottom: 14 }}>
-      <View style={{ flexDirection: 'row' }}>
-        {shown.map((x, i) => (
-          <View key={`${x.id}-${i}`} style={{ marginLeft: i ? -10 : 0, borderRadius: 13, borderWidth: 2.5, borderColor: band, zIndex: shown.length - i }}>
-            <LogoTile id={x.id} size={size} mono={x.mono} />
-          </View>
-        ))}
-      </View>
-      <Txt v="label" color={ink} style={{ marginTop: 8 }}>
-        {words}
-      </Txt>
-      {/* Their real yearly total, only when there's room for it (one currency only, never added across). */}
-      {yearly ? (
-        <Txt v="moneyL" num color={ink} style={{ marginTop: 4 }}>
-          {`${yearly} a year`}
-        </Txt>
-      ) : null}
-    </View>
-  );
-}
-
 export default function Paywall() {
   const dark = useIsDark();
   const f = useFrame({ maxContent: 440, colH: 740, extraBottom: 0 });
@@ -251,15 +225,7 @@ export default function Paywall() {
   const inApp = app.settings.onboardingDone;
   const pickedList = usePickedList();
   const n = inApp ? listedUserSubs(app.subs).length : pickedList.length;
-  // The logo line (approved deck, DECISIONS #26): their own services, in the space above the title.
-  const logos = (
-    inApp ? listedUserSubs(app.subs).map((s) => ({ id: s.catalogId ?? s.id, name: s.name, mono: s.name.slice(0, 1).toUpperCase() })) : pickedList.map((x) => ({ id: x.id, name: x.name, mono: x.mono }))
-  ).slice(0, 12);
   const many = n > 3;
-  // Their yearly total, for the logo line: one currency only (never added across currencies).
-  const home = useCountry()?.currency;
-  const totals = inApp ? homeTotals(app.subs, onboardingToday(), home) : totalsFor(pickedList, home);
-  const yearlyTotal = totals.length === 1 && totals[0].yearlyMinor > 0 ? formatWholeMoney(totals[0].yearlyMinor, totals[0].currency, { home }) : null;
   const [planId, setPlanId] = useState<PlanId>('yearly');
 
   const yearly = planById('yearly');
@@ -324,8 +290,6 @@ export default function Paywall() {
   const overlap = f.tablet ? 48 : 40;
   const duckW = f.small ? 68 : f.tablet ? 104 : 96;
   const ink = dark ? '#F6F0E3' : brand.ink;
-  const showLogos = n >= 2 && !f.tiny;
-
   return (
     <OnbRoot surface="cream">
       <View style={{ flex: 1 }}>
@@ -346,8 +310,6 @@ export default function Paywall() {
               </IconButton>
             </View>
             <View style={{ height: f.small ? 8 : 16 }} />
-            {/* Their logos ("Netflix, Spotify and 5 more"): every phone taller than the SE. */}
-            {showLogos ? <LogoLine items={logos} total={n} ink={ink} band={dark ? brand.night : brand.sunflower} /> : null}
             {/* Dark mode: night like the other yellow screens (Almost set, Ditched), with a sunflower headline. */}
             <Txt
               v="title"
@@ -387,6 +349,15 @@ export default function Paywall() {
       >
         <View accessibilityRole="radiogroup" accessibilityLabel="Plans" style={{ gap: f.tiny ? 6 : 8 }}>
           <PlanCard
+            title="Weekly"
+            price={billedLabel(weekly)}
+            sub="No free trial"
+            selected={planId === 'weekly'}
+            onPress={() => select('weekly')}
+            height={cardH}
+            a11y={`Weekly, ${weekly.priceString} a week, no free trial`}
+          />
+          <PlanCard
             title="Yearly"
             // 320pt wide: the tag would squeeze "Yearly" to "Y."; the button and the line under it say the trial.
             tag={f.tiny ? undefined : `${yearly.trialDays} days free`}
@@ -407,15 +378,6 @@ export default function Paywall() {
             onPress={() => select('lifetime')}
             height={cardH}
             a11y={`Lifetime, ${lifetime.priceString} one time. Pay once, no subscription.`}
-          />
-          <PlanCard
-            title="Weekly"
-            price={billedLabel(weekly)}
-            sub="No free trial"
-            selected={planId === 'weekly'}
-            onPress={() => select('weekly')}
-            height={cardH}
-            a11y={`Weekly, ${weekly.priceString} a week, no free trial`}
           />
         </View>
 

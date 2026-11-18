@@ -63,7 +63,7 @@ function rowsFor(n: number): Row[] {
     // Personal: "All 6" when they track more than the free 3.
     { label: 'Reminders', sub: 'A heads-up before each charge', free: '3', pro: n > 3 ? `All ${n}` : 'Unlimited' },
     // Price watch (DECISIONS #60): our checked price for their plan went up.
-    { label: 'Price hikes', sub: 'We tell you when yours go up', free: 'no', pro: 'yes' },
+    { label: 'Price hikes', sub: 'We flag it when a price goes up', free: 'no', pro: 'yes' },
     // The 30-day warning before yearly charges (DECISIONS #60).
     { label: 'Yearly bills', sub: 'A month’s notice to bail', free: 'no', pro: 'yes' },
     // Free can change the time of day; Pro picks the days before.

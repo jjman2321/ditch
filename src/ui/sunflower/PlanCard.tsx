@@ -22,11 +22,14 @@ export function PlanCard({
   a11y,
   height = 56,
   tint,
+  banner,
   badgeBg,
   badgeFg,
 }: {
   /** Fill for the selected card (the plan we want picked). */
   tint?: string;
+  /** A strip across the top of the card, e.g. "7 DAYS FREE · SAVE 86%" (Cal AI / Deepstash pattern). */
+  banner?: string;
   /** Badge colours (default: ink on cream, sunflower in dark mode). */
   badgeBg?: string;
   badgeFg?: string;
@@ -50,7 +53,34 @@ export function PlanCard({
   const border = selected ? (p.dark ? brand.sunflower : p.fg) : p.dark ? '#3A3630' : p.controlBorder;
   return (
     <Pressable accessibilityRole="radio" accessibilityState={{ selected }} accessibilityLabel={a11y} onPress={onPress} style={({ pressed }) => ({ opacity: pressed ? 0.9 : 1 })}>
-      <View style={{ minHeight: height, borderRadius: radius.plan, backgroundColor: selected && tint ? tint : p.card, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 16 }}>
+      {banner ? (
+        <View
+          style={{
+            height: 26,
+            borderTopLeftRadius: radius.plan,
+            borderTopRightRadius: radius.plan,
+            backgroundColor: p.dark ? brand.sunflower : brand.ink,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Txt v="fine" color={p.dark ? brand.ink : brand.sunflower} style={{ fontFamily: F.bold, fontSize: 12, lineHeight: 16, letterSpacing: 0.8 }} maxFontSizeMultiplier={1.2}>
+            {banner}
+          </Txt>
+        </View>
+      ) : null}
+      <View
+        style={{
+          minHeight: height,
+          borderRadius: radius.plan,
+          ...(banner ? { borderTopLeftRadius: 0, borderTopRightRadius: 0 } : null),
+          backgroundColor: selected && tint ? tint : p.card,
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 12,
+          paddingHorizontal: 16,
+        }}
+      >
         <Radio on={selected} />
         <View style={{ flex: 1, minWidth: 0 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>

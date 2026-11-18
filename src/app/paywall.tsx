@@ -84,7 +84,7 @@ const CANVAS_W = 440;
 const HERO_H = 190;
 const EDGE_W = 24;
 /** Everything on the canvas except the table rows (hero, table header, plans, button, price line, links). */
-const CANVAS_BASE = 570;
+const CANVAS_BASE = 596;
 /** Table row height range: 52pt (SE) to 66pt (fewer rows get more air). Each row has a label and a line under it. */
 const ROW_MIN = 40;
 const ROW_MAX = 50;
@@ -246,7 +246,11 @@ export default function Paywall() {
     notice(r.restored ? 'Restored' : 'Nothing to restore', r.restored ? 'Ditch Pro is back on.' : 'We couldn’t find a Ditch Pro purchase on this Apple Account.');
   };
 
-  const cta = { yearly: `Start ${yearly.trialDays}-day free trial`, weekly: `Subscribe for ${weekly.priceString} a week`, lifetime: `Pay ${lifetime.priceString} once` }[planId];
+  const cta = {
+    yearly: yearly.trialDays === 7 ? 'Start my free week' : `Start my ${yearly.trialDays}-day free trial`,
+    weekly: `Subscribe for ${weekly.priceString} a week`,
+    lifetime: `Pay ${lifetime.priceString} once`,
+  }[planId];
   const perWeek = perWeekFromYearly({ amountMinor: yearly.priceMinor, currency: yearly.currency });
   // A true comparison with the Weekly plan we sell: $6.99 × 52 = $363.48 vs $49.99 (rounded down).
   const badge = yearlyBadgeVsWeekly({ amountMinor: weekly.priceMinor, currency: weekly.currency }, { amountMinor: yearly.priceMinor, currency: yearly.currency }).toUpperCase();
@@ -321,21 +325,16 @@ export default function Paywall() {
               selected={planId === 'weekly'}
               onPress={() => select('weekly')}
               height={58}
-              tint={dark ? '#2A2410' : '#FFF4C8'}
               a11y={`Weekly, ${weekly.priceString} a week, no free trial`}
             />
             <PlanCard
               title="Yearly"
-              tag={`${yearly.trialDays} days free`}
-              badge={badge}
-              badgeBg={brand.sunflower}
-              badgeFg={brand.ink}
+              banner={`${yearly.trialDays} DAYS FREE · ${badge}`}
               price={billedLabel(yearly)}
               sub={`${perWeek} a week`}
               selected={planId === 'yearly'}
               onPress={() => select('yearly')}
               height={58}
-              tint={dark ? '#2A2410' : '#FFF4C8'}
               a11y={`Yearly, ${yearly.priceString} a year, ${perWeek} a week, ${yearly.trialDays} days free, ${badge.toLowerCase()}`}
             />
             <PlanCard
@@ -346,7 +345,6 @@ export default function Paywall() {
               selected={planId === 'lifetime'}
               onPress={() => select('lifetime')}
               height={58}
-              tint={dark ? '#2A2410' : '#FFF4C8'}
               a11y={`Lifetime, ${lifetime.priceString} one time. Pay once.`}
             />
           </View>

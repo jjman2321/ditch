@@ -13,5 +13,6 @@ export const IMPORT_READY = false;
 export const WIDGET_READY = false;
 
 export function showImport(): boolean {
-  return IMPORT_READY || webParam('import') === '1';
+  // The hosted web preview (preview.ditchsubs.app) shows it too, with sample data.
+  return IMPORT_READY || webParam('import') === '1' || process.env.EXPO_PUBLIC_APP_ENV === 'web-preview';
 }

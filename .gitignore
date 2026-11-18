@@ -31,3 +31,4 @@ expo-env.d.ts
 .kotlin/
 __pycache__/
 *.part[0-9]*
+dist-web/

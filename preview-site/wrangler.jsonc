@@ -1,0 +1,9 @@
+{
+  // The owner's always-on preview of the app, built from the Expo web export.
+  // Deploy: npm run preview:deploy (from the repo root). Not indexed by search engines.
+  "$schema": "../web/node_modules/wrangler/config-schema.json",
+  "name": "ditch-preview",
+  "compatibility_date": "2026-11-01",
+  "assets": { "directory": "../dist-web", "not_found_handling": "single-page-application" },
+  "routes": [{ "pattern": "preview.ditchsubs.app", "custom_domain": true }]
+}

@@ -1,0 +1,156 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Paywall v17: bottom-docked</title>
+<style>
+@font-face{font-family:Archivo;src:url(../v12/fonts/archivo-wdth.woff2) format('woff2');font-weight:100 900;font-stretch:62% 125%}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_400Regular.ttf);font-weight:400}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_500Medium.ttf);font-weight:500}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_600SemiBold.ttf);font-weight:600}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_700Bold.ttf);font-weight:700}
+:root{--sun:#FFCC2E;--ink:#16140F;--cream:#FBF7EE;--bill:#FF6C2C}
+*{box-sizing:border-box}
+body{margin:0;background:#E7E2D6;font-family:Inter,system-ui,sans-serif;color:var(--ink);letter-spacing:-.2px;-webkit-font-smoothing:antialiased;padding:40px 48px}
+h2{font:900 34px/38px Archivo;font-stretch:125%;letter-spacing:-1px;margin:0 0 6px}
+.lede{font:500 17px/24px Inter;color:#4A463E;margin:0 0 28px;max-width:1300px}
+.row{display:flex;gap:44px;align-items:flex-end;margin-bottom:64px}
+.cell{display:flex;flex-direction:column;align-items:center;gap:14px}
+.cap{font:600 15px Inter;color:#4A463E}
+
+/* device */
+.phone{position:relative;overflow:hidden;background:var(--sun);border-radius:46px;box-shadow:0 0 0 10px #121110,0 30px 60px rgba(40,30,0,.2);display:flex;flex-direction:column}
+.phone.se{border-radius:0}
+.sb{height:var(--top);flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 30px 0 34px;font:600 16px Inter}
+.se .sb{padding:0 12px;font-size:13px}
+.hi{position:absolute;bottom:8px;left:50%;width:134px;height:5px;margin-left:-67px;border-radius:3px;background:var(--ink)}
+
+/* hero (flexes) */
+.hero{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;padding:0 20px;position:relative}
+.bar{height:44px;flex:none;display:flex;align-items:center;justify-content:space-between}
+.lock{display:flex;align-items:center;gap:8px;font:900 26px Archivo;font-stretch:115%;letter-spacing:-.8px}
+.pro{font:700 13px Inter;border:1.8px solid var(--ink);border-radius:20px;padding:2px 8px;letter-spacing:0}
+.x{width:32px;height:32px;border-radius:16px;background:rgba(22,20,15,.12);display:flex;align-items:center;justify-content:center}
+.title{font:900 30px/34px Archivo;font-stretch:125%;letter-spacing:-1.1px;margin:6px 0 0}
+.se .title{font-size:25px;line-height:29px}
+.lead{font:500 15px/20px Inter;color:#4B4220;margin:8px 0 0}
+
+/* A: notification stack, cut by the panel */
+.stack{flex:1 1 auto;min-height:0;overflow:hidden;margin:16px -4px -40px;padding:0 4px;display:flex;flex-direction:column;gap:8px;
+  -webkit-mask-image:linear-gradient(#000 calc(100% - 70px),transparent calc(100% - 16px))}
+.nt{flex:none;background:rgba(255,255,255,.96);border-radius:18px;padding:11px 12px;display:flex;gap:10px;align-items:center;box-shadow:0 1px 0 rgba(22,20,15,.04)}
+.app{width:34px;height:34px;border-radius:9px;background:var(--sun);flex:none;position:relative;overflow:hidden}
+.app img{position:absolute;width:40px;left:-3px;top:5px}
+.nt .t{flex:1;min-width:0}
+.nt .h{display:flex;justify-content:space-between;font:600 13px Inter}
+.nt .h span{font:400 12px Inter;color:#6E6A62}
+.nt .m{font:400 14px/18px Inter;margin-top:1px}
+.thumb{width:34px;height:34px;border-radius:8px;flex:none;overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:cover}
+
+/* B: trial timeline, spacing flexes */
+.tl{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:center;padding:14px 0 44px;position:relative}
+.steps{position:relative;display:flex;flex-direction:column;gap:clamp(12px,3vh,40px)}
+.step{display:flex;gap:14px;align-items:flex-start;position:relative}
+.step:not(:last-child):after{content:"";position:absolute;left:15px;top:32px;bottom:calc(-1 * var(--g));width:2px;background:rgba(22,20,15,.22)}
+.ic{width:32px;height:32px;border-radius:16px;background:var(--ink);color:var(--sun);display:flex;align-items:center;justify-content:center;flex:none;font:800 14px Inter;z-index:1}
+.step b{display:block;font:700 16px/22px Inter}
+.step p{margin:2px 0 0;font:400 15px/20px Inter;color:#4B4220}
+
+/* bottom panel (fixed height, same on every phone) */
+.panel{flex:none;background:var(--cream);border-radius:28px 28px 0 0;padding:22px 16px calc(var(--bot) + 4px);position:relative;z-index:2;box-shadow:0 -8px 24px rgba(40,30,0,.10)}
+.se .panel{padding-top:18px}
+.duck{position:absolute;right:28px;top:-58px;width:80px;z-index:-1}
+.plans{display:flex;flex-direction:column;gap:8px}
+.plan{position:relative;min-height:58px;background:#fff;border:1.5px solid #D9D0BD;border-radius:16px;display:flex;align-items:center;gap:12px;padding:0 16px}
+.se .plan{min-height:50px}
+.plan.on{border:2.5px solid var(--ink);padding:0 15px}
+.radio{width:22px;height:22px;border-radius:11px;border:2px solid #C9BFA9;flex:none}
+.on .radio{border:0;background:var(--ink);display:flex;align-items:center;justify-content:center}
+.nm{flex:1;min-width:0}
+.nm b{font:600 16px Inter;display:flex;align-items:center;gap:8px}
+.nm small{display:block;font:400 13px/16px Inter;color:#5A544A;margin-top:1px}
+.tag{background:var(--sun);border-radius:8px;padding:2px 7px;font:700 12px Inter}
+.pr{text-align:right}
+.pr b{display:block;font:900 18px/22px Archivo;font-stretch:115%;letter-spacing:-.3px}
+.pr small{font:400 13px Inter;color:#6B6559}
+.rib{position:absolute;top:-11px;left:50px;background:var(--ink);color:#FBF7EE;border-radius:10px;padding:0 8px;height:20px;font:700 11px/20px Inter;letter-spacing:.4px}
+.cta{margin-top:16px;height:56px;border-radius:28px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font:600 17px Inter}
+.se .cta{height:50px;margin-top:12px}
+.fine{text-align:center;font:400 13px/17px Inter;color:#5A544A;margin-top:10px}
+.fine b{color:var(--ink);font-weight:600}
+.links{display:flex;justify-content:center;gap:16px;margin-top:6px;font:400 13px Inter;color:#5A544A;text-decoration:underline}
+.se .links{margin-top:4px}
+</style></head><body>
+
+<template id="panel">
+ <div class="panel">
+  <img class="duck" src="../v12/duck.png" alt="">
+  <div class="plans">
+   <div class="plan on"><span class="rib">SAVE 86%</span><span class="radio"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4"><path d="M5 12l5 5 9-10"/></svg></span><span class="nm"><b>Yearly <span class="tag">7 days free</span></b></span><span class="pr"><b>$49.99/yr</b><small>$0.97 a week</small></span></div>
+   <div class="plan"><span class="radio"></span><span class="nm"><b>Lifetime</b><small>Pay once. No subscription.</small></span><span class="pr"><b>$99.99</b><small>one time</small></span></div>
+   <div class="plan"><span class="radio"></span><span class="nm"><b>Weekly</b></span><span class="pr"><b>$6.99/wk</b><small>No free trial</small></span></div>
+  </div>
+  <div class="cta">Start 7-day free trial</div>
+  <div class="fine"><b>$0 today</b> · $49.99/yr from Sun, Nov 23 · Cancel anytime</div>
+  <div class="links"><span>Restore</span><span>Terms</span><span>Privacy</span></div>
+ </div>
+</template>
+
+<template id="heroA">
+ <div class="hero">
+  <div class="bar"><span class="lock">ditch <span class="pro">Pro</span></span><span class="x"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></div>
+  <h1 class="title">Get a heads-up before all 6 renew.</h1>
+  <div class="stack">
+   <div class="nt"><span class="app"><img src="../v12/duck.png"></span><div class="t"><div class="h">Ditch<span>Sat 9:00 AM</span></div><div class="m">Netflix renews Tuesday. $17.99. Still watching?</div></div></div>
+   <div class="nt"><span class="app"><img src="../v12/duck.png"></span><div class="t"><div class="h">Ditch<span>Mon 9:00 AM</span></div><div class="m">Your ChatGPT trial ends Friday. Then $20.00 a month.</div></div></div>
+   <div class="nt"><span class="app"><img src="../v12/duck.png"></span><div class="t"><div class="h">Ditch<span>Wed 9:00 AM</span></div><div class="m">Spotify went up to $12.99. You were paying $11.99.</div></div></div>
+   <div class="nt"><span class="app"><img src="../v12/duck.png"></span><div class="t"><div class="h">Ditch<span>Fri 9:00 AM</span></div><div class="m">Disney+ renews tomorrow. $15.99.</div></div></div>
+   <div class="nt"><span class="app"><img src="../v12/duck.png"></span><div class="t"><div class="h">Ditch<span>Sun 9:00 AM</span></div><div class="m">YouTube Premium renews in 3 days. $13.99.</div></div></div>
+   <div class="nt"><span class="app"><img src="../v12/duck.png"></span><div class="t"><div class="h">Ditch<span>Tue 9:00 AM</span></div><div class="m">Planet Fitness renews Monday. $24.99. Been lately?</div></div></div>
+  </div>
+ </div>
+</template>
+
+<template id="heroB">
+ <div class="hero">
+  <div class="bar"><span class="lock">ditch <span class="pro">Pro</span></span><span class="x"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16140F" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></div>
+  <h1 class="title">Your free week, step by step.</h1>
+  <div class="tl"><div class="steps">
+   <div class="step"><span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFCC2E" stroke-width="4"><path d="M5 12l5 5 9-10"/></svg></span><div><b>Today</b><p>Reminders on all 6, trial ends and price rises.</p></div></div>
+   <div class="step"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FFCC2E" stroke-width="2.6"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/></svg></span><div><b>Fri, Nov 21</b><p>We remind you your trial is ending.</p></div></div>
+   <div class="step"><span class="ic">$</span><div><b>Sun, Nov 23</b><p>$49.99 for the year. Cancel before and pay nothing.</p></div></div>
+  </div></div>
+ </div>
+</template>
+
+<h2>A · Your reminders, as real notifications</h2>
+<p class="lede">The plans, button and links are pinned to the bottom and look the same on every phone. The top shows the notifications Pro sends about their own subscriptions. Taller phone = more notifications, and the last one slides under the plans. Never an empty block.</p>
+<div class="row" id="rowA"></div>
+
+<h2>B · How the free week works</h2>
+<p class="lede">Same pinned bottom. The top is the trial timeline (Today → reminder → charge date). On taller phones the steps spread out, with a cap. When Lifetime or Weekly is picked, the steps switch to that plan.</p>
+<div class="row" id="rowB"></div>
+
+<script>
+const sizes = [
+  { w: 375, h: 667, top: 20, bot: 12, se: true, label: 'iPhone SE · 375×667' },
+  { w: 390, h: 844, top: 47, bot: 34, label: 'iPhone 12–14 · 390×844' },
+  { w: 440, h: 956, top: 54, bot: 34, label: 'iPhone 16 Pro Max · 440×956' },
+];
+for (const [row, hero] of [['rowA', 'heroA'], ['rowB', 'heroB']]) {
+  const el = document.getElementById(row);
+  for (const s of sizes) {
+    const cell = document.createElement('div'); cell.className = 'cell';
+    const ph = document.createElement('div'); ph.className = 'phone' + (s.se ? ' se' : '');
+    ph.style.cssText = `width:${s.w}px;height:${s.h}px;--top:${s.top}px;--bot:${s.bot}px`;
+    ph.innerHTML = `<div class="sb"><span>9:41</span><span>●●● ▮</span></div>`;
+    ph.append(document.getElementById(hero).content.cloneNode(true), document.getElementById('panel').content.cloneNode(true));
+    if (!s.se) ph.insertAdjacentHTML('beforeend', '<div class="hi"></div>');
+    // B: spread the steps with the spare height, capped
+    const g = Math.max(14, Math.min(44, Math.round((s.h - 667) / 6 + 14)));
+    ph.querySelectorAll('.steps').forEach((x) => { x.style.gap = g + 'px'; x.style.setProperty('--g', g + 'px'); });
+    cell.append(ph);
+    const cap = document.createElement('div'); cap.className = 'cap'; cap.textContent = s.label; cell.append(cap);
+    el.append(cell);
+  }
+}
+</script>
+</body></html>

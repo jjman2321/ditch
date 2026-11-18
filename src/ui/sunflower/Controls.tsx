@@ -1,22 +1,14 @@
 // Small state marks: the round tick, the plan radio, and the bell toggle.
 // They are visual only; the row or card around them is the control.
 
-import { useEffect, useRef } from "react";
-import { Switch, View } from "react-native";
-import Animated, {
-  useAnimatedProps,
-  useAnimatedStyle,
-  useReducedMotion,
-  useSharedValue,
-  withSequence,
-  withSpring,
-  withTiming,
-} from "react-native-reanimated";
-import Svg, { Path } from "react-native-svg";
+import { useEffect, useRef } from 'react';
+import { Switch, View } from 'react-native';
+import Animated, { useAnimatedProps, useAnimatedStyle, useReducedMotion, useSharedValue, withSequence, withSpring, withTiming } from 'react-native-reanimated';
+import Svg, { Path } from 'react-native-svg';
 
-import { Bell, Check } from "./icons";
-import { EASE_OUT, POP } from "./motion";
-import { brand, usePalette } from "./tokens";
+import { Bell, Check } from './icons';
+import { EASE_OUT, POP } from './motion';
+import { brand, usePalette } from './tokens';
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 // The check's stroke length in its 24pt box (two legs: 6.4 + 13.8), so it can draw itself on.
@@ -30,20 +22,14 @@ export function Tick({ on, size = 28 }: { on: boolean; size?: number }) {
         width: size,
         height: size,
         borderRadius: size / 2,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: on
-          ? p.dark
-            ? brand.sunflower
-            : brand.ink
-          : "transparent",
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: on ? (p.dark ? brand.sunflower : brand.ink) : 'transparent',
         borderWidth: on ? 0 : 2,
         borderColor: p.tickBorder,
       }}
     >
-      {on ? (
-        <Check color={p.dark ? brand.ink : brand.sunflower} size={16} />
-      ) : null}
+      {on ? <Check color={p.dark ? brand.ink : brand.sunflower} size={16} /> : null}
     </View>
   );
 }
@@ -71,55 +57,20 @@ export function TickPop({ on, size = 28 }: { on: boolean; size?: number }) {
     }
     if (on) {
       k.set(withSpring(1, POP));
-      draw.set(
-        withSequence(
-          withTiming(0, { duration: 60 }),
-          withTiming(1, { duration: 200, easing: EASE_OUT }),
-        ),
-      );
+      draw.set(withSequence(withTiming(0, { duration: 60 }), withTiming(1, { duration: 200, easing: EASE_OUT })));
     } else {
       k.set(withTiming(0, { duration: 140, easing: EASE_OUT }));
       draw.set(withTiming(0, { duration: 100, easing: EASE_OUT }));
     }
   }, [on, reduce, k, draw]);
-  const fill = useAnimatedStyle(() => ({
-    opacity: Math.min(1, k.get() * 2.5),
-    transform: [{ scale: 0.3 + 0.7 * k.get() }],
-  }));
+  const fill = useAnimatedStyle(() => ({ opacity: Math.min(1, k.get() * 2.5), transform: [{ scale: 0.3 + 0.7 * k.get() }] }));
   const ring = useAnimatedStyle(() => ({ opacity: 1 - Math.min(1, k.get()) }));
-  const check = useAnimatedProps(() => ({
-    strokeDashoffset: CHECK_LEN * (1 - Math.max(0, Math.min(1, draw.get()))),
-  }));
+  const check = useAnimatedProps(() => ({ strokeDashoffset: CHECK_LEN * (1 - Math.max(0, Math.min(1, draw.get()))) }));
   const ink = p.dark ? brand.sunflower : brand.ink;
   return (
     <View style={{ width: size, height: size }}>
-      <Animated.View
-        style={[
-          {
-            position: "absolute",
-            width: size,
-            height: size,
-            borderRadius: size / 2,
-            borderWidth: 2,
-            borderColor: p.tickBorder,
-          },
-          ring,
-        ]}
-      />
-      <Animated.View
-        style={[
-          {
-            position: "absolute",
-            width: size,
-            height: size,
-            borderRadius: size / 2,
-            backgroundColor: ink,
-            alignItems: "center",
-            justifyContent: "center",
-          },
-          fill,
-        ]}
-      >
+      <Animated.View style={[{ position: 'absolute', width: size, height: size, borderRadius: size / 2, borderWidth: 2, borderColor: p.tickBorder }, ring]} />
+      <Animated.View style={[{ position: 'absolute', width: size, height: size, borderRadius: size / 2, backgroundColor: ink, alignItems: 'center', justifyContent: 'center' }, fill]}>
         <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
           <AnimatedPath
             d="M5 12.5l4.5 4.5L19 7.5"
@@ -144,9 +95,9 @@ export function Radio({ on }: { on: boolean }) {
         width: 24,
         height: 24,
         borderRadius: 12,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: on ? p.accent : "transparent",
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: on ? p.accent : 'transparent',
         borderWidth: on ? 0 : 2,
         borderColor: p.radioBorder,
       }}
@@ -168,12 +119,7 @@ export function BellMark({ on }: { on: boolean }) {
       return;
     }
     if (reduce) return;
-    s.set(
-      withSequence(
-        withTiming(1.12, { duration: 90 }),
-        withSpring(1, { damping: 12, stiffness: 260 }),
-      ),
-    );
+    s.set(withSequence(withTiming(1.12, { duration: 90 }), withSpring(1, { damping: 12, stiffness: 260 })));
   }, [on, reduce, s]);
   const anim = useAnimatedStyle(() => ({ transform: [{ scale: s.get() }] }));
   return (
@@ -183,38 +129,22 @@ export function BellMark({ on }: { on: boolean }) {
           width: 44,
           height: 44,
           borderRadius: 22,
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: on ? brand.sunflower : "transparent",
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: on ? brand.sunflower : 'transparent',
           borderWidth: on ? 2 : 1.5,
           borderColor: on ? brand.ink : p.guessBorder,
         },
         anim,
       ]}
     >
-      <Bell
-        color={on ? brand.ink : p.disabledFg}
-        size={19}
-        fill={on ? brand.ink : undefined}
-      />
+      <Bell color={on ? brand.ink : p.disabledFg} size={19} fill={on ? brand.ink : undefined} />
     </Animated.View>
   );
 }
 
 /** iOS switch in Sunflower colours: ink when on (sunflower in dark). */
-export function SunSwitch({
-  value,
-  onValueChange,
-  label,
-  hint,
-  disabled,
-}: {
-  value: boolean;
-  onValueChange: (v: boolean) => void;
-  label: string;
-  hint?: string;
-  disabled?: boolean;
-}) {
+export function SunSwitch({ value, onValueChange, label, hint, disabled }: { value: boolean; onValueChange: (v: boolean) => void; label: string; hint?: string; disabled?: boolean }) {
   const p = usePalette();
   const on = p.dark ? brand.sunflower : brand.ink;
   return (

@@ -4,28 +4,13 @@
 // it never travels past its resting spot, so it can't get clipped.
 // Reduce Motion: shown at rest.
 
-import { Image } from "expo-image";
-import { useEffect } from "react";
-import { type StyleProp, type ViewStyle } from "react-native";
-import Animated, {
-  Easing,
-  useAnimatedStyle,
-  useReducedMotion,
-  useSharedValue,
-  withDelay,
-  withSpring,
-  withTiming,
-} from "react-native-reanimated";
+import { Image } from 'expo-image';
+import { useEffect } from 'react';
+import { type StyleProp, type ViewStyle } from 'react-native';
+import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withSpring, withTiming } from 'react-native-reanimated';
 
-import {
-  DUCK_DARK,
-  DUCK_H,
-  DUCK_INK,
-  DUCK_LIGHT,
-  DUCK_PAD,
-  DUCK_W,
-} from "./duckAsset";
-import { useIsDark } from "./tokens";
+import { DUCK_DARK, DUCK_H, DUCK_INK, DUCK_LIGHT, DUCK_PAD, DUCK_W } from './duckAsset';
+import { useIsDark } from './tokens';
 
 const RISE = 12;
 const EASE = { duration: 420, easing: Easing.out(Easing.cubic) };
@@ -74,9 +59,7 @@ export function Duck({
 
   useEffect(() => {
     if (reduce || !play) return;
-    rise.set(
-      withDelay(delay, spring ? withSpring(0, PEEK) : withTiming(0, EASE)),
-    );
+    rise.set(withDelay(delay, spring ? withSpring(0, PEEK) : withTiming(0, EASE)));
     fade.set(withDelay(delay, withTiming(1, spring ? PEEK_FADE : EASE)));
   }, [reduce, play, delay, spring, rise, fade]);
 
@@ -85,8 +68,7 @@ export function Duck({
     transform: [{ translateY: rise.get() }],
   }));
 
-  const pos: ViewStyle =
-    bottom !== undefined ? { bottom } : { top: -(boxH - sink) };
+  const pos: ViewStyle = bottom !== undefined ? { bottom } : { top: -(boxH - sink) };
   return (
     <Animated.View
       accessible={false}
@@ -94,26 +76,21 @@ export function Duck({
       pointerEvents="none"
       style={[
         {
-          position: "absolute",
+          position: 'absolute',
           width: boxW,
           height: boxH,
           right: right === undefined ? undefined : right - air,
           left: left === undefined ? undefined : left - air,
           // Clips only the bottom while he rises from behind the card;
           // the art has air on the other three sides.
-          overflow: "hidden",
+          overflow: 'hidden',
         },
         pos,
         style,
       ]}
     >
       <Animated.View style={[{ width: boxW, height: boxH }, anim]}>
-        <Image
-          source={dark ? DUCK_DARK : DUCK_LIGHT}
-          style={{ width: boxW, height: boxH }}
-          contentFit="contain"
-          transition={0}
-        />
+        <Image source={dark ? DUCK_DARK : DUCK_LIGHT} style={{ width: boxW, height: boxH }} contentFit="contain" transition={0} />
       </Animated.View>
     </Animated.View>
   );

@@ -7,17 +7,11 @@
 // `go` holds the count at zero until the screen has slid in (motion doc fix 6);
 // it then starts ROLL.start ms later.
 
-import { useEffect, useState } from "react";
-import { Text, View, type TextStyle } from "react-native";
-import Animated, {
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withDelay,
-  withTiming,
-} from "react-native-reanimated";
+import { useEffect, useState } from 'react';
+import { Text, View, type TextStyle } from 'react-native';
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 
-import { tabular } from "./type";
+import { tabular } from './type';
 
 // Fast off the mark, then a long, soft landing.
 const EASE = Easing.bezier(0.12, 0.75, 0.2, 1);
@@ -30,21 +24,7 @@ export function rollDuration(text: string) {
   return /\d/.test(text) ? ROLL.start + ROLL.count : 0;
 }
 
-function Digit({
-  value,
-  place,
-  style,
-  lineHeight,
-  play,
-  go,
-}: {
-  value: number;
-  place: number;
-  style: TextStyle;
-  lineHeight: number;
-  play: boolean;
-  go: boolean;
-}) {
+function Digit({ value, place, style, lineHeight, play, go }: { value: number; place: number; style: TextStyle; lineHeight: number; play: boolean; go: boolean }) {
   const travel = value + 10 * (TURNS[place] ?? 0);
   // y is how many glyphs the strip has moved; the strip is 0–9 repeated, ending on `value`.
   const y = useSharedValue(play ? 0 : travel);
@@ -56,25 +36,14 @@ function Digit({
     }
     // Playing but not yet allowed to start: wait on 0.
     if (!go) return;
-    y.set(
-      withDelay(
-        ROLL.start,
-        withTiming(travel, { duration: ROLL.count, easing: EASE }),
-      ),
-    );
+    y.set(withDelay(ROLL.start, withTiming(travel, { duration: ROLL.count, easing: EASE })));
   }, [play, go, travel, y]);
-  const anim = useAnimatedStyle(() => ({
-    transform: [{ translateY: -y.get() * lineHeight }],
-  }));
+  const anim = useAnimatedStyle(() => ({ transform: [{ translateY: -y.get() * lineHeight }] }));
   return (
-    <View style={{ height: lineHeight, overflow: "hidden" }}>
+    <View style={{ height: lineHeight, overflow: 'hidden' }}>
       <Animated.View style={anim}>
         {Array.from({ length: travel + 1 }, (_, d) => (
-          <Text
-            key={d}
-            allowFontScaling={false}
-            style={[style, tabular, { lineHeight, height: lineHeight }]}
-          >
+          <Text key={d} allowFontScaling={false} style={[style, tabular, { lineHeight, height: lineHeight }]}>
             {d % 10}
           </Text>
         ))}
@@ -101,37 +70,18 @@ export function RollingNumber({
   go?: boolean;
   accessibilityLabel?: string;
 }) {
-  const chars = text.split("");
+  const chars = text.split('');
   const digits = chars.filter((c) => /\d/.test(c)).length;
   let seen = 0;
   return (
-    <View
-      accessible
-      accessibilityRole="text"
-      accessibilityLabel={accessibilityLabel ?? text}
-      style={{ flexDirection: "row", alignItems: "flex-start" }}
-    >
+    <View accessible accessibilityRole="text" accessibilityLabel={accessibilityLabel ?? text} style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
       {chars.map((ch, i) => {
         if (/\d/.test(ch)) {
           const place = digits - 1 - seen++;
-          return (
-            <Digit
-              key={i}
-              value={Number(ch)}
-              place={place}
-              style={style}
-              lineHeight={lineHeight}
-              play={play}
-              go={go}
-            />
-          );
+          return <Digit key={i} value={Number(ch)} place={place} style={style} lineHeight={lineHeight} play={play} go={go} />;
         }
         return (
-          <Text
-            key={i}
-            allowFontScaling={false}
-            style={[style, tabular, { lineHeight, height: lineHeight }]}
-          >
+          <Text key={i} allowFontScaling={false} style={[style, tabular, { lineHeight, height: lineHeight }]}>
             {ch}
           </Text>
         );
@@ -146,38 +96,19 @@ export function RollingNumber({
  * that will really be drawn. Measuring the number as one string comes out
  * narrower on iPhone, which pushed "$3,126" past the screen edge.
  */
-export function RollingMeasure({
-  text,
-  style,
-  onWidth,
-}: {
-  text: string;
-  style: TextStyle;
-  onWidth: (w: number) => void;
-}) {
+export function RollingMeasure({ text, style, onWidth }: { text: string; style: TextStyle; onWidth: (w: number) => void }) {
   return (
     <View
       pointerEvents="none"
       accessible={false}
       importantForAccessibility="no-hide-descendants"
       accessibilityElementsHidden
-      style={{
-        position: "absolute",
-        opacity: 0,
-        left: 0,
-        top: 0,
-        width: 4000,
-        flexDirection: "row",
-        alignItems: "flex-start",
-      }}
+      style={{ position: 'absolute', opacity: 0, left: 0, top: 0, width: 4000, flexDirection: 'row', alignItems: 'flex-start' }}
     >
-      <View
-        style={{ flexDirection: "row" }}
-        onLayout={(e) => onWidth(e.nativeEvent.layout.width)}
-      >
-        {text.split("").map((ch, i) => (
+      <View style={{ flexDirection: 'row' }} onLayout={(e) => onWidth(e.nativeEvent.layout.width)}>
+        {text.split('').map((ch, i) => (
           <Text key={i} allowFontScaling={false} style={[style, tabular]}>
-            {/\d/.test(ch) ? "0" : ch}
+            {/\d/.test(ch) ? '0' : ch}
           </Text>
         ))}
       </View>
@@ -192,9 +123,6 @@ export function RollingMeasure({
  */
 export function useFitSize(base: number, maxWidth: number) {
   const [measured, setMeasured] = useState<number | null>(null);
-  const size =
-    measured && maxWidth > 0 && measured > maxWidth
-      ? Math.floor((base * maxWidth) / measured)
-      : base;
+  const size = measured && maxWidth > 0 && measured > maxWidth ? Math.floor((base * maxWidth) / measured) : base;
   return [size, (w: number) => setMeasured(w)] as const;
 }

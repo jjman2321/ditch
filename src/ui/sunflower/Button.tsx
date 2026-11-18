@@ -1,29 +1,24 @@
 // Buttons. Primary: ink (sunflower in dark), 56pt. Secondary: outline, 52pt.
 // Text: 44pt. Every one has a VoiceOver label (its text) and a 44pt+ target.
 
-import { useEffect, useRef, type ReactNode } from "react";
-import { Pressable, View, type StyleProp, type ViewStyle } from "react-native";
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-  withTiming,
-} from "react-native-reanimated";
+import { useEffect, useRef, type ReactNode } from 'react';
+import { Pressable, View, type StyleProp, type ViewStyle } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 
-import { haptic } from "./haptics";
-import { EASE_OUT, PRESS, RELEASE } from "./motion";
+import { haptic } from './haptics';
+import { EASE_OUT, PRESS, RELEASE } from './motion';
 
-import { TAP, usePalette } from "./tokens";
-import { Txt } from "./type";
+import { TAP, usePalette } from './tokens';
+import { Txt } from './type';
 
-type Kind = "primary" | "secondary" | "text";
+type Kind = 'primary' | 'secondary' | 'text';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export function Button({
   label,
   onPress,
-  kind = "primary",
+  kind = 'primary',
   disabled,
   hint,
   style,
@@ -54,10 +49,9 @@ export function Button({
   const busy = useRef(false);
   // The `press` motion (motion.tsx): buttons scale to 0.97 in 80 ms and spring back on release. Text buttons dim instead.
   const down = useSharedValue(0);
-  const pressIn = () =>
-    down.set(withTiming(1, { duration: PRESS.in, easing: EASE_OUT }));
+  const pressIn = () => down.set(withTiming(1, { duration: PRESS.in, easing: EASE_OUT }));
   const pressOut = () => down.set(withSpring(0, RELEASE));
-  const text = kind === "text";
+  const text = kind === 'text';
   // Turning on or off is a quick fade, not a jump (e.g. "See my total" waking up after the first tick).
   const off = useSharedValue(disabled ? 1 : 0);
   useEffect(() => {
@@ -65,12 +59,7 @@ export function Button({
   }, [disabled, off]);
   const pressStyle = useAnimatedStyle(() => {
     const o = 1 - 0.6 * off.get();
-    return text
-      ? { opacity: o * (1 - 0.4 * down.get()) }
-      : {
-          opacity: o,
-          transform: [{ scale: 1 - (1 - PRESS.scale) * down.get() }],
-        };
+    return text ? { opacity: o * (1 - 0.4 * down.get()) } : { opacity: o, transform: [{ scale: 1 - (1 - PRESS.scale) * down.get() }] };
   });
   const press = () => {
     if (busy.current) return;
@@ -84,14 +73,12 @@ export function Button({
       throw e;
     }
     const release = () => setTimeout(() => (busy.current = false), 450);
-    if (out && typeof (out as Promise<unknown>).then === "function")
-      (out as Promise<unknown>).then(release, release);
+    if (out && typeof (out as Promise<unknown>).then === 'function') (out as Promise<unknown>).then(release, release);
     else release();
   };
-  const h =
-    height ?? (kind === "primary" ? 56 : kind === "secondary" ? 52 : TAP);
-  const bg = kind === "primary" ? p.cta : "transparent";
-  const fg = kind === "primary" ? p.ctaFg : danger ? p.danger : p.fg;
+  const h = height ?? (kind === 'primary' ? 56 : kind === 'secondary' ? 52 : TAP);
+  const bg = kind === 'primary' ? p.cta : 'transparent';
+  const fg = kind === 'primary' ? p.ctaFg : danger ? p.danger : p.fg;
   return (
     <AnimatedPressable
       accessibilityRole="button"
@@ -107,11 +94,11 @@ export function Button({
           minHeight: h,
           borderRadius: h / 2,
           backgroundColor: bg,
-          borderWidth: kind === "secondary" ? 1.5 : 0,
+          borderWidth: kind === 'secondary' ? 1.5 : 0,
           borderColor: p.secBorder,
-          alignItems: "center",
-          justifyContent: "center",
-          flexDirection: "row",
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'row',
           gap: 8,
           paddingHorizontal: 20,
         },
@@ -120,18 +107,7 @@ export function Button({
       ]}
     >
       {left}
-      <Txt
-        v="button"
-        color={fg}
-        center
-        style={
-          kind === "secondary"
-            ? { fontSize: 16 }
-            : kind === "text"
-              ? { fontSize: 16 }
-              : null
-        }
-      >
+      <Txt v="button" color={fg} center style={kind === 'secondary' ? { fontSize: 16 } : kind === 'text' ? { fontSize: 16 } : null}>
         {label}
       </Txt>
       {right}
@@ -166,26 +142,11 @@ export function IconButton({
       hitSlop={Math.max(0, (TAP - size) / 2)}
       onPress={onPress}
       style={({ pressed }) => [
-        {
-          width: TAP,
-          height: TAP,
-          alignItems: "center",
-          justifyContent: "center",
-          opacity: disabled ? 0.3 : pressed ? 0.6 : 1,
-        },
+        { width: TAP, height: TAP, alignItems: 'center', justifyContent: 'center', opacity: disabled ? 0.3 : pressed ? 0.6 : 1 },
         style,
       ]}
     >
-      <View
-        style={{
-          width: size,
-          height: size,
-          borderRadius: size / 2,
-          backgroundColor: bg,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
+      <View style={{ width: size, height: size, borderRadius: size / 2, backgroundColor: bg, alignItems: 'center', justifyContent: 'center' }}>
         {children}
       </View>
     </Pressable>

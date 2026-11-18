@@ -249,7 +249,7 @@ export default function Paywall() {
   const cta = { yearly: `Start ${yearly.trialDays}-day free trial`, weekly: `Subscribe for ${weekly.priceString} a week`, lifetime: `Pay ${lifetime.priceString} once` }[planId];
   const perWeek = perWeekFromYearly({ amountMinor: yearly.priceMinor, currency: yearly.currency });
   // A true comparison with the Weekly plan we sell: $6.99 × 52 = $363.48 vs $49.99 (rounded down).
-  const badge = yearlyBadgeVsWeekly({ amountMinor: weekly.priceMinor, currency: weekly.currency }, { amountMinor: yearly.priceMinor, currency: yearly.currency }).toUpperCase().replace(/^SAVE (\d+%)$/, 'SAVE $1 VS WEEKLY');
+  const badge = yearlyBadgeVsWeekly({ amountMinor: weekly.priceMinor, currency: weekly.currency }, { amountMinor: yearly.priceMinor, currency: yearly.currency }).toUpperCase();
 
   const what = many ? `all ${n}${NB}renewals.` : `every${NB}renewal.`;
   const head = `Get a reminder before\n${what}`;
@@ -329,7 +329,7 @@ export default function Paywall() {
               title="Yearly"
               tag={`${yearly.trialDays} days free`}
               badge={badge}
-              badgeBg={brand.bill}
+              badgeBg={brand.sunflower}
               badgeFg={brand.ink}
               price={billedLabel(yearly)}
               sub={`${perWeek} a week`}

@@ -6,7 +6,7 @@
 // Order (owner, Nov 18): Weekly / Yearly / Lifetime, cheapest first, so Yearly sits in the middle,
 // pre-selected (the "compromise" pick, right under the weekly price it beats by 86%).
 // Plans (DECISIONS #66, owner Nov 18): Yearly with 7 days free (pre-selected,
-// "$0.96 a week", saving vs Weekly), Lifetime ("Pay once. Costs the same as 2 years.")
+// "$0.96 a week", saving vs Weekly), Lifetime ("Pay once.")
 // for people tired of subscriptions, Weekly with no trial. No monthly.
 // Layout (owner, Nov 18: "always fits, any screen"): like AllTrails, Smart Receipts, Quizlet and
 // Trade AI on Mobbin/AppKittie, the plans, button, price line and links are pinned to the bottom
@@ -62,7 +62,7 @@ function rowsFor(n: number): Row[] {
     // Personal: "All 6" when they track more than the free 3.
     { label: 'Reminders', sub: 'A heads-up before each renewal', free: '3', pro: n > 3 ? `All ${n}` : 'Unlimited' },
     // Price watch (DECISIONS #60).
-    { label: 'Price hike alerts', sub: 'Know the day a price goes up', free: 'no', pro: 'yes' },
+    { label: 'Price hike alerts', sub: 'We flag it when a plan costs more', free: 'no', pro: 'yes' },
     // The 30-day warning before yearly charges (DECISIONS #60).
     { label: 'Yearly bills, a month early', sub: 'Time to cancel before it hits', free: 'no', pro: 'yes' },
     // Free can change the time of day; Pro picks the days before.
@@ -342,14 +342,14 @@ export default function Paywall() {
             />
             <PlanCard
               title="Lifetime"
-              note="Pay once. Costs the same as 2 years."
+              note="Pay once."
               price={lifetime.priceString}
               sub="one time"
               selected={planId === 'lifetime'}
               onPress={() => select('lifetime')}
               height={58}
               tint={dark ? '#2A2410' : '#FFF4C8'}
-              a11y={`Lifetime, ${lifetime.priceString} one time. Pay once, costs the same as 2 years.`}
+              a11y={`Lifetime, ${lifetime.priceString} one time. Pay once.`}
             />
           </View>
 

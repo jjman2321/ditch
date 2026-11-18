@@ -30,16 +30,17 @@ import {
   useFrame,
   useIsDark,
   usePalette,
+  useScreenArrived,
 } from '@/ui/sunflower';
 
 const NB = ' ';
 
-/** Fades content up 6pt, `delay` ms after mount (instant when not playing). */
-function useReveal(play: boolean, delay: number, duration = 200) {
+/** Fades content up 6pt, `delay` ms after `go` (instant when not playing). */
+function useReveal(play: boolean, go: boolean, delay: number, duration = 200) {
   const t = useSharedValue(play ? 0 : 1);
   useEffect(() => {
-    if (play) t.set(withDelay(delay, withTiming(1, { duration, easing: Easing.out(Easing.cubic) })));
-  }, [play, delay, duration, t]);
+    if (play && go) t.set(withDelay(delay, withTiming(1, { duration, easing: Easing.out(Easing.cubic) })));
+  }, [play, go, delay, duration, t]);
   return useAnimatedStyle(() => ({ opacity: t.get(), transform: [{ translateY: (1 - t.get()) * 6 }] }));
 }
 
@@ -67,14 +68,19 @@ export default function Total() {
   const [play] = useState(() => !totalShown && !reduce);
   const hero = main ? money(main.yearlyMinor, main.currency, { whole: true }) : '';
   const landed = play ? rollDuration(hero) : 0;
+  // The roll waits for the screen to finish sliding in, so it plays in front of still eyes (motion doc fix 6).
+  const arrived = useScreenArrived();
   useEffect(() => {
     markTotalShown();
-    if (!play) return;
-    const t = setTimeout(() => haptic.light(), landed);
+  }, [markTotalShown]);
+  useEffect(() => {
+    if (!play || !arrived) return;
+    // Success, the moment the last digit lands.
+    const t = setTimeout(() => haptic.success(), landed);
     return () => clearTimeout(t);
-  }, [play, landed, markTotalShown]);
-  const yearStyle = useReveal(play, landed);
-  const restStyle = useReveal(play, landed + 120, 220);
+  }, [play, arrived, landed]);
+  const yearStyle = useReveal(play, arrived, landed);
+  const restStyle = useReveal(play, arrived, landed + 120, 220);
 
   // 104pt (80 on SE, 128 on iPad), shrunk only if a big total won't fit.
   const base = f.tablet ? 128 : f.tiny ? 56 : f.small ? 80 : 104;
@@ -108,7 +114,7 @@ export default function Total() {
         {main ? (
           <>
             <Animated.View entering={reduce ? FadeIn.duration(150) : undefined} style={{ marginTop: 8, marginLeft: -4 }}>
-              <RollingNumber text={hero} style={heroStyle} lineHeight={lh} play={play} accessibilityLabel={`${hero} a year`} />
+              <RollingNumber text={hero} style={heroStyle} lineHeight={lh} play={play} go={arrived} accessibilityLabel={`${hero} a year`} />
             </Animated.View>
             <Animated.View style={yearStyle}>
               <Txt v="heading" importantForAccessibility="no" accessibilityElementsHidden style={{ fontSize: 22, marginTop: f.tablet ? 16 : 12 }}>

@@ -19,7 +19,7 @@ export const haptic = {
   select: () => {
     if (on) Haptics.selectionAsync().catch(() => {});
   },
-  /** The total lands; undo. */
+  /** Undo. */
   light: () => {
     if (on) Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
   },
@@ -31,6 +31,7 @@ export const haptic = {
   heavy: () => {
     if (on) strong(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy));
   },
+  /** The total lands; the checklist is done; a find is added. */
   success: () => {
     if (on) strong(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success));
   },

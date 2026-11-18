@@ -154,3 +154,48 @@ export function Bang({ color, bg, size = 30 }: P & { bg: string }) {
     </Svg>
   );
 }
+
+/** A bank: roof, four columns, base (Find: "My bank"). */
+export function Bank({ color, size = 24 }: P) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path d="M3.5 9.2L12 4l8.5 5.2H3.5z" stroke={color} strokeWidth={2} strokeLinejoin="round" />
+      <Path d="M6.5 12.5v4.5M10.5 12.5v4.5M13.5 12.5v4.5M17.5 12.5v4.5M3.5 20h17" stroke={color} strokeWidth={2} strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+/** A phone showing a list (Find: the Apple subscriptions screenshot). */
+export function PhoneList({ color, size = 24 }: P) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Rect x={6} y={2.5} width={12} height={19} rx={2.8} stroke={color} strokeWidth={2} />
+      <Circle cx={9.4} cy={8.5} r={1} fill={color} />
+      <Circle cx={9.4} cy={12} r={1} fill={color} />
+      <Circle cx={9.4} cy={15.5} r={1} fill={color} />
+      <Path d="M11.6 8.5h3M11.6 12h3M11.6 15.5h2" stroke={color} strokeWidth={1.8} strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+/** A page with a folded corner and lines (Find: a bank statement). */
+export function StatementIcon({ color, size = 24 }: P) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path d="M14 3H7.2A1.2 1.2 0 006 4.2v15.6A1.2 1.2 0 007.2 21h9.6a1.2 1.2 0 001.2-1.2V7l-4-4z" stroke={color} strokeWidth={2} strokeLinejoin="round" />
+      <Path d="M14 3v4h4" stroke={color} strokeWidth={2} strokeLinejoin="round" />
+      <Path d="M9 11.5h6M9 14.5h6M9 17.5h3.5" stroke={color} strokeWidth={1.8} strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+/** A checklist: two ticked rows and an empty one (Find: "Pick them myself"). */
+export function ListCheck({ color, size = 24 }: P) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path d="M3.8 6.6l1.7 1.7 3-3.1M3.8 12.6l1.7 1.7 3-3.1" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+      <Rect x={4} y={17.2} width={4} height={4} rx={1.2} stroke={color} strokeWidth={1.8} />
+      <Path d="M11.5 7h8.5M11.5 13h8.5M11.5 19.2h8.5" stroke={color} strokeWidth={2} strokeLinecap="round" />
+    </Svg>
+  );
+}

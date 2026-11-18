@@ -8,7 +8,7 @@ import { FindPage, RouteCard } from '@/find/Parts';
 import { PLACES } from '@/home/Forgotten';
 import { openUrl } from '@/ditch/CancelHelp';
 import { useApp } from '@/state/app';
-import { External, Txt, usePalette } from '@/ui/sunflower';
+import { External, PhoneList, StatementIcon, Txt, usePalette } from '@/ui/sunflower';
 
 export function useFindGate() {
   const app = useApp();
@@ -23,8 +23,8 @@ export default function FindHub() {
   const tag = pro ? undefined : free ? 'FREE ONCE · THEN PRO' : 'PRO';
   return (
     <FindPage title="Find your subscriptions" back="Home" intro="Show us a list you already have. We read it on your phone, you pick what goes in.">
-      <RouteCard icon="📱" title="Screenshot your Apple list" line="Every App Store subscription and free trial, with its renewal date. Banks can’t name these." tag={tag} onPress={() => go('/find/apple')} />
-      <RouteCard icon="🧾" title="Drop in a statement" line="A bank or Apple Card file. We show the charges that repeat." tag={tag} onPress={() => go('/find/statement')} />
+      <RouteCard icon={PhoneList} title="Screenshot your Apple list" line="Every App Store subscription and free trial, with its renewal date. Banks can’t name these." tag={tag} onPress={() => go('/find/apple')} />
+      <RouteCard icon={StatementIcon} title="Drop in a statement" line="A bank or Apple Card file. We show the charges that repeat." tag={tag} onPress={() => go('/find/statement')} />
 
       <Txt v="eyebrow" tone="mute" style={{ marginTop: 24, marginHorizontal: 4, marginBottom: 8 }}>
         Or check the usual places

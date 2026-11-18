@@ -30,6 +30,7 @@ export function Duck({
   delay = 200,
   bottom,
   style,
+  play = true,
 }: {
   width: number;
   right?: number;
@@ -39,6 +40,8 @@ export function Duck({
   /** Anchor to the bottom instead of peeking over a top edge. */
   bottom?: number;
   style?: StyleProp<ViewStyle>;
+  /** False keeps him hidden until it turns true (e.g. once the screen has slid in); `delay` counts from then. */
+  play?: boolean;
 }) {
   const dark = useIsDark();
   const reduce = useReducedMotion();
@@ -49,10 +52,10 @@ export function Duck({
   const fade = useSharedValue(reduce ? 1 : 0);
 
   useEffect(() => {
-    if (reduce) return;
+    if (reduce || !play) return;
     rise.set(withDelay(delay, withTiming(0, EASE)));
     fade.set(withDelay(delay, withTiming(1, EASE)));
-  }, [reduce, delay, rise, fade]);
+  }, [reduce, play, delay, rise, fade]);
 
   const anim = useAnimatedStyle(() => ({
     opacity: fade.get(),

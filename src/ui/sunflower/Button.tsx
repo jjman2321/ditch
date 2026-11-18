@@ -3,11 +3,16 @@
 
 import { useRef, type ReactNode } from 'react';
 import { Pressable, View, type StyleProp, type ViewStyle } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+
+import { EASE_OUT, PRESS } from './motion';
 
 import { TAP, usePalette } from './tokens';
 import { Txt } from './type';
 
 type Kind = 'primary' | 'secondary' | 'text';
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export function Button({
   label,
@@ -38,6 +43,14 @@ export function Button({
   const p = usePalette();
   // One press at a time: a quick double tap must never add twice or open a screen twice.
   const busy = useRef(false);
+  // The `press` motion (motion.tsx): buttons scale to 0.97, in 80 ms, out 180 ms. Text buttons dim instead.
+  const down = useSharedValue(0);
+  const pressIn = () => down.set(withTiming(1, { duration: PRESS.in, easing: EASE_OUT }));
+  const pressOut = () => down.set(withTiming(0, { duration: PRESS.out, easing: EASE_OUT }));
+  const text = kind === 'text';
+  const pressStyle = useAnimatedStyle(() =>
+    text ? { opacity: (disabled ? 0.4 : 1) * (1 - 0.4 * down.get()) } : { transform: [{ scale: 1 - (1 - PRESS.scale) * down.get() }] },
+  );
   const press = () => {
     if (busy.current) return;
     busy.current = true;
@@ -56,14 +69,16 @@ export function Button({
   const bg = kind === 'primary' ? p.cta : 'transparent';
   const fg = kind === 'primary' ? p.ctaFg : danger ? p.danger : p.fg;
   return (
-    <Pressable
+    <AnimatedPressable
       accessibilityRole="button"
       accessibilityLabel={label}
       accessibilityHint={hint}
       accessibilityState={{ disabled: !!disabled }}
       disabled={disabled}
       onPress={press}
-      style={({ pressed }) => [
+      onPressIn={pressIn}
+      onPressOut={pressOut}
+      style={[
         {
           minHeight: h,
           borderRadius: h / 2,
@@ -75,10 +90,10 @@ export function Button({
           flexDirection: 'row',
           gap: 8,
           paddingHorizontal: 20,
-          opacity: disabled ? 0.4 : pressed ? 0.86 : 1,
-          transform: [{ scale: pressed && !disabled ? 0.985 : 1 }],
+          opacity: disabled ? 0.4 : 1,
         },
         style,
+        pressStyle,
       ]}
     >
       {left}
@@ -86,7 +101,7 @@ export function Button({
         {label}
       </Txt>
       {right}
-    </Pressable>
+    </AnimatedPressable>
   );
 }
 

@@ -1,11 +1,12 @@
 // Shared bits for the Find screens (design/find-subs, DECISIONS #63).
 
 import { router } from 'expo-router';
-import type { ReactNode } from 'react';
+import type { ComponentType, ReactNode } from 'react';
 import { Platform, Pressable, ScrollView, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 import { DEV_TOOLS } from '@/dev/flags';
-import { ChevronLeft, ChevronRight, F, Txt, useInsets, usePageEdge, usePalette } from '@/ui/sunflower';
+import { ChevronLeft, ChevronRight, F, Txt, brand, useInsets, usePageEdge, usePalette, usePressScale } from '@/ui/sunflower';
 
 /** Sample buttons: web preview and test builds only, never the App Store build. */
 export const SHOW_SAMPLES = Platform.OS === 'web' || DEV_TOOLS;
@@ -44,16 +45,37 @@ export function FindPage({ title, back = 'Back', intro, children, footer }: { ti
   );
 }
 
-/** A big tappable card: icon, title, line, optional tag. */
-export function RouteCard({ icon, title, line, tag, onPress }: { icon: string; title: string; line: string; tag?: string; onPress: () => void }) {
+/** A big tappable card: a line icon (from ui/sunflower/icons) on a tinted tile, title, line, optional tag. Presses in to 0.97. */
+export function RouteCard({
+  icon: Icon,
+  title,
+  line,
+  tag,
+  onPress,
+  disabled,
+}: {
+  icon: ComponentType<{ color: string; size?: number }>;
+  title: string;
+  line: string;
+  tag?: string;
+  onPress: () => void;
+  disabled?: boolean;
+}) {
   const p = usePalette();
+  const press = usePressScale(disabled);
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={`${title}. ${line}${tag ? `. ${tag}` : ''}`} onPress={onPress} style={({ pressed }) => ({ opacity: pressed ? 0.75 : 1, marginTop: 12 })}>
-      <View style={{ backgroundColor: p.card, borderRadius: 20, padding: 16, flexDirection: 'row', gap: 14, alignItems: 'flex-start', borderWidth: p.dark ? 1 : 0, borderColor: p.cardBorder }}>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`${title}. ${line}${tag ? `. ${tag}` : ''}`}
+      accessibilityState={{ disabled: !!disabled }}
+      disabled={disabled}
+      onPress={onPress}
+      {...press.handlers}
+      style={{ marginTop: 12 }}
+    >
+      <Animated.View style={[{ backgroundColor: p.card, borderRadius: 20, padding: 16, flexDirection: 'row', gap: 14, alignItems: 'flex-start', borderWidth: p.dark ? 1 : 0, borderColor: p.cardBorder }, press.style]}>
         <View style={{ width: 44, height: 44, borderRadius: 13, backgroundColor: p.dark ? '#2A2721' : '#FFF1BC', alignItems: 'center', justifyContent: 'center' }}>
-          <Txt v="lead" style={{ fontSize: 22 }}>
-            {icon}
-          </Txt>
+          <Icon color={p.dark ? brand.sunflower : brand.ink} size={24} />
         </View>
         <View style={{ flex: 1, minWidth: 0 }}>
           <Txt v="bodyStrong" color={p.cardFg} style={{ fontSize: 16.5 }}>
@@ -73,7 +95,7 @@ export function RouteCard({ icon, title, line, tag, onPress }: { icon: string; t
         <View style={{ alignSelf: 'center' }}>
           <ChevronRight color={p.mute} size={18} />
         </View>
-      </View>
+      </Animated.View>
     </Pressable>
   );
 }

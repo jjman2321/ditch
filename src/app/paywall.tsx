@@ -18,10 +18,10 @@ import { addDays, shortDate } from '@/domain/dates';
 import { balanceLines } from '@/domain/copy';
 import { formatWholeMoney } from '@/domain/money';
 import { perWeekFromYearly, yearlyBadgeVsWeekly } from '@/domain/pricing';
-import { listedUserSubs } from '@/domain/subs';
+import { homeTotals, listedUserSubs } from '@/domain/subs';
 import { FitScroll, OnbRoot } from '@/onboarding/Parts';
 import { PURCHASES_LIVE, billedLabel, planById, purchase, restorePurchases, type PlanId } from '@/services/purchases';
-import { onboardingToday, useOnboarding, usePickedList } from '@/state/onboarding';
+import { onboardingToday, totalsFor, useCountry, useOnboarding, usePickedList } from '@/state/onboarding';
 import { useApp } from '@/state/app';
 import { Button, Card, Check, Close, Duck, F, IconButton, LogoTile, PlanCard, ProLockup, Txt, brand, haptic, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
 
@@ -147,22 +147,29 @@ function FootLink({ label, onPress }: { label: string; onPress: () => void }) {
 }
 
 /** Up to 5 overlapping logos, then "Netflix, Spotify and 5 more" (names, never "+": Disney+ ends in one). */
-function LogoLine({ items, total, ink, band }: { items: { id: string; name: string; mono: string }[]; total: number; ink: string; band: string }) {
+function LogoLine({ items, total, ink, band, yearly, big }: { items: { id: string; name: string; mono: string }[]; total: number; ink: string; band: string; yearly?: string | null; big?: boolean }) {
   const shown = items.slice(0, 5);
+  const size = big ? 48 : 40;
   const [a, b] = items;
   const words = total === 2 ? `${a.name} and ${b.name}` : `${a.name}, ${b.name} and ${total - 2} more`;
   return (
-    <View accessible accessibilityLabel={words} style={{ marginBottom: 14 }}>
+    <View accessible accessibilityLabel={yearly ? `${words}. ${yearly} a year.` : words} style={{ marginBottom: 14 }}>
       <View style={{ flexDirection: 'row' }}>
         {shown.map((x, i) => (
           <View key={`${x.id}-${i}`} style={{ marginLeft: i ? -10 : 0, borderRadius: 13, borderWidth: 2.5, borderColor: band, zIndex: shown.length - i }}>
-            <LogoTile id={x.id} size={40} mono={x.mono} />
+            <LogoTile id={x.id} size={size} mono={x.mono} />
           </View>
         ))}
       </View>
       <Txt v="label" color={ink} style={{ marginTop: 8 }}>
         {words}
       </Txt>
+      {/* Their real yearly total, only when there's room for it (one currency only, never added across). */}
+      {yearly ? (
+        <Txt v="moneyL" num color={ink} style={{ marginTop: 4 }}>
+          {`${yearly} a year`}
+        </Txt>
+      ) : null}
     </View>
   );
 }
@@ -180,6 +187,10 @@ export default function Paywall() {
   // The logo line (approved deck, DECISIONS #26): their own services, in the space above the title.
   const logos = (inApp ? listedUserSubs(app.subs).map((s) => ({ id: s.catalogId ?? s.id, name: s.name, mono: s.name.slice(0, 1).toUpperCase() })) : pickedList.map((x) => ({ id: x.id, name: x.name, mono: x.mono }))).slice(0, 12);
   const many = n > 3;
+  // Their yearly total, for the logo line: one currency only (never added across currencies).
+  const home = useCountry()?.currency;
+  const totals = inApp ? homeTotals(app.subs, onboardingToday(), home) : totalsFor(pickedList, home);
+  const yearlyTotal = totals.length === 1 && totals[0].yearlyMinor > 0 ? formatWholeMoney(totals[0].yearlyMinor, totals[0].currency, { home }) : null;
   const [planId, setPlanId] = useState<PlanId>('yearly');
 
   const yearly = planById('yearly');
@@ -237,6 +248,21 @@ export default function Paywall() {
   const overlap = f.tablet ? 48 : 40;
   const duckW = f.small ? 68 : f.tablet ? 104 : 96;
   const ink = dark ? '#F6F0E3' : brand.ink;
+  // Spare height is filled with content, step by step, never left blank (owner, Nov 18):
+  // 0 = logos and names, 1 = + their yearly total, 2 = bigger logos (Plus / Pro Max). Anything left
+  // is shared between the gaps below (each capped), so big phones breathe evenly instead of one block.
+  // Measured from the gap itself, so it adapts to every phone and text size. It only steps up,
+  // and starts again when the window changes, so it never flickers.
+  const sizeKey = `${f.width}x${f.height}x${f.fontScale}`;
+  const [fillState, setFillState] = useState({ key: sizeKey, level: 0 });
+  const fill = fillState.key === sizeKey ? fillState.level : 0;
+  const setFill = (level: number) => setFillState({ key: sizeKey, level });
+  const showLogos = n >= 2 && (f.tablet || f.height >= 760);
+  const onGap = (h: number) => {
+    if (!showLogos || !yearlyTotal) return;
+    if (fill === 0 && h >= 44) setFill(1);
+    else if (fill === 1 && h >= 40) setFill(2);
+  };
 
   return (
     <OnbRoot surface="cream">
@@ -248,10 +274,11 @@ export default function Paywall() {
               <Close color={ink} />
             </IconButton>
           </View>
-          {/* Spare height goes here, so the title sits lower instead of a gap under the plans. */}
-          <View style={{ flexGrow: 1 }} />
-          {/* Tall phones and iPad: their logos fill that space ("Netflix, Spotify and 5 more"). No room on the SE. */}
-          {n >= 2 && (f.tablet || f.height >= 900) ? <LogoLine items={logos} total={n} ink={ink} band={dark ? brand.night : brand.sunflower} /> : null}
+          {/* Content starts right under the bar, like the top paywalls on Mobbin (Headway, Bevel, Tide Guide).
+              Spare height is filled with their own logos, never left as an empty yellow block. */}
+          <View onLayout={(e) => onGap(e.nativeEvent.layout.height)} style={{ flexGrow: 1, minHeight: f.small ? 4 : 12 }} />
+          {/* Their logos ("Netflix, Spotify and 5 more"): every phone taller than the SE. */}
+          {showLogos ? <LogoLine items={logos} total={n} ink={ink} band={dark ? brand.night : brand.sunflower} yearly={fill >= 1 ? yearlyTotal : null} big={fill >= 2} /> : null}
           {/* Dark mode: night like the other yellow screens (Almost set, Ditched), with a sunflower headline. */}
           <Txt v="title" color={dark ? brand.sunflower : ink} accessibilityRole="header" accessibilityLabel={spokenHead} style={f.tiny ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 } : f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null}>
             {head}
@@ -263,6 +290,7 @@ export default function Paywall() {
         </View>
 
         <Compare rows={rows} width={f.content} overlap={overlap} tiny={f.tiny} />
+        <View style={{ flexGrow: 1, maxHeight: 20 }} />
 
         <View accessibilityRole="radiogroup" accessibilityLabel="Plans" style={{ gap: f.tiny ? 6 : 8, marginTop: f.tiny ? 10 : f.small ? 16 : 20 }}>
           <PlanCard
@@ -299,6 +327,7 @@ export default function Paywall() {
         </View>
 
         <View style={{ height: f.tiny ? 12 : f.small ? 16 : 20 }} />
+        <View style={{ flexGrow: 1, maxHeight: 20 }} />
         <Button label={cta} onPress={buy} height={f.tiny ? 44 : f.small ? 48 : 56} />
         {/* A fixed slot, so the button never moves when the plan changes. Price and the real start date by the
             button (App Review); no reminder text (owner, Nov 10). */}

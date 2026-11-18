@@ -94,6 +94,7 @@ Open the paywall (finish onboarding, or Settings → Ditch Pro → Try Pro free)
 - [ ] Tap Yearly again: "Start 7-day free trial", "$0 today · $49.99/yr from (date a week from today)".
 - [ ] Everything fits without scrolling. Restore, Terms and Privacy are at the bottom. The × still closes it.
 - [ ] VoiceOver on a card reads the plan, price and trial.
+- [ ] No big empty yellow block at the top: your own logos sit under the ditch Pro bar ("Netflix, Spotify and 4 more"). On bigger phones your yearly total shows under them too.
 
 ## 1l. Hold to ditch with Reduce Motion on (bug fix, Nov 18)
 iPhone Settings → Accessibility → Motion → Reduce Motion **on**.

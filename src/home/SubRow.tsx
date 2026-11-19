@@ -6,7 +6,7 @@
 // the stamp's heavy impact on the next screen is the completion haptic.
 
 import { useEffect, useRef } from 'react';
-import { useWindowDimensions, View } from 'react-native';
+import { Platform, useWindowDimensions, View } from 'react-native';
 import { GestureDetector, useExclusiveGestures, useLongPressGesture, useTapGesture } from 'react-native-gesture-handler';
 import Animated, { Easing, interpolateColor, ReduceMotion, useAnimatedProps, useAnimatedStyle, useReducedMotion, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 import Svg, { Circle } from 'react-native-svg';
@@ -16,7 +16,7 @@ import { daysBetween, weekdayDate, type DateOnly } from '@/domain/dates';
 import { CYCLE_SHORT, CYCLE_WORDS, yearlyMinor } from '@/domain/money';
 import { inTrial, isPending, isPricedSub, isProTrial, type Sub } from '@/domain/subs';
 import { useAppMoney } from '@/state/app';
-import { Bell, BellOff, DitchedTag, DuckIcon, F, LogoTile, ProLockup, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
+import { Bell, BellOff, DitchedTag, DuckIcon, F, LogoTile, ProLockup, Txt, brand, haptic, tileRadius, usePalette } from '@/ui/sunflower';
 
 const HOLD_MS = 1200;
 const LIFT_AFTER = 150;
@@ -47,13 +47,27 @@ export function rowLine(sub: Sub, charge: DateOnly | null, today: DateOnly, narr
   return n <= (narrow ? 1 : 6) ? `${weekdayDate(charge)} · ${relative(charge, today)}` : weekdayDate(charge);
 }
 
-export function SubLogo({ sub, size = TILE }: { sub: Sub; size?: number }) {
-  return isProTrial(sub) ? (
+/**
+ * The sub's logo. `ditched`: grey at 60% so it reads as gone (owner, Nov 19; Revolut, Ro do the same).
+ * iOS doesn't draw a `grayscale` filter by default, so a grey layer with the "saturation" blend takes the colour
+ * out instead (works on iOS, Android and web). The name next to it keeps its full contrast.
+ */
+export function SubLogo({ sub, size = TILE, ditched }: { sub: Sub; size?: number; ditched?: boolean }) {
+  const tile = isProTrial(sub) ? (
     <DuckIcon size={size} />
   ) : (
     <LogoTile id={sub.catalogId ?? sub.id} size={size} mono={sub.catalogId ? undefined : sub.name.slice(0, 1).toUpperCase()} color={sub.catalogId ? undefined : '#6B6559'} />
   );
+  if (!ditched) return tile;
+  return (
+    <View style={[{ width: size, height: size, opacity: 0.6, borderRadius: tileRadius(size), overflow: 'hidden' }, continuous]}>
+      {tile}
+      <View pointerEvents="none" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#808080', mixBlendMode: 'saturation' }} />
+    </View>
+  );
 }
+
+const continuous = Platform.OS === 'ios' ? ({ borderCurve: 'continuous' } as const) : null;
 
 /**
  * Invisible copy of the longest price on Home, drawn exactly like a row's
@@ -230,7 +244,7 @@ export function SubRow({
       >
         <View style={{ minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 10, paddingLeft: 14, paddingRight: 14, paddingVertical: 7 }}>
           <Animated.View style={[{ width: TILE, height: TILE, alignItems: 'center', justifyContent: 'center' }, logoLift]}>
-            <SubLogo sub={sub} />
+            <SubLogo sub={sub} ditched={pending} />
             {holding ? (
               <Svg width={RING_BOX} height={RING_BOX} style={{ position: 'absolute', left: (TILE - RING_BOX) / 2, top: (TILE - RING_BOX) / 2 }}>
                 <Circle cx={RING_BOX / 2} cy={RING_BOX / 2} r={RING_R} stroke={p.dark ? 'rgba(246,240,227,0.18)' : 'rgba(22,20,15,0.15)'} strokeWidth={3} fill="none" />

@@ -1,5 +1,10 @@
 // Payday (DECISIONS #60, free): just the day of the month, never an amount.
 // Home then shows what still leaves your account before it.
+// The rule (tested day by day in src/domain/__tests__/payday.test.ts): a local
+// calendar date, no timestamps; 29–31 use the last day of shorter months; the
+// next payday is the first one after today (on payday, it's next month's);
+// "before payday" is today up to the day before it, so a charge on payday
+// counts after it. The day turns at local midnight (clockToday).
 
 import { router } from 'expo-router';
 import { useState } from 'react';

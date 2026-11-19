@@ -134,7 +134,14 @@ export default function Total() {
   const base = f.tablet ? 128 : f.tiny ? 56 : f.small ? 80 : 104;
   // A little air on the right so the last digit never touches the edge.
   const [size, onMeasure] = useFitSize(base, f.content - 4);
-  const lh = Math.round((size * 0.8) / 4) * 4;
+  // Archivo's own line is 1.09× the size (ascent 0.88, descent 0.21). A shorter line crops the tops of the
+  // digits on iPhone (the "$2,64[0]" cut, Nov 19), and each digit sits in a clipped window while it rolls.
+  // So the line is a little taller than the font's, and the empty band above the digits (~0.18×, the
+  // gap between the font's ascent and the digit tops) and below them (the descent) is pulled back with
+  // margins, which only overlap empty space.
+  const lh = Math.ceil(size * 1.12);
+  const pullTop = Math.round(size * 0.16);
+  const pullBottom = Math.round(size * 0.18);
   const heroStyle = { fontFamily: F.display, fontSize: size, letterSpacing: -0.045 * size, color: p.money };
 
   // How many rows fit before "N more · Show all": 4 on iPhone 12 and up, 3 on smaller, 2 on SE, all on iPad.
@@ -164,7 +171,7 @@ export default function Total() {
 
         {main ? (
           <>
-            <Animated.View entering={reduce ? FadeIn.duration(150) : undefined} style={{ marginTop: 8, marginLeft: -4 }}>
+            <Animated.View entering={reduce ? FadeIn.duration(150) : undefined} style={{ marginTop: 8 - pullTop, marginBottom: -pullBottom, marginLeft: -4 }}>
               <RollingNumber text={hero} style={heroStyle} lineHeight={lh} play={play} go={arrived} accessibilityLabel={`${hero} a year`} />
             </Animated.View>
             <Animated.View style={yearStyle}>

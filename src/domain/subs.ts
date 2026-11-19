@@ -43,7 +43,11 @@ export type Sub = {
   status: SubStatus;
   /** The day it was ditched. */
   ditchedOn: DateOnly | null;
-  /** The charge it has to be cancelled before (the next charge on the ditch day). */
+  /**
+   * A cancel-by date the user picked themselves (no screen sets one yet). Null otherwise.
+   * Never filled in automatically (owner, Nov 19): the charge to beat is worked out when it's
+   * shown, with chargeOfSub, so "Cancel by" only ever appears when the user set it.
+   */
   cancelBy: DateOnly | null;
   /** The day the user said "I cancelled it". */
   confirmedOn: DateOnly | null;
@@ -293,7 +297,8 @@ export function ditchSub(s: Sub, today: DateOnly, nowIso = new Date().toISOStrin
     ...s,
     status: 'ditched-pending',
     ditchedOn: today,
-    cancelBy: chargeOfSub(s, today),
+    // Not the next charge: that's worked out when it's shown (chargeOfSub). Only the user sets this.
+    cancelBy: null,
     confirmedOn: null,
     snapAmountMinor: s.amountMinor,
     snapCurrency: s.currency,
@@ -491,7 +496,8 @@ export function toCsv(subs: Sub[], today: DateOnly, digitsOf: (currency: string)
         amount,
         s.currency ?? '',
         BILLED[s.cycle],
-        s.status === 'active' ? (chargeOfSub(s, today) ?? '') : s.confirmedOn ? '' : (s.cancelBy ?? ''),
+        // Waiting to cancel: the date they set, else the next charge (never stored, worked out here).
+        s.status === 'active' ? (chargeOfSub(s, today) ?? '') : s.confirmedOn ? '' : ((s.cancelBy && s.cancelBy >= today ? s.cancelBy : chargeOfSub(s, today)) ?? ''),
         status,
         s.ditchedOn,
         s.confirmedOn,

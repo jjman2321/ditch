@@ -8,7 +8,7 @@
 // it then starts ROLL.start ms later.
 
 import { useEffect, useState } from 'react';
-import { Text, View, type TextStyle } from 'react-native';
+import { StyleSheet, Text, View, type TextStyle } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 
 import { tabular } from './type';
@@ -39,11 +39,15 @@ function Digit({ value, place, style, lineHeight, play, go }: { value: number; p
     y.set(withDelay(ROLL.start, withTiming(travel, { duration: ROLL.count, easing: EASE })));
   }, [play, go, travel, y]);
   const anim = useAnimatedStyle(() => ({ transform: [{ translateY: -y.get() * lineHeight }] }));
+  // The window clips only up and down (it's what hides the other digits). Tight negative letter spacing would
+  // also shave the right edge off wide digits (a "4" lost ~4pt at 104pt), so the glyph keeps its full advance
+  // and the spacing becomes a margin outside the window: same width, nothing cut.
+  const { letterSpacing = 0, ...glyph } = StyleSheet.flatten(style) ?? {};
   return (
-    <View style={{ height: lineHeight, overflow: 'hidden' }}>
+    <View style={{ height: lineHeight, overflow: 'hidden', marginRight: letterSpacing }}>
       <Animated.View style={anim}>
         {Array.from({ length: travel + 1 }, (_, d) => (
-          <Text key={d} allowFontScaling={false} style={[style, tabular, { lineHeight, height: lineHeight }]}>
+          <Text key={d} allowFontScaling={false} style={[glyph, tabular, { letterSpacing: 0, lineHeight, height: lineHeight }]}>
             {d % 10}
           </Text>
         ))}
@@ -119,10 +123,16 @@ export function RollingMeasure({ text, style, onWidth }: { text: string; style: 
 /**
  * Font size that fits `text` in `maxWidth`, measured once at a base size.
  * Returns [fontSize, onMeasure] — render a hidden <Text onLayout={onMeasure}>
- * at `base` to feed it.
+ * at `base` to feed it. Width scales with the size (letter spacing is set
+ * per size too), so one measurement is enough. A 2% margin covers each
+ * character's width rounding to the pixel at the smaller size.
  */
+export function fitSize(base: number, maxWidth: number, measured: number | null): number {
+  if (!measured || maxWidth <= 0 || measured <= maxWidth) return base;
+  return Math.max(1, Math.floor((base * maxWidth * 0.98) / measured));
+}
+
 export function useFitSize(base: number, maxWidth: number) {
   const [measured, setMeasured] = useState<number | null>(null);
-  const size = measured && maxWidth > 0 && measured > maxWidth ? Math.floor((base * maxWidth) / measured) : base;
-  return [size, (w: number) => setMeasured(w)] as const;
+  return [fitSize(base, maxWidth, measured), setMeasured as (w: number) => void] as const;
 }

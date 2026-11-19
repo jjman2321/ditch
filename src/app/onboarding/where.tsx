@@ -1,6 +1,6 @@
 // 3 · Where should we look? (design/v16 screen 2). Every way to find them in
 // one place; you check everything before it's added (find/review). The first
-// find is free (#34), so those cards say "Free once". Bank sync (#64, #70) is the
+// find is free (#34), so those cards say "1 free, then Pro". Bank sync (#64, #70) is the
 // main card in test builds in the US/Canada (design/v32 screen 1), with the free
 // routes below it, smaller; the App Store build doesn't show it yet (Apple 2.1).
 // The bank data provider's name is never shown (owner, Nov 18).
@@ -59,8 +59,8 @@ export default function Where() {
               routes={[
                 ...(showImport()
                   ? [
-                      { key: 'apple', icon: PhoneList, title: 'Apple subscriptions', line: 'A screenshot of your list · Free once', onPress: () => find('/find/apple') },
-                      { key: 'stmt', icon: StatementIcon, title: 'A bank statement', line: 'PDF or CSV from any bank · Free once', onPress: () => find('/find/statement') },
+                      { key: 'apple', icon: PhoneList, title: 'Apple subscriptions', line: 'A screenshot · 1 free, then Pro', onPress: () => find('/find/apple') },
+                      { key: 'stmt', icon: StatementIcon, title: 'A bank statement', line: 'PDF or CSV · 1 free, then Pro', onPress: () => find('/find/statement') },
                     ]
                   : []),
                 { key: 'pick', icon: ListCheck, title: 'Pick them myself', line: 'Tick them from our list', onPress: () => router.push('/onboarding/services') },
@@ -71,8 +71,8 @@ export default function Where() {
           <>
             {showImport() ? (
               <>
-                <RouteCard icon={PhoneList} title="Apple subscriptions" line="A screenshot of your list." tag="FREE ONCE" onPress={() => find('/find/apple')} />
-                <RouteCard icon={StatementIcon} title="A bank statement" line="PDF or CSV from any bank." tag="FREE ONCE" onPress={() => find('/find/statement')} />
+                <RouteCard icon={PhoneList} title="Apple subscriptions" line="A screenshot of your list." tag="1 FREE, THEN PRO" onPress={() => find('/find/apple')} />
+                <RouteCard icon={StatementIcon} title="A bank statement" line="PDF or CSV from any bank." tag="1 FREE, THEN PRO" onPress={() => find('/find/statement')} />
               </>
             ) : null}
             <RouteCard icon={ListCheck} title="Pick them myself" line="Tick them from our list." onPress={() => router.push('/onboarding/services')} />

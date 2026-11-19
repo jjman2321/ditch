@@ -1,14 +1,16 @@
 // 5 · Reminders pre-ask. A real-feeling lock screen (design/v10 render 05):
 // the lock, the day and 9:00, the duck as the wallpaper, the flashlight and
 // camera buttons. The user's own first reminders arrive like real ones: the
-// older one lands, then the newest drops in on top and the older one fades
-// back, exactly like iOS. "Turn on reminders" shows the real iOS prompt;
-// "Maybe later" doesn't ask. Reduce Motion: everything already in place.
+// older one lands in its place, then the newest lands above it and the older
+// one fades back, like iOS. Every card's place is kept from the start and the
+// next one only starts once the last has settled, so no two ever overlap
+// (owner, Nov 19). "Turn on reminders" shows the real iOS prompt; "Maybe
+// later" doesn't ask. Reduce Motion: everything already in place.
 
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Linking, Platform, View } from 'react-native';
-import Animated, { FadeInDown, LinearTransition, useReducedMotion } from 'react-native-reanimated';
+import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { catalogPrice } from '@/catalog/prices';
 import { addDays, longDate, weekdayDate, weekdayName, type DateOnly } from '@/domain/dates';
@@ -31,7 +33,22 @@ function LockButton({ children }: { children: React.ReactNode }) {
 }
 
 // The cards land 600 ms apart (motion doc fix 11: 900 kept you waiting before the duck).
+// Each one takes LAND ms, well inside the gap, so a card has settled before the next starts.
 const GAP = 600;
+const LAND = 320;
+/** How far a card drops from. Less than the 8pt gap between cards, so it never reaches the one above. */
+const DROP = 6;
+
+/** One card in its own slot: invisible until it lands, then a short fade and drop. The slot never moves. */
+function LandingCard({ landed, reduce, children }: { landed: boolean; reduce: boolean; children: React.ReactNode }) {
+  const t = useSharedValue(landed || reduce ? 1 : 0);
+  useEffect(() => {
+    if (reduce) t.set(1);
+    else if (landed) t.set(withTiming(1, { duration: LAND, easing: Easing.out(Easing.cubic) }));
+  }, [landed, reduce, t]);
+  const style = useAnimatedStyle(() => ({ opacity: t.get(), transform: [{ translateY: (t.get() - 1) * DROP }] }));
+  return <Animated.View style={style}>{children}</Animated.View>;
+}
 
 export default function Reminders() {
   const p = usePalette();
@@ -78,13 +95,14 @@ export default function Reminders() {
     const timers = Array.from({ length: count }, (_, i) => setTimeout(() => setArrived((a) => Math.max(a, i + 1)), 400 + i * GAP));
     return () => timers.forEach(clearTimeout);
   }, [reduce, count]);
-  const stack = (reduce ? shown : shown.slice(0, arrived)).slice().reverse();
-  // Space for the whole stack from the start, so nothing jumps while they arrive.
-  const [stackH, setStackH] = useState(0);
+  const landed = reduce ? count : arrived;
+  // Newest on top, like iOS. Every card is laid out from the start (invisible until it lands), so the
+  // stack's height is fixed and no card ever moves or covers another.
+  const stack = shown.map((s, i) => ({ s, i })).reverse();
 
-  // The lock screen's day is the day of the card on top ("now"), so the date and the cards always agree,
+  // The lock screen's day is the day of the newest card in ("now"), so the date and the cards always agree,
   // even while the older one is the only one in. An older card from the same day says "9:00 AM", like iOS.
-  const lockDay = (stack[0] ?? shown[0]).day;
+  const lockDay = shown[Math.max(0, landed - 1)].day;
   const card = (s: Shown, top: boolean) => <NotificationPreview faded={!top} time={top ? 'now' : s.day === lockDay ? '9:00 AM' : weekdayDate(s.day)} message={noOrphan(s.body)} />;
   // Clear room under the cards for the torch and camera buttons (16 from the edge, 44 tall) plus 12pt of air.
   // Taller phones also keep the duck's head below the cards, never under their words.
@@ -113,7 +131,7 @@ export default function Reminders() {
           {`Get a reminder\nbefore you’re${NB}charged.`}
         </Txt>
         <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
-          {'3 days and 1 day before, at 9 AM.\nOnly about your subscriptions.'}
+          {'3 days and 1 day before. You pick the time.\nOnly about your subscriptions.'}
         </Txt>
 
         {/* A picture of the lock screen, always in the sunflower look (dark mode too). */}
@@ -152,20 +170,12 @@ export default function Reminders() {
               </Txt>
             </View>
 
-            {/* Invisible copy of the full stack, to hold its height. */}
-            <View pointerEvents="none" importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ position: 'absolute', left: 12, right: 12, opacity: 0 }}>
-              <View onLayout={(e) => setStackH(e.nativeEvent.layout.height)} style={{ gap: 8 }}>
-                {shown.map((s, i) => (
-                  <View key={s.key}>{card(s, i === shown.length - 1)}</View>
-                ))}
-              </View>
-            </View>
-
-            <View importantForAccessibility="no-hide-descendants" style={{ zIndex: 2, marginTop: 14, minHeight: stackH, gap: 8 }}>
-              {stack.map((s, i) => (
-                <Animated.View key={s.key} entering={reduce ? undefined : FadeInDown.springify().damping(18)} layout={reduce ? undefined : LinearTransition.springify().damping(20)}>
-                  {card(s, i === 0)}
-                </Animated.View>
+            <View importantForAccessibility="no-hide-descendants" style={{ zIndex: 2, marginTop: 14, gap: 8 }}>
+              {stack.map(({ s, i }) => (
+                <LandingCard key={s.key} landed={i < landed} reduce={reduce}>
+                  {/* The newest card in is the bright one; older ones fade back. */}
+                  {card(s, i === landed - 1)}
+                </LandingCard>
               ))}
             </View>
 

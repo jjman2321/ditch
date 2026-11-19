@@ -10,6 +10,7 @@ import { AppState, Linking, Platform, Pressable, ScrollView, useWindowDimensions
 import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 
 import { APPLE_SUBSCRIPTIONS_URL } from '@/catalog/cancel';
+import { chargeDay } from '@/domain/copy';
 import { shortDate, toDateOnly, weekdayDate } from '@/domain/dates';
 import { CYCLE_WORDS, yearlyMinor } from '@/domain/money';
 import { shortTimeLabel } from '@/domain/settings';
@@ -102,7 +103,7 @@ export default function Ditched() {
   if (!sub) return <Gone />;
 
   const trial = isProTrial(sub);
-  // "Cancel by" only for a date the user set; otherwise it's just when it charges.
+  // "Cancel by" only for a date the user set (ditching never fills one in); otherwise it's just when it charges.
   const cancelBy = sub.cancelBy && sub.cancelBy >= app.today ? sub.cancelBy : null;
   const charge = chargeOfSub(sub, app.today);
   const yearly = isPricedSub(sub) ? yearlyMinor(sub.amountMinor, sub.cycle) : null;
@@ -138,10 +139,11 @@ export default function Ditched() {
           title: `One last check: ${(tiny ? shortDate : weekdayDate)(toDateOnly(lastCheck.fireAt))} · ${shortTimeLabel(app.settings.reminderTime)}`,
           line: `“${lastCheck.body}”`.replace(/ (\S+)$/, '\u00A0$1'),
         }
-      : charge
-        ? { title: `It charges ${weekdayDate(charge)}`, line: 'Too close for a last check. Cancel now to be safe.' }
-        : cancelBy
-          ? { title: `Cancel by ${weekdayDate(cancelBy)}`, line: 'No last check on this one. Cancel before then to be safe.' }
+      : cancelBy
+        ? { title: `Cancel by ${chargeDay(cancelBy, app.today)}`, line: cancelBy === app.today ? 'Cancel now to stop it.' : 'Cancel before then to stop it.' }
+        : charge
+          ? // Too soon for a last check: say when it charges, in plain words.
+            { title: `It charges ${chargeDay(charge, app.today)}`, line: charge === app.today ? 'Cancel now to stop it.' : 'Cancel before then to stop it.' }
           : { title: 'No date on this one', line: 'So there’s no last check. Cancel it before it renews.' };
 
   return (

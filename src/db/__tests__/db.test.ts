@@ -150,6 +150,21 @@ describe('migrations', () => {
     db.close();
   });
 
+  it('migration 6 clears the automatic cancel-by dates and keeps everything else (owner, Nov 19)', async () => {
+    const db = nodeSqlite();
+    await migrate(
+      db,
+      MIGRATIONS.filter((m) => m.version <= 5),
+    );
+    const pending = netflix({ status: 'ditched-pending', ditchedOn: '2026-11-09', cancelBy: '2026-11-14', snapAmountMinor: 1799, snapCurrency: 'USD', snapCycle: 'monthly' });
+    const row = subToRow(pending);
+    await db.runAsync(`INSERT INTO subscriptions (${SUB_COLUMNS.join(', ')}) VALUES (${SUB_COLUMNS.map(() => '?').join(', ')})`, ...SUB_COLUMNS.map((c) => row[c]));
+    const repo = await sqlRepo(db); // runs migration 6
+    const [after] = await repo.loadSubs();
+    expect(after).toEqual({ ...pending, cancelBy: null });
+    db.close();
+  });
+
   it('a failing migration rolls back and leaves the version where it was', async () => {
     const db = nodeSqlite();
     await migrate(db);

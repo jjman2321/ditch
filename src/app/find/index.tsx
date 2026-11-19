@@ -23,7 +23,7 @@ export default function FindHub() {
   const p = usePalette();
   const { free, go, pro } = useFindGate();
   // Same tag as onboarding's "Where should we look?"; once the free one is used it says PRO.
-  const tag = pro ? undefined : free ? 'FREE ONCE' : 'PRO';
+  const tag = pro ? undefined : free ? '1 FREE, THEN PRO' : 'PRO';
   const app = useApp();
   // Bank sync first (DECISIONS #70): test builds, US/Canada only.
   const bank = showBankSync(app.settings.country, app.settings.currency);

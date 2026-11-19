@@ -194,7 +194,7 @@ export default function DitchedTab() {
                         {i ? <RowDivider inset={16} /> : null}
                         <View style={{ paddingHorizontal: 14, paddingTop: 14, paddingBottom: 14 }}>
                           <View style={{ flexDirection: 'row', gap: 12 }}>
-                            <SubLogo sub={s} />
+                            <SubLogo sub={s} ditched />
                             <View style={{ flex: 1 }}>
                               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
                                 {s.kind === 'ditch_pro_trial' ? (
@@ -239,7 +239,7 @@ export default function DitchedTab() {
                           onPress={() => reactivate(s)}
                           style={({ pressed }) => ({ minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, paddingVertical: 8, opacity: pressed ? 0.7 : 1 })}
                         >
-                          <SubLogo sub={s} />
+                          <SubLogo sub={s} ditched />
                           <View style={{ flex: 1, minWidth: 0 }}>
                             <Txt v="bodyStrong" color={p.cardFg} style={{ fontSize: 17 }} numberOfLines={1}>
                               {s.name}
@@ -250,7 +250,8 @@ export default function DitchedTab() {
                           </View>
                           {y ? (
                             <View style={{ alignItems: 'flex-end' }}>
-                              <Txt v="moneyM" num color={p.cardFg} style={{ fontSize: 17 }}>
+                              {/* Struck through: a price they no longer pay. Same ink, so it stays easy to read. */}
+                              <Txt v="moneyM" num color={p.cardFg} style={{ fontSize: 17, textDecorationLine: 'line-through' }}>
                                 {money(y.amountMinor, y.currency)}
                               </Txt>
                               <Txt v="sub" tone="mute">

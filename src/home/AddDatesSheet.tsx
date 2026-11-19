@@ -2,6 +2,7 @@
 // onboarding dates step (DECISIONS #33). Tap one → the same day picker,
 // inside this sheet, then back to the list. A sub that gets a date also
 // gets a free reminder if there's room in the 3. Closes when all are done.
+// "Paid it today" saves today as the last charge (src/domain/paidToday.ts).
 
 import { useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
@@ -55,17 +56,27 @@ function Body({ close }: { close: () => void }) {
   const [editing, setEditing] = useState<string | null>(null);
   const sub = editing ? (app.subs.find((s) => s.id === editing) ?? null) : null;
 
-  const save = async (s: Sub, anchor: string) => {
+  const save = async (s: Sub, anchor: string, dateSource: 'next' | 'receipt') => {
     // Room in the free 3? Then this one gets reminders now that it has a date.
-    const room = !pro && remindedIds(app.subs.filter((x) => x.id !== s.id), false).size < FREE_REMINDERS;
-    await app.saveSub({ ...s, anchor, dateSource: 'next', freePick: room });
+    const room =
+      !pro &&
+      remindedIds(
+        app.subs.filter((x) => x.id !== s.id),
+        false,
+      ).size < FREE_REMINDERS;
+    await app.saveSub({ ...s, anchor, dateSource, freePick: room });
     haptic.select();
     setEditing(null);
     if (list.length <= 1) close();
   };
 
   if (sub) {
-    const room = pro || remindedIds(app.subs.filter((x) => x.id !== sub.id), false).size < FREE_REMINDERS;
+    const room =
+      pro ||
+      remindedIds(
+        app.subs.filter((x) => x.id !== sub.id),
+        false,
+      ).size < FREE_REMINDERS;
     return (
       <DayBody
         pick={asPick(sub)}
@@ -75,7 +86,8 @@ function Body({ close }: { close: () => void }) {
         off={room ? undefined : 'No reminder: your free 3 are in use. Swap one in Settings.'}
         onClose={() => setEditing(null)}
         onNotSure={() => setEditing(null)}
-        onDone={(anchor) => save(sub, anchor)}
+        onPaidToday={() => save(sub, app.today, 'receipt')}
+        onDone={(anchor, source) => save(sub, anchor, source)}
       />
     );
   }

@@ -14,6 +14,7 @@ import Animated, { FadeIn, useReducedMotion } from 'react-native-reanimated';
 import { namesLine } from '@/domain/copy';
 import { headsUpDates } from '@/domain/charges';
 import { weekdayDate } from '@/domain/dates';
+import { shortTimeLabel } from '@/domain/settings';
 import { FitScroll, OnbRoot, TextLink } from '@/onboarding/Parts';
 import { useFirstReminders } from '@/onboarding/useFirstReminders';
 import { Which3Sheet } from '@/onboarding/Which3Sheet';
@@ -55,7 +56,9 @@ export default function Done() {
   const { pro: proPlan } = useOnboarding();
   const f = useFrame({ maxContent: 480, colH: proPlan ? 820 : 760 });
   const { pro, notifications, setNotifications, setReminderPicks, country } = useOnboarding();
-  const { finishOnboarding, sendTest } = useApp();
+  const { finishOnboarding, sendTest, settings } = useApp();
+  // The real reminder time (9 AM unless they changed it), never a hard-coded one.
+  const time = shortTimeLabel(settings.reminderTime);
   const countryInfo = useCountry();
   const money = useMoney();
   const list = usePickedList();
@@ -118,9 +121,9 @@ export default function Done() {
       : { mark: 'todo', title: 'Your list is ready', sub: 'Add what you pay for, and we’ll remind you before it charges.' },
     on
       ? pro
-        ? { mark: 'ok', title: undated.length ? `Reminders on all ${n - undated.length} with a date` : `Reminders on all ${n}`, sub: '3 days and 1 day before, at 9 AM' }
+        ? { mark: 'ok', title: undated.length ? `Reminders on all ${n - undated.length} with a date` : `Reminders on all ${n}`, sub: '3 days and 1 day before. You pick the time.' }
         : remindedIds.length
-          ? { mark: 'ok', title: remindedIds.length < n ? `Reminders on ${remindedIds.length} of ${n}` : 'Reminders are on', sub: '3 days and 1 day before, at 9 AM' }
+          ? { mark: 'ok', title: remindedIds.length < n ? `Reminders on ${remindedIds.length} of ${n}` : 'Reminders are on', sub: '3 days and 1 day before. You pick the time.' }
           : { mark: 'todo', title: 'No reminders picked yet', sub: 'Pick up to 3 from your list. Free covers 3.' }
       : { mark: 'warn', title: 'Reminders are off', sub: 'Nothing can reach you until you turn them\u00A0on.' },
   ];
@@ -192,14 +195,14 @@ export default function Done() {
         {/* What happens next (design/v14 option A): the first real reminder, in the lock-screen look
             from step 4, with Ditch peeking over it. "See all" opens the pick-3 sheet. */}
         {first ? (
-          <View accessible accessibilityLabel={`${on ? 'Your first reminder' : 'Your first reminder, paused'}: ${weekdayDate(first.reminder)} at 9 AM. ${first.body}`}>
+          <View accessible accessibilityLabel={`${on ? 'Your first reminder' : 'Your first reminder, paused'}: ${weekdayDate(first.reminder)} at ${time}. ${first.body}`}>
             <Txt v="eyebrow" num color={sub2} style={{ marginHorizontal: 4, marginBottom: 8 }} importantForAccessibility="no">
               {on ? `First reminder · ${weekdayDate(first.reminder)}` : `Paused · ${weekdayDate(first.reminder)}`}
             </Txt>
             <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
               {f.small ? null : <Duck width={84} right={10} sink={4} delay={reduce ? 0 : 700} />}
               <View style={{ zIndex: 2 }}>
-                <NotificationPreview faded={!on} time="9 AM" message={noOrphan(first.body)} />
+                <NotificationPreview faded={!on} time={time} message={noOrphan(first.body)} />
               </View>
             </View>
             {!pro && many ? (
@@ -222,7 +225,7 @@ export default function Done() {
                     if (tested) return;
                     if (await sendTest()) {
                       setTested(true);
-                      AccessibilityInfo.announceForAccessibility('Sent. It arrives in about 5 seconds.');
+                      AccessibilityInfo.announceForAccessibility('Sent. It arrives in a second.');
                     }
                   }}
                   style={{ fontSize: 15 }}

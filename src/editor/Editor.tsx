@@ -12,7 +12,7 @@ import { SERVICES, SERVICE_BY_ID, availableIn, popularIn, searchServices, type C
 import { shortDate, weekdayDate, weekdayShort, type DateOnly } from '@/domain/dates';
 import { headsUpBody, reminderDaysFor, trialBody } from '@/domain/reminders';
 import { now as clockNow } from '@/services/clock';
-import { shortPlanName } from '@/domain/copy';
+import { chargesSoonLine, shortPlanName } from '@/domain/copy';
 import { CYCLE_SHORT, CYCLE_WORDS, currencyDigits, formatMoney, parseAmountInput, type Cycle } from '@/domain/money';
 import { leadsLabel, shortTimeLabel, effectiveLeads } from '@/domain/settings';
 import { previousCharge } from '@/domain/charges';
@@ -192,15 +192,21 @@ function DetailInput({
   const p = usePalette();
   return (
     <View style={{ minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 12, borderBottomWidth: last ? 0 : 1, borderBottomColor: p.hair }}>
-      <Txt v="label" style={{ width: 92 }}>
-        {label}
-      </Txt>
+      {/* "(optional)" under the name, so the field keeps its width on small phones. */}
+      <View style={{ width: 92 }}>
+        <Txt v="label">{label}</Txt>
+        <Txt v="sub" tone="mute" style={{ fontSize: 13, lineHeight: 16 }}>
+          (optional)
+        </Txt>
+      </View>
       <TextInput
         value={value ?? ''}
         onChangeText={(t) => onChange(t.trim() ? t : null)}
+        // A short instruction, never made-up data that could pass for theirs (owner, Nov 19).
         placeholder={placeholder}
-        placeholderTextColor={p.mute}
-        accessibilityLabel={label}
+        // iOS's own placeholder grey (placeholderText), light and dark.
+        placeholderTextColor={p.dark ? 'rgba(235,235,245,0.3)' : 'rgba(60,60,67,0.3)'}
+        accessibilityLabel={`${label}, optional`}
         keyboardType={keyboard ?? 'default'}
         autoCapitalize={keyboard ? 'none' : 'sentences'}
         autoCorrect={!keyboard}
@@ -720,7 +726,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                           : remindOn && heads.length
                             ? `${heads.slice(0, -1).map(weekdayDate).join(', ')}${heads.length > 1 ? ' and ' : ''}${weekdayDate(heads[heads.length - 1])} at ${shortTimeLabel(settings.reminderTime)}`
                             : remindOn && charge
-                              ? 'Too close for a reminder this time. The next one gets them.'
+                              ? `${chargesSoonLine(charge, today)}, so no reminder this time. The next one gets them.`
                               : `${leadsLabel(leadsNow)}, at ${shortTimeLabel(settings.reminderTime)}`}
                   </Txt>
                 </View>
@@ -765,9 +771,15 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
               <>
                 <FieldLabel>For when you cancel</FieldLabel>
                 <Card style={{ paddingHorizontal: 16, paddingVertical: 4 }}>
-                  <DetailInput label="Paid with" placeholder="Visa ending 4821" value={draft.paidWith} onChange={(v) => setDraft({ ...draft, paidWith: v })} />
-                  <DetailInput label="Account email" placeholder="you@email.com" value={draft.accountEmail} onChange={(v) => setDraft({ ...draft, accountEmail: v })} keyboard="email-address" />
-                  <DetailInput label="Notes" placeholder="Shared with Sam, cancel in the app…" value={draft.notes} onChange={(v) => setDraft({ ...draft, notes: v })} last />
+                  <DetailInput label="Paid with" placeholder="Card or account" value={draft.paidWith} onChange={(v) => setDraft({ ...draft, paidWith: v })} />
+                  <DetailInput
+                    label="Account email"
+                    placeholder="Email you signed up with"
+                    value={draft.accountEmail}
+                    onChange={(v) => setDraft({ ...draft, accountEmail: v })}
+                    keyboard="email-address"
+                  />
+                  <DetailInput label="Notes" placeholder="Add a note" value={draft.notes} onChange={(v) => setDraft({ ...draft, notes: v })} last />
                 </Card>
               </>
             )}
@@ -777,12 +789,16 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
               <Card style={{ marginTop: 12, paddingHorizontal: 16, paddingVertical: 4 }}>
                 <View style={{ minHeight: 60, flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 8 }}>
                   <View style={{ flex: 1 }}>
-                    <Txt v="label">Skip the {weekdayDate(charge)} reminders</Txt>
+                    <Txt v="label">Already paid this one?</Txt>
                     <Txt v="sub" tone="mute">
-                      Already paid or sorted? The next charge gets them again.
+                      Skip its reminders. The next charge gets them again.
                     </Txt>
                   </View>
-                  <SunSwitch label={`Skip the reminders for ${weekdayDate(charge)}`} value={draft.skipCharge === charge} onValueChange={(v) => setDraft({ ...draft, skipCharge: v ? charge : null })} />
+                  <SunSwitch
+                    label={`Already paid this one? Skip the reminders for ${weekdayDate(charge)}`}
+                    value={draft.skipCharge === charge}
+                    onValueChange={(v) => setDraft({ ...draft, skipCharge: v ? charge : null })}
+                  />
                 </View>
               </Card>
             ) : null}

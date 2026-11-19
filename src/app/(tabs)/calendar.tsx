@@ -8,6 +8,7 @@ import { Pressable, ScrollView, View, useWindowDimensions } from 'react-native';
 
 import { MONTH_LONG, WEEKDAY_LONG, addDays, parseDate, shiftMonth, toDateOnly, weekdayDate, weekdayOf, weekdayShort, type DateOnly } from '@/domain/dates';
 import { HEADS_UP_LEADS } from '@/domain/charges';
+import { chargesSoonLine } from '@/domain/copy';
 import { effectiveLeads, shortTimeLabel, timeLabel } from '@/domain/settings';
 import {
   FREE_REMINDERS,
@@ -376,8 +377,8 @@ function DayCell({ day, w, selected, blocked, onPress }: { day: CalendarDay; w: 
       ) : null}
       {first ? (
         // A dot day: the logo sits in the bottom-right corner, clear of the dot.
-        <View style={[{ flex: 1, alignItems: 'center', justifyContent: 'center', opacity: first.pending ? 0.4 : 1 }, day.headsUp ? { alignItems: 'flex-end', justifyContent: 'flex-end' } : null]}>
-          <SubLogo sub={first.sub} size={24} />
+        <View style={[{ flex: 1, alignItems: 'center', justifyContent: 'center' }, day.headsUp ? { alignItems: 'flex-end', justifyContent: 'flex-end' } : null]}>
+          <SubLogo sub={first.sub} size={24} ditched={first.pending} />
           {more > 0 ? (
             <Txt v="sub" num color={selected ? brand.ink : p.mute} style={{ position: 'absolute', right: -2, bottom: -2, fontFamily: F.bold, fontSize: 11 }} maxFontSizeMultiplier={1}>
               +{more}
@@ -456,7 +457,8 @@ function ChargeRow({
             ? `${heads.length === 1 ? 'Reminder' : 'Reminders'} ${heads.map(short).join(', ')}`
             : sent.length
               ? `Reminded ${sent.map(short).join(', ')}`
-              : 'Too close for a reminder this time';
+              : // Too soon for its reminders: just say when it charges (owner, Nov 19).
+                chargesSoonLine(c.date, today);
   return (
     <Pressable
       accessibilityRole="button"
@@ -465,7 +467,7 @@ function ChargeRow({
       style={({ pressed }) => ({ paddingHorizontal: 14, paddingVertical: 10, borderTopWidth: first ? 0 : 1, borderTopColor: p.hair, opacity: pressed ? 0.75 : 1 })}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-        <SubLogo sub={s} />
+        <SubLogo sub={s} ditched={c.pending} />
         <View style={{ flex: 1, minWidth: 0 }}>
           <Txt v="bodyStrong" color={p.cardFg} style={{ fontSize: 17 }} numberOfLines={1}>
             {isProTrial(s) ? 'Ditch Pro trial' : s.name}

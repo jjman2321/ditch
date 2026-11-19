@@ -1,6 +1,6 @@
 // Small pure helpers for onboarding copy, kept here so they can be tested.
 
-import { shortDate, type DateOnly } from './dates';
+import { daysBetween, shortDate, weekdayDate, type DateOnly } from './dates';
 
 /** "A", "A and B", "A, B and C". */
 export function joinNames(names: string[]): string {
@@ -100,4 +100,18 @@ export function ordinal(n: number): string {
   const t = n % 100;
   if (t >= 11 && t <= 13) return `${n}th`;
   return `${n}${({ 1: 'st', 2: 'nd', 3: 'rd' } as Record<number, string>)[n % 10] ?? 'th'}`;
+}
+
+/** "today", "tomorrow", else "Thu, Nov 19": when a charge lands, in plain words. */
+export function chargeDay(charge: DateOnly, today: DateOnly): string {
+  const diff = daysBetween(today, charge);
+  return diff === 0 ? 'today' : diff === 1 ? 'tomorrow' : weekdayDate(charge);
+}
+
+/**
+ * A charge too soon for its reminders (owner, Nov 19: never "too close for a last check"):
+ * "Charges today" / "Charges tomorrow" / "Charges Thu, Nov 19".
+ */
+export function chargesSoonLine(charge: DateOnly, today: DateOnly): string {
+  return `Charges ${chargeDay(charge, today)}`;
 }

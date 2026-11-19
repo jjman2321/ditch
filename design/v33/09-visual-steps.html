@@ -1,0 +1,119 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>v33 · 9 Visual steps</title>
+<link rel="stylesheet" href="common.css">
+<style>
+.phone{--mbg:#F2F2F7;--mrow:#fff;--mline:#DCDCE1;--mtext:#1C1C1E;--mframe:#16140F}
+.phone.dark{--mbg:#000;--mrow:#1C1C1E;--mline:#3A3A3C;--mtext:#F2F2F7;--mframe:#8A8476}
+.step{position:relative;overflow:hidden;height:134px;padding:16px 132px 0 16px}
+.step + .step{margin-top:10px}
+.step .t{display:flex;gap:10px;align-items:flex-start}
+.step .t b{font:600 17px/22px Inter;letter-spacing:-.3px;padding-top:2px}
+.step .d{font:400 14.5px/20px Inter;color:var(--mute);margin:6px 0 0 36px}
+.mini{position:absolute;right:16px;top:14px;width:104px;height:170px;border-radius:20px;background:var(--mbg);box-shadow:0 0 0 3px var(--mframe);overflow:hidden;font-family:Inter;color:var(--mtext)}
+.mini .isl{position:absolute;top:5px;left:50%;margin-left:-16px;width:32px;height:9px;border-radius:5px;background:#000}
+.mini .grp{background:var(--mrow);border-radius:6px;margin:0 6px;overflow:hidden}
+.mini .r{height:16px;display:flex;align-items:center;gap:4px;padding:0 5px;position:relative}
+.mini .r + .r{border-top:.5px solid var(--mline)}
+.mini .hl{background:#FFCC2E;color:#16140F;font:700 7.5px Inter;letter-spacing:0}
+.mini .ttl{font:700 8.5px Inter;letter-spacing:-.1px;padding:0 7px}
+.nub{position:absolute;width:4px;border-radius:2px;background:#FFCC2E;box-shadow:0 0 0 1.5px #16140F;z-index:3}
+.place{width:40px;height:40px;border-radius:10px;flex:none;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.openp{height:36px;border-radius:18px;padding:0 13px;display:flex;align-items:center;gap:5px;font:600 14.5px Inter;box-shadow:inset 0 0 0 1.5px var(--fg);flex:none;margin:-4px 0}
+</style></head><body>
+<script src="common.js"></script>
+<script>
+const tick = (x, y) => TAP(x, y, .8);
+// ---- tiny iPhone screens ----
+const miniAccount = () => `<div class="mini"><div class="isl"></div>
+ <div style="height:20px"></div>
+ <div style="display:flex;flex-direction:column;align-items:center;gap:3px"><span style="width:24px;height:24px;border-radius:12px;background:linear-gradient(#B9B4A8,#8E897D);display:flex;align-items:center;justify-content:center;color:#fff;font:700 9px Inter">SM</span>${BAR(38, 'var(--mtext)', 4)}</div>
+ <div style="height:7px"></div>
+ <div class="grp"><div class="r">${BAR(44)}</div><div class="r">${BAR(36)}</div><div class="r hl">Subscriptions<span style="margin-left:auto;display:flex">${ICN.chev(8)}</span></div><div class="r">${BAR(30)}</div></div>
+ ${tick(84, 85)}</div>`;
+const miniSubs = () => `<div class="mini"><div class="isl"></div>
+ <div style="height:21px"></div><div class="ttl">Subscriptions</div><div style="height:5px"></div>
+ <div class="grp">${[['netflix', 'Netflix'], ['spotify', 'Spotify'], ['chatgpt-plus', 'ChatGPT'], ['duolingo', 'Duolingo'], ['youtube-premium', 'YouTube']].map(([l, n]) => `<div class="r" style="height:19px"><img src="${LP}${l}.png" style="width:11px;height:11px;border-radius:3px"><span style="font:600 6.5px Inter;flex:1">${n}</span>${BAR(14, 'var(--mline)', 3)}</div>`).join('')}</div>
+ <span style="position:absolute;inset:3px;border:2px solid #FFCC2E;border-radius:17px;pointer-events:none"></span>
+ </div>
+ <span class="nub" style="right:9px;top:50px;height:24px"></span><span class="nub" style="right:123px;top:44px;height:16px"></span>
+ ${'' }`;
+const miniPicker = () => {
+  const cols = ['#C9B79C', '#9DB4C0', '#D7A49A', '#A9B98F', '#C4A6C9', '#E1C46F', '#94A7B5', '#BFAE92'];
+  return `<div class="mini"><div class="isl"></div><div style="height:21px"></div><div class="ttl" style="display:flex;justify-content:space-between"><span>Recents</span><span style="color:#2F7BF6;font-weight:600">Add</span></div><div style="height:5px"></div>
+ <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:0 3px">
+ <span style="height:34px;background:#fff;border-radius:1px;position:relative;box-shadow:inset 0 0 0 2px #FFCC2E;padding:5px 4px;display:flex;flex-direction:column;gap:3px">${BAR(14, '#16140F', 2.5)}${[0, 1, 2, 3].map(() => `<span style="display:flex;gap:2px;align-items:center"><span style="width:4px;height:4px;border-radius:1px;background:#16140F"></span>${BAR(12, '#D3D0C8', 2)}</span>`).join('')}<span style="position:absolute;right:-1px;bottom:-1px;width:11px;height:11px;border-radius:6px;background:#FFCC2E;box-shadow:0 0 0 1.5px #16140F;display:flex;align-items:center;justify-content:center">${ICN.check(7, '#16140F')}</span></span>
+ ${cols.map(c => `<span style="height:34px;background:${c};border-radius:1px"></span>`).join('')}</div>${tick(28, 62)}</div>`;
+};
+const miniHome = () => {
+  const c = ['#5AA0E6', '#E86B5A', '#62C27A', '#F2B441', '#8E7BE0', '#4BB6B0', '#E58FB7', '#7D8794', '#C9A36A', '#6FA3C7', '#E07B45', '#9BBF5C'];
+  return `<div class="mini" style="background:linear-gradient(160deg,#E9DFC8,#CFC2A3)"><div class="isl"></div><div style="height:24px"></div>
+ <div style="display:grid;grid-template-columns:repeat(4,17px);justify-content:space-between;row-gap:9px;padding:0 9px">${c.map((x, i) => i === 5 ? `<span style="width:17px;height:17px;border-radius:5px;background:#16140F;color:#FFCC2E;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #FFCC2E">${ICN.bank(11)}</span>` : `<span style="width:17px;height:17px;border-radius:5px;background:${x};opacity:.75"></span>`).join('')}</div>
+ ${tick(58, 66)}</div>`;
+};
+const miniStatements = () => `<div class="mini"><div class="isl"></div><div style="height:21px"></div><div class="ttl">Statements</div><div style="height:5px"></div>
+ <div class="grp">${['Oct 2026', 'Sep 2026', 'Aug 2026', 'Jul 2026'].map((m, i) => `<div class="r ${i === 0 ? 'hl' : ''}" style="height:19px"><span style="font:${i === 0 ? 700 : 500} 6.8px Inter;flex:1">${m}</span><span style="font:800 5.5px Inter;padding:1px 2px;border-radius:2px;background:${i === 0 ? '#16140F' : 'var(--mline)'};color:${i === 0 ? '#FFCC2E' : 'var(--mtext)'}">PDF</span><span style="font:800 5.5px Inter;padding:1px 2px;border-radius:2px;background:${i === 0 ? '#16140F' : 'var(--mline)'};color:${i === 0 ? '#FFCC2E' : 'var(--mtext)'}">CSV</span></div>`).join('')}</div>${tick(58, 66)}</div>`;
+const miniFiles = () => `<div class="mini"><div class="isl"></div><div style="height:21px"></div><div class="ttl" style="display:flex;justify-content:space-between"><span>Downloads</span><span style="color:#2F7BF6;font-weight:600">Open</span></div><div style="height:5px"></div>
+ <div class="grp">${[['Statement Oct', 'PDF', 1], ['Boarding pass', 'PDF'], ['Lease 2026', 'PDF'], ['Photos.zip', 'ZIP']].map(([n, t, h]) => `<div class="r ${h ? 'hl' : ''}" style="height:20px"><span style="width:9px;height:11px;border-radius:1.5px;background:${h ? '#fff' : 'var(--mline)'};box-shadow:inset 0 0 0 .8px ${h ? '#16140F' : 'transparent'};position:relative"><span style="position:absolute;left:1px;right:1px;bottom:1.5px;height:3px;background:#E0483A;border-radius:.5px"></span></span><span style="font:${h ? 700 : 500} 6.8px Inter;flex:1">${n}</span><span style="font:500 5.5px Inter;opacity:.6">${t}</span></div>`).join('')}</div>${tick(70, 58)}</div>`;
+
+const STEP = (n, t, d, mini) => `<div class="card step"><div class="t"><span class="num">${n}</span><b>${t}</b></div><div class="d">${d}</div>${mini}</div>`;
+
+const apple = (dark) => `${SB()}${NAV('Back')}
+<div class="pad" style="flex:1;display:flex;flex-direction:column;padding-top:6px">
+ <div class="h1">Screenshot your<br>Apple list</div>
+ <div style="height:18px"></div>
+ ${STEP(1, 'Open your Apple subscriptions', 'The button below goes straight there.', miniAccount())}
+ ${STEP(2, 'Screenshot the list', 'Side button + volume up. Long list? Scroll, take another.', miniSubs())}
+ ${STEP(3, 'Come back and pick it', 'Names, prices and dates get read on your phone.', miniPicker())}
+ <div style="flex:1"></div>
+ <div class="btn" style="${dark ? '' : ''}">Open my Apple subscriptions ${ICN.ext(18)}</div>
+ <div class="btn line" style="margin-top:10px">Pick the screenshot</div>
+ <div class="fine" style="margin:12px 0 30px">Free trials show there too, so we can warn you.</div>
+</div>`;
+
+const stmt = `${SB()}${NAV('Back')}
+<div class="pad" style="flex:1;display:flex;flex-direction:column;padding-top:6px">
+ <div class="h1">Drop in a statement</div>
+ <div class="lead" style="margin-top:6px">2–3 months finds the most.</div>
+ <div style="height:16px"></div>
+ ${STEP(1, 'Open your bank app', 'Or its website. Any bank or card works.', miniHome())}
+ ${STEP(2, 'Download a statement', 'Look for Statements. PDF or CSV both work.', miniStatements())}
+ ${STEP(3, 'Pick it here', 'Read on your phone. Not uploaded, not kept.', miniFiles())}
+ <div style="flex:1"></div>
+ <div class="card" style="padding:12px 14px;display:flex;gap:12px;align-items:center;margin-bottom:14px"><span class="place" style="width:34px;height:34px;background:var(--sunSoft);color:var(--sunSoftFg)">${ICN.phonelist(20)}</span><span style="font:400 14.5px/20px Inter;color:var(--fg2);flex:1">Apple’s charges all look the same on a statement. Your Apple screenshot names them.</span></div>
+ <div class="btn">Pick a PDF or CSV</div>
+ <div style="height:40px"></div>
+</div>`;
+
+// ---- Missing any? (sheet over Home) ----
+const gplay = `<svg width="22" height="24" viewBox="0 0 22 24"><path d="M1.5 1.2l11.2 10.8L1.5 22.8c-.4-.3-.6-.8-.6-1.4V2.6c0-.6.2-1.1.6-1.4z" fill="#2196F3"/><path d="M16.4 8.4l-3.7 3.6L1.5 1.2c.5-.4 1.2-.4 1.9 0z" fill="#34A853"/><path d="M16.4 15.6L3.4 23c-.7.4-1.4.4-1.9-.2L12.7 12z" fill="#EA4335"/><path d="M20.2 10.6c1 .6 1 2.2 0 2.8l-3.8 2.2-3.7-3.6 3.7-3.6z" fill="#FBBC04"/></svg>`;
+const places = [
+  [`<span class="place" style="background:#fff;box-shadow:inset 0 0 0 1px var(--chipBorder)">${gplay}</span>`, 'Google Play', 'Apps you pay for on Android', 'Open'],
+  [`<span class="place" style="background:#fff;box-shadow:inset 0 0 0 1px var(--chipBorder)"><span style="font:900 italic 22px Archivo;font-stretch:100%;color:#003087">P</span></span>`, 'PayPal', 'Shops you let charge you', 'Open'],
+  [`<span class="place">${L('amazon-prime', 40)}</span>`, 'Amazon', 'Prime, Kindle, Audible and more', 'Open'],
+  [`<span class="place" style="background:var(--sunSoft);color:var(--sunSoftFg)">${ICN.bank(22)}</span>`, 'Your bank app', 'Same amount, same day, each month', 'Statement'],
+  [`<span class="place" style="background:var(--sunSoft);color:var(--sunSoftFg)">${ICN.mail(22)}</span>`, 'Your email', 'Search for “receipt” or “renews”', 'Open'],
+];
+const homeBG = (dark) => `${SB()}<div class="pad" style="padding-top:8px">${HEAD(dark)}<div style="height:10px"></div>${TOTAL('$29.98', '$360', '2 of 2', dark)}
+ <div class="eyebrow" style="margin:22px 4px 8px">Next week</div><div class="card">${SUBROW('netflix', 'Netflix', 'Tue, Nov 24 · in 5 days', '$17.99')}${SUBROW('spotify', 'Spotify', 'Thu, Nov 26', '$11.99')}</div></div>`;
+const missing = `${homeBG(false)}<div class="scrim"></div>
+<div class="sheet" style="height:692px"><div class="grab"></div>
+ <div class="pad" style="padding-top:14px;flex:1;display:flex;flex-direction:column">
+  <div style="display:flex;justify-content:space-between;align-items:center"><div class="h2">Missing any?</div><span class="xbtn">${ICN.close(12)}</span></div>
+  <div class="lead" style="margin-top:6px">The ones people forget usually hide in one of these. Each button opens the right page.</div>
+  <div class="card" style="margin-top:16px">${places.map(([ic, n, s, b]) => `<div class="row" style="min-height:68px">${ic}<div style="flex:1;min-width:0"><div class="nm" style="font-size:16px">${n}</div><div class="sub" style="font-size:14px">${s}</div></div><span class="openp">${b}${b === 'Open' ? ICN.ext(14) : ''}</span></div>`).join('')}</div>
+  <div style="flex:1"></div>
+  <div class="btn">Add one I found</div>
+  <div style="height:40px"></div>
+ </div></div>`;
+
+render({
+  title: '9 · Visual steps, not arrow chains',
+  note: 'Each step is a card with a number, one short line and a tiny drawn iPhone screen with the exact row lit in sunflower and a tap dot (Sweatcoin, Cash App, Google, Orbit). No “Settings → name → …” text anywhere. The deep link does steps 1–2 for you, so the button is the hero.',
+  cells: [
+    { cap: '9a · Screenshot your Apple list', sub: 'Drawn Apple Account screen with “Subscriptions” lit; step 2 lights the two buttons you press; step 3 shows the photo picker.', html: apple(false) },
+    { cap: '9a · Dark', sub: 'Mini screens switch to iOS dark too, so the drawing matches what they’ll actually see.', dark: true, html: apple(true) },
+    { cap: '9b · A bank statement', sub: 'Bank icon on a home screen → Statements list with PDF/CSV → Files. The Apple note replaces “APPLE.COM/BILL”.', html: stmt },
+    { cap: '9c · Missing any? (sheet, not a page)', sub: 'Same language: one icon per place, one plain line, one button that opens the right page. “Add one I found” opens the add sheet with search ready (10c).', html: missing },
+  ]
+});
+</script></body></html>

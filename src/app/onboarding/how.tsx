@@ -58,8 +58,8 @@ function slidesFor(us: boolean): Slide[] {
         },
     {
       key: 'remind',
-      title: `A reminder before it${NB}charges.`,
-      body: `3 days and 1 day before, at 9 AM. Free trials${NB}too.`,
+      title: `A reminder before you${NB}pay.`,
+      body: `3 days and 1 day before. You pick the time. Free trials${NB}too.`,
       art: 'notes',
     },
     {

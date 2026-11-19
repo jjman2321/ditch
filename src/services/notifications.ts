@@ -129,13 +129,13 @@ export async function pendingCount(): Promise<number | null> {
   }
 }
 
-/** "Send me a test reminder": arrives in about 5 seconds, even with the app open. */
+/** "Send me a test reminder": arrives in about a second, even with the app open. */
 export async function sendTestReminder(): Promise<boolean> {
   try {
     await Notifications.scheduleNotificationAsync({
       identifier: `test:${Date.now()}`,
       content: { body: TEST_BODY, sound: 'default', data: { kind: 'test' } },
-      trigger: { type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL, seconds: 5 },
+      trigger: { type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL, seconds: 1 },
     });
     return true;
   } catch {

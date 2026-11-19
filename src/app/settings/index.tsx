@@ -24,7 +24,7 @@ import { needsSignIn } from '@/state/bankLogic';
 import { tell } from '@/ui/alert';
 import { Bang, Bell, Button, Card, Check, F, ProLockup, SunSwitch, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
 
-/** Non-breaking space: keeps "at 9 AM" together on one line. */
+/** Non-breaking space: keeps "at 9 AM" (the real time) together on one line. */
 const NB = '\u00A0';
 
 export default function Settings() {
@@ -250,7 +250,7 @@ function HealthCard() {
     const ok = await app.sendTest();
     if (ok) {
       setSent(true);
-      AccessibilityInfo.announceForAccessibility('Sent. It arrives in about 5 seconds.');
+      AccessibilityInfo.announceForAccessibility('Sent. It arrives in a second.');
     } else tell('Couldn’t send it', 'Check that notifications for Ditch are on in iPhone Settings.');
   };
 
@@ -281,7 +281,7 @@ function HealthCard() {
         </View>
       </View>
       {h.button ? <Button label={h.button.label} onPress={h.button.onPress} style={{ minHeight: 48, borderRadius: 24 }} /> : null}
-      {h.test ? <Button kind="secondary" label="Send me a test reminder" hint="Arrives in about 5 seconds" onPress={test} style={{ minHeight: 46, borderRadius: 23 }} /> : null}
+      {h.test ? <Button kind="secondary" label="Send me a test reminder" hint="Arrives in a second" onPress={test} style={{ minHeight: 46, borderRadius: 23 }} /> : null}
     </Card>
   );
 }
@@ -298,7 +298,7 @@ function DevTools() {
   const inOneMinute = () => {
     const d = new Date(Date.now() + 60_000);
     app.updateSettings({ reminderTime: formatTime(d.getHours(), d.getMinutes()) });
-    tell('Reminder time moved', `Reminders now land at ${shortTimeLabel(formatTime(d.getHours(), d.getMinutes()))}. Any reminder due today will go off then. Set it back to 9:00 AM when you’re done.`);
+    tell('Reminder time moved', `Reminders now land at ${shortTimeLabel(formatTime(d.getHours(), d.getMinutes()))}. Any reminder due today will go off then. Set it back when you’re done.`);
   };
   return (
     <Group header="Test build only" note={`Planned: ${plan.length} · waiting on this iPhone: ${pending ?? '…'}`}>

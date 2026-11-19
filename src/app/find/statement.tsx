@@ -34,7 +34,10 @@ export default function Statement() {
 
   const pick = async () => {
     setProblem(null);
-    const res = await DocumentPicker.getDocumentAsync({ type: ['text/csv', 'text/comma-separated-values', 'application/pdf', 'text/plain', 'public.comma-separated-values-text'], copyToCacheDirectory: true });
+    const res = await DocumentPicker.getDocumentAsync({
+      type: ['text/csv', 'text/comma-separated-values', 'application/pdf', 'text/plain', 'public.comma-separated-values-text'],
+      copyToCacheDirectory: true,
+    });
     if (res.canceled || !res.assets.length) return;
     setBusy(true);
     try {
@@ -75,7 +78,7 @@ export default function Statement() {
       </View>
       <View style={{ marginTop: 12, backgroundColor: p.dark ? '#2A2516' : '#FFF6D6', borderRadius: 14, padding: 14 }}>
         <Txt v="sub" color={p.dark ? p.fg2 : '#4B4220'}>
-          Charges to APPLE.COM/BILL don’t say which app. We count them and point you to the Apple screenshot.
+          Apple’s charges all look the same on a statement. We count them and point you to the Apple screenshot.
         </Txt>
       </View>
       {busy ? <ActivityIndicator style={{ marginTop: 20 }} /> : null}

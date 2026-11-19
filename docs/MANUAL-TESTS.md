@@ -86,6 +86,19 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
+## 1t. Owner walkthrough fixes (Nov 19, docs/research/owner-walkthrough-2026-11-19.md, items 1–8, 15, 17, 24)
+1. Intro slide 2: title "A reminder before you pay." and "3 days and 1 day before. You pick the time." No "9 AM" anywhere in the slides' text.
+2. You're set: the reminder line says "3 days and 1 day before. You pick the time." The lock-screen card shows your real reminder time (change it in Settings → Time, then look again).
+3. Where should we look? and Home → Find your subscriptions: the Apple and statement cards say **1 FREE, THEN PRO** (bank-sync layout: "A screenshot · 1 free, then Pro"). After using the free one, the find page says **PRO**.
+4. Home with ChatGPT Plus and Claude Pro on the list: the card says "You pay for 2 AI chat apps · $…/mo   Need both? ›" on one line. On an SE it drops to "2 AI chat apps · $…/mo" (or "2 AI chat apps") and still fits on one line. Two music apps say "music apps".
+5. Edit a sub with a date and reminders on: the switch card reads "Already paid this one?" / "Skip its reminders. The next charge gets them again."
+6. Hold to ditch something that charges today: the card says "Charges <date>" (never "Cancel by"), and the box says "It charges today. Cancel now to stop it." (tomorrow: "It charges tomorrow. Cancel before then to stop it."). The Ditched tab and Home row also say "Charges …". Nowhere says "Too close".
+7. Find → A bank statement: the yellow note says "Apple's charges all look the same on a statement…".
+8. Paywall, Yearly: one line under the button, "Then $59.99/yr from <date>. Cancel anytime." Weekly and Lifetime lines are unchanged.
+9. Edit → For when you cancel: each field shows "(optional)" under its name; empty fields show light grey "Card or account", "Email you signed up with", "Add a note". No made-up email or card.
+10. Ditched look: a ditched row on Home, in the Ditched tab and in Calendar shows its logo grey and faded; in Ditched → Cancelled the yearly price is struck through. Names stay easy to read. Try dark mode too.
+11. Settings → Send me a test reminder: the banner arrives in about a second.
+
 ## 1s. Bank sync on the practice bank (Nov 19, design/v32, DECISIONS #70)
 Test build only, iPhone Region set to the US or Canada. The bank sign-in is a **practice sheet** ("Practice bank (test build)"): no real bank, made-up charges.
 1. Fresh onboarding → Where should we look?: "My bank or card" is the big card on top with "PRO · 7 DAYS FREE"; the free routes sit below under "Or do it yourself".
@@ -122,7 +135,7 @@ Reset first (delete the app, reinstall from TestFlight, open twice). Use an iPho
 2. Where should we look?: all options fit without scrolling, same back arrow as the other steps.
 3. Pick services → "Add them all at once": opens "Where should we look?", not the paywall.
 4. Your total: "Most people guess less than half that." above the button (not on SE).
-5. Paywall: renewal line reads "Then $59.99/yr from <date>. Renews yearly until you cancel."; Yearly shows $59.99, "$1.15 a week", "SAVE 83%"; Lifetime $119.99; on an SE the plans, button, line and Restore · Terms · Privacy are full size. Set the largest text size: the top scrolls, Restore stays on screen.
+5. Paywall: renewal line reads "Then $59.99/yr from <date>. Cancel anytime."; Yearly shows $59.99, "$1.15 a week", "SAVE 83%"; Lifetime $119.99; on an SE the plans, button, line and Restore · Terms · Privacy are full size. Set the largest text size: the top scrolls, Restore stays on screen.
 6. Settings: "Restore purchases" row when you're not Pro. Settings → Ditch Pro: 3 benefit rows and "7 days free, then $49.99/yr".
 7. Which 3: tap a 4th bell → the paywall opens.
 8. Home: tap a grey bell → reminder turns on (4th opens the paywall). "in 5 days" stays on every row. Pick a card chip → a total for that card shows.
@@ -204,7 +217,7 @@ iPhone Settings → Accessibility → Motion → Reduce Motion **on**.
 - [ ] Edit Netflix: near the bottom, "For when you cancel" has Paid with, Account email and Notes. Type "Visa ending 4821" and save.
 - [ ] With 2+ different cards filled in, Home shows chips (All cards · Amex… · Visa…). Tap one: only the subs on that card show, and the totals don't change.
 - [ ] Hold to ditch Netflix: the Ditched screen shows "Paid with Visa ending 4821 · Account: …" so you know where to cancel.
-- [ ] Skip one: edit a sub with a date, turn on "Skip the … reminders". That charge's reminders don't come; the next charge's do. Trial endings are never skipped.
+- [ ] Skip one: edit a sub with a date, turn on "Already paid this one?". That charge's reminders don't come; the next charge's do. Trial endings are never skipped.
 
 **Overlap check (free)**
 - [ ] Add Spotify and Apple Music: Home shows "2 music services: Spotify and Apple Music. $X a month together." Tap "Got it": it goes away and stays away.
@@ -225,7 +238,7 @@ iPhone Settings → Accessibility → Motion → Reduce Motion **on**.
 ## 1j. Find your subscriptions (Nov 16, DECISIONS #63)
 Web preview: add `&import=1` to the address. On the iPhone this needs the development build.
 - [ ] Add (+) → "Find your subscriptions" opens the Find page. Home → Missing any? → "Or let Ditch read a list for you" does too.
-- [ ] Free: both routes say "Free once · then Pro". After one Add, they say "Pro" and lead to the paywall.
+- [ ] Free: both routes say "1 FREE, THEN PRO". After one Add, they say "Pro" and lead to the paywall.
 - [ ] Screenshot your Apple list → "Open Apple subscriptions" opens Apple's page. Take a screenshot of the list, come back, "Pick screenshots", pick it: the check list shows each subscription with "Renews …", trials with "Free trial ends …", cancelled ones under "Already cancelled".
 - [ ] Ones already on your list are greyed "Already on your list" and can't be added twice.
 - [ ] Drop in a statement → pick an Apple Card CSV (Wallet → Apple Card → Card Balance → a statement → Export Transactions): repeats show with their dates ("Sep 3, Oct 3, Nov 3"). APPLE.COM/BILL charges are counted with a link to the Apple screenshot.
@@ -235,7 +248,7 @@ Web preview: add `&import=1` to the address. On the iPhone this needs the develo
 
 **Full sweep fixes (Nov 16, late)**
 - [ ] Edit a sub → Next charge on an SE: the calendar scrolls and "Set next charge …" can always be tapped.
-- [ ] Edit → turn on "Skip the … reminders": the Remind me line says "Skipping Sat, Nov 21. Back on for the next one." and the Calendar has no dots for that charge.
+- [ ] Edit → turn on "Already paid this one?": the Remind me line says "Skipping Sat, Nov 21. Back on for the next one." and the Calendar has no dots for that charge.
 - [ ] Edit Netflix and type a different price: the plan chips stay, and tapping one sets that plan again. "Typical price" only shows when the price matches a plan.
 - [ ] Add → search "hbo": HBO Max is first; "Add 'hbo' as your own" is under it. Search "Paramount+ with SHOWTIME Essential": Paramount+ shows.
 - [ ] Tap "Cancel in Netflix" on the Ditched screen, come back to Ditch: it asks "Did it go through?". "Yes, cancelled" moves it to Cancelled.
@@ -488,7 +501,7 @@ Compare with `design/v10/renders/09-home-hold.jpg`, `09b-home-pro.jpg`, `09c-hom
 
 ## 5. Reminders really arrive (built Nov 10). The most important section.
 Do this on the iPhone, not the web preview. Reminders are local: no internet needed.
-- [ ] **Test reminder:** Settings → **Send me a test reminder**. The card says "Sent. Check the top of your screen." Within about 5 seconds a banner from Ditch says "Test from Ditch. If you can read this, you're set." Do it again with the app in the background (swipe home right after tapping): it still arrives.
+- [ ] **Test reminder:** Settings → **Send me a test reminder**. The card says "Sent. Check the top of your screen." Within a second or two a banner from Ditch says "Test from Ditch. If you can read this, you're set." Do it again with the app in the background (swipe home right after tapping): it still arrives.
 - [ ] **A real heads-up today:**
   1. Add a sub (or edit one) so its next charge is **tomorrow**, and make sure its bell is yellow (it's one of your 3).
   2. Settings → **Time** → set it to **2 minutes from now**. (In Expo Go there's also "Reminder time: 1 minute from now" under "Test build only".)
@@ -514,7 +527,7 @@ Compare with `09-home-hold.jpg`, `10-ditched.jpg`, `10-se.jpg`, `10b-ditched-tri
 - [ ] **Cancel in Netflix ↗** opens Netflix's own cancel page. Coming back, Netflix is still "ditched", not cancelled. Spotify, Hulu and YouTube open their own pages too; Apple Music / iCloud / Apple TV open Apple's subscriptions; anything else shows a short how-to.
 - [ ] **Undo** (top left) puts it back on Home as normal, light tap.
 - [ ] Ditch it again and tap **I already cancelled**: a success buzz and the Ditched tab opens with it under **Cancelled**.
-- [ ] On Home, a ditched-but-not-cancelled sub shows the DITCHED tag, "Cancel by <date>" and a slashed bell; it's no longer in the yellow total. Tapping it reopens the Ditched screen (without the stamp animation).
+- [ ] On Home, a ditched-but-not-cancelled sub shows the DITCHED tag, a grey logo, "Charges <date>" and a slashed bell; it's no longer in the yellow total. Tapping it reopens the Ditched screen (without the stamp animation).
 - [ ] Pro trial (Settings → Test build only → Preview Pro): hold the "ditch Pro trial" row. The screen says "Charges Mon, …", "You keep your whole list. Reminders drop back to 3.", and **Cancel in iPhone Settings ↗**.
 - [ ] iPhone SE or Display Zoom: everything on the Ditched screen fits without scrolling.
 - [ ] Reduce Motion on (Settings → Accessibility → Motion): no lift or flying card; the ring fills in 4 steps; the stamp just appears (the buzz stays).

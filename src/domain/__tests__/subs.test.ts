@@ -120,9 +120,11 @@ describe('who gets reminders', () => {
 });
 
 describe('ditching and savings', () => {
-  it('ditch snapshots the price and the cancel-by date; savings ignore later price edits', () => {
+  it('ditch snapshots the price, never fills in a cancel-by date; savings ignore later price edits', () => {
     const n = ditchSub(byName(demo(), 'Netflix'), TODAY);
-    expect([n.status, n.ditchedOn, n.cancelBy, n.snapAmountMinor]).toEqual(['ditched-pending', TODAY, '2026-11-14', 1799]);
+    // cancelBy is only a date the user picks (owner, Nov 19); the charge to beat comes from chargeOfSub.
+    expect([n.status, n.ditchedOn, n.cancelBy, n.snapAmountMinor]).toEqual(['ditched-pending', TODAY, null, 1799]);
+    expect(chargeOfSub(n, TODAY)).toBe('2026-11-14');
     const edited = { ...n, amountMinor: 9999 };
     expect(pendingSavings([edited])[0].yearlyMinor).toBe(21588);
   });
@@ -417,6 +419,10 @@ describe('CSV safety (audit, Nov 16)', () => {
     const csv = toCsv([s], TODAY, currencyDigits);
     expect(csv).toContain(`"'=HYPERLINK(""http://x"")"`);
     expect(csv).toContain('"line1\rline2"');
+  });
+  it('a ditched one still waiting to cancel shows its next charge, worked out (no stored cancel-by)', () => {
+    const n = ditchSub(byName(demo(), 'Netflix'), TODAY);
+    expect(toCsv([n], TODAY, currencyDigits).split('\n')[1]).toContain(',2026-11-14,"Ditched, not cancelled yet"');
   });
 });
 

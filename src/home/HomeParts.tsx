@@ -1,8 +1,9 @@
 // Home's top: the yellow total card, the reminders-off banner, the guesses
 // nudge, and the empty state with the duck and quick add.
 
-import type { Overlap } from '@/domain/overlaps';
+import { overlapWhat, type Overlap } from '@/domain/overlaps';
 import type { PriceChange } from '@/domain/priceWatch';
+import { useState } from 'react';
 import { Linking, Pressable, View, useWindowDimensions } from 'react-native';
 
 import { POPULAR_ORDER, SERVICE_BY_ID, availableIn } from '@/catalog/services';
@@ -359,8 +360,10 @@ export function EmptyHome({ country, onAdd }: { country: string | null; onAdd: (
 }
 
 /**
- * "2 music services · $22.98/mo · Pick one ›" / "Netflix twice · $35.98/mo · Pick one ›" (DECISIONS #60). Free.
- * One compact line, a nudge toward the ditch moment, never a scold: it states what they pay together and lets them decide.
+ * "You pay for 2 AI chat apps · $219.99/mo   Need both? ›" / "You pay for Netflix twice · $35.98/mo   Need both? ›"
+ * (DECISIONS #60, owner Nov 19). Free. One compact line, a nudge toward the ditch moment, never a scold:
+ * it states what they pay together and lets them decide.
+ * It stays on one line: narrower screens (or bigger text) drop "You pay for", then the price ("2 AI chat apps   Need both? ›").
  * Tapping it opens the cheaper one (its sheet has the Ditch button; they can still pick the other).
  * The × hides it until the set changes.
  */
@@ -368,31 +371,60 @@ export function OverlapCard({ overlap, money, onDismiss, onPick }: { overlap: Ov
   const p = usePalette();
   const names = overlap.subs.map((s) => s.name);
   const listed = names.length > 2 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names.join(' and ');
-  const n = overlap.subs.length;
-  const what = overlap.kind === 'twice' ? `${overlap.label} ${n === 2 ? 'twice' : `${n} times`}` : `${n} ${overlap.label}`;
   // Mixed currencies stay apart (rule 1): "£11.99/mo · US$10.99/mo", never with a "+".
   const together = overlap.totals.map((t) => `${money(Math.round(t.monthlyMinor), t.currency)}/mo`).join(' · ');
   const spokenTogether = overlap.totals.map((t) => money(Math.round(t.monthlyMinor), t.currency)).join(' and ');
-  const spoken =
-    overlap.kind === 'twice'
-      ? `${overlap.label} is on your list ${n === 2 ? 'twice' : `${n} times`}.${spokenTogether ? ` ${spokenTogether} a month together.` : ''}`
-      : `${n} ${overlap.label}: ${listed}.${spokenTogether ? ` ${spokenTogether} a month together.` : ''}`;
-  // Small phones: a touch smaller so "2 music services · $22.98/mo  Pick one ›" stays on one line.
+  const spoken = `${overlapWhat(overlap)}: ${listed}.${spokenTogether ? ` ${spokenTogether} a month together.` : ''}`;
+  // Longest first; the first one that fits beside "Need both? ›" is shown.
+  const options: { what: string; price: string }[] = [
+    { what: overlapWhat(overlap), price: together },
+    { what: overlapWhat(overlap, { short: true }), price: together },
+    { what: overlapWhat(overlap, { short: true }), price: '' },
+  ];
+  const [widths, setWidths] = useState<(number | undefined)[]>([]);
+  const [room, setRoom] = useState(0);
+  const measured = room > 0 && options.every((_, i) => widths[i] !== undefined);
+  const pick = measured ? options.findIndex((_, i) => widths[i]! <= room) : 1;
+  const shown = options[pick === -1 ? options.length - 1 : pick];
   const fs = useWindowDimensions().width < 380 ? 14 : 14.5;
+  const line = (o: { what: string; price: string }) => (
+    <>
+      <Txt v="body" color={p.cardFg} style={{ fontFamily: F.bold, fontSize: fs }}>
+        {o.what}
+      </Txt>
+      {o.price ? ` · ${o.price}` : ''}
+    </>
+  );
   return (
     <Card style={{ minHeight: 48, borderRadius: 16, flexDirection: 'row', alignItems: 'center', paddingLeft: 14 }}>
-      <Pressable accessibilityRole="button" accessibilityLabel={`${spoken} Pick one to ditch`} accessibilityHint="Opens the cheaper one" onPress={onPick} style={{ flex: 1, minWidth: 0 }}>
+      <Pressable accessibilityRole="button" accessibilityLabel={`${spoken} Need both?`} accessibilityHint="Opens the cheaper one" onPress={onPick} style={{ flex: 1, minWidth: 0 }}>
         {({ pressed }) => (
           <View style={{ minHeight: 48, flexDirection: 'row', alignItems: 'center', gap: 6, paddingVertical: 8, opacity: pressed ? 0.7 : 1 }}>
-            <Txt v="body" color={p.cardFg} num style={{ flex: 1, fontSize: fs }}>
-              <Txt v="body" color={p.cardFg} style={{ fontFamily: F.bold, fontSize: fs }}>
-                {what}
+            {/* Off-screen copies of each version, to see which one fits. */}
+            <View pointerEvents="none" importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ position: 'absolute', opacity: 0, width: 2000, alignItems: 'flex-start' }}>
+              {options.map((o, i) => (
+                <Txt
+                  key={i}
+                  v="body"
+                  num
+                  style={{ fontSize: fs }}
+                  onLayout={(e) => {
+                    const w = Math.ceil(e.nativeEvent.layout.width);
+                    setWidths((prev) => (prev[i] === w ? prev : Object.assign([...prev], { [i]: w })));
+                  }}
+                >
+                  {line(o)}
+                </Txt>
+              ))}
+            </View>
+            <View style={{ flex: 1, minWidth: 0 }} onLayout={(e) => setRoom(Math.floor(e.nativeEvent.layout.width))}>
+              <Txt v="body" color={p.cardFg} num numberOfLines={pick === -1 ? undefined : 1} style={{ fontSize: fs }}>
+                {line(shown)}
               </Txt>
-              {together ? ` · ${together}` : ''}
-            </Txt>
+            </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
               <Txt v="body" color={p.cardFg} style={{ fontFamily: F.bold, fontSize: fs }}>
-                Pick one
+                Need both?
               </Txt>
               <ChevronRight color={p.cardFg} size={14} />
             </View>

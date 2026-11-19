@@ -123,6 +123,14 @@ export const MIGRATIONS: Migration[] = [
     // server never stores them), what was handled, dismissed cards. Values are JSON text.
     up: [`ALTER TABLE subscriptions ADD COLUMN found_in_bank_on TEXT`, `CREATE TABLE IF NOT EXISTS bank_state (key TEXT PRIMARY KEY NOT NULL, value TEXT NOT NULL)`],
   },
+  {
+    version: 6,
+    name: 'cancel-by is only ever a date the user picked (owner, Nov 19)',
+    // Ditching used to copy the next charge into cancel_by, so the Ditched screen said "Cancel by"
+    // when the user never set one. No screen lets the user set it, so every value so far was that
+    // automatic copy: clear them. The charge to beat is now worked out when it's shown.
+    up: [`UPDATE subscriptions SET cancel_by = NULL`],
+  },
 ];
 
 export async function schemaVersion(db: SqlDb): Promise<number> {

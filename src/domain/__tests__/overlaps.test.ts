@@ -1,6 +1,6 @@
 import { SERVICES } from '@/catalog/services';
 
-import { GROUPS, overlapToShow, overlaps } from '../overlaps';
+import { GROUPS, overlapToShow, overlapWhat, overlaps } from '../overlaps';
 import { ditchSub, makeSub, type Sub } from '../subs';
 
 const sub = (id: string, name: string, catalogId: string | null, amountMinor = 1000, currency = 'USD', extra: Partial<Sub> = {}) =>
@@ -14,9 +14,9 @@ describe('overlaps (DECISIONS #60)', () => {
       ['twice', 'My Gym', 2],
     ]);
   });
-  it('finds 2 music services with their monthly total', () => {
+  it('finds 2 music apps with their monthly total', () => {
     const [o] = overlaps([sub('s', 'Spotify', 'spotify', 1299), sub('m', 'Apple Music', 'apple-music', 1099)]);
-    expect(o.label).toBe('music services');
+    expect(o.label).toBe('music apps');
     expect(o.totals).toEqual([{ currency: 'USD', yearlyMinor: 28776, monthlyMinor: 2398, dailyMinor: 28776 / 365 }]);
   });
   it('keeps currencies apart', () => {
@@ -43,8 +43,19 @@ describe('overlaps (DECISIONS #60)', () => {
     const key = overlapToShow(three, [])!.key;
     expect(overlapToShow(three.slice(0, 2), [key])).toBeNull();
   });
+  it('the card reads naturally: "You pay for 2 AI chat apps" (owner, Nov 19)', () => {
+    const [ai] = overlaps([sub('c', 'ChatGPT Plus', 'chatgpt-plus'), sub('k', 'Claude Pro', 'claude-pro')]);
+    expect(overlapWhat(ai)).toBe('You pay for 2 AI chat apps');
+    expect(overlapWhat(ai, { short: true })).toBe('2 AI chat apps');
+    const [twice] = overlaps([sub('a', 'Netflix', 'netflix'), sub('b', 'Netflix', 'netflix')]);
+    expect(overlapWhat(twice)).toBe('You pay for Netflix twice');
+    const [three] = overlaps([sub('a', 'Netflix', 'netflix'), sub('b', 'Netflix', 'netflix'), sub('c', 'Netflix', 'netflix')]);
+    expect(overlapWhat(three, { short: true })).toBe('Netflix 3 times');
+  });
+  it('every group label is a plural noun that follows "You pay for 2"', () => {
+    expect(GROUPS.map((g) => g.label)).toEqual(['music apps', 'AI chat apps', 'cloud storage plans', 'video streaming services']);
+  });
 });
-
 
 it('every id in the groups is a real catalog service', () => {
   const ids = new Set(SERVICES.map((s) => s.id));

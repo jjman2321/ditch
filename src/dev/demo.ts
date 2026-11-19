@@ -38,7 +38,6 @@ function cancelled(id: string, name: string, catalogId: string, monthly: number,
     status: 'ditched-confirmed',
     ditchedOn: on,
     confirmedOn: on,
-    cancelBy: on,
     snapAmountMinor: monthly,
     snapCurrency: 'USD',
     snapCycle: 'monthly',
@@ -84,7 +83,7 @@ export function demoData(name: DemoName, today: DateOnly): { subs: Sub[]; settin
   }
   if (name === 'ditched' || name === 'off') {
     const n = list[0];
-    list[0] = { ...n, status: 'ditched-pending', ditchedOn: today, cancelBy: n.anchor, snapAmountMinor: n.amountMinor, snapCurrency: 'USD', snapCycle: 'monthly' };
+    list[0] = { ...n, status: 'ditched-pending', ditchedOn: today, snapAmountMinor: n.amountMinor, snapCurrency: 'USD', snapCycle: 'monthly' };
   }
   return { subs: list, settings };
 }

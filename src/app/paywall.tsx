@@ -93,12 +93,11 @@ const SHORT: Record<string, string> = {
 const CANVAS_W = 440;
 /** Gap between the raised Pro column and the table's right edge. */
 const PRO_INSET = 10;
-// The peeking duck (assets/brand/duck.png, 600×350 with 36px air above and beside him).
-const DUCK_PEEK = require('../../assets/brand/duck.png');
-const DUCK_PEEK_DARK = require('../../assets/brand/duck-dark.png');
-const GRIP_W = 52;
-const GRIP_BOX_W = (GRIP_W * 600) / 528;
-const GRIP_H = Math.round((GRIP_BOX_W * 350) / 600);
+// The duck peeking with his wings on a ledge (assets/brand/duck-grip.png, 300×200): the original duck art,
+// pixel for pixel, cut below the bill, with two wings at his own outline weight (owner, Nov 19: "make sure it's the same"). His wings sit 4pt over the Pro column's top edge, as if holding it.
+const DUCK_GRIP = require('../../assets/brand/duck-grip.png');
+const GRIP_W = 60;
+const GRIP_H = Math.round((GRIP_W * 200) / 300);
 const HERO_H = 190;
 const EDGE_W = 24;
 /** Everything on the canvas except the table rows (hero, table header, plans, button, price line, links). */
@@ -230,35 +229,9 @@ function Compare({
           pointerEvents="none"
           importantForAccessibility="no-hide-descendants"
           accessibilityElementsHidden
-          style={{ position: 'absolute', right: PRO_INSET, width: colP, top: -14 - GRIP_H, height: GRIP_H + 8, alignItems: 'center' }}
+          style={{ position: 'absolute', right: PRO_INSET, width: colP, top: -14 - GRIP_H + 1, height: GRIP_H, alignItems: 'center', zIndex: 3 }}
         >
-          <Image source={dark ? DUCK_PEEK_DARK : DUCK_PEEK} style={{ width: GRIP_BOX_W, height: GRIP_H }} contentFit="contain" transition={0} />
-          <View
-            style={{
-              position: 'absolute',
-              top: GRIP_H - 6,
-              left: colP / 2 - GRIP_W / 2 - 3,
-              width: 16,
-              height: 11,
-              borderRadius: 6,
-              backgroundColor: brand.white,
-              borderWidth: 2.5,
-              borderColor: brand.ink,
-            }}
-          />
-          <View
-            style={{
-              position: 'absolute',
-              top: GRIP_H - 6,
-              left: colP / 2 + GRIP_W / 2 - 13,
-              width: 16,
-              height: 11,
-              borderRadius: 6,
-              backgroundColor: brand.white,
-              borderWidth: 2.5,
-              borderColor: brand.ink,
-            }}
-          />
+          <Image source={DUCK_GRIP} style={{ width: GRIP_W, height: GRIP_H }} contentFit="contain" transition={0} />
         </View>
       ) : null}
       <View style={{ flexDirection: 'row', alignItems: 'center', height: 40 }} importantForAccessibility="no-hide-descendants">

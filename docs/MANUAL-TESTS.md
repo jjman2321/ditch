@@ -86,6 +86,18 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
+## 1p. New welcome screen + overheating fix (Nov 19, design/v29)
+Reset first: delete the app, reinstall from TestFlight, open it twice (the second open loads the update).
+1. First screen: the yellow Ditch icon in the middle, 6 logos around it, 4 faded ones in the corners, a soft yellow glow.
+2. Headline "Know what / renews next." with "renews" in a yellow pill with a bell. Under it: "Every subscription in one place. Reminders before you get charged."
+3. Entrance: the icon pops, the logos fan out from behind it, the pill slides in and the bell rings once. Then the logos float very gently.
+4. Under the black "Get started" button: "Free to track. No account needed."
+5. Leave the phone on this screen for 5 minutes. It should stay cool (before: it got hot).
+6. Tap Get started: the 3 slides open, no crash.
+7. Settings → Accessibility → Motion → Reduce Motion on: everything shows at once, nothing moves.
+8. Dark mode: dark background, yellow button, logos still clear.
+9. Largest text size (Settings → Display → Text Size): the picture hides and the button stays on screen.
+
 ## 1o. Paywall (Nov 18, table B + offer 2)
 - [ ] Headline "Get a reminder before all N renewals."; the duck peeks out from behind a raised, yellow-edged Pro column with a black PRO pill (Free is plain grey text). Rows: (TestFlight only) Scan your bank · Reminders 3 vs All N · Price hike alerts · Yearly bill warnings · Pick your reminder days · Screenshot import (Free: Once).
 - [ ] Weekly $6.99/wk. Yearly picked: "Free for 7 days" in bold under "Yearly", a yellow "SAVE 86%" on the card's top-right edge, $49.99/yr (the biggest price) and "$0.96 a week". Lifetime $99.99 "Pay once. No subscription."

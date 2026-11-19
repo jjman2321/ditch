@@ -1,11 +1,14 @@
-// 1 · Welcome (design/v12 render 01, cleaned Nov 18). Like the top finance apps
-// on Mobbin and AppKittie (Monarch, Rocket Money, One, bunq): one picture, one
-// headline, one button. The picture is the product: a real reminder, the duck behind it.
+// 1 · Welcome (design/v29, Nov 19). Built from Mobbin's best welcome screens (Headway,
+// Perplexity Health, Apple Health, Alan): one centred picture, one calm headline, one button.
+// The picture: the Ditch icon on a soft sunflower glow, real service logos fanned around it
+// (CLAUDE.md rule 8: real logos are the illustration). The headline: "Know what renews next."
+// with "renews" in a sunflower pill with a bell, because reminders are the product.
+// Audit notes: design/v29/AUDIT.md.
 
 import { router, useIsFocused } from 'expo-router';
-import { useEffect, useState, type ReactNode } from 'react';
-import { View } from 'react-native';
-import { GestureDetector, usePanGesture } from 'react-native-gesture-handler';
+import { Image } from 'expo-image';
+import { useEffect } from 'react';
+import { Platform, View } from 'react-native';
 import Animated, {
   Easing,
   cancelAnimation,
@@ -14,112 +17,167 @@ import Animated, {
   useSharedValue,
   withDelay,
   withRepeat,
+  withSequence,
   withSpring,
   withTiming,
   type SharedValue,
 } from 'react-native-reanimated';
+import Svg, { Defs, Path, RadialGradient, Rect, Stop } from 'react-native-svg';
 
-import { catalogPrice } from '@/catalog/prices';
-import { SERVICE_BY_ID } from '@/catalog/services';
-import { headsUpDates } from '@/domain/charges';
-import { stillUsingIt } from '@/domain/copy';
-import { addDays, weekdayName, weekdayShort } from '@/domain/dates';
 import { FREE_LINE, FitScroll, OnbRoot } from '@/onboarding/Parts';
-import { onboardingToday, useMoney, useOnboarding } from '@/state/onboarding';
-import { Button, Duck, LAND, LogoTile, NotificationPreview, Txt, Wordmark, brand, paletteFor, useFrame, useIsDark, useScreenArrived } from '@/ui/sunflower';
+import { Button, F, Txt, brand, tileRadius, useFrame, useIsDark, usePalette, useScreenArrived } from '@/ui/sunflower';
 
-// Real service logos as the picture (CLAUDE.md rule 8), scattered like stickers around the duck.
-// x and y are shares of the free space above the reminder; "row" 2 only shows when there's room.
-// z is depth: closer stickers are bigger, cast a deeper shadow, sit on top and drift and follow
-// your finger more, so the picture reads as layers, not a flat collage.
-const STICKERS = [
-  { id: 'netflix', mono: 'N', x: 0.02, y: 0.06, z: 1.15, rot: -9, row: 1 },
-  { id: 'spotify', mono: 'S', x: 0.6, y: 0.0, z: 1.02, rot: 8, row: 1 },
-  { id: 'disney-plus', mono: 'D', x: 0.35, y: 0.32, z: 0.8, rot: 5, row: 1 },
-  { id: 'chatgpt-plus', mono: 'C', x: 0.84, y: 0.36, z: 0.86, rot: -7, row: 2 },
-  { id: 'youtube-premium', mono: 'Y', x: 0.08, y: 0.62, z: 0.95, rot: 6, row: 2 },
-] as const;
-const BASE = 52;
+const LOGO = {
+  'youtube-premium': require('../../../assets/welcome/youtube-premium.png'),
+  netflix: require('../../../assets/welcome/netflix.png'),
+  spotify: require('../../../assets/welcome/spotify.png'),
+  'chatgpt-plus': require('../../../assets/welcome/chatgpt-plus.png'),
+  'disney-plus': require('../../../assets/welcome/disney-plus.png'),
+  hulu: require('../../../assets/welcome/hulu.png'),
+  'adobe-cc': require('../../../assets/welcome/adobe-cc.png'),
+  'canva-pro': require('../../../assets/welcome/canva-pro.png'),
+  duolingo: require('../../../assets/welcome/duolingo.png'),
+  dropbox: require('../../../assets/welcome/dropbox.png'),
+} as const;
+const ICON = require('../../../assets/welcome/app-icon.png');
+type LogoId = keyof typeof LOGO;
 
-// The entrance, in ms once the screen is up. The headline and the button are there from the
-// first frame (you can tap straight away); only the picture builds:
-// stickers spring in back to front (0–200) · the reminder drops in like a banner (180) ·
-// the one under it (250) · the duck peeks up behind it (400). All at rest by ~750 ms.
-const T = { sticker: 0, stickerGap: 50, note: 180, under: 250, duck: 400 } as const;
-// One slow clock drives every sticker's drift (one animation, on the UI thread).
-const DRIFT_MS = 14000;
+// The picture is drawn on a 342 × 320 canvas (centre 171, 160) and scaled to the phone.
+const W = 342;
+const H = 320;
+const CX = 171;
+const CY = 160;
+// Six main logos around the duck (x, y from the centre; tilt; size), then four faded ones in the corners.
+const INNER: { id: LogoId; x: number; y: number; r: number; s: number }[] = [
+  { id: 'youtube-premium', x: 0, y: -122, r: 3, s: 56 },
+  { id: 'netflix', x: -114, y: -54, r: -5, s: 66 },
+  { id: 'spotify', x: 114, y: -54, r: 5, s: 64 },
+  { id: 'chatgpt-plus', x: -102, y: 72, r: 4, s: 60 },
+  { id: 'disney-plus', x: 104, y: 72, r: -4, s: 60 },
+  { id: 'hulu', x: 0, y: 124, r: -2, s: 50 },
+];
+const OUTER: { id: LogoId; x: number; y: number; s: number; o: number }[] = [
+  { id: 'adobe-cc', x: -140, y: -132, s: 32, o: 0.5 },
+  { id: 'canva-pro', x: 140, y: -132, s: 32, o: 0.5 },
+  { id: 'duolingo', x: -140, y: 136, s: 32, o: 0.45 },
+  { id: 'dropbox', x: 140, y: 136, s: 32, o: 0.45 },
+];
+const DUCK = 110;
+
+// The entrance (ms after the screen is up). Headline and button are there from the first frame;
+// only the picture builds: the duck icon pops (0), the logos fan out from behind it (120 + 45 each),
+// the faded corners fade in (380), the pill slides in (420) and its bell rings once (760).
+// Then only the slow float runs. Every moving tile has a solid background, so iOS draws its shadow
+// from the rounded shape once instead of re-tracing the image every frame (the old welcome's shadows
+// were re-traced 60 times a second, which is what heated phones up).
+const T = { duck: 0, logo: 120, gap: 45, outer: 380, pill: 420, bell: 760 } as const;
+// One slow clock drives every logo's float (one animation on the UI thread, paused when you leave the screen).
+const DRIFT_MS = 12000;
 const TAU = Math.PI * 2;
+const continuous = Platform.OS === 'ios' ? ({ borderCurve: 'continuous' } as const) : null;
 
-/**
- * One sticker. Springs in (from 55% with a little give; far ones first), then drifts on its own
- * slow loop, a few points at most, scaled by its depth. A drag anywhere on the picture shifts
- * every sticker by its depth (parallax) and springs back on release.
- * Reduce Motion: shown at rest, no drift, no parallax.
- */
-function Sticker({
+/** A logo tile that springs out from the centre, then floats a couple of points on a slow loop. */
+function Tile({
+  id,
+  x,
+  y,
+  r,
+  s,
+  o = 1,
   i,
-  order,
-  z,
+  delay,
   show,
   clock,
-  dragX,
-  dragY,
-  style,
-  children,
+  far,
 }: {
+  id: LogoId;
+  x: number;
+  y: number;
+  r: number;
+  s: number;
+  o?: number;
   i: number;
-  order: number;
-  z: number;
+  delay: number;
   show: boolean;
   clock: SharedValue<number>;
-  dragX: SharedValue<number>;
-  dragY: SharedValue<number>;
-  style: object;
-  children: ReactNode;
+  far?: boolean;
 }) {
   const reduce = useReducedMotion();
-  const pop = useSharedValue(reduce ? 1 : 0);
-  const fade = useSharedValue(reduce ? 1 : 0);
+  const dark = useIsDark();
+  const k = useSharedValue(reduce ? 1 : 0);
   useEffect(() => {
     if (reduce) {
-      pop.set(1);
-      fade.set(1);
+      k.set(1);
       return;
     }
     if (!show) return;
-    const at = T.sticker + order * T.stickerGap;
-    pop.set(withDelay(at, withSpring(1, { duration: 480, dampingRatio: 0.72 })));
-    fade.set(withDelay(at, withTiming(1, { duration: 140, easing: Easing.out(Easing.cubic) })));
-  }, [reduce, show, order, pop, fade]);
-  // Whole-number frequencies, so the loop joins up seamlessly when the clock wraps.
+    k.set(withDelay(delay, far ? withTiming(1, { duration: 420, easing: Easing.out(Easing.cubic) }) : withSpring(1, { duration: 560, dampingRatio: 0.7 })));
+  }, [reduce, show, delay, far, k]);
+  const ph = i * 0.37;
   const fx = 1 + (i % 2);
   const fy = 1 + ((i + 1) % 2);
-  const ph = i * 0.37;
   const anim = useAnimatedStyle(() => {
-    if (reduce) return { opacity: 1, transform: [{ translateX: 0 }, { translateY: 0 }, { scale: 1 }, { rotate: '0deg' }] };
-    const t = clock.get();
-    const amp = 4.5 * z;
+    const p = k.get();
+    const t = reduce || far ? 0 : clock.get();
+    const amp = reduce || far ? 0 : 2.2;
     return {
-      opacity: fade.get(),
+      opacity: far ? p * o : Math.min(1, p * 1.6),
       transform: [
-        { translateX: Math.sin(TAU * (t * fx + ph)) * amp + dragX.get() * z },
-        { translateY: Math.cos(TAU * (t * fy + ph)) * amp * 0.8 + dragY.get() * z + (1 - pop.get()) * 10 * z },
-        { scale: 0.55 + 0.45 * pop.get() },
-        { rotate: `${Math.sin(TAU * (t + ph)) * 2 * z}deg` },
+        { translateX: -x * (1 - p) * 0.55 + Math.sin(TAU * (t * fx + ph)) * amp },
+        { translateY: -y * (1 - p) * 0.55 + Math.cos(TAU * (t * fy + ph)) * amp },
+        { scale: far ? 1 : 0.6 + 0.4 * p },
+        { rotate: `${r}deg` },
       ],
     };
   });
-  return <Animated.View style={[style, anim]}>{children}</Animated.View>;
+  const rad = tileRadius(s);
+  return (
+    <Animated.View
+      style={[
+        {
+          position: 'absolute',
+          left: CX + x - s / 2,
+          top: CY + y - s / 2,
+          width: s,
+          height: s,
+          borderRadius: rad,
+          // Solid, so iOS draws the shadow from the rounded shape (cheap), not by re-tracing the image every frame.
+          backgroundColor: '#FFFFFF',
+        },
+        far
+          ? null
+          : {
+              shadowColor: dark ? '#000000' : '#3A2A00',
+              shadowOpacity: dark ? 0.45 : 0.13,
+              shadowRadius: 9,
+              shadowOffset: { width: 0, height: 6 },
+            },
+        continuous,
+        anim,
+      ]}
+    >
+      <View style={[{ width: s, height: s, borderRadius: rad, overflow: 'hidden' }, continuous]}>
+        <Image source={LOGO[id]} style={{ width: s, height: s }} contentFit="cover" transition={0} />
+        <View
+          pointerEvents="none"
+          style={[
+            { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, borderRadius: rad, borderWidth: 0.5, borderColor: dark ? 'rgba(255,255,255,0.10)' : 'rgba(22,20,15,0.10)' },
+            continuous,
+          ]}
+        />
+      </View>
+    </Animated.View>
+  );
 }
 
-function Stickers({ width, height, show }: { width: number; height: number; show: boolean }) {
+/** The whole picture, drawn at 342 × 320 and scaled. Decorative: hidden from VoiceOver. */
+function Picture({ scale, show }: { scale: number; show: boolean }) {
   const reduce = useReducedMotion();
+  const dark = useIsDark();
   const focused = useIsFocused();
   const clock = useSharedValue(0);
-  const dragX = useSharedValue(0);
-  const dragY = useSharedValue(0);
   useEffect(() => {
-    // The drift only runs while the screen is showing, and never with Reduce Motion.
+    // The float runs only while this screen is showing, and never with Reduce Motion.
     if (reduce || !show || !focused) {
       cancelAnimation(clock);
       return;
@@ -127,168 +185,166 @@ function Stickers({ width, height, show }: { width: number; height: number; show
     clock.set(withRepeat(withTiming(clock.get() + 1, { duration: DRIFT_MS, easing: Easing.linear }), -1, false));
     return () => cancelAnimation(clock);
   }, [reduce, show, focused, clock]);
-  // A drag on the picture: the stickers lean with your finger, closer ones more, then spring home.
-  // runOnJS: the callbacks run on the JS thread (like SubRow's gestures), so nothing here has to be a worklet.
-  const pan = usePanGesture({
-    runOnJS: true,
-    enabled: !reduce,
-    minDistance: 2,
-    onUpdate: (e) => {
-      dragX.set(Math.max(-14, Math.min(14, e.translationX * 0.08)));
-      dragY.set(Math.max(-14, Math.min(14, e.translationY * 0.08)));
-    },
-    onFinalize: () => {
-      dragX.set(withSpring(0, LAND));
-      dragY.set(withSpring(0, LAND));
-    },
-  });
-  if (height < 70) return null;
-  const rows = height >= 170 ? 2 : 1;
-  // Tall phones: the stickers stay one cluster (at most 240pt tall), sitting a little above the middle.
-  const box = Math.min(height, 240);
-  const off = Math.round((height - box) * 0.45);
-  const list = STICKERS.filter((x) => x.row <= rows);
-  // Far ones arrive first, so the picture builds from the back.
-  const byDepth = [...list].sort((a, b) => a.z - b.z).map((x) => x.id);
+  const duck = useSharedValue(reduce ? 1 : 0);
+  useEffect(() => {
+    if (reduce || !show) return;
+    duck.set(withDelay(T.duck, withSpring(1, { duration: 520, dampingRatio: 0.62 })));
+  }, [reduce, show, duck]);
+  const duckStyle = useAnimatedStyle(() => ({ opacity: Math.min(1, duck.get() * 2), transform: [{ scale: 0.7 + 0.3 * duck.get() }] }));
+  const r = tileRadius(DUCK);
   return (
-    <GestureDetector gesture={pan}>
-      <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ position: 'absolute', left: 0, right: 0, top: 0, height }}>
-        {list.map((x, i) => {
-          const size = Math.round(BASE * x.z * (rows === 1 ? 0.85 : 1));
-          return (
-            <View
-              key={x.id}
-              pointerEvents="none"
-              style={{
-                position: 'absolute',
-                zIndex: Math.round(x.z * 10),
-                left: Math.min(x.x * width, width - size - 6),
-                top: off + (rows === 1 ? Math.min(x.y * box, box - size - 8) : x.y * (box - size)),
-                transform: [{ rotate: `${x.rot}deg` }],
-              }}
-            >
-              <Sticker
-                i={i}
-                order={byDepth.indexOf(x.id)}
-                z={x.z}
-                show={show}
-                clock={clock}
-                dragX={dragX}
-                dragY={dragY}
-                style={{
-                  borderRadius: size * 0.28,
-                  borderWidth: 3,
-                  borderColor: '#FFFFFF',
-                  shadowColor: '#3A2A00',
-                  // Closer = a deeper, softer shadow.
-                  shadowOpacity: 0.08 + 0.12 * x.z,
-                  shadowRadius: 4 + 8 * x.z,
-                  shadowOffset: { width: 0, height: 2 + 5 * x.z },
-                }}
-              >
-                <LogoTile id={x.id} size={size} mono={x.mono} />
-              </Sticker>
-            </View>
-          );
-        })}
+    <View accessible={false} importantForAccessibility="no-hide-descendants" pointerEvents="none" style={{ height: H * scale, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ width: W, height: H, transform: [{ scale }] }}>
+        <Svg width={W} height={H} style={{ position: 'absolute', left: 0, top: 0 }}>
+          <Defs>
+            <RadialGradient id="glow" cx={CX} cy={CY} r={140} gradientUnits="userSpaceOnUse">
+              <Stop offset="0" stopColor={dark ? brand.sunflower : '#FFE18A'} stopOpacity={dark ? 0.3 : 1} />
+              <Stop offset="0.68" stopColor={dark ? brand.sunflower : '#FFE18A'} stopOpacity={0} />
+            </RadialGradient>
+          </Defs>
+          <Rect x={0} y={0} width={W} height={H} fill="url(#glow)" />
+        </Svg>
+        {OUTER.map((t, i) => (
+          <Tile key={t.id} {...t} r={0} i={i} clock={clock} delay={T.outer + i * 40} show={show} far />
+        ))}
+        {INNER.map((t, i) => (
+          <Tile key={t.id} {...t} i={i} clock={clock} delay={T.logo + i * T.gap} show={show} />
+        ))}
+        <Animated.View
+          style={[
+            {
+              position: 'absolute',
+              left: CX - DUCK / 2,
+              top: CY - DUCK / 2,
+              width: DUCK,
+              height: DUCK,
+              borderRadius: r,
+              backgroundColor: brand.sunflower,
+              shadowColor: dark ? '#000000' : '#3A2A00',
+              shadowOpacity: dark ? 0.5 : 0.24,
+              shadowRadius: 22,
+              shadowOffset: { width: 0, height: 14 },
+            },
+            continuous,
+            duckStyle,
+          ]}
+        >
+          <View style={[{ width: DUCK, height: DUCK, borderRadius: r, overflow: 'hidden', backgroundColor: brand.sunflower }, continuous]}>
+            <Image source={ICON} style={{ width: DUCK, height: DUCK }} contentFit="cover" transition={0} />
+          </View>
+        </Animated.View>
       </View>
-    </GestureDetector>
+    </View>
   );
 }
 
-/** The reminder lands like an iOS banner: it drops from just above and settles on a spring. The price inside never moves on its own (CLAUDE.md rule 8). */
-function useBanner(show: boolean, delay: number, from: number) {
+/** The bell inside the pill. */
+function Bell({ size }: { size: number }) {
+  return (
+    <Svg width={size} height={size * 1.05} viewBox="2 1 20 21">
+      <Path d="M12 3a6 6 0 0 0-6 6v3.6L4.4 15.4c-.4.7.1 1.6.9 1.6h13.4c.8 0 1.3-.9.9-1.6L18 12.6V9a6 6 0 0 0-6-6z" fill={brand.ink} />
+      <Path d="M9.5 18.5a2.5 2.5 0 0 0 5 0" fill="none" stroke={brand.ink} strokeWidth={2.2} strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+/** "renews" in a sunflower pill, tilted 2°, with a bell. Slides in, then the bell rings once. */
+function Pill({ fs, lh, show }: { fs: number; lh: number; show: boolean }) {
   const reduce = useReducedMotion();
-  const y = useSharedValue(reduce ? 0 : from);
   const k = useSharedValue(reduce ? 1 : 0);
+  const ring = useSharedValue(0);
   useEffect(() => {
     if (reduce || !show) return;
-    y.set(withDelay(delay, withSpring(0, LAND)));
-    k.set(withDelay(delay, withTiming(1, { duration: 160, easing: Easing.out(Easing.cubic) })));
-  }, [reduce, show, delay, from, y, k]);
-  return useAnimatedStyle(() => ({ opacity: k.get(), transform: [{ translateY: y.get() }, { scale: 0.96 + 0.04 * k.get() }] }));
+    k.set(withDelay(T.pill, withSpring(1, { duration: 480, dampingRatio: 0.75 })));
+    ring.set(
+      withDelay(
+        T.bell,
+        withSequence(
+          withTiming(1, { duration: 90 }),
+          withTiming(-1, { duration: 120 }),
+          withTiming(0.6, { duration: 110 }),
+          withTiming(-0.4, { duration: 100 }),
+          withTiming(0, { duration: 140, easing: Easing.out(Easing.cubic) }),
+        ),
+      ),
+    );
+  }, [reduce, show, k, ring]);
+  const pill = useAnimatedStyle(() => ({
+    opacity: Math.min(1, k.get() * 1.5),
+    transform: [{ translateX: -10 * (1 - k.get()) }, { rotate: '-2deg' }, { scale: 0.92 + 0.08 * k.get() }],
+  }));
+  const bell = useAnimatedStyle(() => ({ transform: [{ rotate: `${-14 + ring.get() * 16}deg` }] }));
+  const b = Math.round(fs * 0.68);
+  return (
+    <Animated.View
+      style={[
+        {
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: brand.sunflower,
+          borderRadius: 999,
+          height: lh + 2,
+          paddingLeft: Math.round(fs * 0.3),
+          paddingRight: Math.round(fs * 0.38),
+          marginRight: Math.round(fs * 0.24),
+        },
+        pill,
+      ]}
+    >
+      <Animated.View style={[{ marginRight: Math.round(fs * 0.12), marginTop: 2 }, bell]}>
+        <Bell size={b} />
+      </Animated.View>
+      <Txt v="title" color={brand.ink} style={{ fontSize: fs, lineHeight: lh, letterSpacing: -0.03 * fs }} maxFontSizeMultiplier={1.3}>
+        renews
+      </Txt>
+    </Animated.View>
+  );
 }
 
 export default function Welcome() {
-  const dark = useIsDark();
-  const p = paletteFor('sun', dark);
+  const p = usePalette();
   const f = useFrame({ maxContent: 480, colH: 840 });
-  const today = onboardingToday();
-  // A charge next week, so the first reminder ("renews Thursday") is 3 days before it.
-  const charge = addDays(today, 9);
-  const [early] = headsUpDates(charge, today);
-  const money = useMoney();
-  const { country } = useOnboarding();
-  const local = catalogPrice('netflix', country);
-  const price = local ? money(local.amountMinor, local.currency) : null;
-
-  // 70/64 on phones (60/56 on SE, 88/80 on iPad), never wider than the column:
-  // "before it" is the longest line, 342pt wide at 70pt.
-  const base = f.tablet ? 88 : f.tiny ? 50 : f.small ? 60 : 70;
-  const fs = Math.min(base, Math.floor((70 * f.content) / 342));
-  const [art, setArt] = useState({ w: 0, h: 0 });
-  const head = { fontSize: fs, lineHeight: Math.round((fs * 64) / 70 / 4) * 4, letterSpacing: -0.04 * fs };
-  // The picture builds once the screen is up (at once with Reduce Motion: everything shown at rest).
-  // It's the first screen, often with no push before it, so it waits at most 200 ms for one.
   const arrived = useScreenArrived(200);
-  const note = useBanner(arrived, T.note, -28);
-  const under = useBanner(arrived, T.under, -14);
+
+  // Headline 34/38 on phones (30/34 on SE, 38/42 on big phones), never wider than the column:
+  // the pill line ("renews next.") is about 300pt wide at 34pt.
+  const big = f.width > 420;
+  const base = f.tablet ? 42 : f.small ? 30 : big ? 38 : 34;
+  const fs = Math.min(base, Math.floor((34 * f.content) / 304));
+  const lh = Math.round(fs * 1.12);
+  const head = { fontSize: fs, lineHeight: lh, letterSpacing: -0.03 * fs, textAlign: 'center' as const };
+  // The picture: 0.78 on SE, 1.05 on regular phones, 1.18 on big ones, never wider than the column.
+  const want = f.tablet ? 1.3 : f.small ? 0.78 : big ? 1.18 : 1.05;
+  const scale = Math.min(want, (f.content + 32) / W);
+  // At the largest text sizes the picture steps aside so the button never leaves the screen.
+  const showPicture = f.fontScale < 1.35;
 
   return (
-    <OnbRoot surface="sun">
+    <OnbRoot surface="cream">
       <FitScroll style={{ paddingTop: f.top, paddingHorizontal: f.edge, paddingBottom: f.bottom }}>
-        <View style={{ height: 28, marginTop: 16, justifyContent: 'center' }}>
-          <Wordmark size={24} />
-        </View>
-        {/* The headline is there from the first frame: you read it while the picture builds. VoiceOver reads it as one header. */}
-        <View accessible accessibilityRole="header" accessibilityLabel="Ditch it before it renews." style={{ marginTop: f.tiny ? 14 : f.small ? 24 : 32 }}>
-          {['Ditch it', 'before it', 'renews.'].map((line, i) => (
-            <Txt key={line} v="displayXL" color={i === 2 ? (dark ? brand.sunflower : p.fg) : undefined} style={head}>
-              {line}
+        <View style={{ flex: 0.8, minHeight: 8 }} />
+        {showPicture ? <Picture scale={scale} show={arrived} /> : null}
+        <View style={{ flex: 0.5, minHeight: f.small ? 14 : 20 }} />
+
+        {/* VoiceOver reads the headline as one header; the bell is decoration. */}
+        <View accessible accessibilityRole="header" accessibilityLabel="Know what renews next." style={{ alignItems: 'center' }}>
+          <Txt v="title" style={head} maxFontSizeMultiplier={1.3}>
+            Know what
+          </Txt>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 2 }}>
+            <Pill fs={fs} lh={lh} show={arrived} />
+            <Txt v="title" style={head} maxFontSizeMultiplier={1.3}>
+              next.
             </Txt>
-          ))}
+          </View>
         </View>
-        {/* The picture fills the space under the headline (like One, bunq, Monarch): logos up top, the reminder below. */}
-        <View style={{ flex: 1, minHeight: f.tiny ? 16 : 24, marginTop: f.small ? 12 : 20 }} onLayout={(e) => setArt({ w: e.nativeEvent.layout.width, h: e.nativeEvent.layout.height })}>
-          <Stickers width={art.w} height={art.h - (f.small ? 8 : f.tablet ? 120 : 96)} show={arrived} />
-        </View>
+        <Txt v={f.small ? 'leadS' : 'lead'} tone="fg2" center style={{ marginTop: f.small ? 8 : 12, color: p.fg2 }}>
+          {'Every subscription in one place.\nReminders before you get charged.'}
+        </Txt>
 
-        <View>
-          {f.small ? null : <Duck width={f.tablet ? 160 : 136} right={16} sink={6} play={arrived} delay={T.duck} spring />}
-          {/* The one stacked underneath, like the lock screen: it lands just after the top one, from behind it. */}
-          <Animated.View
-            style={[
-              {
-                position: 'absolute',
-                left: 12,
-                right: 12,
-                bottom: 0,
-                height: 28,
-                borderBottomLeftRadius: 20,
-                borderBottomRightRadius: 20,
-                backgroundColor: dark ? '#1C1A16' : 'rgba(255,255,255,0.6)',
-                borderWidth: dark ? 1 : 0,
-                borderTopWidth: 0,
-                borderColor: '#2C2924',
-                zIndex: 1,
-              },
-              under,
-            ]}
-          />
-          {/* The reminder (with its price) lands as one card, then stays still (CLAUDE.md rule 8). */}
-          <Animated.View style={[{ zIndex: 2, marginBottom: 12 }, note]}>
-            <NotificationPreview
-              time={`${weekdayShort(early)} 9 AM`}
-              message={`Netflix renews ${weekdayName(charge)}.${price ? ` ${price}.` : ''} ${stillUsingIt(SERVICE_BY_ID['netflix'].category).replace(' ', '\u00A0')}`}
-            />
-          </Animated.View>
-        </View>
-
-        <View style={{ height: f.tiny ? 14 : f.small ? 20 : 28 }} />
-        {/* There and tappable from the first frame. The slides' button sits in exactly this spot, so it stays put as you go on. */}
-        <Button label="Find my subscriptions" tapHaptic onPress={() => router.push('/onboarding/how')} />
-        {/* The deal, before any work (review research: ~155 "told me after I typed it all"). */}
-        <Txt v="sub" tone="fg2" center style={{ marginTop: 12 }}>
+        <View style={{ flex: 0.45, minHeight: f.small ? 20 : 28 }} />
+        <Button label="Get started" hint="Starts a short intro" tapHaptic onPress={() => router.push('/onboarding/how')} />
+        <Txt v="fine" tone="fg2" center style={{ marginTop: 14, fontFamily: F.medium }}>
           {FREE_LINE}
         </Txt>
       </FitScroll>

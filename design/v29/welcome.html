@@ -65,7 +65,7 @@ function phone(w,h,dark){
      <div class="sub" style="${small?'font-size:16px;line-height:22px;margin-top:8px':''}">Every subscription in one place.<br>Reminders before you get charged.</div></div>
    <div class="grow" style="flex:.45"></div>
    <div class="cta">Get started</div>
-   <div class="fine" style="margin:14px 0 ${bottom}px">Free to track. Your list stays on your phone.</div></div>`;
+   <div class="fine" style="margin:14px 0 ${bottom}px">Free to track. No account needed.</div></div>`;
 }
 const list=[['iPhone SE · 375×667',375,667,0],['iPhone 12 · 390×844',390,844,0],['Pro Max · 440×956',440,956,0],['Dark · 390×844',390,844,1]];
 document.getElementById('row').innerHTML=list.map(([t,w,h,d])=>`<div class="cell"><div class="cap">${t}</div>${phone(w,h,d)}</div>`).join('');

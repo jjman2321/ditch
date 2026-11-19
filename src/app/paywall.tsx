@@ -398,13 +398,13 @@ export default function Paywall() {
         />
         <PlanCard
           title="Lifetime"
-          note={bank ? 'Pay once. 1 bank scan a year.' : 'Pay once. No subscription.'}
+          note="Pay once. No subscription."
           price={lifetime.priceString}
           sub="one time"
           selected={planId === 'lifetime'}
           onPress={() => select('lifetime')}
           height={58}
-          a11y={`Lifetime, ${lifetime.priceString} one time. Pay once, ${bank ? 'includes 1 bank scan a year' : 'no subscription'}.`}
+          a11y={`Lifetime, ${lifetime.priceString} one time. Pay once, no subscription${bank ? ', bank sync for the first year' : ''}.`}
         />
       </View>
 
@@ -418,7 +418,9 @@ export default function Paywall() {
             ? `Then ${yearly.priceString}/yr from ${shortDate(charge).replace(' ', NB)}.\nRenews yearly until you${NB}cancel.`
             : planId === 'weekly'
               ? `${weekly.priceString} today, then every week until you${NB}cancel.`
-              : `${lifetime.priceString} once. Pro for good, nothing${NB}renews.`}
+              : bank
+                ? `${lifetime.priceString} once. Pro for good. Bank sync for the first year.`
+                : `${lifetime.priceString} once. Pro for good, nothing${NB}renews.`}
         </Txt>
       </View>
       <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 4 }}>

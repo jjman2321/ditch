@@ -35,6 +35,8 @@ export const COMPANY = 'Grasp Labs LLC';
 /** The same prices in cents, for maths (a test checks they match PRO). */
 export const PRO_MINOR = { yearly: 2999, monthly: 499, lifetime: 4999 };
 export const PRO = { yearly: '$29.99', yearlyPerMonth: '$2.50', monthly: '$4.99', lifetime: '$49.99', trialDays: 7 };
+/** Current plans (DECISIONS #66, #67). The home page pricing block still uses PRO above until it's redesigned. */
+export const PLANS = { weekly: '$6.99', yearly: '$49.99', lifetime: '$99.99', trialDays: 7, syncAddOn: '$19.99' };
 
 /** App Store: null until the app is live. Then the hero CTA becomes the badge and the Smart App Banner turns on. */
 export const APP_STORE_ID: string | null = null;

@@ -98,6 +98,9 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 - [ ] **Slide 2:** three real reminders, newest on top, no price-rise notification.
 - [ ] **Settings → Ditch Pro (free):** "Free until <date>, then $59.99 a year." No "Manage subscriptions" row until you have Pro.
 - [ ] **Search the app for "→"** on any screen: there should be none.
+- [ ] **After-ditch screen (rebuilt):** "Ditched." headline with "Next, cancel it with Netflix." under it, then one white card: Netflix + DITCHED tag, "You won't pay $X a year, once you cancel", "Last reminder …". The duck pops up on the card's top-right corner. Buttons at the bottom. Nothing floats on any phone size.
+- [ ] **Paywall:** no duck anywhere on it.
+
 
 ## 1v. Owner notes round 2 (Nov 19, design/v35 boards)
 - [ ] **Where should we look?** Four equal cards in this order: My bank or card (7 DAYS FREE, US/Canada test builds only), Apple subscriptions (FIRST ONE FREE), A bank statement (FIRST ONE FREE), Pick them myself.

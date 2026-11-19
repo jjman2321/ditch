@@ -253,7 +253,7 @@ export default function Ditched() {
             </Animated.View>
 
             {/* A fixed gap, so the amount and the reminder card stay together. */}
-            <View style={{ height: wide ? 40 : tiny ? 10 : compact ? 16 : 28 }} />
+            <View style={{ height: wide ? 40 : tiny ? 10 : compact ? 14 : 20 }} />
 
             <Animated.View style={restStyle}>
               {isPending(sub) ? (

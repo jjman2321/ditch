@@ -86,6 +86,14 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
+## 1u. Calendar, Ditched tab and Ditched screen layout fixes (Nov 19)
+Best on the smallest phone you have (SE or mini) and a big one if you can borrow it.
+- [ ] Calendar: the month total sits on its own line and "due in November · 2 charges" is one line under it. Flip through 4–5 months, including one over $100: the grid never moves up or down.
+- [ ] Calendar: a day with 2 charges shows 2 small logos overlapping, a thin white ring between them. A day with 3 or more shows 2 logos and a dark circle with "+1", "+2"… (yellow text in dark mode). Nothing sits on top of a logo, and it all stays inside the day box, including on today and the picked (yellow) day.
+- [ ] Ditched tab, with a few cancelled subs: under the big number, "From 3 subs you cancelled since June" and then "$35.93 a month" on its own line. No line starts with a "·".
+- [ ] Ditched tab: scroll to the very end. The grey "Ditch can't see your bank…" line sits just above the tab bar (about a finger's width), fully readable, not faded.
+- [ ] Ditch something, then look at the Ditched screen: "Open … to cancel", "I cancelled it" and "Billed by Apple?" sit at the bottom of the screen, just above the home bar. The duck, card, amount and "One last check" sit centred in the space above, with no big empty gap under the last link.
+
 ## 1t. Owner walkthrough fixes (Nov 19, docs/research/owner-walkthrough-2026-11-19.md, items 1–8, 15, 17, 24)
 1. Intro slide 2: title "A reminder before you pay." and "3 days and 1 day before. You pick the time." No "9 AM" anywhere in the slides' text.
 2. You're set: the reminder line says "3 days and 1 day before. You pick the time." The lock-screen card shows your real reminder time (change it in Settings → Time, then look again).

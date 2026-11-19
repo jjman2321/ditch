@@ -6,6 +6,8 @@ _Update this at the end of every session._
 
 ## Where we are
 - 🐞 **Nov 19: crash after the first onboarding button (owner, on device).** Fixed by putting the slides screen (`onboarding/how.tsx`) back to its motion-1 version (ran on device); the motion-2 slides are saved in commit e2f2907 and need a device-safe rework before they come back. Added an app-wide error screen (`ErrorBoundary` in `src/app/_layout.tsx`) so a JS error shows its message instead of closing the app. Latest paywall kept. TestFlight update c8629e0e.
+- ✅ **Nov 19: design audit fixes on TestFlight** (owner approved the before/after boards in `design/v32/`). EAS update group `8f01664c-3803-4a2d-a293-859e6c893ecd`; previous `e8184063-…`/`7fb7108c-…`. Checklist: `docs/MANUAL-TESTS.md` §1r.
+- ✅ **Nov 19: bank sync screens approved** (DECISIONS #70). Next: build them on the mock bank service so the flow can be clicked through on TestFlight before Plaid is live.
 - ✅ **Nov 19: prices up (DECISIONS #69):** Weekly $6.99 · Yearly $59.99 · Lifetime $119.99. On TestFlight: EAS update group `7fb7108c-8e53-448c-ab21-737435284de2`. **Owner:** use these prices when creating the App Store Connect products.
 - 🔨 **Nov 19: bank sync (DECISIONS #67) in progress:** on-phone engine done (`src/import/bankSync.ts`); server (Supabase + Plaid, Stripe fallback) and UX research running; screens wait for mockups and owner OK.
 - ✅ **Nov 19: owner enrolled in Apple's Small Business Program (15%).** Money models still show 15% and 30% (DECISIONS #68).

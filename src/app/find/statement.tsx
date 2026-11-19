@@ -26,13 +26,17 @@ const SOURCES: { key: Source; label: string; screen: string; rows: MockRow[]; st
       { text: 'October 2026', sub: 'PDF' },
       { text: 'September 2026', sub: 'PDF' },
     ],
-    steps: ['Open your bank’s app or website.', 'Tap **Statements**.', 'Download the last **3 months** as **PDF** or **CSV**.'],
+    steps: ['Open your bank’s app or website.', 'Tap **Statements**.', 'Download **3 months** as **PDF** or **CSV**.'],
   },
   {
     key: 'card',
     label: 'Apple Card',
     screen: 'October Statement',
-    rows: [{ text: 'Statement Balance', sub: '$412.38' }, { text: 'Payment Due', sub: 'Nov 30' }, { text: 'Export Transactions', hi: true }],
+    rows: [
+      { text: 'Statement Balance', sub: '$412.38' },
+      { text: 'Payment Due', sub: 'Nov 30' },
+      { text: 'Export Transactions', hi: true },
+    ],
     steps: [
       'Open **Wallet** and tap **Apple Card**.',
       'Tap **Card Balance**, then a month under **Statements**.',

@@ -83,9 +83,9 @@ export default function ProPage() {
           </Pressable>
         </>
       )}
-      <Group note={`${pro ? `Lifetime is a one-time ${lifetime.priceString} for Pro. ` : ''}Cancel anytime in your Apple subscriptions.`}>
+      <Group note={pro ? `Lifetime is a one-time ${lifetime.priceString} for Pro. Cancel anytime in your Apple subscriptions.` : 'Cancel anytime in your Apple subscriptions.'}>
         {pro && trial ? <Row label="Trial ends" value={weekdayDate(trial.anchor)} /> : null}
-        {settings.proPlan !== 'lifetime' ? <Row label="Manage subscriptions" hint="Opens your Apple subscriptions" onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)} /> : null}
+        {pro && settings.proPlan !== 'lifetime' ? <Row label="Manage subscriptions" hint="Opens your Apple subscriptions" onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)} /> : null}
         <Row label="Restore purchases" onPress={restore} chevron={false} />
       </Group>
     </SettingsPage>

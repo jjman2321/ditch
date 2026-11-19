@@ -86,6 +86,19 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
+## 1w. Internal audit fixes (Nov 19, design/v35/audit.png)
+- [ ] **DITCHED tag:** even space on both sides of the word. Smaller on Home and Ditched rows, bigger on the ditch screen card. On Home it sits on the date line, so long names never push it to its own line.
+- [ ] **Ditch screen:** the card, amount and "Last reminder …" sit together in the middle. The Netflix logo turns the same grey as on the Ditched tab.
+- [ ] **Ditched tab:** footnote says "This only counts the ones you marked as cancelled." No chevrons on cancelled rows. On SE the row reads "Charges Nov 24 · $19.99/mo".
+- [ ] **Home with a payday set and two music apps:** the "Need both?" card shows (it used to be hidden by the payday card). All cards' text starts at the same spot. Next reminder reads "Sat, Nov 21 at 9 AM".
+- [ ] **Edit a sub when your 3 free reminders are used:** the note says to tap a bell on Home, with no "Settings → …" path.
+- [ ] **Statement:** pick 2–3 monthly files at once. Charges that appear in more than one file count once. Apple Card tab only in the US.
+- [ ] **Apple list on an iPhone with a Home button:** step 2 says "side button + Home button".
+- [ ] **Day sheet in onboarding:** today's day reads "Charged today, the 19th." For a 4th+ subscription on free, the box says free reminds you about your 3 biggest.
+- [ ] **Slide 2:** three real reminders, newest on top, no price-rise notification.
+- [ ] **Settings → Ditch Pro (free):** "Free until <date>, then $59.99 a year." No "Manage subscriptions" row until you have Pro.
+- [ ] **Search the app for "→"** on any screen: there should be none.
+
 ## 1v. Owner notes round 2 (Nov 19, design/v35 boards)
 - [ ] **Where should we look?** Four equal cards in this order: My bank or card (7 DAYS FREE, US/Canada test builds only), Apple subscriptions (FIRST ONE FREE), A bank statement (FIRST ONE FREE), Pick them myself.
 - [ ] **Pick a day:** open a sub with no date. Today's day is already picked and the yellow box says the next charge is one month (or one cycle) from today. Save works straight away. Tap another day and the box updates. "Paid it today" is gone.

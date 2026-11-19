@@ -281,7 +281,7 @@ export function ForgottenRow({ onPress }: { onPress: () => void }) {
 }
 
 /**
- * "4 have no date yet" / "So no reminders for them"   Add dates ›  (design/v13-dates screen 3).
+ * "4 have no date yet" / "No reminders yet"   Add dates ›  (design/v13-dates screen 3).
  * Bold line plus a grey line, like Next reminder and Payday above it.
  */
 export function NoDateRow({ count, onPress }: { count: number; onPress: () => void }) {
@@ -297,7 +297,7 @@ export function NoDateRow({ count, onPress }: { count: number; onPress: () => vo
               {`${count} ${one ? 'has' : 'have'} no date yet`}
             </Txt>
             <Txt v="sub" tone="mute" numberOfLines={1}>
-              {one ? 'So no reminder for it' : 'So no reminders for them'}
+              {one ? 'No reminder yet' : 'No reminders yet'}
             </Txt>
           </View>
           <Txt v="label" color={p.cardFg} style={{ fontSize: 15 }}>
@@ -441,6 +441,11 @@ export function OverlapCard({ overlap, money, onDismiss, onPick }: { overlap: Ov
                   {line(o)}
                 </Txt>
               ))}
+            </View>
+            {/* Two overlapping tiles: the same 17pt icon slot as the other Home cards, so every card's text starts at one x. */}
+            <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ width: 17, height: 17, marginRight: 6 }}>
+              <View style={{ position: 'absolute', left: 0, top: 0, width: 11, height: 11, borderRadius: 3, borderWidth: 1.6, borderColor: p.cardFg }} />
+              <View style={{ position: 'absolute', left: 5, top: 5, width: 11, height: 11, borderRadius: 3, borderWidth: 1.6, borderColor: p.cardFg, backgroundColor: p.card }} />
             </View>
             <View style={{ flex: 1, minWidth: 0 }} onLayout={(e) => setRoom(Math.floor(e.nativeEvent.layout.width))}>
               <Txt v="body" color={p.cardFg} num numberOfLines={pick === -1 ? undefined : 1} style={{ fontSize: fs }}>

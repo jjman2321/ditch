@@ -86,6 +86,19 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
+## 1r. Design audit fixes (Nov 19, design/v32 before/after boards)
+1. Reminders step: "Maybe later" is visible without scrolling on every phone; the lock-screen picture isn't cut off.
+2. Where should we look?: "look?" isn't alone on a line.
+3. Pick services: no "Change" words; tap the price line (small arrow) to change the plan.
+4. Your total: the button text is white.
+5. Paywall on a small iPhone: nothing cut off; unticked plan circles are clearly visible.
+6. Settings: "Your list" header; reminders row says "2 of 3 free" (Pro: "4 on"). The page is now called "Your reminders"; tapping a 4th bell opens the paywall.
+7. Ditch Pro (free): "Or pay once, $119.99 ›" opens the paywall with Lifetime picked.
+8. Payday: "Turn off payday" is a text link.
+9. Home: at most 2 cards above the list; "2 of 6 reminded"; "$17.99 due before payday".
+10. Edit a subscription: "Done" (outlined) until you change something, then "Save".
+11. Ditched on a small iPhone: "I cancelled it" and "How to cancel" in full; header "$216 a year still to go".
+
 ## 1q. Audit fixes (Nov 19, docs/research/app-audit-2026-11-19.md)
 Reset first (delete the app, reinstall from TestFlight, open twice). Use an iPhone SE-size phone too if you can.
 1. Intro slides: slide 2 says "A reminder before it charges." (no "heads-up"); slide 3 says "how to cancel it" (no "exactly").

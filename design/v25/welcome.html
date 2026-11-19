@@ -1,0 +1,91 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Welcome options v25</title>
+<style>
+@font-face{font-family:Archivo;src:url(../v12/fonts/archivo-wdth.woff2) format('woff2');font-weight:100 900;font-stretch:62% 125%}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_400Regular.ttf);font-weight:400}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_500Medium.ttf);font-weight:500}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_600SemiBold.ttf);font-weight:600}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_700Bold.ttf);font-weight:700}
+:root{--sun:#FFCC2E;--ink:#16140F;--cream:#FBF7EE;--fg2:#4B4220}
+*{box-sizing:border-box;margin:0}
+body{background:#E7E2D6;font-family:Inter,sans-serif;color:var(--ink);letter-spacing:-.2px;-webkit-font-smoothing:antialiased;padding:36px 40px}
+.row{display:flex;gap:44px;align-items:flex-start}
+.cell{display:flex;flex-direction:column;align-items:center;gap:14px}
+.cap{font:800 20px Archivo;font-stretch:115%;text-align:center}
+.cap small{display:block;font:500 14px/19px Inter;color:#4A463E;margin-top:4px;max-width:390px}
+.phone{width:390px;height:844px;border-radius:46px;overflow:hidden;box-shadow:0 0 0 10px #121110,0 30px 60px rgba(40,30,0,.2);background:var(--sun);display:flex;flex-direction:column;position:relative}
+.sb{height:47px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 30px 0 34px;font:600 16px Inter}
+.wm{font:900 24px Archivo;font-stretch:115%;letter-spacing:-.8px;padding:14px 24px 0}
+.head{font:900 64px/58px Archivo;font-stretch:125%;letter-spacing:-2.6px;padding:22px 24px 0}
+.headS{font:900 40px/40px Archivo;font-stretch:125%;letter-spacing:-1.4px;padding:18px 24px 0}
+.grow{flex:1}
+.cta{margin:0 24px;height:56px;border-radius:28px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font:600 17px Inter}
+.fine{text-align:center;font:500 14px Inter;color:var(--fg2);margin:12px 0 30px}
+.note{background:#fff;border-radius:22px;padding:14px 16px;display:flex;gap:12px;align-items:center;box-shadow:0 24px 50px rgba(58,42,0,.22),0 4px 12px rgba(58,42,0,.10)}
+.app{width:42px;height:42px;border-radius:11px;background:var(--sun);position:relative;overflow:hidden;flex:none}
+.app img{position:absolute;width:50px;left:-4px;top:7px}
+.h{display:flex;justify-content:space-between;font:600 15px Inter}.h span{font:400 13px Inter;color:#6E6A62}
+.m{font:400 16px/21px Inter;margin-top:2px}
+.lt{position:absolute;border-radius:14px;overflow:hidden;border:3px solid #fff;box-shadow:0 10px 22px rgba(58,42,0,.18)}
+.lt img{display:block;width:100%;height:100%}
+.ring{position:absolute;border:1.5px dashed rgba(22,20,15,.18);border-radius:50%}
+</style></head><body>
+<div class="row">
+
+<!-- A -->
+<div class="cell"><div class="cap">A · One hero reminder<small>One big, tilted notification with a deep shadow; the duck peeks over its top. Nothing else. (Like One, bunq.)</small></div>
+<div class="phone">
+ <div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+ <div class="wm">ditch</div>
+ <div class="head">Ditch it<br>before it<br>renews.</div>
+ <div class="grow"></div>
+ <div style="position:relative;padding:0 26px;margin-bottom:6px">
+  <img src="../v12/duck.png" style="position:absolute;right:52px;top:-86px;width:112px;transform:rotate(-4deg)">
+  <div style="transform:rotate(-3deg)">
+   <div class="note" style="position:relative;z-index:2"><span class="app"><img src="../v12/duck.png"></span><div style="flex:1"><div class="h">Ditch<span>Sat 9:00 AM</span></div><div class="m">Netflix renews Tuesday. $17.99. Still watching?</div></div></div>
+   <div style="margin:-14px 14px 0;height:26px;border-radius:0 0 20px 20px;background:rgba(255,255,255,.55)"></div>
+  </div>
+ </div>
+ <div class="grow"></div>
+ <div class="cta">Find my subscriptions</div>
+ <div class="fine">Free forever for tracking. No account.</div>
+</div></div>
+
+<!-- B -->
+<div class="cell"><div class="cap">B · Reminder with logos in orbit<small>The same reminder in the middle, real logos orbiting it on a faint ring. (Like Plum, Cash App.)</small></div>
+<div class="phone">
+ <div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+ <div class="wm">ditch</div>
+ <div class="headS">Ditch it before<br>it renews.</div>
+ <div class="grow"></div>
+ <div style="position:relative;height:400px">
+  <div class="ring" style="left:12px;right:12px;top:22px;bottom:22px"></div>
+  <span class="lt" style="width:62px;height:62px;left:34px;top:30px;transform:rotate(-8deg)"><img src="../../assets/logos/netflix.png"></span>
+  <span class="lt" style="width:56px;height:56px;right:40px;top:16px;transform:rotate(7deg)"><img src="../../assets/logos/spotify.png"></span>
+  <span class="lt" style="width:52px;height:52px;left:20px;bottom:46px;transform:rotate(6deg)"><img src="../../assets/logos/chatgpt-plus.png"></span>
+  <span class="lt" style="width:58px;height:58px;right:22px;bottom:70px;transform:rotate(-6deg)"><img src="../../assets/logos/disney-plus.png"></span>
+  <span class="lt" style="width:46px;height:46px;left:168px;bottom:6px;transform:rotate(-4deg)"><img src="../../assets/logos/youtube-premium.png"></span>
+  <div style="position:absolute;left:26px;right:26px;top:150px">
+   <div class="note"><span class="app"><img src="../v12/duck.png"></span><div style="flex:1"><div class="h">Ditch<span>Sat 9:00 AM</span></div><div class="m">Netflix renews Tuesday. $17.99. Still watching?</div></div></div>
+  </div>
+ </div>
+ <div class="grow"></div>
+ <div class="cta">Find my subscriptions</div>
+ <div class="fine">Free forever for tracking. No account.</div>
+</div></div>
+
+<!-- C -->
+<div class="cell"><div class="cap">C · Big type only<small>A huge headline, the duck, one button. Nothing else. (Like Cleo, Wise.)</small></div>
+<div class="phone">
+ <div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+ <div class="wm">ditch</div>
+ <div class="grow"></div>
+ <div style="font:900 56px/54px Archivo;font-stretch:118%;letter-spacing:-2px;padding:0 22px">DITCH IT<br>BEFORE IT<br>RENEWS.</div>
+ <div style="display:flex;justify-content:flex-end;padding:8px 30px 0"><img src="../v12/duck.png" style="width:150px"></div>
+ <div class="grow"></div>
+ <div class="cta">Find my subscriptions</div>
+ <div class="fine">Free forever for tracking. No account.</div>
+</div></div>
+
+</div>
+</body></html>

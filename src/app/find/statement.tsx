@@ -4,18 +4,49 @@
 import * as DocumentPicker from 'expo-document-picker';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 
 import { FindPage, SHOW_SAMPLES } from '@/find/Parts';
+import { PhoneMock, Steps, type MockRow } from '@/find/Visual';
 import { readDocument } from '@/import/device';
 import { SAMPLE_STATEMENT } from '@/import/samples';
 import { setFindResult } from '@/import/session';
 import { readStatement } from '@/import/statement';
 import { useApp } from '@/state/app';
-import { Button, Txt, usePalette } from '@/ui/sunflower';
+import { Button, Segmented, Txt } from '@/ui/sunflower';
+
+type Source = 'bank' | 'card' | 'paypal';
+const SOURCES: { key: Source; label: string; screen: string; rows: MockRow[]; steps: string[] }[] = [
+  {
+    key: 'bank',
+    label: 'Most banks',
+    screen: 'Statements',
+    rows: [
+      { text: 'November 2026', sub: 'PDF', hi: true },
+      { text: 'October 2026', sub: 'PDF' },
+      { text: 'September 2026', sub: 'PDF' },
+    ],
+    steps: ['Open your bank’s app or website.', 'Tap **Statements**.', 'Download 2–3 months as **PDF** or **CSV**.'],
+  },
+  {
+    key: 'card',
+    label: 'Apple Card',
+    screen: 'November Statement',
+    rows: [{ text: 'Statement Balance', sub: '$412.38' }, { text: 'Payment Due', sub: 'Dec 31' }, { text: 'Export Transactions', hi: true }],
+    steps: ['Open **Wallet** and tap **Apple Card**.', 'Tap **Card Balance**, then a month.', 'Tap **Export Transactions**.'],
+  },
+  {
+    key: 'paypal',
+    label: 'PayPal',
+    screen: 'Statements',
+    rows: [{ text: 'Monthly statements' }, { text: 'Activity download', hi: true }, { text: 'Tax documents' }],
+    steps: ['Tap **Activity**, then **Statements**.', 'Tap **Activity download**.', 'Pick the dates, choose **CSV** and download.'],
+  },
+];
 
 export default function Statement() {
-  const p = usePalette();
+  const [source, setSource] = useState<Source>('bank');
+  const src = SOURCES.find((x) => x.key === source)!;
   const app = useApp();
   const [busy, setBusy] = useState(false);
   const [problem, setProblem] = useState<string | null>(null);
@@ -52,7 +83,7 @@ export default function Statement() {
   return (
     <FindPage
       title="Drop in a statement"
-      intro="2–3 months finds the most. A monthly charge needs to show up at least twice."
+      intro="2–3 months finds the most: a monthly charge has to show up twice."
       footer={
         <>
           <Button label={busy ? 'Reading…' : 'Pick a CSV or PDF'} disabled={busy} onPress={pick} />
@@ -60,27 +91,10 @@ export default function Statement() {
         </>
       }
     >
-      <View style={{ marginTop: 18, backgroundColor: p.card, borderRadius: 20, paddingHorizontal: 16, borderWidth: p.dark ? 1 : 0, borderColor: p.cardBorder }}>
-        {[
-          ['Apple Card', 'Wallet → Apple Card → Card Balance → a statement → Export Transactions'],
-          ['Most banks', 'Statements → download PDF, or Transactions → export CSV'],
-          ['PayPal', 'Activity → Statements → Activity download → CSV'],
-        ].map(([t, w], i) => (
-          <View key={t} style={{ paddingVertical: 12, borderTopWidth: i ? 1 : 0, borderTopColor: p.hair }}>
-            <Txt v="bodyStrong" color={p.cardFg}>
-              {t}
-            </Txt>
-            <Txt v="sub" tone="mute">
-              {w}
-            </Txt>
-          </View>
-        ))}
-      </View>
-      <View style={{ marginTop: 12, backgroundColor: p.dark ? '#2A2516' : '#FFF6D6', borderRadius: 14, padding: 14 }}>
-        <Txt v="sub" color={p.dark ? p.fg2 : '#4B4220'}>
-          Apple’s charges all look the same on a statement. We count them and point you to the Apple screenshot.
-        </Txt>
-      </View>
+      {/* Pick where it comes from, then see the screen and the three taps (no arrow chains, owner Nov 19). */}
+      <Segmented options={SOURCES.map((x) => ({ value: x.key, label: x.label }))} value={source} onChange={setSource} label="Where your statement comes from" style={{ marginTop: 18 }} />
+      <PhoneMock title={src.screen} rows={src.rows} label={`Picture of the ${src.screen} screen, with ${src.rows.find((r) => r.hi)?.text ?? ''} highlighted`} />
+      <Steps steps={src.steps} />
       {busy ? <ActivityIndicator style={{ marginTop: 20 }} /> : null}
       {problem ? (
         <Txt v="body" style={{ marginTop: 16 }} accessibilityLiveRegion="polite">
@@ -88,7 +102,7 @@ export default function Statement() {
         </Txt>
       ) : null}
       <Txt v="sub" tone="mute" center style={{ marginTop: 18 }}>
-        Read on your iPhone. Your statement isn’t uploaded or kept.
+        Read on your iPhone, never uploaded or kept.
       </Txt>
     </FindPage>
   );

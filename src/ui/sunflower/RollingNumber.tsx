@@ -24,7 +24,7 @@ export function rollDuration(text: string) {
   return /\d/.test(text) ? ROLL.start + ROLL.count : 0;
 }
 
-function Digit({ value, place, style, lineHeight, play, go }: { value: number; place: number; style: TextStyle; lineHeight: number; play: boolean; go: boolean }) {
+function Digit({ value, place, style, lineHeight, play, go, done }: { value: number; place: number; style: TextStyle; lineHeight: number; play: boolean; go: boolean; done: boolean }) {
   const travel = value + 10 * (TURNS[place] ?? 0);
   // y is how many glyphs the strip has moved; the strip is 0–9 repeated, ending on `value`.
   const y = useSharedValue(play ? 0 : travel);
@@ -43,6 +43,19 @@ function Digit({ value, place, style, lineHeight, play, go }: { value: number; p
   // also shave the right edge off wide digits (a "4" lost ~4pt at 104pt), so the glyph keeps its full advance
   // and the spacing becomes a margin outside the window: same width, nothing cut.
   const { letterSpacing = 0, ...glyph } = StyleSheet.flatten(style) ?? {};
+  // Landed (or never rolling): the plain digit, with no clipping window at all, so nothing can be cut off
+  // whatever the phone's text rendering does (the "$2,64[0]" top cut, Nov 19: the ones digit travels ~29
+  // rows, so the tiniest per-row rounding on iPhone left it sitting a few points low in its window).
+  // Same box and spacing as the window, so the swap doesn't move a pixel.
+  if (done) {
+    return (
+      <View style={{ height: lineHeight, marginRight: letterSpacing }}>
+        <Text allowFontScaling={false} style={[glyph, tabular, { letterSpacing: 0, lineHeight, height: lineHeight }]}>
+          {value}
+        </Text>
+      </View>
+    );
+  }
   return (
     <View style={{ height: lineHeight, overflow: 'hidden', marginRight: letterSpacing }}>
       <Animated.View style={anim}>
@@ -74,6 +87,14 @@ export function RollingNumber({
   go?: boolean;
   accessibilityLabel?: string;
 }) {
+  // The roll is over (or never ran): draw plain digits from then on.
+  const [landedOn, setLandedOn] = useState<string | null>(null);
+  const landed = !play || landedOn === text;
+  useEffect(() => {
+    if (!play || !go) return;
+    const t = setTimeout(() => setLandedOn(text), ROLL.start + ROLL.count + 60);
+    return () => clearTimeout(t);
+  }, [play, go, text]);
   const chars = text.split('');
   const digits = chars.filter((c) => /\d/.test(c)).length;
   let seen = 0;
@@ -82,7 +103,7 @@ export function RollingNumber({
       {chars.map((ch, i) => {
         if (/\d/.test(ch)) {
           const place = digits - 1 - seen++;
-          return <Digit key={i} value={Number(ch)} place={place} style={style} lineHeight={lineHeight} play={play} go={go} />;
+          return <Digit key={i} value={Number(ch)} place={place} style={style} lineHeight={lineHeight} play={play} go={go} done={landed} />;
         }
         return (
           <Text key={i} allowFontScaling={false} style={[style, tabular, { lineHeight, height: lineHeight }]}>

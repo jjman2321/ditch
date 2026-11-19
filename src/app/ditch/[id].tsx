@@ -1,6 +1,6 @@
 // 10 / 10b / 10-se · Ditched. Same moment as the website (owner, Nov 15; DECISIONS #58): the row's
 // "Ditched" tag appears with a firm buzz, the logo dims, the duck pops up over the row, then
-// "$X a year you won't pay, once you cancel." fades in. No stamp. Ditching doesn't cancel
+// "You won't pay $X a year, once you cancel." fades in (left-aligned, Nov 19). No stamp. Ditching doesn't cancel
 // anything: the user still has to cancel with the service, so the one
 // last check reminder stays, and "I cancelled it" is what confirms it.
 
@@ -14,7 +14,7 @@ import { chargeDay } from '@/domain/copy';
 import { shortDate, toDateOnly, weekdayDate } from '@/domain/dates';
 import { CYCLE_WORDS, yearlyMinor } from '@/domain/money';
 import { shortTimeLabel } from '@/domain/settings';
-import { chargeOfSub, confirmedSavings, isPending, isPricedSub, isProTrial } from '@/domain/subs';
+import { chargeOfSub, isPending, isPricedSub, isProTrial } from '@/domain/subs';
 import { helpFor, openUrl, useCancelHelp } from '@/ditch/CancelHelp';
 import { SubLogo } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
@@ -109,7 +109,6 @@ export default function Ditched() {
   const charge = chargeOfSub(sub, app.today);
   const yearly = isPricedSub(sub) ? yearlyMinor(sub.amountMinor, sub.cycle) : null;
   const priceLine = isPricedSub(sub) ? `${money(sub.amountMinor, sub.currency)} ${CYCLE_WORDS[sub.cycle]}` : null;
-  const already = confirmedSavings(app.subs, app.settings.currency).find((s) => s.currency === sub.currency);
   const help1 = helpFor(sub);
   const blocked = app.notif === 'denied' || app.notif === 'undetermined';
 
@@ -133,19 +132,19 @@ export default function Ditched() {
 
   const check = blocked
     ? app.notif === 'denied'
-      ? { title: 'Reminders are off', line: 'Turn them on in iPhone Settings so the last check can reach\u00A0you.' }
-      : { title: 'Reminders aren’t on yet', line: 'Tap to turn them on, so the last check can reach\u00A0you.' }
+      ? { title: 'Reminders are off', line: 'Turn them on in iPhone Settings so the last check can reach you.' }
+      : { title: 'Reminders aren’t on', line: 'Tap to turn them on, so the last check can reach you.' }
     : lastCheck
       ? {
-          title: `One last check: ${(tiny ? shortDate : weekdayDate)(toDateOnly(lastCheck.fireAt))} · ${shortTimeLabel(app.settings.reminderTime)}`,
+          title: `Last check ${(tiny ? shortDate : weekdayDate)(toDateOnly(lastCheck.fireAt))} at ${shortTimeLabel(app.settings.reminderTime)}`,
           line: `“${lastCheck.body}”`.replace(/ (\S+)$/, '\u00A0$1'),
         }
       : cancelBy
-        ? { title: `Cancel by ${chargeDay(cancelBy, app.today)}`, line: cancelBy === app.today ? 'Cancel now to stop it.' : 'Cancel before then to stop it.' }
+        ? { title: `Cancel by ${chargeDay(cancelBy, app.today)}`, line: 'Cancel before then to stop it.' }
         : charge
           ? // Too soon for a last check: say when it charges, in plain words.
-            { title: `It charges ${chargeDay(charge, app.today)}`, line: charge === app.today ? 'Cancel now to stop it.' : 'Cancel before then to stop it.' }
-          : { title: 'No date on this one', line: 'So there’s no last check. Cancel it before it renews.' };
+            { title: `Charges ${chargeDay(charge, app.today)}`, line: 'Cancel before then to stop it.' }
+          : { title: 'Cancel it before it renews', line: 'No date on this one, so no last check.' };
 
   return (
     <SurfaceContext.Provider value="sun">
@@ -182,12 +181,12 @@ export default function Ditched() {
             </Pressable>
           </View>
 
-          {/* The hero (duck, card, amount, last check) centres in the space between the top bar and the buttons,
-              so taller phones look composed instead of top-heavy; the buttons sit on the bottom safe area.
-              iPad and the open Duo: everything stays together, centred. */}
-          <View style={wide ? null : { flex: 1, justifyContent: 'center', paddingBottom: tiny ? 6 : compact ? 10 : 14 }}>
-            <Animated.View style={[{ marginTop: tiny ? 22 : compact ? 62 : 76 }, cardStyle]}>
-              <Duck width={tiny ? 68 : compact ? 84 : 114} left={20} sink={2} delay={animate ? DUCK_MS : 0} />
+          {/* Left-aligned and short (owner, Nov 19: "too much on the screen", centred text read like a template).
+              Like Splitwise, Cleo and Coinbase's cancel screens: what it is, what it's worth, one line on when,
+              then the buttons. The card, the account details and running totals live elsewhere. */}
+          <View style={wide ? null : { flex: 1 }}>
+            <Animated.View style={[{ marginTop: tiny ? 22 : compact ? 52 : 72 }, cardStyle]}>
+              <Duck width={tiny ? 68 : compact ? 84 : 104} left={20} sink={2} delay={animate ? DUCK_MS : 0} />
               <Card style={{ flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, paddingVertical: compact ? 11 : 14 }}>
                 <Animated.View style={logoStyle}>
                   <SubLogo sub={sub} size={compact ? 36 : 40} />
@@ -200,10 +199,11 @@ export default function Ditched() {
                       {sub.name}
                     </Txt>
                   )}
-                  <Txt v="body" tone="mute" num style={{ fontSize: compact ? 13.5 : 14, marginTop: 2 }} numberOfLines={2}>
-                    {cancelBy ? `Cancel by ${(tiny ? shortDate : weekdayDate)(cancelBy)}` : charge ? `Charges ${(tiny ? shortDate : weekdayDate)(charge)}` : 'Cancel before it renews'}
-                    {priceLine ? ` · ${priceLine}` : ''}
-                  </Txt>
+                  {priceLine ? (
+                    <Txt v="body" tone="mute" num style={{ fontSize: 14, marginTop: 2 }} numberOfLines={1}>
+                      {priceLine}
+                    </Txt>
+                  ) : null}
                 </View>
                 <Animated.View style={tagStyle} accessible accessibilityLabel="Ditched">
                   <DitchedTag />
@@ -211,51 +211,40 @@ export default function Ditched() {
               </Card>
             </Animated.View>
 
-            {/* What the cancel page will ask for (DECISIONS #60). */}
-            {sub.paidWith || sub.accountEmail ? (
-              <Txt v="sub" tone="fg2" center num style={{ marginTop: 10 }} numberOfLines={2}>
-                {[sub.paidWith ? `Paid with ${sub.paidWith}` : null, sub.accountEmail ? `Account:\u00A0${sub.accountEmail}` : null].filter(Boolean).join(' · ')}
-              </Txt>
-            ) : null}
-
-            <Animated.View style={[{ alignItems: 'center', marginTop: tiny ? 10 : compact ? 28 : 40 }, amountStyle]}>
+            <Animated.View style={[{ marginTop: tiny ? 18 : compact ? 28 : 40 }, amountStyle]}>
               {yearly !== null && sub.currency ? (
                 <>
+                  <Txt v="label" style={{ fontSize: 17 }}>
+                    You won’t pay
+                  </Txt>
                   <Txt
                     v="displayXL"
                     num
-                    center
                     color={p.dark ? brand.sunflower : brand.ink}
-                    style={{ fontSize: tiny ? 44 : compact ? 54 : 66, lineHeight: tiny ? 48 : compact ? 58 : 70 }}
+                    style={{ fontSize: tiny ? 46 : compact ? 54 : 64, lineHeight: tiny ? 52 : compact ? 60 : 72, marginTop: 2, marginLeft: -2 }}
                     adjustsFontSizeToFit
                     numberOfLines={1}
                   >
                     {money(yearly, sub.currency)}
                   </Txt>
-                  <Txt v="title" center style={{ fontSize: tiny ? 18 : compact ? 20 : 24, lineHeight: tiny ? 21 : compact ? 23 : 28, marginTop: 2 }}>
-                    {'a year you won’t pay,\nonce you cancel.'}
+                  <Txt v="title" style={{ fontSize: tiny ? 19 : 22, lineHeight: tiny ? 23 : 27 }}>
+                    a year, once you cancel.
                   </Txt>
                 </>
               ) : (
-                <Txt v="title" center style={{ fontSize: 24, lineHeight: 28 }}>
-                  {'Now cancel it, and\nthat’s one less charge.'}
+                <Txt v="title" style={{ fontSize: 24, lineHeight: 29 }}>
+                  {'Now cancel it, and that’s one less\u00A0charge.'}
                 </Txt>
               )}
-              {compact ? null : trial ? (
-                <Txt v="leadS" tone="fg2" center style={{ marginTop: 12, fontSize: 15, marginHorizontal: -12 }}>
+              {trial ? (
+                <Txt v="leadS" tone="fg2" style={{ marginTop: 10, fontSize: 15 }}>
                   You keep your whole list. Reminders drop back to 3.
-                </Txt>
-              ) : already && yearly !== null ? (
-                <Txt v="leadS" tone="fg2" center num style={{ marginTop: 12 }}>
-                  With the ones you’ve cancelled, that’s {money(already.yearlyMinor + yearly, sub.currency!, { whole: true })} a year you won’t pay.
                 </Txt>
               ) : null}
             </Animated.View>
 
-            {/* A fixed gap, so the amount and the reminder card stay together. */}
-            <View style={{ height: wide ? 40 : tiny ? 10 : compact ? 14 : 20 }} />
-
-            <Animated.View style={restStyle}>
+            {/* One line on when: the last check, or when it charges. Reminders off: tap to turn them on. */}
+            <Animated.View style={[{ marginTop: tiny ? 14 : 22 }, restStyle]}>
               {isPending(sub) ? (
                 <Pressable
                   accessible
@@ -264,34 +253,19 @@ export default function Ditched() {
                   disabled={!blocked}
                   accessibilityHint={app.notif === 'denied' ? 'Opens iPhone Settings' : 'Shows the iPhone permission prompt'}
                   onPress={() => (app.notif === 'denied' ? Linking.openSettings().catch(() => {}) : void app.askNotif())}
+                  style={{ flexDirection: 'row', alignItems: 'center', gap: 10, minHeight: 44 }}
                 >
-                  <Card style={{ flexDirection: 'row', alignItems: 'center', gap: compact ? 12 : 14, paddingHorizontal: compact ? 14 : 16, paddingVertical: tiny ? 8 : compact ? 10 : 13 }}>
-                    <View
-                      style={{
-                        width: compact ? 32 : 36,
-                        height: compact ? 32 : 36,
-                        borderRadius: 18,
-                        backgroundColor: brand.sunflower,
-                        borderWidth: p.dark ? 0 : 2,
-                        borderColor: brand.ink,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <Bell color={brand.ink} fill={brand.ink} size={16} />
-                    </View>
-                    <View style={{ flex: 1 }}>
-                      <Txt v="label" num color={p.cardFg} style={{ fontFamily: F.bold, fontSize: compact ? 14.5 : 15.5 }}>
-                        {check.title}
-                      </Txt>
-                      <Txt v="body" tone="mute" style={{ fontSize: compact ? 14 : 14.5, marginTop: 1 }}>
-                        {check.line}
-                      </Txt>
-                    </View>
-                  </Card>
+                  <View style={{ width: 30, height: 30, borderRadius: 15, backgroundColor: p.dark ? '#2A2721' : 'rgba(22,20,15,0.08)', alignItems: 'center', justifyContent: 'center' }}>
+                    <Bell color={p.dark ? brand.sunflower : brand.ink} size={15} />
+                  </View>
+                  <Txt v="body" num style={{ flex: 1, fontSize: 15.5, fontFamily: F.semi }}>
+                    {check.title}
+                    {blocked ? <Txt v="body" style={{ fontSize: 15.5, fontFamily: F.semi, textDecorationLine: 'underline' }}>{' · Turn on'}</Txt> : null}
+                  </Txt>
                 </Pressable>
               ) : null}
             </Animated.View>
+            {wide ? <View style={{ height: 32 }} /> : <View style={{ flex: 1, minHeight: 20 }} />}
           </View>
 
           <Animated.View style={actionsStyle}>

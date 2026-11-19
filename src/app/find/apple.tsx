@@ -4,11 +4,12 @@
 import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 
 import { APPLE_SUBSCRIPTIONS_URL } from '@/catalog/cancel';
 import { openUrl } from '@/ditch/CancelHelp';
-import { FindPage, SHOW_SAMPLES, Step } from '@/find/Parts';
+import { FindPage, SHOW_SAMPLES } from '@/find/Parts';
+import { PhoneMock, Steps } from '@/find/Visual';
 import { readAppleSubscriptions } from '@/import/appleScreenshot';
 import { canReadImages, readImage } from '@/import/device';
 import { SAMPLE_APPLE_LINES } from '@/import/samples';
@@ -59,6 +60,7 @@ export default function AppleScreenshot() {
   return (
     <FindPage
       title="Screenshot your Apple list"
+      intro="Free trials show up there too, so we can remind you before they end."
       footer={
         <>
           <Button label="Open Apple subscriptions" hint="Opens outside Ditch" right={<External color={p.ctaFg} size={19} />} onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)} />
@@ -67,16 +69,17 @@ export default function AppleScreenshot() {
         </>
       }
     >
-      <View style={{ marginTop: 18, gap: 14 }}>
-        <Step n={1}>Open your Apple subscriptions</Step>
-        <Step n={2}>Screenshot the list. Long list? Scroll and take another.</Step>
-        <Step n={3}>Come back and pick the screenshots</Step>
-      </View>
-      <View style={{ marginTop: 18, backgroundColor: p.card, borderRadius: 18, padding: 14, borderWidth: p.dark ? 1 : 0, borderColor: p.cardBorder }}>
-        <Txt v="sub" tone="fg2">
-          It’s in iPhone Settings → your name → Subscriptions. Free trials show there too, so we can remind you before they end.
-        </Txt>
-      </View>
+      {/* The screen they'll see, then three taps (no arrow chains, owner Nov 19). */}
+      <PhoneMock
+        title="Subscriptions"
+        rows={[
+          { text: 'Netflix', sub: 'Renews Dec 3' },
+          { text: 'Spotify', sub: 'Renews Dec 15' },
+          { text: 'ChatGPT', sub: 'Trial ends Nov 28' },
+        ]}
+        label="Picture of Apple's Subscriptions list, to screenshot"
+      />
+      <Steps steps={['Tap **Open Apple subscriptions** below.', 'Take a screenshot: **side button + volume up**. Long list? Scroll and take another.', 'Come back and tap **Pick screenshots**.']} />
       {busy ? <ActivityIndicator style={{ marginTop: 20 }} /> : null}
       {problem ? (
         <Txt v="body" style={{ marginTop: 16 }} accessibilityLiveRegion="polite">
@@ -84,7 +87,7 @@ export default function AppleScreenshot() {
         </Txt>
       ) : null}
       <Txt v="sub" tone="mute" center style={{ marginTop: 18 }}>
-        Read on your iPhone with Apple’s own text reader. Only the screenshots you pick.
+        Read on your iPhone. Only the screenshots you pick.
       </Txt>
     </FindPage>
   );

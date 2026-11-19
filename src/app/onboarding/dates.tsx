@@ -2,8 +2,8 @@
 // DECISIONS #33). One row per subscription, biggest first. Monthly ones
 // ask for a day, yearly ones a date. A set row turns sunflower and says
 // the next charge; a skipped one has no date and gets no reminder until
-// it has one. No guesses, no "around". "Paid it today" makes today the last
-// charge, so the next is one cycle later (src/domain/paidToday.ts).
+// it has one. No guesses, no "around". The day sheet starts on today
+// (it charged today, so the next is one cycle later; src/domain/paidToday.ts).
 
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
@@ -141,10 +141,6 @@ export default function Dates() {
         onClose={() => setDayFor(null)}
         onNotSure={() => {
           if (dayFor) clearDate(dayFor);
-          setDayFor(nextUndated(dayFor));
-        }}
-        onPaidToday={() => {
-          if (dayFor) setDate(dayFor, onboardingToday(), 'receipt');
           setDayFor(nextUndated(dayFor));
         }}
         onDone={(anchor, source) => {

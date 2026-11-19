@@ -2,7 +2,7 @@
 // onboarding dates step (DECISIONS #33). Tap one → the same day picker,
 // inside this sheet, then back to the list. A sub that gets a date also
 // gets a free reminder if there's room in the 3. Closes when all are done.
-// "Paid it today" saves today as the last charge (src/domain/paidToday.ts).
+// The day sheet starts on today (it charged today) (src/domain/paidToday.ts).
 
 import { useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
@@ -86,7 +86,6 @@ function Body({ close }: { close: () => void }) {
         off={room ? undefined : 'No reminder: your free 3 are in use. Swap one in Settings.'}
         onClose={() => setEditing(null)}
         onNotSure={() => setEditing(null)}
-        onPaidToday={() => save(sub, app.today, 'receipt')}
         onDone={(anchor, source) => save(sub, anchor, source)}
       />
     );

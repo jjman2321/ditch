@@ -69,14 +69,14 @@ export function Stamp({ date, width = 280, bg }: { date: DateOnly; width?: numbe
   );
 }
 
-/** The small "DITCHED" tag on a list row. */
+/** The small "DITCHED" tag on a list row. Straight, not tilted (owner, Nov 19: the angle looked off). */
 export function DitchedTag() {
   const p = usePalette();
   const ink = p.dark ? brand.sunflower : brand.ink;
   return (
     <View
       accessible={false}
-      style={{ borderWidth: 2, borderColor: ink, borderRadius: 6, paddingHorizontal: 6, paddingVertical: 1, transform: [{ rotate: '-3deg' }], backgroundColor: p.dark ? 'transparent' : brand.white }}
+      style={{ borderWidth: 1.5, borderColor: ink, borderRadius: 6, paddingHorizontal: 6, paddingVertical: 1, backgroundColor: p.dark ? 'transparent' : brand.white }}
     >
       <Text maxFontSizeMultiplier={1.2} style={{ fontFamily: F.wideHeavy, fontSize: 11.5, lineHeight: 15, letterSpacing: 1.2, color: ink }}>
         DITCHED

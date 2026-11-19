@@ -30,7 +30,7 @@ import { useEditor } from '@/editor/Editor';
 import { OffBanner, openPhoneSettings } from '@/home/HomeParts';
 import { SubLogo } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
-import { BottomFade, Card, ChevronLeft, ChevronRight, F, IconButton, SectionHeader, Txt, brand, haptic, tileRadius, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
+import { BottomFade, Card, ChevronLeft, ChevronRight, F, IconButton, SectionHeader, Txt, brand, haptic, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
 
 const WEEK = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 const GAP = 4;
@@ -374,75 +374,28 @@ function DayCell({ day, w, selected, blocked, onPress }: { day: CalendarDay; w: 
           }}
         />
       ) : null}
-      {first && day.charges.length === 1 ? (
-        // A dot day: the logo sits in the bottom-right corner, clear of the dot.
+      {first ? (
+        // One logo per day, like Orbit and Rocket Money (owner, Nov 19: it has to stay clean with 10+ subs).
+        // More on the same day: a small "+N" badge on the logo's corner. A dot day: bottom-right, clear of the dot.
         <View style={[{ flex: 1, alignItems: 'center', justifyContent: 'center' }, day.headsUp ? { alignItems: 'flex-end', justifyContent: 'flex-end' } : null]}>
-          <SubLogo sub={first.sub} size={24} ditched={first.pending} />
+          <View>
+            <SubLogo sub={first.sub} size={24} ditched={first.pending} />
+            {day.charges.length > 1 ? <MoreBadge n={day.charges.length - 1} ring={selected ? brand.sunflower : p.card} right={day.headsUp ? -4 : -8} /> : null}
+          </View>
         </View>
-      ) : first ? (
-        <LogoStack day={day} w={w} selected={selected} />
       ) : null}
     </Pressable>
   );
 }
 
-/**
- * Two or more charges on one day: up to two logos overlapping by ~40%, each later one cut out of the one
- * before by a 1.5pt ring in the cell's colour; three or more show two logos and a logo-sized ink circle
- * with the rest ("+2"). Nothing sits on top of a logo, and it's sized from the cell so it fits on the SE.
- */
-function LogoStack({ day, w, selected }: { day: CalendarDay; w: number; selected: boolean }) {
+/** "+2": how many more charges share the day, on the logo's top-right corner, cut out by a ring in the cell's colour. */
+function MoreBadge({ n, ring, right }: { n: number; ring: string; right: number }) {
   const p = usePalette();
-  const RING = 1.5;
-  const many = day.charges.length > 2;
-  const extra = day.charges.length - 2;
-  // Each one overlaps the one before by 40%: 2 logos are 1.6 logos wide, 3+ (with the circle) 2.2. 2pt clear of each side.
-  const span = many ? 2.2 : 1.6;
-  const pad = selected ? 3.5 : 6;
-  const border = selected ? 2.5 : p.dark ? 1 : 0;
-  // A dot day: the stack sits on the bottom edge, so it must stay under the dot (which is lower on today's circle).
-  const dotBottom = day.headsUp ? border + pad + (day.today && !selected ? 25 : 21) + 8 : 0;
-  const bottom = 4;
-  const fitW = Math.floor((w - 4 - RING * 2) / span);
-  const fitH = day.headsUp ? Math.floor(64 - bottom - RING * 2 - dotBottom - 1) : 24;
-  const size = Math.max(14, Math.min(22, fitW, fitH));
-  const step = size * 0.6;
-  const ringBg = selected ? brand.sunflower : p.card;
-  const shown = day.charges.slice(0, 2);
   return (
-    <View
-      pointerEvents="none"
-      style={{
-        position: 'absolute',
-        // Measured from the cell's outer edge (absolute children start inside the border).
-        bottom: bottom - border,
-        left: -border,
-        right: -border,
-        flexDirection: 'row',
-        justifyContent: day.headsUp ? 'flex-end' : 'center',
-        paddingRight: day.headsUp ? 2 : 0,
-      }}
-    >
-      {shown.map((c, i) => (
-        <View key={c.sub.id} style={i === 0 ? { padding: RING } : { marginLeft: step - size - RING * 2, padding: RING, borderRadius: tileRadius(size) + RING, backgroundColor: ringBg }}>
-          <SubLogo sub={c.sub} size={size} ditched={c.pending} />
-        </View>
-      ))}
-      {many ? (
-        <View style={{ marginLeft: step - size - RING * 2, padding: RING, borderRadius: size / 2 + RING, backgroundColor: ringBg }}>
-          <View style={{ width: size, height: size, borderRadius: size / 2, backgroundColor: brand.ink, alignItems: 'center', justifyContent: 'center' }}>
-            <Txt
-              v="label"
-              num
-              color={p.dark ? brand.sunflower : brand.white}
-              style={{ fontFamily: F.bold, fontSize: size >= 18 ? 10.5 : 9.5, lineHeight: size >= 18 ? 13 : 12, letterSpacing: -0.3 }}
-              maxFontSizeMultiplier={1}
-            >
-              +{extra}
-            </Txt>
-          </View>
-        </View>
-      ) : null}
+    <View style={{ position: 'absolute', top: -7, right, minWidth: 19, height: 19, paddingHorizontal: 3, borderRadius: 10, borderWidth: 1.5, borderColor: ring, backgroundColor: p.dark ? p.fg : brand.ink, alignItems: 'center', justifyContent: 'center' }}>
+      <Txt v="label" num color={p.dark ? brand.ink : brand.white} style={{ fontFamily: F.bold, fontSize: 10, lineHeight: 12, letterSpacing: -0.2 }} maxFontSizeMultiplier={1}>
+        {`+${n}`}
+      </Txt>
     </View>
   );
 }

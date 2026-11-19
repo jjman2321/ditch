@@ -22,7 +22,7 @@ import { now as clockNow } from '@/services/clock';
 import { getNotifStatus, requestNotifPermission } from '@/services/notifications';
 import { useApp } from '@/state/app';
 import { defaultReminderPicks, onboardingToday, totalsFor, useCountry, useMoney, useOnboarding, usePickedList, useRemindedIds } from '@/state/onboarding';
-import { Bell, Button, Check, Duck, F, NotificationPreview, Txt, brand, haptic, useFitSize, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
+import { Bell, Button, Check, Duck, F, LogoTile, NotificationPreview, Txt, brand, haptic, useFitSize, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
 
 /** Keep the last two words together, so a line never ends on one word. */
 const noOrphan = (s: string) => s.replace(/ (\S+)$/, '\u00A0$1');
@@ -48,6 +48,21 @@ function MarkIcon({ kind }: { kind: Mark }) {
       </View>
     );
   return <View style={[base, { borderWidth: 2, borderColor: ink }]} />;
+}
+
+/** Up to 3 of their logos, overlapping like avatars, each cut out by a white ring. */
+function LogoPile({ ids }: { ids: string[] }) {
+  const dark = useIsDark();
+  const shown = ids.slice(0, 3);
+  return (
+    <View style={{ flexDirection: 'row' }} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+      {shown.map((id, i) => (
+        <View key={id} style={{ marginLeft: i ? -6 : 0, padding: 2, borderRadius: 11, backgroundColor: dark ? '#1F1D19' : brand.white, zIndex: shown.length - i }}>
+          <LogoTile id={id} size={26} />
+        </View>
+      ))}
+    </View>
+  );
 }
 
 export default function Done() {
@@ -117,7 +132,7 @@ export default function Done() {
 
   const items: { mark: Mark; title: string; sub: string }[] = [
     n
-      ? { mark: 'ok', title: `${n} ${n === 1 ? 'subscription' : 'subscriptions'} on your list`, sub: yearly ? `${yearly} a year` : 'Add prices to see your total' }
+      ? { mark: 'ok', title: `${n} ${n === 1 ? 'subscription' : 'subscriptions'}`, sub: yearly ? `${yearly} a year` : 'Add prices to see your total' }
       : { mark: 'todo', title: 'Your list is ready', sub: 'Add what you pay for, and we’ll remind you before it charges.' },
     on
       ? pro
@@ -169,22 +184,28 @@ export default function Done() {
           {title}
         </Txt>
 
-        <View style={{ marginTop: f.small ? 8 : 24 }}>
+        {/* One white card, rows split by hairlines (Nibble, Facebook "You're all done", Fuse on Mobbin):
+            the checklist reads as a finished set-up, not loose text on yellow. The first row shows their
+            own logos, so it's their list at a glance (owner, Nov 19: "super plain"). */}
+        <View style={{ marginTop: f.small ? 10 : 22, backgroundColor: p.dark ? '#1F1D19' : brand.white, borderRadius: 20, paddingHorizontal: 16 }}>
           {items.map((it, i) => (
-            // No dividers on the yellow: spacing separates the items. They fade in one by one (no motion near a price).
+            // They fade in one by one (no motion near a price).
             <Animated.View key={it.title} entering={reduce ? undefined : FadeIn.delay(150 + i * 160).duration(260)}>
               <View
                 accessible
                 accessibilityLabel={`${it.mark === 'ok' ? 'Done' : it.mark === 'warn' ? 'Needs you' : 'To do'}: ${it.title}. ${it.sub}`}
-                style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 12, paddingVertical: f.tiny ? 5 : f.small ? 8 : 10, marginTop: i ? (f.tiny ? 2 : 4) : 0 }}
+                style={{ flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: f.tiny ? 9 : f.small ? 11 : 14, borderTopWidth: i ? 1 : 0, borderTopColor: p.dark ? '#2C2924' : '#EFE8D8' }}
               >
                 <MarkIcon kind={it.mark} />
                 <View style={{ flex: 1 }}>
-                  <Txt v="strong">{it.title}</Txt>
-                  <Txt v="sub" num color={sub2}>
+                  <Txt v="strong" color={p.dark ? '#F6F0E3' : brand.ink}>
+                    {it.title}
+                  </Txt>
+                  <Txt v="sub" num tone="mute">
                     {it.sub}
                   </Txt>
                 </View>
+                {i === 0 && n ? <LogoPile ids={list.map((x) => x.id)} /> : null}
               </View>
             </Animated.View>
           ))}

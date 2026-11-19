@@ -10,14 +10,13 @@
 import { router } from 'expo-router';
 import { ScrollView, View } from 'react-native';
 
-import { BankHero, MiniRoutes } from '@/bank/Entry';
 import { showBankSync, showImport } from '@/config/features';
 import { RouteCard } from '@/find/Parts';
 import { useApp } from '@/state/app';
 import { useOnboarding } from '@/state/onboarding';
 import { setFindTarget } from '@/import/session';
 import { OnbRoot } from '@/onboarding/Parts';
-import { ChevronLeft, IconButton, ListCheck, PhoneList, STEP_HEADER_H, StatementIcon, Txt, brand, paletteFor, useInsets, useIsDark, usePageEdge, usePalette } from '@/ui/sunflower';
+import { Bank, ChevronLeft, IconButton, ListCheck, PhoneList, STEP_HEADER_H, StatementIcon, Txt, brand, paletteFor, useInsets, useIsDark, usePageEdge, usePalette } from '@/ui/sunflower';
 
 // No entrance of its own (motion pass 2): the cards arrive with the push itself, ready to tap on
 // the first frame. A stagger after the slide read as "slides in, then builds again". Each card
@@ -52,34 +51,19 @@ export default function Where() {
         <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
           Pick one. You check everything before it’s added.
         </Txt>
-        {bank ? (
+        {/* Four equal cards, most complete first (owner, Nov 19: the old card style, order matters).
+            The bank finds everything and keeps watching, so it leads where we offer it; the
+            free route is last. Tags say what each one costs, nothing else. */}
+        {bank ? <RouteCard icon={Bank} title="My bank or card" line="Finds them all, even new ones." tag="7 DAYS FREE" onPress={() => router.push('/bank?from=onboarding')} /> : null}
+        {showImport() ? (
           <>
-            <BankHero onPress={() => router.push('/bank?from=onboarding')} tag="PRO · 7 DAYS FREE" />
-            <MiniRoutes
-              routes={[
-                ...(showImport()
-                  ? [
-                      { key: 'apple', icon: PhoneList, title: 'Apple subscriptions', line: 'A screenshot · 1 free, then Pro', onPress: () => find('/find/apple') },
-                      { key: 'stmt', icon: StatementIcon, title: 'A bank statement', line: 'PDF or CSV · 1 free, then Pro', onPress: () => find('/find/statement') },
-                    ]
-                  : []),
-                { key: 'pick', icon: ListCheck, title: 'Pick them myself', line: 'Tick them from our list', onPress: () => router.push('/onboarding/services') },
-              ]}
-            />
+            <RouteCard icon={PhoneList} title="Apple subscriptions" line="A screenshot of your list." tag="FIRST ONE FREE" onPress={() => find('/find/apple')} />
+            <RouteCard icon={StatementIcon} title="A bank statement" line="PDF or CSV from any bank." tag="FIRST ONE FREE" onPress={() => find('/find/statement')} />
           </>
-        ) : (
-          <>
-            {showImport() ? (
-              <>
-                <RouteCard icon={PhoneList} title="Apple subscriptions" line="A screenshot of your list." tag="1 FREE, THEN PRO" onPress={() => find('/find/apple')} />
-                <RouteCard icon={StatementIcon} title="A bank statement" line="PDF or CSV from any bank." tag="1 FREE, THEN PRO" onPress={() => find('/find/statement')} />
-              </>
-            ) : null}
-            <RouteCard icon={ListCheck} title="Pick them myself" line="Tick them from our list." onPress={() => router.push('/onboarding/services')} />
-          </>
-        )}
+        ) : null}
+        <RouteCard icon={ListCheck} title="Pick them myself" line="Tick them from our list." onPress={() => router.push('/onboarding/services')} />
         <Txt v="sub" tone="mute" center style={{ marginTop: 20, color: p.mute }}>
-          {bank ? 'Screenshots and statements are read on your iPhone, never uploaded.' : 'Read on your iPhone. Screenshots and statements aren’t uploaded.'}
+          {'Screenshots and statements are read on your iPhone, never uploaded.'}
         </Txt>
       </ScrollView>
     </OnbRoot>

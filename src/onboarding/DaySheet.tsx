@@ -4,8 +4,10 @@
 // months. Yearly: the month, then the day. Weekly and every 3 months: a
 // calendar for the next charge. The yellow box says exactly what will
 // happen, reminders included. "I'm not sure" leaves it with no date.
-// "Paid it today" (owner, Nov 19): today was the last charge, so the next is
-// one cycle later (src/domain/paidToday.ts). It saves at once, like "I'm not sure".
+// Today is picked to start with (owner, Nov 19, replaces the "Paid it today" button):
+// most people add a subscription the day it charges. Today's day counts as already
+// charged, so the next charge is one cycle later (src/domain/paidToday.ts) and the
+// yellow box shows that date before they save. Any other day can be tapped.
 
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
@@ -134,7 +136,6 @@ export function DayBody({
   pick,
   onDone,
   onNotSure,
-  onPaidToday,
   onClose,
   leads,
   time,
@@ -145,11 +146,9 @@ export function DayBody({
   /** "3 of 8": where they are when Save moves through the list. */
   progress?: string;
   pick: Picked;
-  /** `source` is 'receipt' only when an untouched "Paid it today" date is saved again as it was. */
+  /** `source` is 'receipt' when today is the day (it charged today), or a saved last charge is kept as it was. */
   onDone: (anchor: DateOnly, source: 'next' | 'receipt') => void;
   onNotSure: () => void;
-  /** "Paid it today": save today as the last charge (paidToday). Hidden when not given. */
-  onPaidToday?: () => void;
   onClose: () => void;
   leads: readonly number[];
   time: string;
@@ -169,9 +168,11 @@ export function DayBody({
   // Until they tap something, Save keeps the date exactly as it was saved (a last charge stays a last charge).
   const [touched, setTouched] = useState(false);
   // Monthly: the day of the month (31 = last day). Yearly: month + day. Others: the next charge itself.
-  const [day, setDayRaw] = useState<number | null>(known && (monthly || yearly) ? parseDate(pick.anchor).d : null);
-  const [month, setMonthRaw] = useState<number | null>(known && yearly ? parseDate(pick.anchor).m : null);
-  const [date, setDateRaw] = useState<DateOnly | null>(!monthly && !yearly ? knownNext : null);
+  const t = parseDate(today);
+  const paid = paidToday(pick.cycle, today);
+  const [day, setDayRaw] = useState<number | null>(monthly || yearly ? (known ? parseDate(pick.anchor).d : t.d) : null);
+  const [month, setMonthRaw] = useState<number | null>(yearly ? (known ? parseDate(pick.anchor).m : t.m) : null);
+  const [date, setDateRaw] = useState<DateOnly | null>(!monthly && !yearly ? (known ? knownNext : paid.next) : null);
   const setDay = (d: number) => (setTouched(true), setDayRaw(d));
   const setMonth = (m: number) => (setTouched(true), setMonthRaw(m));
   const setDate = (d: DateOnly) => (setTouched(true), setDateRaw(d));
@@ -179,9 +180,11 @@ export function DayBody({
   const [view, setView] = useState(() => parseDate(date ?? today));
 
   const yearDays = month ? (month === 2 ? 29 : daysInMonth(2024, month)) : 31;
-  const anchor = keep ? pick.anchor : monthly ? (day ? anchorForDayOfMonth(day, today) : null) : yearly ? (month && day && day <= yearDays ? anchorForMonthDay(month, day, today) : null) : date;
-  const next = keep ? knownNext : anchor ? nextChargeDate(anchor, pick.cycle, today) : null;
-  const paid = onPaidToday ? paidToday(pick.cycle, today) : null;
+  // Today's own day means it charged today: save today as the last charge, next one a cycle later.
+  const isToday = !keep && ((monthly && day === t.d) || (yearly && month === t.m && day === t.d));
+  const anchor = keep || isToday ? (keep ? pick.anchor : today) : monthly ? (day ? anchorForDayOfMonth(day, today) : null) : yearly ? (month && day && day <= yearDays ? anchorForMonthDay(month, day, today) : null) : date;
+  const source: 'next' | 'receipt' = keep || isToday ? 'receipt' : 'next';
+  const next = keep ? knownNext : isToday ? paid.next : anchor ? nextChargeDate(anchor, pick.cycle, today) : null;
   const price = priceOf(pick, 'short');
   const plan = pick.planName ? shortPlanName(pick.planName, pick.name) : null;
   const detail = [plan, price].filter(Boolean).join(' · ') || EVERY[pick.cycle].replace('every', 'Every');
@@ -314,16 +317,8 @@ export function DayBody({
           {next ? `Next: ${weekdayDate(next)}. ${remindersLine(next, today, leads, time, { reminderTime, off })}` : 'It’s on your bank app or the receipt email.'}
         </Txt>
       </View>
-      <Button label="Save" disabled={!anchor} onPress={() => anchor && onDone(anchor, keep ? 'receipt' : 'next')} style={{ marginTop: 16 }} />
-      {paid && onPaidToday ? (
-        // Side by side, so the sheet is no taller than before (it has to fit the SE).
-        <View style={{ flexDirection: 'row', marginTop: 4 }}>
-          <Button kind="text" label="Paid it today" hint={`Saves today as the last charge. Next charge ${weekdayDate(paid.next)}`} onPress={onPaidToday} style={{ flex: 1 }} />
-          <Button kind="text" label="I’m not sure" hint="Leaves it with no date and no reminders" onPress={onNotSure} style={{ flex: 1 }} />
-        </View>
-      ) : (
-        <Button kind="text" label="I’m not sure" onPress={onNotSure} style={{ marginTop: 4 }} />
-      )}
+      <Button label="Save" disabled={!anchor} onPress={() => anchor && onDone(anchor, source)} style={{ marginTop: 16 }} />
+      <Button kind="text" label="I’m not sure" hint="Leaves it with no date and no reminders" onPress={onNotSure} style={{ marginTop: 4 }} />
     </View>
   );
 }
@@ -334,7 +329,6 @@ export function DaySheet({
   onClose,
   onDone,
   onNotSure,
-  onPaidToday,
   leads = HEADS_UP_LEADS,
   time = '9 AM',
   progress,
@@ -346,15 +340,13 @@ export function DaySheet({
   onDone: (anchor: DateOnly, source: 'next' | 'receipt') => void;
   /** Leaves it with no date: no reminder until they add one. */
   onNotSure: () => void;
-  /** Today was the last charge: the next is one cycle later. */
-  onPaidToday?: () => void;
   /** Days before the charge that reminders go out, and when ("9 AM"). */
   leads?: readonly number[];
   time?: string;
 }) {
   return (
     <Sheet visible={visible && !!pick} onClose={onClose} fit gap={0} maxContent={420} label={pick ? `${pick.name} charge day` : 'Charge day'}>
-      {pick ? <DayBody key={pick.id} pick={pick} onDone={onDone} onNotSure={onNotSure} onPaidToday={onPaidToday} onClose={onClose} leads={leads} time={time} progress={progress} /> : null}
+      {pick ? <DayBody key={pick.id} pick={pick} onDone={onDone} onNotSure={onNotSure} onClose={onClose} leads={leads} time={time} progress={progress} /> : null}
     </Sheet>
   );
 }

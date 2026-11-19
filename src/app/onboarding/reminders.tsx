@@ -87,7 +87,9 @@ export default function Reminders() {
         const price = local ? ` ${money(local.amountMinor, local.currency)}.` : '';
         return [{ key: 'example', day: addDays(charge, -3), body: `Netflix renews ${weekdayName(charge)}.${price} Still watching?` }];
       })();
-  // The older one lands first, then the newest drops in on top.
+  // Cards fill the stack top to bottom, one after the other (owner, Nov 19: "needs to be clean").
+  // Nothing else changes while they land: the lock screen's date, which card is bright and every
+  // time label are fixed from the first frame, so the only motion is each card arriving.
   const count = shown.length;
   const [arrived, setArrived] = useState(reduce ? count : 0);
   useEffect(() => {
@@ -100,9 +102,8 @@ export default function Reminders() {
   // stack's height is fixed and no card ever moves or covers another.
   const stack = shown.map((s, i) => ({ s, i })).reverse();
 
-  // The lock screen's day is the day of the newest card in ("now"), so the date and the cards always agree,
-  // even while the older one is the only one in. An older card from the same day says "9:00 AM", like iOS.
-  const lockDay = shown[Math.max(0, landed - 1)].day;
+  // The lock screen shows the newest reminder's day ("now"); an older card from the same day says "9:00 AM", like iOS.
+  const lockDay = shown[count - 1].day;
   const card = (s: Shown, top: boolean) => <NotificationPreview faded={!top} time={top ? 'now' : s.day === lockDay ? '9:00 AM' : weekdayDate(s.day)} message={noOrphan(s.body)} />;
   // Clear room under the cards for the torch and camera buttons (16 from the edge, 44 tall) plus 12pt of air.
   // Taller phones also keep the duck's head below the cards, never under their words.
@@ -171,10 +172,10 @@ export default function Reminders() {
             </View>
 
             <View importantForAccessibility="no-hide-descendants" style={{ zIndex: 2, marginTop: 14, gap: 8 }}>
-              {stack.map(({ s, i }) => (
-                <LandingCard key={s.key} landed={i < landed} reduce={reduce}>
-                  {/* The newest card in is the bright one; older ones fade back. */}
-                  {card(s, i === landed - 1)}
+              {stack.map(({ s }, k) => (
+                <LandingCard key={s.key} landed={k < landed} reduce={reduce}>
+                  {/* The newest (top) card is the bright one; older ones sit back. */}
+                  {card(s, k === 0)}
                 </LandingCard>
               ))}
             </View>

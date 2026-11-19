@@ -30,7 +30,7 @@ import { useEditor } from '@/editor/Editor';
 import { OffBanner, openPhoneSettings } from '@/home/HomeParts';
 import { SubLogo } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
-import { BottomFade, Card, ChevronLeft, ChevronRight, F, IconButton, SectionHeader, Txt, brand, haptic, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
+import { BottomFade, Card, ChevronLeft, ChevronRight, F, IconButton, SectionHeader, Txt, brand, haptic, tileRadius, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
 
 const WEEK = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 const GAP = 4;
@@ -167,14 +167,14 @@ export default function Calendar() {
           }
           style={{ marginTop: 8 }}
         >
-          <View style={{ flexDirection: 'row', alignItems: 'baseline', flexWrap: 'wrap', columnGap: 8 }}>
-            <Txt v="displayM" tone="money" num style={{ fontSize: 31, lineHeight: 38 }}>
-              {due.totals[0] ? money(due.totals[0].amountMinor, due.totals[0].currency) : money(0, settings.currency)}
-            </Txt>
-            <Txt v="leadS" tone="fg2" num style={{ fontSize: 15, letterSpacing: -0.3 }}>
-              due in {MONTH_LONG[view.m - 1]} · {due.count} {due.count === 1 ? 'charge' : 'charges'}
-            </Txt>
-          </View>
+          {/* The total always on its own line, the "due in" line always one line under it: the block is the same
+              height every month and on every width, so the grid never jumps when the total passes $100. */}
+          <Txt v="displayM" tone="money" num style={{ fontSize: 31, lineHeight: 38 }} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
+            {due.totals[0] ? money(due.totals[0].amountMinor, due.totals[0].currency) : money(0, settings.currency)}
+          </Txt>
+          <Txt v="leadS" tone="fg2" num style={{ fontSize: 15, letterSpacing: -0.3 }} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>
+            due in {MONTH_LONG[view.m - 1]} · {due.count} {due.count === 1 ? 'charge' : 'charges'}
+          </Txt>
           {/* Other currencies: their own line each, no "+" (never added together). */}
           {due.totals.slice(1).map((x) => (
             <Txt key={x.currency} v="leadS" tone="fg2" num style={{ fontSize: 15, letterSpacing: -0.3 }}>
@@ -322,7 +322,6 @@ function DayCell({ day, w, selected, blocked, onPress }: { day: CalendarDay; w: 
   const p = usePalette();
   const { d } = parseDate(day.date);
   const first = day.charges[0];
-  const more = day.charges.length - 1;
   const label = `${WEEKDAY_LONG[weekdayOf(day.date)]}, ${MONTH_LONG[parseDate(day.date).m - 1]} ${d}${day.today ? ', today' : ''}${
     day.charges.length ? `, ${day.charges.map((c) => c.sub.name).join(', ')}` : ''
   }${day.headsUp ? (blocked ? ', reminder day, but reminders are off' : ', reminder day') : ''}`;
@@ -375,18 +374,83 @@ function DayCell({ day, w, selected, blocked, onPress }: { day: CalendarDay; w: 
           }}
         />
       ) : null}
-      {first ? (
+      {first && day.charges.length === 1 ? (
         // A dot day: the logo sits in the bottom-right corner, clear of the dot.
         <View style={[{ flex: 1, alignItems: 'center', justifyContent: 'center' }, day.headsUp ? { alignItems: 'flex-end', justifyContent: 'flex-end' } : null]}>
           <SubLogo sub={first.sub} size={24} ditched={first.pending} />
-          {more > 0 ? (
-            <Txt v="sub" num color={selected ? brand.ink : p.mute} style={{ position: 'absolute', right: -2, bottom: -2, fontFamily: F.bold, fontSize: 11 }} maxFontSizeMultiplier={1}>
-              +{more}
-            </Txt>
-          ) : null}
         </View>
+      ) : first ? (
+        <LogoStack day={day} w={w} selected={selected} />
       ) : null}
     </Pressable>
+  );
+}
+
+/**
+ * Two or more charges on one day: up to two logos overlapping by ~40%, each later one cut out of the one
+ * before by a 1.5pt ring in the cell's colour; three or more show two logos and a logo-sized ink circle
+ * with the rest ("+2"). Nothing sits on top of a logo, and it's sized from the cell so it fits on the SE.
+ */
+function LogoStack({ day, w, selected }: { day: CalendarDay; w: number; selected: boolean }) {
+  const p = usePalette();
+  const RING = 1.5;
+  const many = day.charges.length > 2;
+  const extra = day.charges.length - 2;
+  // Each one overlaps the one before by 40%: 2 logos are 1.6 logos wide, 3+ (with the circle) 2.2. 2pt clear of each side.
+  const span = many ? 2.2 : 1.6;
+  const pad = selected ? 3.5 : 6;
+  const border = selected ? 2.5 : p.dark ? 1 : 0;
+  // A dot day: the stack sits on the bottom edge, so it must stay under the dot (which is lower on today's circle).
+  const dotBottom = day.headsUp ? border + pad + (day.today && !selected ? 25 : 21) + 8 : 0;
+  const bottom = 4;
+  const fitW = Math.floor((w - 4 - RING * 2) / span);
+  const fitH = day.headsUp ? Math.floor(64 - bottom - RING * 2 - dotBottom - 1) : 24;
+  const size = Math.max(14, Math.min(22, fitW, fitH));
+  const step = size * 0.6;
+  const ringBg = selected ? brand.sunflower : p.card;
+  const shown = day.charges.slice(0, 2);
+  return (
+    <View
+      pointerEvents="none"
+      style={{
+        position: 'absolute',
+        // Measured from the cell's outer edge (absolute children start inside the border).
+        bottom: bottom - border,
+        left: -border,
+        right: -border,
+        flexDirection: 'row',
+        justifyContent: day.headsUp ? 'flex-end' : 'center',
+        paddingRight: day.headsUp ? 2 : 0,
+      }}
+    >
+      {shown.map((c, i) => (
+        <View
+          key={c.sub.id}
+          style={
+            i === 0
+              ? { padding: RING }
+              : { marginLeft: step - size - RING * 2, padding: RING, borderRadius: tileRadius(size) + RING, backgroundColor: ringBg }
+          }
+        >
+          <SubLogo sub={c.sub} size={size} ditched={c.pending} />
+        </View>
+      ))}
+      {many ? (
+        <View style={{ marginLeft: step - size - RING * 2, padding: RING, borderRadius: size / 2 + RING, backgroundColor: ringBg }}>
+          <View style={{ width: size, height: size, borderRadius: size / 2, backgroundColor: brand.ink, alignItems: 'center', justifyContent: 'center' }}>
+            <Txt
+              v="label"
+              num
+              color={p.dark ? brand.sunflower : brand.white}
+              style={{ fontFamily: F.bold, fontSize: size >= 18 ? 10.5 : 9.5, lineHeight: size >= 18 ? 13 : 12, letterSpacing: -0.3 }}
+              maxFontSizeMultiplier={1}
+            >
+              +{extra}
+            </Txt>
+          </View>
+        </View>
+      ) : null}
+    </View>
   );
 }
 

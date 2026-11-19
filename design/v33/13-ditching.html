@@ -49,7 +49,7 @@ const press = `<div style="filter:blur(14px);opacity:.75;display:flex;flex-direc
   <div class="menu" style="margin-top:10px">
    <div class="mi" style="font-weight:600">Ditch${ICN.stamp(21)}</div>
    <div class="mi">Edit${ICN.pencil(20)}</div>
-   <div class="mi" style="height:60px"><div><div>Skip this charge</div><div style="font:400 13px Inter;color:#6B6559;margin-top:1px">Already paid? Skip its reminders</div></div>${ICN.skip(20)}</div>
+   <div class="mi" style="height:60px"><div><div>Mark as paid</div><div style="font:400 13px Inter;color:#6B6559;margin-top:1px">No more reminders for this one</div></div>${ICN.skip(20)}</div>
   </div>
  </div>`;
 
@@ -64,7 +64,7 @@ const detail = (hold, dark) => `${SB()}${NAV('Home', '<span style="font:600 17px
   <div class="fact"><span class="k">Reminders</span><span class="v" style="display:flex;align-items:center;gap:8px">${ICN.bell(16, 'var(--sun)', 'var(--fg)')}Sat 21 &amp; Mon 23</span></div>
   <div class="fact"><span class="k">Paid with</span><span class="v">Visa ending 4821</span></div>
   <div class="fact"><span class="k">Account</span><span class="v ph" style="font-weight:400;color:var(--mute)">Add the email you use</span></div>
-  <div class="fact"><span class="k">Notes</span><span class="v ph" style="font-weight:400;color:var(--mute)">Shared plan, promo price…</span></div>
+  <div class="fact"><span class="k">Notes</span><span class="v ph" style="font-weight:400;color:var(--mute)">Add a note</span></div>
  </div>
  <div style="flex:1"></div>
  <div class="fine" style="margin-bottom:12px;${hold ? 'color:var(--fg);font-weight:600;font-size:14px' : ''}">${hold ? 'Keep holding. Let go to stop.' : 'Ditching puts it on your To cancel list. You cancel with Netflix; we show you how.'}</div>
@@ -72,7 +72,6 @@ const detail = (hold, dark) => `${SB()}${NAV('Home', '<span style="font:600 17px
   ${hold ? `<span style="position:absolute;left:0;top:0;bottom:0;width:66%;background:${dark ? '#2A2722' : '#FFCC2E'};border-radius:38px 0 0 38px"></span>` : ''}
   <span style="position:relative;display:flex">${ring(hold ? 0.66 : 0, dark)}</span>
   <span style="position:relative;flex:1;${hold ? `color:${dark ? '#FFCC2E' : '#16140F'}` : ''}">${hold ? 'Ditching Netflix…' : 'Hold to ditch'}</span>
-  ${hold ? '<span style="position:absolute;right:46px;top:50%;width:58px;height:58px;margin-top:-29px;border-radius:50%;background:rgba(22,20,15,.16);box-shadow:0 0 0 8px rgba(22,20,15,.07)"></span>' : ''}
  </div>
  <div style="height:40px"></div>
 </div>`;
@@ -82,7 +81,7 @@ render({
   note: 'Three ways in, one result (the Ditched moment you already like). Ditch is sunflower, never red: it isn’t deleting, the sub moves to To cancel and can be put back. On the detail screen the hold ring sits inside a 76pt button at the bottom, far from the name and price, so the thumb never hides what you’re ditching (Cleo, monday.com).',
   cells: [
     { cap: '13a · Swipe left on a row', sub: 'Edit (cream) and Ditch (sunflower). A full swipe = Ditch with a firm haptic, then the usual Ditched moment.', html: swipe },
-    { cap: '13b · Long-press a row', sub: 'iOS context menu: Ditch / Edit / Skip this charge. Skip says what it does in plain words (owner’s note #5).', html: press },
+    { cap: '13b · Long-press a row', sub: 'iOS context menu: Ditch / Edit / Mark as paid (the words Wise, Venmo and Chime use). The line under it says what happens: this charge’s reminders stop, the next ones stay.', html: press },
     { cap: '13c · Detail: Hold to ditch', sub: 'The ring lives inside the button. One honest line above: you cancel with Netflix, Ditch shows how.', html: detail(false) },
     { cap: '13d · Holding (dark)', sub: 'Ring and fill sweep left→right inside the button; label above says “let go to stop”. Reduce Motion: a 1 s hold with no sweep.', dark: true, html: detail(true, true) },
   ]

@@ -26,17 +26,18 @@
 const stack = (logos, ring = '#fff', s = 1) => {
   if (!logos.length) return '';
   const n = logos.length;
-  const sz = (n >= 3 ? 20 : n === 2 ? 22 : 24) * s, step = Math.round(sz * 0.6);
+  // 1 logo 24pt · 2 logos 22pt overlapping ~40% · 3+ = 2 logos + an ink circle with the day's count, same size, same overlap.
+  const sz = (n >= 3 ? 18 : n === 2 ? 22 : 24) * s, step = Math.round(sz * (n >= 3 ? 0.72 : 0.6));
   const two = logos.slice(0, 2);
-  const w = sz + step * (two.length - 1) + (n >= 3 ? 6 * s : 0);
-  const logoEl = (l, i) => `<span style="width:${sz}px;height:${sz}px;border-radius:${5 * s}px;margin-left:${i ? step - sz : 0}px;z-index:${3 - i};box-shadow:0 0 0 ${2 * s}px ${ring}"><img src="${LP}${l}.png"></span>`;
-  const cs = 15 * s;
-  const badge = n >= 3 ? `<span class="cnt" style="position:absolute;width:${cs}px;height:${cs}px;left:${step + sz - 9 * s}px;top:${sz - 9 * s}px;z-index:9;font-size:${10.5 * s}px;box-shadow:0 0 0 ${2 * s}px ${ring}">${n}</span>` : '';
-  return `<span class="stack" style="--ring:${ring};margin-left:${-w / 2}px;height:${sz}px;bottom:${(n >= 3 ? 12 : 7) * s}px">${two.map(logoEl).join('')}${badge}</span>`;
+  const items = two.length + (n >= 3 ? 1 : 0);
+  const w = sz + step * (items - 1);
+  const logoEl = (l, i) => `<span style="width:${sz}px;height:${sz}px;border-radius:${5 * s}px;margin-left:${i ? step - sz : 0}px;z-index:${n >= 3 ? 1 + i : 3 - i};box-shadow:0 0 0 ${2 * s}px ${ring}"><img src="${LP}${l}.png"></span>`;
+  const badge = n >= 3 ? `<span class="cnt" style="width:${sz}px;height:${sz}px;margin-left:${step - sz}px;z-index:4;font-size:${11 * s}px;box-shadow:0 0 0 ${2 * s}px ${ring}">${n}</span>` : '';
+  return `<span class="stack" style="--ring:${ring};margin-left:${-w / 2}px;height:${sz}px;bottom:${7 * s}px">${two.map(logoEl).join('')}${badge}</span>`;
 };
 const DATA = { 24: ['netflix', 'spotify'], 28: ['hulu', 'chatgpt-plus', 'apple-music'] };
 const DOTS = [21, 23, 25, 27];
-const SUBS = { 24: [['netflix', 'Netflix', 'Reminders Sat 21, Mon 23', '$17.99'], ['spotify', 'Spotify', 'Reminders Sat 21, Mon 23', '$11.99']], 28: [['hulu', 'Hulu', 'No reminder · Free covers 3', '$12.49'], ['chatgpt-plus', 'ChatGPT', 'Reminders Wed 25, Fri 27', '$20.00'], ['apple-music', 'Apple Music', 'Reminders Wed 25, Fri 27', '$10.99']] };
+const SUBS = { 24: [['netflix', 'Netflix', 'Reminders Sat 21, Mon 23', '$17.99'], ['spotify', 'Spotify', 'Reminders Sat 21, Mon 23', '$11.99']], 28: [['hulu', 'Hulu', 'No reminder · Tap to add', '$12.49'], ['chatgpt-plus', 'ChatGPT', 'Reminders Wed 25, Fri 27', '$20.00'], ['apple-music', 'Apple Music', 'Reminders Wed 25, Fri 27', '$10.99']] };
 const cal = (sel) => {
   let cells = '';
   for (let i = 0; i < 30; i++) {
@@ -61,17 +62,17 @@ const cal = (sel) => {
 const zoomCell = (d, logos, label, sub, sel) => `<div><div style="width:${45 * 1.7}px;height:${62 * 1.7}px;position:relative"><div class="dc ${sel ? 'sel' : ''}" style="width:45px;transform:scale(1.7);position:absolute;left:0;top:0">${d}${stack(logos, sel ? '#FFCC2E' : '#fff')}</div></div><div class="zl">${label}<small>${sub}</small></div></div>`;
 const zoom = `<div class="zoom">
  <div style="font:900 22px/26px Archivo;font-stretch:115%;letter-spacing:-.5px">Day cells, up close</div>
- <div style="font:400 14.5px/20px Inter;color:#5A544A;margin-top:6px">No more “+1”. Logos overlap ~40% with a 2pt ring in the cell colour so each edge stays clean. From 3 charges, an ink circle with the day’s count sits on the corner, like an app badge.</div>
- <div class="zrow" style="margin-top:22px">${zoomCell(9, ['netflix'], '1 charge', 'logo 24pt')}${zoomCell(24, ['netflix', 'spotify'], '2 charges', '22pt, 40% overlap')}${zoomCell(28, ['hulu', 'chatgpt-plus', 'apple-music'], '3 charges', '2 logos + “3” badge')}</div>
+ <div style="font:400 14.5px/20px Inter;color:#5A544A;margin-top:6px">No more “+1”. Logos overlap ~40% with a 2pt ring in the cell colour so each edge stays clean. From 3 charges, the first two logos stay and an ink circle with the day’s total count joins the row, the same size, so it never covers a logo or the date.</div>
+ <div class="zrow" style="margin-top:22px">${zoomCell(9, ['netflix'], '1 charge', 'logo 24pt')}${zoomCell(24, ['netflix', 'spotify'], '2 charges', '22pt, 40% overlap')}${zoomCell(28, ['hulu', 'chatgpt-plus', 'apple-music'], '3 charges', '2 logos + “3”')}</div>
  <div class="zrow" style="margin-top:22px">${zoomCell(14, ['netflix', 'spotify', 'hulu', 'max', 'disney-plus'], '5 charges', 'count says 5')}${zoomCell(28, ['hulu', 'chatgpt-plus', 'apple-music'], 'Selected', 'ring turns sunflower', 1)}${zoomCell(21, [], 'Reminder only', 'dot, as today').replace('</div><div class="zl">', '<span class="rd" style="position:absolute;left:8px;bottom:9px;width:8px;height:8px;border-radius:4px;background:#FFCC2E;box-shadow:inset 0 0 0 1px rgba(22,20,15,.35)"></span></div><div class="zl">')}</div>
- <div style="font:400 13px/18px Inter;color:#6A655A;margin-top:22px">Fits the 45pt cell on every phone: 20 + 12 + 6 = 38pt wide. VoiceOver reads “Saturday 28, 3 charges, $43.48”.</div>
+ <div style="font:400 13px/18px Inter;color:#6A655A;margin-top:22px">Fits the 45pt cell on every phone: 18 + 13 + 13 = 44pt (3+ days use 18pt logos with less overlap, so the second logo still reads). VoiceOver reads “Saturday 28, 3 charges, $43.48”.</div>
 </div>`;
 
 render({
   title: '14 · Calendar: two logos, then a count',
   note: 'Same calendar as today (Rocket Money, Orbit pattern for busy days). Tapping a day still opens its list below. Only the day cell changes.',
   cells: [
-    { cap: '14a · Nov 28 selected (3 charges)', sub: 'Two logos + ink “3”. The list below names all three, with their reminder days.', html: cal(28) },
+    { cap: '14a · Nov 28 selected (3 charges)', sub: 'Two logos + an ink “3” (the day’s total). The list below names all three; the one without a reminder says how to add one.', html: cal(28) },
     { cap: '14b · Cell anatomy', sub: '1, 2, 3, 5 charges, selected and reminder-only, at 1.7×.', raw: true, html: zoom },
     { cap: '14c · Nov 24 selected (2 charges)', sub: 'Netflix and Spotify overlap; nothing is hidden behind a “+1”.', html: cal(24) },
   ]

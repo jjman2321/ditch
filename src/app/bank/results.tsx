@@ -48,7 +48,7 @@ export default function BankResults() {
   const isOn = (f: BankFind) => (flow.onboarding ? !obOff.has(f.subId) : !f.undone);
   const totals = useMemo(() => findTotals(autos.map((f) => ({ ...f, undone: !isOn(f) }))), [autos, obOff]); // eslint-disable-line react-hooks/exhaustive-deps
   const totalLine = totals.map((t) => `${formatWholeMoney(t.yearlyMinor, t.currency, { home: app.settings.currency })} a year`).join(' · ');
-  const apple = link ? bank.state.txns.filter((t) => bank.state.txnLink[t.id] === link.id && isApple(cleanMerchant(t.merchantName ?? t.text))).length : 0;
+  const apple = link ? bank.state.txns.filter((t) => bank.state.txnLink[t.id] === link.id && isApple(cleanMerchant(t.text))).length : 0;
 
   const toggle = async (f: BankFind) => {
     haptic.select();

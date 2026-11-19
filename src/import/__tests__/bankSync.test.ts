@@ -57,4 +57,10 @@ describe('analyzeBank', () => {
     expect(r.lookCancelled).toEqual([]);
     expect(r.charged).toEqual([]);
   });
+
+  it('never treats Apple’s bundled bill as one subscription, even with a tidy merchant name', () => {
+    const txns = [tx('2026-10-17', 'APPLE.COM/BILL 866-712-7753 CA', 1497, { merchantName: 'Apple' }), tx('2026-11-17', 'APPLE.COM/BILL 866-712-7753 CA', 1497, { merchantName: 'Apple' })];
+    const r = analyzeBank(txns, [], { handled: [] }, TODAY);
+    expect([...r.added, ...r.suggestions]).toEqual([]);
+  });
 });

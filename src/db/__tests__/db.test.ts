@@ -41,7 +41,7 @@ describe('migrations', () => {
     expect(v).toBe(MIGRATIONS[MIGRATIONS.length - 1].version);
     expect(await schemaVersion(db)).toBe(v);
     const tables = await db.getAllAsync<{ name: string }>("SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name");
-    expect(tables.map((t) => t.name)).toEqual(['settings', 'subscriptions']);
+    expect(tables.map((t) => t.name)).toEqual(['bank_state', 'settings', 'subscriptions']);
     const cols = await db.getAllAsync<{ name: string }>('PRAGMA table_info(subscriptions)');
     expect(cols.map((c) => c.name)).toEqual(
       expect.arrayContaining(['amount_minor', 'currency', 'cycle', 'anchor_date', 'date_source', 'plan_id', 'price_source', 'price_country', 'free_pick', 'reminders_muted', 'status', 'ditched_on', 'cancel_by', 'confirmed_on', 'ditched_amount_minor']),
@@ -107,6 +107,21 @@ describe('migrations', () => {
     await repo.saveSubs([netflix({ paidWith: 'Visa ending 4821', accountEmail: 'me@example.com', notes: 'Shared with Sam', skipCharge: '2026-11-14' })]);
     const [after] = await repo.loadSubs();
     expect([after.paidWith, after.accountEmail, after.notes, after.skipCharge]).toEqual(['Visa ending 4821', 'me@example.com', 'Shared with Sam', '2026-11-14']);
+    db.close();
+  });
+
+  it('migration 5 adds the bank side and the found-in-bank day, and keeps every row (DECISIONS #67, #70)', async () => {
+    const db = nodeSqlite();
+    await migrate(db, MIGRATIONS.filter((m) => m.version <= 4));
+    const cols4 = SUB_COLUMNS.filter((c) => c !== 'found_in_bank_on');
+    const row = subToRow(netflix());
+    await db.runAsync(`INSERT INTO subscriptions (${cols4.join(', ')}) VALUES (${cols4.map(() => '?').join(', ')})`, ...cols4.map((c) => row[c]));
+    const repo = await sqlRepo(db);
+    const [loaded] = await repo.loadSubs();
+    expect(loaded).toEqual(netflix());
+    await repo.saveSubs([netflix({ foundInBankOn: '2026-11-19' })]);
+    expect((await repo.loadSubs())[0].foundInBankOn).toBe('2026-11-19');
+    expect(await repo.loadBank()).toEqual({});
     db.close();
   });
 
@@ -187,13 +202,22 @@ async function contract(name: string, make: () => Promise<Repo>) {
       expect(s).toEqual({ ...DEFAULT_SETTINGS, reminderTime: '18:30', leadDays: [7, 1], currency: 'GBP', onboardingDone: true, proPlan: null });
     });
 
-    it('wipe deletes everything', async () => {
+    it('keeps the bank side by key (null removes one)', async () => {
+      const repo = await make();
+      await repo.saveBank({ links: '[{"id":"l1"}]', txns: '[]' });
+      await repo.saveBank({ txns: null, dismissed: '["x"]' });
+      expect(await repo.loadBank()).toEqual({ links: '[{"id":"l1"}]', dismissed: '["x"]' });
+    });
+
+    it('wipe deletes everything, the bank side too', async () => {
       const repo = await make();
       await repo.saveSubs([netflix()]);
       await repo.saveSettings({ onboardingDone: true });
+      await repo.saveBank({ links: '[]' });
       await repo.wipe();
       expect(await repo.loadSubs()).toEqual([]);
       expect((await repo.loadSettings()).onboardingDone).toBe(false);
+      expect(await repo.loadBank()).toEqual({});
     });
   });
 }

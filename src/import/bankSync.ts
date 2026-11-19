@@ -55,6 +55,9 @@ const live = (s: Sub) => s.status === 'active' || s.status === 'ditched-pending'
 
 /** The merchant text we trust most for one transaction. */
 function textOf(t: BankTxn): string {
+  // Apple's bundled bill keeps its raw "APPLE.COM/BILL" text: the provider's tidy "Apple" would
+  // otherwise read as one subscription instead of many (it's pointed to the screenshot finder).
+  if (isApple(cleanMerchant(t.text))) return t.text;
   return t.merchantName?.trim() ? t.merchantName : t.text;
 }
 

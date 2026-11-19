@@ -93,14 +93,12 @@ const SHORT: Record<string, string> = {
 const CANVAS_W = 440;
 /** Gap between the raised Pro column and the table's right edge. */
 const PRO_INSET = 10;
-// The original duck art, untouched (owner, Nov 19: "just keep our original one"): the peeking duck
-// (assets/brand/duck.png, 600×350 with 36px of air above and beside him, bottom flush), sitting on the
-// Pro column's top edge.
+// The peeking duck (assets/brand/duck.png, 600×350 with 36px air above and beside him).
 const DUCK_PEEK = require('../../assets/brand/duck.png');
 const DUCK_PEEK_DARK = require('../../assets/brand/duck-dark.png');
-const PEEK_W = 58;
-const PEEK_BOX_W = (PEEK_W * 600) / 528;
-const PEEK_BOX_H = Math.round((PEEK_BOX_W * 350) / 600);
+const GRIP_W = 52;
+const GRIP_BOX_W = (GRIP_W * 600) / 528;
+const GRIP_H = Math.round((GRIP_BOX_W * 350) / 600);
 const HERO_H = 190;
 const EDGE_W = 24;
 /** Everything on the canvas except the table rows (hero, table header, plans, button, price line, links). */
@@ -225,16 +223,42 @@ function Compare({
           borderColor: brand.sunflower,
         }}
       />
-      {/* The original duck peeks over the top of his Pro column (owner's pick E, Nov 19; DECISIONS #73).
-          Never over a price or the button. */}
+      {/* The duck peeks over his Pro column with his wings on the edge, so the cut is on purpose
+          (owner's pick E, Nov 19; DECISIONS #73). Never over a price or the button. */}
       {duck ? (
         <View
           pointerEvents="none"
           importantForAccessibility="no-hide-descendants"
           accessibilityElementsHidden
-          style={{ position: 'absolute', right: PRO_INSET, width: colP, top: -14 - PEEK_BOX_H + 1, height: PEEK_BOX_H, alignItems: 'center', zIndex: 3 }}
+          style={{ position: 'absolute', right: PRO_INSET, width: colP, top: -14 - GRIP_H, height: GRIP_H + 8, alignItems: 'center' }}
         >
-          <Image source={dark ? DUCK_PEEK_DARK : DUCK_PEEK} style={{ width: PEEK_BOX_W, height: PEEK_BOX_H }} contentFit="contain" transition={0} />
+          <Image source={dark ? DUCK_PEEK_DARK : DUCK_PEEK} style={{ width: GRIP_BOX_W, height: GRIP_H }} contentFit="contain" transition={0} />
+          <View
+            style={{
+              position: 'absolute',
+              top: GRIP_H - 6,
+              left: colP / 2 - GRIP_W / 2 - 3,
+              width: 16,
+              height: 11,
+              borderRadius: 6,
+              backgroundColor: brand.white,
+              borderWidth: 2.5,
+              borderColor: brand.ink,
+            }}
+          />
+          <View
+            style={{
+              position: 'absolute',
+              top: GRIP_H - 6,
+              left: colP / 2 + GRIP_W / 2 - 13,
+              width: 16,
+              height: 11,
+              borderRadius: 6,
+              backgroundColor: brand.white,
+              borderWidth: 2.5,
+              borderColor: brand.ink,
+            }}
+          />
         </View>
       ) : null}
       <View style={{ flexDirection: 'row', alignItems: 'center', height: 40 }} importantForAccessibility="no-hide-descendants">

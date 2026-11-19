@@ -2,7 +2,7 @@
 // Display sizes cap how far Dynamic Type grows them, so a 70pt headline
 // never breaks the layout; body text grows freely.
 
-import { Text, type TextProps, type TextStyle } from 'react-native';
+import { Platform, Text, type TextProps, type TextStyle } from 'react-native';
 
 import { usePalette } from './tokens';
 
@@ -54,6 +54,9 @@ export const type = {
 
 export type TypeVariant = keyof typeof type;
 
+/** Web previews only: the browser's own "no lonely last word" wrapping, to match iOS push-out below. */
+const prettyWrap = (Platform.OS === 'web' ? { textWrap: 'pretty' } : null) as TextStyle | null;
+
 type Tone = 'fg' | 'fg2' | 'mute' | 'money' | 'cardFg' | 'noteFg' | 'noteMute';
 
 export function Txt({
@@ -68,5 +71,13 @@ export function Txt({
 }: TextProps & { v?: TypeVariant; tone?: Tone; color?: string; num?: boolean; center?: boolean }) {
   const p = usePalette();
   const { max, ...t } = type[v] as Style;
-  return <Text maxFontSizeMultiplier={maxFontSizeMultiplier ?? max} {...rest} style={[t, { color: color ?? p[tone] }, num && tabular, center && { textAlign: 'center' }, style]} />;
+  // push-out: iOS pulls a word down rather than leave one word alone on the last line (owner: no one-word last lines).
+  return (
+    <Text
+      maxFontSizeMultiplier={maxFontSizeMultiplier ?? max}
+      lineBreakStrategyIOS="push-out"
+      {...rest}
+      style={[prettyWrap, t, { color: color ?? p[tone] }, num && tabular, center && { textAlign: 'center' }, style]}
+    />
+  );
 }

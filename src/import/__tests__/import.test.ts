@@ -4,7 +4,7 @@ import { alreadyOnList, foundToSub } from '../toSubs';
 import { readAppleSubscriptions } from '../appleScreenshot';
 import { matchMerchant, matchName } from '../match';
 import { MERCHANT_ALIASES } from '../merchants';
-import { cleanMerchant, findRepeats, readCsv, readStatement, readStatementText } from '../statement';
+import { cleanMerchant, findRepeats, mergeTxns, readCsv, readStatement, readStatementText } from '../statement';
 import { findCycle, findDate, findPrice, toMinor } from '../text';
 import { preTicked } from '../types';
 
@@ -164,6 +164,26 @@ describe('bank statements', () => {
     const csv = ['Date,Description,Amount', '03/09/2026,NETFLIX.COM,-10.99', '03/10/2026,NETFLIX.COM,-10.99', '15/10/2026,SALARY,2500.00', '03/11/2026,NETFLIX.COM,-10.99'].join('\n');
     const r = findRepeats(readCsv(csv, TODAY, 'GBP', 'dmy'), TODAY);
     expect(r.found[0]).toMatchObject({ catalogId: 'netflix', date: '2026-12-03', price: { amountMinor: 1099, currency: 'GBP' } });
+  });
+  it('reads several monthly files as one, and counts the overlap once', () => {
+    const head = 'Transaction Date,Clearing Date,Description,Merchant,Category,Type,Amount (USD),Purchased By';
+    const row = (d: string, desc = 'HULU 877-8244858 CA', amt = '18.99') => `${d},${d},"${desc}","${desc}",Entertainment,Purchase,${amt},Sam`;
+    // Each file alone has one Hulu charge: only a maybe.
+    const sep = [head, row('09/14/2026'), row('09/30/2026', 'COFFEE BAR', '4.50'), row('09/30/2026', 'COFFEE BAR', '4.50')].join('\n');
+    const oct = [head, row('09/30/2026', 'COFFEE BAR', '4.50'), row('09/30/2026', 'COFFEE BAR', '4.50'), row('10/14/2026')].join('\n');
+    const nov = [head, row('10/14/2026'), row('11/14/2026')].join('\n');
+    expect(readStatement(sep, TODAY, 'USD').found[0]).toMatchObject({ catalogId: 'hulu', confidence: 'maybe', evidence: 'Sep 14' });
+    const r = readStatement([sep, oct, nov], TODAY, 'USD');
+    // Sep 14, Oct 14 (in two files), Nov 14 → three charges, not four.
+    expect(r.found[0]).toMatchObject({ catalogId: 'hulu', confidence: 'high', evidence: 'Sep 14, Oct 14, Nov 14' });
+    // The two real coffees on Sep 30 are in both Sep and Oct files: kept as two, not four.
+    expect(r.read).toBe(5);
+  });
+  it('mergeTxns keeps real same-day twins in one file and drops copies across files', () => {
+    const t = { date: '2026-10-01', text: 'NETFLIX.COM', amountMinor: 1999, currency: 'USD' };
+    expect(mergeTxns([[t], [{ ...t, text: ' netflix.com ' }]])).toHaveLength(1);
+    expect(mergeTxns([[t, t], [t]])).toHaveLength(2);
+    expect(mergeTxns([[t], [{ ...t, amountMinor: 2099 }]])).toHaveLength(2);
   });
   it('a single charge of a known service is only a maybe', () => {
     const r = findRepeats([{ date: '2026-11-01', text: 'AUDIBLE*AB12CD', amountMinor: 1495, currency: 'USD' }], TODAY);

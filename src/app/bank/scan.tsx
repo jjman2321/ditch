@@ -13,7 +13,7 @@ import { useBankFlow } from '@/bank/flow';
 import { setFindTarget } from '@/import/session';
 import { BankApiError } from '@/services/bank';
 import { useBank } from '@/state/bank';
-import { tell } from '@/ui/alert';
+import { ask } from '@/ui/alert';
 import { Button, Card, LogoTile, Sheet, Stage, Txt, haptic, usePalette } from '@/ui/sunflower';
 
 const STEP_MIN_MS = 1200;
@@ -93,7 +93,10 @@ export default function BankScan() {
     } catch (e) {
       if (!alive.current) return;
       if (e instanceof BankApiError && e.code === 'bank_limit') {
-        tell('3 is the limit', 'You can connect up to 3. Disconnect one in Settings → Bank connections to add another.');
+        ask('3 is the limit', 'You can connect up to 3. Disconnect one to add another.', [
+          { text: 'Not now', style: 'cancel' },
+          { text: 'Open Bank connections', onPress: () => router.push('/settings/banks') },
+        ]);
         router.back();
         return;
       }

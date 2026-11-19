@@ -6,7 +6,7 @@ import { Platform, Pressable, ScrollView, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { DEV_TOOLS } from '@/dev/flags';
-import { ChevronLeft, ChevronRight, F, Txt, brand, useInsets, usePageEdge, usePalette, usePressScale } from '@/ui/sunflower';
+import { BottomFade, ChevronLeft, ChevronRight, F, Txt, brand, useInsets, usePageEdge, usePalette, usePressScale } from '@/ui/sunflower';
 
 /** Sample buttons: web preview and test builds only, never the App Store build. */
 export const SHOW_SAMPLES = Platform.OS === 'web' || DEV_TOOLS;
@@ -17,29 +17,33 @@ export function FindPage({ title, back = 'Back', intro, children, footer }: { ti
   const edge = usePageEdge();
   return (
     <View style={{ flex: 1, backgroundColor: p.bg }}>
-      <ScrollView contentContainerStyle={{ paddingTop: insets.top, paddingHorizontal: edge, paddingBottom: 24 }} showsVerticalScrollIndicator={false}>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={`Back to ${back}`}
-          onPress={() => (router.canGoBack() ? router.back() : router.replace('/(tabs)'))}
-          hitSlop={8}
-          style={{ height: 44, flexDirection: 'row', alignItems: 'center', gap: 4, alignSelf: 'flex-start', marginLeft: -8, paddingRight: 12 }}
-        >
-          <ChevronLeft color={p.fg} size={24} />
-          <Txt v="label" style={{ fontSize: 17, fontFamily: F.medium }}>
-            {back}
+      <View style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={{ paddingTop: insets.top, paddingHorizontal: edge, paddingBottom: 24 }} showsVerticalScrollIndicator={false}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={`Back to ${back}`}
+            onPress={() => (router.canGoBack() ? router.back() : router.replace('/(tabs)'))}
+            hitSlop={8}
+            style={{ height: 44, flexDirection: 'row', alignItems: 'center', gap: 4, alignSelf: 'flex-start', marginLeft: -8, paddingRight: 12 }}
+          >
+            <ChevronLeft color={p.fg} size={24} />
+            <Txt v="label" style={{ fontSize: 17, fontFamily: F.medium }}>
+              {back}
+            </Txt>
+          </Pressable>
+          <Txt v="title" accessibilityRole="header" style={{ marginTop: 2, fontSize: 28, lineHeight: 34 }}>
+            {title}
           </Txt>
-        </Pressable>
-        <Txt v="title" accessibilityRole="header" style={{ marginTop: 2, fontSize: 28, lineHeight: 34 }}>
-          {title}
-        </Txt>
-        {intro ? (
-          <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
-            {intro}
-          </Txt>
-        ) : null}
-        {children}
-      </ScrollView>
+          {intro ? (
+            <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
+              {intro}
+            </Txt>
+          ) : null}
+          {children}
+        </ScrollView>
+        {/* Content that runs under the buttons fades out instead of being sliced mid-line. */}
+        {footer ? <BottomFade height={24} /> : null}
+      </View>
       {footer ? <View style={{ paddingHorizontal: edge, paddingTop: 10, paddingBottom: Math.max(insets.bottom, 16), gap: 4 }}>{footer}</View> : null}
     </View>
   );
@@ -97,21 +101,5 @@ export function RouteCard({
         </View>
       </Animated.View>
     </Pressable>
-  );
-}
-
-export function Step({ n, children }: { n: number; children: string }) {
-  const p = usePalette();
-  return (
-    <View style={{ flexDirection: 'row', gap: 12, alignItems: 'flex-start' }}>
-      <View style={{ width: 28, height: 28, borderRadius: 14, backgroundColor: '#FFCC2E', alignItems: 'center', justifyContent: 'center', borderWidth: p.dark ? 0 : 1.5, borderColor: '#16140F' }}>
-        <Txt v="label" color="#16140F" style={{ fontFamily: F.heavy, fontSize: 14 }}>
-          {String(n)}
-        </Txt>
-      </View>
-      <Txt v="leadS" style={{ flex: 1, paddingTop: 2 }}>
-        {children}
-      </Txt>
-    </View>
   );
 }

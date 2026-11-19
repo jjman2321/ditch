@@ -61,7 +61,7 @@ export default function CurrencyPage() {
       <View
         style={{
           marginTop: 16,
-          height: 46,
+          minHeight: 46,
           borderRadius: 12,
           backgroundColor: p.chipBg,
           borderWidth: 1.5,
@@ -79,7 +79,12 @@ export default function CurrencyPage() {
           placeholder="Search"
           placeholderTextColor={p.mute}
           accessibilityLabel="Search currencies"
-          style={{ flex: 1, height: 44, fontFamily: F.regular, fontSize: 16, color: p.fg, outlineStyle: 'none' } as object}
+          clearButtonMode="while-editing"
+          autoCorrect={false}
+          autoCapitalize="none"
+          returnKeyType="search"
+          maxFontSizeMultiplier={1.6}
+          style={{ flex: 1, minHeight: 44, fontFamily: F.regular, fontSize: 16, color: p.fg, outlineStyle: 'none' } as object}
         />
       </View>
       {list.length ? null : (

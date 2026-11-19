@@ -218,11 +218,43 @@ function titleCase(s: string): string {
   return s.toLowerCase().replace(/\b[a-z]/g, (c) => c.toUpperCase()).replace(/\.Com\b/, '.com');
 }
 
-/** Reads a statement in whatever form it came: CSV if it has a header row with an amount column, else PDF text. */
-export function readStatement(content: string, today: DateOnly, homeCurrency: string, order: DateOrder = 'mdy'): StatementResult {
+/** The charges in one file, in whatever form it came: CSV if it has a header row with an amount column, else PDF text. */
+export function readTxns(content: string, today: DateOnly, homeCurrency: string, order: DateOrder = 'mdy'): Txn[] {
   const firstLine = content.split(/\r?\n/, 1)[0] ?? '';
   const looksCsv = /[,;\t]/.test(firstLine) && /amount|debit|value|betrag/i.test(firstLine);
-  const txns = looksCsv ? readCsv(content, today, homeCurrency, order) : readStatementText(content, today, homeCurrency, order);
-  return findRepeats(txns, today);
+  return looksCsv ? readCsv(content, today, homeCurrency, order) : readStatementText(content, today, homeCurrency, order);
+}
+
+/**
+ * Charges from several files, with the overlap taken out: two statements that both cover
+ * Oct 28–31 list those charges twice. A row counts as many times as the file that has it
+ * most often, so two real same-day charges in one file both stay.
+ */
+export function mergeTxns(files: Txn[][]): Txn[] {
+  const keyOf = (t: Txn) => `${t.date}|${t.amountMinor}|${t.currency}|${t.text.trim().toLowerCase().replace(/\s+/g, ' ')}`;
+  const most = new Map<string, number>();
+  for (const file of files) {
+    const here = new Map<string, number>();
+    for (const t of file) here.set(keyOf(t), (here.get(keyOf(t)) ?? 0) + 1);
+    for (const [k, n] of here) most.set(k, Math.max(most.get(k) ?? 0, n));
+  }
+  const out: Txn[] = [];
+  for (const file of files) {
+    for (const t of file) {
+      const k = keyOf(t);
+      const left = most.get(k) ?? 0;
+      if (left > 0) {
+        out.push(t);
+        most.set(k, left - 1);
+      }
+    }
+  }
+  return out;
+}
+
+/** Reads one statement, or several (2–3 months as separate files), and spots the repeats across all of them. */
+export function readStatement(content: string | string[], today: DateOnly, homeCurrency: string, order: DateOrder = 'mdy'): StatementResult {
+  const files = (Array.isArray(content) ? content : [content]).map((c) => readTxns(c, today, homeCurrency, order));
+  return findRepeats(mergeTxns(files), today);
 }
 

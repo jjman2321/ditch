@@ -8,10 +8,11 @@ import { router } from 'expo-router';
 import { Pressable, View } from 'react-native';
 
 import { APPLE_SUBSCRIPTIONS_URL } from '@/catalog/cancel';
-import { weekdayDate } from '@/domain/dates';
+import { showBankScan, showImport } from '@/config/features';
+import { addDays, weekdayDate } from '@/domain/dates';
 import { listedUserSubs, runningProTrial } from '@/domain/subs';
 import { openUrl } from '@/ditch/CancelHelp';
-import { billedLabel, planById, restorePurchases } from '@/services/purchases';
+import { planById, restorePurchases } from '@/services/purchases';
 import { Group, Row, SettingsPage } from '@/settings/Parts';
 import { useApp } from '@/state/app';
 import { tell } from '@/ui/alert';
@@ -58,13 +59,15 @@ export default function ProPage() {
         <>
           {/* What Pro adds, in the user's own numbers (same rows as the paywall table). */}
           <Group header="With Pro">
+            {showBankScan() ? <Row label="Scan your bank" right={tick} /> : null}
             <Row label={n > 3 ? `Reminders on all ${n}` : 'Reminders on everything'} right={tick} />
             <Row label="Pick your reminder days" right={tick} />
-            <Row label="Price hike alerts" right={tick} />
+            <Row label="Price rise check" right={tick} />
+            {showImport() ? <Row label="Read as many lists as you like" right={tick} /> : null}
           </Group>
           <Button label={`Try Pro free for ${yearly.trialDays} days`} onPress={() => router.push('/paywall?from=app')} style={{ marginTop: 18 }} />
           <Txt v="fine" tone="mute" num center style={{ marginTop: 8, fontSize: 13.5 }}>
-            {`${yearly.trialDays} days free, then ${billedLabel(yearly)}`}
+            {`Free until ${weekdayDate(addDays(app.today, yearly.trialDays))}, then ${yearly.priceString} a year.`}
           </Txt>
           {/* For people tired of subscriptions: straight to the paywall with Lifetime already picked. */}
           <Pressable
@@ -80,9 +83,9 @@ export default function ProPage() {
           </Pressable>
         </>
       )}
-      <Group note={`${pro ? `Lifetime is a one-time ${lifetime.priceString} for Pro. ` : ''}Cancel a subscription anytime in iPhone Settings → your name → Subscriptions.`}>
+      <Group note={`${pro ? `Lifetime is a one-time ${lifetime.priceString} for Pro. ` : ''}Cancel anytime in your Apple subscriptions.`}>
         {pro && trial ? <Row label="Trial ends" value={weekdayDate(trial.anchor)} /> : null}
-        {pro && settings.proPlan !== 'lifetime' ? <Row label="Manage" hint="Opens your Apple subscriptions" onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)} /> : null}
+        {settings.proPlan !== 'lifetime' ? <Row label="Manage subscriptions" hint="Opens your Apple subscriptions" onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)} /> : null}
         <Row label="Restore purchases" onPress={restore} chevron={false} />
       </Group>
     </SettingsPage>

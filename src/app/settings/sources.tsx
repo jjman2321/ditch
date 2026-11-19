@@ -47,50 +47,62 @@ const SOURCES: Source[] = [
     url: 'https://www.westmonroe.com/press-releases/americans-are-spending-more-on-subscriptions-and-are-less-aware-of-spending',
     host: 'westmonroe.com',
   },
-  {
-    who: 'Exchange rates: Exchange Rate API',
-    found: 'The rough “≈ in all” total, shown only when your list has more than one currency. Your real prices and reminders are never converted.',
-    sample: 'Free daily rates, saved on your phone',
-    url: 'https://www.exchangerate-api.com',
-    host: 'exchangerate-api.com',
-  },
 ];
 
-export default function Sources() {
+/** Not a study: where the rough "≈ in all" rates come from. Shown under its own header. */
+const RATES: Source = {
+  who: 'Exchange Rate API',
+  found: 'The rough “≈ in all” total, shown only when your list has more than one currency. Your real prices and reminders are never converted.',
+  sample: 'Free daily rates, saved on your phone',
+  url: 'https://www.exchangerate-api.com',
+  host: 'exchangerate-api.com',
+};
+
+function SourceCard({ s, link }: { s: Source; link: string }) {
   const p = usePalette();
   return (
-    <SettingsPage title="Sources" back="About Ditch" intro="The studies behind the numbers we show. All of them asked US adults, so outside the US we say “in one study”.">
+    <Card style={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 4 }}>
+      <Txt v="bodyStrong" color={p.cardFg} accessibilityRole="header">
+        {s.who}
+      </Txt>
+      <Txt v="body" color={p.cardFg} style={{ marginTop: 4 }}>
+        {s.found}
+      </Txt>
+      <Txt v="sub" tone="mute" style={{ marginTop: 4 }}>
+        {s.sample}
+      </Txt>
+      {s.where ? (
+        <Txt v="sub" tone="mute" style={{ marginTop: 4 }}>
+          {`Used on ${s.where}`}
+        </Txt>
+      ) : null}
+      <Pressable
+        accessibilityRole="link"
+        accessibilityLabel={link}
+        onPress={() => openUrl(s.url)}
+        style={({ pressed }) => ({ marginTop: 4, minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'flex-start', opacity: pressed ? 0.6 : 1 })}
+      >
+        <Txt v="sub" style={{ fontFamily: F.semi, color: p.cardFg, textDecorationLine: 'underline' }}>
+          {s.host}
+        </Txt>
+        <External color={p.cardFg} size={14} />
+      </Pressable>
+    </Card>
+  );
+}
+
+export default function Sources() {
+  return (
+    <SettingsPage title="Sources" back="About Ditch" intro="Where our numbers come from. The surveys asked US adults, so outside the US we say “in one study”.">
       <View style={{ marginTop: 22, gap: 12 }}>
         {SOURCES.map((s) => (
-          <Card key={s.who} style={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: 4 }}>
-            <Txt v="bodyStrong" color={p.cardFg} accessibilityRole="header">
-              {s.who}
-            </Txt>
-            <Txt v="body" color={p.cardFg} style={{ marginTop: 4 }}>
-              {s.found}
-            </Txt>
-            <Txt v="sub" tone="mute" style={{ marginTop: 4 }}>
-              {s.sample}
-            </Txt>
-            {s.where ? (
-              <Txt v="sub" tone="mute" style={{ marginTop: 4 }}>
-                {`Used on ${s.where}`}
-              </Txt>
-            ) : null}
-            <Pressable
-              accessibilityRole="link"
-              accessibilityLabel={`Open the study on ${s.host}`}
-              onPress={() => openUrl(s.url)}
-              style={({ pressed }) => ({ marginTop: 4, minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'flex-start', opacity: pressed ? 0.6 : 1 })}
-            >
-              <Txt v="sub" style={{ fontFamily: F.semi, color: p.cardFg, textDecorationLine: 'underline' }}>
-                {s.host}
-              </Txt>
-              <External color={p.cardFg} size={14} />
-            </Pressable>
-          </Card>
+          <SourceCard key={s.who} s={s} link={`Open the study on ${s.host}`} />
         ))}
       </View>
+      <Txt v="eyebrow" tone="mute" accessibilityRole="header" style={{ marginTop: 24, marginBottom: 8, marginHorizontal: 4 }}>
+        Exchange rates
+      </Txt>
+      <SourceCard s={RATES} link={`Open ${RATES.host}`} />
     </SettingsPage>
   );
 }

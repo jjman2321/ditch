@@ -22,9 +22,30 @@ export function PhoneMock({ title, rows, label }: { title: string; rows: MockRow
       accessible
       accessibilityRole="image"
       accessibilityLabel={label}
-      style={{ marginTop: small ? 14 : 18, height: small ? 172 : 200, borderRadius: 20, backgroundColor: p.dark ? '#2A2516' : '#FFF1BC', overflow: 'hidden', alignItems: 'center', paddingTop: 18 }}
+      style={{
+        marginTop: small ? 14 : 18,
+        height: small ? 150 : 200,
+        borderRadius: 20,
+        backgroundColor: p.dark ? '#2A2516' : '#FFF1BC',
+        overflow: 'hidden',
+        alignItems: 'center',
+        paddingTop: small ? 14 : 18,
+      }}
     >
-      <View style={{ width: 236, flex: 1, borderTopLeftRadius: 30, borderTopRightRadius: 30, borderWidth: 6, borderBottomWidth: 0, borderColor: frame, backgroundColor: screen, paddingHorizontal: 12, paddingTop: 14 }}>
+      <View
+        style={{
+          width: 236,
+          flex: 1,
+          borderTopLeftRadius: 30,
+          borderTopRightRadius: 30,
+          borderWidth: 6,
+          borderBottomWidth: 0,
+          borderColor: frame,
+          backgroundColor: screen,
+          paddingHorizontal: 12,
+          paddingTop: 14,
+        }}
+      >
         <View style={{ alignSelf: 'center', width: 58, height: 14, borderRadius: 7, backgroundColor: frame, marginTop: -6 }} />
         <Txt v="label" color={p.fg} style={{ fontFamily: F.bold, fontSize: 15, marginTop: 10 }} maxFontSizeMultiplier={1}>
           {title}

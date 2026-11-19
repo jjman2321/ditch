@@ -7,7 +7,7 @@ import { Pressable, View } from 'react-native';
 import { BankHero } from '@/bank/Entry';
 import { showBankSync } from '@/config/features';
 import { FindPage, RouteCard } from '@/find/Parts';
-import { PLACES } from '@/home/Forgotten';
+import { PLACES, placeUrl } from '@/home/Forgotten';
 import { openUrl } from '@/ditch/CancelHelp';
 import { useApp } from '@/state/app';
 import { External, PhoneList, StatementIcon, Txt, usePalette } from '@/ui/sunflower';
@@ -23,7 +23,7 @@ export default function FindHub() {
   const p = usePalette();
   const { free, go, pro } = useFindGate();
   // Same tag as onboarding's "Where should we look?"; once the free one is used it says PRO.
-  const tag = pro ? undefined : free ? '1 FREE, THEN PRO' : 'PRO';
+  const tag = pro ? undefined : free ? 'FIRST ONE FREE' : 'PRO';
   const app = useApp();
   // Bank sync first (DECISIONS #70): test builds, US/Canada only.
   const bank = showBankSync(app.settings.country, app.settings.currency);
@@ -33,15 +33,15 @@ export default function FindHub() {
       back="Home"
       intro={bank ? 'Connect your bank, or show us a list you already have. You pick what stays.' : 'Show us a list you already have. We read it on your phone, you pick what goes in.'}
     >
-      {bank ? <BankHero title="Your bank or card" line="Finds them, then watches for new ones." tag={pro ? undefined : 'PRO · 7 DAYS FREE'} onPress={() => router.push('/bank?from=find')} /> : null}
+      {bank ? <BankHero title="Your bank or card" line="Finds them and spots new ones." tag={pro ? undefined : 'PRO · 7 DAYS FREE'} onPress={() => router.push('/bank?from=find')} /> : null}
       <RouteCard
         icon={PhoneList}
         title="Apple subscriptions"
-        line="A screenshot of your list: every App Store subscription and free trial, with its renewal date. Banks can’t name these."
+        line="Every App Store subscription and free trial, with dates. Banks can’t name these."
         tag={tag}
         onPress={() => go('/find/apple')}
       />
-      <RouteCard icon={StatementIcon} title="A bank statement" line="PDF or CSV from any bank or Apple Card. We show the charges that repeat." tag={tag} onPress={() => go('/find/statement')} />
+      <RouteCard icon={StatementIcon} title="A bank statement" line="A PDF or CSV from your bank. We find the charges that repeat." tag={tag} onPress={() => go('/find/statement')} />
 
       <Txt v="eyebrow" tone="mute" style={{ marginTop: 24, marginHorizontal: 4, marginBottom: 8 }}>
         Or check the usual places
@@ -53,7 +53,7 @@ export default function FindHub() {
             accessibilityRole={pl.url ? 'link' : 'text'}
             accessibilityLabel={`${pl.title}. ${pl.where}`}
             disabled={!pl.url}
-            onPress={() => pl.url && openUrl(pl.url)}
+            onPress={() => pl.url && openUrl(placeUrl(pl, app.settings.country) ?? pl.url)}
             style={{ minHeight: 60, flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 10, borderTopWidth: i ? 1 : 0, borderTopColor: p.hair }}
           >
             <View style={{ flex: 1 }}>
@@ -69,7 +69,7 @@ export default function FindHub() {
         ))}
       </View>
       <Txt v="sub" tone="mute" center style={{ marginTop: 16 }}>
-        Read on your iPhone. Screenshots and statements aren’t uploaded.
+        Read on your iPhone. Never uploaded.
       </Txt>
     </FindPage>
   );

@@ -209,7 +209,8 @@ export function Sheet({
                 accessibilityLabel="Close"
                 onPress={onClose}
                 hitSlop={6}
-                style={({ pressed }) => ({ position: 'absolute', top: 6, right: side - 10, width: 44, height: 44, alignItems: 'center', justifyContent: 'center', opacity: pressed ? 0.6 : 1 })}
+                // top 21: the × sits level with the sheet's first line (the editor's logo row, the Add and Find titles, What we see).
+                style={({ pressed }) => ({ position: 'absolute', top: 21, right: side - 10, width: 44, height: 44, alignItems: 'center', justifyContent: 'center', opacity: pressed ? 0.6 : 1 })}
               >
                 <View style={{ width: 30, height: 30, borderRadius: 15, backgroundColor: p.dark ? '#2A2722' : 'rgba(22,20,15,0.08)', alignItems: 'center', justifyContent: 'center' }}>
                   <Close color={p.fg} size={12} />

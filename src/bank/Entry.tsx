@@ -15,32 +15,33 @@ export function BankHero({ onPress, tag, title = 'My bank or card', line = 'Find
     <Pressable accessibilityRole="button" accessibilityLabel={`${title}. ${line}${tag ? ` ${tag.replace('·', ',')}` : ''}`} onPress={onPress} {...press.handlers} style={{ marginTop: 18 }}>
       <Animated.View
         style={[
-          { backgroundColor: p.card, borderRadius: 20, padding: 16, borderWidth: 2, borderColor: brand.sunflower },
+          // Same sizes as the Find RouteCards under it: the 2pt ring eats into the padding, so the icon and text line up with theirs.
+          { backgroundColor: p.card, borderRadius: 20, padding: p.dark ? 15 : 14, borderWidth: 2, borderColor: brand.sunflower, flexDirection: 'row', gap: 14, alignItems: 'flex-start' },
           p.dark ? null : { shadowColor: '#463200', shadowOpacity: 0.08, shadowRadius: 22, shadowOffset: { width: 0, height: 8 }, elevation: 3 },
           press.style,
         ]}
       >
-        <View style={{ flexDirection: 'row', gap: 12, alignItems: 'center' }}>
-          <View style={{ width: 46, height: 46, borderRadius: 12, backgroundColor: brand.sunflower, alignItems: 'center', justifyContent: 'center' }}>
-            <Bank color={brand.ink} size={24} />
-          </View>
-          <View style={{ flex: 1, minWidth: 0 }}>
-            <Txt v="bodyStrong" color={p.cardFg} style={{ fontSize: 17, lineHeight: 22, fontFamily: F.bold }}>
-              {title}
-            </Txt>
-            <Txt v="sub" tone="fg2" style={{ marginTop: 1 }}>
-              {line}
-            </Txt>
-          </View>
+        <View style={{ width: 44, height: 44, borderRadius: 13, backgroundColor: brand.sunflower, alignItems: 'center', justifyContent: 'center' }}>
+          <Bank color={brand.ink} size={24} />
+        </View>
+        <View style={{ flex: 1, minWidth: 0 }}>
+          <Txt v="bodyStrong" color={p.cardFg} style={{ fontSize: 16.5, fontFamily: F.bold }}>
+            {title}
+          </Txt>
+          <Txt v="sub" tone="fg2" style={{ marginTop: 2 }}>
+            {line}
+          </Txt>
+          {tag ? (
+            <View style={{ alignSelf: 'flex-start', marginTop: 8, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 7, backgroundColor: p.sunSoft }}>
+              <Txt v="eyebrow" color={p.sunSoftFg} style={{ fontSize: 10.5, letterSpacing: 0.6 }}>
+                {tag}
+              </Txt>
+            </View>
+          ) : null}
+        </View>
+        <View style={{ alignSelf: 'center' }}>
           <ChevronRight color={p.mute} size={18} />
         </View>
-        {tag ? (
-          <View style={{ alignSelf: 'flex-start', marginTop: 10, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6, backgroundColor: p.sunSoft }}>
-            <Txt v="eyebrow" color={p.sunSoftFg} style={{ fontSize: 11, letterSpacing: 0.6 }}>
-              {tag}
-            </Txt>
-          </View>
-        ) : null}
       </Animated.View>
     </Pressable>
   );

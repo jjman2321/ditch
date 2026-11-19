@@ -54,7 +54,7 @@ export function demoData(name: DemoName, today: DateOnly): { subs: Sub[]; settin
   // Two without a date, like a user who skipped them (DECISIONS #33).
   const none = { dateSource: 'none' as const };
   const list: Sub[] = [
-    sub('netflix', 'Netflix', 'netflix', 'Streaming', 1799, d(5), { freePick: true, paidWith: 'Visa ending 4821', accountEmail: 'sam@example.com' }),
+    sub('netflix', 'Netflix', 'netflix', 'Streaming', 1999, d(5), { freePick: true, paidWith: 'Visa ending 4821', accountEmail: 'sam@example.com' }),
     sub('spotify', 'Spotify', 'spotify', 'Music', 1199, d(7), { paidWith: 'Amex ending 1005' }),
     sub('disney', 'Disney+', 'disney-plus', 'Streaming', 1199, today, none),
     sub('chatgpt', 'ChatGPT', 'chatgpt-plus', 'AI & apps', 2000, d(12), { freePick: true }),

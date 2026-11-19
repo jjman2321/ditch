@@ -22,6 +22,7 @@ export default function PaydayPage() {
   const app = useApp();
   const current = app.settings.payday;
   // Fill each row edge to edge: as many 44pt+ circles as fit, at most 6, so it never reads as a 7-day week.
+  // Always round: height = width (they were ovals on the widest phones).
   const [w, setW] = useState(0);
   const GAP = 8;
   const cols = w ? Math.min(6, Math.max(5, Math.floor((w + GAP) / (44 + GAP)))) : 6;
@@ -32,7 +33,7 @@ export default function PaydayPage() {
     router.back();
   };
   return (
-    <SettingsPage title="Payday" intro="The day you get paid. Home shows what’s due before it. Never the amount.">
+    <SettingsPage title="Payday" intro="The day you get paid. Home shows what’s due before then. We never ask how much.">
       <View accessibilityRole="radiogroup" accessibilityLabel="Payday" onLayout={(e) => setW(e.nativeEvent.layout.width)} style={{ marginTop: 18, flexDirection: 'row', flexWrap: 'wrap', gap: GAP }}>
         {DAYS.map((d) => {
           const on = d === current;
@@ -45,8 +46,8 @@ export default function PaydayPage() {
               onPress={() => void pick(d)}
               style={({ pressed }) => ({
                 width: cell,
-                height: Math.min(cell, 52),
-                borderRadius: 26,
+                height: cell,
+                borderRadius: cell / 2,
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: on ? brand.sunflower : p.chipBg,
@@ -63,7 +64,7 @@ export default function PaydayPage() {
         })}
       </View>
       <Txt v="sub" tone="mute" style={{ marginTop: 10 }}>
-        Paid on the last day? Pick 31: shorter months use their last day.
+        Paid at month end? Pick 31.
       </Txt>
       {/* A quiet text link, not a card: it isn't a setting, it's the way out. */}
       {current ? (

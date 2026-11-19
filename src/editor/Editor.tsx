@@ -158,6 +158,9 @@ function withService(s: Sub, svc: CatalogService, country: string | null, today:
   return fromPick({ ...s, catalogId: svc.id, name: svc.name, category: svc.category, source: 'catalog' }, p);
 }
 
+/** Joins the last two words with a no-break space, so a note never ends on one word alone. */
+const keepLastTwo = (t: string | null) => (t ? t.replace(/ (\S+)$/, '\u00A0$1') : t);
+
 const amountText = (s: Sub) => (s.amountMinor === null || !s.currency ? '' : (s.amountMinor / 10 ** currencyDigits(s.currency)).toFixed(currencyDigits(s.currency)));
 
 const CYCLES: { value: Cycle; label: string }[] = [
@@ -339,7 +342,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
   const toggleRemind = (v: boolean) => {
     if (v && atLimit) {
       haptic.warning();
-      AccessibilityInfo.announceForAccessibility('Free covers 3 reminders. Turn one off first, or try Pro.');
+      AccessibilityInfo.announceForAccessibility('Your 3 free reminders are in use. Tap a bell on Home to free one up, or try Pro.');
       return;
     }
     haptic.select();
@@ -386,13 +389,14 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
     return (
       // Scrolls when the sheet is shorter than the calendar (SE, Display Zoom, big text), so the Set button is always reachable.
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false} scrollEventThrottle={32} onScroll={onSheetScroll}>
-        <Button kind="text" label="Back" onPress={() => setStep('form')} style={{ alignSelf: 'flex-start', marginTop: -8, marginLeft: -12 }} />
+        {/* 10pt under Back keeps the sheet's × clear of the Monthly/Yearly switch on the right. */}
+        <Button kind="text" label="Back" onPress={() => setStep('form')} style={{ alignSelf: 'flex-start', marginTop: -8, marginLeft: -12, marginBottom: 10 }} />
         <DateBody
           sub={shown}
           trial={draft.isTrial}
           leads={effectiveLeads(settings, pro)}
           reminderTime={settings.reminderTime}
-          off={remindOn || trialEntry ? undefined : atLimit ? 'No reminder: your free 3 are in use.' : 'Reminders are off for this one.'}
+          off={remindOn || trialEntry ? undefined : atLimit ? 'No reminder. Your 3 free reminders are in use.' : 'Reminders are off for this one.'}
           onSave={(anchor, source, cycle) => {
             const moved = cycle !== draft.cycle ? fromPick(draft, chooseCycle(asPick(draft), cycle)) : draft;
             const same = anchor === shown.anchor && source === draft.dateSource && cycle === draft.cycle;
@@ -438,13 +442,14 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
       ? moved
         ? `${draft.planName ?? 'This plan'} is ${money(moved.amountMinor, moved.currency)} now, checked ${shortDate(moved.checked)}. Change yours if it went up.`
         : typical
-          ? `Typical ${draft.name} price.`
+          ? 'Typical price.'
           : null
       : null;
   const saving = trialEntry ? null : yearlySaving({ ...draft, currency: draft.currency ?? currency }, priceRow);
-  // One grey note under the price, not two: "Typical Hulu price. Yearly: $124.99 ($24.89 less)."
-  const yearlyLine = saving ? `Yearly: ${money(saving.yearlyMinor, saving.currency)} (${money(saving.lessBy, saving.currency)} less).` : null;
-  const priceNote = yearlyLine ? (catalogLine ? `${catalogLine} ${yearlyLine}` : yearlyLine) : catalogLine && typical && !moved ? `${catalogLine} Change it if yours is different.` : catalogLine;
+  // One grey note under the price, not two: "Typical price. Yearly is $124.99, $24.89 less."
+  const yearlyLine = saving ? `Yearly is ${money(saving.yearlyMinor, saving.currency)}, ${money(saving.lessBy, saving.currency)} less.` : null;
+  // The last two words share a line, so the note never ends on one word alone.
+  const priceNote = keepLastTwo(yearlyLine ? (catalogLine ? `${catalogLine} ${yearlyLine}` : yearlyLine) : catalogLine && typical && !moved ? `${catalogLine} Change it if yours is different.` : catalogLine);
 
   return (
     <View style={{ flex: 1 }}>
@@ -579,7 +584,8 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
             {plans.length ? (
               <>
                 <FieldLabel>Plan</FieldLabel>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginHorizontal: -edge }} contentContainerStyle={{ gap: 8, paddingHorizontal: edge }}>
+                {/* Wrapped, not a sideways scroll: 2 to 4 plans, so every price is in view and none is cut at the edge. */}
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
                   {plans.map((pl) => (
                     <Chip
                       key={pl.id}
@@ -587,7 +593,10 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                         pl.name,
                         draft.name,
                         plans.map((x) => x.name),
-                      ).replace(/\s*\((yearly|monthly|annual)\)$/i, '')} ${money(pl.amountMinor, planRow?.currency ?? draft.currency ?? settings.currency)}${CYCLE_SHORT[pl.cycle]}`}
+                      )
+                        .replace(/\s*\((yearly|monthly|annual)\)$/i, '')
+                        // "With Ads, yearly" + "/yr" says it twice: the price's "/yr" is enough.
+                        .replace(/,?\s+(yearly|monthly|annual)$/i, '')} ${money(pl.amountMinor, planRow?.currency ?? draft.currency ?? settings.currency)}${CYCLE_SHORT[pl.cycle]}`}
                       selected={planSelected(pl)}
                       onPress={() => {
                         haptic.select();
@@ -597,7 +606,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                       }}
                     />
                   ))}
-                </ScrollView>
+                </View>
                 {!isNew && draft.amountMinor && !plans.some(planSelected) ? (
                   <Txt v="sub" tone="mute" style={{ marginTop: 6, marginHorizontal: 2 }}>
                     Doesn’t match a plan. Fine if yours differs.
@@ -680,7 +689,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
             </Pressable>
             {!charge && !trialEntry ? (
               <Txt v="sub" tone="mute" style={{ marginTop: 6, marginHorizontal: 2 }}>
-                {draft.isTrial ? 'No date, no reminder. It’s in the sign-up email.' : 'No date, no reminder. It’s on your bank app or the receipt email.'}
+                {draft.isTrial ? 'No date, no reminder. It’s in the sign-up\u00A0email.' : 'No date, no reminder. Find it in your bank app or receipt\u00A0email.'}
               </Txt>
             ) : null}
 
@@ -718,7 +727,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                   <Txt v="label">Remind me</Txt>
                   <Txt v="sub" tone="mute" num>
                     {atLimit
-                      ? `Free covers ${FREE_REMINDERS}. Turn one off in Settings → Which subscriptions, or try Pro.`
+                      ? `Your ${FREE_REMINDERS} free reminders are in use. Tap a bell on Home to free one up, or try Pro.`
                       : !charge && !trialEntry
                         ? 'Starts once it has a date'
                         : skippedNow && remindOn
@@ -732,7 +741,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                 </View>
                 <SunSwitch
                   label="Remind me"
-                  hint={atLimit ? 'Free covers 3 reminders' : !charge && !trialEntry ? 'Starts once it has a date' : undefined}
+                  hint={atLimit ? 'Your 3 free reminders are in use' : !charge && !trialEntry ? 'Starts once it has a date' : undefined}
                   value={!charge && !trialEntry ? false : remindOn}
                   disabled={trialEntry || !charge}
                   onValueChange={toggleRemind}
@@ -773,7 +782,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                 <Card style={{ paddingHorizontal: 16, paddingVertical: 4 }}>
                   <DetailInput label="Paid with" placeholder="Card or account" value={draft.paidWith} onChange={(v) => setDraft({ ...draft, paidWith: v })} />
                   <DetailInput
-                    label="Account email"
+                    label="Email"
                     placeholder="Email you signed up with"
                     value={draft.accountEmail}
                     onChange={(v) => setDraft({ ...draft, accountEmail: v })}

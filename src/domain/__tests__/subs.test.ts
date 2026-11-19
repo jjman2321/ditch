@@ -41,11 +41,11 @@ const demo = () => demoData('demo', TODAY).subs;
 const byName = (subs: Sub[], name: string) => subs.find((s) => s.name === name)!;
 
 describe('Home totals (per currency, ditched and trials left out)', () => {
-  it('the six demo subs make $90.95 a month and $1,091.40 a year', () => {
+  it('the six demo subs make $92.95 a month and $1,115.40 a year', () => {
     const [t] = homeTotals(demo(), TODAY, 'USD');
     expect(t.currency).toBe('USD');
-    expect(Math.round(t.monthlyMinor)).toBe(9095);
-    expect(t.yearlyMinor).toBe(109140);
+    expect(Math.round(t.monthlyMinor)).toBe(9295);
+    expect(t.yearlyMinor).toBe(111540);
   });
 
   it('ditching Netflix drops it from the total ($72.96 a month, like 9c)', () => {
@@ -123,17 +123,17 @@ describe('ditching and savings', () => {
   it('ditch snapshots the price, never fills in a cancel-by date; savings ignore later price edits', () => {
     const n = ditchSub(byName(demo(), 'Netflix'), TODAY);
     // cancelBy is only a date the user picks (owner, Nov 19); the charge to beat comes from chargeOfSub.
-    expect([n.status, n.ditchedOn, n.cancelBy, n.snapAmountMinor]).toEqual(['ditched-pending', TODAY, null, 1799]);
+    expect([n.status, n.ditchedOn, n.cancelBy, n.snapAmountMinor]).toEqual(['ditched-pending', TODAY, null, 1999]);
     expect(chargeOfSub(n, TODAY)).toBe('2026-11-14');
     const edited = { ...n, amountMinor: 9999 };
-    expect(pendingSavings([edited])[0].yearlyMinor).toBe(21588);
+    expect(pendingSavings([edited])[0].yearlyMinor).toBe(23988);
   });
 
   it('"You’re saving" counts confirmed cancels only: $431.16 a year, $35.93 a month', () => {
     const subs = demo().map((s) => (s.name === 'Netflix' ? ditchSub(s, TODAY) : s));
     const [s] = confirmedSavings(subs, 'USD');
     expect([s.yearlyMinor, Math.round(s.monthlyMinor), s.count]).toEqual([43116, 3593, 3]);
-    expect(pendingSavings(subs, 'USD')[0].yearlyMinor).toBe(21588);
+    expect(pendingSavings(subs, 'USD')[0].yearlyMinor).toBe(23988);
   });
 
   it('reactivate → re-ditch never double counts', () => {
@@ -141,7 +141,7 @@ describe('ditching and savings', () => {
     n = reactivateSub(n);
     expect(n.snapAmountMinor).toBeNull();
     n = confirmCancel(ditchSub(n, TODAY), TODAY);
-    expect(confirmedSavings([n])[0].yearlyMinor).toBe(21588);
+    expect(confirmedSavings([n])[0].yearlyMinor).toBe(23988);
   });
 
   it('confirm only works on a ditched sub', () => {
@@ -163,10 +163,10 @@ describe('calendar', () => {
   const days = calendarMonth(demo(), 2026, 11, TODAY, reminded, [3, 1]);
   const day = (n: number) => days.find((d) => d?.date === `2026-11-${String(n).padStart(2, '0')}`)!;
 
-  it('November: 4 dated charges, $63.97 due (Disney+ has no date, so it isn’t on a day)', () => {
+  it('November: 4 dated charges, $65.97 due (Disney+ has no date, so it isn’t on a day)', () => {
     const due = monthDue(days, 'USD');
     expect(due.count).toBe(4);
-    expect(due.totals).toEqual([{ currency: 'USD', amountMinor: 6397 }]);
+    expect(due.totals).toEqual([{ currency: 'USD', amountMinor: 6597 }]);
   });
 
   it('reminder dots land 3 and 1 days before reminded charges (Netflix 14th, ChatGPT 21st)', () => {
@@ -193,7 +193,7 @@ describe('calendar', () => {
     const d = calendarMonth(subs, 2026, 11, TODAY, remindedIds(subs, false), [3, 1]);
     const nov14 = d.find((x) => x?.date === '2026-11-14')!;
     expect(nov14.charges[0].pending).toBe(true);
-    expect(monthDue(d, 'USD').totals[0].amountMinor).toBe(6397 - 1799);
+    expect(monthDue(d, 'USD').totals[0].amountMinor).toBe(6597 - 1999);
   });
 });
 

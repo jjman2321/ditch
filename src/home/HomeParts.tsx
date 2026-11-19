@@ -14,7 +14,7 @@ import { shortDate, weekdayDate } from '@/domain/dates';
 import type { BeforePayday } from '@/domain/subs';
 import { useCombinedTotal } from '@/services/fx';
 import { useApp, useAppMoney } from '@/state/app';
-import { Bang, Bell, BellOff, Button, Card, ChevronRight, Close, Duck, F, LogoTile, Plus, Search, Txt, brand, usePalette } from '@/ui/sunflower';
+import { Bang, Bell, BellOff, Button, Card, CardIcon, ChevronRight, Close, Duck, F, LogoTile, Plus, Search, Txt, brand, usePalette } from '@/ui/sunflower';
 
 export function TotalCard({
   totals,
@@ -49,6 +49,25 @@ export function TotalCard({
   const a11y = first
     ? `${money(first.monthlyMinor, first.currency)} a month, ${money(first.yearlyMinor, first.currency, { whole: true })} a year. ${rest.map((t) => `And ${money(t.monthlyMinor, t.currency)} a month, kept separate.`).join(' ')}${approx ? ` ${approx.spoken}` : ''} ${trialLine ? ` ${trialLine}.` : ''} ${blocked ? 'Reminders are off.' : `Reminders on ${reminders}.`}`
     : `${trialLine ? `Nothing charging yet. ${trialLine}.` : 'No prices yet.'}`;
+  const fs = tiny ? 14 : 15.5;
+  const reminderRow = rest.length > 0;
+  // "2 of 6 reminded" / "All 6 reminded": the count first, short enough for every phone. VoiceOver keeps "Reminders on 2 of 6".
+  // Everything ditched: no "Reminders on 0 of 0".
+  const remindersBit =
+    of === 0 ? null : (
+      <>
+        {blocked ? <BellOff color={fg} size={16} /> : <Bell color={p.dark ? brand.sunflower : brand.ink} fill={p.dark ? brand.sunflower : brand.ink} size={15} />}
+        <Txt v="body" color={fg} style={{ fontSize: fs, fontFamily: blocked ? F.bold : F.regular }}>
+          {blocked ? 'Reminders off' : null}
+          {blocked ? null : (
+            <Txt v="body" num color={fg} style={{ fontFamily: F.bold, fontSize: fs }}>
+              {all && of > 0 ? `All ${of}` : `${on} of ${of}`}
+            </Txt>
+          )}
+          {blocked ? null : ' reminded'}
+        </Txt>
+      </>
+    );
   return (
     <View
       accessible
@@ -85,32 +104,27 @@ export function TotalCard({
       <View style={{ height: 1, backgroundColor: p.dark ? p.rule : 'rgba(22,20,15,0.18)', marginTop: 8, marginBottom: 9 }} />
       <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
         {first ? (
-          <Txt v="body" num color={fg} style={{ fontSize: tiny ? 14 : 15.5 }}>
-            <Txt v="body" num color={fg} style={{ fontFamily: F.bold, fontSize: tiny ? 14 : 15.5 }}>
+          <Txt v="body" num color={fg} style={{ fontSize: fs }}>
+            <Txt v="body" num color={fg} style={{ fontFamily: F.bold, fontSize: fs }}>
               {money(first.yearlyMinor, first.currency, { whole: true })}
-            </Txt>{' '}
-            a year ·
+            </Txt>
+            {reminderRow ? ' a year' : ' a year ·'}
           </Txt>
         ) : null}
-        {/* Everything ditched: no "Reminders on 0 of 0". */}
-        {of === 0 ? null : blocked ? <BellOff color={fg} size={16} /> : <Bell color={p.dark ? brand.sunflower : brand.ink} fill={p.dark ? brand.sunflower : brand.ink} size={15} />}
-        {of === 0 ? null : (
-          <Txt v="body" color={fg} style={{ fontSize: tiny ? 14 : 15.5, fontFamily: blocked ? F.bold : F.regular }}>
-            {/* "2 of 6 reminded" / "All 6 reminded": the count first, short enough for every phone. VoiceOver keeps "Reminders on 2 of 6". */}
-            {blocked ? 'Reminders off' : null}
-            {blocked ? null : (
-              <Txt v="body" num color={fg} style={{ fontFamily: F.bold, fontSize: tiny ? 14 : 15.5 }}>
-                {all && of > 0 ? `All ${of}` : `${on} of ${of}`}
-              </Txt>
-            )}
-            {blocked ? null : ' reminded'}
-          </Txt>
-        )}
+        {reminderRow ? null : remindersBit}
       </View>
-      {/* Other currencies after the first one's year, each on its own line with no "+": they are never added together. */}
+      {/* Other currencies after the first one's year, each on its own line with no "+": they are never added together.
+          Same weights as the line above: the amounts bold, the words regular. */}
       {rest.map((t) => (
-        <Txt key={t.currency} v="label" num color={fg} style={{ marginTop: 4 }}>
-          {money(t.monthlyMinor, t.currency)} a month · {money(t.yearlyMinor, t.currency, { whole: true })} a year
+        <Txt key={t.currency} v="body" num color={fg} style={{ marginTop: 4, fontSize: fs }}>
+          <Txt v="body" num color={fg} style={{ fontFamily: F.bold, fontSize: fs }}>
+            {money(t.monthlyMinor, t.currency)}
+          </Txt>
+          {' a month · '}
+          <Txt v="body" num color={fg} style={{ fontFamily: F.bold, fontSize: fs }}>
+            {money(t.yearlyMinor, t.currency, { whole: true })}
+          </Txt>
+          {' a year'}
         </Txt>
       ))}
       {approx ? (
@@ -118,6 +132,8 @@ export function TotalCard({
           {approx.text}
         </Txt>
       ) : null}
+      {/* 2+ currencies: the reminder count gets its own line, so it doesn't read as part of the first currency. */}
+      {reminderRow && remindersBit ? <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 6 }}>{remindersBit}</View> : null}
     </View>
   );
 }
@@ -219,6 +235,8 @@ export function PaydayRow({ before, money, onPress }: { before: BeforePayday; mo
     >
       {({ pressed }) => (
         <Card style={{ minHeight: 56, borderRadius: 16, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, paddingVertical: 9, opacity: pressed ? 0.75 : 1 }}>
+          {/* Same 17pt icon slot as Next reminder, so the stacked cards' text starts at one line. */}
+          <CardIcon color={p.cardFg} size={17} />
           <View style={{ flex: 1, minWidth: 0 }}>
             <Txt v="body" color={p.cardFg} num numberOfLines={1} style={{ fontSize: 15 }}>
               <Txt v="body" color={p.cardFg} num style={{ fontFamily: F.bold, fontSize: 15 }}>
@@ -262,21 +280,28 @@ export function ForgottenRow({ onPress }: { onPress: () => void }) {
   );
 }
 
-/** "4 have no date yet, so no reminders. Add dates ›" (design/v13-dates screen 3). */
+/**
+ * "4 have no date yet" / "So no reminders for them"   Add dates ›  (design/v13-dates screen 3).
+ * Bold line plus a grey line, like Next reminder and Payday above it.
+ */
 export function NoDateRow({ count, onPress }: { count: number; onPress: () => void }) {
   const p = usePalette();
+  const one = count === 1;
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={`${count} ${count === 1 ? 'has' : 'have'} no date yet, so no reminders. Add ${count === 1 ? 'it' : 'dates'}.`} onPress={onPress}>
+    <Pressable accessibilityRole="button" accessibilityLabel={`${count} ${one ? 'has' : 'have'} no date yet, so no reminders. Add ${one ? 'it' : 'dates'}.`} onPress={onPress}>
       {({ pressed }) => (
-        <Card style={{ minHeight: 48, borderRadius: 16, flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 14, paddingVertical: 8, opacity: pressed ? 0.75 : 1 }}>
-          <Txt v="body" color={p.cardFg} style={{ flex: 1, fontSize: 15 }}>
-            <Txt v="body" color={p.cardFg} style={{ fontFamily: F.bold, fontSize: 15 }}>
-              {`${count} ${count === 1 ? 'has' : 'have'} no date yet,`}
+        <Card style={{ minHeight: 56, borderRadius: 16, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, paddingVertical: 9, opacity: pressed ? 0.75 : 1 }}>
+          <BellOff color={p.mute} size={17} />
+          <View style={{ flex: 1, minWidth: 0 }}>
+            <Txt v="body" color={p.cardFg} numberOfLines={1} style={{ fontFamily: F.bold, fontSize: 15 }}>
+              {`${count} ${one ? 'has' : 'have'} no date yet`}
             </Txt>
-            {' so no\u00A0reminders.'}
-          </Txt>
+            <Txt v="sub" tone="mute" numberOfLines={1}>
+              {one ? 'So no reminder for it' : 'So no reminders for them'}
+            </Txt>
+          </View>
           <Txt v="label" color={p.cardFg} style={{ fontSize: 15 }}>
-            {count === 1 ? 'Add date' : 'Add dates'}
+            {one ? 'Add date' : 'Add dates'}
           </Txt>
           <ChevronRight color={p.cardFg} size={16} />
         </Card>

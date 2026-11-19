@@ -343,10 +343,13 @@ function DayCell({ day, w, selected, blocked, onPress }: { day: CalendarDay; w: 
         opacity: pressed ? 0.75 : 1,
       })}
     >
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-        {day.today && !selected ? (
-          <View style={{ width: 24, height: 24, borderRadius: 12, backgroundColor: p.dark ? p.fg : brand.ink, alignItems: 'center', justifyContent: 'center', marginLeft: -2, marginTop: -1 }}>
-            <Txt v="label" num color={p.dark ? brand.ink : brand.white} style={{ fontFamily: F.bold, fontSize: 13.5 }} maxFontSizeMultiplier={1.1}>
+      {/* Date row: the number on the left, the reminder dot on the right. The dot belongs to the day, never
+          beside a logo; the logo always sits in the same place, centred below (audit, Nov 19: it jumped
+          to the corner on dot days). Today keeps its ink circle even when selected. */}
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', height: 22 }}>
+        {day.today ? (
+          <View style={{ width: 24, height: 24, borderRadius: 12, backgroundColor: p.dark && !selected ? p.fg : brand.ink, alignItems: 'center', justifyContent: 'center', marginLeft: -2 }}>
+            <Txt v="label" num color={p.dark && !selected ? brand.ink : brand.white} style={{ fontFamily: F.bold, fontSize: 13.5 }} maxFontSizeMultiplier={1.1}>
               {d}
             </Txt>
           </View>
@@ -355,32 +358,27 @@ function DayCell({ day, w, selected, blocked, onPress }: { day: CalendarDay; w: 
             {d}
           </Txt>
         )}
+        {day.headsUp ? (
+          // Reminders off: a hollow dot, since nothing will actually arrive.
+          <View
+            style={{
+              width: 8,
+              height: 8,
+              borderRadius: 4,
+              backgroundColor: blocked ? 'transparent' : brand.sunflower,
+              borderWidth: blocked || !p.dark || selected ? 1.5 : 0,
+              borderColor: blocked ? p.mute : brand.ink,
+            }}
+          />
+        ) : null}
       </View>
-      {day.headsUp ? (
-        // Under the date number, not beside a logo: the dot belongs to the day, while the logo is that day's charge
-        // (audit, Nov 19: a dot next to Apple Music on the 28th was really ChatGPT's Dec 1 reminder).
-        // Reminders off: a hollow dot, since nothing will actually arrive.
-        <View
-          style={{
-            position: 'absolute',
-            left: (selected ? 3.5 : 6) + (d < 10 ? 0 : 1),
-            top: (selected ? 3.5 : 6) + (day.today && !selected ? 25 : 21),
-            width: 8,
-            height: 8,
-            borderRadius: 4,
-            backgroundColor: blocked ? 'transparent' : brand.sunflower,
-            borderWidth: blocked || !p.dark ? 1.5 : 0,
-            borderColor: blocked ? p.mute : brand.ink,
-          }}
-        />
-      ) : null}
       {first ? (
         // One logo per day, like Orbit and Rocket Money (owner, Nov 19: it has to stay clean with 10+ subs).
-        // More on the same day: a small "+N" badge on the logo's corner. A dot day: bottom-right, clear of the dot.
-        <View style={[{ flex: 1, alignItems: 'center', justifyContent: 'center' }, day.headsUp ? { alignItems: 'flex-end', justifyContent: 'flex-end' } : null]}>
+        // More on the same day: a small "+N" badge on the logo's corner.
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <View>
             <SubLogo sub={first.sub} size={24} ditched={first.pending} />
-            {day.charges.length > 1 ? <MoreBadge n={day.charges.length - 1} ring={selected ? brand.sunflower : p.card} right={day.headsUp ? -4 : -8} /> : null}
+            {day.charges.length > 1 ? <MoreBadge n={day.charges.length - 1} ring={selected ? brand.sunflower : p.card} /> : null}
           </View>
         </View>
       ) : null}
@@ -389,11 +387,26 @@ function DayCell({ day, w, selected, blocked, onPress }: { day: CalendarDay; w: 
 }
 
 /** "+2": how many more charges share the day, on the logo's top-right corner, cut out by a ring in the cell's colour. */
-function MoreBadge({ n, ring, right }: { n: number; ring: string; right: number }) {
+function MoreBadge({ n, ring }: { n: number; ring: string }) {
   const p = usePalette();
   return (
-    <View style={{ position: 'absolute', top: -7, right, minWidth: 19, height: 19, paddingHorizontal: 3, borderRadius: 10, borderWidth: 1.5, borderColor: ring, backgroundColor: p.dark ? p.fg : brand.ink, alignItems: 'center', justifyContent: 'center' }}>
-      <Txt v="label" num color={p.dark ? brand.ink : brand.white} style={{ fontFamily: F.bold, fontSize: 10, lineHeight: 12, letterSpacing: -0.2 }} maxFontSizeMultiplier={1}>
+    <View
+      style={{
+        position: 'absolute',
+        top: -6,
+        right: -9,
+        minWidth: 17,
+        height: 17,
+        paddingHorizontal: 2.5,
+        borderRadius: 9,
+        borderWidth: 1.5,
+        borderColor: ring,
+        backgroundColor: p.dark ? p.fg : brand.ink,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Txt v="label" num color={p.dark ? brand.ink : brand.white} style={{ fontFamily: F.bold, fontSize: 9.5, lineHeight: 11, letterSpacing: -0.2 }} maxFontSizeMultiplier={1}>
         {`+${n}`}
       </Txt>
     </View>
@@ -458,7 +471,7 @@ function ChargeRow({
         ? 'Reminders off for this one'
         : room > 0
           ? `No reminder · ${room} free left`
-          : 'No reminder · free covers 3'
+          : 'No reminder · 3 free in use'
       : blocked
         ? 'Reminders are off'
         : c.date < today

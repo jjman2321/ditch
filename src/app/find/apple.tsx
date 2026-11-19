@@ -4,7 +4,7 @@
 import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, useWindowDimensions } from 'react-native';
 
 import { APPLE_SUBSCRIPTIONS_URL } from '@/catalog/cancel';
 import { openUrl } from '@/ditch/CancelHelp';
@@ -25,6 +25,9 @@ export default function AppleScreenshot() {
   const [busy, setBusy] = useState(false);
   const [problem, setProblem] = useState<string | null>(null);
   const dayFirst = !['US', 'CA'].includes(app.settings.country ?? 'US');
+  // iPhones with a Home button (SE, 8) are 667pt tall and screenshot with side + Home.
+  const homeButton = useWindowDimensions().height <= 667;
+  const shot = homeButton ? 'side button + Home button' : 'side button + volume up';
 
   const finish = (lines: string[]) => {
     const found = readAppleSubscriptions(lines, app.today, app.settings.currency, dayFirst ? 'dmy' : 'mdy');
@@ -79,7 +82,7 @@ export default function AppleScreenshot() {
         ]}
         label="Picture of Apple's Subscriptions list, to screenshot"
       />
-      <Steps steps={['Tap **Open Apple subscriptions** below.', 'Take a screenshot: **side button + volume up**. Long list? Scroll and take another.', 'Come back and tap **Pick screenshots**.']} />
+      <Steps steps={['Tap **Open Apple subscriptions** below.', `Take a screenshot: **${shot}**. Long list? Scroll and take another.`, 'Come back and tap **Pick screenshots**.']} />
       {busy ? <ActivityIndicator style={{ marginTop: 20 }} /> : null}
       {problem ? (
         <Txt v="body" style={{ marginTop: 16 }} accessibilityLiveRegion="polite">
@@ -87,7 +90,7 @@ export default function AppleScreenshot() {
         </Txt>
       ) : null}
       <Txt v="sub" tone="mute" center style={{ marginTop: 18 }}>
-        Read on your iPhone. Only the screenshots you pick.
+        Read on your iPhone. Never uploaded.
       </Txt>
     </FindPage>
   );

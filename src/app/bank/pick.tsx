@@ -11,7 +11,7 @@ import { BankPage, BankTile, BigTitle, TextLink } from '@/bank/Parts';
 import { useBankFlow } from '@/bank/flow';
 import { useBank } from '@/state/bank';
 import { canAddLink } from '@/state/bankLogic';
-import { tell } from '@/ui/alert';
+import { ask } from '@/ui/alert';
 import { F, Search, Txt, haptic, usePageEdge, usePalette } from '@/ui/sunflower';
 
 export default function BankPick() {
@@ -28,11 +28,17 @@ export default function BankPick() {
   const pick = (b: BankEntry) => {
     haptic.select();
     if (!canAddLink(bank.state)) {
-      tell('3 is the limit', 'You can connect up to 3. Disconnect one in Settings → Bank connections to add another.');
+      ask('3 is the limit', 'You can connect up to 3. Disconnect one to add another.', [
+        { text: 'Not now', style: 'cancel' },
+        { text: 'Open Bank connections', onPress: () => router.push('/settings/banks') },
+      ]);
       return;
     }
     if (bank.state.links.some((l) => l.bankId === b.id)) {
-      tell(`${b.name} is already connected`, 'Pick another bank or card, or reconnect it in Settings → Bank connections.');
+      ask(`${b.name} is already connected`, 'Pick another bank or card, or reconnect this one from Bank connections.', [
+        { text: 'Not now', style: 'cancel' },
+        { text: 'Open Bank connections', onPress: () => router.push('/settings/banks') },
+      ]);
       return;
     }
     // Price before the bank, never after (spec principle 2): no Pro yet → the paywall first.

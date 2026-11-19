@@ -17,7 +17,7 @@ import { preTicked, type Found } from '@/import/types';
 import { useApp, useAppMoney } from '@/state/app';
 import { onboardingToday, useOnboarding } from '@/state/onboarding';
 import { pickFromFound } from '@/state/picks';
-import { Button, Duck, F, LogoTile, Tick, Txt, haptic, usePalette } from '@/ui/sunflower';
+import { Button, Card, Duck, F, LogoTile, Tick, Txt, haptic, usePalette } from '@/ui/sunflower';
 
 function line(f: Found): string {
   if (f.source === 'statement') return f.evidence.replace(/^/, f.confidence === 'maybe' && !f.evidence.includes(',') ? 'One charge: ' : '');
@@ -82,13 +82,21 @@ export default function Review() {
   };
 
   if (!result) {
+    // Can show on a cold start too (the last check lives in memory), so it doesn't say "cleared".
     return (
-      <FindPage title="Nothing to check" intro="Your last check was cleared. Pick a screenshot or statement to start again.">
-        {/* The duck sits above the button with clear space, never on it (CLAUDE.md rule 8). */}
-        <View style={{ marginTop: 40, alignItems: 'center' }}>
-          <Duck width={96} bottom={0} style={{ position: 'relative' }} />
+      <FindPage
+        title="Nothing to check yet"
+        footer={<Button label="Find your subscriptions" onPress={() => router.replace(findTarget() === 'onboarding' ? '/onboarding/where' : '/find')} />}
+      >
+        {/* The duck peeks over the card's top edge, like everywhere else, and stays clear of the button (CLAUDE.md rule 8). */}
+        <View style={{ marginTop: 92 }}>
+          <Duck width={92} left={20} sink={2} />
+          <Card style={{ padding: 18 }}>
+            <Txt v="leadS" color={p.cardFg}>
+              Pick a screenshot or a statement and what we find shows up here.
+            </Txt>
+          </Card>
         </View>
-        <Button label="Find your subscriptions" onPress={() => router.replace(findTarget() === 'onboarding' ? '/onboarding/where' : '/find')} style={{ marginTop: 20 }} />
       </FindPage>
     );
   }

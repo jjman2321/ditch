@@ -11,15 +11,25 @@ import { Pressable, ScrollView, View } from 'react-native';
 import { APPLE_SUBSCRIPTIONS_URL } from '@/catalog/cancel';
 import { showImport } from '@/config/features';
 import { openUrl } from '@/ditch/CancelHelp';
+import { useApp } from '@/state/app';
 import { Button, External, Tick, Txt, haptic, usePalette } from '@/ui/sunflower';
 
 type Place = { id: string; title: string; where: string; url?: string };
 
+// Amazon's Memberships & Subscriptions page lives on each country's own store.
+const AMAZON_HOST: Record<string, string> = { GB: 'amazon.co.uk', CA: 'amazon.ca', AU: 'amazon.com.au', DE: 'amazon.de', FR: 'amazon.fr', IT: 'amazon.it', ES: 'amazon.es', IN: 'amazon.in', JP: 'amazon.co.jp', MX: 'amazon.com.mx', BR: 'amazon.com.br', NL: 'amazon.nl', SE: 'amazon.se', PL: 'amazon.pl' };
+
+/** The link for a place, on the right Amazon store for the user's country. */
+export function placeUrl(pl: Place, country?: string | null): string | undefined {
+  if (pl.id === 'amazon' && pl.url && country && AMAZON_HOST[country]) return pl.url.replace('amazon.com', AMAZON_HOST[country]);
+  return pl.url;
+}
+
 export const PLACES: Place[] = [
   { id: 'apple', title: 'Apple subscriptions', where: 'Everything billed to your Apple Account', url: APPLE_SUBSCRIPTIONS_URL },
   { id: 'google', title: 'Google Play', where: 'Android or Google apps you’ve paid for', url: 'https://play.google.com/store/account/subscriptions' },
-  { id: 'paypal', title: 'PayPal', where: 'Settings → Payments → Automatic payments' },
-  { id: 'amazon', title: 'Amazon', where: 'Your Account → Memberships & Subscriptions' },
+  { id: 'paypal', title: 'PayPal', where: 'Opens your automatic payments', url: 'https://www.paypal.com/myaccount/autopay/' },
+  { id: 'amazon', title: 'Amazon', where: 'Opens Memberships & Subscriptions', url: 'https://www.amazon.com/yourmembershipsandsubscriptions' },
   { id: 'bank', title: 'Your bank or card app', where: 'The same amount, the same day, each month' },
   { id: 'email', title: 'Your email', where: 'Search “renews”, “receipt” or “free trial”' },
 ];
@@ -52,10 +62,12 @@ function PlaceRow({ place, done, first, onPress }: { place: Place; done: boolean
 
 export function ForgottenBody({ onAdd, onDone }: { onAdd: () => void; onDone: () => void }) {
   const p = usePalette();
+  const country = useApp().settings.country;
   const [done, setDone] = useState<string[]>([]);
   const tap = (pl: Place) => {
     haptic.select();
-    if (pl.url) openUrl(pl.url);
+    const url = placeUrl(pl, country);
+    if (url) openUrl(url);
     setDone((d) => (d.includes(pl.id) ? (pl.url ? d : d.filter((x) => x !== pl.id)) : [...d, pl.id]));
   };
   return (

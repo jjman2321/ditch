@@ -131,12 +131,22 @@ export default function Done() {
         : { mark: 'warn', title: 'Trial reminders are paused', sub: `Turn on reminders so we can warn you before ${weekdayDate(trialCharge!)}.` },
     );
   // No guesses (DECISIONS #33): say plainly which ones have no reminder yet.
+  // Free with more than 3: a date alone doesn't bring a reminder, so say free covers 3 (CLAUDE.md rule 6).
   if (n)
     items.push(
       undated.length
-        ? { mark: 'todo', title: `${undated.length} with no date yet`, sub: `Add ${undated.length === 1 ? 'its date' : 'dates'} for ${namesLine(undated)} to get ${undated.length === 1 ? 'its' : 'their'}\u00A0reminders` }
+        ? {
+            mark: 'todo',
+            title: `${undated.length} with no date yet`,
+            sub:
+              !pro && many
+                ? 'Free covers 3. Add dates, then pick\u00A0which.'
+                : `Add ${undated.length === 1 ? 'its date' : 'dates'} for ${namesLine(undated)} to get ${undated.length === 1 ? 'its' : 'their'}\u00A0reminders`,
+          }
         : { mark: 'ok', title: 'Every date is set', sub: 'Reminders land on the right day.' },
     );
+
+  const seeLabel = remindedIds.length === 1 ? 'See your reminder' : `See all ${Math.min(3, remindedIds.length)} reminders`;
 
   const title = on ? 'You’re set.' : 'Almost set.';
   const titleBase = f.tablet ? 80 : 60;
@@ -160,15 +170,19 @@ export default function Done() {
           {items.map((it, i) => (
             // No dividers on the yellow: spacing separates the items. They fade in one by one (no motion near a price).
             <Animated.View key={it.title} entering={reduce ? undefined : FadeIn.delay(150 + i * 160).duration(260)}>
-            <View accessible accessibilityLabel={`${it.mark === 'ok' ? 'Done' : it.mark === 'warn' ? 'Needs you' : 'To do'}: ${it.title}. ${it.sub}`} style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 12, paddingVertical: f.tiny ? 5 : f.small ? 8 : 10, marginTop: i ? (f.tiny ? 2 : 4) : 0 }}>
-              <MarkIcon kind={it.mark} />
-              <View style={{ flex: 1 }}>
-                <Txt v="strong">{it.title}</Txt>
-                <Txt v="sub" num color={sub2}>
-                  {it.sub}
-                </Txt>
+              <View
+                accessible
+                accessibilityLabel={`${it.mark === 'ok' ? 'Done' : it.mark === 'warn' ? 'Needs you' : 'To do'}: ${it.title}. ${it.sub}`}
+                style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 12, paddingVertical: f.tiny ? 5 : f.small ? 8 : 10, marginTop: i ? (f.tiny ? 2 : 4) : 0 }}
+              >
+                <MarkIcon kind={it.mark} />
+                <View style={{ flex: 1 }}>
+                  <Txt v="strong">{it.title}</Txt>
+                  <Txt v="sub" num color={sub2}>
+                    {it.sub}
+                  </Txt>
+                </View>
               </View>
-            </View>
             </Animated.View>
           ))}
         </View>
@@ -190,7 +204,8 @@ export default function Done() {
             </View>
             {!pro && many ? (
               <View style={{ alignItems: 'center', marginTop: 8 }}>
-                <TextLink label={remindedIds.length === 1 ? 'See your reminder' : `See all ${Math.min(3, remindedIds.length)} reminders`} a11y="See and change which 3 get reminders" onPress={() => setPicking(true)} style={{ fontSize: 15 }} />
+                {/* VoiceOver reads the words on screen first (Voice Control matches them), then what it does. */}
+                <TextLink label={seeLabel} a11y={`${seeLabel}. Change which 3 get reminders`} onPress={() => setPicking(true)} style={{ fontSize: 15 }} />
               </View>
             ) : remindedIds.length > 1 ? (
               <Txt v="sub" num color={sub2} center style={{ marginTop: 10 }}>

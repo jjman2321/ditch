@@ -23,6 +23,7 @@ import Animated, {
 import { scheduleOnRN } from 'react-native-worklets';
 
 import { OnbRoot } from '@/onboarding/Parts';
+import { useOnboarding } from '@/state/onboarding';
 import { Button, DitchedTag, EASE_OUT, F, LogoTile, NotificationPreview, Stage, Txt, brand, haptic, useFrame, usePalette, useScreenArrived } from '@/ui/sunflower';
 
 const NB = ' ';
@@ -35,27 +36,41 @@ type Slide = {
   art: 'statement' | 'notes' | 'ditch';
 };
 
-const SLIDES: Slide[] = [
-  {
-    key: 'pay',
-    big: '$2,628',
-    title: 'a year on subscriptions.',
-    body: `That’s what the average person pays. Most guess less than half. Let’s${NB}find${NB}yours.`,
-    art: 'statement',
-  },
-  {
-    key: 'remind',
-    title: 'A heads-up before every charge.',
-    body: `3 days and 1 day before, at 9 AM. Free trials and price${NB}rises${NB}too.`,
-    art: 'notes',
-  },
-  {
-    key: 'ditch',
-    title: 'Ditch what you don’t use.',
-    body: `Hold to ditch. We show you exactly how to cancel${NB}it.`,
-    art: 'ditch',
-  },
-];
+// Slide 1's fact: C+R Research (via CNBC, 2022), US adults: they guessed $86 a month, they paid $219
+// ($2,628 a year). It's a US dollar figure, so only US phones see it; everyone else gets the guess
+// fact without a currency (never a converted amount).
+function slidesFor(us: boolean): Slide[] {
+  return [
+    us
+      ? {
+          key: 'pay',
+          big: '$2,628',
+          title: 'a year on subscriptions.',
+          body: `That’s the average. The average guess is less than half. Let’s${NB}find${NB}yours.`,
+          art: 'statement',
+        }
+      : {
+          key: 'pay',
+          big: 'Less than half',
+          title: `of what people really pay is what they${NB}guess.`,
+          body: `That’s on average. Let’s${NB}find${NB}yours.`,
+          art: 'statement',
+        },
+    {
+      key: 'remind',
+      title: `A reminder before it${NB}charges.`,
+      body: `3 days and 1 day before, at 9 AM. Free trials${NB}too.`,
+      art: 'notes',
+    },
+    {
+      key: 'ditch',
+      title: 'Ditch what you don’t use.',
+      body: `Hold to ditch. We show you how to cancel${NB}it.`,
+      art: 'ditch',
+    },
+  ];
+}
+const SLIDE_COUNT = 3;
 
 /** Fades 0 → 1 after `delay` ms once `play` is true; at rest from the start with Reduce Motion. */
 function useFadeIn(play: boolean, delay: number, duration = 220) {
@@ -283,6 +298,8 @@ function Dot({ i, x, width, on, off }: { i: number; x: SharedValue<number>; widt
 export default function How() {
   const p = usePalette();
   const f = useFrame({ maxContent: 480, colH: 820 });
+  const { country } = useOnboarding();
+  const slides = slidesFor(country === 'US');
   const scroller = useRef<{
     scrollTo: (o: { x: number; animated: boolean }) => void;
   } | null>(null);
@@ -290,7 +307,7 @@ export default function How() {
   // The furthest slide reached: its picture plays once, the first time it shows (after the screen has slid in).
   const [seen, setSeen] = useState(0);
   const arrived = useScreenArrived();
-  const last = page === SLIDES.length - 1;
+  const last = page === slides.length - 1;
   const next = () => router.push('/onboarding/where');
 
   // The scroll position lives on the UI thread; the dots and words follow it frame by frame.
@@ -302,7 +319,7 @@ export default function How() {
     setSeen((s) => Math.max(s, i));
   }, []);
   const width = f.width;
-  const count = SLIDES.length;
+  const count = SLIDE_COUNT;
   const onScroll = useAnimatedScrollHandler(
     {
       onScroll: (e) => {
@@ -358,7 +375,7 @@ export default function How() {
         </View>
 
         <Animated.ScrollView ref={scroller as never} horizontal pagingEnabled showsHorizontalScrollIndicator={false} onScroll={onScroll} scrollEventThrottle={16} style={{ flex: 1 }}>
-          {SLIDES.map((s, i) => {
+          {slides.map((s, i) => {
             const play = arrived && seen >= i;
             return (
               <View key={s.key} style={{ width: f.width, paddingHorizontal: f.edge, flex: 1 }}>
@@ -373,7 +390,7 @@ export default function How() {
                   <View style={{ marginBottom: f.small ? 20 : 36 }}>{s.art === 'statement' ? <Statement play={play} /> : s.art === 'notes' ? <Notes play={play} /> : <DitchRows play={play} />}</View>
                   <SlideWords i={i} x={x} width={width}>
                     {s.big ? (
-                      <Txt v="displayL" num color={p.fg} accessibilityRole="header" style={f.small ? { fontSize: 52, lineHeight: 52 } : null}>
+                      <Txt v="displayL" num color={p.fg} accessibilityRole="header" numberOfLines={1} adjustsFontSizeToFit style={f.small ? { fontSize: 52, lineHeight: 52 } : null}>
                         {s.big}
                       </Txt>
                     ) : null}
@@ -393,7 +410,7 @@ export default function How() {
         <View style={{ paddingHorizontal: f.edge, paddingBottom: f.bottom }}>
           <View
             accessible
-            accessibilityLabel={`Slide ${page + 1} of ${SLIDES.length}`}
+            accessibilityLabel={`Slide ${page + 1} of ${slides.length}`}
             style={{
               flexDirection: 'row',
               justifyContent: 'center',
@@ -401,7 +418,7 @@ export default function How() {
               marginBottom: f.small ? 14 : 20,
             }}
           >
-            {SLIDES.map((s, i) => (
+            {slides.map((s, i) => (
               <Dot key={s.key} i={i} x={x} width={width} on={dotOn} off={dotOff} />
             ))}
           </View>

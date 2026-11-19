@@ -27,9 +27,7 @@ const noOrphan = (s: string) => s.replace(/ (\S+)$/, `${NB}$1`);
 type Shown = { key: string; day: DateOnly; body: string };
 
 function LockButton({ children }: { children: React.ReactNode }) {
-  return (
-    <View style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: 'rgba(22,20,15,0.14)', alignItems: 'center', justifyContent: 'center' }}>{children}</View>
-  );
+  return <View style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: 'rgba(22,20,15,0.14)', alignItems: 'center', justifyContent: 'center' }}>{children}</View>;
 }
 
 // The cards land 600 ms apart (motion doc fix 11: 900 kept you waiting before the duck).
@@ -44,7 +42,10 @@ export default function Reminders() {
   const [status, setStatus] = useState<NotifStatus | null>(null);
   useEffect(() => {
     // The web preview has no real permission: always show the first-run version.
-    if (Platform.OS !== 'web') getNotifStatus().then(setStatus).catch(() => {});
+    if (Platform.OS !== 'web')
+      getNotifStatus()
+        .then(setStatus)
+        .catch(() => {});
   }, []);
   const decided = status === 'granted' || status === 'quiet' || status === 'denied';
   const money = useMoney();
@@ -69,9 +70,6 @@ export default function Reminders() {
         const price = local ? ` ${money(local.amountMinor, local.currency)}.` : '';
         return [{ key: 'example', day: addDays(charge, -3), body: `Netflix renews ${weekdayName(charge)}.${price} Still watching?` }];
       })();
-  // The lock screen shows the moment the newest one arrives.
-  const newest = shown[shown.length - 1];
-
   // The older one lands first, then the newest drops in on top.
   const count = shown.length;
   const [arrived, setArrived] = useState(reduce ? count : 0);
@@ -84,9 +82,13 @@ export default function Reminders() {
   // Space for the whole stack from the start, so nothing jumps while they arrive.
   const [stackH, setStackH] = useState(0);
 
-  const card = (s: Shown, top: boolean) => (
-    <NotificationPreview faded={!top} time={top ? 'now' : weekdayDate(s.day)} message={noOrphan(s.body)} />
-  );
+  // The lock screen's day is the day of the card on top ("now"), so the date and the cards always agree,
+  // even while the older one is the only one in. An older card from the same day says "9:00 AM", like iOS.
+  const lockDay = (stack[0] ?? shown[0]).day;
+  const card = (s: Shown, top: boolean) => <NotificationPreview faded={!top} time={top ? 'now' : s.day === lockDay ? '9:00 AM' : weekdayDate(s.day)} message={noOrphan(s.body)} />;
+  // Clear room under the cards for the torch and camera buttons (16 from the edge, 44 tall) plus 12pt of air.
+  // Taller phones also keep the duck's head below the cards, never under their words.
+  const lockBottom = 16 + 44 + 12 + (f.small ? 0 : 12);
 
   const go = () => router.push(n > 0 ? '/paywall' : '/onboarding/done');
   const turnOn = async () => {
@@ -101,7 +103,11 @@ export default function Reminders() {
       <View style={{ height: f.top + STEP_HEADER_H }} />
       <FitScroll style={{ paddingHorizontal: f.edge, paddingBottom: f.bottom }}>
         {/* SE: the paywall's smaller title size, so no word sits alone on a line. */}
-        <Txt v="title" accessibilityRole="header" style={[{ marginTop: f.tiny ? 10 : 16 }, f.tiny ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 } : f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null]}>
+        <Txt
+          v="title"
+          accessibilityRole="header"
+          style={[{ marginTop: f.tiny ? 10 : 16 }, f.tiny ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 } : f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null]}
+        >
           {f.tiny ? `Get a reminder\nbefore you’re${NB}charged.` : f.small ? `Get a reminder before\nyou’re${NB}charged.` : `Get a reminder before you’re${NB}charged.`}
         </Txt>
         <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
@@ -122,6 +128,7 @@ export default function Reminders() {
               overflow: 'hidden',
               paddingTop: f.small ? 14 : 20,
               paddingHorizontal: 12,
+              paddingBottom: lockBottom,
               borderWidth: 1,
               borderColor: 'rgba(0,0,0,0.05)',
             }}
@@ -129,9 +136,15 @@ export default function Reminders() {
             <View style={{ alignItems: 'center' }} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
               <Lock color={brand.ink} />
               <Txt v="label" color={brand.ink} style={{ marginTop: 6 }} maxFontSizeMultiplier={1.2}>
-                {longDate(newest.day)}
+                {longDate(lockDay)}
               </Txt>
-              <Txt v="label" color={brand.ink} num style={{ fontFamily: F.wideHeavy, fontSize: f.tiny ? 40 : f.small ? 48 : 72, lineHeight: f.tiny ? 44 : f.small ? 52 : 76, letterSpacing: -2 }} maxFontSizeMultiplier={1}>
+              <Txt
+                v="label"
+                color={brand.ink}
+                num
+                style={{ fontFamily: F.wideHeavy, fontSize: f.tiny ? 40 : f.small ? 48 : 72, lineHeight: f.tiny ? 44 : f.small ? 52 : 76, letterSpacing: -2 }}
+                maxFontSizeMultiplier={1}
+              >
                 9:00
               </Txt>
             </View>
@@ -173,9 +186,21 @@ export default function Reminders() {
         </ForceLightContext.Provider>
 
         {status === 'denied' ? (
-          <Button label="Open iPhone Settings" hint="Turn on notifications for Ditch there" left={<Bell color={p.ctaFg} size={20} />} onPress={() => (setNotifications('denied'), Linking.openSettings().catch(() => {}), go())} style={{ marginTop: 16 }} />
+          <Button
+            label="Open iPhone Settings"
+            hint="Turn on notifications for Ditch there"
+            left={<Bell color={p.ctaFg} size={20} />}
+            onPress={() => (setNotifications('denied'), Linking.openSettings().catch(() => {}), go())}
+            style={{ marginTop: 16 }}
+          />
         ) : (
-          <Button label={decided ? 'Continue' : 'Turn on reminders'} hint={decided ? undefined : 'Shows the iPhone permission prompt'} left={decided ? undefined : <Bell color={p.ctaFg} size={20} />} onPress={turnOn} style={{ marginTop: f.tiny ? 10 : 16 }} />
+          <Button
+            label={decided ? 'Continue' : 'Turn on reminders'}
+            hint={decided ? undefined : 'Shows the iPhone permission prompt'}
+            left={decided ? undefined : <Bell color={p.ctaFg} size={20} />}
+            onPress={turnOn}
+            style={{ marginTop: f.tiny ? 10 : 16 }}
+          />
         )}
         <Txt v="sub" tone="mute" center style={{ marginTop: f.tiny ? 4 : 8 }}>
           {status === 'denied' ? 'Notifications for Ditch are off on this iPhone.' : decided ? 'Reminders are already on.' : 'Tap “Allow” on the next screen.'}

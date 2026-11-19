@@ -17,7 +17,7 @@ import { preTicked, type Found } from '@/import/types';
 import { useApp, useAppMoney } from '@/state/app';
 import { onboardingToday, useOnboarding } from '@/state/onboarding';
 import { pickFromFound } from '@/state/picks';
-import { Button, F, LogoTile, Tick, Txt, haptic, usePalette } from '@/ui/sunflower';
+import { Button, Duck, F, LogoTile, Tick, Txt, haptic, usePalette } from '@/ui/sunflower';
 
 function line(f: Found): string {
   if (f.source === 'statement') return f.evidence.replace(/^/, f.confidence === 'maybe' && !f.evidence.includes(',') ? 'One charge: ' : '');
@@ -83,8 +83,12 @@ export default function Review() {
 
   if (!result) {
     return (
-      <FindPage title="Nothing to check">
-        <Button label="Find your subscriptions" onPress={() => router.replace('/find')} style={{ marginTop: 20 }} />
+      <FindPage title="Nothing to check" intro="Your last check was cleared. Pick a screenshot or statement to start again.">
+        {/* The duck peeks over the button, like the other empty states (home/HomeParts.tsx). */}
+        <View style={{ marginTop: 28, alignItems: 'center' }}>
+          <Duck width={96} bottom={-2} style={{ position: 'relative' }} />
+        </View>
+        <Button label="Find your subscriptions" onPress={() => router.replace(findTarget() === 'onboarding' ? '/onboarding/where' : '/find')} style={{ zIndex: 2 }} />
       </FindPage>
     );
   }
@@ -118,7 +122,8 @@ export default function Review() {
                 const ticked = on.has(f.key);
                 const s = foundToSub(f, opts);
                 const over = f.state === 'expired' || f.state === 'ends';
-                const price = !over && s.amountMinor && s.currency ? `${f.state === 'trial' ? 'then ' : ''}${money(s.amountMinor, s.currency)}${s.cycle === 'monthly' ? '' : CYCLE_SHORT[s.cycle]}` : null;
+                const price =
+                  !over && s.amountMinor && s.currency ? `${f.state === 'trial' ? 'then ' : ''}${money(s.amountMinor, s.currency)}${s.cycle === 'monthly' ? '' : CYCLE_SHORT[s.cycle]}` : null;
                 const svc = f.catalogId ? SERVICE_BY_ID[f.catalogId] : undefined;
                 const sub = dup ? 'Already on your list' : `${line(f)}${s.amountIsEstimate && !over ? ' · usual price' : ''}`;
                 return (
@@ -137,7 +142,16 @@ export default function Review() {
                         return next;
                       });
                     }}
-                    style={({ pressed }) => ({ minHeight: 64, flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 10, borderTopWidth: i ? 1 : 0, borderTopColor: p.hair, opacity: dup ? 0.5 : pressed ? 0.7 : 1 })}
+                    style={({ pressed }) => ({
+                      minHeight: 64,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      gap: 12,
+                      paddingVertical: 10,
+                      borderTopWidth: i ? 1 : 0,
+                      borderTopColor: p.hair,
+                      opacity: dup ? 0.5 : pressed ? 0.7 : 1,
+                    })}
                   >
                     <Tick on={ticked} size={26} />
                     <LogoTile id={svc?.id ?? 'custom'} size={40} mono={f.name.slice(0, 1).toUpperCase()} color={svc ? undefined : '#6B6559'} />

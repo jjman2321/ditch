@@ -145,7 +145,9 @@ export default function Total() {
   const visible = [...rows, ...rest1];
   const priceSub = priceFor ? (list.find((x) => x.id === priceFor) ?? null) : null;
 
-  const sheetPad = f.tablet ? { borderRadius: 28, padding: 24 } : { marginHorizontal: -f.edge, borderTopLeftRadius: 28, borderTopRightRadius: 28, paddingTop: f.small ? 16 : 24, paddingHorizontal: f.edge, paddingBottom: 8 };
+  const sheetPad = f.tablet
+    ? { borderRadius: 28, padding: 24 }
+    : { marginHorizontal: -f.edge, borderTopLeftRadius: 28, borderTopRightRadius: 28, paddingTop: f.small ? 16 : 24, paddingHorizontal: f.edge, paddingBottom: 8 };
 
   return (
     <OnbRoot surface="sun">
@@ -234,33 +236,33 @@ export default function Total() {
             })}
             {restMany.length ? (
               <Animated.View style={moreStyle} pointerEvents={moreLive ? 'auto' : 'none'}>
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel={`${restMany.length} more. Show all`}
-                onPress={() => {
-                  haptic.select();
-                  setShowAll(true);
-                }}
-                style={({ pressed }) => ({ flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 52, opacity: pressed ? 0.6 : 1 })}
-              >
-                <View style={{ position: 'absolute', top: 0, left: 44, right: 0, height: 1, backgroundColor: cream.hair }} />
-                <View style={{ width: 32, flexDirection: 'row' }}>
-                  {restMany.slice(0, 2).map((x, i) => (
-                    <View key={x.id} style={{ marginLeft: i ? -8 : 0, borderRadius: 6, borderWidth: 2, borderColor: cream.sheet, margin: -2 }}>
-                      <LogoTile id={x.id} size={20} />
-                    </View>
-                  ))}
-                </View>
-                <Txt v="label" color={cream.fg} style={{ flex: 1, fontSize: 16 }}>
-                  {`${restMany.length} more`}
-                </Txt>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-                  <Txt v="label" color={cream.fg}>
-                    Show all
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={`${restMany.length} more. Show all`}
+                  onPress={() => {
+                    haptic.select();
+                    setShowAll(true);
+                  }}
+                  style={({ pressed }) => ({ flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 52, opacity: pressed ? 0.6 : 1 })}
+                >
+                  <View style={{ position: 'absolute', top: 0, left: 44, right: 0, height: 1, backgroundColor: cream.hair }} />
+                  <View style={{ width: 32, flexDirection: 'row' }}>
+                    {restMany.slice(0, 2).map((x, i) => (
+                      <View key={x.id} style={{ marginLeft: i ? -8 : 0, borderRadius: 6, borderWidth: 2, borderColor: cream.sheet, margin: -2 }}>
+                        <LogoTile id={x.id} size={20} />
+                      </View>
+                    ))}
+                  </View>
+                  <Txt v="label" color={cream.fg} style={{ flex: 1, fontSize: 16 }}>
+                    {`${restMany.length} more`}
                   </Txt>
-                  <ChevronDown color={cream.fg} size={14} />
-                </View>
-              </Pressable>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                    <Txt v="label" color={cream.fg}>
+                      Show all
+                    </Txt>
+                    <ChevronDown color={cream.fg} size={14} />
+                  </View>
+                </Pressable>
               </Animated.View>
             ) : null}
           </View>
@@ -269,6 +271,18 @@ export default function Total() {
               {f.tiny ? 'Not using one? Ditch it.' : `Not using one? Ditch it before it${NB}renews.`}
             </Txt>
           </Animated.View>
+          {/* One fact in the spare room above the button on taller phones (C+R Research via CNBC, 2022: people guess
+              $86 a month, they pay $219). Hidden on SE-size phones so the button never moves. */}
+          {main && !f.small && !f.tablet ? (
+            <>
+              <View style={{ flex: 1, minHeight: 16 }} />
+              <Animated.View style={moreStyle}>
+                <Txt v="sub" color={cream.mute} style={{ marginBottom: 8 }}>
+                  Most people guess less than half that.
+                </Txt>
+              </Animated.View>
+            </>
+          ) : null}
           {f.tablet ? (
             <>
               <View style={{ flex: 1, minHeight: 16 }} />

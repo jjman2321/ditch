@@ -15,6 +15,7 @@ import { showImport } from '@/config/features';
 import { SERVICES, availableIn, popularIn, searchServices, type CatalogService } from '@/catalog/services';
 import { shortPlanName } from '@/domain/copy';
 import { CYCLE_SHORT } from '@/domain/money';
+import { setFindTarget } from '@/import/session';
 import { CountrySheet } from '@/onboarding/CountrySheet';
 import { LinkButton, OnbRoot, TextLink } from '@/onboarding/Parts';
 import { PlanSheet } from '@/onboarding/PlanSheet';
@@ -34,7 +35,13 @@ function useRowLine() {
       const amount = `${money(pick.amountMinor, pick.currency)}${CYCLE_SHORT[pick.cycle]}`;
       if (pick.priceSource === 'user') return { text: `Your price · ${amount}`, link: 'price' };
       const plans = planChoices(s.id, pick.priceCountry);
-      const short = pick.planName ? shortPlanName(pick.planName, s.name, plans.map((x) => x.name)) : null;
+      const short = pick.planName
+        ? shortPlanName(
+            pick.planName,
+            s.name,
+            plans.map((x) => x.name),
+          )
+        : null;
       // "Monthly · $14.99/mo" says it twice: drop a plan name that's only a cycle word.
       const name = short && /^(monthly|yearly|annual|annually|weekly|quarterly)$/i.test(short.trim()) ? null : short;
       return { text: name ? `${name} · ${amount}` : amount, link: plans.length > 1 ? 'plan' : null };
@@ -45,7 +52,11 @@ function useRowLine() {
     const row = plans.length > 1 ? priceRow(s.id, country) : null;
     if (row) {
       const d = defaultPlan(row);
-      const name = shortPlanName(d.name, s.name, plans.map((x) => x.name));
+      const name = shortPlanName(
+        d.name,
+        s.name,
+        plans.map((x) => x.name),
+      );
       return { text: `${name} · ${money(d.amountMinor, row.currency)}${CYCLE_SHORT[d.cycle]}`, link: null };
     }
     const c = catalogPrice(s.id, country);
@@ -83,19 +94,7 @@ function useLogoPop(on: boolean) {
   };
 }
 
-function Row({
-  s,
-  pick,
-  first,
-  onToggle,
-  onChange,
-}: {
-  s: CatalogService;
-  pick: Picked | undefined;
-  first: boolean;
-  onToggle: () => void;
-  onChange: (kind: 'plan' | 'price') => void;
-}) {
+function Row({ s, pick, first, onToggle, onChange }: { s: CatalogService; pick: Picked | undefined; first: boolean; onToggle: () => void; onChange: (kind: 'plan' | 'price') => void }) {
   const p = usePalette();
   const line = useRowLine()(s, pick);
   const on = !!pick;
@@ -146,48 +145,60 @@ function Row({
 }
 
 /**
- * "Add them all at once" (design/v13-dates screen 0, DECISIONS #34). It just
- * works here: the first import is free, so it needs no label. Hidden until
- * import works (src/config/features.ts).
- */
-/**
  * "Add them all at once" (design/v13-dates screen 0, DECISIONS #34): one
- * button. Tapping it will ask Photo library (screenshots) or Files
- * (statements), like Mercury's "Match receipts". The first import is free,
- * so it needs no label. Hidden until import works (src/config/features.ts).
+ * button. It opens "Where should we look?" (screenshot or statement), the same
+ * place as Skip on the slides. The first find is free (#34), so it never opens
+ * the paywall. Hidden until import works (src/config/features.ts). On small
+ * phones it's one line, so the list keeps more rows.
  */
 function ImportCard() {
   const p = usePalette();
+  const f = useFrame();
+  const compact = f.small;
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel="Add them all at once. Snap a screenshot or upload a bank statement. We fill in the prices and dates."
-      onPress={() => router.push('/paywall?from=import')}
+      onPress={() => {
+        setFindTarget('onboarding');
+        router.push('/onboarding/where');
+      }}
       style={({ pressed }) => ({
-        marginTop: 14,
-        minHeight: 64,
+        marginTop: compact ? 10 : 14,
+        minHeight: compact ? 48 : 64,
         borderRadius: 16,
         backgroundColor: p.card,
         borderWidth: 1.5,
         borderColor: p.chipBorder,
         paddingHorizontal: 14,
-        paddingVertical: 12,
+        paddingVertical: compact ? 6 : 12,
         flexDirection: 'row',
         alignItems: 'center',
         gap: 12,
         opacity: pressed ? 0.75 : 1,
       })}
     >
-      <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: p.dark ? '#2A2721' : '#FFF1BC', alignItems: 'center', justifyContent: 'center' }}>
+      <View
+        style={{
+          width: compact ? 32 : 40,
+          height: compact ? 32 : 40,
+          borderRadius: compact ? 10 : 12,
+          backgroundColor: p.dark ? '#2A2721' : '#FFF1BC',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         <Camera color={p.fg} />
       </View>
       <View style={{ flex: 1, minWidth: 0 }}>
-        <Txt v="label" color={p.cardFg}>
+        <Txt v="label" color={p.cardFg} numberOfLines={compact ? 1 : undefined}>
           Add them all at once
         </Txt>
-        <Txt v="sub" tone="mute" style={{ marginTop: 2 }}>
-          Snap a screenshot or upload a bank statement. We fill in the prices and dates.
-        </Txt>
+        {compact ? null : (
+          <Txt v="sub" tone="mute" style={{ marginTop: 2 }}>
+            Snap a screenshot or upload a bank statement. We fill in the prices and dates.
+          </Txt>
+        )}
       </View>
       <ChevronRight color={p.mute} />
     </Pressable>
@@ -250,7 +261,12 @@ function PickBar({ list, onSkip }: { list: Picked[]; onSkip: () => void }) {
           <Txt v="moneyS" num>
             {money(totals[0].monthlyMinor, totals[0].currency)}
           </Txt>
-          {totals.length > 1 ? ` + ${totals.slice(1).map((t) => money(t.monthlyMinor, t.currency)).join(' + ')}` : ''}
+          {totals.length > 1
+            ? ` + ${totals
+                .slice(1)
+                .map((t) => money(t.monthlyMinor, t.currency))
+                .join(' + ')}`
+            : ''}
           {' a month'}
         </Txt>
       ) : n === 0 ? (
@@ -335,12 +351,7 @@ export default function Services() {
           />
         </View>
         {query.trim() ? null : (
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={{ marginTop: 8, marginHorizontal: -f.edge, flexGrow: 0 }}
-            contentContainerStyle={{ gap: 8, paddingHorizontal: f.edge }}
-          >
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 8, marginHorizontal: -f.edge, flexGrow: 0 }} contentContainerStyle={{ gap: 8, paddingHorizontal: f.edge }}>
             {FILTERS.map((x) => {
               const on = filter === x;
               return (
@@ -436,13 +447,7 @@ export default function Services() {
           setCountryOpen(false);
         }}
       />
-      <PlanSheet
-        pick={editPick}
-        visible={sheet === 'plan'}
-        onClose={() => setSheet(null)}
-        onPick={(planId) => editing && setPlan(editing, planId)}
-        onOwnPrice={() => setSheet('price')}
-      />
+      <PlanSheet pick={editPick} visible={sheet === 'plan'} onClose={() => setSheet(null)} onPick={(planId) => editing && setPlan(editing, planId)} onOwnPrice={() => setSheet('price')} />
       <PriceSheet
         sub={editPick}
         visible={sheet === 'price'}

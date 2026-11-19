@@ -16,6 +16,8 @@ import { setFindResult } from '@/import/session';
 import { useApp } from '@/state/app';
 import { Button, External, Txt, usePalette } from '@/ui/sunflower';
 
+const CANT_READ = 'This iPhone can’t read screenshots yet. Use a statement or pick them yourself.';
+
 export default function AppleScreenshot() {
   const p = usePalette();
   const app = useApp();
@@ -34,6 +36,11 @@ export default function AppleScreenshot() {
   };
 
   const pick = async () => {
+    // This build can't read screenshots: say so and point to the other ways, instead of a dead button.
+    if (!canReadImages) {
+      setProblem(CANT_READ);
+      return;
+    }
     setProblem(null);
     const res = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ['images'], allowsMultipleSelection: true, selectionLimit: 5, quality: 1 });
     if (res.canceled || !res.assets.length) return;
@@ -43,7 +50,7 @@ export default function AppleScreenshot() {
       for (const a of res.assets) lines.push(...(await readImage(a.uri)));
       finish(lines);
     } catch {
-      setProblem('Reading screenshots needs the new Ditch build. It’s coming in the next update.');
+      setProblem(CANT_READ);
     } finally {
       setBusy(false);
     }
@@ -55,7 +62,7 @@ export default function AppleScreenshot() {
       footer={
         <>
           <Button label="Open Apple subscriptions" hint="Opens outside Ditch" right={<External color={p.ctaFg} size={19} />} onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)} />
-          <Button kind="secondary" label={busy ? 'Reading…' : 'Pick screenshots'} disabled={busy || (!canReadImages && !SHOW_SAMPLES)} onPress={pick} style={{ marginTop: 6 }} />
+          <Button kind="secondary" label={busy ? 'Reading…' : 'Pick screenshots'} disabled={busy} onPress={pick} style={{ marginTop: 6 }} />
           {SHOW_SAMPLES ? <Button kind="text" label="Try with a sample (test builds)" onPress={() => finish(SAMPLE_APPLE_LINES)} /> : null}
         </>
       }

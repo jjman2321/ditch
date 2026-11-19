@@ -47,3 +47,31 @@ Welcome screen ("nice, I like it"), the slides, "Where should we look?", Pick th
 
 ### Bug found in the frames
 - The Ditched screen says **"Cancel by Thu, Nov 19"** because ditching stores the next charge as "cancel by" automatically, so the earlier "Charges vs Cancel by" fix never triggers. Fix in the data, not just the label.
+
+## Research (Mobbin, Nov 19) and the plan
+| # | Fix | Based on |
+|---|---|---|
+| 1 | Reminder time: "3 days and 1 day before. You pick the time." Default 9 AM stays in Settings, not in onboarding copy | Owner |
+| 2 | Slide 2 title: "A reminder before you pay." | Owner |
+| 3 | Tags: "1 FREE, THEN PRO" | Owner |
+| 4 | Overlap card: "You pay for 2 AI chat apps. Need both?" | Owner |
+| 5 | Skip toggle: "Already paid this one? Skip its reminders" | Owner |
+| 6 | Ditched screen: "Charges Thu, Nov 19. Cancel today to stop it." + fix the auto "Cancel by" data bug | Owner + frames |
+| 7 | Statement screen: "Apple's charges all look the same on a statement…" (no APPLE.COM/BILL) | Owner |
+| 8 | Yearly fine print: "Then $59.99/yr from Nov 26. Cancel anytime." (one line; still says it renews by the price) | Owner + law |
+| 9 | Visual steps: 3 numbered cards with a drawn iPhone screen and the row to tap highlighted + tap dot; deep-link button | [Sweatcoin](https://mobbin.com/screens/3963cfe5-df6c-49b0-8650-283c95db318e), [Cash App](https://mobbin.com/screens/99208919-11c6-42f4-a1a6-353ba875fe6f), [Google](https://mobbin.com/screens/73101647-2740-45fb-aa4d-82aebce34ebf), [Orbit](https://mobbin.com/screens/143d819c-dc6a-41c6-9451-54e408bbbb1b) |
+| 10 | One add sheet everywhere: Track a free trial = same sheet with the trial switch on; Missing any? = same sheet with search focused | [Orbit add](https://mobbin.com/flows/78e8655b-afa5-43db-ab32-42b53002a748), [Rocket Money](https://mobbin.com/flows/aa321cb3-1155-4319-913e-3248da1e247a) |
+| 11 | In-app feedback sheet: chips (Problem / Idea / Missing service), text, optional screenshot + email, Send, duck "Got it" | [Substack](https://mobbin.com/screens/a3a6cddc-4f32-4e6e-ba99-82f42be65a32), [Yami](https://mobbin.com/screens/d8939cf6-d9b1-4139-ac31-07b8f211a312), [Clue](https://mobbin.com/screens/ae9bbd7e-bf98-4bcc-834d-b6e8e97877e9). Sends to a small ditchsubs.app endpoint (privacy label check) |
+| 12 | Paywall: duck whole in its own header space (scales, never cropped); plan cards 64–72pt, fill the space on every phone | [Yazio](https://mobbin.com/screens/d444f04c-d1b9-4872-a056-a0dff266f600), [BitePal](https://mobbin.com/screens/de10057f-86df-48b6-bae9-8f3bc8eb854a), [DailyArt](https://mobbin.com/screens/9ab25919-5957-45e3-b2d7-bfcf713bbb79) |
+| 13 | Ditching: swipe left on a row = Ditch; long-press menu (Ditch / Edit / Skip); hold-ring moves into a big button on the detail screen so the finger never covers the name | [Cleo](https://mobbin.com/screens/e571046b-44c2-41d4-a6c0-129cd8443270), [monday.com](https://mobbin.com/screens/934eb64d-5479-4f6d-8c6f-3e28434f4f57) |
+| 14 | Calendar: up to 2 overlapping logos, 3+ = 2 logos + ink count circle | [Rocket Money](https://mobbin.com/screens/659d619e-4062-4cb0-9dff-8c986a7924f5), [Orbit](https://mobbin.com/screens/954dab6c-e3ed-4104-aae0-e5039bd5012f) |
+| 15 | Optional fields: "Email (optional)" label, prompt placeholders in light grey, no fake data | [Rocket Money](https://mobbin.com/screens/fa648fc8-007a-4994-8946-e16208a69207), [Pangea](https://mobbin.com/screens/5908b677-67d5-4494-a0b0-6e70081a33b2) |
+| 16 | Short lists: one-tap "Missing any?" logo row + dashed "Find my subscriptions" card under the list | [Ubank](https://mobbin.com/screens/9bbc33b2-7e59-49b5-8c8b-fb3da8f1918b), [Origin](https://mobbin.com/screens/daa3a327-0378-463f-a810-8ef6efdb7005) |
+| 17 | Ditched look: logo grey (~60%), price struck through, DITCHED tag kept | [Revolut](https://mobbin.com/screens/f4e3b120-5492-4171-97c6-be853b4b899d), [Ro](https://mobbin.com/screens/7dd6efef-874d-466f-8a02-3a45ca37c048) |
+| 18 | Your total: number always fits (shrink-to-fit on every width incl. Duo/iPad) | Owner |
+| 19 | Reminders-step animation: cards land one after another with no overlap | Owner |
+| 20 | No-date rule: a sub with no date gets no reminders and stays in "No date yet" with one tap to add; if the user says "I just paid", today becomes the date | Owner (pipeline) |
+| 21 | Payday rule written down: day-of-month in the phone's time zone, date-only, last-day clamp; tests for every month and midnight | Owner (pipeline) |
+| 22 | State tests: 0 / 1 / 3 / 20 / 60 subs × SE / 12 / Pro Max / Duo / iPad screenshots | Owner |
+| 23 | Margins: check against Apple's 16–20pt sides; trim the bottom gaps on taller phones | Owner |
+| 24 | Test reminder: fire after 1 s, not 5 | Owner |

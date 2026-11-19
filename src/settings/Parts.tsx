@@ -27,8 +27,7 @@ export function SettingsPage({ title, back = 'Settings', children, intro }: { ti
             {back}
           </Txt>
         </Pressable>
-        {/* One line on every phone: long titles shrink a little instead of wrapping (audit Nov 19). */}
-        <Txt v="displayM" accessibilityRole="header" numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.85} style={{ fontSize: 32, lineHeight: 40, marginTop: 2 }}>
+        <Txt v="displayM" accessibilityRole="header" style={{ fontSize: 32, lineHeight: 40, marginTop: 2 }}>
           {title}
         </Txt>
         {intro ? (

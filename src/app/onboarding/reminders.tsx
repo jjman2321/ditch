@@ -88,7 +88,8 @@ export default function Reminders() {
   const card = (s: Shown, top: boolean) => <NotificationPreview faded={!top} time={top ? 'now' : s.day === lockDay ? '9:00 AM' : weekdayDate(s.day)} message={noOrphan(s.body)} />;
   // Clear room under the cards for the torch and camera buttons (16 from the edge, 44 tall) plus 12pt of air.
   // Taller phones also keep the duck's head below the cards, never under their words.
-  const lockBottom = 16 + 44 + 12 + (f.small ? 0 : 12);
+  // Room for the torch and camera buttons; small phones drop them (decoration) so the reminders fit.
+  const lockBottom = f.small ? 16 : 16 + 44 + 8;
 
   const go = () => router.push(n > 0 ? '/paywall' : '/onboarding/done');
   const turnOn = async () => {
@@ -101,12 +102,12 @@ export default function Reminders() {
     <OnbRoot surface="cream">
       {/* The step header is drawn once by onboarding/_layout.tsx and stays still; this strip keeps its place, outside the scroll. */}
       <View style={{ height: f.top + STEP_HEADER_H }} />
-      <FitScroll style={{ paddingHorizontal: f.edge, paddingBottom: f.bottom }}>
+      <FitScroll style={{ paddingHorizontal: f.edge, paddingBottom: 4 }}>
         {/* SE: the paywall's smaller title size, so no word sits alone on a line. */}
         <Txt
           v="title"
           accessibilityRole="header"
-          style={[{ marginTop: f.tiny ? 10 : 16 }, f.tiny ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 } : f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null]}
+          style={[{ marginTop: f.tiny ? 10 : 16 }, f.tiny ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 } : f.tablet ? null : { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 }]}
         >
           {`Get a reminder\nbefore you’re${NB}charged.`}
         </Txt>
@@ -120,14 +121,14 @@ export default function Reminders() {
             accessible
             accessibilityLabel={`${example ? 'An example reminder' : 'Your first reminders'}: ${shown.map((s) => `${weekdayDate(s.day)}, 9 AM: ${s.body}`).join('. ')}`}
             style={{
-              marginTop: f.tiny ? 12 : 20,
+              marginTop: f.tiny ? 12 : f.small ? 20 : 12,
               flex: 1,
               // Grows into spare room, but never pushes the buttons below off screen (audit Nov 19).
               minHeight: f.tiny ? 196 : f.small ? 238 : 300,
               borderRadius: 34,
               backgroundColor: brand.sunflower,
               overflow: 'hidden',
-              paddingTop: f.small ? 14 : 20,
+              paddingTop: f.small ? 14 : 14,
               paddingHorizontal: 12,
               paddingBottom: lockBottom,
               borderWidth: 1,
@@ -143,7 +144,7 @@ export default function Reminders() {
                 v="label"
                 color={brand.ink}
                 num
-                style={{ fontFamily: F.wideHeavy, fontSize: f.tiny ? 40 : f.small ? 48 : 72, lineHeight: f.tiny ? 44 : f.small ? 52 : 76, letterSpacing: -2 }}
+                style={{ fontFamily: F.wideHeavy, fontSize: f.tiny ? 40 : f.small ? 48 : f.tablet ? 72 : 60, lineHeight: f.tiny ? 44 : f.small ? 52 : f.tablet ? 76 : 64, letterSpacing: -2 }}
                 maxFontSizeMultiplier={1}
               >
                 9:00
@@ -173,19 +174,26 @@ export default function Reminders() {
                 <Duck width={128} bottom={0} delay={reduce ? 0 : 400 + count * GAP} style={{ position: 'relative' }} />
               </View>
             )}
-            <View pointerEvents="none" style={{ position: 'absolute', left: 16, bottom: 16 }}>
-              <LockButton>
-                <Flashlight color={brand.ink} />
-              </LockButton>
-            </View>
-            <View pointerEvents="none" style={{ position: 'absolute', right: 16, bottom: 16 }}>
-              <LockButton>
-                <Camera color={brand.ink} />
-              </LockButton>
-            </View>
+            {f.small ? null : (
+              <>
+                <View pointerEvents="none" style={{ position: 'absolute', left: 16, bottom: 16 }}>
+                  <LockButton>
+                    <Flashlight color={brand.ink} />
+                  </LockButton>
+                </View>
+                <View pointerEvents="none" style={{ position: 'absolute', right: 16, bottom: 16 }}>
+                  <LockButton>
+                    <Camera color={brand.ink} />
+                  </LockButton>
+                </View>
+              </>
+            )}
           </View>
         </ForceLightContext.Provider>
+      </FitScroll>
 
+      {/* Pinned, so "Maybe later" is always on screen (audit Nov 19); the lock screen above takes what's left. */}
+      <View style={{ paddingHorizontal: f.edge, paddingBottom: f.bottom }}>
         {status === 'denied' ? (
           <Button
             label="Open iPhone Settings"
@@ -217,7 +225,7 @@ export default function Reminders() {
             style={{ marginTop: f.tiny ? 0 : 4 }}
           />
         )}
-      </FitScroll>
+      </View>
     </OnbRoot>
   );
 }

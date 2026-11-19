@@ -111,8 +111,6 @@ export default function Ditched() {
   const priceLine = isPricedSub(sub) ? `${money(sub.amountMinor, sub.currency)} ${CYCLE_WORDS[sub.cycle]}` : null;
   const help1 = helpFor(sub);
   const blocked = app.notif === 'denied' || app.notif === 'undetermined';
-  // "You won't pay … a year, once you cancel." is one sentence: both ends in the same style, only the amount is big.
-  const amountWords = { fontSize: tiny ? 17 : 20, lineHeight: tiny ? 22 : 25, fontFamily: F.semi };
 
   const undo = async () => {
     haptic.light();
@@ -183,95 +181,113 @@ export default function Ditched() {
             </Pressable>
           </View>
 
-          {/* Left-aligned and short (owner, Nov 19: "too much on the screen", centred text read like a template).
-              Like Splitwise, Cleo and Coinbase's cancel screens: what it is, what it's worth, one line on when,
-              then the buttons. The card, the account details and running totals live elsewhere. */}
-          {/* Centred between the header and the buttons, so there's no empty band above the buttons. */}
-          <View style={wide ? null : { flex: 1, justifyContent: 'center', paddingBottom: 24 }}>
-            <Animated.View style={[{ marginTop: tiny ? 22 : compact ? 52 : 72 }, cardStyle]}>
-              <Duck width={tiny ? 68 : compact ? 84 : 104} left={20} sink={2} delay={animate ? DUCK_MS : 0} />
-              <Card style={{ flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 18, paddingVertical: compact ? 11 : 14 }}>
-                <View style={{ width: compact ? 36 : 40, height: compact ? 36 : 40 }}>
-                  <SubLogo sub={sub} size={compact ? 36 : 40} ditched />
-                  <Animated.View style={[StyleSheet.absoluteFill, logoStyle]}>
-                    <SubLogo sub={sub} size={compact ? 36 : 40} />
+          {/* One headline, then ONE receipt card that holds everything about this sub (owner, Nov 19: the
+              loose pieces floated and felt flat). Like Wise, Chime and Wealthsimple's "done" screens: say what
+              happened, show the money in a card, then the next step. The duck pops over the card's corner. */}
+          <View style={wide ? null : { flex: 1 }}>
+            <Animated.View style={[{ marginTop: tiny ? 6 : compact ? 12 : 24 }, cardStyle]}>
+              <Txt v="displayL" accessibilityRole="header" style={{ fontSize: tiny ? 34 : compact ? 40 : 46, lineHeight: tiny ? 38 : compact ? 44 : 50, letterSpacing: tiny ? -1.2 : -1.6 }}>
+                Ditched.
+              </Txt>
+              <Txt v="leadS" tone="fg2" style={{ marginTop: 6, fontSize: tiny ? 15 : 16.5, lineHeight: tiny ? 20 : 22 }}>
+                {trial ? 'Next, cancel it in your Apple subscriptions.' : `Next, cancel it with ${sub.name}.`}
+              </Txt>
+            </Animated.View>
+
+            {/* Spare height splits above and below the card, so it never floats with one big gap (room for the duck at least). */}
+            {wide ? <View style={{ height: 92 }} /> : <View style={{ flex: 1, minHeight: tiny ? 44 : compact ? 64 : 92, maxHeight: 150 }} />}
+            <Animated.View style={cardStyle}>
+              <Duck width={tiny ? 76 : compact ? 92 : 116} right={18} sink={3} delay={animate ? DUCK_MS : 0} />
+              <Card style={{ paddingHorizontal: 18, paddingTop: compact ? 14 : 18, paddingBottom: compact ? 4 : 6 }}>
+                {/* The sub: logo greys as the tag lands. */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+                  <View style={{ width: compact ? 36 : 40, height: compact ? 36 : 40 }}>
+                    <SubLogo sub={sub} size={compact ? 36 : 40} ditched />
+                    <Animated.View style={[StyleSheet.absoluteFill, logoStyle]}>
+                      <SubLogo sub={sub} size={compact ? 36 : 40} />
+                    </Animated.View>
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    {trial ? (
+                      <ProLockup size={17} suffix="trial" color={p.cardFg} />
+                    ) : (
+                      <Txt v="bodyStrong" color={p.cardFg} style={{ fontSize: 17 }} numberOfLines={1}>
+                        {sub.name}
+                      </Txt>
+                    )}
+                    {priceLine ? (
+                      <Txt v="body" tone="mute" num style={{ fontSize: 14, marginTop: 2 }} numberOfLines={1}>
+                        {priceLine}
+                      </Txt>
+                    ) : null}
+                  </View>
+                  <Animated.View style={tagStyle} accessible accessibilityLabel="Ditched">
+                    <DitchedTag size="m" />
                   </Animated.View>
                 </View>
-                <View style={{ flex: 1 }}>
-                  {trial ? (
-                    <ProLockup size={17} suffix="trial" color={p.cardFg} />
+
+                {/* The money: the one big thing on the screen. */}
+                <Animated.View style={[{ marginTop: compact ? 14 : 18, paddingTop: compact ? 12 : 16, borderTopWidth: 1, borderTopColor: p.hair }, amountStyle]}>
+                  {yearly !== null && sub.currency ? (
+                    <>
+                      <Txt v="label" tone="mute" style={{ fontSize: 15 }}>
+                        You won’t pay
+                      </Txt>
+                      <Txt
+                        v="displayXL"
+                        num
+                        color={p.dark ? brand.sunflower : brand.ink}
+                        style={{ fontSize: tiny ? 42 : compact ? 48 : 56, lineHeight: tiny ? 48 : compact ? 54 : 62, marginTop: 2, marginLeft: -2 }}
+                        adjustsFontSizeToFit
+                        numberOfLines={1}
+                      >
+                        {money(yearly, sub.currency)}
+                      </Txt>
+                      <Txt v="label" color={p.cardFg} style={{ fontSize: 15 }}>
+                        a year, once you cancel
+                      </Txt>
+                    </>
                   ) : (
-                    <Txt v="bodyStrong" color={p.cardFg} style={{ fontSize: 17 }} numberOfLines={1}>
-                      {sub.name}
+                    <Txt v="label" color={p.cardFg} style={{ fontSize: 17, lineHeight: 23 }}>
+                      {'Cancel it, and that’s one less\u00A0charge.'}
                     </Txt>
                   )}
-                  {priceLine ? (
-                    <Txt v="body" tone="mute" num style={{ fontSize: 14, marginTop: 2 }} numberOfLines={1}>
-                      {priceLine}
+                  {trial ? (
+                    <Txt v="body" tone="mute" style={{ marginTop: 8, fontSize: 14.5 }}>
+                      You keep your whole list. Reminders drop back to 3.
                     </Txt>
                   ) : null}
-                </View>
-                <Animated.View style={tagStyle} accessible accessibilityLabel="Ditched">
-                  <DitchedTag size="m" />
+                </Animated.View>
+
+                {/* When: the last reminder, or when it charges. Reminders off: tap to turn them on. */}
+                <Animated.View style={[{ marginTop: compact ? 12 : 16, borderTopWidth: 1, borderTopColor: p.hair }, restStyle]}>
+                  {isPending(sub) ? (
+                    <Pressable
+                      accessible
+                      accessibilityRole={blocked ? 'button' : 'text'}
+                      accessibilityLabel={`${check.title}. ${check.line}`}
+                      disabled={!blocked}
+                      accessibilityHint={app.notif === 'denied' ? 'Opens iPhone Settings' : 'Shows the iPhone permission prompt'}
+                      onPress={() => (app.notif === 'denied' ? Linking.openSettings().catch(() => {}) : void app.askNotif())}
+                      style={{ flexDirection: 'row', alignItems: 'center', gap: 10, minHeight: compact ? 48 : 54 }}
+                    >
+                      <Bell color={p.cardFg} fill={blocked ? undefined : p.dark ? brand.sunflower : brand.ink} size={16} />
+                      <Txt v="body" num color={p.cardFg} style={{ flex: 1, fontSize: 15, fontFamily: F.semi }}>
+                        {check.title}
+                        {blocked ? (
+                          <Txt v="body" color={p.cardFg} style={{ fontSize: 15, fontFamily: F.semi, textDecorationLine: 'underline' }}>
+                            {' · Turn on'}
+                          </Txt>
+                        ) : null}
+                      </Txt>
+                    </Pressable>
+                  ) : (
+                    <View style={{ height: 12 }} />
+                  )}
                 </Animated.View>
               </Card>
             </Animated.View>
-
-            <Animated.View style={[{ marginTop: tiny ? 18 : compact ? 28 : 40 }, amountStyle]}>
-              {yearly !== null && sub.currency ? (
-                <>
-                  <Txt v="label" style={amountWords}>
-                    You won’t pay
-                  </Txt>
-                  <Txt
-                    v="displayXL"
-                    num
-                    color={p.dark ? brand.sunflower : brand.ink}
-                    style={{ fontSize: tiny ? 46 : compact ? 54 : 64, lineHeight: tiny ? 52 : compact ? 60 : 72, marginTop: 2, marginLeft: -2 }}
-                    adjustsFontSizeToFit
-                    numberOfLines={1}
-                  >
-                    {money(yearly, sub.currency)}
-                  </Txt>
-                  <Txt v="label" style={amountWords}>
-                    a year, once you cancel.
-                  </Txt>
-                </>
-              ) : (
-                <Txt v="title" style={{ fontSize: 24, lineHeight: 29 }}>
-                  {'Now cancel it, and that’s one less\u00A0charge.'}
-                </Txt>
-              )}
-              {trial ? (
-                <Txt v="leadS" tone="fg2" style={{ marginTop: 10, fontSize: 15 }}>
-                  You keep your whole list. Reminders drop back to 3.
-                </Txt>
-              ) : null}
-            </Animated.View>
-
-            {/* One line on when: the last check, or when it charges. Reminders off: tap to turn them on. */}
-            <Animated.View style={[{ marginTop: tiny ? 14 : 22 }, restStyle]}>
-              {isPending(sub) ? (
-                <Pressable
-                  accessible
-                  accessibilityRole={blocked ? 'button' : 'text'}
-                  accessibilityLabel={`${check.title}. ${check.line}`}
-                  disabled={!blocked}
-                  accessibilityHint={app.notif === 'denied' ? 'Opens iPhone Settings' : 'Shows the iPhone permission prompt'}
-                  onPress={() => (app.notif === 'denied' ? Linking.openSettings().catch(() => {}) : void app.askNotif())}
-                  style={{ flexDirection: 'row', alignItems: 'center', gap: 10, minHeight: 44 }}
-                >
-                  <View style={{ width: 30, height: 30, borderRadius: 15, backgroundColor: p.dark ? '#2A2721' : 'rgba(22,20,15,0.08)', alignItems: 'center', justifyContent: 'center' }}>
-                    <Bell color={p.dark ? brand.sunflower : brand.ink} size={15} />
-                  </View>
-                  <Txt v="body" num style={{ flex: 1, fontSize: 15.5, fontFamily: F.semi }}>
-                    {check.title}
-                    {blocked ? <Txt v="body" style={{ fontSize: 15.5, fontFamily: F.semi, textDecorationLine: 'underline' }}>{' · Turn on'}</Txt> : null}
-                  </Txt>
-                </Pressable>
-              ) : null}
-            </Animated.View>
-            {wide ? <View style={{ height: 32 }} /> : null}
+            {wide ? <View style={{ height: 32 }} /> : <View style={{ flex: 1, minHeight: tiny ? 14 : 24 }} />}
           </View>
 
           <Animated.View style={actionsStyle}>

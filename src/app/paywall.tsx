@@ -23,6 +23,7 @@ import { bankEntry } from '@/bank/banks';
 import { WIDGET_READY, showBankScan, showImport } from '@/config/features';
 import { DEV_TOOLS } from '@/dev/flags';
 import { addDays, shortDate } from '@/domain/dates';
+import { headsUpDates } from '@/domain/charges';
 import { balanceLines } from '@/domain/copy';
 import { formatWholeMoney } from '@/domain/money';
 import { perWeekFromYearly, yearlyBadgeVsWeekly } from '@/domain/pricing';
@@ -31,7 +32,7 @@ import { OnbRoot } from '@/onboarding/Parts';
 import { PURCHASES_LIVE, billedLabel, planById, purchase, restorePurchases, type PlanId } from '@/services/purchases';
 import { onboardingToday, useOnboarding, usePickedList } from '@/state/onboarding';
 import { useApp } from '@/state/app';
-import { Button, Card, Check, Close, F, PlanCard, ProLockup, Txt, brand, haptic, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
+import { Button, Card, Check, Close, DuckIcon, F, PlanCard, ProLockup, Txt, brand, haptic, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
 
 const NB = ' ';
 
@@ -285,7 +286,9 @@ export default function Paywall() {
   // `plan` (lifetime | yearly | weekly) picks the plan that's selected first, e.g. Settings → Ditch Pro's "Or pay once".
   // `bank` (a picker id, src/bank/banks.ts): opened from the bank picker (DECISIONS #70). The headline
   // names their bank, and after the purchase the bank sign-in opens straight away.
-  const { from, plan: planParam, bank: bankParam } = useLocalSearchParams<{ from?: string; plan?: string; bank?: string }>();
+  const { from, plan: planParam, bank: bankParam, pwduck } = useLocalSearchParams<{ from?: string; plan?: string; bank?: string; pwduck?: string }>();
+  // Where the duck sits (owner, Nov 19: "have the duck somewhere"). Preview-only switch while the owner picks.
+  const duckAt: 'none' | 'promise' | 'avatar' = pwduck === 'promise' || pwduck === 'avatar' ? pwduck : 'none';
   const bankPick = bankParam ? bankEntry(bankParam) : null;
   // After onboarding (Settings, a PRO tag, the editor) vs. during onboarding. Decided by
   // whether onboarding is done, never by the link, so no link can rerun onboarding.
@@ -305,6 +308,8 @@ export default function Paywall() {
   const lifetime = planById('lifetime');
   const today = onboardingToday();
   const charge = addDays(today, yearly.trialDays);
+  // Ditch's own trial gets the usual two reminders before it renews (DECISIONS #15).
+  const trialReminders = headsUpDates(charge, today, { nowHour: new Date().getHours() });
   // Lifetime includes one bank scan a year (DECISIONS #65), so say so once the scan is on the table.
   const bank = showBankScan();
 
@@ -405,7 +410,10 @@ export default function Paywall() {
   const hero = (s: number) => (
     <View style={{ height: HERO_H, marginHorizontal: -EDGE_W, paddingHorizontal: EDGE_W }}>
       <View style={{ height: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-        <ProLockup size={22} color={ink} />
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          {duckAt === 'avatar' ? <DuckIcon size={28} /> : null}
+          <ProLockup size={22} color={ink} />
+        </View>
         <CloseX label={closeLabel} onPress={leaveFree} scale={s} color={ink} bg={dark ? '#3A3424' : 'rgba(22,20,15,0.12)'} />
       </View>
       <View style={{ height: 14 }} />
@@ -463,6 +471,16 @@ export default function Paywall() {
       {/* A fixed slot, so the button never moves when the plan changes. Price and the real start date by the
         button (App Review); no reminder text (owner, Nov 10). At least 13pt on screen at any scale. */}
       <View style={{ minHeight: 44, alignItems: 'center', justifyContent: 'center', paddingHorizontal: planId === 'yearly' ? 0 : 4 }}>
+        {/* The duck's job here: he watches your free week (DECISIONS #15, real reminders 3 days and 1 day before).
+            Fear of being charged is the top reason people skip a trial; saying we'll warn them answers it. */}
+        {duckAt === 'promise' && planId === 'yearly' && trialReminders.length ? (
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 6 / scale, marginBottom: 2 }}>
+            <DuckIcon size={18 / scale} />
+            <Txt v="fine" num style={{ fontSize: 13 / scale, lineHeight: 16 / scale, fontFamily: F.semi }}>
+              {`We’ll remind you ${trialReminders.map((d) => shortDate(d).replace(' ', NB)).join(' and ')}.`}
+            </Txt>
+          </View>
+        ) : null}
         <Txt v="fine" tone="fg2" num center accessibilityLiveRegion="polite" style={{ fontSize: 13 / scale, lineHeight: 16 / scale }}>
           {planId === 'yearly'
             ? // One line (owner, Nov 19): the yearly price and the real date say it renews.

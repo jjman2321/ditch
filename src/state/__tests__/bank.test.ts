@@ -72,7 +72,10 @@ describe('applySync', () => {
     expect(later.added).toHaveLength(5);
     expect(later.state.finds).toHaveLength(5);
     // Or "Looks right": nothing is offered again.
-    const done = rememberKeys(state, state.finds.map((f) => f.key));
+    const done = rememberKeys(
+      state,
+      state.finds.map((f) => f.key),
+    );
     expect(applySync(done, res([]), [], OPTS).added).toEqual([]);
   });
 

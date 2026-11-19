@@ -3,7 +3,7 @@
 // next to a price (CLAUDE.md rule 8). Prices change only after a tap; nothing is ditched alone.
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { AccessibilityInfo, Pressable, View } from 'react-native';
+import { AccessibilityInfo, Platform, Pressable, View } from 'react-native';
 import Animated, { FadeIn, FadeOut, useReducedMotion } from 'react-native-reanimated';
 
 import { shortDate, type DateOnly } from '@/domain/dates';
@@ -38,7 +38,11 @@ function Head({ logo, title, line, dot }: { logo: ReactNode; title: ReactNode; l
       {logo}
       <View style={{ flex: 1, minWidth: 0 }}>
         <Txt v="bodyStrong" color={p.cardFg} num style={{ fontFamily: F.bold, fontSize: 16, lineHeight: 21 }}>
-          {dot ? <Txt v="bodyStrong" color={p.amber}>{'● '}</Txt> : null}
+          {dot ? (
+            <Txt v="bodyStrong" color={p.amber}>
+              {'● '}
+            </Txt>
+          ) : null}
           {title}
         </Txt>
         {line ? (
@@ -69,12 +73,7 @@ export function SyncCardView({ card, today, h }: { card: SyncCard; today: DateOn
     const l = card.link;
     return (
       <Notice amber>
-        <Head
-          dot
-          logo={<BankTile bank={bankOf(l)} size={36} name={l.name} />}
-          title={`Sign back in to ${l.name}.`}
-          line="Banks do this every few months. Your list and reminders still work."
-        />
+        <Head dot logo={<BankTile bank={bankOf(l)} size={36} name={l.name} />} title={`Sign back in to ${l.name}.`} line="Banks do this every few months. Your list and reminders still work." />
         <Pair a={{ label: 'Reconnect', onPress: () => h.reconnect(l.id), hint: `Opens ${l.name}’s sign-in` }} b={{ label: 'Later', onPress: () => h.later(l.id), hint: 'Hides this for 3 days' }} />
       </Notice>
     );
@@ -124,7 +123,10 @@ export function SyncCardView({ card, today, h }: { card: SyncCard; today: DateOn
           {card.items.length > 1 ? `Are these subscriptions? ${card.items.length} to check` : 'Is this a subscription?'}
         </Txt>
         <Head logo={subLogo(f.catalogId, f.name)} title={`${f.name}${price ? ` · ${price}` : ''}`} line={`${f.evidence}. Subscription?`} />
-        <Pair a={{ label: 'Yes', onPress: () => h.answer(f.key, true), hint: `Adds ${f.name} to your list` }} b={{ label: 'No', onPress: () => h.answer(f.key, false), hint: 'Never asks about it again' }} />
+        <Pair
+          a={{ label: 'Yes', onPress: () => h.answer(f.key, true), hint: `Adds ${f.name} to your list` }}
+          b={{ label: 'No', onPress: () => h.answer(f.key, false), hint: 'Never asks about it again' }}
+        />
         {more > 0 ? (
           <Txt v="fine" tone="mute" style={{ marginTop: 8 }}>
             {`${more} more after this.`}
@@ -158,15 +160,18 @@ export function BankToastView({ toast, onUndo, onDone }: { toast: BankToast | nu
   const [reader, setReader] = useState(false);
   const shownFor = useRef<string | null>(null);
   useEffect(() => {
+    // The web preview reports a screen reader that isn't there: it gets the phone's 8 seconds.
     AccessibilityInfo.isScreenReaderEnabled()
-      .then(setReader)
+      .then((on) => setReader(on && Platform.OS !== 'web'))
       .catch(() => {});
   }, []);
   useEffect(() => {
     if (!toast) return;
     if (shownFor.current !== toast.id) {
       shownFor.current = toast.id;
-      AccessibilityInfo.announceForAccessibility(`Added ${toast.name} from your bank.${toast.amountMinor != null && toast.currency ? ` ${spokenMoney(toast.amountMinor, toast.currency)} ${per(toast.cycle)}.` : ''} Undo is at the bottom.`);
+      AccessibilityInfo.announceForAccessibility(
+        `Added ${toast.name} from your bank.${toast.amountMinor != null && toast.currency ? ` ${spokenMoney(toast.amountMinor, toast.currency)} ${per(toast.cycle)}.` : ''} Undo is at the bottom.`,
+      );
     }
     if (reader) return;
     const t = setTimeout(onDone, TOAST_MS);
@@ -204,7 +209,13 @@ export function BankToastView({ toast, onUndo, onDone }: { toast: BankToast | nu
       <Txt v="body" num color={fg} accessibilityLiveRegion="polite" style={{ flex: 1, fontFamily: F.medium, fontSize: 15, lineHeight: 20, paddingVertical: 10 }}>
         {`Added ${toast.name} from your bank.${price}`}
       </Txt>
-      <Pressable accessibilityRole="button" accessibilityLabel={`Undo, take ${toast.name} off your list`} onPress={() => onUndo(toast.subId)} hitSlop={4} style={({ pressed }) => ({ minHeight: 44, minWidth: 56, alignItems: 'center', justifyContent: 'center', opacity: pressed ? 0.6 : 1 })}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`Undo, take ${toast.name} off your list`}
+        onPress={() => onUndo(toast.subId)}
+        hitSlop={4}
+        style={({ pressed }) => ({ minHeight: 44, minWidth: 56, alignItems: 'center', justifyContent: 'center', opacity: pressed ? 0.6 : 1 })}
+      >
         <Txt v="label" color={p.dark ? brand.ink : brand.sunflower} style={{ fontFamily: F.bold, fontSize: 15, textDecorationLine: p.dark ? 'underline' : 'none' }}>
           Undo
         </Txt>
@@ -219,5 +230,11 @@ export function BankToastView({ toast, onUndo, onDone }: { toast: BankToast | nu
 }
 
 function per(cycle: BankToast['cycle']): string {
-  return cycle === 'yearly' ? 'a year' : cycle === 'weekly' ? 'a week' : cycle === 'monthly' ? 'a month' : `every ${cycle === 'biweekly' ? '2 weeks' : cycle === 'quarterly' ? '3 months' : '6 months'}`;
+  return cycle === 'yearly'
+    ? 'a year'
+    : cycle === 'weekly'
+      ? 'a week'
+      : cycle === 'monthly'
+        ? 'a month'
+        : `every ${cycle === 'biweekly' ? '2 weeks' : cycle === 'quarterly' ? '3 months' : '6 months'}`;
 }

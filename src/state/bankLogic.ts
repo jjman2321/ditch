@@ -192,12 +192,19 @@ export function applySync(s: BankState, res: BankSyncResponse, subs: Sub[], opts
   const newKeys = new Set(r.added.map((f) => f.key));
   const finds = [...s.finds.filter((f) => !newKeys.has(f.key)), ...r.added.map((f, i) => toFind(f, added[i], linkOf(f), opts.today, 'auto'))];
   // Onboarding remembers them only at "Looks right" (rememberKeys), so leaving early loses nothing.
-  const memory = opts.autoAdd === false ? s.memory : rememberHandled(s.memory, r.added.map((f) => f.key));
+  const memory =
+    opts.autoAdd === false
+      ? s.memory
+      : rememberHandled(
+          s.memory,
+          r.added.map((f) => f.key),
+        );
   const subById = new Map(subs.map((x) => [x.id, x]));
   const caught = [...s.caught];
   for (const c of r.priceChanges) {
     const sub = subById.get(c.subId);
-    if (sub && c.toMinor > c.fromMinor && !caught.some((x) => x.subId === c.subId && x.deltaMinor === c.toMinor - c.fromMinor)) caught.push({ subId: c.subId, name: sub.name, deltaMinor: c.toMinor - c.fromMinor, currency: c.currency });
+    if (sub && c.toMinor > c.fromMinor && !caught.some((x) => x.subId === c.subId && x.deltaMinor === c.toMinor - c.fromMinor))
+      caught.push({ subId: c.subId, name: sub.name, deltaMinor: c.toMinor - c.fromMinor, currency: c.currency });
   }
   const state: BankState = {
     ...s,
@@ -332,7 +339,18 @@ export function linkStatusWords(l: BankLink, now: Date): { text: string; tone: '
   if (l.status === 'removing') return { text: 'Disconnecting…', tone: 'mute' };
   if (!l.checkedAt) return { text: 'Reading your charges…', tone: 'mute' };
   const mins = Math.max(0, Math.round((now.getTime() - new Date(l.checkedAt).getTime()) / 60000));
-  const ago = mins < 2 ? 'just now' : mins < 60 ? `${mins} minutes ago` : mins < 120 ? '1 hour ago' : mins < 60 * 24 ? `${Math.floor(mins / 60)} hours ago` : mins < 60 * 48 ? 'yesterday' : `${Math.floor(mins / 1440)} days ago`;
+  const ago =
+    mins < 2
+      ? 'just now'
+      : mins < 60
+        ? `${mins} minutes ago`
+        : mins < 120
+          ? '1 hour ago'
+          : mins < 60 * 24
+            ? `${Math.floor(mins / 60)} hours ago`
+            : mins < 60 * 48
+              ? 'yesterday'
+              : `${Math.floor(mins / 1440)} days ago`;
   return { text: `Checked ${ago}`, tone: 'ok' };
 }
 

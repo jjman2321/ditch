@@ -20,19 +20,7 @@ export type BankLinkInfo = {
 
 export type BankAccess = {
   allowed: boolean;
-  reason:
-    | 'subscription'
-    | 'trial'
-    | 'grace'
-    | 'lifetime_first_year'
-    | 'bank_addon'
-    | 'trial_ending'
-    | 'lifetime_year_over'
-    | 'expired'
-    | 'revoked'
-    | 'billing_retry'
-    | 'family_shared'
-    | 'none';
+  reason: 'subscription' | 'trial' | 'grace' | 'lifetime_first_year' | 'bank_addon' | 'trial_ending' | 'lifetime_year_over' | 'expired' | 'revoked' | 'billing_retry' | 'family_shared' | 'none';
   until: string | null;
 };
 
@@ -137,7 +125,15 @@ export type PracticeEvent = 'new' | 'price' | 'cancelled' | 'relogin' | 'back';
 export function practiceSync(kind: PracticeEvent, links: { id: string; name: string }[], today: DateOnly, seq = Date.now()): BankSyncResponse {
   const first = links[0];
   if (!first) return { links: [] };
-  const txn = (id: string, date: DateOnly, text: string, merchantName: string, amountMinor: number): ServerTxn => ({ id: `p-${id}-${seq}`, date, text, merchantName, amountMinor, currency: 'USD', pending: false });
+  const txn = (id: string, date: DateOnly, text: string, merchantName: string, amountMinor: number): ServerTxn => ({
+    id: `p-${id}-${seq}`,
+    date,
+    text,
+    merchantName,
+    amountMinor,
+    currency: 'USD',
+    pending: false,
+  });
   let added: ServerTxn[] = [];
   let modified: ServerTxn[] = [];
   let removed: string[] = [];

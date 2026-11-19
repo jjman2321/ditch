@@ -28,7 +28,11 @@ export default function FindHub() {
   // Bank sync first (DECISIONS #70): test builds, US/Canada only.
   const bank = showBankSync(app.settings.country, app.settings.currency);
   return (
-    <FindPage title="Find your subscriptions" back="Home" intro={bank ? 'Connect your bank, or show us a list you already have. You pick what stays.' : 'Show us a list you already have. We read it on your phone, you pick what goes in.'}>
+    <FindPage
+      title="Find your subscriptions"
+      back="Home"
+      intro={bank ? 'Connect your bank, or show us a list you already have. You pick what stays.' : 'Show us a list you already have. We read it on your phone, you pick what goes in.'}
+    >
       {bank ? <BankHero title="Your bank or card" line="Finds them, then watches for new ones." tag={pro ? undefined : 'PRO · 7 DAYS FREE'} onPress={() => router.push('/bank?from=find')} /> : null}
       <RouteCard
         icon={PhoneList}

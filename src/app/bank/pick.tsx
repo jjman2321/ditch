@@ -4,7 +4,7 @@
 
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, TextInput, View } from 'react-native';
+import { Pressable, TextInput, View, useWindowDimensions } from 'react-native';
 
 import { searchBanks, type BankEntry } from '@/bank/banks';
 import { BankPage, BankTile, BigTitle, TextLink } from '@/bank/Parts';
@@ -12,7 +12,7 @@ import { useBankFlow } from '@/bank/flow';
 import { useBank } from '@/state/bank';
 import { canAddLink } from '@/state/bankLogic';
 import { tell } from '@/ui/alert';
-import { F, Search, Txt, haptic, usePalette } from '@/ui/sunflower';
+import { F, Search, Txt, haptic, usePageEdge, usePalette } from '@/ui/sunflower';
 
 export default function BankPick() {
   const p = usePalette();
@@ -20,6 +20,10 @@ export default function BankPick() {
   const bank = useBank();
   const [q, setQ] = useState('');
   const list = searchBanks(q);
+  // Three across, whatever the phone (10pt gaps).
+  const edge = usePageEdge();
+  const { width } = useWindowDimensions();
+  const tileW = Math.floor((width - edge * 2 - 20) / 3);
 
   const pick = (b: BankEntry) => {
     haptic.select();
@@ -39,7 +43,20 @@ export default function BankPick() {
   return (
     <BankPage>
       <BigTitle style={{ marginTop: 8 }}>Which bank pays your subscriptions?</BigTitle>
-      <View style={{ marginTop: 16, minHeight: 48, borderRadius: 14, backgroundColor: p.card, flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 14, borderWidth: 1, borderColor: p.dark ? p.cardBorder : p.hair }}>
+      <View
+        style={{
+          marginTop: 16,
+          minHeight: 48,
+          borderRadius: 14,
+          backgroundColor: p.card,
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 8,
+          paddingHorizontal: 14,
+          borderWidth: 1,
+          borderColor: p.dark ? p.cardBorder : p.hair,
+        }}
+      >
         <Search color={p.mute} size={18} />
         <TextInput
           value={q}
@@ -63,9 +80,7 @@ export default function BankPick() {
               accessibilityHint={flow.pro ? 'Opens the bank sign-in' : 'Shows Pro first'}
               onPress={() => pick(b)}
               style={({ pressed }) => ({
-                width: '31.5%',
-                flexGrow: 1,
-                maxWidth: '33%',
+                width: tileW,
                 minHeight: 86,
                 paddingVertical: 10,
                 paddingHorizontal: 6,

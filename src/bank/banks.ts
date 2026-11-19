@@ -54,7 +54,11 @@ export const MORE_BANKS: BankEntry[] = [
 export const ALL_BANKS = [...TOP_BANKS, ...MORE_BANKS];
 export const BANK_BY_ID: Record<string, BankEntry> = Object.fromEntries(ALL_BANKS.map((b) => [b.id, b]));
 
-const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim();
+const norm = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/[^a-z0-9 ]/g, '')
+    .trim();
 
 /** Banks whose name (or a nickname) contains what was typed. Empty query: the big nine. */
 export function searchBanks(query: string): BankEntry[] {

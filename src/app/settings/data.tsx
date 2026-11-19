@@ -45,20 +45,21 @@ export default function DataPage() {
       'Delete everything?',
       `Your list, ditched subs and settings go from this phone, and all reminders stop.${banks ? ' Every bank is disconnected.' : ''} This can’t be undone. It doesn’t cancel any subscriptions, including Ditch Pro.`,
       [
-      { text: 'Keep it', style: 'cancel' },
-      { text: 'Export first', onPress: () => void exportCsv() },
-      {
-        text: 'Delete',
-        style: 'destructive',
-        onPress: async () => {
-          await bank.wipe();
-          await app.deleteAll();
-          // Start over with nothing behind onboarding, so no swipe lands on the old list.
-          if (router.canDismiss()) router.dismissAll();
-          router.replace('/onboarding');
+        { text: 'Keep it', style: 'cancel' },
+        { text: 'Export first', onPress: () => void exportCsv() },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            await bank.wipe();
+            await app.deleteAll();
+            // Start over with nothing behind onboarding, so no swipe lands on the old list.
+            if (router.canDismiss()) router.dismissAll();
+            router.replace('/onboarding');
+          },
         },
-      },
-    ]);
+      ],
+    );
 
   return (
     <SettingsPage title="Your data" intro={bank.on ? 'Your list stays on your phone. No account.' : 'Your list stays on your phone. No account, no bank link.'}>

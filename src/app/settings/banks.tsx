@@ -92,7 +92,15 @@ export default function BankConnections() {
                       accessibilityRole="button"
                       accessibilityLabel={`Reconnect ${l.name}`}
                       onPress={() => void reconnect(l)}
-                      style={({ pressed }) => ({ minHeight: 44, borderRadius: 22, paddingHorizontal: 14, backgroundColor: p.cta, alignItems: 'center', justifyContent: 'center', opacity: pressed ? 0.8 : 1 })}
+                      style={({ pressed }) => ({
+                        minHeight: 44,
+                        borderRadius: 22,
+                        paddingHorizontal: 14,
+                        backgroundColor: p.cta,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        opacity: pressed ? 0.8 : 1,
+                      })}
                     >
                       <Txt v="label" color={p.ctaFg} style={{ fontSize: 14 }}>
                         Reconnect

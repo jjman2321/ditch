@@ -23,7 +23,8 @@ import { Button, Card, Check, Duck, F, LogoTile, RowDivider, Txt, brand, haptic,
 
 /** "Sep 10, Oct 10, Nov 10 · next Dec 10" */
 function proof(f: Pick<BankFind, 'evidence' | 'next'>): string {
-  return `${f.evidence.replace(' · price went up', '')}${f.next ? ` · next ${shortDate(f.next)}` : ''}`;
+  // Non-breaking inside "next Dec 10", so the date never splits across lines.
+  return `${f.evidence.replace(' · price went up', '')}${f.next ? ` · next\u00A0${shortDate(f.next).replace(' ', '\u00A0')}` : ''}`;
 }
 
 export default function BankResults() {
@@ -104,7 +105,12 @@ export default function BankResults() {
           <>
             {canAddLink(bank.state) ? <Button label="Add another card" onPress={() => router.replace(`/bank/pick?${flow.q()}`)} /> : null}
             <Button kind="secondary" label="Screenshot my Apple list" onPress={screenshot} style={{ marginTop: 10 }} />
-            <Button kind="text" label={flow.onboarding ? 'Pick them myself' : 'Go to my list'} onPress={() => (flow.onboarding ? router.replace('/onboarding/services') : router.dismissTo('/(tabs)'))} style={{ marginTop: 4 }} />
+            <Button
+              kind="text"
+              label={flow.onboarding ? 'Pick them myself' : 'Go to my list'}
+              onPress={() => (flow.onboarding ? router.replace('/onboarding/services') : router.dismissTo('/(tabs)'))}
+              style={{ marginTop: 4 }}
+            />
           </>
         }
       >
@@ -127,7 +133,11 @@ export default function BankResults() {
 
   return (
     <BankPage onBack={() => (flow.onboarding ? router.replace('/onboarding/where') : router.dismissTo('/(tabs)'))} footer={<Button label="Looks right" onPress={done} />}>
-      <View accessible accessibilityRole="header" accessibilityLabel={`${title}${n && totals.length ? ` ${totals.map((t) => `${spokenMoney(t.yearlyMinor, t.currency)} a year`).join(', ')}.` : ''} ${lead}`}>
+      <View
+        accessible
+        accessibilityRole="header"
+        accessibilityLabel={`${title}${n && totals.length ? ` ${totals.map((t) => `${spokenMoney(t.yearlyMinor, t.currency)} a year`).join(', ')}.` : ''} ${lead}`}
+      >
         <Txt v="title" style={{ marginTop: 8, fontSize: 30, lineHeight: 34 }} num>
           {title}
           {n && totalLine ? `\n${totalLine}.` : ''}
@@ -157,14 +167,28 @@ export default function BankResults() {
                     accessibilityLabel={spoken}
                     accessibilityHint={on ? 'Untick to take it off your list' : 'Tick to put it back on your list'}
                     onPress={() => void toggle(f)}
-                    style={({ pressed }) => ({ minHeight: 64, flexDirection: 'row', alignItems: 'center', gap: 12, paddingLeft: 14, paddingRight: 6, paddingVertical: 10, opacity: pressed ? 0.75 : 1 })}
+                    style={({ pressed }) => ({
+                      minHeight: 64,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      gap: 12,
+                      paddingLeft: 14,
+                      paddingRight: 6,
+                      paddingVertical: 10,
+                      opacity: pressed ? 0.75 : 1,
+                    })}
                   >
                     <View style={{ opacity: on ? 1 : 0.45 }}>
                       <LogoTile id={f.catalogId ?? 'custom'} size={40} mono={f.catalogId ? undefined : f.name.slice(0, 1).toUpperCase()} color={f.catalogId ? undefined : p.mute} />
                     </View>
                     <View style={{ flex: 1, minWidth: 0 }}>
                       <View style={{ flexDirection: big ? 'column' : 'row', alignItems: big ? 'flex-start' : 'center', gap: big ? 0 : 8 }}>
-                        <Txt v="bodyStrong" color={on ? p.cardFg : p.mute} numberOfLines={big ? 2 : 1} style={{ flexShrink: 1, flex: big ? undefined : 1, textDecorationLine: on ? 'none' : 'line-through' }}>
+                        <Txt
+                          v="bodyStrong"
+                          color={on ? p.cardFg : p.mute}
+                          numberOfLines={big ? 2 : 1}
+                          style={{ flexShrink: 1, flex: big ? undefined : 1, textDecorationLine: on ? 'none' : 'line-through' }}
+                        >
                           {f.name}
                         </Txt>
                         {price ? (
@@ -211,7 +235,11 @@ export default function BankResults() {
             {yeses.map((f, i) => (
               <View key={f.key}>
                 {i ? <RowDivider inset={66} /> : null}
-                <View accessible accessibilityLabel={`${f.name}, ${f.amountMinor != null && f.currency ? spokenMoney(f.amountMinor, f.currency) : ''}, added`} style={{ minHeight: 60, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, paddingVertical: 10 }}>
+                <View
+                  accessible
+                  accessibilityLabel={`${f.name}, ${f.amountMinor != null && f.currency ? spokenMoney(f.amountMinor, f.currency) : ''}, added`}
+                  style={{ minHeight: 60, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, paddingVertical: 10 }}
+                >
                   <LogoTile id={f.catalogId ?? 'custom'} size={40} mono={f.catalogId ? undefined : f.name.slice(0, 1).toUpperCase()} color={f.catalogId ? undefined : p.mute} />
                   <Txt v="bodyStrong" color={p.cardFg} style={{ flex: 1 }}>
                     {`${f.name} · ${f.amountMinor != null && f.currency ? money(f.amountMinor, f.currency) : ''}`}
@@ -256,7 +284,12 @@ export default function BankResults() {
       ) : null}
 
       {apple ? (
-        <Pressable accessibilityRole="button" accessibilityHint="Opens the Apple screenshot finder" onPress={screenshot} style={{ marginTop: 14, backgroundColor: p.dark ? '#2A2516' : '#FFF6D6', borderRadius: 14, padding: 14 }}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityHint="Opens the Apple screenshot finder"
+          onPress={screenshot}
+          style={{ marginTop: 14, backgroundColor: p.dark ? '#2A2516' : '#FFF6D6', borderRadius: 14, padding: 14 }}
+        >
           <Txt v="sub" color={p.dark ? p.fg2 : '#4B4220'}>
             {'Apple bundles all its subscriptions into one charge. '}
             <Txt v="sub" style={{ textDecorationLine: 'underline', fontFamily: F.semi }} color={p.dark ? p.fg : brand.ink}>

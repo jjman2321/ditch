@@ -86,6 +86,23 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
+## 1s. Bank sync on the practice bank (Nov 19, design/v32, DECISIONS #70)
+Test build only, iPhone Region set to the US or Canada. The bank sign-in is a **practice sheet** ("Practice bank (test build)"): no real bank, made-up charges.
+1. Fresh onboarding → Where should we look?: "My bank or card" is the big card on top with "PRO · 7 DAYS FREE"; the free routes sit below under "Or do it yourself".
+2. Tap it → "Your bank already knows." with 3 ticks, "What we see" opens a short sheet, the price line is at the bottom.
+3. Choose my bank → 9 banks, 3 across. Search "navy" finds Navy Federal; "zzz" says no bank by that name. "Bank not here?" → "Didn't find your bank?" with 3 ways out.
+4. Pick Chase → the paywall says "See what Chase knows." Start my free week (Preview Pro) → the practice sheet opens over "Reading Chase…". Cancel → "Didn't find your bank?".
+5. Connect practice Chase → the 4 steps tick one by one, logos drop in → "Found 5 at Chase. $924 a year." Untick Netflix: the year total drops. Yes/No on the 2 unsure ones are the same size. Looks right → your total, without Netflix.
+6. Home (after onboarding): Settings → Bank connections → Practice: a new subscription → back to Home: toast "Added Disney+ from your bank. $11.99 a month." with Undo for 8 s; after it goes the row says FOUND IN YOUR BANK. Do it again and tap Undo: Disney+ is gone and doesn't come back on the next open.
+7. Practice: Netflix charges more → Home card "Netflix charged $22.99, not $17.99." Netflix still says $17.99 until Update price.
+8. Practice: Hulu stops charging → "No Hulu charge since …" Mark ditched opens the Ditched screen; Still paying hides it.
+9. Practice: bank signs Ditch out → amber card "Sign back in to Chase." (Later hides it 3 days); Settings → Bank connections shows "Needs sign-in" with Reconnect on the row.
+10. Only one bank card on Home at a time, and at most 2 cards above the list.
+11. Bank connections: tap Chase → "Disconnect Chase?" sheet, red Disconnect; your list stays. Add up to 3, then "3 is the limit".
+12. Settings → Your data → Delete all my data: says banks are disconnected too.
+13. VoiceOver: a results row reads "Netflix, 17 dollars 99, charged Sep 10, Oct 10, Nov 10, next Dec 10, added". Biggest text size: results rows put the price under the name. Reduce Motion: logos appear without moving. Dark mode on every screen.
+14. Region set to the UK: no bank card anywhere, no Bank connections row.
+
 ## 1r. Design audit fixes (Nov 19, design/v32 before/after boards)
 1. Reminders step: "Maybe later" is visible without scrolling on every phone; the lock-screen picture isn't cut off.
 2. Where should we look?: "look?" isn't alone on a line.

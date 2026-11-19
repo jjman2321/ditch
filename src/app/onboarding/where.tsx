@@ -69,13 +69,13 @@ export default function Where() {
           </>
         ) : (
           <>
-          {showImport() ? (
-            <>
-              <RouteCard icon={PhoneList} title="Apple subscriptions" line="A screenshot of your list." tag="FREE ONCE" onPress={() => find('/find/apple')} />
-              <RouteCard icon={StatementIcon} title="A bank statement" line="PDF or CSV from any bank." tag="FREE ONCE" onPress={() => find('/find/statement')} />
-            </>
-          ) : null}
-          <RouteCard icon={ListCheck} title="Pick them myself" line="Tick them from our list." onPress={() => router.push('/onboarding/services')} />
+            {showImport() ? (
+              <>
+                <RouteCard icon={PhoneList} title="Apple subscriptions" line="A screenshot of your list." tag="FREE ONCE" onPress={() => find('/find/apple')} />
+                <RouteCard icon={StatementIcon} title="A bank statement" line="PDF or CSV from any bank." tag="FREE ONCE" onPress={() => find('/find/statement')} />
+              </>
+            ) : null}
+            <RouteCard icon={ListCheck} title="Pick them myself" line="Tick them from our list." onPress={() => router.push('/onboarding/services')} />
           </>
         )}
         <Txt v="sub" tone="mute" center style={{ marginTop: 20, color: p.mute }}>

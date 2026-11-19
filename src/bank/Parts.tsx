@@ -137,7 +137,13 @@ export function StepRow({ label, state }: { label: string; state: 'done' | 'now'
 /** An underlined text link with a 44pt target. */
 export function TextLink({ label, onPress, center, hint }: { label: string; onPress: () => void; center?: boolean; hint?: string }) {
   return (
-    <Pressable accessibilityRole="link" accessibilityHint={hint} onPress={onPress} hitSlop={6} style={({ pressed }) => ({ minHeight: 44, justifyContent: 'center', alignSelf: center ? 'center' : 'flex-start', opacity: pressed ? 0.6 : 1 })}>
+    <Pressable
+      accessibilityRole="link"
+      accessibilityHint={hint}
+      onPress={onPress}
+      hitSlop={6}
+      style={({ pressed }) => ({ minHeight: 44, justifyContent: 'center', alignSelf: center ? 'center' : 'flex-start', opacity: pressed ? 0.6 : 1 })}
+    >
       <Txt v="label" style={{ fontSize: 15, textDecorationLine: 'underline' }}>
         {label}
       </Txt>

@@ -16,7 +16,7 @@ import { useBank } from '@/state/bank';
 import { tell } from '@/ui/alert';
 import { Button, Card, LogoTile, Sheet, Stage, Txt, haptic, usePalette } from '@/ui/sunflower';
 
-const STEP_MIN_MS = 900;
+const STEP_MIN_MS = 1200;
 const KEEP_GOING_MS = 20_000;
 const SLOW_MS = 180_000;
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -182,13 +182,7 @@ export default function BankScan() {
         </Card>
       ) : null}
 
-      <PracticeSignIn
-        visible={phase === 'signin'}
-        bankName={name}
-        live={bank.live}
-        onConnect={read}
-        onClose={() => router.replace(`/bank/missing?${flow.q({ closed: '1' })}`)}
-      />
+      <PracticeSignIn visible={phase === 'signin'} bankName={name} live={bank.live} onConnect={read} onClose={() => router.replace(`/bank/missing?${flow.q({ closed: '1' })}`)} />
     </BankPage>
   );
 }

@@ -19,5 +19,14 @@ export function useBankFlow() {
   const pro = app.pro || (onboarding && ob.pro !== null);
   const country = onboarding ? (ob.country ?? app.settings.country) : app.settings.country;
   const on = showBankSync(country, app.settings.currency);
-  return { from, onboarding, pro, on, country, bankId: params.bank ?? null, linkId: params.link ?? null, q: (extra: Record<string, string> = {}) => new URLSearchParams({ from, ...extra }).toString() };
+  return {
+    from,
+    onboarding,
+    pro,
+    on,
+    country,
+    bankId: params.bank ?? null,
+    linkId: params.link ?? null,
+    q: (extra: Record<string, string> = {}) => new URLSearchParams({ from, ...extra }).toString(),
+  };
 }

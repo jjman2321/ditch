@@ -44,7 +44,23 @@ describe('migrations', () => {
     expect(tables.map((t) => t.name)).toEqual(['bank_state', 'settings', 'subscriptions']);
     const cols = await db.getAllAsync<{ name: string }>('PRAGMA table_info(subscriptions)');
     expect(cols.map((c) => c.name)).toEqual(
-      expect.arrayContaining(['amount_minor', 'currency', 'cycle', 'anchor_date', 'date_source', 'plan_id', 'price_source', 'price_country', 'free_pick', 'reminders_muted', 'status', 'ditched_on', 'cancel_by', 'confirmed_on', 'ditched_amount_minor']),
+      expect.arrayContaining([
+        'amount_minor',
+        'currency',
+        'cycle',
+        'anchor_date',
+        'date_source',
+        'plan_id',
+        'price_source',
+        'price_country',
+        'free_pick',
+        'reminders_muted',
+        'status',
+        'ditched_on',
+        'cancel_by',
+        'confirmed_on',
+        'ditched_amount_minor',
+      ]),
     );
     db.close();
   });
@@ -74,10 +90,13 @@ describe('migrations', () => {
 
   it('migration 3 keeps every saved subscription and allows every 2 weeks and every 6 months (DECISIONS #57)', async () => {
     const db = nodeSqlite();
-    await migrate(db, MIGRATIONS.filter((m) => m.version <= 2));
+    await migrate(
+      db,
+      MIGRATIONS.filter((m) => m.version <= 2),
+    );
     const before = [netflix(), netflix({ id: 'sub-ditched', name: 'Hulu', status: 'ditched-pending', ditchedOn: '2026-11-10', snapAmountMinor: 1899, snapCurrency: 'USD', snapCycle: 'monthly' })];
     // Only the columns that existed at version 2 (migration 4 added more).
-    const cols2 = SUB_COLUMNS.filter((c) => !['paid_with', 'account_email', 'notes', 'skip_charge'].includes(c));
+    const cols2 = SUB_COLUMNS.filter((c) => !['paid_with', 'account_email', 'notes', 'skip_charge', 'found_in_bank_on'].includes(c));
     for (const sub of before) {
       const row = subToRow(sub);
       await db.runAsync(`INSERT INTO subscriptions (${cols2.join(', ')}) VALUES (${cols2.map(() => '?').join(', ')})`, ...cols2.map((c) => row[c]));
@@ -97,8 +116,11 @@ describe('migrations', () => {
 
   it('migration 4 adds card, account email, notes and skip, and keeps every row (DECISIONS #60)', async () => {
     const db = nodeSqlite();
-    await migrate(db, MIGRATIONS.filter((m) => m.version <= 3));
-    const cols3 = SUB_COLUMNS.filter((c) => !['paid_with', 'account_email', 'notes', 'skip_charge'].includes(c));
+    await migrate(
+      db,
+      MIGRATIONS.filter((m) => m.version <= 3),
+    );
+    const cols3 = SUB_COLUMNS.filter((c) => !['paid_with', 'account_email', 'notes', 'skip_charge', 'found_in_bank_on'].includes(c));
     const row = subToRow(netflix());
     await db.runAsync(`INSERT INTO subscriptions (${cols3.join(', ')}) VALUES (${cols3.map(() => '?').join(', ')})`, ...cols3.map((c) => row[c]));
     const repo = await sqlRepo(db);
@@ -112,7 +134,10 @@ describe('migrations', () => {
 
   it('migration 5 adds the bank side and the found-in-bank day, and keeps every row (DECISIONS #67, #70)', async () => {
     const db = nodeSqlite();
-    await migrate(db, MIGRATIONS.filter((m) => m.version <= 4));
+    await migrate(
+      db,
+      MIGRATIONS.filter((m) => m.version <= 4),
+    );
     const cols4 = SUB_COLUMNS.filter((c) => c !== 'found_in_bank_on');
     const row = subToRow(netflix());
     await db.runAsync(`INSERT INTO subscriptions (${cols4.join(', ')}) VALUES (${cols4.map(() => '?').join(', ')})`, ...cols4.map((c) => row[c]));
@@ -226,12 +251,7 @@ contract('SQLite', () => sqlRepo(nodeSqlite()));
 
 it('SQLite: quick writes one after another never overlap their transactions', async () => {
   const repo = await sqlRepo(nodeSqlite());
-  await Promise.all([
-    repo.saveSubs([netflix()]),
-    repo.saveSettings({ currency: 'GBP' }),
-    repo.saveSubs([netflix({ id: 'b', name: 'B' })]),
-    repo.saveSettings({ reminderTime: '08:15' }),
-  ]);
+  await Promise.all([repo.saveSubs([netflix()]), repo.saveSettings({ currency: 'GBP' }), repo.saveSubs([netflix({ id: 'b', name: 'B' })]), repo.saveSettings({ reminderTime: '08:15' })]);
   expect((await repo.loadSubs()).map((s) => s.id).sort()).toEqual(['b', 'sub-netflix']);
   expect((await repo.loadSettings()).reminderTime).toBe('08:15');
 });

@@ -15,11 +15,12 @@ import { bankEntry, type BankEntry } from '@/bank/banks';
 import { showBankSync } from '@/config/features';
 import { openRepo } from '@/db/open';
 import { webParam } from '@/dev/webParams';
-import type { DateOnly } from '@/domain/dates';
+import { addDays, type DateOnly } from '@/domain/dates';
 import { runningProTrial, type Sub } from '@/domain/subs';
 import * as bank from '@/services/bank';
 import { today as clockToday } from '@/services/clock';
 import { useApp } from '@/state/app';
+import { proTrialSub } from '@/state/fromOnboarding';
 
 import {
   MAX_LINKS,
@@ -31,6 +32,7 @@ import {
   emptyBank,
   laterLink,
   parseBank,
+  priceKey,
   redoFind,
   rememberKeys,
   removeLink,
@@ -153,9 +155,9 @@ export function BankProvider({ children }: { children: ReactNode }) {
 
   const runSync = useCallback(
     (o: { toast?: boolean; onboarding?: boolean } = {}) => {
+      if (!ref.current.links.length) return Promise.resolve({ added: [] as Sub[] });
       if (inFlight.current) return inFlight.current;
       const run = (async () => {
-        if (!ref.current.links.length) return { added: [] };
         setSyncing(true);
         try {
           const res = await bank.syncBank();
@@ -164,7 +166,8 @@ export function BankProvider({ children }: { children: ReactNode }) {
           const r = await apply({ links: res.links.filter((l) => known.has(l.linkId)) }, o);
           await bank.confirmBankSync(res).catch(() => {});
           return r;
-        } catch {
+        } catch (e) {
+          if (__DEV__) console.warn('bank sync failed', e);
           return { added: [] };
         } finally {
           setSyncing(false);
@@ -194,7 +197,7 @@ export function BankProvider({ children }: { children: ReactNode }) {
     const demo = webParam('bank');
     if (!demo || demoDone.current || !ready || !app.ready || !app.settings.onboardingDone) return;
     demoDone.current = true;
-    void runDemo(demo, { put, apply, ref, setToasts });
+    void runDemo(demo, { put, apply, ref, setToasts, app: appRef.current });
   }, [ready, app.ready, app.settings.onboardingDone, put, apply]);
 
   const actions = useMemo(
@@ -286,6 +289,7 @@ type DemoKit = {
   apply: (res: bank.BankSyncResponse, o?: { toast?: boolean; onboarding?: boolean }) => Promise<{ added: Sub[] }>;
   ref: { current: BankState };
   setToasts: (f: (t: BankToast[]) => BankToast[]) => void;
+  app: { setPro: (plan: 'yearly' | null, o?: { startTrial?: boolean }) => Promise<void>; addSub: (s: Sub) => Promise<void> };
 };
 
 /** ?bank=connected|toast|price|cancelled|reconnect|recap|check: a practice Chase in that state. */
@@ -294,7 +298,15 @@ async function runDemo(kind: string, kit: DemoKit) {
   const chase = bankEntry('chase')!;
   const amex = bankEntry('amex')!;
   await kit.put(
-    addLink(emptyBank(), { id: 'demo-chase', bankId: chase.id, name: chase.name, status: 'active', accounts: 'Visa ending 4821 · Checking ending 1005', connectedOn: today, checkedAt: new Date(Date.now() - 2 * 3600_000).toISOString() }),
+    addLink(emptyBank(), {
+      id: 'demo-chase',
+      bankId: chase.id,
+      name: chase.name,
+      status: 'active',
+      accounts: 'Visa ending 4821 · Checking ending 1005',
+      connectedOn: today,
+      checkedAt: new Date(Date.now() - 2 * 3600_000).toISOString(),
+    }),
   );
   if (kind === 'settings') {
     await kit.put(addLink(kit.ref.current, { id: 'demo-amex', bankId: amex.id, name: 'American Express', status: 'needs_relogin', accounts: 'Gold ending 3007', connectedOn: today }));
@@ -310,5 +322,12 @@ async function runDemo(kind: string, kit: DemoKit) {
     for (const f of kit.ref.current.suggestions) await kit.put(answerSuggestion(kit.ref.current, f.key, false, { today, nowIso: new Date().toISOString(), country: 'US', currency: 'USD' }).state);
   };
   if (kind !== 'check' && kind !== 'connected') await answerAll();
+  if (kind === 'recap') {
+    // Day 5 of the free week: Pro on, Ditch's trial ends in 2 days, and Netflix's price went up.
+    await kit.app.setPro('yearly');
+    await kit.app.addSub(proTrialSub(addDays(today, -5), new Date().toISOString()));
+    await kit.apply(bank.practiceSync('price', kit.ref.current.links, today, 1));
+    for (const c of kit.ref.current.priceChanges) await kit.put(dismiss(kit.ref.current, priceKey(c)));
+  }
   if (kind === 'price' || kind === 'cancelled' || kind === 'reconnect') await kit.apply(bank.practiceSync(kind === 'reconnect' ? 'relogin' : kind, kit.ref.current.links, today, 1));
 }

@@ -98,6 +98,17 @@ const PRO_INSET = 10;
 const DUCK_STAND = require('../../assets/brand/duck-stand.png');
 const STAND_W = 46;
 const STAND_H = Math.round((STAND_W * 231) / 240);
+const DUCK_BODY = require('../../assets/brand/duck-body.png');
+const DUCK_FEET = require('../../assets/brand/duck-feet.png');
+const SIT_W = 50;
+const SIT_BODY_H = Math.round((SIT_W * 208) / 240);
+const SIT_FEET_H = Math.round((SIT_W * 21) / 240);
+// The peeking duck (assets/brand/duck.png, 600×350 with 36px air above and beside him).
+const DUCK_PEEK = require('../../assets/brand/duck.png');
+const DUCK_PEEK_DARK = require('../../assets/brand/duck-dark.png');
+const GRIP_W = 52;
+const GRIP_BOX_W = (GRIP_W * 600) / 528;
+const GRIP_H = Math.round((GRIP_BOX_W * 350) / 600);
 const HERO_H = 190;
 const EDGE_W = 24;
 /** Everything on the canvas except the table rows (hero, table header, plans, button, price line, links). */
@@ -144,7 +155,23 @@ function fitRowsTo(rows: Row[], n: number): Row[] {
 }
 
 /** Free vs Pro. Fixed columns: Free 56pt; Pro fits "Unlimited" with 12pt either side. */
-function Compare({ rows, width, overlap, tiny, grow = 0, font = 14, duck }: { rows: Row[]; width: number; overlap: number; tiny?: boolean; grow?: number; font?: number; duck?: 'stand' | 'bell' }) {
+function Compare({
+  rows,
+  width,
+  overlap,
+  tiny,
+  grow = 0,
+  font = 14,
+  duck,
+}: {
+  rows: Row[];
+  width: number;
+  overlap: number;
+  tiny?: boolean;
+  grow?: number;
+  font?: number;
+  duck?: 'stand' | 'bell' | 'sit' | 'grip';
+}) {
   const CELL_TEXT = { fontFamily: F.semi, fontSize: font, lineHeight: Math.round(font * 1.43) };
   const LABEL_TEXT = { fontFamily: F.medium, fontSize: font, letterSpacing: -0.1 };
   const p = usePalette();
@@ -206,7 +233,54 @@ function Compare({ rows, width, overlap, tiny, grow = 0, font = 14, duck }: { ro
         }}
       />
       {/* Preview: the duck stands on top of the Pro column (his column), optionally ringing a bell. */}
-      {duck ? (
+      {duck === 'sit' ? (
+        // Sitting on the column's top edge, feet hanging over the front.
+        <View
+          pointerEvents="none"
+          importantForAccessibility="no-hide-descendants"
+          accessibilityElementsHidden
+          style={{ position: 'absolute', right: PRO_INSET, width: colP, top: -14 - SIT_BODY_H + 2, alignItems: 'center' }}
+        >
+          <Image source={DUCK_BODY} style={{ width: SIT_W, height: SIT_BODY_H }} contentFit="contain" transition={0} />
+          <Image source={DUCK_FEET} style={{ width: SIT_W, height: SIT_FEET_H, marginTop: 3 }} contentFit="contain" transition={0} />
+        </View>
+      ) : duck === 'grip' ? (
+        // Peeking over the column with his wings on the edge, so the cut is on purpose.
+        <View
+          pointerEvents="none"
+          importantForAccessibility="no-hide-descendants"
+          accessibilityElementsHidden
+          style={{ position: 'absolute', right: PRO_INSET, width: colP, top: -14 - GRIP_H, height: GRIP_H + 8, alignItems: 'center' }}
+        >
+          <Image source={dark ? DUCK_PEEK_DARK : DUCK_PEEK} style={{ width: GRIP_BOX_W, height: GRIP_H }} contentFit="contain" transition={0} />
+          <View
+            style={{
+              position: 'absolute',
+              top: GRIP_H - 6,
+              left: colP / 2 - GRIP_W / 2 - 3,
+              width: 16,
+              height: 11,
+              borderRadius: 6,
+              backgroundColor: brand.white,
+              borderWidth: 2.5,
+              borderColor: brand.ink,
+            }}
+          />
+          <View
+            style={{
+              position: 'absolute',
+              top: GRIP_H - 6,
+              left: colP / 2 + GRIP_W / 2 - 13,
+              width: 16,
+              height: 11,
+              borderRadius: 6,
+              backgroundColor: brand.white,
+              borderWidth: 2.5,
+              borderColor: brand.ink,
+            }}
+          />
+        </View>
+      ) : duck ? (
         <View
           pointerEvents="none"
           importantForAccessibility="no-hide-descendants"
@@ -311,8 +385,8 @@ export default function Paywall() {
   // names their bank, and after the purchase the bank sign-in opens straight away.
   const { from, plan: planParam, bank: bankParam, pwduck } = useLocalSearchParams<{ from?: string; plan?: string; bank?: string; pwduck?: string }>();
   // Where the duck sits (owner, Nov 19: "have the duck somewhere"). Preview-only switch while the owner picks.
-  const duckAt: 'none' | 'promise' | 'avatar' | 'stand' | 'bell' = pwduck === 'promise' || pwduck === 'avatar' || pwduck === 'stand' || pwduck === 'bell' ? pwduck : 'none';
-  const tableDuck = duckAt === 'stand' || duckAt === 'bell' ? duckAt : undefined;
+  const duckAt = (['promise', 'avatar', 'stand', 'bell', 'sit', 'grip'] as const).find((v) => v === pwduck) ?? 'none';
+  const tableDuck = duckAt === 'stand' || duckAt === 'bell' || duckAt === 'sit' || duckAt === 'grip' ? duckAt : undefined;
   const bankPick = bankParam ? bankEntry(bankParam) : null;
   // After onboarding (Settings, a PRO tag, the editor) vs. during onboarding. Decided by
   // whether onboarding is done, never by the link, so no link can rerun onboarding.

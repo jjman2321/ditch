@@ -4,9 +4,9 @@
 // the trial line has real dates; no countdowns, no fake discounts, no trial
 // toggle. The billed price is always the biggest price.
 // Order (owner, Nov 18): Weekly / Yearly / Lifetime, cheapest first, so Yearly sits in the middle,
-// pre-selected (the "compromise" pick, right under the weekly price it beats by 86%).
+// pre-selected (the "compromise" pick, right under the weekly price it beats by 83%).
 // Plans (DECISIONS #66, owner Nov 18): Yearly with 7 days free (pre-selected,
-// "$0.96 a week", saving vs Weekly), Lifetime ("Pay once.")
+// "$1.15 a week", saving vs Weekly), Lifetime ("Pay once.")
 // for people tired of subscriptions, Weekly with no trial. No monthly.
 // Layout (owner, Nov 18: "always fits, any screen"): like AllTrails, Smart Receipts, Quizlet and
 // Trade AI on Mobbin/AppKittie, the plans, button, price line and links sit at the bottom and look
@@ -315,7 +315,7 @@ export default function Paywall() {
     lifetime: `Pay ${lifetime.priceString} once`,
   }[planId];
   const perWeek = perWeekFromYearly({ amountMinor: yearly.priceMinor, currency: yearly.currency });
-  // A true comparison with the Weekly plan we sell: $6.99 × 52 = $363.48 vs $49.99 (rounded down).
+  // A true comparison with the Weekly plan we sell: $6.99 × 52 = $363.48 vs $59.99 → 83% (rounded down).
   const badge = yearlyBadgeVsWeekly({ amountMinor: weekly.priceMinor, currency: weekly.currency }, { amountMinor: yearly.priceMinor, currency: yearly.currency }).toUpperCase();
 
   // The same headline from onboarding, a 4th bell (from=which) or custom days (from=remind): "all N" once they track more than 3.

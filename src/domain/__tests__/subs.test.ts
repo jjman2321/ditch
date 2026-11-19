@@ -223,7 +223,7 @@ describe('onboarding is saved', () => {
     expect(subs[0]).toMatchObject({ catalogId: 'netflix', name: 'Netflix', currency: 'USD', dateSource: 'none', source: 'onboarding', status: 'active' }); // not picked on the dates step yet
     const pro = subsFromOnboarding({ picks, reminderIds: [], pro: 'yearly', today: TODAY, nowIso: 'x' });
     const trial = pro.find((s) => s.kind === 'ditch_pro_trial')!;
-    expect([trial.anchor, trial.amountMinor, trial.isTrial]).toEqual(['2026-11-16', 4999, true]);
+    expect([trial.anchor, trial.amountMinor, trial.isTrial]).toEqual(['2026-11-16', 5999, true]);
   });
 });
 

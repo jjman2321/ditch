@@ -1,8 +1,8 @@
 // Ditch Pro: the plan, restore, manage. Purchases go through StoreKit 2
 // directly (DECISIONS #59, no RevenueCat) once Milestone 2 lands; until then
 // they're stubbed, so this never charges anything. Prices and the trial come
-// from PLANS (DECISIONS #66: Weekly $6.99, Yearly $49.99 with 7 days free,
-// Lifetime $99.99), never typed here.
+// from PLANS (DECISIONS #69: Weekly $6.99, Yearly $59.99 with 7 days free,
+// Lifetime $119.99), never typed here.
 
 import { router } from 'expo-router';
 import { View } from 'react-native';

@@ -1,8 +1,8 @@
 // Purchases adapter. Milestone 2 swaps this for StoreKit 2 directly
 // (DECISIONS #59, no RevenueCat; library candidate expo-iap), which reads
 // real localized prices from the App Store. Until then these are the
-// planned US prices (DECISIONS #66: Weekly $6.99, Yearly $49.99 with a
-// 7-day trial, Lifetime $99.99), used only to lay out the paywall. Display
+// planned US prices (DECISIONS #69: Weekly $6.99, Yearly $59.99 with a
+// 7-day trial, Lifetime $119.99), used only to lay out the paywall. Display
 // code must use priceString (the store's own text) and the minor-unit
 // amounts, never a typed "$".
 
@@ -11,7 +11,7 @@ export type PlanId = 'yearly' | 'weekly' | 'lifetime';
 export type Plan = {
   id: PlanId;
   title: string;
-  priceString: string; // what the store says, e.g. "$49.99"
+  priceString: string; // what the store says, e.g. "$59.99"
   priceMinor: number;
   currency: string;
   period: 'year' | 'week' | 'once';
@@ -20,8 +20,8 @@ export type Plan = {
 
 export const PLANS: Plan[] = [
   // DECISIONS #66 (owner, Nov 18): Yearly with a 7-day trial, Lifetime on the main paywall, Weekly. No monthly.
-  { id: 'yearly', title: 'Yearly', priceString: '$49.99', priceMinor: 4999, currency: 'USD', period: 'year', trialDays: 7 },
-  { id: 'lifetime', title: 'Lifetime', priceString: '$99.99', priceMinor: 9999, currency: 'USD', period: 'once', trialDays: 0 },
+  { id: 'yearly', title: 'Yearly', priceString: '$59.99', priceMinor: 5999, currency: 'USD', period: 'year', trialDays: 7 },
+  { id: 'lifetime', title: 'Lifetime', priceString: '$119.99', priceMinor: 11999, currency: 'USD', period: 'once', trialDays: 0 },
   { id: 'weekly', title: 'Weekly', priceString: '$6.99', priceMinor: 699, currency: 'USD', period: 'week', trialDays: 0 },
 ];
 
@@ -31,7 +31,7 @@ export function planById(id: PlanId): Plan {
   return PLANS.find((p) => p.id === id)!;
 }
 
-/** "$49.99/yr", "$6.99/wk", "$99.99". */
+/** "$59.99/yr", "$6.99/wk", "$119.99". */
 export function billedLabel(plan: Plan): string {
   return plan.priceString + (plan.period === 'year' ? '/yr' : plan.period === 'week' ? '/wk' : '');
 }

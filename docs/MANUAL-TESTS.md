@@ -92,7 +92,7 @@ Reset first (delete the app, reinstall from TestFlight, open twice). Use an iPho
 2. Where should we look?: all options fit without scrolling, same back arrow as the other steps.
 3. Pick services → "Add them all at once": opens "Where should we look?", not the paywall.
 4. Your total: "Most people guess less than half that." above the button (not on SE).
-5. Paywall: renewal line ends "Renews yearly until you cancel."; on an SE the plans, button, line and Restore · Terms · Privacy are full size. Set the largest text size: the top scrolls, Restore stays on screen.
+5. Paywall: renewal line reads "Then $59.99/yr from <date>. Renews yearly until you cancel."; Yearly shows $59.99, "$1.15 a week", "SAVE 83%"; Lifetime $119.99; on an SE the plans, button, line and Restore · Terms · Privacy are full size. Set the largest text size: the top scrolls, Restore stays on screen.
 6. Settings: "Restore purchases" row when you're not Pro. Settings → Ditch Pro: 3 benefit rows and "7 days free, then $49.99/yr".
 7. Which 3: tap a 4th bell → the paywall opens.
 8. Home: tap a grey bell → reminder turns on (4th opens the paywall). "in 5 days" stays on every row. Pick a card chip → a total for that card shows.

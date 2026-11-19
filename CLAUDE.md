@@ -81,7 +81,7 @@ This is the #1 complaint about Bobby, so it's the product.
 - **Never delete or hide data when Pro lapses.** Reminders drop back to 3.
 
 ### 7. Lifetime
-- $99.99 one-time (DECISIONS #66), shown on the main paywall. Covers **Pro** with one bank scan a year; always-on bank sync is not included.
+- $119.99 one-time (DECISIONS #69), shown on the main paywall. Covers **Pro** forever plus always-on bank sync for the first 12 months; after that, bank sync is an optional $19.99/yr add-on (DECISIONS #67). Details live in the Terms page.
 - Never write "all future features included".
 
 ### 8. Ditch the duck, the Ditched moment and the voice

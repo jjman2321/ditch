@@ -11,17 +11,15 @@ import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withSeque
 
 import { catalogPrice, defaultPlan, planChoices, priceRow } from '@/catalog/prices';
 import { CHIP, FILTERS, type Filter } from '@/catalog/filters';
-import { showImport } from '@/config/features';
 import { SERVICES, availableIn, popularIn, searchServices, type CatalogService } from '@/catalog/services';
 import { shortPlanName } from '@/domain/copy';
 import { CYCLE_SHORT } from '@/domain/money';
-import { setFindTarget } from '@/import/session';
 import { CountrySheet } from '@/onboarding/CountrySheet';
 import { LinkButton, OnbRoot, TextLink } from '@/onboarding/Parts';
 import { PlanSheet } from '@/onboarding/PlanSheet';
 import { PriceSheet } from '@/onboarding/PriceSheet';
 import { isPriced, totalsFor, useCountry, useMoney, useOnboarding, usePickedList, type Picked } from '@/state/onboarding';
-import { Button, Camera, ChevronRight, EASE_OUT, F, LogoTile, POP, PRESS, RELEASE, Search, StepHeaderSpace, TickPop, Txt, haptic, radius, useFrame, usePalette } from '@/ui/sunflower';
+import { Button, ChevronRight, EASE_OUT, F, LogoTile, POP, PRESS, RELEASE, Search, StepHeaderSpace, TickPop, Txt, haptic, radius, useFrame, usePalette } from '@/ui/sunflower';
 
 const NB = ' ';
 
@@ -151,67 +149,6 @@ function Row({ s, pick, first, onToggle, onChange }: { s: CatalogService; pick: 
   );
 }
 
-/**
- * "Add them all at once" (design/v13-dates screen 0, DECISIONS #34): one
- * button. It opens "Where should we look?" (screenshot or statement), the same
- * place as Skip on the slides. The first find is free (#34), so it never opens
- * the paywall. Hidden until import works (src/config/features.ts). On small
- * phones it's one line, so the list keeps more rows.
- */
-function ImportCard() {
-  const p = usePalette();
-  const f = useFrame();
-  const compact = f.small;
-  return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel="Add from a screenshot or statement. We fill in the prices and dates."
-      onPress={() => {
-        setFindTarget('onboarding');
-        router.push('/onboarding/where');
-      }}
-      style={({ pressed }) => ({
-        marginTop: compact ? 10 : 14,
-        minHeight: compact ? 48 : 64,
-        borderRadius: 16,
-        backgroundColor: p.card,
-        borderWidth: 1.5,
-        borderColor: p.chipBorder,
-        paddingHorizontal: 14,
-        paddingVertical: compact ? 6 : 12,
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 12,
-        opacity: pressed ? 0.75 : 1,
-      })}
-    >
-      <View
-        style={{
-          width: compact ? 32 : 40,
-          height: compact ? 32 : 40,
-          borderRadius: compact ? 10 : 12,
-          backgroundColor: p.dark ? '#2A2721' : '#FFF1BC',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Camera color={p.fg} />
-      </View>
-      <View style={{ flex: 1, minWidth: 0 }}>
-        <Txt v="label" color={p.cardFg} numberOfLines={compact ? 1 : undefined}>
-          Add from a screenshot or statement
-        </Txt>
-        {compact ? null : (
-          <Txt v="sub" tone="mute" style={{ marginTop: 2 }}>
-            Snap a screenshot or upload a bank statement. We fill in the prices and dates.
-          </Txt>
-        )}
-      </View>
-      <ChevronRight color={p.mute} />
-    </Pressable>
-  );
-}
-
 /** "Tick each one. Prices for 🇺🇸 US · Change" */
 function CountryLine({ onChange }: { onChange: () => void }) {
   const country = useCountry();
@@ -329,7 +266,6 @@ export default function Services() {
           {`What do you pay${NB}for?`}
         </Txt>
         <CountryLine onChange={() => setCountryOpen(true)} />
-        {showImport() ? <ImportCard /> : null}
         <View
           style={{
             marginTop: 16,

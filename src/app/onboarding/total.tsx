@@ -286,7 +286,7 @@ export default function Total() {
               <View style={{ flex: 1, minHeight: 16 }} />
               <Animated.View style={moreStyle}>
                 <Txt v="sub" color={cream.mute} style={{ marginBottom: 8 }}>
-                  Most people guess less than half that.
+                  Most people guess less than half of what they pay.
                 </Txt>
               </Animated.View>
             </>

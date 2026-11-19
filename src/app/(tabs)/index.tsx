@@ -96,9 +96,10 @@ export default function Home() {
   const sync = bank.cards[0] ?? null;
   // At most two cards above the list on every phone, so the list starts on the first screen:
   // Next reminder (when there is one) plus ONE other. A bank sync card takes that slot first (it's
-  // about real money that just moved), then before payday, a duplicate/overlap
+  // about real money that just moved), then a duplicate/overlap, then before payday
   // (then price watch, the other suggestion), then dates missing.
-  const other = sync ? 'sync' : payday ? 'payday' : overlap ? 'overlap' : change ? 'change' : undated.length && !blocked ? 'undated' : null;
+  // The overlap card can be dismissed, so it goes before payday; payday only when something is actually due (audit, Nov 19).
+  const other = sync ? 'sync' : overlap ? 'overlap' : payday?.count ? 'payday' : change ? 'change' : undated.length && !blocked ? 'undated' : null;
   // The very next one, so it's plain that reminders are scheduled.
   const next = blocked ? null : nextReminder(app.plan, subs);
   const money = useAppMoney();

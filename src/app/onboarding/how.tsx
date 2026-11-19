@@ -132,7 +132,7 @@ function Statement({ play }: { play: boolean }) {
     ['DEC 05', 'APPLE.COM/BILL', '27.97', true],
     ['DEC 03', 'SPOTIFY USA', '11.99', true],
     ['DEC 02', 'TRADER JOE’S #552', '64.10', false],
-    ['DEC 01', 'NETFLIX.COM', '17.99', true],
+    ['DEC 01', 'NETFLIX.COM', '19.99', true],
   ];
   let k = 0;
   return (
@@ -158,9 +158,10 @@ function Statement({ play }: { play: boolean }) {
 /** Slide 2: the reminders drop in one by one, like they do on the lock screen. Each card moves as a whole. */
 function Notes({ play }: { play: boolean }) {
   const notes = [
-    { time: 'Sat 9 AM', message: 'Netflix renews Tuesday. $17.99. Still watching?' },
-    { time: 'Mon 9 AM', message: 'Your ChatGPT trial ends Friday. Then $20.00 a month.' },
-    { time: 'Wed 9 AM', message: 'Spotify went up to $12.99. You were paying $11.99.', faded: true },
+    // Real reminders only (3 days and 1 day before), newest on top like iOS (audit, Nov 19).
+    { time: 'Mon 9 AM', message: 'Netflix renews tomorrow. $19.99. Last call if you’re done with it.' },
+    { time: 'Sat 9 AM', message: 'Netflix renews Tuesday. $19.99. Still watching?' },
+    { time: 'Fri 9 AM', message: 'Your ChatGPT trial ends Monday. Then it’s $20.00 a month.', faded: true },
   ];
   return (
     <View style={{ gap: 10 }}>
@@ -200,7 +201,7 @@ function DitchRows({ play }: { play: boolean }) {
     price: string;
     ditched?: boolean;
   }[] = [
-    { id: 'netflix', name: 'Netflix', sub: 'Tue, Dec 16', price: '$17.99' },
+    { id: 'netflix', name: 'Netflix', sub: 'Tue, Dec 16', price: '$19.99' },
     {
       id: 'planet-fitness',
       name: 'Planet Fitness',

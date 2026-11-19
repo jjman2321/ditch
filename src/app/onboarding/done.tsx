@@ -140,7 +140,7 @@ export default function Done() {
         : remindedIds.length
           ? { mark: 'ok', title: remindedIds.length < n ? `Reminders on ${remindedIds.length} of ${n}` : 'Reminders are on', sub: '3 days and 1 day before. You pick the time.' }
           : { mark: 'todo', title: 'No reminders picked yet', sub: 'Pick up to 3 from your list. Free covers 3.' }
-      : { mark: 'warn', title: 'Reminders are off', sub: 'Nothing can reach you until you turn them\u00A0on.' },
+      : { mark: 'warn', title: 'Reminders are off', sub: 'We can’t remind you until you turn them\u00A0on.' },
   ];
   if (trialDays.length)
     items.push(
@@ -158,13 +158,13 @@ export default function Done() {
             title: `${undated.length} with no date yet`,
             sub:
               !pro && many
-                ? 'Free covers 3. Add dates, then pick\u00A0which.'
+                ? 'Add their dates. Free reminds you about\u00A03.'
                 : `Add ${undated.length === 1 ? 'its date' : 'dates'} for ${namesLine(undated)} to get ${undated.length === 1 ? 'its' : 'their'}\u00A0reminders`,
           }
         : { mark: 'ok', title: 'Every date is set', sub: 'Reminders land on the right day.' },
     );
 
-  const seeLabel = remindedIds.length === 1 ? 'See your reminder' : `See all ${Math.min(3, remindedIds.length)} reminders`;
+  const seeLabel = 'Pick which 3 get reminders';
 
   const title = on ? 'You’re set.' : 'Almost set.';
   const titleBase = f.tablet ? 80 : 60;
@@ -194,7 +194,14 @@ export default function Done() {
               <View
                 accessible
                 accessibilityLabel={`${it.mark === 'ok' ? 'Done' : it.mark === 'warn' ? 'Needs you' : 'To do'}: ${it.title}. ${it.sub}`}
-                style={{ flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: f.tiny ? 9 : f.small ? 11 : 14, borderTopWidth: i ? 1 : 0, borderTopColor: p.dark ? '#2C2924' : '#EFE8D8' }}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: 12,
+                  paddingVertical: f.tiny ? 9 : f.small ? 11 : 14,
+                  borderTopWidth: i ? 1 : 0,
+                  borderTopColor: p.dark ? '#2C2924' : '#EFE8D8',
+                }}
               >
                 <MarkIcon kind={it.mark} />
                 <View style={{ flex: 1 }}>

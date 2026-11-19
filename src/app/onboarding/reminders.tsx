@@ -127,7 +127,16 @@ export default function Reminders() {
         <Txt
           v="title"
           accessibilityRole="header"
-          style={[{ marginTop: f.tiny ? 10 : 16 }, f.tiny ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 } : f.tablet ? null : { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 }]}
+          style={[
+            { marginTop: f.tiny ? 10 : 16 },
+            f.tiny
+              ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 }
+              : f.small
+                ? { fontSize: 24, lineHeight: 30, letterSpacing: -0.7 }
+                : f.tablet
+                  ? null
+                  : { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 },
+          ]}
         >
           {`Get a reminder\nbefore you’re${NB}charged.`}
         </Txt>

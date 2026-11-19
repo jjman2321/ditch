@@ -45,16 +45,16 @@ export default function Where() {
             <ChevronLeft color={chevron} />
           </IconButton>
         </View>
-        <Txt v="title" accessibilityRole="header" style={{ marginTop: 2, fontSize: 28, lineHeight: 34 }}>
+        <Txt v="title" accessibilityRole="header" style={{ marginTop: 16 }}>
           {'Where should we\u00A0look?'}
         </Txt>
         <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
-          Pick one. You check everything before it’s added.
+          Pick one. You check them all first.
         </Txt>
         {/* Four equal cards, most complete first (owner, Nov 19: the old card style, order matters).
             The bank finds everything and keeps watching, so it leads where we offer it; the
             free route is last. Tags say what each one costs, nothing else. */}
-        {bank ? <RouteCard icon={Bank} title="My bank or card" line="Finds them all, even new ones." tag="7 DAYS FREE" onPress={() => router.push('/bank?from=onboarding')} /> : null}
+        {bank ? <RouteCard icon={Bank} title="My bank or card" line="Finds them and spots new ones." tag="7 DAYS FREE" onPress={() => router.push('/bank?from=onboarding')} /> : null}
         {showImport() ? (
           <>
             <RouteCard icon={PhoneList} title="Apple subscriptions" line="A screenshot of your list." tag="FIRST ONE FREE" onPress={() => find('/find/apple')} />

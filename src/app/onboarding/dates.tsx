@@ -85,13 +85,15 @@ function DateRow({ x, first, onPress }: { x: Picked; first: boolean; onPress: ()
 export default function Dates() {
   const p = usePalette();
   const f = useFrame({ colH: 1040 });
-  const { setDate, clearDate } = useOnboarding();
+  const { setDate, clearDate, pro } = useOnboarding();
   const list = usePickedList();
   const sorted = useMemo(() => [...list].sort(byYearlyDesc), [list]);
   const [dayFor, setDayFor] = useState<string | null>(null);
   const [footerH, setFooterH] = useState(120);
   const set = list.filter(pickHasDate).length;
   const dayPick = dayFor ? (list.find((x) => x.id === dayFor) ?? null) : null;
+  // Free reminds you about 3 (CLAUDE.md rule 6): past the 3 biggest, the sheet mustn't promise reminders (audit, Nov 19).
+  const freeOff = !pro && dayPick && sorted.length > 3 && !sorted.slice(0, 3).some((x) => x.id === dayPick.id) ? 'Free reminds you about your 3 biggest. Pro covers this one too.' : undefined;
   // After Save (or "I'm not sure"), go straight to the next one without a date, further
   // down the list; close after the last. Many picks used to mean opening a sheet for each.
   const nextUndated = (from: string | null): string | null => {
@@ -109,7 +111,7 @@ export default function Dates() {
             {'Which day does each one\u00A0charge?'}
           </Txt>
           <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
-            It’s on your bank app or the receipt email. Skip any you’re not sure of.
+            It’s in your bank app or the receipt email. Skip any you’re not sure of.
           </Txt>
           <View style={{ marginTop: f.tiny ? 12 : f.small ? 16 : 20, backgroundColor: p.card, borderRadius: 20, paddingHorizontal: 16 }}>
             {sorted.map((x, i) => (
@@ -138,6 +140,7 @@ export default function Dates() {
         pick={dayPick}
         progress={dayPick ? `${sorted.findIndex((x) => x.id === dayPick.id) + 1} of ${sorted.length}` : undefined}
         visible={!!dayPick}
+        off={freeOff}
         onClose={() => setDayFor(null)}
         onNotSure={() => {
           if (dayFor) clearDate(dayFor);

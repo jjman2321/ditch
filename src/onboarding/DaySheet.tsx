@@ -182,7 +182,20 @@ export function DayBody({
   const yearDays = month ? (month === 2 ? 29 : daysInMonth(2024, month)) : 31;
   // Today's own day means it charged today: save today as the last charge, next one a cycle later.
   const isToday = !keep && ((monthly && day === t.d) || (yearly && month === t.m && day === t.d));
-  const anchor = keep || isToday ? (keep ? pick.anchor : today) : monthly ? (day ? anchorForDayOfMonth(day, today) : null) : yearly ? (month && day && day <= yearDays ? anchorForMonthDay(month, day, today) : null) : date;
+  const anchor =
+    keep || isToday
+      ? keep
+        ? pick.anchor
+        : today
+      : monthly
+        ? day
+          ? anchorForDayOfMonth(day, today)
+          : null
+        : yearly
+          ? month && day && day <= yearDays
+            ? anchorForMonthDay(month, day, today)
+            : null
+          : date;
   const source: 'next' | 'receipt' = keep || isToday ? 'receipt' : 'next';
   const next = keep ? knownNext : isToday ? paid.next : anchor ? nextChargeDate(anchor, pick.cycle, today) : null;
   const price = priceOf(pick, 'short');
@@ -193,13 +206,16 @@ export function DayBody({
   const head = monthly ? `Which day does ${pick.name}\u00A0charge?` : yearly ? `When does ${pick.name}\u00A0renew?` : `When does ${pick.name} charge\u00A0next?`;
   const rule = !next
     ? null
-    : monthly
-      ? day === 31
-        ? 'Charges on the last day of every month.'
-        : `Charges on the ${ordinal(day!)} of every month.`
-      : yearly
-        ? `Renews every year on ${shortDate(next)}.`
-        : `Charges ${EVERY[pick.cycle]}.`;
+    : isToday
+      ? // Say why today is picked, so a quick Save is a choice, not an accident (audit, Nov 19).
+        `Charged today, the ${ordinal(t.d)}.`
+      : monthly
+        ? day === 31
+          ? 'Charges on the last day of every month.'
+          : `Charges on the ${ordinal(day!)} of every month.`
+        : yearly
+          ? `Renews every year on ${shortDate(next)}.`
+          : `Charges ${EVERY[pick.cycle]}.`;
 
   // The next charge is at most one cycle away.
   const max = addDays(today, pick.cycle === 'semiannual' ? 184 : pick.cycle === 'quarterly' ? 92 : 31);
@@ -314,7 +330,7 @@ export function DayBody({
           {rule ?? (monthly ? 'Tap the day it charges.' : yearly ? 'Tap the month, then the day.' : 'Tap the day it charges next.')}
         </Txt>
         <Txt v="body" tone="fg2" num style={{ marginTop: 2 }}>
-          {next ? `Next: ${weekdayDate(next)}. ${remindersLine(next, today, leads, time, { reminderTime, off })}` : 'It’s on your bank app or the receipt email.'}
+          {next ? `Next: ${weekdayDate(next)}. ${remindersLine(next, today, leads, time, { reminderTime, off })}` : 'It’s in your bank app or the receipt email.'}
         </Txt>
       </View>
       <Button label="Save" disabled={!anchor} onPress={() => anchor && onDone(anchor, source)} style={{ marginTop: 16 }} />
@@ -332,6 +348,7 @@ export function DaySheet({
   leads = HEADS_UP_LEADS,
   time = '9 AM',
   progress,
+  off,
 }: {
   progress?: string;
   pick: Picked | null;
@@ -343,10 +360,12 @@ export function DaySheet({
   /** Days before the charge that reminders go out, and when ("9 AM"). */
   leads?: readonly number[];
   time?: string;
+  /** Shown instead of the reminder dates when this one won't get any (e.g. free covers the 3 biggest). */
+  off?: string;
 }) {
   return (
     <Sheet visible={visible && !!pick} onClose={onClose} fit gap={0} maxContent={420} label={pick ? `${pick.name} charge day` : 'Charge day'}>
-      {pick ? <DayBody key={pick.id} pick={pick} onDone={onDone} onNotSure={onNotSure} onClose={onClose} leads={leads} time={time} progress={progress} /> : null}
+      {pick ? <DayBody key={pick.id} pick={pick} onDone={onDone} onNotSure={onNotSure} onClose={onClose} leads={leads} time={time} progress={progress} off={off} /> : null}
     </Sheet>
   );
 }

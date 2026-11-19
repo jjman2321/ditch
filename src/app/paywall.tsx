@@ -72,14 +72,14 @@ function rowsFor(n: number): Row[] {
     // Personal: "All 6" when they track more than the free 3.
     { label: 'Reminders', free: '3', pro: n > 3 ? `All ${n}` : 'Unlimited' },
     // Price watch (DECISIONS #60).
-    { label: 'Price hike alerts', free: 'no', pro: 'yes' },
+    { label: 'Price rise check', free: 'no', pro: 'yes' },
     // The 30-day warning before yearly charges (DECISIONS #60).
     { label: 'Yearly bill warnings', free: 'no', pro: 'yes', drop: 2 },
     // Free can change the time of day; Pro picks the days before.
     { label: 'Pick your reminder days', free: 'no', pro: 'yes', drop: 3 },
     ...(WIDGET_READY ? [{ label: `Lock${NB}Screen widget`, free: 'no', pro: 'yes' }] : []),
     // The first import is free (DECISIONS #34), so Free says "1 free".
-    ...(showImport() ? [{ label: 'Screenshot import', free: '1 free', pro: 'yes', drop: 1 }] : []),
+    ...(showImport() ? [{ label: 'Screenshot or statement', free: '1 free', pro: 'yes', drop: 1 }] : []),
   ];
 }
 
@@ -459,7 +459,7 @@ export default function Paywall() {
       </View>
 
       <View style={{ height: 14 }} />
-      <Button label={cta} sub={planId === 'yearly' ? `${formatWholeMoney(0, yearly.currency)} today · Cancel anytime` : undefined} onPress={buy} height={60} />
+      <Button label={cta} sub={planId === 'yearly' ? `${formatWholeMoney(0, yearly.currency)} due today` : undefined} onPress={buy} height={60} />
       {/* A fixed slot, so the button never moves when the plan changes. Price and the real start date by the
         button (App Review); no reminder text (owner, Nov 10). At least 13pt on screen at any scale. */}
       <View style={{ minHeight: 44, alignItems: 'center', justifyContent: 'center', paddingHorizontal: planId === 'yearly' ? 0 : 4 }}>

@@ -28,7 +28,27 @@ import { chooseCycle, choosePlan, newPick, type Picked } from '@/state/picks';
 import { ask } from '@/ui/alert';
 import { suggestService } from '@/settings/feedback';
 import { yearlySaving } from '@/domain/priceWatch';
-import { Button, Card, ChevronRight, Chip, F, KEYBOARD_DONE, KeyboardDone, LogoTile, NotificationPreview, Search, Segmented, Sheet, SunSwitch, Txt, brand, haptic, useFrame, usePalette, useSheetScroll } from '@/ui/sunflower';
+import {
+  Button,
+  Card,
+  ChevronRight,
+  Chip,
+  F,
+  KEYBOARD_DONE,
+  KeyboardDone,
+  LogoTile,
+  NotificationPreview,
+  Search,
+  Segmented,
+  Sheet,
+  SunSwitch,
+  Txt,
+  brand,
+  haptic,
+  useFrame,
+  usePalette,
+  useSheetScroll,
+} from '@/ui/sunflower';
 
 /**
  * add: the picker first; `custom` is a name typed there (the full form);
@@ -64,7 +84,13 @@ export function EditorProvider({ children }: { children: ReactNode }) {
   return (
     <Ctx.Provider value={value}>
       {children}
-      <Sheet visible={visible} onClose={() => setVisible(false)} maxHeight={780} closeButton label={open?.mode === 'edit' ? 'Edit subscription' : open?.mode === 'forgotten' ? 'Find the ones you forgot' : 'Add a subscription'}>
+      <Sheet
+        visible={visible}
+        onClose={() => setVisible(false)}
+        maxHeight={780}
+        closeButton
+        label={open?.mode === 'edit' ? 'Edit subscription' : open?.mode === 'forgotten' ? 'Find the ones you forgot' : 'Add a subscription'}
+      >
         {open?.mode === 'forgotten' ? (
           <ForgottenBody
             onAdd={() => setOpen({ mode: 'add' })}
@@ -148,7 +174,21 @@ const OTHER_CYCLES: { value: Cycle; label: string }[] = [
 const COMMON = ['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'NZD', 'INR', 'JPY'];
 
 /** One labelled line in "For when you cancel". Empty saves as nothing, not "". */
-function DetailInput({ label, placeholder, value, onChange, keyboard, last }: { label: string; placeholder: string; value: string | null; onChange: (v: string | null) => void; keyboard?: 'email-address'; last?: boolean }) {
+function DetailInput({
+  label,
+  placeholder,
+  value,
+  onChange,
+  keyboard,
+  last,
+}: {
+  label: string;
+  placeholder: string;
+  value: string | null;
+  onChange: (v: string | null) => void;
+  keyboard?: 'email-address';
+  last?: boolean;
+}) {
   const p = usePalette();
   return (
     <View style={{ minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 12, borderBottomWidth: last ? 0 : 1, borderBottomColor: p.hair }}>
@@ -193,7 +233,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
   const { settings, today, pro } = app;
   const country = settings.country;
 
-  const existing = open.mode === 'edit' ? app.subs.find((s) => s.id === open.id) ?? null : null;
+  const existing = open.mode === 'edit' ? (app.subs.find((s) => s.id === open.id) ?? null) : null;
   const [draft, setDraft] = useState<Sub>(() => {
     if (existing) return existing;
     const custom = open.mode === 'add' ? open.custom?.trim() : undefined;
@@ -221,7 +261,10 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
 
   const matches = useMemo(() => {
     if (!query.trim()) return popularIn(country, 6);
-    return searchServices(query, SERVICES.filter((s) => availableIn(s, country))).slice(0, 6);
+    return searchServices(
+      query,
+      SERVICES.filter((s) => availableIn(s, country)),
+    ).slice(0, 6);
   }, [query, country]);
 
   if (open.mode === 'edit' && !existing) return null;
@@ -277,10 +320,14 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
   const planRow = draft.catalogId && draft.priceCountry ? priceRow(draft.catalogId, draft.priceCountry) : null;
   const plans = draft.catalogId ? planChoices(draft.catalogId, draft.priceCountry) : [];
   // The plan they picked, or the one their price matches.
-  const planSelected = (pl: (typeof plans)[number]) => (draft.planId ? pl.id === draft.planId : pl.amountMinor === draft.amountMinor && pl.cycle === draft.cycle && planRow?.currency === draft.currency);
+  const planSelected = (pl: (typeof plans)[number]) =>
+    draft.planId ? pl.id === draft.planId : pl.amountMinor === draft.amountMinor && pl.cycle === draft.cycle && planRow?.currency === draft.currency;
 
   // Reminders: free covers 3 (the Pro trial entry is always on).
-  const othersOn = remindedIds(app.subs.filter((s) => s.id !== draft.id), false).size;
+  const othersOn = remindedIds(
+    app.subs.filter((s) => s.id !== draft.id),
+    false,
+  ).size;
   const remindOn = trialEntry || (pro ? !draft.muted : draft.freePick);
   const atLimit = !pro && !draft.freePick && othersOn >= FREE_REMINDERS;
   const toggleRemind = (v: boolean) => {
@@ -405,16 +452,42 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
         onScroll={onSheetScroll}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-          {draft.catalogId || draft.name || trialEntry ? <SubLogo sub={{ ...draft, name: draft.name || query || '?' }} size={44} /> : <LogoTile id="?" size={44} mono="+" color={brand.sunflower} ink={brand.ink} />}
+          {draft.catalogId || draft.name || trialEntry ? (
+            <SubLogo sub={{ ...draft, name: draft.name || query || '?' }} size={44} />
+          ) : (
+            <LogoTile id="?" size={44} mono="+" color={brand.sunflower} ink={brand.ink} />
+          )}
           <Txt v="heading" accessibilityRole="header" style={{ flex: 1, marginRight: 40 }} numberOfLines={2}>
-            {isNew ? (open.mode === 'add' && open.trial ? (draft.catalogId ? `${draft.name} free trial` : 'Track a free trial') : draft.catalogId ? `Add ${draft.name}` : 'Add a subscription') : trialEntry ? 'Ditch Pro trial' : draft.name}
+            {isNew
+              ? open.mode === 'add' && open.trial
+                ? draft.catalogId
+                  ? `${draft.name} free trial`
+                  : 'Track a free trial'
+                : draft.catalogId
+                  ? `Add ${draft.name}`
+                  : 'Add a subscription'
+              : trialEntry
+                ? 'Ditch Pro trial'
+                : draft.name}
           </Txt>
         </View>
 
         {trialEntry ? null : (
           <>
             <FieldLabel>Name</FieldLabel>
-            <View style={{ minHeight: 52, borderRadius: 14, backgroundColor: p.chipBg, borderWidth: 1.5, borderColor: p.chipBorder, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 14, gap: 8 }}>
+            <View
+              style={{
+                minHeight: 52,
+                borderRadius: 14,
+                backgroundColor: p.chipBg,
+                borderWidth: 1.5,
+                borderColor: p.chipBorder,
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingHorizontal: 14,
+                gap: 8,
+              }}
+            >
               {isNew ? <Search color={p.mute} /> : null}
               <TextInput
                 value={query}
@@ -482,7 +555,10 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                 style={{ minHeight: 44, justifyContent: 'center', alignSelf: 'center' }}
               >
                 <Txt v="sub" tone="mute" center>
-                  Not on our list? <Txt v="sub" style={{ textDecorationLine: 'underline' }}>Ask us to add it</Txt>
+                  Not on our list?{' '}
+                  <Txt v="sub" style={{ textDecorationLine: 'underline' }}>
+                    Ask us to add it
+                  </Txt>
                 </Txt>
               </Pressable>
             ) : null}
@@ -498,7 +574,11 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                   {plans.map((pl) => (
                     <Chip
                       key={pl.id}
-                      label={`${shortPlanName(pl.name, draft.name, plans.map((x) => x.name)).replace(/\s*\((yearly|monthly|annual)\)$/i, '')} ${money(pl.amountMinor, planRow?.currency ?? draft.currency ?? settings.currency)}${CYCLE_SHORT[pl.cycle]}`}
+                      label={`${shortPlanName(
+                        pl.name,
+                        draft.name,
+                        plans.map((x) => x.name),
+                      ).replace(/\s*\((yearly|monthly|annual)\)$/i, '')} ${money(pl.amountMinor, planRow?.currency ?? draft.currency ?? settings.currency)}${CYCLE_SHORT[pl.cycle]}`}
                       selected={planSelected(pl)}
                       onPress={() => {
                         haptic.select();
@@ -518,7 +598,19 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
             ) : null}
 
             <FieldLabel>{draft.isTrial ? 'Price after the trial' : 'Price'}</FieldLabel>
-            <View style={{ minHeight: 56, borderRadius: 14, backgroundColor: p.chipBg, borderWidth: 1.5, borderColor: p.chipBorder, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, gap: 6 }}>
+            <View
+              style={{
+                minHeight: 56,
+                borderRadius: 14,
+                backgroundColor: p.chipBg,
+                borderWidth: 1.5,
+                borderColor: p.chipBorder,
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingHorizontal: 16,
+                gap: 6,
+              }}
+            >
               <Txt v="moneyL" tone="mute">
                 {formatMoney(0, currency).replace(/[\d.,\s]/g, '') || currency}
               </Txt>
@@ -608,18 +700,13 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
               ))}
             </View>
 
-
             <Card style={{ marginTop: 18, paddingHorizontal: 16, paddingVertical: 4 }}>
               {trialEntry ? null : (
                 <View style={{ minHeight: 52, flexDirection: 'row', alignItems: 'center', gap: 12, borderBottomWidth: 1, borderBottomColor: p.hair }}>
                   <Txt v="label" style={{ flex: 1 }}>
                     It’s a free trial
                   </Txt>
-                  <SunSwitch
-                    label="It’s a free trial"
-                    value={draft.isTrial}
-                    onValueChange={(v) => setDraft({ ...draft, isTrial: v })}
-                  />
+                  <SunSwitch label="It’s a free trial" value={draft.isTrial} onValueChange={(v) => setDraft({ ...draft, isTrial: v })} />
                 </View>
               )}
               <View style={{ minHeight: 60, flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 8 }}>
@@ -632,22 +719,24 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                         ? 'Starts once it has a date'
                         : skippedNow && remindOn
                           ? `Skipping ${weekdayDate(charge)}. Back on for the next one.`
-                        : remindOn && heads.length
-                          ? `${heads.slice(0, -1).map(weekdayDate).join(', ')}${heads.length > 1 ? ' and ' : ''}${weekdayDate(heads[heads.length - 1])} at ${shortTimeLabel(settings.reminderTime)}`
-                          : remindOn && charge
-                            ? 'Too close for a reminder this time. The next one gets them.'
-                            : `${leadsLabel(leadsNow)}, at ${shortTimeLabel(settings.reminderTime)}`}
+                          : remindOn && heads.length
+                            ? `${heads.slice(0, -1).map(weekdayDate).join(', ')}${heads.length > 1 ? ' and ' : ''}${weekdayDate(heads[heads.length - 1])} at ${shortTimeLabel(settings.reminderTime)}`
+                            : remindOn && charge
+                              ? 'Too close for a reminder this time. The next one gets them.'
+                              : `${leadsLabel(leadsNow)}, at ${shortTimeLabel(settings.reminderTime)}`}
                   </Txt>
                 </View>
-                <SunSwitch label="Remind me" hint={atLimit ? 'Free covers 3 reminders' : !charge && !trialEntry ? 'Starts once it has a date' : undefined} value={!charge && !trialEntry ? false : remindOn} disabled={trialEntry || !charge} onValueChange={toggleRemind} />
+                <SunSwitch
+                  label="Remind me"
+                  hint={atLimit ? 'Free covers 3 reminders' : !charge && !trialEntry ? 'Starts once it has a date' : undefined}
+                  value={!charge && !trialEntry ? false : remindOn}
+                  disabled={trialEntry || !charge}
+                  onValueChange={toggleRemind}
+                />
               </View>
               {/* The exact notification they'll get (design/v14 option A). */}
               {preview ? (
-                <View
-                  accessible
-                  accessibilityLabel={`Preview: ${preview.body}`}
-                  style={{ marginBottom: 12, borderRadius: 18, padding: 10, backgroundColor: p.dark ? '#2A2721' : '#FFF1BC' }}
-                >
+                <View accessible accessibilityLabel={`Preview: ${preview.body}`} style={{ marginBottom: 12, borderRadius: 18, padding: 10, backgroundColor: p.dark ? '#2A2721' : '#FFF1BC' }}>
                   <View importantForAccessibility="no-hide-descendants">
                     <NotificationPreview time={preview.time} message={preview.body} />
                   </View>
@@ -691,7 +780,9 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                 <View style={{ minHeight: 60, flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 8 }}>
                   <View style={{ flex: 1 }}>
                     <Txt v="label">Skip the {weekdayDate(charge)} reminders</Txt>
-                    <Txt v="sub" tone="mute">Already paid or sorted? The next charge gets them again.</Txt>
+                    <Txt v="sub" tone="mute">
+                      Already paid or sorted? The next charge gets them again.
+                    </Txt>
                   </View>
                   <SunSwitch label={`Skip the reminders for ${weekdayDate(charge)}`} value={draft.skipCharge === charge} onValueChange={(v) => setDraft({ ...draft, skipCharge: v ? charge : null })} />
                 </View>

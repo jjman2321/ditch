@@ -11,7 +11,22 @@ import { nextReminder, whenLabel } from '@/domain/reminders';
 import { overlapToShow } from '@/domain/overlaps';
 import { priceChanges } from '@/domain/priceWatch';
 import { priceRow } from '@/catalog/prices';
-import { beforePayday, cheapestSub, hasDate, trialsAfter, homeGroups, homeTotals, isPending, isPricedSub, isProTrial, listedUserSubs, remindedIds, undatedSubs, yearlyOfSub, type Sub } from '@/domain/subs';
+import {
+  beforePayday,
+  cheapestSub,
+  hasDate,
+  trialsAfter,
+  homeGroups,
+  homeTotals,
+  isPending,
+  isPricedSub,
+  isProTrial,
+  listedUserSubs,
+  remindedIds,
+  undatedSubs,
+  yearlyOfSub,
+  type Sub,
+} from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
 import { AddDatesSheet } from '@/home/AddDatesSheet';
 import { EmptyHome, ForgottenRow, NextReminderRow, NoDateRow, OffBanner, OverlapCard, PaydayRow, PriceChangeCard, TotalCard, openPhoneSettings } from '@/home/HomeParts';
@@ -34,7 +49,17 @@ export default function Home() {
 
   const allGroups = useMemo(() => homeGroups(subs, today), [subs, today]);
   // Filter by card (DECISIONS #60): only once 2+ different cards are noted, so it never clutters a simple list.
-  const cards = useMemo(() => [...new Set(listedUserSubs(subs).map((s) => s.paidWith?.trim()).filter((c): c is string => !!c))].sort(), [subs]);
+  const cards = useMemo(
+    () =>
+      [
+        ...new Set(
+          listedUserSubs(subs)
+            .map((s) => s.paidWith?.trim())
+            .filter((c): c is string => !!c),
+        ),
+      ].sort(),
+    [subs],
+  );
   const [card, setCard] = useState<string | null>(null);
   const cardOn = card && cards.includes(card) ? card : null;
   const groups = useMemo(
@@ -43,7 +68,17 @@ export default function Home() {
   );
   const totals = useMemo(() => homeTotals(subs, today, settings.currency), [subs, today, settings.currency]);
   // The picked card's own total, one line per currency (the big card above stays the whole list).
-  const cardTotals = useMemo(() => (cardOn ? homeTotals(subs.filter((s) => s.paidWith?.trim() === cardOn), today, settings.currency) : []), [subs, today, settings.currency, cardOn]);
+  const cardTotals = useMemo(
+    () =>
+      cardOn
+        ? homeTotals(
+            subs.filter((s) => s.paidWith?.trim() === cardOn),
+            today,
+            settings.currency,
+          )
+        : [],
+    [subs, today, settings.currency, cardOn],
+  );
   const trials = useMemo(() => trialsAfter(subs, today), [subs, today]);
   const reminded = useMemo(() => remindedIds(subs, pro), [subs, pro]);
   const listed = listedUserSubs(subs);
@@ -99,11 +134,7 @@ export default function Home() {
     <SurfaceContext.Provider value="cream">
       <View style={{ flex: 1, backgroundColor: p.bg }}>
         <PriceColumnMeasure prices={prices} onWidth={setPriceW} />
-        <ScrollView
-          contentContainerStyle={{ paddingTop: insets.top + 6, paddingHorizontal: edge, paddingBottom: 28 }}
-          showsVerticalScrollIndicator={false}
-          scrollEnabled={!holding}
-        >
+        <ScrollView contentContainerStyle={{ paddingTop: insets.top + 6, paddingHorizontal: edge, paddingBottom: 28 }} showsVerticalScrollIndicator={false} scrollEnabled={!holding}>
           <View style={{ height: 52, flexDirection: 'row', alignItems: 'center' }}>
             <Wordmark size={25} />
             <View style={{ flex: 1 }} />
@@ -127,7 +158,14 @@ export default function Home() {
                 </View>
               ) : null}
               <View style={{ marginTop: 14 }}>
-                <TotalCard totals={totals} on={[...reminded].filter((id) => listed.some((s) => s.id === id)).length} of={listed.length} all={pro && listed.every((s) => reminded.has(s.id))} blocked={blocked} trials={trials} />
+                <TotalCard
+                  totals={totals}
+                  on={[...reminded].filter((id) => listed.some((s) => s.id === id)).length}
+                  of={listed.length}
+                  all={pro && listed.every((s) => reminded.has(s.id))}
+                  blocked={blocked}
+                  trials={trials}
+                />
               </View>
               {next ? (
                 <View style={{ marginTop: 10 }}>
@@ -171,7 +209,13 @@ export default function Home() {
               ) : null}
 
               {cards.length >= 2 ? (
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 16, marginHorizontal: -edge }} contentContainerStyle={{ gap: 8, paddingHorizontal: edge }} accessibilityLabel="Filter by card">
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  style={{ marginTop: 16, marginHorizontal: -edge }}
+                  contentContainerStyle={{ gap: 8, paddingHorizontal: edge }}
+                  accessibilityLabel="Filter by card"
+                >
                   <Chip label="All" selected={!cardOn} onPress={() => setCard(null)} />
                   {cards.map((c) => (
                     <Chip key={c} label={c} selected={cardOn === c} onPress={() => setCard(cardOn === c ? null : c)} />

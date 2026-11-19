@@ -7,7 +7,7 @@ import { router } from 'expo-router';
 import { useMemo } from 'react';
 import { Pressable, ScrollView, View, useWindowDimensions } from 'react-native';
 
-import { MONTH_LONG, parseDate, weekdayDate } from '@/domain/dates';
+import { MONTH_LONG, parseDate, shortDate, weekdayDate } from '@/domain/dates';
 import { CYCLE_WORDS } from '@/domain/money';
 import { chargeOfSub, confirmedSavings, isConfirmed, isPending, isPricedSub, pendingSavings, savingsSteps, snapYearly, type Sub } from '@/domain/subs';
 import { useCancelHelp } from '@/ditch/CancelHelp';
@@ -236,7 +236,7 @@ export default function DitchedTab() {
                               {s.name}
                             </Txt>
                             <Txt v="body" tone="mute" num style={{ fontSize: 14.5, marginTop: 1 }}>
-                              Cancelled {s.confirmedOn ? weekdayDate(s.confirmedOn) : ''}
+                              Cancelled {s.confirmedOn ? shortDate(s.confirmedOn) : ''}
                             </Txt>
                           </View>
                           {y ? (

@@ -263,9 +263,7 @@ export function homeGroups(subs: Sub[], today: DateOnly): { title: HomeGroup; ro
   const all = subs
     .filter((s) => (isActive(s) || isPending(s)) && !isProTrial(s))
     .map((sub) => ({ sub, charge: isPending(sub) && sub.cancelBy && sub.cancelBy >= today ? sub.cancelBy : chargeOfSub(sub, today) }));
-  const dated = all
-    .filter((r): r is { sub: Sub; charge: DateOnly } => r.charge !== null)
-    .sort((a, b) => (a.charge === b.charge ? a.sub.name.localeCompare(b.sub.name) : a.charge < b.charge ? -1 : 1));
+  const dated = all.filter((r): r is { sub: Sub; charge: DateOnly } => r.charge !== null).sort((a, b) => (a.charge === b.charge ? a.sub.name.localeCompare(b.sub.name) : a.charge < b.charge ? -1 : 1));
   const undated = all.filter((r) => r.charge === null).sort((a, b) => yearlyOfSub(b.sub) - yearlyOfSub(a.sub) || a.sub.name.localeCompare(b.sub.name));
   const groups: { title: HomeGroup; rows: HomeRow[] }[] = [
     { title: 'This week', rows: dated.filter((r) => r.charge < nextWeek) },
@@ -347,7 +345,10 @@ function sumSnapshots(list: Sub[], home?: string): Savings[] {
     cur.count += 1;
     map.set(y.currency, cur);
   }
-  return homeFirst([...map.values()].sort((a, b) => b.yearlyMinor - a.yearlyMinor), home);
+  return homeFirst(
+    [...map.values()].sort((a, b) => b.yearlyMinor - a.yearlyMinor),
+    home,
+  );
 }
 
 /** "You won't pay $X a year": confirmed cancels only, one total per currency. */
@@ -405,14 +406,7 @@ export function chargesBetween(s: Sub, from: DateOnly, to: DateOnly): DateOnly[]
  * lands on it. Receipt anchors are on-cycle, so the same maths applies.
  * Ditched-and-confirmed subs don't show; waiting ones show as pending.
  */
-export function calendarMonth(
-  subs: Sub[],
-  y: number,
-  m: number,
-  today: DateOnly,
-  reminded: Set<string>,
-  leads: readonly number[],
-): (CalendarDay | null)[] {
+export function calendarMonth(subs: Sub[], y: number, m: number, today: DateOnly, reminded: Set<string>, leads: readonly number[]): (CalendarDay | null)[] {
   const cells = monthGrid(y, m);
   const days = cells.filter((c): c is DateOnly => !!c);
   const from = days[0];
@@ -489,7 +483,19 @@ export function toCsv(subs: Sub[], today: DateOnly, digitsOf: (currency: string)
       const digits = s.currency ? digitsOf(s.currency) : 2;
       const amount = s.amountMinor === null ? '' : (s.amountMinor / 10 ** digits).toFixed(digits);
       const status = s.status === 'active' ? 'Active' : s.status === 'ditched-pending' ? 'Ditched, not cancelled yet' : 'Cancelled';
-      return [s.name, amount, s.currency ?? '', BILLED[s.cycle], s.status === 'active' ? (chargeOfSub(s, today) ?? '') : s.confirmedOn ? '' : (s.cancelBy ?? ''), status, s.ditchedOn, s.confirmedOn, s.paidWith, s.accountEmail, s.notes];
+      return [
+        s.name,
+        amount,
+        s.currency ?? '',
+        BILLED[s.cycle],
+        s.status === 'active' ? (chargeOfSub(s, today) ?? '') : s.confirmedOn ? '' : (s.cancelBy ?? ''),
+        status,
+        s.ditchedOn,
+        s.confirmedOn,
+        s.paidWith,
+        s.accountEmail,
+        s.notes,
+      ];
     });
   return [head, ...rows].map((r) => r.map(csvCell).join(',')).join('\n') + '\n';
 }
@@ -535,7 +541,11 @@ export function yearAhead(subs: Sub[], today: DateOnly): MonthAhead[] {
         if (s.cycle === 'yearly' || s.cycle === 'semiannual') big.push({ sub: s, charge });
       }
     }
-    out.push({ month: start, totals: [...sums.entries()].map(([currency, amountMinor]) => ({ currency, amountMinor })).sort((a, b) => b.amountMinor - a.amountMinor), big: big.sort((a, b) => a.charge.localeCompare(b.charge)) });
+    out.push({
+      month: start,
+      totals: [...sums.entries()].map(([currency, amountMinor]) => ({ currency, amountMinor })).sort((a, b) => b.amountMinor - a.amountMinor),
+      big: big.sort((a, b) => a.charge.localeCompare(b.charge)),
+    });
   }
   return out;
 }

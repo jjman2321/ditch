@@ -86,6 +86,21 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
+## 1q. Audit fixes (Nov 19, docs/research/app-audit-2026-11-19.md)
+Reset first (delete the app, reinstall from TestFlight, open twice). Use an iPhone SE-size phone too if you can.
+1. Intro slides: slide 2 says "A reminder before it charges." (no "heads-up"); slide 3 says "how to cancel it" (no "exactly").
+2. Where should we look?: all options fit without scrolling, same back arrow as the other steps.
+3. Pick services → "Add them all at once": opens "Where should we look?", not the paywall.
+4. Your total: "Most people guess less than half that." above the button (not on SE).
+5. Paywall: renewal line ends "Renews yearly until you cancel."; on an SE the plans, button, line and Restore · Terms · Privacy are full size. Set the largest text size: the top scrolls, Restore stays on screen.
+6. Settings: "Restore purchases" row when you're not Pro. Settings → Ditch Pro: 3 benefit rows and "7 days free, then $49.99/yr".
+7. Which 3: tap a 4th bell → the paywall opens.
+8. Home: tap a grey bell → reminder turns on (4th opens the paywall). "in 5 days" stays on every row. Pick a card chip → a total for that card shows.
+9. Edit a subscription: chip rows run to the edge (no cut prices); Next charge is right under Price; Save is grey until you change something.
+10. Calendar: "Rest of November"; reminder dots sit under the date; a line for subs with no date yet.
+11. Ditched: rows say "Charges <date>" unless you set a cancel-by date; header "$216 more a year"; "To cancel" on every phone; empty state has "Go to my list".
+12. Cancel help: "Open Netflix to cancel", "Steps checked Nov 10".
+
 ## 1p. New welcome screen + overheating fix (Nov 19, design/v29)
 Reset first: delete the app, reinstall from TestFlight, open it twice (the second open loads the update).
 1. First screen: the yellow Ditch icon in the middle, 6 logos around it, 4 faded ones in the corners, a soft yellow glow.

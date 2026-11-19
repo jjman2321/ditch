@@ -9,7 +9,22 @@ import { Pressable, ScrollView, View, useWindowDimensions } from 'react-native';
 import { MONTH_LONG, WEEKDAY_LONG, addDays, parseDate, shiftMonth, toDateOnly, weekdayDate, weekdayOf, weekdayShort, type DateOnly } from '@/domain/dates';
 import { HEADS_UP_LEADS } from '@/domain/charges';
 import { effectiveLeads, shortTimeLabel, timeLabel } from '@/domain/settings';
-import { FREE_REMINDERS, calendarMonth, homeFirst, isPending, isPricedSub, isProTrial, monthDue, remindedIds, undatedSubs, undatedTotals, yearAhead, yearlyOfSub, type CalendarCharge, type CalendarDay } from '@/domain/subs';
+import {
+  FREE_REMINDERS,
+  calendarMonth,
+  homeFirst,
+  isPending,
+  isPricedSub,
+  isProTrial,
+  monthDue,
+  remindedIds,
+  undatedSubs,
+  undatedTotals,
+  yearAhead,
+  yearlyOfSub,
+  type CalendarCharge,
+  type CalendarDay,
+} from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
 import { OffBanner, openPhoneSettings } from '@/home/HomeParts';
 import { SubLogo } from '@/home/SubRow';
@@ -37,10 +52,18 @@ export default function Calendar() {
   const due = monthDue(days, settings.currency);
   // This month only: what's still to come from today (Monzo/Orbit-style "still to pay"). One currency only, so nothing is added across currencies.
   const isThisMonth = view.y === t.y && view.m === t.m;
-  const left = isThisMonth ? monthDue(days.map((d) => (d && d.date >= today ? d : null)), settings.currency) : null;
-  const stillLine = left && due.totals.length === 1 && left.totals.length <= 1 && left.count < due.count
-    ? left.count ? `${money(left.totals[0].amountMinor, left.totals[0].currency)} still to come in ${MONTH_LONG[view.m - 1]}` : 'All paid for this month'
+  const left = isThisMonth
+    ? monthDue(
+        days.map((d) => (d && d.date >= today ? d : null)),
+        settings.currency,
+      )
     : null;
+  const stillLine =
+    left && due.totals.length === 1 && left.totals.length <= 1 && left.count < due.count
+      ? left.count
+        ? `${money(left.totals[0].amountMinor, left.totals[0].currency)} still to come in ${MONTH_LONG[view.m - 1]}`
+        : 'All paid for this month'
+      : null;
   const undated = useMemo(() => undatedSubs(subs).sort((a, b) => yearlyOfSub(b) - yearlyOfSub(a)), [subs]);
   // The next 12 months at a glance (DECISIONS #60, free): which months are heavy, and the yearly charges in them.
   const ahead = useMemo(() => yearAhead(subs, today), [subs, today]);
@@ -49,7 +72,10 @@ export default function Calendar() {
   const undatedMonthly = useMemo(() => undatedTotals(subs, today, settings.currency), [subs, today, settings.currency]);
   const aheadRows = useMemo(() => {
     // Each currency on its own line, never joined with "+" (rule 1). The joined text is only a key for "Most months".
-    const fmt = (a: (typeof ahead)[number]) => homeFirst(a.totals, settings.currency).map((x) => money(x.amountMinor, x.currency)).join('\n') || '–';
+    const fmt = (a: (typeof ahead)[number]) =>
+      homeFirst(a.totals, settings.currency)
+        .map((x) => money(x.amountMinor, x.currency))
+        .join('\n') || '–';
     // The 13th month is only its first days (up to a year from today): it shows only for a yearly or 6-monthly charge.
     const full = ahead.length > 12 ? ahead.slice(0, 12) : ahead;
     const counts = new Map<string, number>();
@@ -62,7 +88,13 @@ export default function Calendar() {
       if (i >= 12 && !a.big.length) continue;
       const { y, m } = parseDate(a.month);
       // This month only counts from today, so say so: "Rest of November".
-      rows.push({ key: a.month, label: i === 0 ? `Rest of ${MONTH_LONG[m - 1]}` : `${MONTH_LONG[m - 1]}${y !== t.y ? ` ${y}` : ''}`, amounts: fmt(a), bigs: a.big.map((b) => `${b.sub.name} ${money(b.sub.amountMinor, b.sub.currency)}`).join(' · '), usual: false });
+      rows.push({
+        key: a.month,
+        label: i === 0 ? `Rest of ${MONTH_LONG[m - 1]}` : `${MONTH_LONG[m - 1]}${y !== t.y ? ` ${y}` : ''}`,
+        amounts: fmt(a),
+        bigs: a.big.map((b) => `${b.sub.name} ${money(b.sub.amountMinor, b.sub.currency)}`).join(' · '),
+        usual: false,
+      });
     }
     return rows;
   }, [ahead, money, t.y, settings.currency]);
@@ -256,7 +288,16 @@ export default function Calendar() {
                   accessibilityRole="button"
                   accessibilityLabel={`${u.name}, no date yet. Add date`}
                   onPress={() => editor.openEdit(u.id)}
-                  style={({ pressed }) => ({ minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, borderTopWidth: i ? 1 : 0, borderTopColor: p.hair, opacity: pressed ? 0.75 : 1 })}
+                  style={({ pressed }) => ({
+                    minHeight: 56,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 12,
+                    paddingHorizontal: 14,
+                    borderTopWidth: i ? 1 : 0,
+                    borderTopColor: p.hair,
+                    opacity: pressed ? 0.75 : 1,
+                  })}
                 >
                   <SubLogo sub={u} size={32} />
                   <Txt v="label" color={p.cardFg} numberOfLines={1} style={{ flex: 1, fontSize: 16 }}>

@@ -8,17 +8,7 @@
 import { useEffect, useRef } from 'react';
 import { useWindowDimensions, View } from 'react-native';
 import { GestureDetector, useExclusiveGestures, useLongPressGesture, useTapGesture } from 'react-native-gesture-handler';
-import Animated, {
-  Easing,
-  interpolateColor,
-  ReduceMotion,
-  useAnimatedProps,
-  useAnimatedStyle,
-  useReducedMotion,
-  useSharedValue,
-  withSpring,
-  withTiming,
-} from 'react-native-reanimated';
+import Animated, { Easing, interpolateColor, ReduceMotion, useAnimatedProps, useAnimatedStyle, useReducedMotion, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 import Svg, { Circle } from 'react-native-svg';
 import { scheduleOnRN } from 'react-native-worklets';
 
@@ -47,7 +37,8 @@ function relative(charge: DateOnly, today: DateOnly): string {
 /** The grey line under the name. No date yet: "Add date" (DECISIONS #33). */
 export function rowLine(sub: Sub, charge: DateOnly | null, today: DateOnly, narrow = false): string {
   if (!charge) return isPending(sub) ? 'Cancel before it renews' : 'Add date';
-  if (isPending(sub)) return `Cancel by ${weekdayDate(charge)}`;
+  // "Cancel by" only for a date the user chose; otherwise the charge day itself (too late to call it a deadline).
+  if (isPending(sub)) return sub.cancelBy && sub.cancelBy >= today ? `Cancel by ${weekdayDate(sub.cancelBy)}` : `Charges ${weekdayDate(charge)}`;
   if (isProTrial(sub)) return `${weekdayDate(charge)} · trial ends`;
   if (inTrial(sub, today)) return `Trial ends ${weekdayDate(charge)}`;
   // "in N days" only for the coming week (further out the date says it). Narrow iPhones
@@ -57,7 +48,11 @@ export function rowLine(sub: Sub, charge: DateOnly | null, today: DateOnly, narr
 }
 
 export function SubLogo({ sub, size = TILE }: { sub: Sub; size?: number }) {
-  return isProTrial(sub) ? <DuckIcon size={size} /> : <LogoTile id={sub.catalogId ?? sub.id} size={size} mono={sub.catalogId ? undefined : sub.name.slice(0, 1).toUpperCase()} color={sub.catalogId ? undefined : '#6B6559'} />;
+  return isProTrial(sub) ? (
+    <DuckIcon size={size} />
+  ) : (
+    <LogoTile id={sub.catalogId ?? sub.id} size={size} mono={sub.catalogId ? undefined : sub.name.slice(0, 1).toUpperCase()} color={sub.catalogId ? undefined : '#6B6559'} />
+  );
 }
 
 /**
@@ -68,7 +63,13 @@ export function PriceColumnMeasure({ prices, onWidth }: { prices: (string | null
   const longest = prices.reduce<string>((a, b) => (b && b.length > a.length ? b : a), '');
   if (!longest) return null;
   return (
-    <View pointerEvents="none" accessible={false} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={{ position: 'absolute', opacity: 0, left: 0, top: 0, width: 1000, flexDirection: 'row' }}>
+    <View
+      pointerEvents="none"
+      accessible={false}
+      importantForAccessibility="no-hide-descendants"
+      accessibilityElementsHidden
+      style={{ position: 'absolute', opacity: 0, left: 0, top: 0, width: 1000, flexDirection: 'row' }}
+    >
       <Txt v="moneyM" num style={{ fontSize: 17.5 }} onLayout={(e) => onWidth(Math.ceil(e.nativeEvent.layout.width) + 2)}>
         {longest}
       </Txt>

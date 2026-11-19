@@ -46,7 +46,7 @@ function slidesFor(us: boolean): Slide[] {
           key: 'pay',
           big: '$2,628',
           title: 'a year on subscriptions.',
-          body: `That’s the average. The average guess is less than half. Let’s${NB}find${NB}yours.`,
+          body: `That’s what people pay on average, and they guess less than half. Let’s${NB}find${NB}yours.`,
           art: 'statement',
         }
       : {

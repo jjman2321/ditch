@@ -59,7 +59,12 @@ export function TotalCard({
     >
       {first ? (
         <View style={{ flexDirection: 'row', alignItems: 'baseline', flexWrap: 'wrap', columnGap: 8 }}>
-          <Txt v="displayM" num color={p.dark ? brand.sunflower : brand.ink} style={tiny ? { fontSize: 32, lineHeight: 36, letterSpacing: -1.2 } : { fontSize: 42, lineHeight: 44, letterSpacing: -1.6 }}>
+          <Txt
+            v="displayM"
+            num
+            color={p.dark ? brand.sunflower : brand.ink}
+            style={tiny ? { fontSize: 32, lineHeight: 36, letterSpacing: -1.2 } : { fontSize: 42, lineHeight: 44, letterSpacing: -1.6 }}
+          >
             {money(first.monthlyMinor, first.currency)}
           </Txt>
           <Txt v="lead" color={fg} style={{ fontFamily: F.semi, fontSize: 17 }}>
@@ -139,7 +144,15 @@ export function OffBanner({ status, onTurnOn }: { status: NotifStatus; onTurnOn:
         accessibilityLabel="Turn on reminders"
         accessibilityHint={asked ? 'Opens iPhone Settings' : 'Shows the iPhone permission prompt'}
         onPress={onTurnOn}
-        style={({ pressed }) => ({ minHeight: 44, borderRadius: 22, paddingHorizontal: 16, backgroundColor: brand.sunflower, alignItems: 'center', justifyContent: 'center', opacity: pressed ? 0.8 : 1 })}
+        style={({ pressed }) => ({
+          minHeight: 44,
+          borderRadius: 22,
+          paddingHorizontal: 16,
+          backgroundColor: brand.sunflower,
+          alignItems: 'center',
+          justifyContent: 'center',
+          opacity: pressed ? 0.8 : 1,
+        })}
       >
         <Txt v="label" color={brand.ink} style={{ fontFamily: F.semi, fontSize: 16 }}>
           Turn on
@@ -275,19 +288,25 @@ export function EmptyHome({ country, onAdd }: { country: string | null; onAdd: (
     <View>
       <View style={{ marginTop: 92 }}>
         <Duck width={128} left={110} sink={2} />
-        <View style={{ borderRadius: 26, backgroundColor: p.dark ? p.card : brand.sunflower, paddingHorizontal: 22, paddingTop: 24, paddingBottom: 22, alignItems: 'center', borderWidth: p.dark ? 1 : 0, borderColor: p.cardBorder }}>
+        <View
+          style={{
+            borderRadius: 26,
+            backgroundColor: p.dark ? p.card : brand.sunflower,
+            paddingHorizontal: 22,
+            paddingTop: 24,
+            paddingBottom: 22,
+            alignItems: 'center',
+            borderWidth: p.dark ? 1 : 0,
+            borderColor: p.cardBorder,
+          }}
+        >
           <Txt v="displayM" center accessibilityRole="header" color={p.dark ? p.fg : brand.ink} style={{ fontSize: 33, lineHeight: 35 }}>
             {'Nothing to watch\u00A0yet.'}
           </Txt>
           <Txt v="leadS" center color={p.dark ? p.fg2 : '#4B4220'} style={{ marginTop: 10 }}>
             Add what you pay for. Ditch reminds you before it charges.
           </Txt>
-          <Button
-            label="Add a subscription"
-            onPress={() => onAdd()}
-            style={{ marginTop: 18, alignSelf: 'stretch' }}
-            left={<Plus color={p.dark ? brand.ink : brand.sunflower} size={20} />}
-          />
+          <Button label="Add a subscription" onPress={() => onAdd()} style={{ marginTop: 18, alignSelf: 'stretch' }} left={<Plus color={p.dark ? brand.ink : brand.sunflower} size={20} />} />
         </View>
       </View>
       <Txt v="eyebrow" tone="mute" accessibilityRole="header" style={{ marginTop: 28, marginBottom: 12, marginHorizontal: 4 }}>
@@ -304,7 +323,21 @@ export function EmptyHome({ country, onAdd }: { country: string | null; onAdd: (
           >
             <View>
               <LogoTile id={id} size={52} />
-              <View style={{ position: 'absolute', right: -9, bottom: -7, width: 24, height: 24, borderRadius: 12, backgroundColor: brand.ink, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: p.bg }}>
+              <View
+                style={{
+                  position: 'absolute',
+                  right: -9,
+                  bottom: -7,
+                  width: 24,
+                  height: 24,
+                  borderRadius: 12,
+                  backgroundColor: brand.ink,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderWidth: 2,
+                  borderColor: p.bg,
+                }}
+              >
                 <Plus color={brand.sunflower} size={13} />
               </View>
             </View>
@@ -328,10 +361,15 @@ export function OverlapCard({ overlap, money, onDismiss, onPick }: { overlap: Ov
   const p = usePalette();
   const names = overlap.subs.map((s) => s.name);
   const listed = names.length > 2 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names.join(' and ');
-  const title = overlap.kind === 'twice' ? `${overlap.label} is on your list ${overlap.subs.length === 2 ? 'twice' : `${overlap.subs.length} times`}.` : `${overlap.subs.length} ${overlap.label}: ${listed}.`;
+  const title =
+    overlap.kind === 'twice' ? `${overlap.label} is on your list ${overlap.subs.length === 2 ? 'twice' : `${overlap.subs.length} times`}.` : `${overlap.subs.length} ${overlap.label}: ${listed}.`;
   // Mixed currencies stay apart (rule 1): "£11.99 · US$10.99 a month together", never with a "+".
   const together = overlap.totals.map((t) => money(Math.round(t.monthlyMinor), t.currency)).join(' · ');
-  const line = together ? `${together} a month together.${overlap.kind === 'twice' ? ' Same account twice, or one to ditch?' : ''}` : overlap.kind === 'twice' ? 'Same account twice, or one to ditch?' : '';
+  const line = together
+    ? `${together} a month together.${overlap.kind === 'twice' ? ' Same account twice, or one to ditch?' : ''}`
+    : overlap.kind === 'twice'
+      ? 'Same account twice, or one to ditch?'
+      : '';
   return (
     <Card style={{ borderRadius: 16, paddingHorizontal: 14, paddingTop: 12, paddingBottom: 6 }}>
       <View accessible accessibilityLabel={`${title} ${line}`}>
@@ -345,7 +383,14 @@ export function OverlapCard({ overlap, money, onDismiss, onPick }: { overlap: Ov
         ) : null}
       </View>
       <Button label="Pick one to ditch" hint="Opens the cheaper one" onPress={onPick} height={48} style={{ marginTop: 10 }} />
-      <Pressable accessibilityRole="button" accessibilityLabel="Got it" accessibilityHint="Hides this until the list changes" onPress={onDismiss} hitSlop={8} style={{ alignSelf: 'center', minHeight: 44, justifyContent: 'center' }}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Got it"
+        accessibilityHint="Hides this until the list changes"
+        onPress={onDismiss}
+        hitSlop={8}
+        style={{ alignSelf: 'center', minHeight: 44, justifyContent: 'center' }}
+      >
         <Txt v="label" color={p.cardFg} style={{ fontSize: 15, textDecorationLine: 'underline' }}>
           Got it
         </Txt>
@@ -359,7 +404,21 @@ export function OverlapCard({ overlap, money, onDismiss, onPick }: { overlap: Ov
  * Pro sees it and can update in one tap; free sees that something changed, with a way to Pro.
  * Prices sit still (rule 8); the card only appears, it doesn't slide.
  */
-export function PriceChangeCard({ change, pro, money, onUpdate, onDismiss, onPro }: { change: PriceChange; pro: boolean; money: (minor: number, currency: string) => string; onUpdate: () => void; onDismiss: () => void; onPro: () => void }) {
+export function PriceChangeCard({
+  change,
+  pro,
+  money,
+  onUpdate,
+  onDismiss,
+  onPro,
+}: {
+  change: PriceChange;
+  pro: boolean;
+  money: (minor: number, currency: string) => string;
+  onUpdate: () => void;
+  onDismiss: () => void;
+  onPro: () => void;
+}) {
   const p = usePalette();
   const s = change.sub;
   if (!pro) {
@@ -399,7 +458,14 @@ export function PriceChangeCard({ change, pro, money, onUpdate, onDismiss, onPro
             Update to {now}
           </Txt>
         </Pressable>
-        <Pressable accessibilityRole="button" accessibilityLabel="Keep my price" accessibilityHint="Hides this for this price" onPress={onDismiss} hitSlop={8} style={{ minHeight: 44, justifyContent: 'center' }}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Keep my price"
+          accessibilityHint="Hides this for this price"
+          onPress={onDismiss}
+          hitSlop={8}
+          style={{ minHeight: 44, justifyContent: 'center' }}
+        >
           <Txt v="label" color={p.cardFg} style={{ fontSize: 15, textDecorationLine: 'underline' }}>
             Keep mine
           </Txt>

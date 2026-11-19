@@ -229,7 +229,10 @@ describe('onboarding is saved', () => {
 
 describe('CSV export', () => {
   it('writes plain decimals in each sub’s own currency and quotes commas', () => {
-    const subs = [makeSub({ name: 'Gym, downtown', amountMinor: 4500, currency: 'USD', cycle: 'monthly', anchor: '2026-11-20' }), makeSub({ name: 'Netflix JP', amountMinor: 980, currency: 'JPY', cycle: 'monthly', anchor: '2026-11-12', dateSource: 'none' })];
+    const subs = [
+      makeSub({ name: 'Gym, downtown', amountMinor: 4500, currency: 'USD', cycle: 'monthly', anchor: '2026-11-20' }),
+      makeSub({ name: 'Netflix JP', amountMinor: 980, currency: 'JPY', cycle: 'monthly', anchor: '2026-11-12', dateSource: 'none' }),
+    ];
     const csv = toCsv(subs, TODAY, currencyDigits).split('\n');
     expect(csv[0]).toBe('Name,Amount,Currency,Billed,Next charge,Status,Ditched on,Cancelled on,Paid with,Account email,Notes');
     expect(csv[1]).toBe('"Gym, downtown",45.00,USD,Monthly,2026-11-20,Active,,,,,');
@@ -247,7 +250,11 @@ describe('no date yet (DECISIONS #33)', () => {
   });
 
   it('is listed as undated; Ditch’s own trial and ditched ones are not', () => {
-    expect(undatedSubs(demo()).map((s) => s.name).sort()).toEqual(['Amazon Prime', 'Disney+']);
+    expect(
+      undatedSubs(demo())
+        .map((s) => s.name)
+        .sort(),
+    ).toEqual(['Amazon Prime', 'Disney+']);
     expect(undatedSubs([ditchSub(none, TODAY)])).toEqual([]);
   });
 
@@ -306,7 +313,14 @@ describe('settleFreePicks', () => {
   });
   it('a swap in one save works, and Pro is left alone', () => {
     const all = [mk('a', 2000), mk('b', 1500), mk('c', 1000), mk('d', 800, true, false)];
-    const out = settleFreePicks(all, [{ ...all[2], freePick: false }, { ...all[3], freePick: true }], false);
+    const out = settleFreePicks(
+      all,
+      [
+        { ...all[2], freePick: false },
+        { ...all[3], freePick: true },
+      ],
+      false,
+    );
     expect(out.map((s) => s.freePick)).toEqual([false, true]);
     expect(settleFreePicks(all, [mk('e', 1)], true)[0].freePick).toBe(true);
   });
@@ -335,8 +349,7 @@ describe('trialsAfter', () => {
 });
 
 describe('year ahead (DECISIONS #60)', () => {
-  const s = (name: string, amountMinor: number, cycle: Sub['cycle'], anchor: string, currency = 'USD') =>
-    makeSub({ name, amountMinor, currency, cycle, anchor, dateSource: 'next' });
+  const s = (name: string, amountMinor: number, cycle: Sub['cycle'], anchor: string, currency = 'USD') => makeSub({ name, amountMinor, currency, cycle, anchor, dateSource: 'next' });
   it('12 months from this month; this month only counts from today', () => {
     const months = yearAhead([s('Netflix', 1799, 'monthly', '2026-11-05')], '2026-11-09');
     expect(months).toHaveLength(13); // Nov 9 through Nov 8 next year
@@ -367,8 +380,7 @@ describe('year ahead (DECISIONS #60)', () => {
 });
 
 describe('before payday (DECISIONS #60)', () => {
-  const s = (name: string, amountMinor: number, cycle: Sub['cycle'], anchor: string, currency = 'USD') =>
-    makeSub({ name, amountMinor, currency, cycle, anchor, dateSource: 'next' });
+  const s = (name: string, amountMinor: number, cycle: Sub['cycle'], anchor: string, currency = 'USD') => makeSub({ name, amountMinor, currency, cycle, anchor, dateSource: 'next' });
   it('next payday is later this month, or next month once it has come', () => {
     expect(nextPayday(25, '2026-11-09')).toBe('2026-11-25');
     expect(nextPayday(9, '2026-11-09')).toBe('2026-12-09'); // paid today

@@ -415,7 +415,7 @@ export default function Paywall() {
       <View style={{ minHeight: 44, alignItems: 'center', justifyContent: 'center', paddingHorizontal: planId === 'yearly' ? 0 : 4 }}>
         <Txt v="fine" tone="fg2" num center accessibilityLiveRegion="polite" style={{ fontSize: 13 / scale, lineHeight: 16 / scale }}>
           {planId === 'yearly'
-            ? `Then ${yearly.priceString}/yr from ${shortDate(charge).replace(' ', NB)}. Renews yearly until you${NB}cancel.`
+            ? `Then ${yearly.priceString}/yr from ${shortDate(charge).replace(' ', NB)}.\nRenews yearly until you${NB}cancel.`
             : planId === 'weekly'
               ? `${weekly.priceString} today, then every week until you${NB}cancel.`
               : `${lifetime.priceString} once. Pro for good, nothing${NB}renews.`}

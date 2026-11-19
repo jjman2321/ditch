@@ -46,7 +46,17 @@ export default function Settings() {
   );
 
   const whichValue = pro ? (reminded.size === listed.length ? `All ${listed.length}` : `${reminded.size} of ${listed.length}`) : `${reminded.size} of ${FREE_REMINDERS}`;
-  const proValue = !pro ? null : trial ? `Trial, ends ${weekdayDate(trial.anchor).split(', ')[1]}` : settings.proPlan === 'lifetime' ? 'Lifetime' : settings.proPlan === 'weekly' ? 'Weekly' : settings.proPlan === 'monthly' ? 'Monthly' : 'Yearly';
+  const proValue = !pro
+    ? null
+    : trial
+      ? `Trial, ends ${weekdayDate(trial.anchor).split(', ')[1]}`
+      : settings.proPlan === 'lifetime'
+        ? 'Lifetime'
+        : settings.proPlan === 'weekly'
+          ? 'Weekly'
+          : settings.proPlan === 'monthly'
+            ? 'Monthly'
+            : 'Yearly';
   // VoiceOver hears the plan and its price, not just the row name (prices from PLANS, never typed here).
   const yearly = planById('yearly');
   const proPlan = settings.proPlan && settings.proPlan !== 'monthly' ? planById(settings.proPlan) : null;
@@ -104,7 +114,11 @@ export default function Settings() {
 
       {/* Feedback & help: a person reads every one (reviews: a developer who answers turns 1★ into 5★). */}
       <Group header="Feedback & help" note="A real person reads every email.">
-        <Row label="Report a problem" hint="Opens an email with a line of counts, no names or prices" onPress={() => void reportProblem({ subs, settings, pro, notif: app.notif, leads: effectiveLeads(settings, pro) })} />
+        <Row
+          label="Report a problem"
+          hint="Opens an email with a line of counts, no names or prices"
+          onPress={() => void reportProblem({ subs, settings, pro, notif: app.notif, leads: effectiveLeads(settings, pro) })}
+        />
         <Row label="Suggest a feature" hint={`Opens an email to ${SUPPORT_EMAIL}`} onPress={suggestFeature} />
         <Row label="Suggest a subscription" hint="Missing one? We’ll add it to the list" onPress={() => suggestService()} />
         <Row label="Rate Ditch" hint="Opens the App Store" onPress={rateDitch} />
@@ -168,15 +182,38 @@ function HealthCard() {
   } else if (notif === 'undetermined') {
     h = { icon: 'bell', title: 'Reminders aren’t on yet', line: 'Ditch needs your OK to send them.', button: { label: 'Turn on reminders', onPress: () => app.askNotif() }, test: false };
   } else if (notif === 'quiet') {
-    h = { icon: 'warn', title: 'On, but quiet', line: 'Banners are off, so reminders slip into Notification Center without a sound.', button: { label: 'Change in iPhone Settings', onPress: openPhone }, test: true };
+    h = {
+      icon: 'warn',
+      title: 'On, but quiet',
+      line: 'Banners are off, so reminders slip into Notification Center without a sound.',
+      button: { label: 'Change in iPhone Settings', onPress: openPhone },
+      test: true,
+    };
   } else if (!listed.length) {
     h = { icon: 'ok', title: 'All set up', line: 'Nothing on your list yet. Add a subscription and reminders start once it has a date.', test: true };
   } else if (!anyDated) {
-    h = { icon: 'bell', title: 'No dates yet', line: 'Reminders start once a subscription has a date. Add them from your list.', button: { label: 'Go to my list', onPress: () => router.back() }, test: true };
+    h = {
+      icon: 'bell',
+      title: 'No dates yet',
+      line: 'Reminders start once a subscription has a date. Add them from your list.',
+      button: { label: 'Go to my list', onPress: () => router.back() },
+      test: true,
+    };
   } else if (nonePicked) {
-    h = { icon: 'bell', title: 'No reminders picked', line: 'Pick up to 3 and you’ll hear before they charge.', button: { label: 'Pick 3', onPress: () => router.push('/settings/which') }, test: true };
+    h = {
+      icon: 'bell',
+      title: 'No reminders picked',
+      line: 'Pick up to 3 and you’ll hear before they charge.',
+      button: { label: 'Pick 3', onPress: () => router.push('/settings/which') },
+      test: true,
+    };
   } else if (next) {
-    h = { icon: 'ok', title: 'All good', line: `Next one: ${next.name}, ${weekdayDate(toDateOnly(next.fireAt)).replace(/ (\d+)$/, `${NB}$1`)} at${NB}${shortTimeLabel(formatTime(next.fireAt.getHours(), next.fireAt.getMinutes()))}`, test: true };
+    h = {
+      icon: 'ok',
+      title: 'All good',
+      line: `Next one: ${next.name}, ${weekdayDate(toDateOnly(next.fireAt)).replace(/ (\d+)$/, `${NB}$1`)} at${NB}${shortTimeLabel(formatTime(next.fireAt.getHours(), next.fireAt.getMinutes()))}`,
+      test: true,
+    };
   } else {
     h = { icon: 'ok', title: 'All good', line: 'Nothing to remind you about yet. Add a next charge date to start.', test: true };
   }
@@ -189,17 +226,23 @@ function HealthCard() {
     if (ok) {
       setSent(true);
       AccessibilityInfo.announceForAccessibility('Sent. It arrives in about 5 seconds.');
-    }
-    else tell('Couldn’t send it', 'Check that notifications for Ditch are on in iPhone Settings.');
+    } else tell('Couldn’t send it', 'Check that notifications for Ditch are on in iPhone Settings.');
   };
 
   return (
     <Card style={{ marginTop: 18, padding: 16, gap: 14 }}>
-      <View style={{ flexDirection: 'row', gap: 12, alignItems: 'center' }} accessible accessibilityLabel={`${h.title}. ${sent ? 'Sent. Check the top of your screen.' : h.line}`} accessibilityLiveRegion="polite">
+      <View
+        style={{ flexDirection: 'row', gap: 12, alignItems: 'center' }}
+        accessible
+        accessibilityLabel={`${h.title}. ${sent ? 'Sent. Check the top of your screen.' : h.line}`}
+        accessibilityLiveRegion="polite"
+      >
         {h.icon === 'warn' ? (
           <Bang color={brand.ink} bg={brand.bill} size={36} />
         ) : (
-          <View style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: brand.sunflower, alignItems: 'center', justifyContent: 'center', borderWidth: p.dark ? 0 : 1.5, borderColor: brand.ink }}>
+          <View
+            style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: brand.sunflower, alignItems: 'center', justifyContent: 'center', borderWidth: p.dark ? 0 : 1.5, borderColor: brand.ink }}
+          >
             {h.icon === 'ok' ? <Check color={brand.ink} size={17} /> : <Bell color={brand.ink} fill={brand.ink} size={16} />}
           </View>
         )}

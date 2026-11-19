@@ -1,6 +1,7 @@
 // Which subscriptions get reminders. Free: pick 3 (bells, biggest yearly
 // first). Pro: a switch on each, all on by default. Nothing is hidden: the
-// rest stay on the list with dates and totals.
+// rest stay on the list with dates and totals. A 4th bell opens the paywall
+// (DECISIONS #66: "4th reminder" is a paywall moment).
 
 import { router } from 'expo-router';
 import { useState } from 'react';
@@ -13,9 +14,10 @@ import { FREE_REMINDERS, chargeOfSub, isPricedSub, listedUserSubs, remindedIds, 
 import { useEditor } from '@/editor/Editor';
 import { SubLogo } from '@/home/SubRow';
 import { TextLink } from '@/onboarding/Parts';
-import { Group, Row, SettingsPage } from '@/settings/Parts';
+import { planById } from '@/services/purchases';
+import { Group, SettingsPage } from '@/settings/Parts';
 import { useApp, useAppMoney } from '@/state/app';
-import { Bell, BellMark, SunSwitch, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
+import { Bell, BellMark, ChevronRight, F, SunSwitch, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
 
 export default function Which() {
   const narrow = useWindowDimensions().width < 400;
@@ -41,8 +43,13 @@ export default function Which() {
     haptic.warning();
     setLimitHit(true);
     AccessibilityInfo.announceForAccessibility(`Free covers ${FREE_REMINDERS}. Turn one off first to remind you about ${name}.`);
-    if (!reduce) nudge.set(withSequence(withTiming(3, { duration: 30 }), withTiming(-3, { duration: 60 }), withTiming(3, { duration: 60 }), withTiming(-3, { duration: 60 }), withTiming(0, { duration: 30 })));
+    if (!reduce)
+      nudge.set(withSequence(withTiming(3, { duration: 30 }), withTiming(-3, { duration: 60 }), withTiming(3, { duration: 60 }), withTiming(-3, { duration: 60 }), withTiming(0, { duration: 30 })));
+    router.push('/paywall?from=which');
   };
+  // Dark mode: the empty bell's ring is drawn stronger on top (#8E877A on the #1E1C18 card is 4.8:1; the stock one is 1.8:1).
+  const offRing = p.dark ? '#8E877A' : null;
+  const upsellFg = p.dark ? brand.sunflower : brand.ink;
 
   return (
     <SettingsPage title="Which subscriptions" intro={pro ? 'Pro reminds you about all of them. Switch off any you don’t need.' : `Pick ${FREE_REMINDERS} to get reminders.`}>
@@ -50,7 +57,10 @@ export default function Which() {
         <Animated.View
           accessible
           accessibilityLabel={`Reminders ${on.size} of ${FREE_REMINDERS}`}
-          style={[{ alignSelf: 'flex-start', marginTop: 14, height: 30, borderRadius: 15, backgroundColor: brand.sunflower, flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 12 }, nudgeStyle]}
+          style={[
+            { alignSelf: 'flex-start', marginTop: 14, height: 30, borderRadius: 15, backgroundColor: brand.sunflower, flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 12 },
+            nudgeStyle,
+          ]}
         >
           <Bell color={brand.ink} size={14} fill={brand.ink} />
           <Txt v="label" color={brand.ink} num style={{ fontFamily: 'Inter_700Bold', fontSize: 13.5 }}>
@@ -64,14 +74,44 @@ export default function Which() {
           <Txt v="body" tone="fg2" style={{ fontSize: 15 }}>
             Free covers {FREE_REMINDERS}. Turn one off, or
           </Txt>
-          <TextLink label="see Pro" a11y="See Ditch Pro" onPress={() => router.push('/paywall?from=app')} style={{ fontSize: 15 }} />
+          <TextLink label="see Pro" a11y="See Ditch Pro" onPress={() => router.push('/paywall?from=which')} style={{ fontSize: 15 }} />
         </View>
       ) : null}
-      {list.length ? (
-        <Group
-          style={{ marginTop: 14 }}
-          note={pro ? undefined : 'The rest stay on your list with real dates and totals. You just won’t get a reminder.'}
+      {/* The way to all of them, above the list so it's on screen without scrolling (SE). Home total card colours. */}
+      {pro ? null : (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`Get reminders on all of them. Try Pro free for ${planById('yearly').trialDays} days`}
+          onPress={() => router.push('/paywall?from=which')}
+          style={({ pressed }) => ({
+            marginTop: 14,
+            minHeight: 64,
+            borderRadius: 22,
+            paddingHorizontal: 18,
+            paddingVertical: 12,
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 12,
+            backgroundColor: p.dark ? p.card : brand.sunflower,
+            borderWidth: p.dark ? 1 : 0,
+            borderColor: p.cardBorder,
+            opacity: pressed ? 0.8 : 1,
+          })}
         >
+          <Bell color={upsellFg} fill={upsellFg} size={18} />
+          <View style={{ flex: 1 }}>
+            <Txt v="bodyStrong" color={upsellFg} style={{ fontFamily: F.bold }}>
+              Get reminders on all of them
+            </Txt>
+            <Txt v="sub" color={p.dark ? p.cardFg : brand.ink}>
+              Try Pro free for {planById('yearly').trialDays} days
+            </Txt>
+          </View>
+          <ChevronRight color={upsellFg} size={16} />
+        </Pressable>
+      )}
+      {list.length ? (
+        <Group style={{ marginTop: 14 }} note={pro ? undefined : 'The rest stay on your list with real dates and totals. You just won’t get a reminder.'}>
           {list.map((s) => {
             const isOn = on.has(s.id);
             const next = chargeOfSub(s, today);
@@ -123,7 +163,12 @@ export default function Which() {
                 style={({ pressed }) => ({ minHeight: 62, flexDirection: 'row', alignItems: 'center', gap: 12, opacity: pressed ? 0.75 : 1 })}
               >
                 {body}
-                <BellMark on={isOn} />
+                <View>
+                  <BellMark on={isOn} />
+                  {!isOn && offRing ? (
+                    <View pointerEvents="none" style={{ position: 'absolute', top: 0, left: 0, width: 44, height: 44, borderRadius: 22, borderWidth: 1.5, borderColor: offRing }} />
+                  ) : null}
+                </View>
               </Pressable>
             );
           })}
@@ -132,11 +177,6 @@ export default function Which() {
         <Txt v="leadS" tone="fg2" style={{ marginTop: 20 }}>
           Nothing on your list yet. Add a subscription on Home first.
         </Txt>
-      )}
-      {pro ? null : (
-        <Group>
-          <Row label="Get reminders on all of them" onPress={() => router.push('/paywall?from=app')} />
-        </Group>
       )}
     </SettingsPage>
   );

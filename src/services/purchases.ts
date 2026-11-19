@@ -19,7 +19,7 @@ export type Plan = {
 };
 
 export const PLANS: Plan[] = [
-// DECISIONS #66 (owner, Nov 18): Yearly with a 7-day trial, Lifetime on the main paywall, Weekly. No monthly.
+  // DECISIONS #66 (owner, Nov 18): Yearly with a 7-day trial, Lifetime on the main paywall, Weekly. No monthly.
   { id: 'yearly', title: 'Yearly', priceString: '$49.99', priceMinor: 4999, currency: 'USD', period: 'year', trialDays: 7 },
   { id: 'lifetime', title: 'Lifetime', priceString: '$99.99', priceMinor: 9999, currency: 'USD', period: 'once', trialDays: 0 },
   { id: 'weekly', title: 'Weekly', priceString: '$6.99', priceMinor: 699, currency: 'USD', period: 'week', trialDays: 0 },

@@ -30,7 +30,7 @@ export default function RemindMe() {
   const toggle = (d: number) => {
     if (!pro) {
       haptic.select();
-      router.push('/paywall?from=app');
+      router.push('/paywall?from=remind');
       return;
     }
     const on = leads.includes(d);

@@ -129,12 +129,12 @@ add('2 · Before the bank opens','What you get, what we read, what we can’t do
 <div class="btn ghost" style="margin-top:4px">Not now</div>
 <div class="fine" style="margin:6px 0 30px">US &amp; Canada. Part of Pro: 7 days free, then $59.99/yr.</div></div>`);
 
-add('3 · Which bank?','Like Copilot: pick first, so banks that can’t connect are caught before anyone pays. Built version shows each bank’s real logo; letters are placeholders.',
+add('3 · Which bank?','Like Copilot: pick first, so banks that can’t connect are caught before anyone pays. Real bank logos; in the app they come from the bank-data provider.',
 `${SB}<div class="nav"><span class="back">‹</span><span></span></div>
 <div class="pad"><div class="h1">Which bank pays your subscriptions?</div>
 <div class="search" style="margin-top:16px">⌕&nbsp; Search banks</div>
 <div class="banks">
- ${[['Chase','#0F5BA7','C'],['Bank of America','#C8102E','B'],['Wells Fargo','#D71E28','W'],['Capital One','#004977','C'],['Citi','#056DAE','c'],['Amex','#1E3A8A','A'],['Discover','#E8590C','D'],['Chime','#1EC677','C'],['U.S. Bank','#0C2074','U']].map(([n,c,l])=>`<div class="bk"><i style="background:${c}">${l}</i>${n}</div>`).join('')}
+ ${[['Chase','chase'],['Bank of America','bankofamerica'],['Wells Fargo','wellsfargo'],['Capital One','capitalone'],['Citi','citi'],['Amex','americanexpress'],['Discover','discover'],['Chime','chime'],['U.S. Bank','usbank']].map(([n,f])=>`<div class="bk"><i style="background:#fff;overflow:hidden;box-shadow:inset 0 0 0 .5px rgba(22,20,15,.12)"><img src="banks/${f}.png" style="width:100%;height:100%"></i>${n}</div>`).join('')}
 </div>
 <div class="fine" style="margin-top:16px">Pick the card or account you pay subscriptions with.</div><div style="text-align:center;margin-top:10px;font:600 15px Inter;text-decoration:underline;text-underline-offset:3px">Bank not here?</div></div>`);
 
@@ -153,7 +153,7 @@ add('4 · Paywall (same design, new headline)','Same design as today’s paywall
 
 add('5 · Reading your bank','Real steps, last 30 days first so finds appear in ~10 s. Finds drop in live. Leaving is safe.',
 `${SB}<div class="pad" style="flex:1;display:flex;flex-direction:column;padding-top:40px">
-<span class="bank" style="width:56px;height:56px;border-radius:14px;font-size:24px">C</span>
+<span class="bank" style="width:56px;height:56px;border-radius:14px;background:#fff;overflow:hidden"><img src="banks/chase.png" style="width:100%;height:100%"></span>
 <div class="h1" style="margin-top:18px">Reading Chase…</div>
 <div style="margin-top:20px">
  <div class="step done"><span class="d">✓</span>Connected to Chase</div>
@@ -203,7 +203,7 @@ add('9 · Home: looks cancelled','After a missed date + 7 days. Never ditched wi
 
 add('10 · Home: bank needs a sign-in','Same spot and style as other cards, an amber outline instead of more yellow. Reminders keep working.',
 `${SB}<div class="pad" style="padding-top:6px">${HEAD}${TOTAL('$90.95','$1,091','all 6')}
-<div class="notice amber" style="margin-top:12px"><div style="display:flex;gap:12px;align-items:flex-start"><span class="bank">C</span><div style="flex:1"><div style="font:700 16px/21px Inter"><span class="dot"></span>Sign back in to Chase.</div><div class="sub" style="margin-top:2px">Banks do this every few months. Your list and reminders still work.</div></div></div>
+<div class="notice amber" style="margin-top:12px"><div style="display:flex;gap:12px;align-items:flex-start"><span class="bank" style="background:#fff;overflow:hidden;box-shadow:inset 0 0 0 .5px rgba(22,20,15,.12)"><img src="banks/chase.png" style="width:100%;height:100%"></span><div style="flex:1"><div style="font:700 16px/21px Inter"><span class="dot"></span>Sign back in to Chase.</div><div class="sub" style="margin-top:2px">Banks do this every few months. Your list and reminders still work.</div></div></div>
 <div class="yn"><div class="btn sm">Reconnect</div><div class="btn sm line">Later</div></div></div>
 <div class="eyebrow" style="margin:18px 0 8px">Next week</div>
 <div class="card"><div class="row">${L('netflix')}<div style="flex:1"><div class="nm">Netflix</div><div class="sub">Tue, Nov 24 · in 5 days</div></div><span class="amt">$17.99</span></div></div></div>${TABS('Home')}`);
@@ -218,8 +218,8 @@ add('12 · Settings → Bank connections','Status in words, Reconnect right on t
 `${SB}<div class="nav"><span class="back" style="font-size:16px;width:auto;padding:0 6px">‹ Settings</span><span></span></div>
 <div class="pad"><div class="h1">Bank connections</div><div class="lead">Banks update a few times a day.</div>
 <div class="card" style="margin-top:18px">
- <div class="row"><span class="bank">C</span><div style="flex:1"><div class="nm">Chase</div><div class="sub">Visa ending 4821 · Checking ending 1005</div><div class="sub" style="color:var(--green)">Checked 2 hours ago</div></div>${chev}</div>
- <div class="row"><span class="bank" style="background:#1E3A8A">A</span><div style="flex:1"><div class="nm">American Express</div><div class="sub">Gold ending 3007</div><div class="sub" style="color:var(--amber)"><span class="dot"></span>Needs sign-in</div></div><div class="btn sm" style="font-size:14px;padding:0 14px">Reconnect</div></div>
+ <div class="row"><span class="bank" style="background:#fff;overflow:hidden;box-shadow:inset 0 0 0 .5px rgba(22,20,15,.12)"><img src="banks/chase.png" style="width:100%;height:100%"></span><div style="flex:1"><div class="nm">Chase</div><div class="sub">Visa ending 4821 · Checking ending 1005</div><div class="sub" style="color:var(--green)">Checked 2 hours ago</div></div>${chev}</div>
+ <div class="row"><span class="bank" style="overflow:hidden"><img src="banks/americanexpress.png" style="width:100%;height:100%"></span><div style="flex:1"><div class="nm">American Express</div><div class="sub">Gold ending 3007</div><div class="sub" style="color:var(--amber)"><span class="dot"></span>Needs sign-in</div></div><div class="btn sm" style="font-size:14px;padding:0 14px">Reconnect</div></div>
 </div>
 <div class="card" style="margin-top:14px"><div class="row" style="font:600 16px Inter">＋&nbsp; Add a bank or card</div></div>
 <div class="fine" style="text-align:left;margin-top:8px">Connect the card or bank that pays your subscriptions. You can connect up to 3.</div>

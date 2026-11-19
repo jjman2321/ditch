@@ -29,7 +29,7 @@ import { OnbRoot } from '@/onboarding/Parts';
 import { PURCHASES_LIVE, billedLabel, planById, purchase, restorePurchases, type PlanId } from '@/services/purchases';
 import { onboardingToday, useOnboarding, usePickedList } from '@/state/onboarding';
 import { useApp } from '@/state/app';
-import { Button, Card, Check, Close, Duck, F, IconButton, PlanCard, ProLockup, Txt, brand, haptic, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
+import { Button, Card, Check, Close, F, IconButton, PlanCard, ProLockup, Txt, brand, haptic, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
 
 const NB = ' ';
 
@@ -330,8 +330,6 @@ export default function Paywall() {
             >
               {head}
             </Txt>
-            {/* He sits on top of the raised Pro column, peeking over it. */}
-            <Duck width={80} right={EDGE_W + PRO_INSET} bottom={50} />
           </View>
 
           <Compare rows={rows} width={CANVAS_W - EDGE_W * 2} overlap={40} grow={rowGrow} />

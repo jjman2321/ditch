@@ -393,7 +393,17 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
   return (
     <View style={{ flex: 1 }}>
       {/* Drag the form down, or tap Done, to put the keyboard away. */}
-      <ScrollView style={{ flex: 1 }} keyboardShouldPersistTaps="handled" keyboardDismissMode="interactive" automaticallyAdjustKeyboardInsets showsVerticalScrollIndicator={false} scrollEventThrottle={32} onScroll={onSheetScroll}>
+      {/* Edge to edge with the padding inside, so the chip rows can scroll out to the screen edge instead of being cut at the margin. */}
+      <ScrollView
+        style={{ flex: 1, marginHorizontal: -edge }}
+        contentContainerStyle={{ paddingHorizontal: edge }}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="interactive"
+        automaticallyAdjustKeyboardInsets
+        showsVerticalScrollIndicator={false}
+        scrollEventThrottle={32}
+        onScroll={onSheetScroll}
+      >
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
           {draft.catalogId || draft.name || trialEntry ? <SubLogo sub={{ ...draft, name: draft.name || query || '?' }} size={44} /> : <LogoTile id="?" size={44} mono="+" color={brand.sunflower} ink={brand.ink} />}
           <Txt v="heading" accessibilityRole="header" style={{ flex: 1, marginRight: 40 }} numberOfLines={2}>

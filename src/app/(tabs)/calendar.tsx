@@ -9,7 +9,7 @@ import { Pressable, ScrollView, View, useWindowDimensions } from 'react-native';
 import { MONTH_LONG, WEEKDAY_LONG, addDays, parseDate, shiftMonth, toDateOnly, weekdayDate, weekdayOf, weekdayShort, type DateOnly } from '@/domain/dates';
 import { HEADS_UP_LEADS } from '@/domain/charges';
 import { effectiveLeads, shortTimeLabel, timeLabel } from '@/domain/settings';
-import { FREE_REMINDERS, calendarMonth, isPending, isPricedSub, isProTrial, monthDue, remindedIds, undatedSubs, undatedTotals, yearAhead, yearlyOfSub, type CalendarCharge, type CalendarDay } from '@/domain/subs';
+import { FREE_REMINDERS, calendarMonth, homeFirst, isPending, isPricedSub, isProTrial, monthDue, remindedIds, undatedSubs, undatedTotals, yearAhead, yearlyOfSub, type CalendarCharge, type CalendarDay } from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
 import { OffBanner, openPhoneSettings } from '@/home/HomeParts';
 import { SubLogo } from '@/home/SubRow';
@@ -49,7 +49,7 @@ export default function Calendar() {
   const undatedMonthly = useMemo(() => undatedTotals(subs, today, settings.currency), [subs, today, settings.currency]);
   const aheadRows = useMemo(() => {
     // Each currency on its own line, never joined with "+" (rule 1). The joined text is only a key for "Most months".
-    const fmt = (a: (typeof ahead)[number]) => a.totals.map((x) => money(x.amountMinor, x.currency)).join('\n') || '–';
+    const fmt = (a: (typeof ahead)[number]) => homeFirst(a.totals, settings.currency).map((x) => money(x.amountMinor, x.currency)).join('\n') || '–';
     // The 13th month is only its first days (up to a year from today): it shows only for a yearly or 6-monthly charge.
     const full = ahead.length > 12 ? ahead.slice(0, 12) : ahead;
     const counts = new Map<string, number>();
@@ -65,7 +65,7 @@ export default function Calendar() {
       rows.push({ key: a.month, label: i === 0 ? `Rest of ${MONTH_LONG[m - 1]}` : `${MONTH_LONG[m - 1]}${y !== t.y ? ` ${y}` : ''}`, amounts: fmt(a), bigs: a.big.map((b) => `${b.sub.name} ${money(b.sub.amountMinor, b.sub.currency)}`).join(' · '), usual: false });
     }
     return rows;
-  }, [ahead, money, t.y]);
+  }, [ahead, money, t.y, settings.currency]);
   const [picked, setPicked] = useState<DateOnly | null>(null);
   const [gridW, setGridW] = useState(345);
 

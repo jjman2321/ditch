@@ -1,0 +1,251 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Bank sync screens v32</title>
+<style>
+@font-face{font-family:Archivo;src:url(../v12/fonts/archivo-wdth.woff2) format('woff2');font-weight:100 900;font-stretch:62% 125%}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_400Regular.ttf);font-weight:400}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_500Medium.ttf);font-weight:500}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_600SemiBold.ttf);font-weight:600}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_700Bold.ttf);font-weight:700}
+:root{--sun:#FFCC2E;--sunsoft:#FFF1BC;--ink:#16140F;--cream:#FBF7EE;--card:#fff;--fg2:#5A544A;--mute:#6F695C;--chip2:#EFE8D8;--warnbg:#FFF6E0;--warndot:#B45309;--outline:#16140F;--btnbg:#16140F;--btnfg:#FFFFFF;--tabdim:#CFC7B5;--hair:#ECE5D6;--amber:#B45309;--red:#C2410C;--green:#15803D}
+*{box-sizing:border-box;margin:0}
+body{background:#E4DFD3;font-family:Inter,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;padding:28px 32px;letter-spacing:-.15px}
+.grid{display:grid;grid-template-columns:repeat(4,390px);gap:34px 30px}
+.cell{display:flex;flex-direction:column;gap:10px}
+.cap{font:700 14px Inter;color:#3D392F}.cap small{display:block;font:500 12.5px/17px Inter;color:#6A655A;margin-top:2px}
+.phone{width:390px;height:844px;border-radius:44px;overflow:hidden;box-shadow:0 0 0 9px #121110,0 24px 50px rgba(40,30,0,.18);background:var(--cream);display:flex;flex-direction:column;position:relative}
+.sb{height:50px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:4px 30px 0 34px;font:600 16px Inter}
+.sb i{display:flex;gap:5px}.sb i b{display:block;background:var(--ink);border-radius:2px}
+.pad{padding:0 20px}
+.nav{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;flex:none}
+.back{width:44px;height:44px;display:flex;align-items:center;justify-content:center;font:500 24px Inter}
+.h1{font:900 30px/34px Archivo;font-stretch:115%;letter-spacing:-.8px;text-wrap:balance}
+.h2{font:900 22px/27px Archivo;font-stretch:112%;letter-spacing:-.5px}
+.lead{font:400 16px/23px Inter;color:var(--fg2);margin-top:8px}
+.eyebrow{font:700 11.5px Inter;letter-spacing:1.1px;text-transform:uppercase;color:var(--mute)}
+.card{background:var(--card);border-radius:18px;box-shadow:0 1px 0 rgba(22,20,15,.04),0 6px 18px rgba(70,50,0,.06)}
+.row{display:flex;align-items:center;gap:12px;padding:12px 14px;min-height:60px}
+.row+.row{border-top:1px solid var(--hair)}
+.logo{width:40px;height:40px;border-radius:10px;overflow:hidden;flex:none;box-shadow:inset 0 0 0 .5px rgba(22,20,15,.1)}
+.logo img{width:100%;height:100%;display:block}
+.bank{width:40px;height:40px;border-radius:10px;flex:none;background:#0F5BA7;color:#fff;display:flex;align-items:center;justify-content:center;font:800 17px Archivo}
+.nm{font:600 16px Inter}.sub{font:400 13.5px/18px Inter;color:var(--mute);margin-top:1px}
+.amt{font:800 16px Archivo;font-stretch:110%;font-variant-numeric:tabular-nums}
+.btn{height:54px;border-radius:27px;background:var(--btnbg);color:var(--btnfg);display:flex;align-items:center;justify-content:center;font:600 17px Inter;flex:none}
+.btn.sun{background:var(--sun);color:var(--ink)}
+.btn.ghost{background:transparent;color:var(--ink);height:44px;font-weight:600}
+.btn.sm{height:44px;border-radius:22px;font-size:15px;padding:0 16px}
+.btn.line{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--outline)}
+.fine{font:400 13px/18px Inter;color:var(--fg2);text-align:center}
+.tick{display:flex;gap:12px;align-items:flex-start;padding:10px 0;font:500 16px/22px Inter}
+.tick span.c{width:24px;height:24px;border-radius:12px;background:var(--sun);display:flex;align-items:center;justify-content:center;font:800 14px Inter;flex:none;margin-top:-1px}
+.tag{display:inline-block;font:800 9.5px Archivo;font-stretch:110%;letter-spacing:.6px;padding:2px 6px;border-radius:5px;background:var(--ink);color:var(--sun);vertical-align:2px;margin-left:6px}
+.chip{display:inline-block;font:700 11px Inter;letter-spacing:.6px;padding:3px 8px;border-radius:6px;background:var(--sunsoft);color:#5C4700}
+.tabbar{position:absolute;left:0;right:0;bottom:0;height:84px;background:var(--cream);border-top:1px solid var(--hair);display:flex;justify-content:space-around;padding-top:10px;font:600 10.5px Inter;color:var(--mute)}
+.tabbar b{display:block;width:22px;height:22px;margin:0 auto 4px;border-radius:6px;background:#CFC7B5}.tabbar .on{color:var(--ink)}.tabbar .on b{background:var(--ink)}
+.total{background:var(--sun);border-radius:20px;padding:16px 18px}
+.total .big{font:900 40px Archivo;font-stretch:118%;letter-spacing:-1.2px}
+.total .big small{font:600 16px Inter;letter-spacing:0;margin-left:6px}
+.toast{position:absolute;left:14px;right:14px;bottom:98px;background:var(--ink);color:#fff;border-radius:16px;padding:12px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 14px 30px rgba(0,0,0,.25)}
+.toast .u{color:var(--sun);font:700 15px Inter;padding:12px 6px;min-height:44px;display:flex;align-items:center}
+.step{display:flex;gap:12px;align-items:center;padding:9px 0;font:500 16px Inter}
+.step .d{width:24px;height:24px;border-radius:12px;flex:none;display:flex;align-items:center;justify-content:center;font:800 13px Inter}
+.step.done .d{background:var(--ink);color:var(--sun)}.step.now .d{box-shadow:inset 0 0 0 2.5px var(--ink)}.step.now .d::after{content:"";width:8px;height:8px;border-radius:4px;background:var(--ink)}
+.step.todo{color:var(--mute)}.step.todo .d{box-shadow:inset 0 0 0 2px #D4CCBA}
+.yn{display:flex;gap:8px;margin-top:10px}.yn .btn{flex:1}
+.notice{border-radius:18px;padding:14px 16px;background:var(--card);box-shadow:0 6px 18px rgba(70,50,0,.06)}
+.notice.warn{background:var(--warnbg);box-shadow:inset 0 0 0 1.5px #F2C14E}
+.dot{display:inline-block;width:8px;height:8px;border-radius:4px;background:var(--warndot);margin-right:6px;vertical-align:1px}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--cream);border-radius:22px 22px 0 0;padding:10px 20px 34px;box-shadow:0 -10px 40px rgba(0,0,0,.18)}
+.grab{width:36px;height:5px;border-radius:3px;background:#D6CEBC;margin:0 auto 14px}
+.dim{position:absolute;inset:0;background:rgba(22,20,15,.35)}
+.lockrow{display:flex;justify-content:space-between;align-items:center}
+.grid{grid-template-columns:repeat(4,390px)}
+.hero{border-radius:20px;background:var(--card);box-shadow:0 0 0 2px var(--sun),0 8px 22px rgba(70,50,0,.08);padding:16px}
+.mini .row{min-height:52px;padding:9px 14px}
+.mini .bank{width:34px;height:34px;border-radius:9px}
+.ck{width:44px;height:44px;display:flex;align-items:center;justify-content:center;margin-right:-10px}
+.ck span{width:26px;height:26px;border-radius:8px;background:var(--ink);color:var(--sun);display:flex;align-items:center;justify-content:center;font:800 14px Inter}
+.banks{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.bk{background:var(--card);border-radius:16px;height:86px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font:600 13px Inter;box-shadow:0 4px 14px rgba(70,50,0,.06)}
+.bk i{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font:800 15px Archivo;font-style:normal}
+.search{height:48px;border-radius:14px;background:var(--card);display:flex;align-items:center;padding:0 14px;color:var(--mute);font:500 16px Inter;box-shadow:inset 0 0 0 1px var(--hair)}
+.amber{box-shadow:inset 0 0 0 1.5px #EBC46A}
+body.dark{--cream:#12110E;--card:#1E1C18;--ink:#F6F1E4;--fg2:#C2BAA9;--mute:#A39C8C;--hair:#2E2B25;--chip2:#2A2721;--warnbg:#2A2412;--outline:#F6F1E4;--btnbg:#FFCC2E;--btnfg:#16140F;--sunsoft:#3A3112;--tabdim:#3A3630}
+body.dark .phone{background:var(--cream);color:var(--ink)}
+body.dark .total,body.dark .tick span.c{color:#16140F}
+body.dark .chip{background:#FFCC2E;color:#16140F}
+body.dark .toast{background:#F6F1E4;color:#16140F}
+body.dark .toast .u{color:#7A5200}
+body.dark .ck span{background:#FFCC2E;color:#16140F}
+body.dark .tag{background:#FFCC2E;color:#16140F}
+body.dark .step.done .d{background:#FFCC2E;color:#16140F}
+body.dark .tabbar{background:var(--cream)}
+body.dark .sheet{background:#1E1C18}
+body.dark .card,body.dark .notice{box-shadow:inset 0 0 0 1px var(--hair)}
+body.dark .notice.amber{box-shadow:inset 0 0 0 1.5px #8A6A1F}
+.tabbar b{background:var(--tabdim)}
+.bank[style*="chip2"]{color:var(--ink)}
+.bank[style*="--sun"]{color:#16140F}
+.radio{width:22px;height:22px;border-radius:11px;box-shadow:inset 0 0 0 2px #8F8776;flex:none}
+.radio.on{background:var(--btnbg);box-shadow:none;display:flex;align-items:center;justify-content:center;color:var(--btnfg);font:800 12px Inter}
+</style></head><body class="dark">
+<div class="grid" id="g"></div>
+<script>
+const IC=["<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M3.5 9.2L12 4l8.5 5.2H3.5z\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linejoin=\"round\"/><path d=\"M6.5 12.5v4.5M10.5 12.5v4.5M13.5 12.5v4.5M17.5 12.5v4.5M3.5 20h17\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>", "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\"><rect x=\"6\" y=\"2.5\" width=\"12\" height=\"19\" rx=\"2.8\" stroke=\"currentColor\" stroke-width=\"2\"/><circle cx=\"9.4\" cy=\"8.5\" r=\"1\" fill=\"currentColor\"/><circle cx=\"9.4\" cy=\"12\" r=\"1\" fill=\"currentColor\"/><circle cx=\"9.4\" cy=\"15.5\" r=\"1\" fill=\"currentColor\"/><path d=\"M11.6 8.5h3M11.6 12h3M11.6 15.5h2\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg>", "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M14 3H7.2A1.2 1.2 0 006 4.2v15.6A1.2 1.2 0 007.2 21h9.6a1.2 1.2 0 001.2-1.2V7l-4-4z\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linejoin=\"round\"/><path d=\"M14 3v4h4\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linejoin=\"round\"/><path d=\"M9 11.5h6M9 14.5h6M9 17.5h3.5\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg>", "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M3.8 6.6l1.7 1.7 3-3.1M3.8 12.6l1.7 1.7 3-3.1\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"4\" y=\"17.2\" width=\"4\" height=\"4\" rx=\"1.2\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"M11.5 7h8.5M11.5 13h8.5M11.5 19.2h8.5\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>"];
+const L=n=>`<span class="logo"><img src="../v26/logos/${n}.png"></span>`;
+const SB=`<div class="sb"><span>9:41</span><i><b style="width:17px;height:11px"></b><b style="width:25px;height:12px;border-radius:4px"></b></i></div>`;
+const TABS=(on)=>`<div class="tabbar">${['Home','Calendar','Ditched'].map(t=>`<div class="${t===on?'on':''}"><b></b>${t}</div>`).join('')}</div>`;
+const HEAD=`<div class="lockrow"><span style="font:900 28px Archivo;font-stretch:125%;letter-spacing:-1px">ditch</span><span style="display:flex;gap:8px"><span style="width:44px;height:44px;border-radius:22px;background:var(--chip2);display:flex;align-items:center;justify-content:center;font:500 20px Inter">⚙︎</span><span style="width:44px;height:44px;border-radius:22px;background:var(--ink);color:var(--sun);display:flex;align-items:center;justify-content:center;font:600 24px Inter">+</span></span></div>`;
+const TOTAL=(a,y,r)=>`<div class="total" style="margin-top:14px"><div class="big">${a}<small>a month</small></div><div style="font:500 15px Inter;margin-top:8px;padding-top:8px;border-top:1px solid rgba(22,20,15,.15)">${y} a year · Reminders on ${r}</div></div>`;
+const S=[];
+const add=(t,s,html)=>S.push(`<div class="cell"><div class="cap">${t}<small>${s}</small></div><div class="phone">${html}</div></div>`);
+const chev=`<span style="color:var(--mute);font-size:20px">›</span>`;
+
+add('1 · Where should we look?','The bank is the main card (the paid path); the free routes sit below, smaller. Bank card only for US/CA App Store accounts.',
+`${SB}<div class="nav"><span class="back">‹</span><span></span></div>
+<div class="pad"><div class="h1">Where should we look?</div><div class="lead">Pick one. You check everything before it's added.</div>
+<div class="hero" style="margin-top:18px"><div style="display:flex;gap:12px;align-items:center"><span class="bank" style="background:var(--sun);width:46px;height:46px">${IC[0]}</span><div style="flex:1"><div class="nm" style="font-size:17px">My bank or card</div><div class="sub">Finds them, then spots new ones. US &amp; Canada.</div></div>${chev}</div>
+<div style="margin-top:10px"><span class="chip">PRO · 7 DAYS FREE</span></div></div>
+<div class="eyebrow" style="margin:20px 0 8px">Or do it yourself</div>
+<div class="card mini">
+ <div class="row"><span class="bank" style="background:var(--chip2)">${IC[1]}</span><div style="flex:1"><div class="nm" style="font-size:15px">Apple subscriptions</div><div class="sub">A screenshot of your list · Free once</div></div>${chev}</div>
+ <div class="row"><span class="bank" style="background:var(--chip2)">${IC[2]}</span><div style="flex:1"><div class="nm" style="font-size:15px">A bank statement</div><div class="sub">PDF or CSV from any bank · Free once</div></div>${chev}</div>
+ <div class="row"><span class="bank" style="background:var(--chip2)">${IC[3]}</span><div style="flex:1"><div class="nm" style="font-size:15px">Pick them myself</div><div class="sub">Tick them from our list</div></div>${chev}</div>
+</div></div>`);
+
+add('2 · Before the bank opens','What you get, what we read, what we can’t do. Price and trial shown before anything else.',
+`${SB}<div class="nav"><span class="back">‹</span><span></span></div>
+<div class="pad" style="flex:1;display:flex;flex-direction:column"><div class="h1" style="font-size:34px;line-height:37px">Your bank<br>already knows.</div>
+<div class="lead">Connect it once. Ditch finds what you pay for, adds it to your list and spots new ones as they start.</div>
+<div style="margin-top:20px">
+ <div class="tick"><span class="c">✓</span><span>Read-only. Ditch can't move money.</span></div>
+ <div class="tick"><span class="c">✓</span><span>You sign in with your bank. We never see your password.</span></div>
+ <div class="tick"><span class="c">✓</span><span>Disconnect any time in Settings.</span></div>
+</div>
+<div class="fine" style="text-align:left;margin-top:6px">Apple subscriptions show as one “Apple” charge. A screenshot of your Apple list names them.</div>
+<div style="margin-top:10px;font:600 15px Inter;text-decoration:underline;text-underline-offset:3px">What we see</div>
+<div style="flex:1"></div>
+<div class="btn">Choose my bank</div>
+<div class="btn ghost" style="margin-top:4px">Not now</div>
+<div class="fine" style="margin:6px 0 30px">US &amp; Canada. Part of Pro: 7 days free, then $59.99/yr.</div></div>`);
+
+add('3 · Which bank?','Like Copilot: pick first, so banks that can’t connect are caught before anyone pays. Built version shows each bank’s real logo; letters are placeholders.',
+`${SB}<div class="nav"><span class="back">‹</span><span></span></div>
+<div class="pad"><div class="h1">Which bank pays your subscriptions?</div>
+<div class="search" style="margin-top:16px">⌕&nbsp; Search banks</div>
+<div class="banks">
+ ${[['Chase','#0F5BA7','C'],['Bank of America','#C8102E','B'],['Wells Fargo','#D71E28','W'],['Capital One','#004977','C'],['Citi','#056DAE','c'],['Amex','#1E3A8A','A'],['Discover','#E8590C','D'],['Chime','#1EC677','C'],['U.S. Bank','#0C2074','U']].map(([n,c,l])=>`<div class="bk"><i style="background:${c}">${l}</i>${n}</div>`).join('')}
+</div>
+<div class="fine" style="margin-top:16px">Pick the card or account you pay subscriptions with.</div><div style="text-align:center;margin-top:10px;font:600 15px Inter;text-decoration:underline;text-underline-offset:3px">Bank not here?</div></div>`);
+
+add('4 · Paywall (same design, new headline)','Same design as today’s paywall (duck, raised Pro column); only the headline changes. With Lifetime picked, the line under the button says “Bank sync for the first year”, as in the app now.',
+`${SB}<div style="background:var(--sun);padding:8px 20px 22px"><div class="lockrow"><span style="font:900 22px Archivo;font-stretch:125%">ditch <span style="font:800 11px Inter;background:var(--ink);color:var(--sun);border-radius:6px;padding:2px 6px;vertical-align:4px">Pro</span></span><span style="width:32px;height:32px;border-radius:16px;background:rgba(22,20,15,.08);display:flex;align-items:center;justify-content:center">✕</span></div>
+<div class="h1" style="margin-top:14px;color:#16140F">See what<br>Chase knows.</div></div>
+<div class="pad" style="flex:1;display:flex;flex-direction:column">
+<div class="card" style="margin-top:-6px;padding:6px 0"><div class="lockrow" style="padding:6px 16px 2px"><span></span><span style="display:flex"><span style="width:50px;text-align:center;font:500 12px Inter;color:var(--mute)">Free</span><span style="width:56px;text-align:center"><span style="font:800 10px Inter;background:#16140F;color:#FFCC2E;padding:2px 6px;border-radius:6px">PRO</span></span></span></div>${[['Scan your bank','—','✓'],['Reminders','3','All'],['Price hike alerts','—','✓'],['Yearly bill warnings','—','✓'],['Pick your reminder days','—','✓'],['Screenshot import','1 free','✓']].map(([a,b,c])=>`<div class="row" style="min-height:42px;padding:8px 16px"><span style="flex:1;font:500 14px Inter">${a}</span><span style="width:50px;text-align:center;color:var(--mute)">${b}</span><span style="width:56px;text-align:center;font-weight:700;background:var(--sunsoft);align-self:stretch;display:flex;align-items:center;justify-content:center;margin:-8px 0">${c}</span></div>`).join('')}</div>
+<div style="height:18px"></div>
+<div class="card" style="padding:12px 14px;margin-bottom:10px"><div class="lockrow"><span style="display:flex;gap:10px;align-items:center"><span class="radio"></span><span class="nm">Weekly</span></span><div class="amt">$6.99/wk</div></div></div>
+<div class="card" style="padding:12px 14px;box-shadow:inset 0 0 0 2px var(--ink);position:relative"><span style="position:absolute;right:12px;top:-10px;background:var(--sun);font:800 10.5px Inter;letter-spacing:.5px;padding:2px 7px;border-radius:6px">SAVE 83%</span><div class="lockrow"><span style="display:flex;gap:10px;align-items:center"><span class="radio on">✓</span><span><div class="nm">Yearly</div><div style="font:700 13px Inter">Free for 7 days</div></span></span><div style="text-align:right"><div class="amt">$59.99/yr</div><div class="sub">$1.15 a week</div></div></div></div>
+<div class="card" style="padding:12px 14px;margin-top:8px"><div class="lockrow"><span style="display:flex;gap:10px;align-items:center"><span class="radio"></span><span><div class="nm">Lifetime</div><div class="sub">Pay once. No subscription.</div></span></span><div style="text-align:right"><div class="amt">$119.99</div><div class="sub">one time</div></div></div></div>
+<div class="btn" style="margin-top:12px;flex-direction:column;height:58px"><span>Start my free week</span><span style="font:500 12.5px Inter;opacity:.8">$0 today · Cancel anytime</span></div>
+<div class="fine" style="margin:8px 0 4px">Then $59.99/yr from Nov 26.<br>Renews yearly until you cancel.</div>
+<div class="fine" style="margin-bottom:26px"><u>Restore</u> · <u>Terms</u> · <u>Privacy</u></div></div>`);
+
+add('5 · Reading your bank','Real steps, last 30 days first so finds appear in ~10 s. Finds drop in live. Leaving is safe.',
+`${SB}<div class="pad" style="flex:1;display:flex;flex-direction:column;padding-top:40px">
+<span class="bank" style="width:56px;height:56px;border-radius:14px;font-size:24px">C</span>
+<div class="h1" style="margin-top:18px">Reading Chase…</div>
+<div style="margin-top:20px">
+ <div class="step done"><span class="d">✓</span>Connected to Chase</div>
+ <div class="step done"><span class="d">✓</span>Read the last 30 days</div>
+ <div class="step now"><span class="d"></span>Reading the last 12 months</div>
+ <div class="step todo"><span class="d"></span>Matching charges to services</div>
+</div>
+<div class="card" style="margin-top:24px;padding:14px 16px"><div class="eyebrow">Found 4 so far</div><div style="display:flex;gap:8px;margin-top:10px">${['netflix','spotify','hulu','chatgpt-plus'].map(L).join('')}</div></div>
+<div style="flex:1"></div>
+<div class="fine">Usually under a minute.</div>
+<div class="btn line" style="margin:12px 0 4px">Go to my list</div><div class="fine" style="margin-bottom:30px">We’ll keep reading in the background.</div></div>`);
+
+add('6 · What we found','Leads with money. Every find shows its real dates. Sure ones already added (untick = undo, 44pt). Unsure ones need a Yes.',
+`${SB}<div class="pad" style="flex:1;display:flex;flex-direction:column;padding-top:14px;overflow:hidden">
+<div class="h1">Found 5 at Chase.<br>$924 a year.</div><div class="lead" style="margin-top:4px">They’re on your list. 2 more need a yes or no.</div>
+<div class="eyebrow" style="margin:14px 0 8px">Added</div>
+<div class="card">
+ ${[['netflix','Netflix','$17.99','Sep 10, Oct 10, Nov 10 · next Dec 10'],['spotify','Spotify','$11.99','Sep 26, Oct 26 · next Nov 26'],['chatgpt-plus','ChatGPT Plus','$20.00','Oct 1, Nov 1 · next Dec 1'],['hulu','Hulu','$9.99','Oct 12, Nov 12 · next Dec 12'],['max','Max','$16.99','Oct 24 · next Nov 24']].map(([l,n,a,s])=>`<div class="row" style="min-height:62px">${L(l)}<div style="flex:1;min-width:0"><div class="lockrow"><span class="nm">${n}</span><span class="amt">${a}</span></div><div class="sub">${s}</div></div><span class="ck"><span>✓</span></span></div>`).join('')}
+</div>
+<div class="eyebrow" style="margin:14px 0 8px">Check these</div>
+<div class="card">${[['patreon','Patreon · $9.99','Oct 3, Nov 3. Subscription?'],['hellofresh','HelloFresh · $59.99','Oct 9, Nov 9. Subscription?']].map(([l,n,d])=>`<div class="row" style="flex-wrap:wrap">${L(l)}<div style="flex:1"><div class="nm">${n}</div><div class="sub">${d}</div></div><div style="display:flex;gap:8px;width:100%;padding-left:52px"><div class="btn sm line" style="flex:1">Yes</div><div class="btn sm line" style="flex:1">No</div></div></div>`).join('')}</div>
+<div style="height:120px"></div>
+<div style="position:absolute;left:0;right:0;bottom:0;padding:24px 20px 34px;background:linear-gradient(rgba(251,247,238,0),var(--cream) 30%)"><div class="btn">Looks right</div></div></div>`);
+
+add('7 · Home: a new one was added','Toast with Undo (8 s). After it goes, the row shows "FOUND IN YOUR BANK" for 7 days; Undo also lives on the detail screen.',
+`${SB}<div class="pad" style="padding-top:6px">${HEAD}${TOTAL('$107.94','$1,295','all 7')}
+<div class="eyebrow" style="margin:18px 0 8px">Next week</div>
+<div class="card">
+ <div class="row">${L('max')}<div style="flex:1"><div class="nm">Max</div><div class="sub">Tue, Nov 24 · in 5 days</div></div><span class="amt">$16.99</span></div>
+ <div class="row">${L('netflix')}<div style="flex:1"><div class="nm">Netflix</div><div class="sub">Thu, Nov 26</div></div><span class="amt">$17.99</span></div>
+ <div class="row">${L('spotify')}<div style="flex:1"><div class="nm">Spotify</div><div class="sub">Sat, Nov 28</div></div><span class="amt">$11.99</span></div>
+</div></div>
+<div class="toast"><div style="flex:1;font:500 15px/20px Inter">Added Max from your bank. $16.99 a month.</div><span class="u">Undo</span></div>${TABS('Home')}`);
+
+add('8 · Home: the real bill changed','Every sync card sits under the total, one at a time. The list keeps $15.49 until you tap Update; the row shows what the bank charged.',
+`${SB}<div class="pad" style="padding-top:6px">${HEAD}${TOTAL('$90.95','$1,091','all 6')}
+<div class="notice" style="margin-top:12px"><div style="display:flex;gap:12px">${L('netflix')}<div style="flex:1"><div style="font:700 16px/21px Inter">Netflix charged $17.99, not $15.49. <span style="color:var(--warndot)">+$2.50</span></div><div class="sub" style="margin-top:2px">From today’s charge at Chase.</div></div></div>
+<div class="yn"><div class="btn sm">Update price</div><div class="btn sm line">It was a one-off</div></div></div>
+<div class="eyebrow" style="margin:18px 0 8px">Today</div>
+<div class="card"><div class="row">${L('netflix')}<div style="flex:1"><div class="nm">Netflix</div><div class="sub">Charged $17.99 today</div></div><span class="amt">$15.49</span></div></div>
+<div class="eyebrow" style="margin:18px 0 8px">Next week</div><div class="card"><div class="row">${L('spotify')}<div style="flex:1"><div class="nm">Spotify</div><div class="sub">Thu, Nov 26</div></div><span class="amt">$11.99</span></div></div></div>${TABS('Home')}`);
+
+add('9 · Home: looks cancelled','After a missed date + 7 days. Never ditched without a tap.',
+`${SB}<div class="pad" style="padding-top:6px">${HEAD}${TOTAL('$90.95','$1,091','all 6')}
+<div class="notice" style="margin-top:12px"><div style="display:flex;gap:12px">${L('hulu')}<div style="flex:1"><div style="font:700 16px/21px Inter">No Hulu charge since Oct 12.</div><div class="sub" style="margin-top:2px">It was due Nov 12. Cancelled?</div></div></div>
+<div class="yn"><div class="btn sm">Mark ditched</div><div class="btn sm line">Still paying</div></div></div><div class="eyebrow" style="margin:18px 0 8px">Next week</div><div class="card"><div class="row">${L('netflix')}<div style="flex:1"><div class="nm">Netflix</div><div class="sub">Tue, Nov 24 · in 5 days</div></div><span class="amt">$17.99</span></div><div class="row">${L('spotify')}<div style="flex:1"><div class="nm">Spotify</div><div class="sub">Thu, Nov 26</div></div><span class="amt">$11.99</span></div></div></div>${TABS('Home')}`);
+
+add('10 · Home: bank needs a sign-in','Same spot and style as other cards, an amber outline instead of more yellow. Reminders keep working.',
+`${SB}<div class="pad" style="padding-top:6px">${HEAD}${TOTAL('$90.95','$1,091','all 6')}
+<div class="notice amber" style="margin-top:12px"><div style="display:flex;gap:12px;align-items:flex-start"><span class="bank">C</span><div style="flex:1"><div style="font:700 16px/21px Inter"><span class="dot"></span>Sign back in to Chase.</div><div class="sub" style="margin-top:2px">Banks do this every few months. Your list and reminders still work.</div></div></div>
+<div class="yn"><div class="btn sm">Reconnect</div><div class="btn sm line">Later</div></div></div>
+<div class="eyebrow" style="margin:18px 0 8px">Next week</div>
+<div class="card"><div class="row">${L('netflix')}<div style="flex:1"><div class="nm">Netflix</div><div class="sub">Tue, Nov 24 · in 5 days</div></div><span class="amt">$17.99</span></div></div></div>${TABS('Home')}`);
+
+add('11 · Day 5 of the trial','The strongest moment to keep paying: only real counts from their own bank. Plus one notification.',
+`${SB}<div class="pad" style="padding-top:6px">${HEAD}${TOTAL('$107.94','$1,295','all 7')}
+<div class="notice" style="margin-top:12px"><div style="display:flex;gap:12px;align-items:flex-start"><img src="../v12/duck.png" style="width:56px;height:34px;object-fit:cover;object-position:top"><div style="flex:1"><div style="font:700 16px/21px Inter">Your free week so far</div><div class="sub" style="margin-top:2px;font-size:14.5px;line-height:20px;color:var(--fg2)">7 found at Chase · $924 a year. Caught Netflix going up $2.50.</div></div></div>
+<div class="fine" style="text-align:left;margin-top:10px">Trial ends Nov 26, then $59.99/yr. Cancel before then to pay nothing.</div>
+<div class="yn"><div class="btn sm">Got it</div><div class="btn sm ghost">How to cancel</div></div></div><div class="eyebrow" style="margin:18px 0 8px">Next week</div><div class="card"><div class="row">${L('netflix')}<div style="flex:1"><div class="nm">Netflix</div><div class="sub">Tue, Nov 24 · in 5 days</div></div><span class="amt">$17.99</span></div><div class="row">${L('spotify')}<div style="flex:1"><div class="nm">Spotify</div><div class="sub">Thu, Nov 26</div></div><span class="amt">$11.99</span></div></div></div>${TABS('Home')}`);
+
+add('12 · Settings → Bank connections','Status in words, Reconnect right on the row. No "check now". Disconnect: swipe the row, then confirm. Up to 3.',
+`${SB}<div class="nav"><span class="back" style="font-size:16px;width:auto;padding:0 6px">‹ Settings</span><span></span></div>
+<div class="pad"><div class="h1">Bank connections</div><div class="lead">Banks update a few times a day.</div>
+<div class="card" style="margin-top:18px">
+ <div class="row"><span class="bank">C</span><div style="flex:1"><div class="nm">Chase</div><div class="sub">Visa ending 4821 · Checking ending 1005</div><div class="sub" style="color:var(--green)">Checked 2 hours ago</div></div>${chev}</div>
+ <div class="row"><span class="bank" style="background:#1E3A8A">A</span><div style="flex:1"><div class="nm">American Express</div><div class="sub">Gold ending 3007</div><div class="sub" style="color:var(--amber)"><span class="dot"></span>Needs sign-in</div></div><div class="btn sm" style="font-size:14px;padding:0 14px">Reconnect</div></div>
+</div>
+<div class="card" style="margin-top:14px"><div class="row" style="font:600 16px Inter">＋&nbsp; Add a bank or card</div></div>
+<div class="fine" style="text-align:left;margin-top:8px">Connect the card or bank that pays your subscriptions. You can connect up to 3.</div>
+<div style="margin-top:22px;font:600 15px Inter;text-decoration:underline;text-underline-offset:3px">What we see</div></div>
+<div class="dim"></div><div class="sheet"><div class="grab"></div><div class="h2">Disconnect Chase?</div><div class="lead" style="margin-top:6px">Ditch stops checking Chase. Everything on your list stays.</div>
+<div class="btn" style="margin-top:18px;background:var(--red)">Disconnect</div><div class="btn ghost" style="margin-top:4px">Cancel</div></div>`);
+
+add('13 · They cancelled the trial','Sync keeps running until the trial ends (no extra cost inside the month). Says the date and what stays. No guilt.',
+`${SB}<div class="pad" style="padding-top:6px">${HEAD}${TOTAL('$90.95','$1,091','all 6')}
+<div class="notice" style="margin-top:12px"><div style="font:700 16px/21px Inter">Bank sync ends Nov 26.</div><div class="sub" style="margin-top:4px;font-size:14.5px;line-height:20px;color:var(--fg2)">After that, Chase disconnects and reminders go back to 3 of 6. Everything we found stays.</div>
+<div class="yn"><div class="btn sm">Keep Pro</div><div class="btn sm line">That’s fine</div></div><div class="fine" style="font-size:12.5px;margin-top:6px">Keep Pro: $59.99/yr from Nov 26, then yearly until you cancel. <u>Restore</u></div></div><div class="eyebrow" style="margin:18px 0 8px">Next week</div><div class="card"><div class="row">${L('netflix')}<div style="flex:1"><div class="nm">Netflix</div><div class="sub">Tue, Nov 24 · in 5 days</div></div><span class="amt">$17.99</span></div><div class="row">${L('spotify')}<div style="flex:1"><div class="nm">Spotify</div><div class="sub">Thu, Nov 26</div></div><span class="amt">$11.99</span></div></div></div>${TABS('Home')}`);
+
+add('14 · Lifetime: free year of sync ending','30 days before. Price, date and "until you cancel" right by the button.',
+`${SB}<div class="pad" style="padding-top:6px">${HEAD}${TOTAL('$90.95','$1,091','all 6')}
+<div class="notice" style="margin-top:12px"><div style="font:700 16px/21px Inter">Your free year of bank sync ends Dec 19.</div><div class="sub" style="margin-top:4px;font-size:14.5px;line-height:20px;color:var(--fg2)">Keep it for $19.99 a year, or let it go. Pro stays yours either way.</div>
+<div class="btn sm" style="margin-top:12px">Keep bank sync · $19.99/yr</div><div class="btn sm ghost" style="margin-top:2px">Let it end</div>
+<div class="fine" style="font-size:12.5px">First charge Dec 19, then yearly until you cancel. <u>Restore</u></div></div><div class="eyebrow" style="margin:18px 0 8px">Next week</div><div class="card"><div class="row">${L('netflix')}<div style="flex:1"><div class="nm">Netflix</div><div class="sub">Tue, Nov 24 · in 5 days</div></div><span class="amt">$17.99</span></div><div class="row">${L('spotify')}<div style="flex:1"><div class="nm">Spotify</div><div class="sub">Thu, Nov 26</div></div><span class="amt">$11.99</span></div></div></div>${TABS('Home')}`);
+
+add('15 · Bank not listed','Reached from "Can’t find it?" before paying. Always a next step. (If it happens after a trial starts: "Your trial still covers reminders on everything. Cancel by Nov 26 to pay nothing.")',
+`${SB}<div class="nav"><span class="back">‹</span><span></span></div>
+<div class="pad" style="flex:1;display:flex;flex-direction:column"><div style="flex:.6"></div>
+<div class="h1">Didn't find your bank?</div>
+<div class="lead">Some banks and credit unions can't connect yet. The card you pay subscriptions with might work.</div>
+<div class="notice" style="margin-top:18px"><div class="sub" style="color:var(--fg2);font-size:14.5px;line-height:20px">Your Apple list and bank statements work without connecting anything. You haven’t paid anything.</div></div>
+<div style="flex:1"></div>
+<div class="btn">Try another bank or card</div><div class="btn line" style="margin-top:10px">Use a statement</div><div class="btn ghost" style="margin:4px 0 30px">Pick them myself</div></div>`);
+
+document.getElementById('g').innerHTML=S.join('');
+</script></body></html>

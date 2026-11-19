@@ -87,7 +87,7 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
 ## 1o. Paywall (Nov 18, table B + offer 2)
-- [ ] Headline "Get a reminder before all N renewals."; a raised, yellow-edged Pro column with a black PRO pill (Free is plain grey text). Rows: (TestFlight only) Scan your bank · Reminders 3 vs All N · Price hike alerts · Yearly bill warnings · Pick your reminder days · Screenshot import (Free: Once).
+- [ ] Headline "Get a reminder before all N renewals."; the duck peeks out from behind a raised, yellow-edged Pro column with a black PRO pill (Free is plain grey text). Rows: (TestFlight only) Scan your bank · Reminders 3 vs All N · Price hike alerts · Yearly bill warnings · Pick your reminder days · Screenshot import (Free: Once).
 - [ ] Weekly $6.99/wk. Yearly picked: "Free for 7 days" in bold under "Yearly", a yellow "SAVE 86%" on the card's top-right edge, $49.99/yr (the biggest price) and "$0.96 a week". Lifetime $99.99 "Pay once. No subscription."
 - [ ] Button: "Start my free week" with "$0 today · Cancel anytime" inside. Under it: "Then $49.99/yr from (date). Renews yearly."
 - [ ] Tap Weekly / Lifetime: the button and the line under it change; the button never moves.

@@ -90,7 +90,10 @@ export function SubRow({
   onOpen,
   onBell,
   priceWidth,
+  foundTag,
 }: {
+  /** "FOUND IN YOUR BANK" for 7 days after the bank added it (DECISIONS #67). */
+  foundTag?: boolean;
   /** Free plan: tapping the bell turns this one's reminder on or off (one of the 3). Not set: the bell is just a sign. */
   onBell?: (sub: Sub) => void;
   /** Same for every row on Home, so the bells and prices line up. */
@@ -203,7 +206,7 @@ export function SubRow({
   const on = holding && !p.dark;
   const fg = on ? brand.ink : p.cardFg;
   const sub2 = on ? '#4B4220' : p.mute;
-  const label = `${isProTrial(sub) ? 'Ditch Pro trial' : sub.name}, ${price ? `${price} ${CYCLE_WORDS[sub.cycle]}` : 'no price yet'}, ${charge ? line : 'no date yet, add date'}${pending ? ', ditched, not cancelled yet' : ''}, reminders ${bell === 'on' ? 'on' : 'off'}`;
+  const label = `${isProTrial(sub) ? 'Ditch Pro trial' : sub.name}, ${price ? `${price} ${CYCLE_WORDS[sub.cycle]}` : 'no price yet'}, ${charge ? line : 'no date yet, add date'}${pending ? ', ditched, not cancelled yet' : ''}${foundTag ? ', found in your bank' : ''}, reminders ${bell === 'on' ? 'on' : 'off'}`;
 
   return (
     <GestureDetector gesture={gesture}>
@@ -247,7 +250,7 @@ export function SubRow({
             ) : null}
           </Animated.View>
           <View style={{ flex: 1, minWidth: 0 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', columnGap: 8, rowGap: 2 }}>
               {isProTrial(sub) ? (
                 <ProLockup size={16} suffix="trial" color={fg} />
               ) : (
@@ -256,6 +259,7 @@ export function SubRow({
                 </Txt>
               )}
               {pending ? <DitchedTag /> : null}
+              {foundTag && !pending ? <FoundTag /> : null}
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 1 }}>
               <Txt
@@ -313,5 +317,17 @@ export function SubRow({
         ) : null}
       </Animated.View>
     </GestureDetector>
+  );
+}
+
+/** The ink tag on a row the bank just added ("FOUND IN YOUR BANK", 7 days). Sunflower on night in dark mode. */
+export function FoundTag() {
+  const p = usePalette();
+  return (
+    <View style={{ borderRadius: 5, paddingHorizontal: 6, paddingVertical: 2, backgroundColor: p.dark ? brand.sunflower : brand.ink }}>
+      <Txt v="eyebrow" color={p.dark ? brand.ink : brand.sunflower} style={{ fontSize: 9.5, lineHeight: 13, letterSpacing: 0.6, fontFamily: F.wideHeavy }} maxFontSizeMultiplier={1.3}>
+        Found in your bank
+      </Txt>
+    </View>
   );
 }

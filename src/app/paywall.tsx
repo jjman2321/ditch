@@ -19,6 +19,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Alert, Linking, Platform, Pressable, ScrollView, Text, View } from 'react-native';
 
+import { bankEntry } from '@/bank/banks';
 import { WIDGET_READY, showBankScan, showImport } from '@/config/features';
 import { DEV_TOOLS } from '@/dev/flags';
 import { addDays, shortDate } from '@/domain/dates';
@@ -282,7 +283,10 @@ export default function Paywall() {
   // Where it was opened from: 'app' (Settings, a PRO tag, the editor), 'which' (a 4th bell), 'remind'
   // (custom reminder days), 'import'. Only changes words, never the flow.
   // `plan` (lifetime | yearly | weekly) picks the plan that's selected first, e.g. Settings → Ditch Pro's "Or pay once".
-  const { from, plan: planParam } = useLocalSearchParams<{ from?: string; plan?: string }>();
+  // `bank` (a picker id, src/bank/banks.ts): opened from the bank picker (DECISIONS #70). The headline
+  // names their bank, and after the purchase the bank sign-in opens straight away.
+  const { from, plan: planParam, bank: bankParam } = useLocalSearchParams<{ from?: string; plan?: string; bank?: string }>();
+  const bankPick = bankParam ? bankEntry(bankParam) : null;
   // After onboarding (Settings, a PRO tag, the editor) vs. during onboarding. Decided by
   // whether onboarding is done, never by the link, so no link can rerun onboarding.
   const inApp = app.settings.onboardingDone;
@@ -305,10 +309,17 @@ export default function Paywall() {
   const bank = showBankScan();
 
   // × is the free path: no purchase, reminders on the 3 biggest (picked on You're set).
-  const leaveFree = () => (inApp ? router.back() : router.replace('/onboarding/done'));
+  // From the bank picker it goes back there (spec a3: × → back to Where should we look?).
+  const leaveFree = () => (inApp || bankPick ? (router.canGoBack() ? router.back() : router.replace('/(tabs)')) : router.replace('/onboarding/done'));
   // Only onboarding's × leads on to the free app; anywhere else it just closes.
-  const closeLabel = inApp || (from !== undefined && from !== 'import') ? 'Close' : 'Close, continue free';
+  const closeLabel = inApp || bankPick || (from !== undefined && from !== 'import') ? 'Close' : 'Close, continue free';
   const activate = async (id: PlanId) => {
+    if (bankPick) {
+      if (inApp) await app.setPro(id, { startTrial: id === 'yearly' });
+      else setOnboardingPro(id);
+      router.replace(`/bank/scan?bank=${bankPick.id}&from=${inApp ? 'find' : 'onboarding'}`);
+      return;
+    }
     if (inApp) {
       await app.setPro(id, { startTrial: id === 'yearly' });
       router.back();
@@ -351,8 +362,8 @@ export default function Paywall() {
 
   // The same headline from onboarding, a 4th bell (from=which) or custom days (from=remind): "all N" once they track more than 3.
   const what = many ? `all ${n}${NB}renewals.` : `every${NB}renewal.`;
-  const head = `Get a reminder before\n${what}`;
-  const spokenHead = `Get a reminder before ${many ? `all ${n} renewals` : 'every renewal'}.`;
+  const head = bankPick ? `See what\n${bankPick.name}${NB}knows.` : `Get a reminder before\n${what}`;
+  const spokenHead = bankPick ? `See what ${bankPick.name} knows.` : `Get a reminder before ${many ? `all ${n} renewals` : 'every renewal'}.`;
   const allRows = rowsFor(n);
   const ink = dark ? '#F6F0E3' : brand.ink;
   // One fixed design, scaled to fit (owner, Nov 18: "how it looks on other devices"). The paywall is laid

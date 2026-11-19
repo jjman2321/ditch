@@ -115,6 +115,14 @@ export const MIGRATIONS: Migration[] = [
       `ALTER TABLE subscriptions ADD COLUMN skip_charge TEXT`,
     ],
   },
+  {
+    version: 5,
+    name: 'bank sync on the phone (DECISIONS #67, #70)',
+    // The day a sub was added from the bank ("FOUND IN YOUR BANK" for 7 days), and a small
+    // key/value table for the bank side: connected banks, the charges the phone keeps (the
+    // server never stores them), what was handled, dismissed cards. Values are JSON text.
+    up: [`ALTER TABLE subscriptions ADD COLUMN found_in_bank_on TEXT`, `CREATE TABLE bank_state (key TEXT PRIMARY KEY NOT NULL, value TEXT NOT NULL)`],
+  },
 ];
 
 export async function schemaVersion(db: SqlDb): Promise<number> {

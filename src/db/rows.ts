@@ -37,6 +37,7 @@ export type SubRow = {
   account_email: string | null;
   notes: string | null;
   skip_charge: string | null;
+  found_in_bank_on: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -72,6 +73,7 @@ export const SUB_COLUMNS: (keyof SubRow)[] = [
   'account_email',
   'notes',
   'skip_charge',
+  'found_in_bank_on',
   'created_at',
   'updated_at',
 ];
@@ -112,6 +114,7 @@ export function rowToSub(r: SubRow): Sub {
     accountEmail: r.account_email ?? null,
     notes: r.notes ?? null,
     skipCharge: r.skip_charge ?? null,
+    foundInBankOn: r.found_in_bank_on ?? null,
     createdAt: r.created_at,
     updatedAt: r.updated_at,
   };
@@ -150,6 +153,7 @@ export function subToRow(s: Sub): SubRow {
     account_email: s.accountEmail,
     notes: s.notes,
     skip_charge: s.skipCharge,
+    found_in_bank_on: s.foundInBankOn ?? null,
     created_at: s.createdAt,
     updated_at: s.updatedAt,
   };

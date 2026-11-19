@@ -5,6 +5,8 @@
 // buttons stay hidden: Apple rejects apps that show features that don't
 // exist yet. The web preview can show them with ?import=1 for screenshots.
 
+import { Platform } from 'react-native';
+
 import { DEV_TOOLS } from '@/dev/flags';
 import { webParam } from '@/dev/webParams';
 
@@ -21,6 +23,22 @@ export const IMPORT_READY = process.env.EXPO_PUBLIC_APP_ENV !== 'production';
 export const BANK_READY = false;
 export function showBankScan(): boolean {
   return BANK_READY || DEV_TOOLS;
+}
+
+/**
+ * Bank sync only works with US and Canadian banks (DECISIONS #64). The App Store storefront isn't
+ * readable without StoreKit yet, so this uses the country Ditch prices for (iPhone Region or the
+ * user's pick), then the currency. The web preview counts as the US when no country is set.
+ */
+export function bankRegion(country: string | null | undefined, currency: string | null | undefined, web = Platform.OS === 'web'): boolean {
+  if (country) return country === 'US' || country === 'CA';
+  if (web) return true;
+  return currency === 'USD' || currency === 'CAD';
+}
+
+/** Every bank screen, card and row checks this: test builds, in the US or Canada. Production stays unchanged. */
+export function showBankSync(country: string | null | undefined, currency: string | null | undefined): boolean {
+  return showBankScan() && bankRegion(country, currency);
 }
 
 /** The Home and Lock Screen widget (WidgetKit, v1.1, DECISIONS #27). Its paywall row shows once it exists. */

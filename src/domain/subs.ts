@@ -59,6 +59,8 @@ export type Sub = {
   notes: string | null;
   /** "Skip this one": no reminders for this one charge date; the next charge gets them again. */
   skipCharge: DateOnly | null;
+  /** Added on its own from a connected bank on this day (DECISIONS #67): Home tags it "FOUND IN YOUR BANK" for 7 days. */
+  foundInBankOn?: DateOnly | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -104,6 +106,7 @@ export function makeSub(fields: Partial<Sub> & Pick<Sub, 'name' | 'cycle' | 'anc
     accountEmail: null,
     notes: null,
     skipCharge: null,
+    foundInBankOn: null,
     createdAt: nowIso,
     updatedAt: nowIso,
     ...fields,

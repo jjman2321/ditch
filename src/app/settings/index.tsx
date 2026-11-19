@@ -19,6 +19,8 @@ import { SUPPORT_EMAIL, rateDitch, reportProblem, suggestFeature, suggestService
 import { SHORT_VERSION } from '@/settings/version';
 import { TimeField } from '@/settings/TimeField';
 import { useApp } from '@/state/app';
+import { useBank } from '@/state/bank';
+import { needsSignIn } from '@/state/bankLogic';
 import { tell } from '@/ui/alert';
 import { Bang, Bell, Button, Card, Check, F, ProLockup, SunSwitch, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
 
@@ -38,7 +40,7 @@ export default function Settings() {
 
   // Health check every time Settings opens.
   const { recheck } = app;
-  const cardFg = usePalette().cardFg;
+  const { cardFg, amber } = usePalette();
   useFocusEffect(
     useCallback(() => {
       recheck();
@@ -68,6 +70,11 @@ export default function Settings() {
     : proPlan?.id === 'lifetime'
       ? `, Lifetime, paid once`
       : `, ${proValue}${proPlan ? `, ${proPlan.priceString} a ${proPlan.period}` : ''}`;
+  // Bank connections (DECISIONS #70): test builds in the US/Canada. "Chase" / "Chase + 1"; an amber dot when one needs a sign-in.
+  const bank = useBank();
+  const links = bank.state.links;
+  const broken = links.some(needsSignIn);
+  const bankValue = links.length ? (links.length === 1 ? links[0].name : `${links[0].name} + ${links.length - 1}`) : 'None';
   const restore = async () => {
     const r = await restorePurchases();
     tell(r.restored ? 'Restored' : 'Nothing to restore', r.restored ? 'Ditch Pro is back on.' : 'We couldn’t find a Ditch Pro purchase on this Apple Account.');
@@ -112,6 +119,21 @@ export default function Settings() {
       <Group header="Your list">
         <Row label="Currency" value={`${settings.currency} ${symbolOf(settings.currency)}`} onPress={() => router.push('/settings/currency')} />
         <Row label="Payday" value={settings.payday ? `The ${ordinal(settings.payday)}` : 'Off'} onPress={() => router.push('/settings/payday')} />
+        {bank.on ? (
+          <Row
+            label="Bank connections"
+            onPress={() => router.push('/settings/banks')}
+            a11yValue={`, ${bankValue}${broken ? ', one needs a sign-in' : ''}`}
+            right={
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                {broken ? <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: amber }} /> : null}
+                <Txt v="leadS" tone="mute" numberOfLines={1} style={{ fontSize: 16 }}>
+                  {bankValue}
+                </Txt>
+              </View>
+            }
+          />
+        ) : null}
         <Row label="Your data" onPress={() => router.push('/settings/data')} />
       </Group>
 

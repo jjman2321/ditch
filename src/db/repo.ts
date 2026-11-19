@@ -15,7 +15,11 @@ export interface Repo {
   saveSubs(subs: Sub[]): Promise<void>;
   loadSettings(): Promise<Settings>;
   saveSettings(patch: Partial<Settings>): Promise<void>;
-  /** Delete everything on this phone. */
+  /** The bank side (src/state/bank.tsx): JSON text by key. */
+  loadBank(): Promise<Record<string, string>>;
+  /** Only the keys passed; null removes one. */
+  saveBank(patch: Record<string, string | null>): Promise<void>;
+  /** Delete everything on this phone (the bank side too). */
   wipe(): Promise<void>;
 }
 
@@ -58,24 +62,40 @@ export async function sqlRepo(db: SqlDb): Promise<Repo> {
         }),
       );
     },
+    async loadBank() {
+      const rows = await db.getAllAsync<{ key: string; value: string }>('SELECT key, value FROM bank_state');
+      return Object.fromEntries(rows.map((r) => [r.key, r.value]));
+    },
+    saveBank(patch) {
+      return serial(() =>
+        db.withTransactionAsync(async () => {
+          for (const [key, value] of Object.entries(patch)) {
+            if (value === null) await db.runAsync('DELETE FROM bank_state WHERE key = ?', key);
+            else await db.runAsync('INSERT OR REPLACE INTO bank_state (key, value) VALUES (?, ?)', key, value);
+          }
+        }),
+      );
+    },
     wipe() {
       return serial(() =>
         db.withTransactionAsync(async () => {
           await db.execAsync('DELETE FROM subscriptions');
           await db.execAsync('DELETE FROM settings');
+          await db.execAsync('DELETE FROM bank_state');
         }),
       );
     },
   };
 }
 
-export type MemorySnapshot = { subs: Sub[]; kv: Record<string, string> };
+export type MemorySnapshot = { subs: Sub[]; kv: Record<string, string>; bank?: Record<string, string> };
 
 /** Same contract, kept in memory. `persist` is called after every change. */
 export function memoryRepo(initial: MemorySnapshot = { subs: [], kv: {} }, persist?: (snap: MemorySnapshot) => void): Repo {
   const subs = new Map(initial.subs.map((s) => [s.id, s]));
   let kv = { ...initial.kv };
-  const save = () => persist?.({ subs: [...subs.values()], kv });
+  let bank = { ...(initial.bank ?? {}) };
+  const save = () => persist?.({ subs: [...subs.values()], kv, bank });
   return {
     async loadSubs() {
       return [...subs.values()].filter((s) => s.status !== 'deleted').map((s) => ({ ...s }));
@@ -94,9 +114,20 @@ export function memoryRepo(initial: MemorySnapshot = { subs: [], kv: {} }, persi
       }
       save();
     },
+    async loadBank() {
+      return { ...bank };
+    },
+    async saveBank(patch) {
+      for (const [key, value] of Object.entries(patch)) {
+        if (value === null) delete bank[key];
+        else bank[key] = value;
+      }
+      save();
+    },
     async wipe() {
       subs.clear();
       kv = {};
+      bank = {};
       save();
     },
   };

@@ -9,6 +9,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { EditorProvider } from '@/editor/Editor';
 import { AppProvider, useApp } from '@/state/app';
+import { BankProvider } from '@/state/bank';
 import { OnboardingProvider } from '@/state/onboarding';
 import { Button, EDGE, Txt, brand, paletteFor } from '@/ui/sunflower';
 
@@ -70,7 +71,9 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <ThemeProvider value={theme}>
           <AppProvider>
-            <Navigator dark={dark} bg={p.bg} />
+            <BankProvider>
+              <Navigator dark={dark} bg={p.bg} />
+            </BankProvider>
           </AppProvider>
         </ThemeProvider>
       </SafeAreaProvider>
@@ -116,6 +119,7 @@ function Navigator({ dark, bg }: { dark: boolean; bg: string }) {
           <Stack.Screen name="ditch/[id]" options={{ presentation: 'fullScreenModal', animation: 'fade', contentStyle: { backgroundColor: dark ? brand.night : brand.sunflower } }} />
           <Stack.Screen name="settings" />
           <Stack.Screen name="find" />
+          <Stack.Screen name="bank" />
         </Stack>
       </EditorProvider>
     </OnboardingProvider>

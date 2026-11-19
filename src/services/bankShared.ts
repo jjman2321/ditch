@@ -90,26 +90,72 @@ export function mergeBankTxns(local: BankTxn[], links: SyncedLink[], today: Date
 
 // ---------- sample data for Expo Go without a server and the web preview ----------
 
-/** A believable US bank: three months of Netflix, Spotify (price rise), a gym, ChatGPT, and noise. */
-export function sampleBankTxns(today: DateOnly): ServerTxn[] {
+/** The last `day` of the month on or before today, `back` months earlier (clamped to month end). */
+function lastDay(today: DateOnly, day: number, back: number): DateOnly {
+  let d = addMonthsClamped(today.slice(0, 8) + String(day).padStart(2, '0'), 0);
+  if (d > today) d = addMonthsClamped(d, -1);
+  return addMonthsClamped(d, -back);
+}
+
+/**
+ * A believable US bank, matching the approved mockups (design/v32): Netflix, Spotify, ChatGPT,
+ * Hulu and Max repeat (sure finds), two unknown repeats to ask about, Apple's bundled charge,
+ * and noise (fuel on random days, a refund, a pending ride). `bank` > 0: a second or third
+ * bank with a couple of different ones, so every connected bank has something to read.
+ */
+export function sampleBankTxns(today: DateOnly, bank = 0): ServerTxn[] {
   const out: ServerTxn[] = [];
-  const month = (back: number, day: number) => {
-    const d = addMonthsClamped(today.slice(0, 8) + String(day).padStart(2, '0'), -back);
-    return d > today ? addMonthsClamped(d, -1) : d;
-  };
   const add = (id: string, date: DateOnly, text: string, merchantName: string | null, amountMinor: number) =>
-    out.push({ id, date, text, merchantName, amountMinor, currency: 'USD', pending: false });
-  for (const back of [3, 2, 1, 0]) {
-    add(`s-nflx-${back}`, month(back, 3), 'NETFLIX.COM 866-579-7172 CA', 'Netflix', 1799);
-    add(`s-spot-${back}`, month(back, 5), 'SPOTIFY USA', 'Spotify', back === 0 ? 1299 : 1199);
-    add(`s-gym-${back}`, month(back, 9), 'PLANET FITNESS #1234', 'Planet Fitness', 2499);
-    add(`s-oai-${back}`, month(back, 14), 'OPENAI *CHATGPT SUBSCR', 'OpenAI', 2000);
-    add(`s-shell-${back}`, month(back, 12), 'SHELL OIL 57444 HOUSTON TX', 'Shell', 4510 + back * 37);
+    out.push({ id: bank ? `b${bank}-${id}` : id, date, text, merchantName, amountMinor, currency: 'USD', pending: false });
+  if (bank > 0) {
+    for (const back of [2, 1, 0]) add(`s-nyt-${back}`, lastDay(today, 6, back), 'NYTIMES*NYTIMES SUBSCR', 'The New York Times', 2500);
+    for (const back of [1, 0]) add(`s-pel-${back}`, lastDay(today, 15, back), 'PELOTON* MEMBERSHIP', 'Peloton', 4400);
+    add('s-coffee', addDays(today, -3), 'BLUE BOTTLE COFFEE', 'Blue Bottle', 675);
+    return out;
   }
+  for (const back of [2, 1, 0]) add(`s-nflx-${back}`, lastDay(today, 10, back), 'NETFLIX.COM 866-579-7172 CA', 'Netflix', 1799);
+  for (const back of [1, 0]) add(`s-spot-${back}`, lastDay(today, 26, back), 'SPOTIFY USA', 'Spotify', 1199);
+  for (const back of [1, 0]) add(`s-oai-${back}`, lastDay(today, 1, back), 'OPENAI *CHATGPT SUBSCR', 'OpenAI', 2000);
+  for (const back of [1, 0]) add(`s-hulu-${back}`, lastDay(today, 12, back), 'HULU 877-8244858 CA', 'Hulu', 999);
+  for (const back of [1, 0]) add(`s-max-${back}`, lastDay(today, 24, back), 'MAX.COM HBO MAX', 'Max', 1699);
+  // Not services we know: asked about, never added on their own.
+  for (const back of [1, 0]) add(`s-yoga-${back}`, lastDay(today, 3, back), 'SQ *CORNER YOGA STUDIO', 'Corner Yoga Studio', 4500);
+  for (const back of [1, 0]) add(`s-apron-${back}`, lastDay(today, 9, back), 'BLUE APRON MEALS', 'Blue Apron', 5999);
+  // Apple bundles its subscriptions into one charge: pointed to the screenshot finder.
+  for (const back of [1, 0]) add(`s-apple-${back}`, lastDay(today, 17, back), 'APPLE.COM/BILL 866-712-7753 CA', 'Apple', 1497);
+  // Noise: fuel on uneven days and amounts, a refund, a pending ride.
+  [4, 19, 33, 52, 61, 80].forEach((n, i) => add(`s-shell-${i}`, addDays(today, -n), 'SHELL OIL 57444 HOUSTON TX', 'Shell', 3120 + i * 611));
   add('s-refund', addDays(today, -4), 'AMAZON MKTPLACE REFUND', 'Amazon', -2399);
   add('s-pending', addDays(today, -1), 'UBER *TRIP', 'Uber', 1850);
   out[out.length - 1].pending = true;
   return out;
+}
+
+/** Test builds only: the practice bank's next sync, so every Home card can be tried before real banks. */
+export type PracticeEvent = 'new' | 'price' | 'cancelled' | 'relogin' | 'back';
+
+export function practiceSync(kind: PracticeEvent, links: { id: string; name: string }[], today: DateOnly, seq = Date.now()): BankSyncResponse {
+  const first = links[0];
+  if (!first) return { links: [] };
+  const txn = (id: string, date: DateOnly, text: string, merchantName: string, amountMinor: number): ServerTxn => ({ id: `p-${id}-${seq}`, date, text, merchantName, amountMinor, currency: 'USD', pending: false });
+  let added: ServerTxn[] = [];
+  let modified: ServerTxn[] = [];
+  let removed: string[] = [];
+  let status: BankLinkStatus = 'active';
+  if (kind === 'new') {
+    // A new one that's sure: two Disney+ charges a month apart.
+    added = [txn('dis1', addDays(today, -31), 'DISNEY PLUS 888-905-7888', 'Disney+', 1199), txn('dis2', addDays(today, -1), 'DISNEY PLUS 888-905-7888', 'Disney+', 1199)];
+  } else if (kind === 'price') {
+    // Netflix bills more today.
+    added = [txn('nflx', today, 'NETFLIX.COM 866-579-7172 CA', 'Netflix', 2299)];
+  } else if (kind === 'cancelled') {
+    // Hulu stopped: its last charge is 40 days back, so the next one is over a week late.
+    removed = ['s-hulu-0'];
+    modified = [{ id: 's-hulu-1', date: addDays(today, -40), text: 'HULU 877-8244858 CA', merchantName: 'Hulu', amountMinor: 999, currency: 'USD', pending: false }];
+  } else if (kind === 'relogin') {
+    status = 'needs_relogin';
+  }
+  return { links: [{ linkId: first.id, institutionName: first.name, status, ready: true, added, modified, removed, syncToken: null }] };
 }
 
 export const SAMPLE_BANK: BankLinkInfo = {
@@ -124,7 +170,7 @@ export const SAMPLE_BANK: BankLinkInfo = {
 /** The offline stand-in for the server, used when EXPO_PUBLIC_API_URL isn't set and on the web. */
 export function createBankMock(today: () => DateOnly) {
   let links: BankLinkInfo[] = [];
-  let delivered = false;
+  const delivered = new Set<string>();
   const access: BankAccess = { allowed: true, reason: 'trial', until: null };
   return {
     async listBanks(): Promise<BankListResponse> {
@@ -137,24 +183,24 @@ export function createBankMock(today: () => DateOnly) {
     async exchangePublicToken(): Promise<ExchangeResponse> {
       const link = { ...SAMPLE_BANK, id: `sample-bank-${links.length + 1}`, createdAt: new Date().toISOString() };
       links = [...links, link];
-      delivered = false;
       return { link, replaced: null };
     },
     async syncBank(): Promise<BankSyncResponse> {
-      const first = !delivered;
-      delivered = true;
-      return {
+      // Each bank's sample charges arrive once, on its first sync (like the real first pull).
+      const res = {
         links: links.map((l, i) => ({
           linkId: l.id,
           institutionName: l.institutionName,
           status: l.status,
           ready: true,
-          added: first && i === 0 ? sampleBankTxns(today()) : [],
+          added: delivered.has(l.id) ? [] : sampleBankTxns(today(), i),
           modified: [],
           removed: [],
           syncToken: null,
         })),
       };
+      for (const l of links) delivered.add(l.id);
+      return res;
     },
     async removeBank(linkId?: string): Promise<{ removed: number; pending: number }> {
       const before = links.length;

@@ -36,7 +36,7 @@ const GAP = 600;
 export default function Reminders() {
   const p = usePalette();
   const f = useFrame({ colH: 800 });
-  const { setNotifications, country } = useOnboarding();
+  const { setNotifications, country, pro } = useOnboarding();
   const n = usePickedList().length;
   // Already answered the iPhone prompt (e.g. after Delete all): no prompt will show, so say what happens.
   const [status, setStatus] = useState<NotifStatus | null>(null);
@@ -91,7 +91,8 @@ export default function Reminders() {
   // Room for the torch and camera buttons; small phones drop them (decoration) so the reminders fit.
   const lockBottom = f.small ? 16 : 16 + 44 + 8;
 
-  const go = () => router.push(n > 0 ? '/paywall' : '/onboarding/done');
+  // Already started Pro on the way to their bank (DECISIONS #70): no second paywall.
+  const go = () => router.push(n > 0 && !pro ? '/paywall' : '/onboarding/done');
   const turnOn = async () => {
     const status = await requestNotifPermission();
     setNotifications(status === 'granted' || status === 'quiet' ? 'granted' : 'denied');

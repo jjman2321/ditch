@@ -31,7 +31,11 @@ import { useEditor } from '@/editor/Editor';
 import { AddDatesSheet } from '@/home/AddDatesSheet';
 import { EmptyHome, ForgottenRow, NextReminderRow, NoDateRow, OffBanner, OverlapCard, PaydayRow, PriceChangeCard, TotalCard, openPhoneSettings } from '@/home/HomeParts';
 import { PriceColumnMeasure, SubRow, type BellState } from '@/home/SubRow';
+import { BankToastView, SyncCardView, type SyncHandlers } from '@/bank/HomeCards';
+import { openUrl } from '@/ditch/CancelHelp';
 import { useApp, useAppMoney } from '@/state/app';
+import { useBank } from '@/state/bank';
+import { foundTagShows } from '@/state/bankLogic';
 import { BottomFade, Card, Chip, Gear, IconButton, Plus, RowDivider, SectionHeader, SurfaceContext, Txt, Wordmark, brand, haptic, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
 
 export default function Home() {
@@ -87,10 +91,14 @@ export default function Home() {
   const payday = useMemo(() => beforePayday(subs, today, settings.payday), [subs, today, settings.payday]);
   // Price watch (Pro): our checked price for their plan changed. Dismissed keys share the overlaps list.
   const change = useMemo(() => priceChanges(subs, priceRow).find((c) => !settings.dismissedOverlaps.includes(c.key)) ?? null, [subs, settings.dismissedOverlaps]);
+  // Bank sync (DECISIONS #70): one card at a time, reconnect > price change > looks cancelled > check these > trial recap.
+  const bank = useBank();
+  const sync = bank.cards[0] ?? null;
   // At most two cards above the list on every phone, so the list starts on the first screen:
-  // Next reminder (when there is one) plus ONE other. Priority: before payday, then a duplicate/overlap
+  // Next reminder (when there is one) plus ONE other. A bank sync card takes that slot first (it's
+  // about real money that just moved), then before payday, a duplicate/overlap
   // (then price watch, the other suggestion), then dates missing.
-  const other = payday ? 'payday' : overlap ? 'overlap' : change ? 'change' : undated.length && !blocked ? 'undated' : null;
+  const other = sync ? 'sync' : payday ? 'payday' : overlap ? 'overlap' : change ? 'change' : undated.length && !blocked ? 'undated' : null;
   // The very next one, so it's plain that reminders are scheduled.
   const next = blocked ? null : nextReminder(app.plan, subs);
   const money = useAppMoney();
@@ -121,6 +129,23 @@ export default function Home() {
     await app.ditch(id);
     setHolding(null);
     router.push(`/ditch/${id}?fresh=1`);
+  };
+
+  const syncHandlers: SyncHandlers = {
+    updatePrice: (c) => {
+      haptic.select();
+      void app.saveSub({ ...c.sub, amountMinor: c.change.toMinor, amountIsEstimate: false, priceSource: 'user' });
+    },
+    dismiss: (key) => void bank.dismissCard(key),
+    markDitched: (id) => void ditch(id),
+    reconnect: (id) => void bank.reconnect(id),
+    later: (id) => void bank.later(id),
+    answer: (key, yes) => {
+      haptic.select();
+      void bank.answer(key, yes);
+    },
+    // Ditch Pro is billed by Apple: its page in iPhone Settings is where the trial is cancelled.
+    howToCancel: () => openUrl('https://apps.apple.com/account/subscriptions'),
   };
 
   const turnOn = async () => {
@@ -168,6 +193,11 @@ export default function Home() {
               {next ? (
                 <View style={{ marginTop: 10 }}>
                   <NextReminderRow when={whenLabel(next.fireAt, today, settings.reminderTime)} name={next.name} onPress={() => router.push('/calendar')} />
+                </View>
+              ) : null}
+              {sync && other === 'sync' ? (
+                <View style={{ marginTop: 10 }}>
+                  <SyncCardView card={sync} today={today} h={syncHandlers} />
                 </View>
               ) : null}
               {payday && other === 'payday' ? (
@@ -244,6 +274,7 @@ export default function Home() {
                           bell={bellOf(r.sub.id)}
                           onBell={!pro && !blocked && !isPending(r.sub) && hasDate(r.sub) ? toggleBell : undefined}
                           priceWidth={priceW}
+                          foundTag={bank.on && foundTagShows(r.sub, today) && bank.toast?.subId !== r.sub.id}
                           holding={holding === r.sub.id}
                           dimmed={!!holding && holding !== r.sub.id}
                           onHoldStart={setHolding}
@@ -265,6 +296,7 @@ export default function Home() {
           )}
         </ScrollView>
         <BottomFade />
+        <BankToastView toast={bank.toast} onUndo={(id) => void bank.undo(id)} onDone={bank.dismissToast} />
       </View>
       <AddDatesSheet visible={datesOpen} onClose={() => setDatesOpen(false)} />
     </SurfaceContext.Provider>

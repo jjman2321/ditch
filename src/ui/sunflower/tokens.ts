@@ -63,6 +63,15 @@ const cream = {
   disabledFg: '#8F8776', // 3.6:1 on white, 3.3:1 on cream: SubRow's off bell uses it too
   danger: '#B3361A',
   warn: brand.bill,
+  /** Bank sync (design/v32): "Checked 2 hours ago" green, "Needs sign-in" amber, the amber card outline. */
+  ok: '#15803D',
+  amber: '#B45309',
+  amberLine: '#EBC46A',
+  /** Soft sunflower: chips ("PRO · 7 DAYS FREE"), icon tiles. */
+  sunSoft: '#FFF1BC',
+  sunSoftFg: '#5C4700',
+  /** The disconnect button. */
+  dangerFill: '#C2410C',
 };
 
 export type Palette = typeof cream;
@@ -126,6 +135,12 @@ const night: Palette = {
   disabledFg: '#6E685D',
   danger: '#FF8A65',
   warn: brand.bill,
+  ok: '#6FCF8E',
+  amber: '#F0B35A',
+  amberLine: '#8A6A1F',
+  sunSoft: brand.sunflower,
+  sunSoftFg: brand.ink,
+  dangerFill: '#E0592A',
 };
 
 export function paletteFor(surface: Surface, dark: boolean): Palette {

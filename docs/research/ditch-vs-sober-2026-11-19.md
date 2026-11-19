@@ -41,3 +41,12 @@ Builds on `quit-decision-2026-11-18.md` (sober market), `monetization-model-2026
 3. Build the sober app as app #2, reusing Ditch's reminder engine, paywall and duck.
 
 Sources: [Rocket acquires Truebill for $1.275B (HousingWire)](https://housingwire.com/articles/rocket-acquires-truebill-app-for-1-275b-in-cash), [Crowdfund Insider](https://www.crowdfundinsider.com/2021/12/184478-rocket-acquires-truebill-for-1-275-billion-in-big-fintech-deal/), [Monument buys Tempest (Behavioral Health Business)](https://bhbusiness.com/2022/05/13/monument-has-purchased-fellow-digital-alcohol-recovery-program-tempest-for-an-undisclosed-sum/), [Sunnyside raises $11.5M (TechCrunch)](https://techcrunch.com/2023/11/15/mindful-drinking-app-sunnyside-lands-11-5m-to-launch-its-ai-powered-coach). Market and keyword numbers: the two earlier research docs (AppKittie estimates).
+
+## Which is easier to win organically? (added Nov 19)
+**Ditch, clearly, on the App Store.** The top 6 results for each search term (US iTunes Search, Nov 19; rating counts in brackets):
+- Ditch's terms have weak spots: "subscription tracker" #4–6 at 259 / 134 / 0 ratings; "subscription reminder" top 5 all at **0**; "cancel subscriptions", "track subscriptions" #4–6 at 0–56.
+- Sober terms have none: "sober" I Am Sober (191k), Sobo (1.9k), Days Since (19.8k), Sober Time (43.6k), Sober (7.9k), Nomo (17k). "quit drinking" and "sober tracker" are all 1.9k–191k. Only "alcohol free" has one weak spot (#3, 14 ratings).
+- AppKittie scores "sober" (29) and "subscription tracker" (28) about equally hard, but the real top 6 shows sober is much harder.
+- Nicotine is the softer quit niche: "quit vaping" has VapeFree (286) and Exhale (310) in the top 6.
+
+**Google:** Ditch is easier too ("how to cancel X" is a how-to; quitting drinking is health advice, where Google favours medical sites like the NHS and Mayo Clinic). The catch for both: AI answers now reply to "how to cancel Netflix" directly, and cancel-guide readers turn into installs at only ~0.5–2% (`demand-2026-11-18.md`). So the App Store carries growth for both apps; the website helps with ranking and trust.

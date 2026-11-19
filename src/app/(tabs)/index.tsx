@@ -29,7 +29,7 @@ import {
 } from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
 import { AddDatesSheet } from '@/home/AddDatesSheet';
-import { EmptyHome, ForgottenRow, NextReminderRow, NoDateRow, OffBanner, OverlapCard, PaydayRow, PriceChangeCard, TotalCard, openPhoneSettings } from '@/home/HomeParts';
+import { EmptyHome, NextReminderRow, NoDateRow, OffBanner, OverlapCard, PaydayRow, PriceChangeCard, TotalCard, openPhoneSettings } from '@/home/HomeParts';
 import { PriceColumnMeasure, SubRow, type BellState } from '@/home/SubRow';
 import { BankToastView, SyncCardView, type SyncHandlers } from '@/bank/HomeCards';
 import { openUrl } from '@/ditch/CancelHelp';
@@ -287,11 +287,7 @@ export default function Home() {
                   </Card>
                 </View>
               ))}
-              {settings.forgottenDone ? null : (
-                <View style={{ marginTop: 22 }}>
-                  <ForgottenRow onPress={() => editor.openForgotten()} />
-                </View>
-              )}
+              {/* No "Missing any?" / find cards on Home (owner, Nov 19: too much for the main page). They live in the + sheet. */}
             </>
           )}
         </ScrollView>

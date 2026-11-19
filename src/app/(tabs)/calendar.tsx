@@ -424,14 +424,7 @@ function LogoStack({ day, w, selected }: { day: CalendarDay; w: number; selected
       }}
     >
       {shown.map((c, i) => (
-        <View
-          key={c.sub.id}
-          style={
-            i === 0
-              ? { padding: RING }
-              : { marginLeft: step - size - RING * 2, padding: RING, borderRadius: tileRadius(size) + RING, backgroundColor: ringBg }
-          }
-        >
+        <View key={c.sub.id} style={i === 0 ? { padding: RING } : { marginLeft: step - size - RING * 2, padding: RING, borderRadius: tileRadius(size) + RING, backgroundColor: ringBg }}>
           <SubLogo sub={c.sub} size={size} ditched={c.pending} />
         </View>
       ))}

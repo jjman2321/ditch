@@ -1,7 +1,9 @@
-// Paywall plan card (design/v12): full width, 56pt (48 on small phones).
+// Paywall plan card (design/v12): full width, 56pt by default (the paywall uses 58).
 // The billed price is always the biggest price on it. Selection: the radio
-// fills and the border goes 1.5 → 2.5pt with no layout shift. The "SAVE 49%"
-// ribbon sits on the top edge above the name, so it never touches the price.
+// fills and the border goes 1.5 → 2.5pt with no layout shift. The "SAVE 86%"
+// ribbon sits on the top edge, so it never touches the price.
+// Plans (DECISIONS #66): Weekly $6.99, Yearly $49.99 with a 7-day trial, Lifetime $99.99.
+// Purchases go through StoreKit 2 directly (DECISIONS #59).
 
 import { Pressable, View } from 'react-native';
 
@@ -40,14 +42,14 @@ export function PlanCard({
   noteStrong?: boolean;
   badgeFg?: string;
   title: string;
-  /** The billed price, e.g. "$29.99/yr". */
+  /** The billed price, e.g. "$49.99/yr". */
   price: string;
   sub?: string;
-  /** Small line under the name, e.g. "Pay once. No subscription." */
+  /** Small line under the name, e.g. "Pay once. No subscription." or "Free for 7 days". */
   note?: string;
   /** Pill next to the name, e.g. "7 days free". */
   tag?: string;
-  /** Ribbon on the card's top edge, e.g. "SAVE 49%". */
+  /** Ribbon on the card's top edge, e.g. "SAVE 86%". */
   badge?: string;
   selected: boolean;
   onPress: () => void;

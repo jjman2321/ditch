@@ -28,7 +28,7 @@ import { chooseCycle, choosePlan, newPick, type Picked } from '@/state/picks';
 import { ask } from '@/ui/alert';
 import { suggestService } from '@/settings/feedback';
 import { yearlySaving } from '@/domain/priceWatch';
-import { Button, Card, ChevronRight, Chip, F, KEYBOARD_DONE, KeyboardDone, LogoTile, NotificationPreview, Search, Segmented, Sheet, SunSwitch, Txt, brand, haptic, usePalette, useSheetScroll } from '@/ui/sunflower';
+import { Button, Card, ChevronRight, Chip, F, KEYBOARD_DONE, KeyboardDone, LogoTile, NotificationPreview, Search, Segmented, Sheet, SunSwitch, Txt, brand, haptic, useFrame, usePalette, useSheetScroll } from '@/ui/sunflower';
 
 /**
  * add: the picker first; `custom` is a name typed there (the full form);
@@ -188,6 +188,8 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
   const app = useApp();
   const money = useAppMoney();
   const onSheetScroll = useSheetScroll();
+  // The sheet's side margin: chip rows bleed to the screen edge so no price is cut mid-word.
+  const { edge } = useFrame();
   const { settings, today, pro } = app;
   const country = settings.country;
 
@@ -274,6 +276,8 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
   // Plans stay on screen after the price is edited (audit, Nov 16), so a plan can always be re-picked.
   const planRow = draft.catalogId && draft.priceCountry ? priceRow(draft.catalogId, draft.priceCountry) : null;
   const plans = draft.catalogId ? planChoices(draft.catalogId, draft.priceCountry) : [];
+  // The plan they picked, or the one their price matches.
+  const planSelected = (pl: (typeof plans)[number]) => (draft.planId ? pl.id === draft.planId : pl.amountMinor === draft.amountMinor && pl.cycle === draft.cycle && planRow?.currency === draft.currency);
 
   // Reminders: free covers 3 (the Pro trial entry is always on).
   const othersOn = remindedIds(app.subs.filter((s) => s.id !== draft.id), false).size;
@@ -366,6 +370,8 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
           body: (draft.isTrial ? trialBody : headsUpBody)({ ...draft, name: previewName }, charge, heads[0], (a, c) => formatMoney(a, c, { home: settings.currency })),
         }
       : null;
+  // Edit: Save wakes up once something changed, so an untouched sheet doesn't look like it needs saving.
+  const changed = isNew || !existing || JSON.stringify(draft) !== JSON.stringify(existing);
   const canSave = !!(draft.name || query).trim() && (!amount || typed !== null);
   // If our checked price for their plan has moved since they added it, say so plainly instead of "Typical".
   const current = draft.catalogId && draft.priceSource === 'catalog' ? catalogPrice(draft.catalogId, draft.priceCountry, draft.planId) : null;
@@ -478,13 +484,12 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
             {plans.length ? (
               <>
                 <FieldLabel>Plan</FieldLabel>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginHorizontal: -edge }} contentContainerStyle={{ gap: 8, paddingHorizontal: edge }}>
                   {plans.map((pl) => (
                     <Chip
                       key={pl.id}
                       label={`${shortPlanName(pl.name, draft.name, plans.map((x) => x.name)).replace(/\s*\((yearly|monthly|annual)\)$/i, '')} ${money(pl.amountMinor, planRow?.currency ?? draft.currency ?? settings.currency)}${CYCLE_SHORT[pl.cycle]}`}
-                      // The plan they picked, or the one their price matches.
-                      selected={draft.planId ? pl.id === draft.planId : pl.amountMinor === draft.amountMinor && pl.cycle === draft.cycle && planRow?.currency === draft.currency}
+                      selected={planSelected(pl)}
                       onPress={() => {
                         haptic.select();
                         const next = fromPick(draft, choosePlan(asPick(draft), pl.id));
@@ -494,6 +499,11 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                     />
                   ))}
                 </ScrollView>
+                {!isNew && draft.amountMinor && !plans.some(planSelected) ? (
+                  <Txt v="sub" tone="mute" style={{ marginTop: 6, marginHorizontal: 2 }}>
+                    Doesn’t match a plan. Fine if yours differs.
+                  </Txt>
+                ) : null}
               </>
             ) : null}
 
@@ -527,36 +537,13 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                 {catalogLine}
               </Txt>
             ) : null}
-            {/* Cheaper-plan check (Pro, DECISIONS #60): the same plan billed yearly, from our checked prices. */}
+            {/* Cheaper-plan check (DECISIONS #60): the same plan billed yearly, from our checked prices. Same currency only.
+                Free too: the yearly price is already on a plan chip, so hiding the difference behind Pro hid nothing (audit, Nov 19). */}
             {saving ? (
-              app.pro ? (
-                <Txt v="sub" num color={p.fg} style={{ marginTop: 6, marginHorizontal: 2 }}>
-                  {`Paying yearly would be ${money(saving.yearlyMinor, saving.currency)} a year, ${money(saving.lessBy, saving.currency)} less than 12 months of this.`}
-                </Txt>
-              ) : (
-                <Pressable accessibilityRole="button" accessibilityLabel="Yearly would cost less. See how much with Pro" onPress={() => router.push('/paywall?from=app')} style={{ minHeight: 44, justifyContent: 'center', marginHorizontal: 2 }}>
-                  <Txt v="sub" tone="mute">
-                    Yearly would cost less. <Txt v="sub" style={{ textDecorationLine: 'underline' }}>See how much with Pro</Txt>
-                  </Txt>
-                </Pressable>
-              )
+              <Txt v="sub" num color={p.fg} style={{ marginTop: 6, marginHorizontal: 2 }}>
+                {`Paying yearly would be ${money(saving.yearlyMinor, saving.currency)} a year, ${money(saving.lessBy, saving.currency)} less than 12 months of this.`}
+              </Txt>
             ) : null}
-            {trialEntry ? null : (
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8, paddingTop: 10 }}>
-                {[...new Set([settings.currency, currency, ...COMMON])].map((c) => (
-                  <Chip key={c} label={c} selected={c === currency} onPress={() => setCurrency(c)} />
-                ))}
-              </ScrollView>
-            )}
-
-            <FieldLabel>How often</FieldLabel>
-            <Segmented label="How often it charges" value={draft.cycle} onChange={setCycle} options={CYCLES} fontSize={13.5} />
-            {/* Less common cycles (Nov 15, DECISIONS #57): chips under the main four, so the switch stays readable. */}
-            <View style={{ flexDirection: 'row', gap: 8, paddingTop: 10 }}>
-              {OTHER_CYCLES.map((c) => (
-                <Chip key={c.value} label={c.label} selected={draft.cycle === c.value} onPress={() => setCycle(c.value)} />
-              ))}
-            </View>
 
             <FieldLabel>{draft.isTrial ? 'Trial ends' : 'Next charge'}</FieldLabel>
             {/* No guesses (DECISIONS #33): a real date, or "Add date" and no reminder yet. */}
@@ -590,6 +577,27 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                 {draft.isTrial ? 'No date, no reminder. It’s in the sign-up email.' : 'No date, no reminder. It’s on your bank app or the receipt email.'}
               </Txt>
             ) : null}
+
+            {trialEntry ? null : (
+              <>
+                <FieldLabel>Currency</FieldLabel>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginHorizontal: -edge }} contentContainerStyle={{ gap: 8, paddingHorizontal: edge }}>
+                  {[...new Set([settings.currency, currency, ...COMMON])].map((c) => (
+                    <Chip key={c} label={c} selected={c === currency} onPress={() => setCurrency(c)} />
+                  ))}
+                </ScrollView>
+              </>
+            )}
+
+            <FieldLabel>How often</FieldLabel>
+            <Segmented label="How often it charges" value={draft.cycle} onChange={setCycle} options={CYCLES} fontSize={13.5} />
+            {/* Less common cycles (Nov 15, DECISIONS #57): chips under the main four, so the switch stays readable. */}
+            <View style={{ flexDirection: 'row', gap: 8, paddingTop: 10 }}>
+              {OTHER_CYCLES.map((c) => (
+                <Chip key={c.value} label={c.label} selected={draft.cycle === c.value} onPress={() => setCycle(c.value)} />
+              ))}
+            </View>
+
 
             <Card style={{ marginTop: 18, paddingHorizontal: 16, paddingVertical: 4 }}>
               {trialEntry ? null : (
@@ -695,7 +703,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
       <KeyboardDone />
       {searching ? null : (
         <View style={{ paddingTop: 10 }}>
-          <Button label={isNew ? (draft.isTrial ? 'Track trial' : `Add ${draft.name || query.trim() || 'it'}`) : 'Save'} disabled={!canSave} onPress={save} />
+          <Button label={isNew ? (draft.isTrial ? 'Track trial' : `Add ${draft.name || query.trim() || 'it'}`) : 'Save'} disabled={!canSave || !changed} onPress={save} />
         </View>
       )}
     </View>

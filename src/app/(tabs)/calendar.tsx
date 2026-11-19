@@ -9,7 +9,7 @@ import { Pressable, ScrollView, View, useWindowDimensions } from 'react-native';
 import { MONTH_LONG, WEEKDAY_LONG, addDays, parseDate, shiftMonth, toDateOnly, weekdayDate, weekdayOf, weekdayShort, type DateOnly } from '@/domain/dates';
 import { HEADS_UP_LEADS } from '@/domain/charges';
 import { effectiveLeads, shortTimeLabel, timeLabel } from '@/domain/settings';
-import { FREE_REMINDERS, calendarMonth, isPending, isPricedSub, isProTrial, monthDue, remindedIds, undatedSubs, yearAhead, yearlyOfSub, type CalendarCharge, type CalendarDay } from '@/domain/subs';
+import { FREE_REMINDERS, calendarMonth, isPending, isPricedSub, isProTrial, monthDue, remindedIds, undatedSubs, undatedTotals, yearAhead, yearlyOfSub, type CalendarCharge, type CalendarDay } from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
 import { OffBanner, openPhoneSettings } from '@/home/HomeParts';
 import { SubLogo } from '@/home/SubRow';
@@ -39,14 +39,17 @@ export default function Calendar() {
   const isThisMonth = view.y === t.y && view.m === t.m;
   const left = isThisMonth ? monthDue(days.map((d) => (d && d.date >= today ? d : null)), settings.currency) : null;
   const stillLine = left && due.totals.length === 1 && left.totals.length <= 1 && left.count < due.count
-    ? left.count ? `${money(left.totals[0].amountMinor, left.totals[0].currency)} still to come` : 'All paid for this month'
+    ? left.count ? `${money(left.totals[0].amountMinor, left.totals[0].currency)} still to come in ${MONTH_LONG[view.m - 1]}` : 'All paid for this month'
     : null;
   const undated = useMemo(() => undatedSubs(subs).sort((a, b) => yearlyOfSub(b) - yearlyOfSub(a)), [subs]);
   // The next 12 months at a glance (DECISIONS #60, free): which months are heavy, and the yearly charges in them.
   const ahead = useMemo(() => yearAhead(subs, today), [subs, today]);
   // One "Most months" line, then only the months that differ (the yearly and 6-monthly ones), so it isn't 12 identical rows.
+  // Undated subs have no month, so the Year ahead leaves them out: a line under it says what they add (per currency).
+  const undatedMonthly = useMemo(() => undatedTotals(subs, today, settings.currency), [subs, today, settings.currency]);
   const aheadRows = useMemo(() => {
-    const fmt = (a: (typeof ahead)[number]) => a.totals.map((x) => money(x.amountMinor, x.currency)).join(' + ') || '–';
+    // Each currency on its own line, never joined with "+" (rule 1). The joined text is only a key for "Most months".
+    const fmt = (a: (typeof ahead)[number]) => a.totals.map((x) => money(x.amountMinor, x.currency)).join('\n') || '–';
     // The 13th month is only its first days (up to a year from today): it shows only for a yearly or 6-monthly charge.
     const full = ahead.length > 12 ? ahead.slice(0, 12) : ahead;
     const counts = new Map<string, number>();
@@ -58,7 +61,8 @@ export default function Calendar() {
       if (fmt(a) === usual[0] && !a.big.length) continue;
       if (i >= 12 && !a.big.length) continue;
       const { y, m } = parseDate(a.month);
-      rows.push({ key: a.month, label: `${MONTH_LONG[m - 1]}${y !== t.y ? ` ${y}` : ''}`, amounts: fmt(a), bigs: a.big.map((b) => `${b.sub.name} ${money(b.sub.amountMinor, b.sub.currency)}`).join(' · '), usual: false });
+      // This month only counts from today, so say so: "Rest of November".
+      rows.push({ key: a.month, label: i === 0 ? `Rest of ${MONTH_LONG[m - 1]}` : `${MONTH_LONG[m - 1]}${y !== t.y ? ` ${y}` : ''}`, amounts: fmt(a), bigs: a.big.map((b) => `${b.sub.name} ${money(b.sub.amountMinor, b.sub.currency)}`).join(' · '), usual: false });
     }
     return rows;
   }, [ahead, money, t.y]);
@@ -125,17 +129,25 @@ export default function Calendar() {
           accessible
           accessibilityLabel={
             due.totals.length
-              ? `${due.totals.map((x) => money(x.amountMinor, x.currency)).join(' plus ')} due in ${MONTH_LONG[view.m - 1]}, ${due.count} ${due.count === 1 ? 'charge' : 'charges'}`
+              ? `${due.totals.map((x) => money(x.amountMinor, x.currency)).join(', and ')} due in ${MONTH_LONG[view.m - 1]}, ${due.count} ${due.count === 1 ? 'charge' : 'charges'}`
               : `Nothing due in ${MONTH_LONG[view.m - 1]}`
           }
-          style={{ flexDirection: 'row', alignItems: 'baseline', flexWrap: 'wrap', columnGap: 8, marginTop: 8 }}
+          style={{ marginTop: 8 }}
         >
-          <Txt v="displayM" tone="money" num style={{ fontSize: 31, lineHeight: 38 }}>
-            {due.totals[0] ? money(due.totals[0].amountMinor, due.totals[0].currency) : money(0, settings.currency)}
-          </Txt>
-          <Txt v="leadS" tone="fg2" num style={{ fontSize: 15, letterSpacing: -0.3 }}>
-            {due.totals.slice(1).map((x) => `+ ${money(x.amountMinor, x.currency)} `)}due in {MONTH_LONG[view.m - 1]} · {due.count} {due.count === 1 ? 'charge' : 'charges'}
-          </Txt>
+          <View style={{ flexDirection: 'row', alignItems: 'baseline', flexWrap: 'wrap', columnGap: 8 }}>
+            <Txt v="displayM" tone="money" num style={{ fontSize: 31, lineHeight: 38 }}>
+              {due.totals[0] ? money(due.totals[0].amountMinor, due.totals[0].currency) : money(0, settings.currency)}
+            </Txt>
+            <Txt v="leadS" tone="fg2" num style={{ fontSize: 15, letterSpacing: -0.3 }}>
+              due in {MONTH_LONG[view.m - 1]} · {due.count} {due.count === 1 ? 'charge' : 'charges'}
+            </Txt>
+          </View>
+          {/* Other currencies: their own line each, no "+" (never added together). */}
+          {due.totals.slice(1).map((x) => (
+            <Txt key={x.currency} v="leadS" tone="fg2" num style={{ fontSize: 15, letterSpacing: -0.3 }}>
+              {money(x.amountMinor, x.currency)} due in {MONTH_LONG[view.m - 1]}
+            </Txt>
+          ))}
         </View>
         {stillLine ? (
           <Txt v="sub" tone="fg2" num style={{ marginTop: 2 }}>
@@ -207,14 +219,14 @@ export default function Calendar() {
                 <View
                   key={r.key}
                   accessible
-                  accessibilityLabel={`${r.label}: ${r.amounts}${r.bigs ? `. Big ones: ${r.bigs}` : ''}`}
+                  accessibilityLabel={`${r.label}: ${r.amounts.split('\n').join(', and ')}${r.bigs ? `. Big ones: ${r.bigs}` : ''}`}
                   style={{ minHeight: 48, paddingHorizontal: 14, paddingVertical: 10, borderTopWidth: i ? 1 : 0, borderTopColor: p.hair }}
                 >
                   <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 12 }}>
                     <Txt v="label" color={r.usual ? p.mute : p.cardFg} style={{ flex: 1, fontSize: 16 }}>
                       {r.label}
                     </Txt>
-                    <Txt v="label" num color={r.usual ? p.mute : p.cardFg} style={{ fontSize: 16, fontFamily: r.usual ? undefined : F.bold }}>
+                    <Txt v="label" num color={r.usual ? p.mute : p.cardFg} style={{ fontSize: 16, fontFamily: r.usual ? undefined : F.bold, textAlign: 'right' }}>
                       {r.amounts}
                     </Txt>
                   </View>
@@ -226,6 +238,11 @@ export default function Calendar() {
                 </View>
               ))}
             </Card>
+            {undatedMonthly.map((x) => (
+              <Txt key={x.currency} v="sub" tone="mute" num style={{ marginTop: 6, marginHorizontal: 2 }}>
+                + {money(x.monthlyMinor, x.currency)} a month with no date yet
+              </Txt>
+            ))}
           </>
         ) : null}
 
@@ -297,13 +314,28 @@ function DayCell({ day, w, selected, blocked, onPress }: { day: CalendarDay; w: 
             {d}
           </Txt>
         )}
-        {day.headsUp ? (
-          // Reminders off: a hollow dot, since nothing will actually arrive.
-          <View style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: blocked ? 'transparent' : brand.sunflower, borderWidth: blocked || !p.dark ? 1.5 : 0, borderColor: blocked ? p.mute : brand.ink }} />
-        ) : null}
       </View>
+      {day.headsUp ? (
+        // Under the date number, not beside a logo: the dot belongs to the day, while the logo is that day's charge
+        // (audit, Nov 19: a dot next to Apple Music on the 28th was really ChatGPT's Dec 1 reminder).
+        // Reminders off: a hollow dot, since nothing will actually arrive.
+        <View
+          style={{
+            position: 'absolute',
+            left: (selected ? 3.5 : 6) + (d < 10 ? 0 : 1),
+            top: (selected ? 3.5 : 6) + (day.today && !selected ? 25 : 21),
+            width: 8,
+            height: 8,
+            borderRadius: 4,
+            backgroundColor: blocked ? 'transparent' : brand.sunflower,
+            borderWidth: blocked || !p.dark ? 1.5 : 0,
+            borderColor: blocked ? p.mute : brand.ink,
+          }}
+        />
+      ) : null}
       {first ? (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', opacity: first.pending ? 0.4 : 1 }}>
+        // A dot day: the logo sits in the bottom-right corner, clear of the dot.
+        <View style={[{ flex: 1, alignItems: 'center', justifyContent: 'center', opacity: first.pending ? 0.4 : 1 }, day.headsUp ? { alignItems: 'flex-end', justifyContent: 'flex-end' } : null]}>
           <SubLogo sub={first.sub} size={24} />
           {more > 0 ? (
             <Txt v="sub" num color={selected ? brand.ink : p.mute} style={{ position: 'absolute', right: -2, bottom: -2, fontFamily: F.bold, fontSize: 11 }} maxFontSizeMultiplier={1}>

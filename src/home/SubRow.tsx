@@ -87,8 +87,11 @@ export function SubRow({
   onHoldEnd,
   onDitch,
   onOpen,
+  onBell,
   priceWidth,
 }: {
+  /** Free plan: tapping the bell turns this one's reminder on or off (one of the 3). Not set: the bell is just a sign. */
+  onBell?: (sub: Sub) => void;
   /** Same for every row on Home, so the bells and prices line up. */
   priceWidth?: number;
   sub: Sub;
@@ -172,6 +175,8 @@ export function SubRow({
   // A flick to scroll must never count as a tap (it would open the editor).
   const tap = useTapGesture({ runOnJS: true, maxDistance: 10, onActivate: () => onOpen(sub) });
   const gesture = useExclusiveGestures(longPress, tap);
+  // The bell is its own 44pt target; the row's tap and hold wait for it, so a bell tap never opens the editor.
+  const bellTap = useTapGesture({ runOnJS: true, maxDistance: 10, hitSlop: 12, enabled: !!onBell, block: onBell ? [longPress, tap] : undefined, onActivate: () => onBell?.(sub) });
 
   const ringProps = useAnimatedProps(() => {
     // Reduce Motion: a stepped 4-segment fill instead of a smooth sweep.
@@ -189,7 +194,8 @@ export function SubRow({
 
   const price = isPricedSub(sub) ? money(sub.amountMinor, sub.currency) : null;
   const yearly = isPricedSub(sub) ? money(yearlyMinor(sub.amountMinor, sub.cycle), sub.currency) : null;
-  // Short date line when the row is tight: small phones, or a wide price column ("$65.00/yr", "US$20.00").
+  // Short date line when the row is tight: small phones, or a wide price column ("US$120.00").
+  // The "/yr" sits under the price now, so one yearly row no longer cuts "in 5 days" from the others.
   const narrow = useWindowDimensions().width < 380 || (priceWidth ?? 0) > 80;
   const line = rowLine(sub, charge, today, narrow);
   const per = sub.cycle === 'monthly' ? '' : CYCLE_SHORT[sub.cycle];
@@ -204,9 +210,13 @@ export function SubRow({
         accessible
         accessibilityRole="button"
         accessibilityLabel={label}
-        accessibilityHint={canHold ? 'Opens it. The actions menu has Ditch it.' : 'Opens the cancel check.'}
-        accessibilityActions={canHold ? [{ name: 'activate' }, { name: 'ditch', label: 'Ditch it' }] : [{ name: 'activate' }]}
-        onAccessibilityAction={(e) => (e.nativeEvent.actionName === 'ditch' ? onDitch(sub.id) : onOpen(sub))}
+        accessibilityHint={canHold ? (onBell ? 'Opens it. The actions menu has Ditch it and the reminder switch.' : 'Opens it. The actions menu has Ditch it.') : 'Opens the cancel check.'}
+        accessibilityActions={[
+          { name: 'activate' },
+          ...(canHold ? [{ name: 'ditch', label: 'Ditch it' }] : []),
+          ...(onBell ? [{ name: 'bell', label: bell === 'on' ? 'Turn reminder off' : 'Turn reminder on' }] : []),
+        ]}
+        onAccessibilityAction={(e) => (e.nativeEvent.actionName === 'ditch' ? onDitch(sub.id) : e.nativeEvent.actionName === 'bell' ? onBell?.(sub) : onOpen(sub))}
         style={[
           { borderRadius: 20, zIndex: holding ? 2 : 0, borderWidth: p.dark ? 1.5 : 0, borderColor: 'transparent' },
           holding && !p.dark ? { shadowColor: '#463200', shadowOpacity: 0.18, shadowRadius: 18, shadowOffset: { width: 0, height: 8 }, elevation: 6 } : null,
@@ -258,22 +268,28 @@ export function SubRow({
               </Txt>
             </View>
           </View>
-          <View style={{ width: 20, alignItems: 'center' }} importantForAccessibility="no-hide-descendants">
-            {bell === 'blocked' || pending ? (
-              <BellOff color={p.disabledFg} size={19} />
-            ) : (
-              <Bell color={bell === 'on' ? (on ? brand.ink : p.dark ? brand.sunflower : brand.ink) : p.disabledFg} size={19} fill={bell === 'on' ? (on ? brand.ink : brand.sunflower) : undefined} />
-            )}
-          </View>
-          <Txt v="moneyM" num color={price ? fg : p.mute} style={[{ minWidth: 62, textAlign: 'right', fontSize: price ? 17.5 : 13 }, priceWidth ? { width: Math.max(62, priceWidth) } : null]}>
-            {price ?? 'Add price'}
-            {/* Not monthly? Say so, or $139 a year looks like $139 a month. */}
+          <GestureDetector gesture={bellTap}>
+            {/* 20pt wide like before; the gesture's 12pt hit slop makes it a 44pt target. The row is one VoiceOver
+                element (a button inside a button can't be reached), so VoiceOver gets it as the row's "Turn reminder on/off" action. */}
+            <View style={{ width: 20, minHeight: 20, alignItems: 'center', justifyContent: 'center' }} importantForAccessibility="no-hide-descendants">
+              {bell === 'blocked' || pending ? (
+                <BellOff color={p.disabledFg} size={19} />
+              ) : (
+                <Bell color={bell === 'on' ? (on ? brand.ink : p.dark ? brand.sunflower : brand.ink) : p.disabledFg} size={19} fill={bell === 'on' ? (on ? brand.ink : brand.sunflower) : undefined} />
+              )}
+            </View>
+          </GestureDetector>
+          <View style={[{ minWidth: 62, alignItems: 'flex-end' }, priceWidth ? { width: Math.max(62, priceWidth) } : null]}>
+            <Txt v="moneyM" num color={price ? fg : p.mute} style={{ textAlign: 'right', fontSize: price ? 17.5 : 13 }}>
+              {price ?? 'Add price'}
+            </Txt>
+            {/* Not monthly? Say so, or $139 a year looks like $139 a month. Under the price, so the column (and every row's date line) stays narrow. */}
             {price && per ? (
-              <Txt v="sub" num color={sub2} style={{ fontSize: 12 }}>
+              <Txt v="sub" num color={sub2} maxFontSizeMultiplier={1.3} style={{ position: 'absolute', top: '100%', right: 0, fontSize: 12, lineHeight: 14, marginTop: -2 }}>
                 {per}
               </Txt>
             ) : null}
-          </Txt>
+          </View>
         </View>
         {holding ? (
           <View style={{ marginHorizontal: 12, marginBottom: 12, marginTop: -2, borderRadius: 14, padding: 12, paddingHorizontal: 14, backgroundColor: p.dark ? '#2A2722' : 'rgba(255,255,255,0.78)' }}>

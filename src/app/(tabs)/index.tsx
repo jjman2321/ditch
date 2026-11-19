@@ -6,19 +6,18 @@ import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { ScrollView, View, useWindowDimensions } from 'react-native';
 
-import { CYCLE_SHORT } from '@/domain/money';
 import { DISMISSED_KEEP } from '@/domain/settings';
 import { nextReminder, whenLabel } from '@/domain/reminders';
 import { overlapToShow } from '@/domain/overlaps';
 import { priceChanges } from '@/domain/priceWatch';
 import { priceRow } from '@/catalog/prices';
-import { beforePayday, trialsAfter, homeGroups, homeTotals, isPending, isPricedSub, isProTrial, listedUserSubs, remindedIds, undatedSubs, yearlyOfSub } from '@/domain/subs';
+import { beforePayday, cheapestSub, hasDate, trialsAfter, homeGroups, homeTotals, isPending, isPricedSub, isProTrial, listedUserSubs, remindedIds, undatedSubs, yearlyOfSub, type Sub } from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
 import { AddDatesSheet } from '@/home/AddDatesSheet';
 import { EmptyHome, ForgottenRow, NextReminderRow, NoDateRow, OffBanner, OverlapCard, PaydayRow, PriceChangeCard, TotalCard, openPhoneSettings } from '@/home/HomeParts';
 import { PriceColumnMeasure, SubRow, type BellState } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
-import { BottomFade, Card, Chip, Gear, IconButton, Plus, RowDivider, SectionHeader, SurfaceContext, Wordmark, brand, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
+import { BottomFade, Card, Chip, Gear, IconButton, Plus, RowDivider, SectionHeader, SurfaceContext, Txt, Wordmark, brand, haptic, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
 
 export default function Home() {
   const p = usePalette();
@@ -43,6 +42,8 @@ export default function Home() {
     [allGroups, cardOn],
   );
   const totals = useMemo(() => homeTotals(subs, today, settings.currency), [subs, today, settings.currency]);
+  // The picked card's own total, one line per currency (the big card above stays the whole list).
+  const cardTotals = useMemo(() => (cardOn ? homeTotals(subs.filter((s) => s.paidWith?.trim() === cardOn), today, settings.currency) : []), [subs, today, settings.currency, cardOn]);
   const trials = useMemo(() => trialsAfter(subs, today), [subs, today]);
   const reminded = useMemo(() => remindedIds(subs, pro), [subs, pro]);
   const listed = listedUserSubs(subs);
@@ -60,7 +61,8 @@ export default function Home() {
   // The very next one, so it's plain that reminders are scheduled.
   const next = blocked ? null : nextReminder(app.plan, subs);
   const money = useAppMoney();
-  const prices = useMemo(() => groups.flatMap((g) => g.rows.map((r) => (isPricedSub(r.sub) ? `${money(r.sub.amountMinor, r.sub.currency)}${r.sub.cycle === 'monthly' ? '' : CYCLE_SHORT[r.sub.cycle]}` : null))), [groups, money]);
+  // The "/yr" sits under each price, so only the price itself sets the column's width.
+  const prices = useMemo(() => groups.flatMap((g) => g.rows.map((r) => (isPricedSub(r.sub) ? money(r.sub.amountMinor, r.sub.currency) : null))), [groups, money]);
   const [priceW, setPriceW] = useState<number | undefined>(undefined);
 
   const bellOf = (id: string): BellState => {
@@ -68,6 +70,18 @@ export default function Home() {
     if (blocked) return 'blocked';
     if (s && isProTrial(s)) return 'on';
     return reminded.has(id) ? 'on' : 'off';
+  };
+
+  // Free plan: tap a bell to move one of the 3 reminders (same rules as Settings → Which subscriptions).
+  // A 4th one opens Pro instead.
+  const toggleBell = async (s: Sub) => {
+    const ok = await app.setReminder(s.id, !reminded.has(s.id));
+    if (ok) {
+      haptic.select();
+      return;
+    }
+    haptic.warning();
+    router.push('/paywall?from=which');
   };
 
   const ditch = async (id: string) => {
@@ -147,7 +161,12 @@ export default function Home() {
               {/* One suggestion card at a time: the free overlap win first (shortest path to a ditch), then price watch. */}
               {overlap && showSuggest ? (
                 <View style={{ marginTop: 10 }}>
-                  <OverlapCard overlap={overlap} money={money} onDismiss={() => void app.updateSettings({ dismissedOverlaps: [...settings.dismissedOverlaps, overlap.key].slice(-DISMISSED_KEEP) })} />
+                  <OverlapCard
+                    overlap={overlap}
+                    money={money}
+                    onPick={() => editor.openEdit((cheapestSub(overlap.subs) ?? overlap.subs[0]).id)}
+                    onDismiss={() => void app.updateSettings({ dismissedOverlaps: [...settings.dismissedOverlaps, overlap.key].slice(-DISMISSED_KEEP) })}
+                  />
                 </View>
               ) : null}
 
@@ -158,6 +177,15 @@ export default function Home() {
                     <Chip key={c} label={c} selected={cardOn === c} onPress={() => setCard(cardOn === c ? null : c)} />
                   ))}
                 </ScrollView>
+              ) : null}
+              {cardOn && cardTotals.length ? (
+                <View style={{ marginTop: 8, marginHorizontal: 2 }}>
+                  {cardTotals.map((t) => (
+                    <Txt key={t.currency} v="sub" tone="mute" num>
+                      {`${cardOn}: ${money(t.monthlyMinor, t.currency)} a month`}
+                    </Txt>
+                  ))}
+                </View>
               ) : null}
 
               {groups.map((g, gi) => (
@@ -172,6 +200,7 @@ export default function Home() {
                           charge={r.charge}
                           today={today}
                           bell={bellOf(r.sub.id)}
+                          onBell={!pro && !blocked && !isPending(r.sub) && hasDate(r.sub) ? toggleBell : undefined}
                           priceWidth={priceW}
                           holding={holding === r.sub.id}
                           dimmed={!!holding && holding !== r.sub.id}

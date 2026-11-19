@@ -12,6 +12,7 @@ import { nextReminder } from '@/domain/reminders';
 import { effectiveLeads, formatTime, leadsLabel, shortTimeLabel } from '@/domain/settings';
 import { FREE_REMINDERS, hasDate, listedUserSubs, remindedIds, runningProTrial } from '@/domain/subs';
 import { pendingCount } from '@/services/notifications';
+import { planById, restorePurchases } from '@/services/purchases';
 import { ordinal } from '@/domain/copy';
 import { Group, Row, SettingsPage } from '@/settings/Parts';
 import { SUPPORT_EMAIL, rateDitch, reportProblem, suggestFeature, suggestService } from '@/settings/feedback';
@@ -21,6 +22,8 @@ import { useApp } from '@/state/app';
 import { tell } from '@/ui/alert';
 import { Bang, Bell, Button, Card, Check, F, ProLockup, SunSwitch, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
 
+/** Non-breaking space: keeps "at 9 AM" together on one line. */
+const NB = '\u00A0';
 
 export default function Settings() {
   // 320pt wide: "3 days, 1 day" (the row already says Remind me), so it never gets cut.
@@ -44,6 +47,18 @@ export default function Settings() {
 
   const whichValue = pro ? (reminded.size === listed.length ? `All ${listed.length}` : `${reminded.size} of ${listed.length}`) : `${reminded.size} of ${FREE_REMINDERS}`;
   const proValue = !pro ? null : trial ? `Trial, ends ${weekdayDate(trial.anchor).split(', ')[1]}` : settings.proPlan === 'lifetime' ? 'Lifetime' : settings.proPlan === 'weekly' ? 'Weekly' : settings.proPlan === 'monthly' ? 'Monthly' : 'Yearly';
+  // VoiceOver hears the plan and its price, not just the row name (prices from PLANS, never typed here).
+  const yearly = planById('yearly');
+  const proPlan = settings.proPlan && settings.proPlan !== 'monthly' ? planById(settings.proPlan) : null;
+  const proSpoken = !pro
+    ? `, try free for ${yearly.trialDays} days, then ${yearly.priceString} a year`
+    : proPlan?.id === 'lifetime'
+      ? `, Lifetime, paid once`
+      : `, ${proValue}${proPlan ? `, ${proPlan.priceString} a ${proPlan.period}` : ''}`;
+  const restore = async () => {
+    const r = await restorePurchases();
+    tell(r.restored ? 'Restored' : 'Nothing to restore', r.restored ? 'Ditch Pro is back on.' : 'We couldn’t find a Ditch Pro purchase on this Apple Account.');
+  };
 
   return (
     <SettingsPage title="Settings" back="Home">
@@ -55,18 +70,20 @@ export default function Settings() {
         <Row label="Which subscriptions" value={whichValue} onPress={() => router.push('/settings/which')} />
       </Group>
 
-      <Group>
+      <Group header="Your plan">
         <Row
           label="Ditch Pro"
           labelNode={<ProLockup size={19} color={cardFg} />}
           onPress={() => (pro ? router.push('/settings/pro') : router.push('/paywall?from=app'))}
-          a11yValue={pro ? `, ${proValue}` : ', try free'}
+          a11yValue={proSpoken}
           right={
             pro ? (
               <Txt v="leadS" tone="mute">
                 {proValue}
               </Txt>
             ) : (
+              // TODO(M2, StoreKit 2): show "Try free" only when the Apple Account is still eligible for the
+              // intro trial (Product.SubscriptionInfo.isEligibleForIntroOffer); otherwise "See Pro".
               <View style={{ backgroundColor: brand.sunflower, borderRadius: 14, paddingHorizontal: 12, paddingVertical: 5 }}>
                 <Txt v="label" color={brand.ink} style={{ fontFamily: F.bold, fontSize: 15 }}>
                   Try free
@@ -75,6 +92,8 @@ export default function Settings() {
             )
           }
         />
+        {/* Restore is always one tap away for anyone not on Pro (App Review 3.1.1), same as on the paywall. */}
+        {pro ? null : <Row label="Restore purchases" onPress={() => void restore()} chevron={false} />}
       </Group>
 
       <Group>
@@ -157,7 +176,7 @@ function HealthCard() {
   } else if (nonePicked) {
     h = { icon: 'bell', title: 'No reminders picked', line: 'Pick up to 3 and you’ll hear before they charge.', button: { label: 'Pick 3', onPress: () => router.push('/settings/which') }, test: true };
   } else if (next) {
-    h = { icon: 'ok', title: 'All good', line: `Next one: ${next.name}, ${weekdayDate(toDateOnly(next.fireAt))} at ${shortTimeLabel(formatTime(next.fireAt.getHours(), next.fireAt.getMinutes()))}`, test: true };
+    h = { icon: 'ok', title: 'All good', line: `Next one: ${next.name}, ${weekdayDate(toDateOnly(next.fireAt)).replace(/ (\d+)$/, `${NB}$1`)} at${NB}${shortTimeLabel(formatTime(next.fireAt.getHours(), next.fireAt.getMinutes()))}`, test: true };
   } else {
     h = { icon: 'ok', title: 'All good', line: 'Nothing to remind you about yet. Add a next charge date to start.', test: true };
   }

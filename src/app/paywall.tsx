@@ -9,14 +9,15 @@
 // "$0.96 a week", saving vs Weekly), Lifetime ("Pay once.")
 // for people tired of subscriptions, Weekly with no trial. No monthly.
 // Layout (owner, Nov 18: "always fits, any screen"): like AllTrails, Smart Receipts, Quizlet and
-// Trade AI on Mobbin/AppKittie, the plans, button, price line and links are pinned to the bottom
-// and look the same on every phone. Above them scrolls the hero, the Free vs Pro table and "How
-// the free week works". That part is always taller than the space, so a bigger phone shows more
-// of it and a small one scrolls: never an empty gap.
+// Trade AI on Mobbin/AppKittie, the plans, button, price line and links sit at the bottom and look
+// the same on every phone. When everything fits (iPhone 12 to Pro Max at the normal text size) it's
+// one picture scaled to the phone's width. On a short phone (SE) or with big text, only the hero and
+// the Free vs Pro table get smaller or scroll; the bottom part never shrinks below its width-fit size,
+// so Restore, Terms and the renewal line are always on screen and readable.
 
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { Alert, Linking, Platform, Pressable, Text, View } from 'react-native';
+import { Alert, Linking, Platform, Pressable, ScrollView, Text, View } from 'react-native';
 
 import { WIDGET_READY, showBankScan, showImport } from '@/config/features';
 import { DEV_TOOLS } from '@/dev/flags';
@@ -29,7 +30,7 @@ import { OnbRoot } from '@/onboarding/Parts';
 import { PURCHASES_LIVE, billedLabel, planById, purchase, restorePurchases, type PlanId } from '@/services/purchases';
 import { onboardingToday, useOnboarding, usePickedList } from '@/state/onboarding';
 import { useApp } from '@/state/app';
-import { Button, Card, Check, Close, Duck, F, IconButton, PlanCard, ProLockup, Txt, brand, haptic, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
+import { Button, Card, Check, Close, Duck, F, PlanCard, ProLockup, Txt, brand, haptic, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
 
 const NB = ' ';
 
@@ -90,6 +91,21 @@ const CANVAS_BASE = 600;
 /** Table row height range: 52pt (SE) to 66pt (fewer rows get more air). Each row has a label and a line under it. */
 const ROW_MIN = 40;
 const ROW_MAX = 50;
+/** Short phone or big text: the hero and table shrink to fit, but never below this (labels stay ≥ 11pt). Under it they scroll. */
+const TOP_MIN_SCALE = 0.8;
+/** Space between the table and the plans when the bottom part is pinned on its own (fits the Pro column's 8pt overhang). */
+const TOP_GAP = 18;
+/** Space above the first plan card when the bottom part is pinned on its own. */
+const BOTTOM_PAD = 12;
+/** First guess of the bottom part's height (pad + plans + gap + button + price line + links), before it's measured. */
+const BOTTOM_EST = BOTTOM_PAD + 3 * 58 + 2 * 10 + 14 + 60 + 44 + 44;
+/** Smallest real tap target, in points (Apple HIG). */
+const MIN_TAP = 44;
+
+/** Extra touch area (in canvas units) so a `size`-tall target is at least 44pt on screen at this scale. */
+function slopFor(size: number, scale: number, base = 0): number {
+  return Math.max(base, Math.ceil((MIN_TAP / scale - size) / 2));
+}
 
 const CELL_TEXT = { fontFamily: F.semi, fontSize: 14, lineHeight: 20 } as const;
 const LABEL_TEXT = { fontFamily: F.medium, fontSize: 14, letterSpacing: -0.1 } as const;
@@ -197,12 +213,13 @@ function Compare({ rows, width, overlap, tiny, grow = 0 }: { rows: Row[]; width:
   );
 }
 
-function FootLink({ label, onPress }: { label: string; onPress: () => void }) {
+function FootLink({ label, onPress, hitSlop = 0 }: { label: string; onPress: () => void; hitSlop?: number }) {
   return (
     <Pressable
       accessibilityRole="link"
       accessibilityLabel={label}
       onPress={onPress}
+      hitSlop={hitSlop}
       style={({ pressed }) => ({ height: 44, minWidth: 44, paddingHorizontal: 4, alignItems: 'center', justifyContent: 'center', opacity: pressed ? 0.6 : 1 })}
     >
       <Txt v="sub" tone="fg2" style={{ textDecorationLine: 'underline' }}>
@@ -212,11 +229,31 @@ function FootLink({ label, onPress }: { label: string; onPress: () => void }) {
   );
 }
 
+/** The ×: looks exactly like IconButton (32pt circle in a 44pt box), with a touch area that stays ≥ 44pt after the canvas is scaled. */
+function CloseX({ label, onPress, scale, color, bg }: { label: string; onPress: () => void; scale: number; color: string; bg: string }) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      hitSlop={slopFor(MIN_TAP, scale, 6)}
+      onPress={onPress}
+      style={({ pressed }) => ({ width: MIN_TAP, height: MIN_TAP, alignItems: 'center', justifyContent: 'center', opacity: pressed ? 0.6 : 1, marginRight: -6 })}
+    >
+      <View style={{ width: 32, height: 32, borderRadius: 16, backgroundColor: bg, alignItems: 'center', justifyContent: 'center' }}>
+        <Close color={color} />
+      </View>
+    </Pressable>
+  );
+}
+
 export default function Paywall() {
   const dark = useIsDark();
   const f = useFrame({ maxContent: 440, colH: 740, extraBottom: 0 });
   const { setPro: setOnboardingPro } = useOnboarding();
   const app = useApp();
+  // Where it was opened from: 'app' (Settings, a PRO tag, the editor), 'which' (a 4th bell), 'remind'
+  // (custom reminder days), 'import'. Only changes words, never the flow.
+  const { from } = useLocalSearchParams<{ from?: string }>();
   // After onboarding (Settings, a PRO tag, the editor) vs. during onboarding. Decided by
   // whether onboarding is done, never by the link, so no link can rerun onboarding.
   const inApp = app.settings.onboardingDone;
@@ -224,15 +261,22 @@ export default function Paywall() {
   const n = inApp ? listedUserSubs(app.subs).length : pickedList.length;
   const many = n > 3;
   const [planId, setPlanId] = useState<PlanId>('yearly');
+  // Measured heights (canvas units) of the two halves, used only when they're laid out apart (short phone or big text).
+  const [topH, setTopH] = useState(0);
+  const [bottomH, setBottomH] = useState(BOTTOM_EST);
 
   const yearly = planById('yearly');
   const weekly = planById('weekly');
   const lifetime = planById('lifetime');
   const today = onboardingToday();
   const charge = addDays(today, yearly.trialDays);
+  // Lifetime includes one bank scan a year (DECISIONS #65), so say so once the scan is on the table.
+  const bank = showBankScan();
 
   // × is the free path: no purchase, reminders on the 3 biggest (picked on You're set).
   const leaveFree = () => (inApp ? router.back() : router.replace('/onboarding/done'));
+  // Only onboarding's × leads on to the free app; anywhere else it just closes.
+  const closeLabel = inApp || (from !== undefined && from !== 'import') ? 'Close' : 'Close, continue free';
   const activate = async (id: PlanId) => {
     if (inApp) {
       await app.setPro(id, { startTrial: id === 'yearly' });
@@ -274,6 +318,7 @@ export default function Paywall() {
   // A true comparison with the Weekly plan we sell: $6.99 × 52 = $363.48 vs $49.99 (rounded down).
   const badge = yearlyBadgeVsWeekly({ amountMinor: weekly.priceMinor, currency: weekly.currency }, { amountMinor: yearly.priceMinor, currency: yearly.currency }).toUpperCase();
 
+  // The same headline from onboarding, a 4th bell (from=which) or custom days (from=remind): "all N" once they track more than 3.
   const what = many ? `all ${n}${NB}renewals.` : `every${NB}renewal.`;
   const head = `Get a reminder before\n${what}`;
   const spokenHead = `Get a reminder before ${many ? `all ${n} renewals` : 'every renewal'}.`;
@@ -285,17 +330,158 @@ export default function Paywall() {
   // spare edge just continues the yellow (top) and cream (bottom) backgrounds.
   const availH = f.height - f.insets.top - f.insets.bottom;
   // Width decides the size, so every iPhone gets the same proportions; the table rows take up the small
-  // height differences (38-54pt each). Only a short, wide phone (SE) is shrunk a little more.
+  // height differences (40-50pt each).
   const byWidth = Math.min(1, f.width / CANVAS_W);
   const rowsMin = rows.length * ROW_MIN;
   const rowsMax = rows.length * ROW_MAX;
   const fitRows = Math.min(rowsMax, availH / byWidth - CANVAS_BASE);
-  const scale = fitRows < rowsMin ? Math.min(byWidth, availH / (CANVAS_BASE + rowsMin)) : byWidth;
+  // Too short for the whole picture at width-fit (SE: 647pt tall), or big text (Dynamic Type): split it.
+  // The bottom part (plans, button, price line, links) stays at width-fit size, pinned to the bottom; only
+  // the hero and table shrink (down to TOP_MIN_SCALE) and scroll past that.
+  const split = fitRows < rowsMin || f.fontScale > 1.15;
+  const scale = byWidth;
   const rowsH = Math.max(rowsMin, Math.min(rowsMax, availH / scale - CANVAS_BASE));
   const CANVAS_H = CANVAS_BASE + rowsH;
   const rowGrow = Math.floor(rowsH / rows.length) - ROW_MIN;
   const canvasTop = f.insets.top + (availH - CANVAS_H * scale) / 2;
   const yellowTo = canvasTop + HERO_H * scale;
+
+  // Split layout sizes (points on screen).
+  const bottomOnScreen = bottomH * scale;
+  const topRoom = availH - bottomOnScreen;
+  const topScale = !split || !topH ? scale : f.fontScale > 1.15 ? scale : Math.min(scale, Math.max(TOP_MIN_SCALE, topRoom / topH));
+  const topOnScreen = topH * topScale;
+
+  const hero = (s: number) => (
+    <View style={{ height: HERO_H, marginHorizontal: -EDGE_W, paddingHorizontal: EDGE_W }}>
+      <View style={{ height: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <ProLockup size={22} color={ink} />
+        <CloseX label={closeLabel} onPress={leaveFree} scale={s} color={ink} bg={dark ? '#3A3424' : 'rgba(22,20,15,0.12)'} />
+      </View>
+      <View style={{ height: 14 }} />
+      {/* Dark mode: night like the other yellow screens (Almost set, Ditched), with a sunflower headline. */}
+      <Txt
+        v="title"
+        color={dark ? brand.sunflower : ink}
+        accessibilityRole="header"
+        accessibilityLabel={spokenHead}
+        style={{ fontSize: 30, lineHeight: 36, letterSpacing: -1 }}
+        maxFontSizeMultiplier={1}
+      >
+        {head}
+      </Txt>
+      {/* He peeks out from behind the raised Pro column: the column hides his body, only his head shows. */}
+      <Duck width={70} right={EDGE_W + PRO_INSET + 8} bottom={42} />
+    </View>
+  );
+
+  // Plans, button, the renewal line and the links. Always drawn at the width-fit `scale`, never smaller.
+  const linkSlop = slopFor(44, scale);
+  const bottom = (
+    <>
+      <View accessibilityRole="radiogroup" accessibilityLabel="Plans" style={{ gap: 10 }}>
+        <PlanCard title="Weekly" price={billedLabel(weekly)} selected={planId === 'weekly'} onPress={() => select('weekly')} height={58} a11y={`Weekly, ${weekly.priceString} a week, no free trial`} />
+        <PlanCard
+          title="Yearly"
+          note={`Free for ${yearly.trialDays} days`}
+          noteStrong
+          badge={badge}
+          badgeBg={brand.sunflower}
+          badgeFg={brand.ink}
+          badgeRight
+          price={billedLabel(yearly)}
+          sub={`${perWeek} a week`}
+          selected={planId === 'yearly'}
+          onPress={() => select('yearly')}
+          height={58}
+          a11y={`Yearly, ${yearly.priceString} a year, ${perWeek} a week, ${yearly.trialDays} days free, ${badge.toLowerCase()}`}
+        />
+        <PlanCard
+          title="Lifetime"
+          note={bank ? 'Pay once. 1 bank scan a year.' : 'Pay once. No subscription.'}
+          price={lifetime.priceString}
+          sub="one time"
+          selected={planId === 'lifetime'}
+          onPress={() => select('lifetime')}
+          height={58}
+          a11y={`Lifetime, ${lifetime.priceString} one time. Pay once, ${bank ? 'includes 1 bank scan a year' : 'no subscription'}.`}
+        />
+      </View>
+
+      <View style={{ height: 14 }} />
+      <Button label={cta} sub={planId === 'yearly' ? `${formatWholeMoney(0, yearly.currency)} today · Cancel anytime` : undefined} onPress={buy} height={60} />
+      {/* A fixed slot, so the button never moves when the plan changes. Price and the real start date by the
+        button (App Review); no reminder text (owner, Nov 10). At least 13pt on screen at any scale. */}
+      <View style={{ minHeight: 44, alignItems: 'center', justifyContent: 'center', paddingHorizontal: planId === 'yearly' ? 0 : 4 }}>
+        <Txt v="fine" tone="fg2" num center accessibilityLiveRegion="polite" style={{ fontSize: 13 / scale, lineHeight: 16 / scale }}>
+          {planId === 'yearly'
+            ? `Then ${yearly.priceString}/yr from ${shortDate(charge).replace(' ', NB)}. Renews yearly until you${NB}cancel.`
+            : planId === 'weekly'
+              ? `${weekly.priceString} today, then every week until you${NB}cancel.`
+              : `${lifetime.priceString} once. Pro for good, nothing${NB}renews.`}
+        </Txt>
+      </View>
+      <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 4 }}>
+        <FootLink label="Restore" onPress={restore} hitSlop={linkSlop} />
+        <Txt v="sub" tone="fg2" importantForAccessibility="no">
+          ·
+        </Txt>
+        <FootLink label="Terms" onPress={() => Linking.openURL('https://ditchsubs.app/terms')} hitSlop={linkSlop} />
+        <Txt v="sub" tone="fg2" importantForAccessibility="no">
+          ·
+        </Txt>
+        <FootLink label="Privacy" onPress={() => Linking.openURL('https://ditchsubs.app/privacy')} hitSlop={linkSlop} />
+      </View>
+    </>
+  );
+
+  if (split) {
+    const yellow = dark ? brand.night : brand.sunflower;
+    return (
+      <OnbRoot surface="cream">
+        <View style={{ flex: 1, backgroundColor: dark ? brand.night : brand.cream }}>
+          <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingTop: f.insets.top }} alwaysBounceVertical={false} showsVerticalScrollIndicator>
+            {/* The yellow band moves with the hero (and fills the top bounce). */}
+            <View style={{ position: 'absolute', left: 0, right: 0, top: -1000, height: 1000 + f.insets.top + HERO_H * topScale, backgroundColor: yellow }} />
+            <View style={{ height: topOnScreen, opacity: topH ? 1 : 0 }}>
+              <View
+                onLayout={(e) => setTopH(e.nativeEvent.layout.height)}
+                style={{
+                  position: 'absolute',
+                  width: CANVAS_W,
+                  left: (f.width - CANVAS_W) / 2,
+                  top: (topOnScreen - topH) / 2,
+                  transform: [{ scale: topScale }],
+                  paddingHorizontal: EDGE_W,
+                  paddingBottom: TOP_GAP,
+                }}
+              >
+                {hero(topScale)}
+                <Compare rows={rows} width={CANVAS_W - EDGE_W * 2} overlap={40} />
+              </View>
+            </View>
+          </ScrollView>
+          <View style={{ height: bottomOnScreen, marginBottom: f.insets.bottom }}>
+            <View
+              onLayout={(e) => setBottomH(e.nativeEvent.layout.height)}
+              style={{
+                position: 'absolute',
+                width: CANVAS_W,
+                left: (f.width - CANVAS_W) / 2,
+                top: (bottomOnScreen - bottomH) / 2,
+                transform: [{ scale }],
+                paddingHorizontal: EDGE_W,
+                paddingTop: BOTTOM_PAD,
+              }}
+            >
+              {bottom}
+            </View>
+          </View>
+        </View>
+      </OnbRoot>
+    );
+  }
+
   return (
     <OnbRoot surface="cream">
       <View style={{ flex: 1, backgroundColor: dark ? brand.night : brand.cream }}>
@@ -311,92 +497,10 @@ export default function Paywall() {
             paddingHorizontal: EDGE_W,
           }}
         >
-          <View style={{ height: HERO_H, marginHorizontal: -EDGE_W, paddingHorizontal: EDGE_W }}>
-            <View style={{ height: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-              <ProLockup size={22} color={ink} />
-              <IconButton label="Close, continue free" onPress={leaveFree} size={32} bg={dark ? '#3A3424' : 'rgba(22,20,15,0.12)'} style={{ marginRight: -6 }}>
-                <Close color={ink} />
-              </IconButton>
-            </View>
-            <View style={{ height: 14 }} />
-            {/* Dark mode: night like the other yellow screens (Almost set, Ditched), with a sunflower headline. */}
-            <Txt
-              v="title"
-              color={dark ? brand.sunflower : ink}
-              accessibilityRole="header"
-              accessibilityLabel={spokenHead}
-              style={{ fontSize: 30, lineHeight: 36, letterSpacing: -1 }}
-              maxFontSizeMultiplier={1}
-            >
-              {head}
-            </Txt>
-            {/* He peeks out from behind the raised Pro column: the column hides his body, only his head shows. */}
-            <Duck width={70} right={EDGE_W + PRO_INSET + 8} bottom={42} />
-          </View>
-
+          {hero(scale)}
           <Compare rows={rows} width={CANVAS_W - EDGE_W * 2} overlap={40} grow={rowGrow} />
           <View style={{ flex: 1 }} />
-
-          <View accessibilityRole="radiogroup" accessibilityLabel="Plans" style={{ gap: 10 }}>
-            <PlanCard
-              title="Weekly"
-              price={billedLabel(weekly)}
-              selected={planId === 'weekly'}
-              onPress={() => select('weekly')}
-              height={58}
-              a11y={`Weekly, ${weekly.priceString} a week, no free trial`}
-            />
-            <PlanCard
-              title="Yearly"
-              note={`Free for ${yearly.trialDays} days`}
-              noteStrong
-              badge={badge}
-              badgeBg={brand.sunflower}
-              badgeFg={brand.ink}
-              badgeRight
-              price={billedLabel(yearly)}
-              sub={`${perWeek} a week`}
-              selected={planId === 'yearly'}
-              onPress={() => select('yearly')}
-              height={58}
-              a11y={`Yearly, ${yearly.priceString} a year, ${perWeek} a week, ${yearly.trialDays} days free, ${badge.toLowerCase()}`}
-            />
-            <PlanCard
-              title="Lifetime"
-              note="Pay once. No subscription."
-              price={lifetime.priceString}
-              sub="one time"
-              selected={planId === 'lifetime'}
-              onPress={() => select('lifetime')}
-              height={58}
-              a11y={`Lifetime, ${lifetime.priceString} one time. Pay once, no subscription.`}
-            />
-          </View>
-
-          <View style={{ height: 14 }} />
-          <Button label={cta} sub={planId === 'yearly' ? `${formatWholeMoney(0, yearly.currency)} today · Cancel anytime` : undefined} onPress={buy} height={60} />
-          {/* A fixed slot, so the button never moves when the plan changes. Price and the real start date by the
-            button (App Review); no reminder text (owner, Nov 10). */}
-          <View style={{ height: 44, alignItems: 'center', justifyContent: 'center', paddingHorizontal: planId === 'yearly' ? 0 : 4 }}>
-            <Txt v="fine" tone="fg2" num center accessibilityLiveRegion="polite">
-              {planId === 'yearly'
-                ? `Then ${yearly.priceString}/yr from ${shortDate(charge).replace(' ', NB)}. Renews${NB}yearly.`
-                : planId === 'weekly'
-                  ? `${weekly.priceString} today, then every week. Renews weekly. Cancel${NB}anytime.`
-                  : `${lifetime.priceString} once. Pro for good, nothing${NB}renews.`}
-            </Txt>
-          </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 4 }}>
-            <FootLink label="Restore" onPress={restore} />
-            <Txt v="sub" tone="fg2" importantForAccessibility="no">
-              ·
-            </Txt>
-            <FootLink label="Terms" onPress={() => Linking.openURL('https://ditchsubs.app/terms')} />
-            <Txt v="sub" tone="fg2" importantForAccessibility="no">
-              ·
-            </Txt>
-            <FootLink label="Privacy" onPress={() => Linking.openURL('https://ditchsubs.app/privacy')} />
-          </View>
+          {bottom}
         </View>
       </View>
     </OnbRoot>

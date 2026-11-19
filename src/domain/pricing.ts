@@ -1,6 +1,8 @@
 // Paywall price lines (docs/research/pricing-regional-and-plans.md).
 // Works on store prices in minor units plus a currency code, so it keeps
-// working when RevenueCat hands us live, local prices. Never a typed "$".
+// working when StoreKit 2 (DECISIONS #59) hands us live, local prices.
+// Current plans (DECISIONS #66): Weekly $6.99, Yearly $49.99 with a 7-day
+// trial, Lifetime $99.99. Never a typed "$".
 
 import { formatMoney } from './money';
 
@@ -9,8 +11,8 @@ export type StorePrice = { amountMinor: number; currency: string };
 /**
  * How much cheaper yearly is than 12 months of monthly, in whole percent,
  * rounded DOWN (49.9% → 49). Null when the currencies differ or yearly
- * isn't cheaper. Never use RevenueCat's relative_discount: it rounds to
- * nearest, which would claim 50%.
+ * isn't cheaper. Never round to nearest: that would claim 50%. (No monthly
+ * plan is sold now, DECISIONS #66; kept for the tests and regional pricing.)
  */
 export function yearlySavingsPercent(monthly: StorePrice, yearly: StorePrice): number | null {
   if (monthly.currency !== yearly.currency) return null;
@@ -47,7 +49,7 @@ export function perWeekFromYearly(yearly: StorePrice, locale = 'en-US'): string 
   return formatMoney(Math.round(yearly.amountMinor / 52), yearly.currency, { locale });
 }
 
-/** Yearly price per month, rounded UP to the currency's smallest unit: $29.99 → "$2.50". */
+/** Yearly price per month, rounded UP to the currency's smallest unit: $49.99 → "$4.17". */
 export function perMonthFromYearly(yearly: StorePrice, locale = 'en-US'): string {
   return formatMoney(Math.ceil(yearly.amountMinor / 12), yearly.currency, { locale });
 }

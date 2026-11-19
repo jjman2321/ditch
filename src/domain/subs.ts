@@ -162,6 +162,24 @@ export function homeTotals(subs: Sub[], today: DateOnly, home?: string): SpendTo
   return homeFirst(spendTotals(payingSubs(subs, today)), home);
 }
 
+/**
+ * What the subs with no date yet cost, per currency (the Year ahead leaves them out: no date, no month).
+ * Same rules as the Home total: paying ones only, never added across currencies. Zero totals are dropped.
+ */
+export function undatedTotals(subs: Sub[], today: DateOnly, home?: string): SpendTotal[] {
+  return homeFirst(spendTotals(payingSubs(subs, today).filter((s) => !hasDate(s))), home).filter((t) => t.yearlyMinor > 0);
+}
+
+/**
+ * The cheapest of a few subs (by monthly cost), e.g. the one to suggest ditching from an overlap.
+ * Only compares prices in one currency: mixed currencies, or no prices, give null.
+ */
+export function cheapestSub(subs: Sub[]): Sub | null {
+  const priced = subs.filter(isPricedSub);
+  if (!priced.length || new Set(priced.map((s) => s.currency)).size > 1) return null;
+  return priced.reduce((a, b) => (monthlyMinorExact(b.amountMinor, b.cycle) < monthlyMinorExact(a.amountMinor, a.cycle) ? b : a));
+}
+
 /** The user's own subs on the list (not Ditch's trial, not ditched). */
 export function listedUserSubs(subs: Sub[]): Sub[] {
   return subs.filter((s) => isActive(s) && !isProTrial(s));

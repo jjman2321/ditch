@@ -1,15 +1,17 @@
-// Purchases adapter. Milestone 2 swaps this for RevenueCat, which reads
+// Purchases adapter. Milestone 2 swaps this for StoreKit 2 directly
+// (DECISIONS #59, no RevenueCat; library candidate expo-iap), which reads
 // real localized prices from the App Store. Until then these are the
-// planned US prices, used only to lay out the paywall. Display code must
-// use priceString (the store's own text) and the minor-unit amounts, never
-// a typed "$".
+// planned US prices (DECISIONS #66: Weekly $6.99, Yearly $49.99 with a
+// 7-day trial, Lifetime $99.99), used only to lay out the paywall. Display
+// code must use priceString (the store's own text) and the minor-unit
+// amounts, never a typed "$".
 
 export type PlanId = 'yearly' | 'weekly' | 'lifetime';
 
 export type Plan = {
   id: PlanId;
   title: string;
-  priceString: string; // what the store says, e.g. "$29.99"
+  priceString: string; // what the store says, e.g. "$49.99"
   priceMinor: number;
   currency: string;
   period: 'year' | 'week' | 'once';
@@ -36,7 +38,7 @@ export function billedLabel(plan: Plan): string {
 
 export type PurchaseResult = { status: 'purchased' | 'cancelled' | 'unavailable' };
 
-/** Stub until RevenueCat: nothing is ever charged. */
+/** Stub until StoreKit 2 (DECISIONS #59): nothing is ever charged. */
 export async function purchase(_plan: PlanId): Promise<PurchaseResult> {
   return { status: PURCHASES_LIVE ? 'cancelled' : 'unavailable' };
 }

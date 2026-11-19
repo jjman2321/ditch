@@ -1,14 +1,17 @@
 // Remind me: how many days before a charge. Free keeps 3 days and 1 day;
 // the other choices come with Pro. Plain words on the control, "heads-up"
-// only in the voice (docs/research/settings.md).
+// only in the voice (docs/research/settings.md). The time in the intro is
+// tappable: it opens the same time control as Settings → Time.
 
 import { router } from 'expo-router';
+import { useState } from 'react';
 import { AccessibilityInfo, Pressable, View } from 'react-native';
 
 import { LEAD_CHOICES, cleanLeads, effectiveLeads, leadWord, shortTimeLabel, timeLabel } from '@/domain/settings';
-import { Group, SettingsPage } from '@/settings/Parts';
+import { Group, Row, SettingsPage } from '@/settings/Parts';
+import { TimeField } from '@/settings/TimeField';
 import { useApp } from '@/state/app';
-import { Check, NotificationPreview, Tag, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
+import { Check, F, NotificationPreview, Tag, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
 
 export default function RemindMe() {
   const p = usePalette();
@@ -16,6 +19,13 @@ export default function RemindMe() {
   const { settings, pro, plan } = app;
   const leads = effectiveLeads(settings, pro);
   const example = plan.find((r) => r.kind === 'heads-up')?.body ?? 'Netflix renews Saturday. $17.99. Still watching?';
+  const [timeOpen, setTimeOpen] = useState(false);
+  const time = shortTimeLabel(settings.reminderTime);
+  const openTime = () => {
+    haptic.select();
+    setTimeOpen(true);
+    AccessibilityInfo.announceForAccessibility('Reminder time is below. Change it there.');
+  };
 
   const toggle = (d: number) => {
     if (!pro) {
@@ -34,7 +44,28 @@ export default function RemindMe() {
   };
 
   return (
-    <SettingsPage title="Remind me" intro={`When should Ditch remind you? Reminders land at ${shortTimeLabel(settings.reminderTime)}.`}>
+    <SettingsPage title="Remind me">
+      {/* Same look as the page intro; the whole sentence is the tap target (≥ 44pt), the time is underlined. */}
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`When should Ditch remind you? Reminders land at ${time}.`}
+        accessibilityHint="Change the reminder time"
+        onPress={openTime}
+        style={({ pressed }) => ({ marginTop: 8, minHeight: 44, opacity: pressed ? 0.6 : 1 })}
+      >
+        <Txt v="leadS" tone="fg2">
+          When should Ditch remind you? Reminders land at{' '}
+          <Txt v="leadS" tone="fg2" style={{ fontFamily: F.semi, textDecorationLine: 'underline' }}>
+            {time}
+          </Txt>
+          .
+        </Txt>
+      </Pressable>
+      {timeOpen ? (
+        <Group style={{ marginTop: 14 }}>
+          <Row label="Time" right={<TimeField value={settings.reminderTime} onChange={(t) => app.updateSettings({ reminderTime: t })} />} a11yValue={`, ${time}`} />
+        </Group>
+      ) : null}
       <View style={{ marginTop: 18 }}>
         <NotificationPreview time={timeLabel(settings.reminderTime)} message={example} />
       </View>

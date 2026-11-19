@@ -32,6 +32,8 @@ import {
   yearAhead,
   beforePayday,
   nextPayday,
+  undatedTotals,
+  cheapestSub,
 } from '../subs';
 
 const TODAY = '2026-11-09'; // a Monday, like the renders
@@ -403,5 +405,52 @@ describe('CSV safety (audit, Nov 16)', () => {
     const csv = toCsv([s], TODAY, currencyDigits);
     expect(csv).toContain(`"'=HYPERLINK(""http://x"")"`);
     expect(csv).toContain('"line1\rline2"');
+  });
+});
+
+describe('Subs with no date yet, for the Year ahead (audit, Nov 19)', () => {
+  const sub = (name: string, amountMinor: number | null, currency: string | null, extra: Partial<Sub> = {}) =>
+    makeSub({ name, amountMinor, currency, cycle: 'monthly', anchor: TODAY, dateSource: 'none', ...extra });
+  it('adds the undated ones per currency: Disney+ $11.99 + Prime $14.99 = $26.98 a month', () => {
+    const t = undatedTotals(demo(), TODAY, 'USD');
+    expect(t).toHaveLength(1);
+    expect(t[0].currency).toBe('USD');
+    expect(t[0].yearlyMinor).toBe(2698 * 12);
+    expect(t[0].monthlyMinor).toBe(2698);
+  });
+  it('never adds currencies together, home currency first', () => {
+    const t = undatedTotals([sub('A', 1000, 'USD'), sub('B', 500, 'GBP'), sub('C', 250, 'GBP')], TODAY, 'GBP');
+    expect(t.map((x) => [x.currency, x.monthlyMinor])).toEqual([
+      ['GBP', 750],
+      ['USD', 1000],
+    ]);
+  });
+  it('leaves out dated, unpriced, ditched and trial ones', () => {
+    const list = [
+      sub('Dated', 1000, 'USD', { dateSource: 'next' }),
+      sub('No price', null, null),
+      sub('Ditched', 1000, 'USD', { status: 'ditched-pending' }),
+      sub('Trial', 1000, 'USD', { isTrial: true }),
+    ];
+    expect(undatedTotals(list, TODAY)).toEqual([]);
+  });
+  it('yearly ones count as their monthly share ($120 a year is $10 a month)', () => {
+    const t = undatedTotals([sub('Y', 12000, 'USD', { cycle: 'yearly' })], TODAY);
+    expect(t[0].monthlyMinor).toBe(1000);
+  });
+});
+
+describe('Cheapest of an overlap (audit, Nov 19)', () => {
+  const sub = (name: string, amountMinor: number | null, currency: string | null, cycle: Sub['cycle'] = 'monthly') => makeSub({ name, amountMinor, currency, cycle, anchor: TODAY });
+  it('picks the lower monthly cost', () => {
+    expect(cheapestSub([sub('Spotify', 1199, 'USD'), sub('Apple Music', 1099, 'USD')])?.name).toBe('Apple Music');
+  });
+  it('compares yearly plans by their monthly share', () => {
+    expect(cheapestSub([sub('Monthly', 1000, 'USD'), sub('Yearly', 10800, 'USD', 'yearly')])?.name).toBe('Yearly');
+  });
+  it('ignores unpriced ones and never compares across currencies', () => {
+    expect(cheapestSub([sub('A', null, null), sub('B', 500, 'USD')])?.name).toBe('B');
+    expect(cheapestSub([sub('A', 1000, 'USD'), sub('B', 500, 'GBP')])).toBeNull();
+    expect(cheapestSub([sub('A', null, null)])).toBeNull();
   });
 });

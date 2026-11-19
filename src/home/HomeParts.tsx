@@ -46,7 +46,7 @@ export function TotalCard({
     ? `+ ${trials.count} ${trials.count === 1 ? 'trial' : 'trials'}${trials.monthly.length === 1 ? `, then ${money(trials.monthly[0].monthlyMinor, trials.monthly[0].currency)} a month` : ''}`
     : null;
   const a11y = first
-    ? `${money(first.monthlyMinor, first.currency)} a month, ${money(first.yearlyMinor, first.currency, { whole: true })} a year. ${rest.map((t) => `Plus ${money(t.monthlyMinor, t.currency)} a month.`).join(' ')}${approx ? ` ${approx.spoken}` : ''} ${trialLine ? ` ${trialLine}.` : ''} ${blocked ? 'Reminders are off.' : `Reminders on ${reminders}.`}`
+    ? `${money(first.monthlyMinor, first.currency)} a month, ${money(first.yearlyMinor, first.currency, { whole: true })} a year. ${rest.map((t) => `And ${money(t.monthlyMinor, t.currency)} a month, kept separate.`).join(' ')}${approx ? ` ${approx.spoken}` : ''} ${trialLine ? ` ${trialLine}.` : ''} ${blocked ? 'Reminders are off.' : `Reminders on ${reminders}.`}`
     : `${trialLine ? `Nothing charging yet. ${trialLine}.` : 'No prices yet.'}`;
   return (
     <View
@@ -99,10 +99,10 @@ export function TotalCard({
           </Txt>
         )}
       </View>
-      {/* Other currencies after the first one's year, so each total reads in order (never added together). */}
+      {/* Other currencies after the first one's year, each on its own line with no "+": they are never added together. */}
       {rest.map((t) => (
         <Txt key={t.currency} v="label" num color={fg} style={{ marginTop: 4 }}>
-          + {money(t.monthlyMinor, t.currency)} a month · {money(t.yearlyMinor, t.currency, { whole: true })} a year
+          {money(t.monthlyMinor, t.currency)} a month · {money(t.yearlyMinor, t.currency, { whole: true })} a year
         </Txt>
       ))}
       {approx ? (
@@ -321,14 +321,16 @@ export function EmptyHome({ country, onAdd }: { country: string | null; onAdd: (
 /**
  * "Netflix is on your list twice" / "2 music services" (DECISIONS #60). Free. A nudge toward the
  * ditch moment, never a scold: it states what they pay together and lets them decide.
+ * "Pick one to ditch" opens the cheaper one (its sheet has the Ditch button; they can still pick the other).
  * "Got it" hides it until the set changes.
  */
-export function OverlapCard({ overlap, money, onDismiss }: { overlap: Overlap; money: (minor: number, currency: string) => string; onDismiss: () => void }) {
+export function OverlapCard({ overlap, money, onDismiss, onPick }: { overlap: Overlap; money: (minor: number, currency: string) => string; onDismiss: () => void; onPick: () => void }) {
   const p = usePalette();
   const names = overlap.subs.map((s) => s.name);
   const listed = names.length > 2 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names.join(' and ');
   const title = overlap.kind === 'twice' ? `${overlap.label} is on your list ${overlap.subs.length === 2 ? 'twice' : `${overlap.subs.length} times`}.` : `${overlap.subs.length} ${overlap.label}: ${listed}.`;
-  const together = overlap.totals.map((t) => money(Math.round(t.monthlyMinor), t.currency)).join(' + ');
+  // Mixed currencies stay apart (rule 1): "£11.99 · US$10.99 a month together", never with a "+".
+  const together = overlap.totals.map((t) => money(Math.round(t.monthlyMinor), t.currency)).join(' · ');
   const line = together ? `${together} a month together.${overlap.kind === 'twice' ? ' Same account twice, or one to ditch?' : ''}` : overlap.kind === 'twice' ? 'Same account twice, or one to ditch?' : '';
   return (
     <Card style={{ borderRadius: 16, paddingHorizontal: 14, paddingTop: 12, paddingBottom: 6 }}>
@@ -342,7 +344,8 @@ export function OverlapCard({ overlap, money, onDismiss }: { overlap: Overlap; m
           </Txt>
         ) : null}
       </View>
-      <Pressable accessibilityRole="button" accessibilityLabel="Got it" accessibilityHint="Hides this until the list changes" onPress={onDismiss} hitSlop={8} style={{ alignSelf: 'flex-start', minHeight: 44, justifyContent: 'center' }}>
+      <Button label="Pick one to ditch" hint="Opens the cheaper one" onPress={onPick} height={48} style={{ marginTop: 10 }} />
+      <Pressable accessibilityRole="button" accessibilityLabel="Got it" accessibilityHint="Hides this until the list changes" onPress={onDismiss} hitSlop={8} style={{ alignSelf: 'center', minHeight: 44, justifyContent: 'center' }}>
         <Txt v="label" color={p.cardFg} style={{ fontSize: 15, textDecorationLine: 'underline' }}>
           Got it
         </Txt>

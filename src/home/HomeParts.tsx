@@ -377,30 +377,36 @@ export function OverlapCard({ overlap, money, onDismiss, onPick }: { overlap: Ov
     overlap.kind === 'twice'
       ? `${overlap.label} is on your list ${n === 2 ? 'twice' : `${n} times`}.${spokenTogether ? ` ${spokenTogether} a month together.` : ''}`
       : `${n} ${overlap.label}: ${listed}.${spokenTogether ? ` ${spokenTogether} a month together.` : ''}`;
+  // Small phones: a touch smaller so "2 music services · $22.98/mo  Pick one ›" stays on one line.
+  const fs = useWindowDimensions().width < 380 ? 14 : 14.5;
   return (
     <Card style={{ minHeight: 48, borderRadius: 16, flexDirection: 'row', alignItems: 'center', paddingLeft: 14 }}>
       <Pressable accessibilityRole="button" accessibilityLabel={`${spoken} Pick one to ditch`} accessibilityHint="Opens the cheaper one" onPress={onPick} style={{ flex: 1, minWidth: 0 }}>
         {({ pressed }) => (
-          <View style={{ minHeight: 48, flexDirection: 'row', alignItems: 'center', gap: 4, paddingVertical: 8, opacity: pressed ? 0.7 : 1 }}>
-            <Txt v="body" color={p.cardFg} num style={{ flexShrink: 1, fontSize: 15 }}>
-              <Txt v="body" color={p.cardFg} style={{ fontFamily: F.bold, fontSize: 15 }}>
+          <View style={{ minHeight: 48, flexDirection: 'row', alignItems: 'center', gap: 6, paddingVertical: 8, opacity: pressed ? 0.7 : 1 }}>
+            <Txt v="body" color={p.cardFg} num style={{ flex: 1, fontSize: fs }}>
+              <Txt v="body" color={p.cardFg} style={{ fontFamily: F.bold, fontSize: fs }}>
                 {what}
               </Txt>
-              {together ? ` · ${together} · ` : ' · '}
-              <Txt v="body" color={p.cardFg} style={{ fontFamily: F.bold, fontSize: 15 }}>
-                {'Pick\u00A0one'}
-              </Txt>
+              {together ? ` · ${together}` : ''}
             </Txt>
-            <ChevronRight color={p.cardFg} size={14} />
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+              <Txt v="body" color={p.cardFg} style={{ fontFamily: F.bold, fontSize: fs }}>
+                Pick one
+              </Txt>
+              <ChevronRight color={p.cardFg} size={14} />
+            </View>
           </View>
         )}
       </Pressable>
+      {/* 28pt wide, plus 8pt of hit slop each side: a 44pt target that leaves the line room. */}
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Hide this"
         accessibilityHint="Hides this until the list changes"
         onPress={onDismiss}
-        style={({ pressed }) => ({ width: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center', opacity: pressed ? 0.6 : 1 })}
+        hitSlop={8}
+        style={({ pressed }) => ({ width: 28, minHeight: 44, marginRight: 4, alignItems: 'center', justifyContent: 'center', opacity: pressed ? 0.6 : 1 })}
       >
         <Close color={p.mute} size={12} />
       </Pressable>

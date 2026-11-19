@@ -5,9 +5,10 @@
 import { addDays, type DateOnly } from '@/domain/dates';
 import type { Settings } from '@/domain/settings';
 import { makeSub, type Sub } from '@/domain/subs';
+import { SERVICES } from '@/catalog/services';
 import { proTrialSub } from '@/state/fromOnboarding';
 
-export type DemoName = 'demo' | 'pro' | 'off' | 'ditched' | 'empty' | 'onboarding' | 'mixed' | 'overlap';
+export type DemoName = 'demo' | 'pro' | 'off' | 'ditched' | 'empty' | 'onboarding' | 'mixed' | 'overlap' | `n${number}`;
 
 const NOW = '2026-11-09T09:41:00.000Z';
 
@@ -46,6 +47,7 @@ function cancelled(id: string, name: string, catalogId: string, monthly: number,
 
 export function demoData(name: DemoName, today: DateOnly): { subs: Sub[]; settings: Partial<Settings> } {
   if (name === 'onboarding') return { subs: [], settings: {} };
+  if (/^n\d+$/.test(name)) return countData(Number(name.slice(1)), today);
   const settings: Partial<Settings> = { onboardingDone: true, country: 'US', currency: 'USD', holdHintDone: name !== 'pro' };
   if (name === 'empty') return { subs: [], settings };
   const d = (n: number) => addDays(today, n);
@@ -86,4 +88,25 @@ export function demoData(name: DemoName, today: DateOnly): { subs: Sub[]; settin
     list[0] = { ...n, status: 'ditched-pending', ditchedOn: today, snapAmountMinor: n.amountMinor, snapCurrency: 'USD', snapCycle: 'monthly' };
   }
   return { subs: list, settings };
+}
+
+// ---------- State screenshots: ?seed=n0, n1, n3, n20, n60 (owner, Nov 19, plan item 22) ----------
+
+/**
+ * `count` active subscriptions from the catalog, most popular first, with mixed prices,
+ * cycles and dates (a few with no date), so every screen can be checked from empty to a long list.
+ */
+function countData(count: number, today: DateOnly): { subs: Sub[]; settings: Partial<Settings> } {
+  const settings: Partial<Settings> = { onboardingDone: true, country: 'US', currency: 'USD', holdHintDone: true };
+  const pool = [...SERVICES].sort((a, b) => (a.rank ?? 999) - (b.rank ?? 999));
+  const cycles = ['monthly', 'monthly', 'monthly', 'yearly', 'monthly', 'weekly', 'monthly', 'quarterly'] as const;
+  const subs = pool.slice(0, count).map((x, i) => {
+    const cycle = cycles[i % cycles.length];
+    const base = [1799, 1199, 2000, 999, 1499, 699, 2999, 499][i % 8];
+    const amountMinor = cycle === 'yearly' ? base * 10 : cycle === 'weekly' ? Math.round(base / 4) : cycle === 'quarterly' ? base * 3 : base;
+    // Every 7th has no date yet; the rest spread over the next 5 weeks.
+    const extra: Partial<Sub> = { cycle, freePick: i < 3, ...(i % 7 === 6 ? { dateSource: 'none' as const } : {}) };
+    return sub(`n${i}`, x.name, x.id, x.category, amountMinor, addDays(today, (i * 5) % 35), extra);
+  });
+  return { subs, settings: { ...settings, payday: count >= 3 ? 25 : null } };
 }

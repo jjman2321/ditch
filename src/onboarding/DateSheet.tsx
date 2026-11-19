@@ -8,27 +8,13 @@ import { Pressable, View } from 'react-native';
 
 import { HEADS_UP_LEADS, nextFromLastCharge, previousCharge } from '@/domain/charges';
 import { addDays, longDate, monthGrid, monthTitle, parseDate, shiftMonth, shortDate, toDateOnly, weekdayDate, type DateOnly } from '@/domain/dates';
+import { chargesSoonLine } from '@/domain/copy';
 import { type Cycle } from '@/domain/money';
 import { reminderDaysFor } from '@/domain/reminders';
 import { now as clockNow } from '@/services/clock';
 import { usePickPrice, type Picked } from '@/state/onboarding';
 import { chooseCycle, cycleChoices } from '@/state/picks';
-import {
-  Bell,
-  Button,
-  Card,
-  CardIcon,
-  ChevronLeft,
-  ChevronRight,
-  F,
-  IconButton,
-  LogoTile,
-  Segmented,
-  Txt,
-  brand,
-  haptic,
-  usePalette,
-} from '@/ui/sunflower';
+import { Bell, Button, Card, CardIcon, ChevronLeft, ChevronRight, F, IconButton, LogoTile, Segmented, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
 
 type Mode = 'next' | 'receipt';
 const WEEKDAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
@@ -36,7 +22,11 @@ const WEEKDAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', '
 const EVERY: Record<Cycle, string> = { weekly: 'every week', biweekly: 'every 2 weeks', monthly: 'every month', quarterly: 'every 3 months', semiannual: 'every 6 months', yearly: 'every year' };
 
 function B({ children }: { children: string }) {
-  return <Txt v="body" style={{ fontFamily: F.bold, fontSize: 14 }}>{children}</Txt>;
+  return (
+    <Txt v="body" style={{ fontFamily: F.bold, fontSize: 14 }}>
+      {children}
+    </Txt>
+  );
 }
 
 export function DateBody({
@@ -123,18 +113,18 @@ export function DateBody({
           </Txt>
         </View>
         {cycles.length > 1 ? (
-        <Segmented
-          label="How often it charges"
-          value={cycle === 'monthly' || cycle === 'yearly' ? cycle : null}
-          onChange={(c: 'monthly' | 'yearly') => setCycle(c)}
-          options={[
-            { value: 'monthly', label: 'Monthly' },
-            { value: 'yearly', label: 'Yearly' },
-          ]}
-          height={36}
-          fontSize={13.5}
-          style={{ width: 150 }}
-        />
+          <Segmented
+            label="How often it charges"
+            value={cycle === 'monthly' || cycle === 'yearly' ? cycle : null}
+            onChange={(c: 'monthly' | 'yearly') => setCycle(c)}
+            options={[
+              { value: 'monthly', label: 'Monthly' },
+              { value: 'yearly', label: 'Yearly' },
+            ]}
+            height={36}
+            fontSize={13.5}
+            style={{ width: 150 }}
+          />
         ) : null}
       </View>
 
@@ -211,13 +201,7 @@ export function DateBody({
                     borderColor: brand.ink,
                   }}
                 >
-                  <Txt
-                    v="label"
-                    num
-                    color={on ? brand.ink : disabled ? p.disabledFg : p.fg}
-                    style={{ fontFamily: on ? F.heavy : F.semi, fontSize: 16 }}
-                    maxFontSizeMultiplier={1.2}
-                  >
+                  <Txt v="label" num color={on ? brand.ink : disabled ? p.disabledFg : p.fg} style={{ fontFamily: on ? F.heavy : F.semi, fontSize: 16 }} maxFontSizeMultiplier={1.2}>
                     {parseDate(d).d}
                   </Txt>
                   {isToday && !on ? <View style={{ position: 'absolute', bottom: 4, width: 4, height: 4, borderRadius: 2, backgroundColor: p.fg }} /> : null}
@@ -259,7 +243,8 @@ export function DateBody({
                     Reminder <B>{weekdayDate(heads[0])}</B>
                   </>
                 ) : (
-                  trial ? 'Too close for a reminder. Cancel it today if you don’t want it.' : 'Too close for a reminder this time. The next one gets them.'
+                  // Plain words (owner, Nov 19), never "too close".
+                  `${chargesSoonLine(next, today)}${trial ? '. Cancel it today if you don’t want it.' : ', so no reminder this time.'}`
                 )}
               </Txt>
             </View>

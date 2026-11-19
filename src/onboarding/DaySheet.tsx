@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { HEADS_UP_LEADS, chargeFrom, ordinal } from '@/domain/charges';
-import { shortPlanName } from '@/domain/copy';
+import { chargesSoonLine, shortPlanName } from '@/domain/copy';
 import { paidToday } from '@/domain/paidToday';
 import { reminderDaysFor } from '@/domain/reminders';
 import {
@@ -45,14 +45,15 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
  */
 export function remindersLine(
   next: DateOnly,
-  _today: DateOnly,
+  today: DateOnly,
   leads: readonly number[],
   time: string,
   { reminderTime = '09:00', now = clockNow(), off }: { reminderTime?: string; now?: Date; off?: string } = {},
 ): string {
   if (off) return off;
   const heads = reminderDaysFor(next, now, leads, reminderTime);
-  if (heads.length === 0) return 'Too close for a reminder this time. The next one gets them.';
+  // Plain words (owner, Nov 19): "Charges tomorrow, so no reminder this time."
+  if (heads.length === 0) return `${chargesSoonLine(next, today)}, so no reminder this time.`;
   if (heads.length === 1) return `Reminder ${weekdayDate(heads[0])} at ${time}.`;
   return `Reminders ${heads.slice(0, -1).map(weekdayDate).join(', ')} and ${weekdayDate(heads[heads.length - 1])} at ${time}.`;
 }

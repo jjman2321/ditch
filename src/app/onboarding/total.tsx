@@ -144,8 +144,8 @@ export default function Total() {
   const pullBottom = Math.round(size * 0.18);
   const heroStyle = { fontFamily: F.display, fontSize: size, letterSpacing: -0.045 * size, color: p.money };
 
-  // How many rows fit before "N more · Show all": 4 on iPhone 12 and up, 3 on smaller, 2 on SE, all on iPad.
-  const shown = showAll || f.tablet ? sorted.length : f.tiny ? 1 : f.small ? 2 : f.height >= 800 ? 4 : 3;
+  // How many rows fit before "N more · Show all": 4 on iPhone 12 and up, 3 on smaller and the SE (2 left ~110pt empty, Nov 19), 1 at 320pt, all on iPad.
+  const shown = showAll || f.tablet ? sorted.length : f.tiny ? 1 : f.small ? 3 : f.height >= 800 ? 4 : 3;
   const rows = sorted.slice(0, shown);
   const rest = sorted.slice(shown);
   const rest1 = rest.length === 1 ? rest : [];

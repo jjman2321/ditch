@@ -115,10 +115,10 @@ export function cleanMerchant(raw: string): string {
   return s.split(' ').slice(0, 3).join(' ');
 }
 
-const isApple = (clean: string) => /^APPLE\.?COM|^APPLE COM|^ITUNES/.test(clean);
+export const isApple = (clean: string) => /^APPLE\.?COM|^APPLE COM|^ITUNES/.test(clean);
 
 /** One key per merchant, so "NETFLIX.COM" and "NETFLIX.COM LOS GATOS" group together. */
-function groupKey(clean: string): string {
+export function groupKey(clean: string): string {
   const svc = matchMerchant(clean);
   if (svc) return `svc:${svc.id}`;
   return clean.toLowerCase().replace(/[^a-z0-9 ]/g, '').split(' ').slice(0, 2).join(' ');

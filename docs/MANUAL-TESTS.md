@@ -86,6 +86,18 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
+## 1v. Owner notes round 2 (Nov 19, design/v35 boards)
+- [ ] **Where should we look?** Four equal cards in this order: My bank or card (7 DAYS FREE, US/Canada test builds only), Apple subscriptions (FIRST ONE FREE), A bank statement (FIRST ONE FREE), Pick them myself.
+- [ ] **Pick a day:** open a sub with no date. Today's day is already picked and the yellow box says the next charge is one month (or one cycle) from today. Save works straight away. Tap another day and the box updates. "Paid it today" is gone.
+- [ ] **Your total:** the big number is never cut off at the top, including after the count-up lands. Try with Settings → Display & Brightness → Text Size at its largest.
+- [ ] **Reminders step:** the top card lands, then the one below it, then the duck rises. The date at the top and the card labels never change while it plays.
+- [ ] **Calendar:** each day shows one logo. Days with more show a small "+2" badge on the logo's corner. Add 10–12 subs (or more) and check nothing overlaps or spills out of a day.
+- [ ] **Ditch something:** the screen is left-aligned. The card (logo greys, straight DITCHED tag, duck pops up), "You won't pay $X a year, once you cancel.", one line "Last check …", then the two buttons. No account line, no running total.
+- [ ] **Ditched tab:** the DITCHED tag is straight, not tilted.
+- [ ] **Find → statement:** pick Most banks / Apple Card / PayPal at the top. The phone picture and the 3 steps change to match. No arrow chains anywhere.
+- [ ] **Find → Apple list:** a picture of the Subscriptions list, then 3 steps with the button names in bold.
+- [ ] **You're set / Almost set:** the checklist sits in one white card. The first row shows 3 of your logos.
+
 ## 1u. Calendar, Ditched tab and Ditched screen layout fixes (Nov 19)
 Best on the smallest phone you have (SE or mini) and a big one if you can borrow it.
 - [ ] Calendar: the month total sits on its own line and "due in November · 2 charges" is one line under it. Flip through 4–5 months, including one over $100: the grid never moves up or down.

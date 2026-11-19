@@ -22,8 +22,9 @@ export default function DitchedTab() {
   const p = usePalette();
   const insets = useInsets();
   const edge = usePageEdge();
+  const { width, fontScale } = useWindowDimensions();
   // SE and mini (375pt): the two buttons get their own full-width row under the name, so the full labels fit.
-  const narrow = useWindowDimensions().width < 380;
+  const narrow = width < 380;
   const app = useApp();
   const money = useAppMoney();
   const help = useCancelHelp();
@@ -42,6 +43,8 @@ export default function DitchedTab() {
   const steps = main ? savingsSteps(app.subs, main.currency) : [];
   const since = confirmed.length ? confirmed[confirmed.length - 1].confirmedOn : null;
   const sinceWord = since ? sinceLabel(since, app.today) : '';
+  // "From 3 subs you cancelled since June · $35.93 a month" needs about 440pt at 16pt text; the hero card has 20pt sides.
+  const oneLine = (width - edge * 2 - 40) / Math.max(1, fontScale) >= 440;
 
   const reactivate = (s: Sub) =>
     ask(`Still paying for ${s.name}?`, 'Put it back on your list, or back with the ones waiting for you to cancel.', [
@@ -72,7 +75,8 @@ export default function DitchedTab() {
 
   return (
     <View style={{ flex: 1, backgroundColor: p.bg }}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: insets.top + 8, paddingHorizontal: edge, paddingBottom: 28 }} showsVerticalScrollIndicator={false}>
+      {/* The tab bar sits below this screen, not over it, so 16pt here is the tab bar's height + 16 from the bottom of the phone. */}
+      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: insets.top + 8, paddingHorizontal: edge, paddingBottom: 16 }} showsVerticalScrollIndicator={false}>
         <Txt v="displayM" accessibilityRole="header" style={{ fontSize: 32, lineHeight: 40 }}>
           Ditched
         </Txt>
@@ -149,7 +153,10 @@ export default function DitchedTab() {
                     </Txt>
                   ))}
                   <Txt v="leadS" num color={p.dark ? p.fg2 : '#4B4220'} style={{ marginTop: 6 }}>
-                    From {main.count} {main.count === 1 ? 'sub' : 'subs'} you cancelled{sinceWord ? ` since ${sinceWord}` : ''} · {money(main.monthlyMinor, main.currency)} a month
+                    {/* Too narrow for one line (every phone): the monthly gets its own line, no dot. Wide (iPad): one line,
+                        with the dot glued to the word before it so a dot never starts a line. */}
+                    {`From ${main.count} ${main.count === 1 ? 'sub' : 'subs'} you cancelled${sinceWord ? ` since ${sinceWord}` : ''}`}
+                    {oneLine ? `\u00A0· ${`${money(main.monthlyMinor, main.currency)} a month`.replace(/ /g, '\u00A0')}` : `\n${money(main.monthlyMinor, main.currency)} a month`}
                   </Txt>
                 </>
               ) : confirmed.length ? (
@@ -283,7 +290,8 @@ export default function DitchedTab() {
           </>
         )}
       </ScrollView>
-      <BottomFade />
+      {/* As tall as the bottom padding, so the last line is never faded once you reach the end. */}
+      <BottomFade height={16} />
       {help.sheet}
     </View>
   );

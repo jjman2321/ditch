@@ -1,5 +1,5 @@
 // 13 · Ditched. "You won't pay $X a year" counts only cancels the user
-// confirmed (Ditch can't see the bank). Ditched-but-not-cancelled ones wait
+// confirmed (marked as cancelled). Ditched-but-not-cancelled ones wait
 // at the top with "I cancelled it". Rewards are real money only (DECISIONS #13).
 
 import { Image } from 'expo-image';
@@ -8,7 +8,7 @@ import { useMemo } from 'react';
 import { Pressable, ScrollView, View, useWindowDimensions } from 'react-native';
 
 import { MONTH_LONG, parseDate, shortDate, weekdayDate } from '@/domain/dates';
-import { CYCLE_WORDS } from '@/domain/money';
+import { CYCLE_SHORT, CYCLE_WORDS } from '@/domain/money';
 import { chargeOfSub, confirmedSavings, isConfirmed, isPending, isPricedSub, pendingSavings, savingsSteps, snapYearly, type Sub } from '@/domain/subs';
 import { useCancelHelp } from '@/ditch/CancelHelp';
 import { StepChart } from '@/ditched/StepChart';
@@ -114,7 +114,7 @@ export default function DitchedTab() {
               Nothing ditched yet.
             </Txt>
             <Txt v="leadS" tone="fg2" center style={{ marginTop: 8, maxWidth: 300 }}>
-              Hold a subscription on Home to ditch it. What you stop paying adds up here.
+              Press and hold a subscription on Home to ditch it. What you stop paying adds up here.
             </Txt>
             <Button label="Go to my list" onPress={() => router.navigate('/')} style={{ marginTop: 24, width: '100%', maxWidth: 320 }} />
           </View>
@@ -187,7 +187,8 @@ export default function DitchedTab() {
               <>
                 <SectionHeader
                   title="To cancel"
-                  right={waiting[0] ? `${money(waiting[0].yearlyMinor, waiting[0].currency, { whole: true })} a year still to go` : undefined}
+                  // Cents, like the Ditched screen it came from ($17.99 a month is $215.88 a year there, not $216).
+                  right={waiting[0] ? `${money(waiting[0].yearlyMinor, waiting[0].currency)} a year left to cancel` : undefined}
                   style={{ marginTop: 24, marginBottom: 8 }}
                 />
                 <Card>
@@ -195,7 +196,11 @@ export default function DitchedTab() {
                     // "Cancel by" only for a date the user set; otherwise it's just when it charges.
                     const cancelBy = s.cancelBy && s.cancelBy >= app.today ? s.cancelBy : null;
                     const charge = cancelBy ? null : chargeOfSub(s, app.today);
-                    const price = isPricedSub(s) ? ` · ${money(s.amountMinor, s.currency)} ${CYCLE_WORDS[s.cycle]}` : '';
+                    // Glued with no-break spaces so "a month" never wraps on its own. SE: "Nov 24 · $17.99/mo" fits one line.
+                    const price = isPricedSub(s)
+                      ? ` · ${(narrow ? `${money(s.amountMinor, s.currency)}${CYCLE_SHORT[s.cycle]}` : `${money(s.amountMinor, s.currency)} ${CYCLE_WORDS[s.cycle]}`).replace(/ /g, '\u00A0')}`
+                      : '';
+                    const day = narrow ? shortDate : weekdayDate;
                     return (
                       <View key={s.id}>
                         {i ? <RowDivider inset={16} /> : null}
@@ -211,10 +216,10 @@ export default function DitchedTab() {
                                     {s.name}
                                   </Txt>
                                 )}
-                                <DitchedTag />
+                                <DitchedTag size="s" />
                               </View>
                               <Txt v="body" tone="mute" num style={{ fontSize: 14.5, marginTop: 2 }}>
-                                {cancelBy ? `Cancel by ${weekdayDate(cancelBy)}` : charge ? `Charges ${weekdayDate(charge)}` : 'Cancel before it renews'}
+                                {cancelBy ? `Cancel by ${day(cancelBy)}` : charge ? `Charges ${day(charge)}` : 'Cancel before it renews'}
                                 {price}
                               </Txt>
                               {narrow ? null : pills(s)}
@@ -248,7 +253,8 @@ export default function DitchedTab() {
                         >
                           <SubLogo sub={s} ditched />
                           <View style={{ flex: 1, minWidth: 0 }}>
-                            <Txt v="bodyStrong" color={p.cardFg} style={{ fontSize: 17 }} numberOfLines={1}>
+                            {/* Two lines before it cuts off: "Audible Premium Plus" fits whole on every iPhone. */}
+                            <Txt v="bodyStrong" color={p.cardFg} style={{ fontSize: 17 }} numberOfLines={2}>
                               {s.name}
                             </Txt>
                             <Txt v="body" tone="mute" num style={{ fontSize: 14.5, marginTop: 1 }}>
@@ -266,7 +272,7 @@ export default function DitchedTab() {
                               </Txt>
                             </View>
                           ) : null}
-                          <ChevronRight color={p.mute} size={16} />
+                          {/* No chevron: a tap opens a choice, not another page. */}
                         </Pressable>
                       </View>
                     );
@@ -285,7 +291,7 @@ export default function DitchedTab() {
             ) : null}
 
             <Txt v="fine" tone="mute" style={{ marginTop: 18, marginHorizontal: 4 }}>
-              Ditch can’t see your bank, so this only counts the ones you told us you cancelled.
+              This only counts the ones you marked as cancelled.
             </Txt>
           </>
         )}

@@ -6,7 +6,7 @@
 
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useRef } from 'react';
-import { AppState, Linking, Platform, Pressable, ScrollView, useWindowDimensions, View } from 'react-native';
+import { AppState, Linking, Platform, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 
 import { APPLE_SUBSCRIPTIONS_URL } from '@/catalog/cancel';
@@ -73,8 +73,8 @@ export default function Ditched() {
   // Fade only: the card shows the price, and nothing moves next to a price (CLAUDE.md rule 8).
   const cardStyle = useAnimatedStyle(() => ({ opacity: card.get() }));
   const tagStyle = useAnimatedStyle(() => ({ opacity: tag.get() }));
-  // The logo dims as the tag lands, like the website's grey logo.
-  const logoStyle = useAnimatedStyle(() => ({ opacity: 1 - 0.55 * tag.get() }));
+  // The colour logo fades out as the tag lands, leaving the same grey logo as Home and the Ditched tab.
+  const logoStyle = useAnimatedStyle(() => ({ opacity: 1 - tag.get() }));
   const amountStyle = useAnimatedStyle(() => ({ opacity: amount.get() }));
   // Opacity only: nothing slides under the buttons (CLAUDE.md rule 8).
   const restStyle = useAnimatedStyle(() => ({ opacity: rest.get() }));
@@ -111,6 +111,8 @@ export default function Ditched() {
   const priceLine = isPricedSub(sub) ? `${money(sub.amountMinor, sub.currency)} ${CYCLE_WORDS[sub.cycle]}` : null;
   const help1 = helpFor(sub);
   const blocked = app.notif === 'denied' || app.notif === 'undetermined';
+  // "You won't pay … a year, once you cancel." is one sentence: both ends in the same style, only the amount is big.
+  const amountWords = { fontSize: tiny ? 17 : 20, lineHeight: tiny ? 22 : 25, fontFamily: F.semi };
 
   const undo = async () => {
     haptic.light();
@@ -132,11 +134,11 @@ export default function Ditched() {
 
   const check = blocked
     ? app.notif === 'denied'
-      ? { title: 'Reminders are off', line: 'Turn them on in iPhone Settings so the last check can reach you.' }
-      : { title: 'Reminders aren’t on', line: 'Tap to turn them on, so the last check can reach you.' }
+      ? { title: 'Reminders are off', line: 'Turn them on in iPhone Settings so the last reminder can reach you.' }
+      : { title: 'Reminders aren’t on', line: 'Tap to turn them on, so the last reminder can reach you.' }
     : lastCheck
       ? {
-          title: `Last check ${(tiny ? shortDate : weekdayDate)(toDateOnly(lastCheck.fireAt))} at ${shortTimeLabel(app.settings.reminderTime)}`,
+          title: `Last reminder ${(tiny ? shortDate : weekdayDate)(toDateOnly(lastCheck.fireAt))} at ${shortTimeLabel(app.settings.reminderTime)}`,
           line: `“${lastCheck.body}”`.replace(/ (\S+)$/, '\u00A0$1'),
         }
       : cancelBy
@@ -144,7 +146,7 @@ export default function Ditched() {
         : charge
           ? // Too soon for a last check: say when it charges, in plain words.
             { title: `Charges ${chargeDay(charge, app.today)}`, line: 'Cancel before then to stop it.' }
-          : { title: 'Cancel it before it renews', line: 'No date on this one, so no last check.' };
+          : { title: 'Cancel it before it renews', line: 'No date on this one, so no last reminder.' };
 
   return (
     <SurfaceContext.Provider value="sun">
@@ -184,13 +186,17 @@ export default function Ditched() {
           {/* Left-aligned and short (owner, Nov 19: "too much on the screen", centred text read like a template).
               Like Splitwise, Cleo and Coinbase's cancel screens: what it is, what it's worth, one line on when,
               then the buttons. The card, the account details and running totals live elsewhere. */}
-          <View style={wide ? null : { flex: 1 }}>
+          {/* Centred between the header and the buttons, so there's no empty band above the buttons. */}
+          <View style={wide ? null : { flex: 1, justifyContent: 'center', paddingBottom: 24 }}>
             <Animated.View style={[{ marginTop: tiny ? 22 : compact ? 52 : 72 }, cardStyle]}>
               <Duck width={tiny ? 68 : compact ? 84 : 104} left={20} sink={2} delay={animate ? DUCK_MS : 0} />
-              <Card style={{ flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, paddingVertical: compact ? 11 : 14 }}>
-                <Animated.View style={logoStyle}>
-                  <SubLogo sub={sub} size={compact ? 36 : 40} />
-                </Animated.View>
+              <Card style={{ flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 18, paddingVertical: compact ? 11 : 14 }}>
+                <View style={{ width: compact ? 36 : 40, height: compact ? 36 : 40 }}>
+                  <SubLogo sub={sub} size={compact ? 36 : 40} ditched />
+                  <Animated.View style={[StyleSheet.absoluteFill, logoStyle]}>
+                    <SubLogo sub={sub} size={compact ? 36 : 40} />
+                  </Animated.View>
+                </View>
                 <View style={{ flex: 1 }}>
                   {trial ? (
                     <ProLockup size={17} suffix="trial" color={p.cardFg} />
@@ -206,7 +212,7 @@ export default function Ditched() {
                   ) : null}
                 </View>
                 <Animated.View style={tagStyle} accessible accessibilityLabel="Ditched">
-                  <DitchedTag />
+                  <DitchedTag size="m" />
                 </Animated.View>
               </Card>
             </Animated.View>
@@ -214,7 +220,7 @@ export default function Ditched() {
             <Animated.View style={[{ marginTop: tiny ? 18 : compact ? 28 : 40 }, amountStyle]}>
               {yearly !== null && sub.currency ? (
                 <>
-                  <Txt v="label" style={{ fontSize: 17 }}>
+                  <Txt v="label" style={amountWords}>
                     You won’t pay
                   </Txt>
                   <Txt
@@ -227,7 +233,7 @@ export default function Ditched() {
                   >
                     {money(yearly, sub.currency)}
                   </Txt>
-                  <Txt v="title" style={{ fontSize: tiny ? 19 : 22, lineHeight: tiny ? 23 : 27 }}>
+                  <Txt v="label" style={amountWords}>
                     a year, once you cancel.
                   </Txt>
                 </>
@@ -265,7 +271,7 @@ export default function Ditched() {
                 </Pressable>
               ) : null}
             </Animated.View>
-            {wide ? <View style={{ height: 32 }} /> : <View style={{ flex: 1, minHeight: 20 }} />}
+            {wide ? <View style={{ height: 32 }} /> : null}
           </View>
 
           <Animated.View style={actionsStyle}>
@@ -287,18 +293,12 @@ export default function Ditched() {
               onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)}
               style={{ minHeight: compact ? 30 : 36, justifyContent: 'center', marginTop: 2 }}
             >
-              {trial ? (
-                <Txt v="body" tone="fg2" center style={{ fontSize: 14 }}>
-                  Settings → your name → Subscriptions → Ditch.
+              <Txt v="body" tone="fg2" center style={{ fontSize: 14 }}>
+                {trial ? 'Billed by Apple. ' : 'Billed by Apple? '}
+                <Txt v="body" tone="fg2" style={{ fontSize: 14, fontFamily: F.semi, textDecorationLine: 'underline' }}>
+                  Open Apple subscriptions
                 </Txt>
-              ) : (
-                <Txt v="body" tone="fg2" center style={{ fontSize: 14 }}>
-                  {'Billed by Apple? '}
-                  <Txt v="body" tone="fg2" style={{ fontSize: 14, fontFamily: F.semi, textDecorationLine: 'underline' }}>
-                    Open Apple subscriptions
-                  </Txt>
-                </Txt>
-              )}
+              </Txt>
             </Pressable>
           </Animated.View>
         </ScrollView>

@@ -48,9 +48,10 @@ export default function Settings() {
   );
 
   // Free counts against the free allowance ("2 of 3 free"); Pro has no allowance, so it's just how many are on ("4 on").
-  const allOn = listed.length > 0 && reminded.size === listed.length;
-  const whichValue = pro ? (allOn ? `All ${listed.length}` : `${reminded.size} on`) : `${reminded.size} of ${FREE_REMINDERS} free`;
-  const whichSpoken = pro ? (allOn ? `, reminders on all ${listed.length}` : `, reminders on for ${reminded.size}`) : `, ${reminded.size} of ${FREE_REMINDERS} free reminders picked`;
+  // Pro: "All on" unless they switched one off. Subs with no date can't be reminded, so they don't count as off.
+  const allOn = !listed.some((s) => hasDate(s) && s.muted);
+  const whichValue = pro ? (allOn ? 'All on' : `${reminded.size} on`) : `${reminded.size} of ${FREE_REMINDERS} free`;
+  const whichSpoken = pro ? (allOn ? ', reminders on for all of them' : `, reminders on for ${reminded.size}`) : `, ${reminded.size} of ${FREE_REMINDERS} free reminders picked`;
   const proValue = !pro
     ? null
     : trial

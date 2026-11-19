@@ -48,13 +48,13 @@ export default function RemindMe() {
       {/* Same look as the page intro; the whole sentence is the tap target (≥ 44pt), the time is underlined. */}
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel={`When should Ditch remind you? Reminders land at ${time}.`}
+        accessibilityLabel={`When should Ditch remind you? Reminders come at ${time}.`}
         accessibilityHint="Change the reminder time"
         onPress={openTime}
         style={({ pressed }) => ({ marginTop: 8, minHeight: 44, opacity: pressed ? 0.6 : 1 })}
       >
         <Txt v="leadS" tone="fg2">
-          When should Ditch remind you? Reminders land at{' '}
+          When should Ditch remind you? Reminders come at{' '}
           <Txt v="leadS" tone="fg2" style={{ fontFamily: F.semi, textDecorationLine: 'underline' }}>
             {time}
           </Txt>
@@ -69,7 +69,7 @@ export default function RemindMe() {
       <View style={{ marginTop: 18 }}>
         <NotificationPreview time={timeLabel(settings.reminderTime)} message={example} />
       </View>
-      <Group note={pro ? 'Pick as many as you like (at least one). Free trials always get the 3-day and 1-day ones too.' : 'Custom timing comes with Pro. Free keeps 3 days and 1 day before.'}>
+      <Group note={pro ? 'Pick as many as you like (at least one). Trials you track always get a 3-day and 1-day reminder too.' : 'Custom timing comes with Pro. Free keeps 3 days and 1 day before.'}>
         {LEAD_CHOICES.map((d) => {
           const on = leads.includes(d);
           const locked = !pro && !on;

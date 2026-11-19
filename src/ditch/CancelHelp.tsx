@@ -53,7 +53,7 @@ export function HowToSheet({ sub, visible, onClose }: { sub: Sub | null; visible
             How to cancel {sub.name}
           </Txt>
           <Txt v="body" tone="fg2" style={{ marginTop: 6 }}>
-            Ditch can’t cancel for you. It takes about a minute:
+            Ditch can’t cancel for you, but it’s quick:
           </Txt>
           <View style={{ marginTop: 16, gap: 14 }}>
             {h.steps.map((step, i) => (
@@ -87,7 +87,7 @@ export function HowToSheet({ sub, visible, onClose }: { sub: Sub | null; visible
           ) : null}
           {h.appleNote ? (
             <Txt v="body" tone="fg2" style={{ marginTop: 18 }}>
-              Paying through Apple? It’s in iPhone Settings → your name → Subscriptions.
+              Paying through Apple? Cancel it in Apple subscriptions below.
             </Txt>
           ) : null}
           <YourRights />

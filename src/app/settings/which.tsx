@@ -53,7 +53,8 @@ export default function Which() {
 
   return (
     <SettingsPage
-      title="Your reminders"
+      // Same as the Settings row that opens it.
+      title="Which subscriptions"
       // The count lives in the intro (no yellow pill): the upsell card and the bells are the only yellow here.
       intro={pro ? 'Pro reminds you about all of them. Switch off any you don’t need.' : `${on.size} of ${FREE_REMINDERS} picked. Tap a bell to ${on.size >= FREE_REMINDERS ? 'swap' : 'add one'}.`}
     >

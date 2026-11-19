@@ -69,16 +69,33 @@ export function Stamp({ date, width = 280, bg }: { date: DateOnly; width?: numbe
   );
 }
 
+// 's': list rows (Home, Ditched tab), quieter than the name next to it. 'm': the card on the Ditched screen,
+// where the tag is the thing that lands. iOS adds the letter spacing after the last letter too, so the right
+// padding is the left one minus the tracking: the word sits optically centred in its box (owner, Nov 19).
+const TAG_SIZES = {
+  s: { fontSize: 10, lineHeight: 13, letterSpacing: 0.8, padLeft: 6, padV: 2.5, border: 1.25, radius: 5 },
+  m: { fontSize: 12, lineHeight: 16, letterSpacing: 1, padLeft: 9, padV: 4, border: 1.5, radius: 7 },
+} as const;
+
 /** The small "DITCHED" tag on a list row. Straight, not tilted (owner, Nov 19: the angle looked off). */
-export function DitchedTag() {
+export function DitchedTag({ size = 's' }: { size?: 's' | 'm' }) {
   const p = usePalette();
   const ink = p.dark ? brand.sunflower : brand.ink;
+  const t = TAG_SIZES[size];
   return (
     <View
       accessible={false}
-      style={{ borderWidth: 1.5, borderColor: ink, borderRadius: 6, paddingHorizontal: 6, paddingVertical: 1, backgroundColor: p.dark ? 'transparent' : brand.white }}
+      style={{
+        borderWidth: t.border,
+        borderColor: ink,
+        borderRadius: t.radius,
+        paddingLeft: t.padLeft,
+        paddingRight: t.padLeft - t.letterSpacing,
+        paddingVertical: t.padV,
+        backgroundColor: p.dark ? 'transparent' : brand.white,
+      }}
     >
-      <Text maxFontSizeMultiplier={1.2} style={{ fontFamily: F.wideHeavy, fontSize: 11.5, lineHeight: 15, letterSpacing: 1.2, color: ink }}>
+      <Text maxFontSizeMultiplier={1.2} style={{ fontFamily: F.wideHeavy, fontSize: t.fontSize, lineHeight: t.lineHeight, letterSpacing: t.letterSpacing, color: ink }}>
         DITCHED
       </Text>
     </View>

@@ -12,7 +12,7 @@ import Animated, { Easing, interpolateColor, ReduceMotion, useAnimatedProps, use
 import Svg, { Circle } from 'react-native-svg';
 import { scheduleOnRN } from 'react-native-worklets';
 
-import { daysBetween, weekdayDate, type DateOnly } from '@/domain/dates';
+import { daysBetween, shortDate, weekdayDate, type DateOnly } from '@/domain/dates';
 import { CYCLE_SHORT, CYCLE_WORDS, yearlyMinor } from '@/domain/money';
 import { inTrial, isPending, isPricedSub, isProTrial, type Sub } from '@/domain/subs';
 import { useAppMoney } from '@/state/app';
@@ -45,6 +45,17 @@ export function rowLine(sub: Sub, charge: DateOnly | null, today: DateOnly, narr
   // (SE, mini) keep it for today and tomorrow only, so the line never gets cut off.
   const n = daysBetween(today, charge);
   return n <= (narrow ? 1 : 6) ? `${weekdayDate(charge)} · ${relative(charge, today)}` : weekdayDate(charge);
+}
+
+/**
+ * A ditched row's date line, shown after the DITCHED tag, so it's short enough to sit next to it on an SE:
+ * "DITCHED Tue, Nov 24" (the charge, like every other row), "DITCHED by Nov 23" (a cancel-by date they set).
+ * VoiceOver still hears the full rowLine.
+ */
+function pendingLine(sub: Sub, charge: DateOnly | null, today: DateOnly, narrow: boolean): string {
+  if (sub.cancelBy && sub.cancelBy >= today) return `by ${shortDate(sub.cancelBy)}`;
+  if (!charge) return narrow ? 'No date' : 'No date yet';
+  return narrow ? shortDate(charge) : weekdayDate(charge);
 }
 
 /**
@@ -216,6 +227,7 @@ export function SubRow({
   // The "/yr" sits under the price now, so one yearly row no longer cuts "in 5 days" from the others.
   const narrow = useWindowDimensions().width < 380 || (priceWidth ?? 0) > 80;
   const line = rowLine(sub, charge, today, narrow);
+  const shown = pending ? pendingLine(sub, charge, today, narrow) : line;
   const per = sub.cycle === 'monthly' ? '' : CYCLE_SHORT[sub.cycle];
   const on = holding && !p.dark;
   const fg = on ? brand.ink : p.cardFg;
@@ -268,14 +280,16 @@ export function SubRow({
               {isProTrial(sub) ? (
                 <ProLockup size={16} suffix="trial" color={fg} />
               ) : (
-                <Txt v="bodyStrong" color={fg} numberOfLines={1} style={{ fontSize: 17, lineHeight: 21, flexShrink: 1 }}>
+                // Shrinks a little (to 15pt) before it cuts off, so "YouTube Premium" fits next to a "US$20.00" column.
+                <Txt v="bodyStrong" color={fg} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.88} style={{ fontSize: 17, lineHeight: 21, flexShrink: 1 }}>
                   {sub.name}
                 </Txt>
               )}
-              {pending ? <DitchedTag /> : null}
               {foundTag && !pending ? <FoundTag /> : null}
             </View>
+            {/* Ditched: the tag leads the date line ("DITCHED Tue, Nov 24"), so it never wraps under a long name. */}
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 1 }}>
+              {pending ? <DitchedTag size="s" /> : null}
               <Txt
                 v="body"
                 color={charge || pending ? sub2 : fg}
@@ -283,7 +297,7 @@ export function SubRow({
                 numberOfLines={1}
                 style={[{ fontSize: 14.5, lineHeight: 19, flexShrink: 1 }, !charge && !pending ? { fontFamily: F.semi, textDecorationLine: 'underline' } : null]}
               >
-                {line}
+                {shown}
               </Txt>
             </View>
           </View>

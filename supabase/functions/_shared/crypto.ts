@@ -13,7 +13,7 @@ export async function importTokenKey(base64Key: string | undefined): Promise<Cry
   if (!base64Key) throw new Error('TOKEN_ENC_KEY is not set');
   const raw = fromBase64(base64Key.trim());
   if (raw.length !== 32) throw new Error('TOKEN_ENC_KEY must be 32 bytes (base64)');
-  return crypto.subtle.importKey('raw', raw, { name: 'AES-GCM' }, false, ['encrypt', 'decrypt']);
+  return await crypto.subtle.importKey('raw', raw, { name: 'AES-GCM' }, false, ['encrypt', 'decrypt']);
 }
 
 export async function encryptToken(key: CryptoKey, plaintext: string, boundTo: string): Promise<string> {

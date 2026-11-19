@@ -18,5 +18,5 @@ export function decodeJws(jws: string): DecodedJws {
 /** ES256 signature check (raw r||s, 64 bytes, as JWS uses). */
 export async function verifyEs256(key: CryptoKey, d: DecodedJws): Promise<boolean> {
   if (d.signature.length !== 64) return false;
-  return crypto.subtle.verify({ name: 'ECDSA', hash: 'SHA-256' }, key, d.signature, d.signingInput);
+  return await crypto.subtle.verify({ name: 'ECDSA', hash: 'SHA-256' }, key, d.signature, d.signingInput);
 }

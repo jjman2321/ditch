@@ -1,7 +1,8 @@
 // Makes a FAKE Apple-style certificate chain and a few signed JWS strings for the
 // apple JWS tests. Nothing here is trusted in production: the tests pin this fake
 // root on purpose. Keys live only in a temp folder and are thrown away.
-// Run: node supabase/__tests__/fixtures/make-apple-fixtures.mjs  (needs openssl)
+// Run: node supabase/testing/fixtures/make-apple-fixtures.mjs  (needs openssl)
+import { Buffer } from 'node:buffer';
 import { execFileSync } from 'node:child_process';
 import { createPrivateKey, sign } from 'node:crypto';
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -61,10 +62,11 @@ const jws = (payload, leafName, chain) => {
   return `${input}.${b64u(sig)}`;
 };
 
+const signedAt = Date.now() + 5 * 60_000; // after the fresh certificates' start date
 const tx = {
   transactionId: '2000000000000001', originalTransactionId: '2000000000000001', bundleId: 'app.ditchsubs.ditch',
-  productId: 'test.yearly', purchaseDate: 1795000000000, originalPurchaseDate: 1795000000000, expiresDate: 1795604800000,
-  type: 'Auto-Renewable Subscription', inAppOwnershipType: 'PURCHASED', signedDate: 1795000000000, environment: 'Sandbox',
+  productId: 'test.yearly', purchaseDate: signedAt, originalPurchaseDate: signedAt, expiresDate: signedAt + 7 * 86_400_000,
+  type: 'Auto-Renewable Subscription', inAppOwnershipType: 'PURCHASED', signedDate: signedAt, environment: 'Sandbox',
   appAccountToken: '7f0c2a52-8d9e-4b8e-9a51-2a3b4c5d6e7f', offerType: 1, offerDiscountType: 'FREE_TRIAL', price: 0, currency: 'USD',
 };
 const out = {

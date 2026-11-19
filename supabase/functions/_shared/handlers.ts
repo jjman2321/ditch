@@ -12,7 +12,7 @@ import { decryptToken, encryptToken, hashSecret, sha256Hex } from './crypto.ts';
 import type { AppleNotification, AppleRenewalInfo, AppleTransaction } from './appleJws.ts';
 import { bankAccess, deriveEntitlement, isNewer, type BankAccess } from './entitlements.ts';
 import { fail, json, parseJson, readBody, UUID_RE } from './http.ts';
-import { canAddLink, duplicateOf, isLive, linkTokenAllowed, planCleanup } from './policy.ts';
+import { canAddLink, duplicateOf, isLive, linkTokenAllowed, planCleanup, RENEWAL_GRACE_MS } from './policy.ts';
 import { plaidWebhookAction, type PlaidWebhookBody } from './plaidWebhook.ts';
 import { ProviderError, type BankProvider } from './provider.ts';
 import type { Store } from './store.ts';
@@ -140,6 +140,8 @@ export async function handleLinkToken(req: Request, deps: Deps): Promise<Respons
       await deps.store.logEvent({ kind: 'link_token', app_user_id: user.id, link_id: link.id, detail: { mode: 'update' } });
       return json(200, { linkToken: lt.linkToken, expiration: lt.expiration, provider: link.provider, mode: 'update' });
     }
+    // A cancelled trial keeps its banks until the end date, but adds no new ones (each new bank bills a month).
+    if (access.reason === 'trial_ending') return fail(402, 'not_entitled', { reason: access.reason });
     if (!canAddLink(links)) return fail(409, 'bank_limit', { max: 3 });
     const providerName = body.provider === 'stripe' || body.provider === 'plaid' ? body.provider : deps.defaultProvider;
     const lt = await deps.provider(providerName).createLinkToken({ mode: 'new', appUserId: user.id });
@@ -160,7 +162,7 @@ export async function handleExchange(req: Request, deps: Deps): Promise<Response
   if (typeof body.publicToken !== 'string' || !body.publicToken || body.publicToken.length > 512) return fail(400, 'bad_public_token');
 
   const access = await accessFor(deps, user.id);
-  if (!access.allowed) return fail(402, 'not_entitled', { reason: access.reason });
+  if (!access.allowed || access.reason === 'trial_ending') return fail(402, 'not_entitled', { reason: access.reason });
 
   const providerName = body.provider === 'stripe' || body.provider === 'plaid' ? body.provider : deps.defaultProvider;
   const provider = deps.provider(providerName);
@@ -181,6 +183,8 @@ export async function handleExchange(req: Request, deps: Deps): Promise<Response
       await deps.store.logEvent({ kind: 'exchange_over_cap', app_user_id: user.id });
       return fail(409, 'bank_limit', { max: 3 });
     }
+    // Same bank again (usually a re-link): the old connection goes first, so the cap holds.
+    if (dup) await removeLink(deps, dup, 'replaced_by_relink');
     const row = await deps.store.insertLink({
       app_user_id: user.id,
       provider: providerName,
@@ -198,7 +202,6 @@ export async function handleExchange(req: Request, deps: Deps): Promise<Response
       removed_at: null,
     });
     await deps.store.logEvent({ kind: 'link_created', app_user_id: user.id, link_id: row.id, detail: { provider: providerName } });
-    if (dup) await removeLink(deps, dup, 'replaced_by_relink');
     return json(200, { link: publicLink(row), replaced: dup?.id ?? null });
   } catch (e) {
     await provider.remove(ex.accessToken).catch(() => undefined);
@@ -228,7 +231,8 @@ export async function handleSync(req: Request, deps: Deps): Promise<Response> {
   if (user instanceof Response) return user;
   const { store } = deps;
 
-  const access = await accessFor(deps, user.id);
+  // Same 1-hour grace as the cleanup, so a late Apple renewal notice can't cost a paying user their bank.
+  const access = await accessFor(deps, user.id, RENEWAL_GRACE_MS);
   if (!access.allowed) {
     // Paying stopped and we missed it: remove now (Plaid bills every month a connection exists).
     await removeAllLinks(deps, user.id, `sync_${access.reason}`);
@@ -398,8 +402,9 @@ export async function handleAppleNotification(req: Request, deps: Deps): Promise
   if (!ent) return json(200, { ignored: 'product' });
   if (isNewer(ent, tx.originalTransactionId ? await deps.store.getEntitlementByOriginal(tx.originalTransactionId) : null)) await deps.store.putEntitlement(ent);
 
-  // Trial cancelled, expired, refunded: the bank goes now, not at the next cleanup.
-  const access = await accessFor(deps, userId);
+  // Expired, refunded, revoked: the bank goes now. A cancelled trial or auto-renew off keeps it until
+  // the period ends (DECISIONS #67); the hourly cleanup removes it then.
+  const access = await accessFor(deps, userId, RENEWAL_GRACE_MS);
   const removed = access.allowed ? 0 : await removeAllLinks(deps, userId, `apple_${n.notificationType}_${access.reason}`);
   return json(200, { ok: true, removed });
 }
@@ -462,7 +467,7 @@ export async function handleEntitlementSync(req: Request, deps: Deps): Promise<R
   }
 
   const ents = await deps.store.getEntitlements(id);
-  const access = bankAccess(ents, now);
+  const access = bankAccess(ents, now, RENEWAL_GRACE_MS);
   const removed = access.allowed ? 0 : await removeAllLinks(deps, id, `entitlement_${access.reason}`);
   return json(200, {
     access,

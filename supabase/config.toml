@@ -1,0 +1,30 @@
+# Supabase project "ditch-api" (DECISIONS #64/#67). Edge Functions only; see docs/plans/bank-sync-build.md.
+# `supabase link --project-ref <ref>` fills in the real project; this file holds no secrets.
+project_id = "ditch-api"
+
+[db]
+major_version = 17
+
+# No Supabase Auth in Ditch: every function checks its own caller instead of a Supabase JWT.
+#   phone calls     -> x-ditch-user + x-ditch-secret headers (install secret, hashed in app_users)
+#   plaid-webhook   -> Plaid-Verification JWT
+#   apple-notifications -> Apple-signed JWS (x5c chain to Apple Root CA - G3)
+#   bank-cleanup    -> x-cron-secret header (pg_cron)
+[functions.bank-link-token]
+verify_jwt = false
+[functions.bank-exchange]
+verify_jwt = false
+[functions.bank-sync]
+verify_jwt = false
+[functions.bank-remove]
+verify_jwt = false
+[functions.bank-list]
+verify_jwt = false
+[functions.plaid-webhook]
+verify_jwt = false
+[functions.apple-notifications]
+verify_jwt = false
+[functions.entitlement-sync]
+verify_jwt = false
+[functions.bank-cleanup]
+verify_jwt = false

@@ -1,0 +1,140 @@
+// Bank sync client for the phone (DECISIONS #67). Talks to the Supabase Edge Functions in
+// supabase/functions. Without EXPO_PUBLIC_API_URL (Expo Go, local dev) it uses sample data.
+//
+// Identity: no accounts. A random app user id + a per-install secret live in the iOS Keychain
+// (expo-secure-store). The same id goes to StoreKit as appAccountToken, so Apple's server
+// notifications can be matched to this phone. The secret never leaves the phone except as a
+// header to our own server, which keeps only a hash of it.
+//
+// Not wired to any screen yet; Plaid Link itself needs a new native build (docs/plans/bank-sync-build.md).
+
+import * as Crypto from 'expo-crypto';
+import * as SecureStore from 'expo-secure-store';
+import { today } from './clock';
+import {
+  BankApiError,
+  createBankMock,
+  type BankListResponse,
+  type BankSyncResponse,
+  type EntitlementSyncResponse,
+  type ExchangeResponse,
+  type LinkTokenResponse,
+} from './bankShared';
+
+export * from './bankShared';
+
+const API_URL = process.env.EXPO_PUBLIC_API_URL?.replace(/\/+$/, '') || null;
+/** True when a real server is configured; false means sample data. */
+export const BANK_LIVE = API_URL !== null;
+
+const ID_KEY = 'ditch.appUserId';
+const SECRET_KEY = 'ditch.installSecret';
+const ACK_KEY = 'ditch.bankSyncAck';
+// Readable after the first unlock, so background refresh can sync while the phone is locked.
+const KEYCHAIN = { keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK };
+
+type Identity = { id: string; secret: string };
+let identity: Promise<Identity> | null = null;
+
+function base64Url(bytes: Uint8Array): string {
+  let s = '';
+  for (const b of bytes) s += String.fromCharCode(b);
+  return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+function loadIdentity(): Promise<Identity> {
+  identity ??= (async () => {
+    let id = await SecureStore.getItemAsync(ID_KEY, KEYCHAIN);
+    let secret = await SecureStore.getItemAsync(SECRET_KEY, KEYCHAIN);
+    if (!id || !secret) {
+      id = Crypto.randomUUID().toLowerCase();
+      secret = base64Url(Crypto.getRandomBytes(32));
+      await SecureStore.setItemAsync(ID_KEY, id, KEYCHAIN);
+      await SecureStore.setItemAsync(SECRET_KEY, secret, KEYCHAIN);
+    }
+    return { id, secret };
+  })();
+  identity.catch(() => (identity = null));
+  return identity;
+}
+
+/** The random app user id. Pass it to StoreKit purchases as `appAccountToken`. */
+export async function getAppUserId(): Promise<string> {
+  return (await loadIdentity()).id;
+}
+
+async function call<T>(fn: string, body: unknown = {}, timeoutMs = 30_000): Promise<T> {
+  const { id, secret } = await loadIdentity();
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const res = await fetch(`${API_URL}/${fn}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-ditch-user': id, 'x-ditch-secret': secret },
+      body: JSON.stringify(body),
+      signal: ctrl.signal,
+    });
+    const json = (await res.json().catch(() => ({}))) as { error?: string; reason?: string };
+    if (!res.ok) throw new BankApiError(res.status, json.error ?? 'http_error', json.reason);
+    return json as T;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+const mock = createBankMock(today);
+
+/**
+ * Sends StoreKit 2's signed transactions (Transaction.jwsRepresentation for each current
+ * entitlement) and renewal info. Call after a purchase, on launch and on restore. The server
+ * creates the user on first proof and removes banks if access ended.
+ */
+export function syncEntitlements(transactions: string[], renewals: string[] = []): Promise<EntitlementSyncResponse> {
+  return API_URL ? call('entitlement-sync', { transactions, renewals }) : mock.syncEntitlements();
+}
+
+export function listBanks(): Promise<BankListResponse> {
+  return API_URL ? call('bank-list') : mock.listBanks();
+}
+
+/** A Link token to open the bank's sign-in. `update` re-logs-in an existing bank (same connection). */
+export function createLinkToken(opts: { mode: 'new' } | { mode: 'update'; linkId: string } = { mode: 'new' }): Promise<LinkTokenResponse> {
+  return API_URL ? call('bank-link-token', opts) : mock.createLinkToken();
+}
+
+/** After the bank sign-in succeeds: hand the one-time public token to the server. */
+export function exchangePublicToken(publicToken: string, provider?: 'plaid' | 'stripe'): Promise<ExchangeResponse> {
+  return API_URL ? call('bank-exchange', { publicToken, provider }) : mock.exchangePublicToken();
+}
+
+async function readAcks(): Promise<Record<string, string>> {
+  try {
+    return JSON.parse((await SecureStore.getItemAsync(ACK_KEY, KEYCHAIN)) ?? '{}');
+  } catch {
+    return {};
+  }
+}
+
+/**
+ * New, changed and removed bank transactions since the last confirmed sync. After saving them
+ * on the phone, call confirmBankSync(result) so the server moves on; if the app dies before
+ * that, the next sync sends the same batch again (nothing lost).
+ */
+export async function syncBank(linkId?: string): Promise<BankSyncResponse> {
+  if (!API_URL) return mock.syncBank();
+  return call('bank-sync', { linkId, ack: await readAcks() }, 90_000);
+}
+
+/** Records that this sync's transactions are saved; sent along with the next syncBank(). */
+export async function confirmBankSync(res: BankSyncResponse): Promise<void> {
+  if (!API_URL) return;
+  const acks = await readAcks();
+  for (const l of res.links) if (l.syncToken) acks[l.linkId] = l.syncToken;
+  await SecureStore.setItemAsync(ACK_KEY, JSON.stringify(acks), KEYCHAIN);
+}
+
+/** Disconnects one bank (Settings → Bank → Disconnect), or all of them. */
+export function removeBank(linkId?: string): Promise<{ removed: number; pending: number }> {
+  if (!API_URL) return mock.removeBank(linkId);
+  return call('bank-remove', linkId ? { linkId } : { all: true });
+}

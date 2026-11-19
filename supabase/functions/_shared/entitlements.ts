@@ -5,8 +5,9 @@
 //     billing grace period.
 //   - Lifetime for the first 12 months after purchase.
 //   - The $19.99/yr bank add-on (Lifetime owners after year one), same rules as a subscription.
-// Never for: a cancelled trial (removed the same hour), expired, refunded/revoked, billing retry,
-// Family Sharing copies.
+//   - A cancelled trial or a subscription with auto-renew off: kept until the period ends
+//     (DECISIONS #67, updated Nov 19), then the hourly cleanup removes it (+1 hour grace).
+// Never for: expired, refunded/revoked (removed at once), billing retry, Family Sharing copies.
 
 import type { AppleNotification, AppleRenewalInfo, AppleTransaction } from './appleJws.ts';
 import type { Entitlement, EntitlementKind, EntitlementStatus } from './types.ts';
@@ -87,12 +88,12 @@ export function deriveEntitlement({ appUserId, tx, renewal, notification, produc
 export type BankAccess = {
   allowed: boolean;
   /** Why (for the app's copy and the audit log). */
-  reason: 'subscription' | 'trial' | 'grace' | 'lifetime_first_year' | 'bank_addon' | 'trial_cancelled' | 'lifetime_year_over' | 'expired' | 'revoked' | 'billing_retry' | 'family_shared' | 'none';
+  reason: 'subscription' | 'trial' | 'trial_ending' | 'grace' | 'lifetime_first_year' | 'bank_addon' | 'lifetime_year_over' | 'expired' | 'revoked' | 'billing_retry' | 'family_shared' | 'none';
   /** Until when, if allowed. */
   until: string | null;
 };
 
-const DENY_ORDER: BankAccess['reason'][] = ['trial_cancelled', 'lifetime_year_over', 'billing_retry', 'expired', 'revoked', 'family_shared', 'none'];
+const DENY_ORDER: BankAccess['reason'][] = ['lifetime_year_over', 'billing_retry', 'expired', 'revoked', 'family_shared', 'none'];
 
 /**
  * May this user hold a bank connection right now?
@@ -127,13 +128,14 @@ export function bankAccess(ents: Entitlement[], now: Date, graceMs = 0): BankAcc
       else denies.push('expired');
       continue;
     }
-    if (e.status === 'trial' || e.status === 'active') {
+    if (e.status === 'trial' || e.status === 'active' || e.status === 'trial_cancelled') {
+      // A cancelled trial keeps the bank until the trial's end date; then it's simply expired.
       if (e.expires_at && Date.parse(e.expires_at) + graceMs > nowMs) {
-        allow(e.kind === 'bank_addon' ? 'bank_addon' : e.status === 'trial' ? 'trial' : 'subscription', e.expires_at);
+        allow(e.kind === 'bank_addon' ? 'bank_addon' : e.status === 'trial' ? 'trial' : e.status === 'trial_cancelled' ? 'trial_ending' : 'subscription', e.expires_at);
       } else denies.push('expired');
       continue;
     }
-    denies.push(e.status === 'trial_cancelled' ? 'trial_cancelled' : e.status === 'billing_retry' ? 'billing_retry' : 'expired');
+    denies.push(e.status === 'billing_retry' ? 'billing_retry' : 'expired');
   }
   if (best) return best;
   const reason = DENY_ORDER.find((r) => denies.includes(r)) ?? 'none';

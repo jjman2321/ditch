@@ -13,7 +13,8 @@
     "types": [
       "jest",
       "node"
-    ]
+    ],
+    "allowImportingTsExtensions": true
   },
   "include": [
     "**/*.ts",
@@ -21,5 +22,10 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
   ],
-  "exclude": ["node_modules", "web"]
+  "exclude": [
+    "node_modules",
+    "web",
+    "supabase/functions/*/index.ts",
+    "supabase/functions/_shared/deno"
+  ]
 }

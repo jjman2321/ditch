@@ -1,0 +1,65 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Welcome v27</title>
+<style>
+@font-face{font-family:Archivo;src:url(../v12/fonts/archivo-wdth.woff2) format('woff2');font-weight:100 900;font-stretch:62% 125%}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_400Regular.ttf);font-weight:400}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_500Medium.ttf);font-weight:500}
+@font-face{font-family:Inter;src:url(../v12/fonts/Inter_600SemiBold.ttf);font-weight:600}
+*{box-sizing:border-box;margin:0}
+body{background:#E4DFD3;font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased;padding:32px 36px}
+.row{display:flex;gap:40px;align-items:flex-end}
+.cell{display:flex;flex-direction:column;align-items:center;gap:14px}
+.cap{font:700 15px Inter;color:#4A463E;text-align:center}
+.phone{--bg:#FBF7EE;--ink:#16140F;--fg2:#5E584B;--glow:#FFE18A;--btn:#16140F;--btnfg:#fff;--hl:#FFCC2E;--ring:rgba(22,20,15,.10);
+  border-radius:46px;overflow:hidden;box-shadow:0 0 0 10px #121110,0 30px 60px rgba(40,30,0,.2);background:var(--bg);color:var(--ink);display:flex;flex-direction:column;position:relative}
+.phone.dark{--bg:#14120D;--ink:#F6F1E4;--fg2:#B3AC9C;--glow:rgba(255,204,46,.30);--btn:#FFCC2E;--btnfg:#16140F;--hl:rgba(255,204,46,.55);--ring:rgba(255,255,255,.10)}
+.sb{flex:none;display:flex;justify-content:space-between;align-items:center;padding:4px 32px 0 36px;font:600 16px Inter;position:relative;z-index:5}
+.sb i{display:flex;gap:5px;align-items:center}.sb i b{display:block;background:var(--ink);border-radius:2px}
+.stage{position:relative;width:342px;height:320px;flex:none;align-self:center;transform-origin:center}
+.t{position:absolute;border-radius:24%;overflow:hidden;box-shadow:0 0 0 .5px var(--ring),0 8px 18px rgba(58,42,0,.13),0 1px 3px rgba(58,42,0,.08)}
+.dark .t{box-shadow:0 0 0 .5px var(--ring),0 8px 20px rgba(0,0,0,.45)}
+.t img{display:block;width:100%;height:100%}
+.t.far{box-shadow:none;filter:saturate(.75)}
+.dark .t.far{filter:saturate(.6) brightness(.8)}
+.copy{text-align:center;padding:0 28px;flex:none}
+.h1{font:800 34px/38px Archivo;font-stretch:108%;letter-spacing:-1px}
+.hl{background:linear-gradient(transparent 60%,var(--hl) 56%,var(--hl) 86%,transparent 86%);padding:0 3px;margin:0 -3px}
+.sub{font:400 17px/24px Inter;color:var(--fg2);margin-top:12px;letter-spacing:-.2px}
+.cta{margin:0 24px;height:56px;border-radius:28px;background:var(--btn);color:var(--btnfg);display:flex;align-items:center;justify-content:center;font:600 17px Inter;letter-spacing:-.2px;flex:none}
+.fine{text-align:center;font:500 13px Inter;color:var(--fg2);flex:none}
+.grow{flex:1}
+</style></head><body>
+<div class="row" id="row"></div>
+<script>
+const L=n=>`../v26/logos/${n}.png`;
+const C=171,CY=160;
+function stage(){
+  // inner fan (from C): six logos, slight tilt
+  const inner=[['youtube-premium',0,-122,4,56],['netflix',-114,-54,-9,66],['spotify',114,-54,8,64],['chatgpt-plus',-102,72,7,60],['disney-plus',104,72,-7,60],['apple-music',0,124,-3,48]];
+  // outer ring (from A): faded, smaller, fills the corners
+  const outer=[['hulu',-68,-138,32,.5],['adobe-cc',68,-138,32,.5],['canva-pro',-156,8,34,.5],['dropbox',158,8,32,.5],['duolingo',-70,140,32,.45],['max',72,140,32,.45]];
+  let h=`<div style="position:absolute;left:${C-140}px;top:${CY-140}px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,var(--glow) 0%,transparent 68%)"></div>`;
+  h+=outer.map(([n,x,y,s,o])=>`<span class="t far" style="width:${s}px;height:${s}px;left:${C+x-s/2}px;top:${CY+y-s/2}px;opacity:${o}"><img src="${L(n)}"></span>`).join('');
+  h+=inner.map(([n,x,y,r,s])=>`<span class="t" style="width:${s}px;height:${s}px;left:${C+x-s/2}px;top:${CY+y-s/2}px;transform:rotate(${r}deg)"><img src="${L(n)}"></span>`).join('');
+  const sp=(x,y,s,o=1)=>`<svg style="position:absolute;left:${x-s/2}px;top:${y-s/2}px;opacity:${o}" width="${s}" height="${s}" viewBox="0 0 24 24"><path d="M12 0c1 7 5 11 12 12-7 1-11 5-12 12-1-7-5-11-12-12 7-1 11-5 12-12z" fill="#FFB800"/></svg>`;
+  h+=sp(C-150,CY-104,16)+sp(C+152,CY-100,13)+sp(C+150,CY+92,15)+sp(C-148,CY+96,12);
+  h+=`<span class="t" style="width:110px;height:110px;left:${C-55}px;top:${CY-55}px;box-shadow:0 0 0 .5px var(--ring),0 22px 46px rgba(58,42,0,.26),0 3px 8px rgba(58,42,0,.1)"><img src="../v26/app-icon.png"></span>`;
+  return h;
+}
+function phone(w,h,dark){
+  const small=h<700, sb=small?20:50, scale=small?.78:(w>420?1.1:1);
+  const bottom=small?18:34;
+  return `<div class="phone${dark?' dark':''}" style="width:${w}px;height:${h}px">
+   <div class="sb" style="height:${sb}px;${small?'font-size:14px;padding-top:2px':''}"><span>9:41</span><i><b style="width:17px;height:11px;opacity:.9"></b><b style="width:25px;height:12px;border-radius:4px"></b></i></div>
+   <div class="grow" style="flex:.7"></div>
+   <div class="stage" style="transform:scale(${scale});margin:${(scale-1)*160}px 0">${stage()}</div>
+   <div class="grow" style="flex:.55"></div>
+   <div class="copy"><div class="h1" style="${small?'font-size:30px;line-height:34px':''}">Every subscription.<br>One <span class="hl">calm</span> list.</div>
+     <div class="sub" style="${small?'font-size:16px;line-height:22px;margin-top:8px':''}">See what you pay for, and get a<br>reminder before each charge.</div></div>
+   <div class="grow" style="flex:1"></div>
+   <div class="cta">Get started</div>
+   <div class="fine" style="margin:14px 0 ${bottom}px">Free to track. No account needed.</div></div>`;
+}
+const list=[['iPhone SE · 375×667',375,667,0],['iPhone 12 · 390×844',390,844,0],['Pro Max · 440×956',440,956,0],['Dark · 390×844',390,844,1]];
+document.getElementById('row').innerHTML=list.map(([t,w,h,d])=>`<div class="cell"><div class="cap">${t}</div>${phone(w,h,d)}</div>`).join('');
+</script></body></html>

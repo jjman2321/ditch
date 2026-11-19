@@ -1,0 +1,66 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>v33 · 16 Short lists and Ditched detail</title>
+<link rel="stylesheet" href="common.css">
+<style>
+.mini-card{background:var(--card);border-radius:16px;box-shadow:var(--shadow),inset 0 0 0 1px var(--cardBorder);display:flex;align-items:center;gap:12px;padding:12px 16px;min-height:60px}
+.qa{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.qa > div{display:flex;flex-direction:column;align-items:center;gap:6px;font:500 13.5px Inter;color:var(--fg)}
+.qa .t{position:relative;width:54px;height:54px}
+.qa .t .logo{width:54px;height:54px;border-radius:13px}
+.qa .t b{position:absolute;right:-6px;bottom:-6px;width:24px;height:24px;border-radius:12px;background:#16140F;color:#FFCC2E;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px var(--bg)}
+.dark .qa .t b{background:#FFCC2E;color:#16140F}
+.findc{border-radius:18px;border:1.5px dashed #BDB29C;padding:14px 16px;display:flex;align-items:center;gap:14px}
+.dark .findc{border-color:#5A554C}
+.tag1{display:inline-block;font:800 10px Archivo;font-stretch:112%;letter-spacing:.7px;padding:3px 7px;border-radius:6px;background:var(--seg);color:var(--fg2);margin-top:6px}
+.fact{display:flex;align-items:flex-start;gap:12px;min-height:52px;padding:15px 16px;position:relative}
+.fact + .fact::before{content:"";position:absolute;top:0;left:16px;right:16px;height:1px;background:var(--hair)}
+.fact .k{font:400 15px/21px Inter;color:var(--mute);width:84px;flex:none}
+.fact .v{font:600 15.5px/21px Inter;flex:1}
+.ditched{display:inline-block;font:800 11px Archivo;font-stretch:112%;letter-spacing:1.6px;padding:3px 8px;border-radius:7px;box-shadow:inset 0 0 0 2px var(--fg);transform:rotate(-3deg)}
+.stp{display:flex;gap:12px;align-items:center;font:400 15.5px/21px Inter;min-height:34px}
+.stp .num{width:24px;height:24px;font-size:13px}
+</style></head><body>
+<script src="common.js"></script>
+<script>
+const home = (dark) => `${SB()}<div class="pad" style="padding-top:8px">${HEAD(dark)}<div style="height:10px"></div>${TOTAL('$29.98', '$360', '2 of 2', dark)}
+ <div class="mini-card" style="margin-top:10px"><span>${ICN.bell(18, 'var(--fg)', 'var(--fg)')}</span><div style="flex:1"><div style="font:400 16px Inter"><b style="font-weight:600">Next reminder:</b> Netflix</div><div class="sub">Sat, Nov 21, 9 AM</div></div>${ICN.chev(18)}</div>
+ <div class="eyebrow" style="margin:20px 4px 8px">Next week</div>
+ <div class="card">${SUBROW('netflix', 'Netflix', 'Tue, Nov 24 · in 5 days', '$17.99')}${SUBROW('spotify', 'Spotify', 'Thu, Nov 26', '$11.99')}</div>
+ <div style="display:flex;justify-content:space-between;align-items:baseline;margin:22px 4px 12px"><span class="eyebrow">Missing any?</span><span style="font:600 14px Inter;color:var(--fg2);text-decoration:underline;text-underline-offset:3px">See all</span></div>
+ <div class="qa">${[['chatgpt-plus', 'ChatGPT'], ['amazon-prime', 'Prime'], ['disney-plus', 'Disney+'], ['youtube-premium', 'YouTube']].map(([l, n]) => `<div><span class="t">${L(l, 54)}<b>${ICN.plus(14, 'currentColor', 3.2)}</b></span>${n}</div>`).join('')}</div>
+ <div class="findc" style="margin-top:18px"><span style="width:44px;height:44px;border-radius:12px;background:var(--sunSoft);color:var(--fg);display:flex;align-items:center;justify-content:center;flex:none">${ICN.phonelist(24)}</span><div style="flex:1"><div style="font:600 16px Inter">Find my subscriptions</div><div class="sub" style="font-size:14px;line-height:19px">From your Apple list or a bank statement</div><span class="tag1">1 FREE, THEN PRO</span></div><span style="color:var(--mute)">${ICN.chev(18)}</span></div>
+</div>${TABS('Home')}`;
+
+const detail = `${SB()}${NAV('Ditched')}
+<div class="pad" style="flex:1;display:flex;flex-direction:column;padding-top:6px">
+ <div style="display:flex;gap:14px;align-items:center">${L('chatgpt-plus', 60, 'filter:grayscale(1);opacity:.55')}<div style="flex:1"><div style="display:flex;align-items:center;gap:10px"><span class="h1" style="font-size:28px">ChatGPT</span><span class="ditched">DITCHED</span></div><div class="sub" style="font-size:15px;margin-top:3px">Plus · <s>$19.99 a month</s> · Ditched Nov 19</div></div></div>
+ <div class="total" style="margin-top:18px;padding:16px 18px 16px;position:relative"><img src="../icon/v4/duck-full.png" alt="" style="position:absolute;right:16px;bottom:14px;width:74px"><div class="big" style="font-size:46px;line-height:50px">$239.88</div><div style="font:800 19px/24px Archivo;font-stretch:112%;letter-spacing:-.3px;margin-top:2px">a year you won’t pay,<br>once you cancel.</div></div>
+ <div class="card" style="margin-top:12px">
+  <div class="fact"><span class="k">Charges</span><span class="v">Tue, Nov 24. Cancel before then to stop it.</span></div>
+  <div class="fact"><span class="k">Paid with</span><span class="v">Visa ending 4821</span></div>
+  <div class="fact"><span class="k">Last check</span><span class="v" style="display:flex;gap:8px;align-items:center">${ICN.bell(16, 'var(--sun)', 'var(--fg)')}Mon, Nov 23, 9 AM</span></div>
+ </div>
+ <div class="card" style="margin-top:12px;padding:14px 16px 12px">
+  <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:600 16px Inter">How to cancel</span><span style="font:400 13px Inter;color:var(--mute)">About a minute</span></div>
+  <div style="margin-top:8px">
+   <div class="stp"><span class="num">1</span>Open ChatGPT, tap your profile</div>
+   <div class="stp"><span class="num">2</span>Tap My plan, then Manage</div>
+   <div class="stp"><span class="num">3</span>Cancel, and keep the email</div>
+  </div>
+ </div>
+ <div style="flex:1;min-height:14px"></div>
+ <div class="btn">Open ChatGPT to cancel ${ICN.ext(18)}</div>
+ <div style="display:flex;gap:10px;margin-top:10px"><div class="btn line" style="flex:1;height:50px">I cancelled it</div><div class="btn line" style="flex:1;height:50px;box-shadow:inset 0 0 0 1.5px var(--chipBorder)">Track it again</div></div>
+ <div style="height:36px"></div>
+</div>`;
+
+render({
+  title: '16 · Short lists get useful things to tap',
+  note: 'With 1–4 subs, Home had a big empty bottom. Now the space under the list does work: one-tap logos for the services people most often forget (the same + badge as the empty-state Quick add), then a dashed “Find my subscriptions” card. Both disappear once the list is long (5+). The Ditched detail fills the iPhone 12 height with what you need to actually cancel (Ubank, Origin, Revolut, Ro).',
+  cells: [
+    { cap: '16a · Home with 2 subs', sub: '“Missing any?” logos add in one tap (opens the add form pre-filled). Dashed card = an offer, not content; tag says “1 FREE, THEN PRO”.', html: home(false) },
+    { cap: '16b · Dark', sub: 'Badges and the dashed outline flip for dark; the yearly card becomes the dark money card as in today’s app.', dark: true, html: home(true) },
+    { cap: '16c · Ditched detail · iPhone 12', sub: 'Logo greyed, price struck, DITCHED tag kept. Facts fixed: it charges Nov 24, cancel before then. Steps right here; “Track it again” always reachable.', html: detail },
+  ]
+});
+</script></body></html>

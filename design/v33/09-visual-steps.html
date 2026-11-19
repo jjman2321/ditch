@@ -22,14 +22,14 @@
 </style></head><body>
 <script src="common.js"></script>
 <script>
-const tick = (x, y) => TAP(x, y, .8);
+const tick = (x, y, d = 20) => `<span style="position:absolute;left:${x - d / 2}px;top:${y - d / 2}px;width:${d}px;height:${d}px;border-radius:50%;box-shadow:0 0 0 2.5px #16140F,0 0 0 4px #fff,0 0 0 9px rgba(22,20,15,.12);z-index:4"></span>`;
 // ---- tiny iPhone screens ----
 const miniAccount = () => `<div class="mini"><div class="isl"></div>
  <div style="height:20px"></div>
  <div style="display:flex;flex-direction:column;align-items:center;gap:3px"><span style="width:24px;height:24px;border-radius:12px;background:linear-gradient(#B9B4A8,#8E897D);display:flex;align-items:center;justify-content:center;color:#fff;font:700 9px Inter">SM</span>${BAR(38, 'var(--mtext)', 4)}</div>
  <div style="height:7px"></div>
  <div class="grp"><div class="r">${BAR(44)}</div><div class="r">${BAR(36)}</div><div class="r hl">Subscriptions<span style="margin-left:auto;display:flex">${ICN.chev(8)}</span></div><div class="r">${BAR(30)}</div></div>
- ${tick(84, 85)}</div>`;
+ ${tick(80, 98)}</div>`;
 const miniSubs = () => `<div class="mini"><div class="isl"></div>
  <div style="height:21px"></div><div class="ttl">Subscriptions</div><div style="height:5px"></div>
  <div class="grp">${[['netflix', 'Netflix'], ['spotify', 'Spotify'], ['chatgpt-plus', 'ChatGPT'], ['duolingo', 'Duolingo'], ['youtube-premium', 'YouTube']].map(([l, n]) => `<div class="r" style="height:19px"><img src="${LP}${l}.png" style="width:11px;height:11px;border-radius:3px"><span style="font:600 6.5px Inter;flex:1">${n}</span>${BAR(14, 'var(--mline)', 3)}</div>`).join('')}</div>
@@ -42,18 +42,18 @@ const miniPicker = () => {
   return `<div class="mini"><div class="isl"></div><div style="height:21px"></div><div class="ttl" style="display:flex;justify-content:space-between"><span>Recents</span><span style="color:#2F7BF6;font-weight:600">Add</span></div><div style="height:5px"></div>
  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:0 3px">
  <span style="height:34px;background:#fff;border-radius:1px;position:relative;box-shadow:inset 0 0 0 2px #FFCC2E;padding:5px 4px;display:flex;flex-direction:column;gap:3px">${BAR(14, '#16140F', 2.5)}${[0, 1, 2, 3].map(() => `<span style="display:flex;gap:2px;align-items:center"><span style="width:4px;height:4px;border-radius:1px;background:#16140F"></span>${BAR(12, '#D3D0C8', 2)}</span>`).join('')}<span style="position:absolute;right:-1px;bottom:-1px;width:11px;height:11px;border-radius:6px;background:#FFCC2E;box-shadow:0 0 0 1.5px #16140F;display:flex;align-items:center;justify-content:center">${ICN.check(7, '#16140F')}</span></span>
- ${cols.map(c => `<span style="height:34px;background:${c};border-radius:1px"></span>`).join('')}</div>${tick(28, 62)}</div>`;
+ ${cols.map(c => `<span style="height:34px;background:${c};border-radius:1px"></span>`).join('')}</div>${tick(19, 54, 32)}</div>`;
 };
 const miniHome = () => {
   const c = ['#5AA0E6', '#E86B5A', '#62C27A', '#F2B441', '#8E7BE0', '#4BB6B0', '#E58FB7', '#7D8794', '#C9A36A', '#6FA3C7', '#E07B45', '#9BBF5C'];
   return `<div class="mini" style="background:linear-gradient(160deg,#E9DFC8,#CFC2A3)"><div class="isl"></div><div style="height:24px"></div>
  <div style="display:grid;grid-template-columns:repeat(4,17px);justify-content:space-between;row-gap:9px;padding:0 9px">${c.map((x, i) => i === 5 ? `<span style="width:17px;height:17px;border-radius:5px;background:#16140F;color:#FFCC2E;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #FFCC2E">${ICN.bank(11)}</span>` : `<span style="width:17px;height:17px;border-radius:5px;background:${x};opacity:.75"></span>`).join('')}</div>
- ${tick(58, 66)}</div>`;
+ ${tick(40.5, 58.5, 24)}</div>`;
 };
 const miniStatements = () => `<div class="mini"><div class="isl"></div><div style="height:21px"></div><div class="ttl">Statements</div><div style="height:5px"></div>
- <div class="grp">${['Oct 2026', 'Sep 2026', 'Aug 2026', 'Jul 2026'].map((m, i) => `<div class="r ${i === 0 ? 'hl' : ''}" style="height:19px"><span style="font:${i === 0 ? 700 : 500} 6.8px Inter;flex:1">${m}</span><span style="font:800 5.5px Inter;padding:1px 2px;border-radius:2px;background:${i === 0 ? '#16140F' : 'var(--mline)'};color:${i === 0 ? '#FFCC2E' : 'var(--mtext)'}">PDF</span><span style="font:800 5.5px Inter;padding:1px 2px;border-radius:2px;background:${i === 0 ? '#16140F' : 'var(--mline)'};color:${i === 0 ? '#FFCC2E' : 'var(--mtext)'}">CSV</span></div>`).join('')}</div>${tick(58, 66)}</div>`;
+ <div class="grp">${['Oct 2026', 'Sep 2026', 'Aug 2026', 'Jul 2026'].map((m, i) => `<div class="r ${i === 0 ? 'hl' : ''}" style="height:19px"><span style="font:${i === 0 ? 700 : 500} 6.8px Inter;flex:1">${m}</span><span style="font:800 5.5px Inter;padding:1px 2px;border-radius:2px;background:${i === 0 ? '#16140F' : 'var(--mline)'};color:${i === 0 ? '#FFCC2E' : 'var(--mtext)'}">PDF</span><span style="font:800 5.5px Inter;padding:1px 2px;border-radius:2px;background:${i === 0 ? '#16140F' : 'var(--mline)'};color:${i === 0 ? '#FFCC2E' : 'var(--mtext)'}">CSV</span></div>`).join('')}</div>${tick(66, 46, 20)}</div>`;
 const miniFiles = () => `<div class="mini"><div class="isl"></div><div style="height:21px"></div><div class="ttl" style="display:flex;justify-content:space-between"><span>Downloads</span><span style="color:#2F7BF6;font-weight:600">Open</span></div><div style="height:5px"></div>
- <div class="grp">${[['Statement Oct', 'PDF', 1], ['Boarding pass', 'PDF'], ['Lease 2026', 'PDF'], ['Photos.zip', 'ZIP']].map(([n, t, h]) => `<div class="r ${h ? 'hl' : ''}" style="height:20px"><span style="width:9px;height:11px;border-radius:1.5px;background:${h ? '#fff' : 'var(--mline)'};box-shadow:inset 0 0 0 .8px ${h ? '#16140F' : 'transparent'};position:relative"><span style="position:absolute;left:1px;right:1px;bottom:1.5px;height:3px;background:#E0483A;border-radius:.5px"></span></span><span style="font:${h ? 700 : 500} 6.8px Inter;flex:1">${n}</span><span style="font:500 5.5px Inter;opacity:.6">${t}</span></div>`).join('')}</div>${tick(70, 58)}</div>`;
+ <div class="grp">${[['Oct statement', 'PDF', 1], ['Boarding pass', 'PDF'], ['Lease 2026', 'PDF'], ['Photos.zip', 'ZIP']].map(([n, t, h]) => `<div class="r ${h ? 'hl' : ''}" style="height:20px"><span style="width:9px;height:11px;border-radius:1.5px;background:${h ? '#fff' : 'var(--mline)'};box-shadow:inset 0 0 0 .8px ${h ? '#16140F' : 'transparent'};position:relative"><span style="position:absolute;left:1px;right:1px;bottom:1.5px;height:3px;background:#E0483A;border-radius:.5px"></span></span><span style="font:${h ? 700 : 500} 6.8px Inter;flex:1">${n}</span><span style="font:500 5.5px Inter;opacity:.6">${t}</span></div>`).join('')}</div>${tick(14, 47, 18)}</div>`;
 
 const STEP = (n, t, d, mini) => `<div class="card step"><div class="t"><span class="num">${n}</span><b>${t}</b></div><div class="d">${d}</div>${mini}</div>`;
 

@@ -1,0 +1,72 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>v33 · 11 Feedback sheet</title>
+<link rel="stylesheet" href="common.css">
+<style>
+.grp{background:var(--card);border-radius:18px;box-shadow:var(--shadow)}
+.srow{min-height:52px;display:flex;align-items:center;gap:10px;padding:0 16px;position:relative;font:400 17px Inter}
+.srow + .srow::before{content:"";position:absolute;top:0;left:16px;right:0;height:1px;background:var(--hair)}
+.srow .v{margin-left:auto;color:var(--mute);display:flex;align-items:center;gap:6px}
+.lbl{font:700 12px/16px Inter;letter-spacing:1.2px;text-transform:uppercase;color:var(--mute);margin:0 4px 8px}
+.area{background:var(--card);border-radius:16px;box-shadow:inset 0 0 0 1.5px var(--chipBorder);padding:14px 16px;font:400 16px/23px Inter}
+.dash{height:52px;border-radius:16px;box-shadow:none;border:1.5px dashed #B9AF9A;display:flex;align-items:center;justify-content:center;gap:8px;font:600 16px Inter}
+.chiprow{display:flex;gap:8px}
+.chiprow .chip{height:44px;padding:0 16px;font-size:15.5px}
+</style></head><body>
+<script src="common.js"></script>
+<script>
+const chev = `<span style="color:var(--mute);display:flex">${ICN.chev(16)}</span>`;
+const settingsBG = `${SB()}${NAV('Home')}
+<div class="pad" style="padding-top:6px">
+ <div class="h1">Settings</div>
+ <div class="lbl" style="margin-top:22px">Your list</div>
+ <div class="grp"><div class="srow">Currency<span class="v">USD $${chev}</span></div><div class="srow">Payday<span class="v">Off${chev}</span></div><div class="srow">Your data<span class="v">${chev}</span></div></div>
+ <div class="lbl" style="margin-top:24px">Feedback &amp; help</div>
+ <div class="grp">
+  ${[['Report a problem', 'Tell us what broke'], ['Suggest a feature', 'What would make Ditch better'], ['Suggest a subscription', 'Missing one? We’ll add it'], ['Rate Ditch', 'Opens the App Store']].map(([a, b]) => `<div class="srow" style="min-height:64px"><div><div>${a}</div><div class="sub" style="font-size:14px">${b}</div></div><span class="v">${chev}</span></div>`).join('')}
+ </div>
+ <div class="fine" style="text-align:left;margin:8px 4px 0;color:var(--mute)">All three open a short form right here.</div>
+ <div class="grp" style="margin-top:24px"><div class="srow">About Ditch<span class="v">${chev}</span></div></div>
+</div>`;
+
+const camera = ICN.camera(20);
+const form = ({ kind, filled }) => {
+  const kinds = ['Problem', 'Idea', 'Missing service'];
+  const ph = { Problem: 'What happened? What did you tap just before?', Idea: 'What would make Ditch better for you?', 'Missing service': 'Which service? Its price helps too.' }[kind];
+  return `${settingsBG}<div class="scrim"></div>
+<div class="sheet" style="top:58px"><div class="grab"></div>
+ <div class="pad" style="padding-top:14px;display:flex;flex-direction:column;flex:1">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="h1" style="font-size:26px;line-height:32px">Tell us something</div><span class="xbtn" style="margin-top:1px">${ICN.close(12)}</span></div>
+  <div class="lead" style="margin-top:4px">A real person reads every one.</div>
+  <div class="chiprow" style="margin-top:16px">${kinds.map(k => `<span class="chip ${k === kind ? 'on' : ''}">${k}</span>`).join('')}</div>
+  <div class="area" style="margin-top:14px;height:${filled ? 176 : 196}px;${filled ? 'box-shadow:inset 0 0 0 2px var(--fg)' : ''}">${filled ? 'Nebula. $6 a month or $60 a year, billed through their website.<span class="caret" style="display:inline-block;vertical-align:-4px;margin-left:1px;height:20px"></span>' : `<span class="ph">${ph}</span>`}</div>
+  ${filled ? `<div style="display:flex;gap:12px;align-items:center;margin-top:12px"><span style="position:relative;width:52px;height:72px;border-radius:8px;background:#fff;box-shadow:0 0 0 1px var(--chipBorder),0 4px 10px rgba(0,0,0,.08);padding:8px 6px;display:flex;flex-direction:column;gap:4px;flex:none">${BAR(26, '#16140F', 3)}${[0, 1, 2, 3, 4].map(() => BAR(36, '#DED8CB', 3)).join('')}<span style="position:absolute;top:-8px;right:-8px;width:22px;height:22px;border-radius:11px;background:var(--fg);color:var(--bg);display:flex;align-items:center;justify-content:center">${ICN.close(9)}</span></span><div style="flex:1"><div style="font:600 15px Inter">1 screenshot added</div><div class="sub" style="font-size:14px">Tap to add another</div></div></div>` : `<div class="dash" style="margin-top:12px">${camera}Add a screenshot</div>`}
+  <div class="lbl" style="margin-top:20px">Email <span style="text-transform:none;letter-spacing:0;font-weight:500">(optional)</span></div>
+  <div class="field" style="box-shadow:inset 0 0 0 1.5px var(--chipBorder);font-size:16px">${filled ? 'maya.r@icloud.com' : '<span class="ph">Only if you’d like a reply</span>'}</div>
+  <div style="flex:1"></div>
+  <div class="btn" style="${filled ? '' : 'opacity:.35'}">Send</div>
+  <div class="fine" style="margin:10px 0 36px;color:var(--mute)">Also sends your iPhone model and app version.<br>Nothing from your list.</div>
+ </div></div>`;
+};
+
+const gotit = `${settingsBG}<div class="scrim"></div>
+<div class="sheet" style="height:452px"><div class="grab"></div>
+ <div class="pad" style="padding-top:26px;display:flex;flex-direction:column;flex:1;align-items:center;text-align:center">
+  <img src="../icon/v4/duck-full.png" style="width:112px;height:auto;display:block">
+  <div class="h1" style="margin-top:16px">Got it. Thanks.</div>
+  <div class="lead" style="margin-top:8px;max-width:300px">We read every note. You left an email, so expect a reply from a human.</div>
+  <div style="flex:1"></div>
+  <div class="btn" style="width:100%">Done</div>
+  <div style="height:40px"></div>
+ </div></div>`;
+
+render({
+  title: '11 · Feedback without leaving the app',
+  note: 'The three Settings rows stay where they are, but open one in-app sheet (Substack, Yami, Clue) instead of Mail. The row you tap picks the chip. Screenshot and email are optional; the email field says so in its label and the placeholder is a prompt, not fake data. Privacy label: optional, user-typed feedback should fit Apple’s exception and keep “Data Not Collected”; re-check before submission.',
+  cells: [
+    { cap: '11a · Settings → Feedback & help', sub: 'Same rows as now, new one-line hints. No “Opens an email to…”.', html: settingsBG },
+    { cap: '11b · Sheet, from “Report a problem”', sub: 'Chip pre-picked. Send stays dimmed until there’s text. Fine print says exactly what goes along.', html: form({ kind: 'Problem' }) },
+    { cap: '11c · Filled, “Missing service”', sub: 'Placeholder adapts per chip. Screenshot shows as a thumbnail with a remove ×.', html: form({ kind: 'Missing service', filled: true }) },
+    { cap: '11d · Got it', sub: 'The duck, whole, has a job here: a thank-you. One button. Without an email: “Thanks. We read every note.”', html: gotit },
+  ]
+});
+</script></body></html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>v33 · 12 Paywall</title>
+<link rel="stylesheet" href="common.css">
+<style>
+.pw{position:relative;flex:1;display:flex;flex-direction:column}
+.pw .sunbg{position:absolute;left:0;right:0;top:0;background:var(--sunHead);z-index:0}
+.pw > *{position:relative;z-index:1}
+.pw .top{display:flex;justify-content:space-between;align-items:center}
+.pw .wm{font:900 24px Archivo;font-stretch:125%;letter-spacing:-.8px;display:flex;align-items:center;gap:7px;color:var(--fg)}
+.pw .wm span{font:700 11px Inter;letter-spacing:0;border:1.5px solid currentColor;border-radius:9px;padding:1px 6px}
+.dark .pw .wm span{background:#FFCC2E;color:#16140F;border-color:#FFCC2E}
+.pw .x{width:32px;height:32px;border-radius:16px;background:rgba(22,20,15,.1);display:flex;align-items:center;justify-content:center;color:#16140F}
+.dark .pw .x{background:#2A2722;color:#F6F0E3}
+.pw .hl{font-family:Archivo;font-weight:900;font-stretch:115%;letter-spacing:-.9px;color:var(--sunFg)}
+.tbl{background:var(--card);border-radius:20px;box-shadow:0 1px 2px rgba(22,20,15,.05),0 8px 24px rgba(70,50,0,.08),inset 0 0 0 1px var(--cardBorder);position:relative}
+.dark .tbl{box-shadow:inset 0 0 0 1px #2C2924}
+.procol{position:absolute;border-radius:16px;background:#FFF1BC;box-shadow:inset 0 0 0 2px #FFCC2E,0 6px 16px rgba(180,130,0,.14);z-index:0}
+.dark .procol{background:#2E2710;box-shadow:inset 0 0 0 2px #FFCC2E}
+.tr{display:flex;align-items:center;position:relative;z-index:1}
+.tr + .tr::before{content:"";position:absolute;top:0;left:16px;height:1px;background:var(--hair)}
+.tr .a{flex:1;font:500 15px Inter;letter-spacing:-.2px;padding-left:16px}
+.tr .f{text-align:center;color:var(--mute);font:500 15px Inter}
+.tr .p{text-align:center;font:700 15px Inter;display:flex;justify-content:center;color:#16140F}
+.dark .tr .p{color:#FFCC2E}
+.dash{display:inline-block;width:12px;height:2px;border-radius:1px;background:#A39B8A;vertical-align:middle}
+.prpill{font:800 11.5px Archivo;font-stretch:115%;letter-spacing:1px;background:#16140F;color:#FFCC2E;border-radius:10px;padding:3px 10px}
+.plan{border-radius:16px;background:var(--card);box-shadow:inset 0 0 0 1.5px var(--chipBorder);display:flex;align-items:center;gap:12px;padding:0 16px;position:relative}
+.plan.on{box-shadow:inset 0 0 0 2.5px var(--fg)}
+.plan .nm2{font:600 17px/22px Inter;letter-spacing:-.3px}
+.plan .s2{font:400 13.5px/18px Inter;color:var(--mute)}
+.plan .pr{font:800 18px Archivo;font-stretch:110%;letter-spacing:-.3px;font-variant-numeric:tabular-nums;text-align:right}
+.badge{position:absolute;top:-10px;right:14px;background:#FFCC2E;color:#16140F;font:800 10.5px Archivo;font-stretch:112%;letter-spacing:.7px;padding:3px 8px;border-radius:7px;box-shadow:0 0 0 2px var(--bg)}
+.links{font:500 13px Inter;color:var(--fg2);text-align:center}
+.links u{text-underline-offset:3px;text-decoration-thickness:1px}
+.ruler{position:absolute;left:-58px;font:600 11px Inter;color:#625D52;white-space:nowrap}
+</style></head><body>
+<script src="common.js"></script>
+<script>
+// one paywall, sized per phone. Everything that changes per device lives in `d`.
+const SIZES = {
+  se: { w: 375, h: 667, se: 1, top: 40, hl: 26, lh: 30, mt: 2, G: 28, th: 24, rh: 31, colW: 76, raise: 10, duck: 48, gap1: 10, ph: 64, pg: 8, gap2: 10, cta: 54, padX: 16, finePad: 6, botPad: 6 },
+  i12: { w: 390, h: 844, top: 44, hl: 28, lh: 33, mt: 8, G: 46, th: 32, rh: 40, colW: 82, raise: 14, duck: 60, gap1: 16, ph: 68, pg: 8, gap2: 14, cta: 58, padX: 20, finePad: 8, botPad: 34 },
+  max: { w: 430, h: 932, top: 44, hl: 31, lh: 36, mt: 10, G: 52, th: 36, rh: 48, colW: 88, raise: 16, duck: 68, gap1: 20, ph: 72, pg: 10, gap2: 16, cta: 60, padX: 20, finePad: 8, botPad: 34 },
+};
+function paywall(k, dark) {
+  const d = SIZES[k];
+  const sbH = d.se ? 22 : 50;
+  const tableTop = sbH + d.top + d.mt + d.lh * 2 + d.G;
+  const rows = [['Reminders', '3', 'Unlimited'], ['Price hike alerts', '', 'y'], ['Yearly bill warnings', '', 'y'], ['Pick your reminder days', '', 'y'], ['Screenshot import', '1 free', 'y']];
+  const fW = 58;
+  const tbl = `<div class="tbl" style="margin:0 ${d.padX}px">
+   <span class="procol" style="right:10px;width:${d.colW}px;top:-${d.raise}px;bottom:-6px"></span>
+   <img src="../icon/v4/duck-full.png" alt="" style="position:absolute;z-index:2;width:${Math.round(d.duck * 1.04)}px;right:${10 + d.colW / 2 - d.duck * 0.52}px;top:${-d.raise - d.duck + 4}px">
+   <div class="tr" style="height:${d.th}px;align-items:flex-end;padding-bottom:4px"><span class="a"></span><span class="f" style="width:${fW}px;font-size:13px">Free</span><span class="p" style="width:${d.colW}px;margin-right:10px"><span class="prpill">PRO</span></span></div>
+   ${rows.map(([a, f, p]) => `<div class="tr" style="height:${d.rh}px"><span class="a" style="${d.se ? 'font-size:14px' : ''}">${a}</span><span class="f" style="width:${fW}px;${d.se ? 'font-size:14px' : ''}">${f || '<span class="dash"></span>'}</span><span class="p" style="width:${d.colW}px;margin-right:10px;${d.se ? 'font-size:14px' : ''}">${p === 'y' ? ICN.check(17) : p}</span></div>`).join('')}
+   <div style="height:6px"></div>
+  </div>`;
+  const plan = (on, name, sub, price, per, badge) => `<div class="plan ${on ? 'on' : ''}" style="height:${d.ph}px">${badge ? `<span class="badge">${badge}</span>` : ''}<span class="radio ${on ? 'on' : ''}" style="${on ? 'color:var(--accentFg)' : ''}">${on ? ICN.check(14) : ''}</span><div style="flex:1;min-width:0"><div class="nm2">${name}</div>${sub ? `<div class="s2" style="${sub.b ? 'font-weight:700;color:var(--fg)' : ''}">${sub.t}</div>` : ''}</div><div><div class="pr">${price}</div>${per ? `<div class="s2" style="text-align:right">${per}</div>` : ''}</div></div>`;
+  return `${SB(d.se)}<div class="pw">
+  <div class="sunbg" style="height:${tableTop - sbH + d.th + 4}px;top:${-sbH}px"></div>
+  <div class="top" style="height:${d.top}px;padding:0 ${d.padX}px"><span class="wm">ditch<span>Pro</span></span><span class="x">${ICN.close(12)}</span></div>
+  <div class="hl" style="font-size:${d.hl}px;line-height:${d.lh}px;margin:${d.mt}px ${d.padX}px 0">Get a reminder before<br>every renewal.</div>
+  <div style="height:${d.G}px"></div>
+  ${tbl}
+  <div style="height:${d.gap1}px;flex:none"></div>
+  <div style="padding:0 ${d.padX}px;display:flex;flex-direction:column;gap:${d.pg}px">
+   ${plan(false, 'Weekly', null, '$6.99/wk')}
+   ${plan(true, 'Yearly', { t: 'Free for 7 days', b: 1 }, '$59.99/yr', '$1.15 a week', 'SAVE 83%')}
+   ${plan(false, 'Lifetime', { t: 'Pay once. No subscription.' }, '$119.99', 'one time')}
+  </div>
+  <div style="flex:1;min-height:${d.gap2}px"></div>
+  <div style="padding:0 ${d.padX}px"><div class="btn" style="height:${d.cta}px;border-radius:${d.cta / 2}px;flex-direction:column;gap:0"><span>Start my free week</span><span style="font:500 13px Inter;opacity:.8;letter-spacing:-.1px">$0 today · Cancel anytime</span></div></div>
+  <div class="fine" style="margin-top:${d.finePad}px">Then $59.99/yr from Nov 26. Cancel anytime.</div>
+  <div class="links" style="margin-top:${d.se ? 3 : 6}px;padding-bottom:${d.botPad}px"><u>Restore</u> &nbsp;·&nbsp; <u>Terms</u> &nbsp;·&nbsp; <u>Privacy</u></div>
+  </div>`;
+}
+
+render({
+  title: '12 · Paywall: whole duck, bigger plans, no gap',
+  note: 'Same content as today (headline, Free vs PRO with the raised Pro column, three plans, CTA, renewal line, Restore · Terms · Privacy). Changes: the duck is drawn whole and stands on the Pro column, inside the sunflower header where there is room for him, so he can never be cropped; plan cards grow to 64–72pt; table rows and spacing scale with the screen so the space between table and plans stays one even step (Yazio, BitePal, DailyArt). Yearly fine print is the one line the owner asked for.',
+  cells: [
+    { cap: '12a · iPhone SE · 375×667', sub: 'Tightest case. Rows 31pt, plan cards 64pt, Restore line still on screen without scrolling.', w: 375, h: 667, cls: 'se', html: paywall('se') },
+    { cap: '12b · iPhone 12–16 · 390×844', sub: 'The owner’s phone. Rows 40pt, plans 68pt; the old empty gap is now card height.', html: paywall('i12') },
+    { cap: '12c · Pro Max · 430×932', sub: 'Rows 48pt, plans 72pt, bigger duck. Spacing grows evenly, nothing floats.', w: 430, h: 932, html: paywall('max') },
+    { cap: '12d · Dark · 390×844', sub: 'Matches today’s dark paywall: night header, sunflower headline, glowing Pro column, sunflower CTA.', dark: true, html: paywall('i12', true) },
+  ]
+});
+</script></body></html>

@@ -1,0 +1,25 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>v33 · Overview</title>
+<link rel="stylesheet" href="common.css">
+<style>
+body{width:1880px}
+.ov{display:grid;grid-template-columns:repeat(2,900px);gap:28px 40px;margin-top:8px}
+.ov figure{background:#F3EFE6;border-radius:22px;padding:16px 16px 14px;box-shadow:0 10px 30px rgba(40,30,0,.08)}
+.ov img{width:100%;display:block;border-radius:12px}
+.ov figcaption{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;font:800 20px Archivo;font-stretch:112%;letter-spacing:-.4px}
+.ov figcaption span{font:600 13px Inter;color:#5A544A;letter-spacing:0}
+.sc{display:inline-block;background:#16140F;color:#FFCC2E;border-radius:8px;padding:2px 8px;font:800 12px Archivo;font-stretch:110%;margin-left:8px}
+</style></head><body>
+<div class="board-h"><h1>v33 · Owner walkthrough fixes 9–14, 16</h1>
+<p>Mockups for approval, matched to the current build (Nov 19 screenshots). Light mode on every board; dark versions of the three most-used screens: Apple steps (9), paywall (12), Home (16), plus the hold-to-ditch state (13). Scores are my self-audit across UI, wording, colour and hierarchy.</p></div>
+<div class="ov">
+ <figure><figcaption>9 · Visual steps<span>Apple list · statement · Missing any? sheet<b class="sc">9/10</b></span></figcaption><img src="09-visual-steps.png"></figure>
+ <figure><figcaption>10 · One add sheet<span>+ · free trial · Missing any?<b class="sc">9/10</b></span></figcaption><img src="10-add-sheet.png"></figure>
+ <figure><figcaption>11 · In-app feedback<span>Settings · form · filled · Got it<b class="sc">9/10</b></span></figcaption><img src="11-feedback.png"></figure>
+ <figure><figcaption>12 · Paywall<span>SE · 12 · Pro Max · dark<b class="sc">9.5/10</b></span></figcaption><img src="12-paywall.png"></figure>
+ <figure><figcaption>13 · Ditching<span>swipe · long-press · hold button<b class="sc">9/10</b></span></figcaption><img src="13-ditching.png"></figure>
+ <figure><figcaption>14 · Calendar cells<span>2 logos · 3+ badge · anatomy<b class="sc">9/10</b></span></figcaption><img src="14-calendar.png"></figure>
+ <figure><figcaption>16 · Short lists + Ditched detail<span>Home 2 subs · dark · detail<b class="sc">9.5/10</b></span></figcaption><img src="16-home-ditched.png"></figure>
+</div>
+<script>Promise.all([...document.images].map(i => i.decode())).then(() => document.body.dataset.ready = '1');</script>
+</body></html>

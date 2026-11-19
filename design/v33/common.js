@@ -39,12 +39,12 @@ const TAP = (x, y, s = 1) => `<span style="position:absolute;left:${x}px;top:${y
 const BAR = (w, c = 'var(--mline)', h = 4) => `<span style="display:block;width:${w}px;height:${h}px;border-radius:2px;background:${c}"></span>`;
 
 // iOS keyboard (light or dark through vars)
-function KB(ret = 'search') {
+function KB(ret = 'search', sug = ['I', 'The', 'I’m']) {
   const rows = ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'];
   const key = (t, w = 33) => `<span style="width:${w}px;height:43px;border-radius:5px;background:var(--key);box-shadow:0 1px 0 rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font:400 23px Inter;color:var(--fg)">${t}</span>`;
   const key2 = (t, w, bg = 'var(--key2)', fs = 16, c = 'var(--fg)') => `<span style="width:${w}px;height:43px;border-radius:5px;background:${bg};box-shadow:0 1px 0 rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font:400 ${fs}px Inter;color:${c}">${t}</span>`;
   return `<div style="background:var(--kb);padding:8px 3px 0;height:336px;flex:none;position:relative;z-index:25">
-  <div style="height:36px;display:flex;align-items:center;justify-content:space-around;font:400 16px Inter;color:var(--fg);margin-bottom:4px"><span>"Pa"</span><span style="width:1px;height:22px;background:var(--key2)"></span><span>Paramount</span><span style="width:1px;height:22px;background:var(--key2)"></span><span>PayPal</span></div>
+  <div style="height:36px;display:flex;align-items:center;justify-content:space-around;font:400 16px Inter;color:var(--fg);margin-bottom:4px">${sug.map(x => `<span>${x}</span>`).join('<span style="width:1px;height:22px;background:var(--key2)"></span>')}</div>
   <div style="display:flex;justify-content:center;gap:6px;margin-bottom:11px">${[...rows[0]].map(k => key(k)).join('')}</div>
   <div style="display:flex;justify-content:center;gap:6px;margin-bottom:11px">${[...rows[1]].map(k => key(k)).join('')}</div>
   <div style="display:flex;justify-content:space-between;padding:0 0;margin-bottom:11px">${key2('⇧', 43)}<span style="display:flex;gap:6px">${[...rows[2]].map(k => key(k)).join('')}</span>${key2('⌫', 43)}</div>
@@ -53,6 +53,6 @@ function KB(ret = 'search') {
 }
 
 function render(B) {
-  document.body.innerHTML = `<div class="board-h"><h1>${B.title}</h1>${B.note ? `<p>${B.note}</p>` : ''}</div><div class="grid">${B.cells.map(c => `<div class="cell" style="width:${(c.w || 390) + 20}px"><div class="cap">${c.cap}<small>${c.sub || ''}</small></div><div class="phone ${c.dark ? 'dark' : ''} ${c.cls || ''}" style="width:${c.w || 390}px;height:${c.h || 844}px">${c.html}${c.nohi ? '' : HI}</div></div>`).join('')}</div>`;
+  document.body.innerHTML = `<div class="board-h"><h1>${B.title}</h1>${B.note ? `<p>${B.note}</p>` : ''}</div><div class="grid">${B.cells.map(c => `<div class="cell" style="width:${(c.w || 390) + 20}px"><div class="cap">${c.cap}<small>${c.sub || ''}</small></div>${c.raw ? c.html : `<div class="phone ${c.dark ? 'dark' : ''} ${c.cls || ''}" style="width:${c.w || 390}px;height:${c.h || 844}px">${c.html}${c.nohi ? '' : HI}</div>`}</div>`).join('')}</div>`;
   document.body.dataset.ready = '1';
 }

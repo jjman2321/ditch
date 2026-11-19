@@ -1,0 +1,50 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>v33 · 10 One add sheet</title>
+<link rel="stylesheet" href="common.css">
+<style>
+.tk{width:28px;height:28px;border-radius:14px;box-shadow:inset 0 0 0 2px #C4BBA8;display:flex;align-items:center;justify-content:center;flex:none}
+.dark .tk{box-shadow:inset 0 0 0 2px #5A554C}
+.tk.on{background:#16140F;box-shadow:none;color:#FFCC2E}
+.prow{display:flex;align-items:center;gap:12px;min-height:64px;position:relative}
+.prow + .prow::before{content:"";position:absolute;top:0;left:52px;right:0;height:1px;background:var(--hair)}
+.tile{width:40px;height:40px;border-radius:12px;background:var(--sunSoft);color:var(--fg);display:flex;align-items:center;justify-content:center;flex:none}
+.ctl{min-height:64px;display:flex;align-items:center;gap:12px;border-radius:16px;padding:10px 14px;background:var(--card);box-shadow:inset 0 0 0 1.5px var(--chipBorder)}
+.sfield{height:48px;border-radius:14px;background:var(--chipBg);box-shadow:inset 0 0 0 1.5px var(--chipBorder);display:flex;align-items:center;gap:8px;padding-left:16px;font:400 16px Inter;color:var(--mute)}
+.sfield.focus{box-shadow:inset 0 0 0 2px var(--fg)}
+.sheet .pad>*{flex:none}
+.chips{display:flex;gap:8px;margin-top:8px;height:44px;align-items:center;white-space:nowrap;margin-right:-24px;overflow:hidden}
+.chips .chip{height:36px;box-shadow:inset 0 0 0 1.5px var(--chipBorder);padding:0 16px}
+.chips .chip.on{box-shadow:none}
+</style></head><body>
+<script src="common.js"></script>
+<script>
+const bgHome = `${SB()}<div class="pad" style="padding-top:8px">${HEAD(false)}<div style="height:10px"></div>${TOTAL('$29.98', '$360', '2 of 2')}</div>`;
+const POP = [['netflix', 'Netflix', 'Standard · $19.99/mo', '$19.99'], ['amazon-prime', 'Amazon Prime', '$14.99/mo', '$14.99'], ['spotify', 'Spotify', 'Individual · $12.99/mo', '$12.99'], ['disney-plus', 'Disney+', 'With Ads · $12.49/mo', '$12.49'], ['chatgpt-plus', 'ChatGPT', 'Plus · $19.99/mo', '$19.99'], ['apple-music', 'Apple Music', 'Individual · $11.99/mo', '$11.99'], ['max', 'HBO Max', 'Standard · $18.49/mo', '$18.49'], ['hulu', 'Hulu', 'With Ads · $12.49/mo', '$12.49']];
+const FORGOT = [['google-one', 'Google One', '100 GB · $1.99/mo'], ['audible', 'Audible', 'Premium · $14.95/mo'], ['amazon-prime', 'Amazon Prime', '$14.99/mo'], ['apple-music', 'Apple Music', 'Individual · $11.99/mo']];
+
+const sheet = ({ title, trial, focus, ticked = [] }) => {
+  const list = focus ? FORGOT : POP;
+  const chips = focus ? ['Often forgotten', 'Popular', 'Streaming', 'Music', 'AI'] : ['Popular', 'Streaming', 'Music', 'AI', 'Productivity'];
+  return `${bgHome}<div class="scrim"></div>
+<div class="sheet" style="top:58px"><div class="grab"></div>
+ <div class="pad" style="padding-top:14px;display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="h1" style="font-size:26px;line-height:32px">${title}</div><span class="xbtn" style="margin-top:1px">${ICN.close(12)}</span></div>
+  <div class="ctl" style="margin-top:14px;${trial ? 'box-shadow:inset 0 0 0 2px var(--fg)' : ''}"><span class="tile">${ICN.bell(20)}</span><div style="flex:1;min-width:0"><div style="font:600 15px/20px Inter">It’s a free trial</div><div class="sub" style="font-size:14px">${trial ? 'We’ll remind you before it ends' : 'Get a reminder before it ends'}</div></div><span class="switch ${trial ? 'on' : ''}"></span></div>
+  <div class="sfield ${focus ? 'focus' : ''}" style="margin-top:12px">${ICN.search(18)}${focus ? '<span class="caret" style="margin:0 -6px 0 0"></span>' : ''}<span>Search 213 services</span></div>
+  <div class="chips" data-allow>${chips.map((c, i) => `<span class="chip ${i === 0 ? 'on' : ''}">${c}</span>`).join('')}</div>
+  <div style="margin-top:4px">${list.map(([l, n, s], i) => `<div class="prow">${L(l, 40, 'border-radius:10px')}<div style="flex:1;min-width:0"><div style="font:600 16px/20px Inter">${n}</div><div class="sub" style="font-size:14px">${trial ? `Trial, then ${s.split(' · ').pop()}` : s}</div></div><span style="width:44px;height:44px;margin-right:-8px;display:flex;align-items:center;justify-content:center">${trial ? `<span style="color:var(--mute)">${ICN.chev(18)}</span>` : `<span class="tk ${ticked.includes(i) ? 'on' : ''}">${ticked.includes(i) ? ICN.check(16) : ''}</span>`}</span></div>`).join('')}</div>
+ </div>
+ ${focus ? KB('search') : trial ? `<div class="pad" style="position:absolute;left:0;right:0;bottom:0;padding:44px 24px 44px;background:linear-gradient(rgba(251,247,238,0),var(--sheet) 50%)"><div class="fine" style="font-size:14px">Pick one. Next, the day the trial ends.</div></div>` : `<div class="pad" style="position:absolute;left:0;right:0;bottom:0;padding:22px 24px 40px;background:linear-gradient(rgba(251,247,238,0),var(--sheet) 22%)"><div class="btn">Add 2</div></div>`}
+</div>`;
+};
+
+render({
+  title: '10 · One add sheet, three doors',
+  note: 'Today’s Add sheet stays exactly as it is (title, search, category chips, tick what you pay for, “Add 2”). The “Track a free trial” row becomes a switch inside it, and “Missing any?” stops being a separate page: it opens this same sheet with search ready (Orbit, Rocket Money). Same list everywhere, so nobody feels sent somewhere else.',
+  cells: [
+    { cap: '10a · From the + button', sub: 'Unchanged list and ticks. The trial row is now a switch (off), so the trial path is the same sheet, not a detour.', html: sheet({ title: 'Add a subscription', ticked: [0, 2] }) },
+    { cap: '10b · From “Track a free trial”', sub: 'Same sheet, same list. Header says why you’re here, the switch is on and outlined. One pick → the form with the end date.', html: sheet({ title: 'Track a free trial', trial: true }) },
+    { cap: '10c · From “Missing any?”', sub: 'Same sheet, search focused, keyboard up. An “Often forgotten” chip leads, with the small ones people lose track of.', html: sheet({ title: 'Add a subscription', focus: true, ticked: [] }) },
+  ]
+});
+</script></body></html>

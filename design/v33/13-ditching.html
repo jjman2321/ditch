@@ -1,0 +1,90 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>v33 · 13 Ditching</title>
+<link rel="stylesheet" href="common.css">
+<style>
+.mini-card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;padding:12px 16px;min-height:60px}
+.fchip{height:40px;padding:0 15px;border-radius:20px;display:inline-flex;align-items:center;font:600 15px Inter;background:var(--chipBg);box-shadow:inset 0 0 0 1.5px var(--chipBorder);flex:none}
+.fchip.on{background:var(--chipOnBg);color:var(--chipOnFg);box-shadow:none}
+.act{width:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font:600 13.5px Inter;flex:none}
+.menu{background:rgba(255,255,255,.96);border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.22);overflow:hidden;width:254px}
+.dark .menu{background:#2A2824}
+.mi{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font:400 17px Inter;letter-spacing:-.3px;position:relative}
+.mi + .mi{border-top:.5px solid rgba(60,60,67,.25)}
+.mi.sep{border-top:7px solid rgba(60,60,67,.08)!important}
+.fact{display:flex;align-items:center;gap:12px;min-height:56px;padding:8px 16px;position:relative}
+.fact + .fact::before{content:"";position:absolute;top:0;left:16px;right:16px;height:1px;background:var(--hair)}
+.fact .k{font:400 15px Inter;color:var(--mute);width:96px;flex:none}
+.fact .v{font:600 16px/21px Inter;flex:1}
+.holdbtn{height:76px;border-radius:38px;background:#16140F;color:#fff;display:flex;align-items:center;gap:14px;padding:0 10px;position:relative;overflow:hidden;font:600 18px Inter;letter-spacing:-.3px}
+.dark .holdbtn{background:#FFCC2E;color:#16140F}
+</style></head><body>
+<script src="common.js"></script>
+<script>
+const homeTop = (dark) => `${SB()}<div class="pad" style="padding-top:8px">${HEAD(dark)}<div style="height:10px"></div>${TOTAL('$90.95', '$1,091', '2 of 6', dark)}
+ <div class="mini-card" style="margin-top:10px"><span style="color:var(--fg)">${ICN.bell(18, 'var(--fg)', 'var(--fg)')}</span><div style="flex:1"><div style="font:400 16px Inter"><b style="font-weight:600">Next reminder:</b> Netflix</div><div class="sub">Sat, Nov 21, 9 AM</div></div>${ICN.chev(18)}</div>
+ <div style="display:flex;gap:8px;margin:14px -24px 0 0;overflow:hidden" data-allow><span class="fchip on">All</span><span class="fchip">Amex ending 1005</span><span class="fchip">Visa ending 4821</span></div>`;
+const rest = `<div class="eyebrow" style="margin:20px 4px 8px">Later</div><div class="card">${SUBROW('chatgpt-plus', 'ChatGPT', 'Tue, Dec 1', '$20.00')}${SUBROW('youtube-premium', 'YouTube Premium', 'Mon, Dec 7', '$13.99', 'off')}</div>`;
+
+// 13a swipe
+const swipe = `${homeTop(false)}
+ <div class="eyebrow" style="margin:20px 4px 8px">Next week</div>
+ <div class="card" style="overflow:hidden">
+  <div style="position:relative;height:62px;overflow:hidden;border-radius:18px 18px 0 0">
+   <div style="position:absolute;right:0;top:0;bottom:0;display:flex">
+    <span class="act" style="background:#EFE8D9;color:#16140F">${ICN.pencil(22)}Edit</span>
+    <span class="act" style="background:#FFCC2E;color:#16140F;width:84px">${ICN.stamp(23)}Ditch</span>
+   </div>
+   <div style="position:absolute;left:-160px;width:100%;top:0;background:var(--card)">${SUBROW('netflix', 'Netflix', 'Tue, Nov 24 · in 5 days', '$17.99')}</div>
+  </div>
+  ${SUBROW('spotify', 'Spotify', 'Thu, Nov 26', '$11.99', 'off')}
+ </div>
+ ${rest}</div>${TABS('Home')}`;
+
+// 13b long-press
+const press = `<div style="filter:blur(14px);opacity:.75;display:flex;flex-direction:column;height:100%">${homeTop(false)}
+ <div class="eyebrow" style="margin:20px 4px 8px">Next week</div><div class="card">${SUBROW('netflix', 'Netflix', 'Tue, Nov 24 · in 5 days', '$17.99')}${SUBROW('spotify', 'Spotify', 'Thu, Nov 26', '$11.99', 'off')}</div>${rest}</div>${TABS('Home')}</div>
+ <div style="position:absolute;inset:0;background:rgba(22,20,15,.12);z-index:9"></div>
+ <div style="position:absolute;left:18px;right:18px;top:446px;z-index:10">
+  <div class="card" style="box-shadow:0 18px 40px rgba(0,0,0,.18);transform:scale(1.02)">${SUBROW('netflix', 'Netflix', 'Tue, Nov 24 · in 5 days', '$17.99')}</div>
+  <div class="menu" style="margin-top:10px">
+   <div class="mi" style="font-weight:600">Ditch${ICN.stamp(21)}</div>
+   <div class="mi">Edit${ICN.pencil(20)}</div>
+   <div class="mi" style="height:60px"><div><div>Skip this charge</div><div style="font:400 13px Inter;color:#6B6559;margin-top:1px">Already paid? Skip its reminders</div></div>${ICN.skip(20)}</div>
+  </div>
+ </div>`;
+
+// 13c/d detail
+const ring = (p, dark) => { const r = 19, c = 2 * Math.PI * r; return `<svg width="52" height="52" viewBox="0 0 52 52" style="flex:none"><circle cx="26" cy="26" r="${r}" fill="none" stroke="${dark && !p ? 'rgba(22,20,15,.2)' : 'rgba(255,255,255,.22)'}" stroke-width="5"/>${p ? `<circle cx="26" cy="26" r="${r}" fill="none" stroke="#FFCC2E" stroke-width="5" stroke-linecap="round" stroke-dasharray="${c * p} ${c}" transform="rotate(-90 26 26)"/>` : ''}<g transform="translate(15 15)" style="color:${dark && !p ? '#16140F' : '#FFCC2E'}">${ICN.stamp(22)}</g></svg>`; };
+const detail = (hold, dark) => `${SB()}${NAV('Home', '<span style="font:600 17px Inter;padding:0 8px;min-height:44px;display:flex;align-items:center">Edit</span>')}
+<div class="pad" style="flex:1;display:flex;flex-direction:column;padding-top:8px">
+ <div style="display:flex;gap:14px;align-items:center">${L('netflix', 64)}<div><div class="h1">Netflix</div><div class="sub" style="font-size:15px;margin-top:2px">Standard plan</div></div></div>
+ <div class="total" style="margin-top:20px;padding:16px 18px"><div style="font:600 15px Inter">Every month</div><div class="big" style="font-size:44px;line-height:48px;margin-top:2px">$17.99</div><div class="yr" style="justify-content:space-between"><span><b style="font-weight:700">$215.88</b> a year</span><span>Renews monthly</span></div></div>
+ <div class="card" style="margin-top:12px">
+  <div class="fact"><span class="k">Next charge</span><span class="v">Tue, Nov 24 · in 5 days</span></div>
+  <div class="fact"><span class="k">Reminders</span><span class="v" style="display:flex;align-items:center;gap:8px">${ICN.bell(16, 'var(--sun)', 'var(--fg)')}Sat 21 &amp; Mon 23</span></div>
+  <div class="fact"><span class="k">Paid with</span><span class="v">Visa ending 4821</span></div>
+  <div class="fact"><span class="k">Account</span><span class="v ph" style="font-weight:400;color:var(--mute)">Add the email you use</span></div>
+  <div class="fact"><span class="k">Notes</span><span class="v ph" style="font-weight:400;color:var(--mute)">Shared plan, promo price…</span></div>
+ </div>
+ <div style="flex:1"></div>
+ <div class="fine" style="margin-bottom:12px;${hold ? 'color:var(--fg);font-weight:600;font-size:14px' : ''}">${hold ? 'Keep holding. Let go to stop.' : 'Ditching puts it on your To cancel list. You cancel with Netflix; we show you how.'}</div>
+ <div class="holdbtn" style="${dark ? '' : ''}">
+  ${hold ? `<span style="position:absolute;left:0;top:0;bottom:0;width:66%;background:${dark ? '#2A2722' : '#FFCC2E'};border-radius:38px 0 0 38px"></span>` : ''}
+  <span style="position:relative;display:flex">${ring(hold ? 0.66 : 0, dark)}</span>
+  <span style="position:relative;flex:1;${hold ? `color:${dark ? '#FFCC2E' : '#16140F'}` : ''}">${hold ? 'Ditching Netflix…' : 'Hold to ditch'}</span>
+  ${hold ? '<span style="position:absolute;right:46px;top:50%;width:58px;height:58px;margin-top:-29px;border-radius:50%;background:rgba(22,20,15,.16);box-shadow:0 0 0 8px rgba(22,20,15,.07)"></span>' : ''}
+ </div>
+ <div style="height:40px"></div>
+</div>`;
+
+render({
+  title: '13 · Ditching: swipe, long-press, or hold the big button',
+  note: 'Three ways in, one result (the Ditched moment you already like). Ditch is sunflower, never red: it isn’t deleting, the sub moves to To cancel and can be put back. On the detail screen the hold ring sits inside a 76pt button at the bottom, far from the name and price, so the thumb never hides what you’re ditching (Cleo, monday.com).',
+  cells: [
+    { cap: '13a · Swipe left on a row', sub: 'Edit (cream) and Ditch (sunflower). A full swipe = Ditch with a firm haptic, then the usual Ditched moment.', html: swipe },
+    { cap: '13b · Long-press a row', sub: 'iOS context menu: Ditch / Edit / Skip this charge. Skip says what it does in plain words (owner’s note #5).', html: press },
+    { cap: '13c · Detail: Hold to ditch', sub: 'The ring lives inside the button. One honest line above: you cancel with Netflix, Ditch shows how.', html: detail(false) },
+    { cap: '13d · Holding (dark)', sub: 'Ring and fill sweep left→right inside the button; label above says “let go to stop”. Reduce Motion: a 1 s hold with no sweep.', dark: true, html: detail(true, true) },
+  ]
+});
+</script></body></html>

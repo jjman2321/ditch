@@ -1,0 +1,79 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>v33 · 14 Calendar cells</title>
+<link rel="stylesheet" href="common.css">
+<style>
+.calg{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.dow{text-align:center;font:600 13px Inter;color:var(--fg2);padding-bottom:6px}
+.dc{height:62px;border-radius:12px;background:var(--card);position:relative;padding:5px 0 0 7px;font:600 16px Inter;letter-spacing:-.3px;color:var(--fg2)}
+.dc.pastx{color:var(--mute)}
+.dc.sel{background:#FFCC2E;color:#16140F;box-shadow:inset 0 0 0 2px #16140F}
+.dc .today{display:inline-flex;width:26px;height:26px;border-radius:13px;background:#16140F;color:#fff;align-items:center;justify-content:center;margin:-3px 0 0 -4px;font-size:15px}
+.dc .rd{position:absolute;left:8px;bottom:9px;width:8px;height:8px;border-radius:4px;background:#FFCC2E;box-shadow:inset 0 0 0 1px rgba(22,20,15,.35)}
+.stack{position:absolute;left:50%;bottom:7px;height:22px;display:flex}
+.stack > span{position:relative;border-radius:6px;overflow:hidden;box-shadow:0 0 0 2px var(--ring,#fff);flex:none;display:block}
+.stack img{width:100%;height:100%;display:block}
+.stack > span:not(.cnt)::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 .75px rgba(22,20,15,.22)}
+.cnt{border-radius:50%!important;background:#16140F;color:#FFCC2E;font:800 11px Archivo;font-stretch:110%;display:flex!important;align-items:center;justify-content:center}
+.zoom{background:#FBF7EE;border-radius:28px;padding:26px 24px;box-shadow:0 24px 50px rgba(40,30,0,.12);width:390px}
+.zoom .dc{transform-origin:top left}
+.zrow{display:flex;gap:18px;align-items:flex-start}
+.zl{font:600 13px/18px Inter;color:#3D392F;margin-top:10px;text-align:center}
+.zl small{display:block;font:500 12px/16px Inter;color:#6A655A}
+</style></head><body>
+<script src="common.js"></script>
+<script>
+// logo stack inside a day cell: 1 logo, 2 overlapping ~40%, 3+ = 2 logos + ink count circle
+const stack = (logos, ring = '#fff', s = 1) => {
+  if (!logos.length) return '';
+  const n = logos.length;
+  const sz = (n >= 3 ? 20 : n === 2 ? 22 : 24) * s, step = Math.round(sz * 0.6);
+  const two = logos.slice(0, 2);
+  const w = sz + step * (two.length - 1) + (n >= 3 ? 6 * s : 0);
+  const logoEl = (l, i) => `<span style="width:${sz}px;height:${sz}px;border-radius:${5 * s}px;margin-left:${i ? step - sz : 0}px;z-index:${3 - i};box-shadow:0 0 0 ${2 * s}px ${ring}"><img src="${LP}${l}.png"></span>`;
+  const cs = 15 * s;
+  const badge = n >= 3 ? `<span class="cnt" style="position:absolute;width:${cs}px;height:${cs}px;left:${step + sz - 9 * s}px;top:${sz - 9 * s}px;z-index:9;font-size:${10.5 * s}px;box-shadow:0 0 0 ${2 * s}px ${ring}">${n}</span>` : '';
+  return `<span class="stack" style="--ring:${ring};margin-left:${-w / 2}px;height:${sz}px;bottom:${(n >= 3 ? 12 : 7) * s}px">${two.map(logoEl).join('')}${badge}</span>`;
+};
+const DATA = { 24: ['netflix', 'spotify'], 28: ['hulu', 'chatgpt-plus', 'apple-music'] };
+const DOTS = [21, 23, 25, 27];
+const SUBS = { 24: [['netflix', 'Netflix', 'Reminders Sat 21, Mon 23', '$17.99'], ['spotify', 'Spotify', 'Reminders Sat 21, Mon 23', '$11.99']], 28: [['hulu', 'Hulu', 'No reminder · Free covers 3', '$12.49'], ['chatgpt-plus', 'ChatGPT', 'Reminders Wed 25, Fri 27', '$20.00'], ['apple-music', 'Apple Music', 'Reminders Wed 25, Fri 27', '$10.99']] };
+const cal = (sel) => {
+  let cells = '';
+  for (let i = 0; i < 30; i++) {
+    const d = i + 1;
+    const logos = DATA[d] || [];
+    const isSel = d === sel;
+    cells += `<div class="dc ${isSel ? 'sel' : ''} ${d < 19 ? 'pastx' : ''}">${d === 19 ? '<span class="today">19</span>' : d}${DOTS.includes(d) && !logos.length ? '<span class="rd"></span>' : ''}${stack(logos, isSel ? '#FFCC2E' : '#fff')}</div>`;
+  }
+  const list = SUBS[sel];
+  const tot = list.reduce((a, x) => a + parseFloat(x[3].slice(1)), 0).toFixed(2);
+  const day = sel === 24 ? 'Tue, Nov 24' : 'Sat, Nov 28';
+  return `${SB()}<div class="pad" style="padding-top:12px">
+  <div style="display:flex;justify-content:space-between;align-items:center"><div class="h1" style="font-size:34px;line-height:40px">November</div><span style="display:flex;gap:4px"><span style="width:44px;height:44px;display:flex;align-items:center;justify-content:center">${ICN.back('currentColor', 26)}</span><span style="width:44px;height:44px;display:flex;align-items:center;justify-content:center">${ICN.chev(24)}</span></span></div>
+  <div style="display:flex;align-items:baseline;gap:8px;margin-top:6px"><span style="font:900 30px Archivo;font-stretch:118%;letter-spacing:-1px">$73.46</span><span style="font:400 15px Inter;color:var(--fg2)">due in November · 5 charges</span></div>
+  <div class="calg" style="margin-top:14px">${'SMTWTFS'.split('').map(x => `<div class="dow">${x}</div>`).join('')}${cells}</div>
+  <div style="display:flex;gap:18px;margin-top:12px;font:400 14px Inter;color:var(--fg2)"><span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:5px;background:#FFCC2E;box-shadow:inset 0 0 0 1px rgba(22,20,15,.35)"></span>Reminder</span><span style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:6px;background:#16140F"></span>Today</span></div>
+  <div style="display:flex;justify-content:space-between;align-items:baseline;margin:20px 4px 8px"><span class="eyebrow">${day}</span><span style="font:600 14px Inter;color:var(--fg2)">${list.length} charges · $${tot}</span></div>
+  <div class="card">${list.map(([l, n, s, a]) => SUBROW(l, n, s, a, '')).join('')}</div>
+  </div>${TABS('Calendar')}`;
+};
+// days start on Sunday Nov 1 2026
+const zoomCell = (d, logos, label, sub, sel) => `<div><div style="width:${45 * 1.7}px;height:${62 * 1.7}px;position:relative"><div class="dc ${sel ? 'sel' : ''}" style="width:45px;transform:scale(1.7);position:absolute;left:0;top:0">${d}${stack(logos, sel ? '#FFCC2E' : '#fff')}</div></div><div class="zl">${label}<small>${sub}</small></div></div>`;
+const zoom = `<div class="zoom">
+ <div style="font:900 22px/26px Archivo;font-stretch:115%;letter-spacing:-.5px">Day cells, up close</div>
+ <div style="font:400 14.5px/20px Inter;color:#5A544A;margin-top:6px">No more “+1”. Logos overlap ~40% with a 2pt ring in the cell colour so each edge stays clean. From 3 charges, an ink circle with the day’s count sits on the corner, like an app badge.</div>
+ <div class="zrow" style="margin-top:22px">${zoomCell(9, ['netflix'], '1 charge', 'logo 24pt')}${zoomCell(24, ['netflix', 'spotify'], '2 charges', '22pt, 40% overlap')}${zoomCell(28, ['hulu', 'chatgpt-plus', 'apple-music'], '3 charges', '2 logos + “3” badge')}</div>
+ <div class="zrow" style="margin-top:22px">${zoomCell(14, ['netflix', 'spotify', 'hulu', 'max', 'disney-plus'], '5 charges', 'count says 5')}${zoomCell(28, ['hulu', 'chatgpt-plus', 'apple-music'], 'Selected', 'ring turns sunflower', 1)}${zoomCell(21, [], 'Reminder only', 'dot, as today').replace('</div><div class="zl">', '<span class="rd" style="position:absolute;left:8px;bottom:9px;width:8px;height:8px;border-radius:4px;background:#FFCC2E;box-shadow:inset 0 0 0 1px rgba(22,20,15,.35)"></span></div><div class="zl">')}</div>
+ <div style="font:400 13px/18px Inter;color:#6A655A;margin-top:22px">Fits the 45pt cell on every phone: 20 + 12 + 6 = 38pt wide. VoiceOver reads “Saturday 28, 3 charges, $43.48”.</div>
+</div>`;
+
+render({
+  title: '14 · Calendar: two logos, then a count',
+  note: 'Same calendar as today (Rocket Money, Orbit pattern for busy days). Tapping a day still opens its list below. Only the day cell changes.',
+  cells: [
+    { cap: '14a · Nov 28 selected (3 charges)', sub: 'Two logos + ink “3”. The list below names all three, with their reminder days.', html: cal(28) },
+    { cap: '14b · Cell anatomy', sub: '1, 2, 3, 5 charges, selected and reminder-only, at 1.7×.', raw: true, html: zoom },
+    { cap: '14c · Nov 24 selected (2 charges)', sub: 'Netflix and Spotify overlap; nothing is hidden behind a “+1”.', html: cal(24) },
+  ]
+});
+</script></body></html>

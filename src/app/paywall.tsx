@@ -15,6 +15,7 @@
 // the Free vs Pro table get smaller or scroll; the bottom part never shrinks below its width-fit size,
 // so Restore, Terms and the renewal line are always on screen and readable.
 
+import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Alert, Linking, Platform, Pressable, ScrollView, Text, View } from 'react-native';
@@ -32,7 +33,7 @@ import { OnbRoot } from '@/onboarding/Parts';
 import { PURCHASES_LIVE, billedLabel, planById, purchase, restorePurchases, type PlanId } from '@/services/purchases';
 import { onboardingToday, useOnboarding, usePickedList } from '@/state/onboarding';
 import { useApp } from '@/state/app';
-import { Button, Card, Check, Close, DuckIcon, F, PlanCard, ProLockup, Txt, brand, haptic, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
+import { Bell, Button, Card, Check, Close, DuckIcon, F, PlanCard, ProLockup, Txt, brand, haptic, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
 
 const NB = ' ';
 
@@ -93,6 +94,10 @@ const SHORT: Record<string, string> = {
 const CANVAS_W = 440;
 /** Gap between the raised Pro column and the table's right edge. */
 const PRO_INSET = 10;
+/** The standing duck (assets/brand/duck-stand.png, 240×231). */
+const DUCK_STAND = require('../../assets/brand/duck-stand.png');
+const STAND_W = 46;
+const STAND_H = Math.round((STAND_W * 231) / 240);
 const HERO_H = 190;
 const EDGE_W = 24;
 /** Everything on the canvas except the table rows (hero, table header, plans, button, price line, links). */
@@ -139,7 +144,7 @@ function fitRowsTo(rows: Row[], n: number): Row[] {
 }
 
 /** Free vs Pro. Fixed columns: Free 56pt; Pro fits "Unlimited" with 12pt either side. */
-function Compare({ rows, width, overlap, tiny, grow = 0, font = 14 }: { rows: Row[]; width: number; overlap: number; tiny?: boolean; grow?: number; font?: number }) {
+function Compare({ rows, width, overlap, tiny, grow = 0, font = 14, duck }: { rows: Row[]; width: number; overlap: number; tiny?: boolean; grow?: number; font?: number; duck?: 'stand' | 'bell' }) {
   const CELL_TEXT = { fontFamily: F.semi, fontSize: font, lineHeight: Math.round(font * 1.43) };
   const LABEL_TEXT = { fontFamily: F.medium, fontSize: font, letterSpacing: -0.1 };
   const p = usePalette();
@@ -200,6 +205,24 @@ function Compare({ rows, width, overlap, tiny, grow = 0, font = 14 }: { rows: Ro
           borderColor: brand.sunflower,
         }}
       />
+      {/* Preview: the duck stands on top of the Pro column (his column), optionally ringing a bell. */}
+      {duck ? (
+        <View
+          pointerEvents="none"
+          importantForAccessibility="no-hide-descendants"
+          accessibilityElementsHidden
+          style={{ position: 'absolute', right: PRO_INSET, width: colP, top: -14 - STAND_H + 3, height: STAND_H, alignItems: 'center', justifyContent: 'flex-end' }}
+        >
+          <Image source={DUCK_STAND} style={{ width: STAND_W, height: STAND_H }} contentFit="contain" transition={0} />
+          {duck === 'bell' ? (
+            <View style={{ position: 'absolute', left: colP / 2 - STAND_W / 2 - 16, top: 2, alignItems: 'center' }}>
+              <Bell color={brand.ink} fill={brand.white} size={22} />
+              <View style={{ position: 'absolute', left: -6, top: 3, width: 4, height: 2, borderRadius: 1, backgroundColor: brand.ink }} />
+              <View style={{ position: 'absolute', left: -7, top: 9, width: 5, height: 2, borderRadius: 1, backgroundColor: brand.ink }} />
+            </View>
+          ) : null}
+        </View>
+      ) : null}
       <View style={{ flexDirection: 'row', alignItems: 'center', height: 40 }} importantForAccessibility="no-hide-descendants">
         <View style={{ flex: 1 }} />
         <Txt v="sub" tone="mute" center style={{ width: colF, fontFamily: F.semi, fontSize: font }} maxFontSizeMultiplier={1.2}>
@@ -288,7 +311,8 @@ export default function Paywall() {
   // names their bank, and after the purchase the bank sign-in opens straight away.
   const { from, plan: planParam, bank: bankParam, pwduck } = useLocalSearchParams<{ from?: string; plan?: string; bank?: string; pwduck?: string }>();
   // Where the duck sits (owner, Nov 19: "have the duck somewhere"). Preview-only switch while the owner picks.
-  const duckAt: 'none' | 'promise' | 'avatar' = pwduck === 'promise' || pwduck === 'avatar' ? pwduck : 'none';
+  const duckAt: 'none' | 'promise' | 'avatar' | 'stand' | 'bell' = pwduck === 'promise' || pwduck === 'avatar' || pwduck === 'stand' || pwduck === 'bell' ? pwduck : 'none';
+  const tableDuck = duckAt === 'stand' || duckAt === 'bell' ? duckAt : undefined;
   const bankPick = bankParam ? bankEntry(bankParam) : null;
   // After onboarding (Settings, a PRO tag, the editor) vs. during onboarding. Decided by
   // whether onboarding is done, never by the link, so no link can rerun onboarding.
@@ -531,7 +555,7 @@ export default function Paywall() {
                 }}
               >
                 {hero(topScale)}
-                <Compare rows={rows} width={CANVAS_W - EDGE_W * 2} overlap={40} font={tableFont} tiny={shortLabels} />
+                <Compare rows={rows} width={CANVAS_W - EDGE_W * 2} overlap={40} font={tableFont} tiny={shortLabels} duck={tableDuck} />
               </View>
             </View>
           </ScrollView>
@@ -572,7 +596,7 @@ export default function Paywall() {
           }}
         >
           {hero(scale)}
-          <Compare rows={rows} width={CANVAS_W - EDGE_W * 2} overlap={40} grow={rowGrow} font={tableFont} tiny={shortLabels} />
+          <Compare rows={rows} width={CANVAS_W - EDGE_W * 2} overlap={40} grow={rowGrow} font={tableFont} tiny={shortLabels} duck={tableDuck} />
           <View style={{ flex: 1 }} />
           {bottom}
         </View>

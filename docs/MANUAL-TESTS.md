@@ -99,7 +99,7 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 - [ ] **Settings → Ditch Pro (free):** "Free until <date>, then $59.99 a year." No "Manage subscriptions" row until you have Pro.
 - [ ] **Search the app for "→"** on any screen: there should be none.
 - [ ] **After-ditch screen (rebuilt):** "Ditched." headline with "Next, cancel it with Netflix." under it, then one white card: Netflix + DITCHED tag, "You won't pay $X a year, once you cancel", "Last reminder …". The duck pops up on the card's top-right corner. Buttons at the bottom. Nothing floats on any phone size.
-- [ ] **Paywall:** no duck anywhere on it.
+- [ ] **Paywall:** the duck peeks over the top of the Pro column with his wings on its edge. Nothing under the buy button except the price line. Check on your phone in light and dark mode.
 
 
 ## 1v. Owner notes round 2 (Nov 19, design/v35 boards)

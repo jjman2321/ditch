@@ -24,7 +24,6 @@ import { bankEntry } from '@/bank/banks';
 import { WIDGET_READY, showBankScan, showImport } from '@/config/features';
 import { DEV_TOOLS } from '@/dev/flags';
 import { addDays, shortDate } from '@/domain/dates';
-import { headsUpDates } from '@/domain/charges';
 import { balanceLines } from '@/domain/copy';
 import { formatWholeMoney } from '@/domain/money';
 import { perWeekFromYearly, yearlyBadgeVsWeekly } from '@/domain/pricing';
@@ -33,7 +32,7 @@ import { OnbRoot } from '@/onboarding/Parts';
 import { PURCHASES_LIVE, billedLabel, planById, purchase, restorePurchases, type PlanId } from '@/services/purchases';
 import { onboardingToday, useOnboarding, usePickedList } from '@/state/onboarding';
 import { useApp } from '@/state/app';
-import { Bell, Button, Card, Check, Close, DuckIcon, F, PlanCard, ProLockup, Txt, brand, haptic, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
+import { Button, Card, Check, Close, F, PlanCard, ProLockup, Txt, brand, haptic, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
 
 const NB = ' ';
 
@@ -94,15 +93,6 @@ const SHORT: Record<string, string> = {
 const CANVAS_W = 440;
 /** Gap between the raised Pro column and the table's right edge. */
 const PRO_INSET = 10;
-/** The standing duck (assets/brand/duck-stand.png, 240×231). */
-const DUCK_STAND = require('../../assets/brand/duck-stand.png');
-const STAND_W = 46;
-const STAND_H = Math.round((STAND_W * 231) / 240);
-const DUCK_BODY = require('../../assets/brand/duck-body.png');
-const DUCK_FEET = require('../../assets/brand/duck-feet.png');
-const SIT_W = 50;
-const SIT_BODY_H = Math.round((SIT_W * 208) / 240);
-const SIT_FEET_H = Math.round((SIT_W * 21) / 240);
 // The peeking duck (assets/brand/duck.png, 600×350 with 36px air above and beside him).
 const DUCK_PEEK = require('../../assets/brand/duck.png');
 const DUCK_PEEK_DARK = require('../../assets/brand/duck-dark.png');
@@ -170,7 +160,8 @@ function Compare({
   tiny?: boolean;
   grow?: number;
   font?: number;
-  duck?: 'stand' | 'bell' | 'sit' | 'grip';
+  /** The duck on the Pro column (off in places with no room, e.g. a future variant). */
+  duck?: boolean;
 }) {
   const CELL_TEXT = { fontFamily: F.semi, fontSize: font, lineHeight: Math.round(font * 1.43) };
   const LABEL_TEXT = { fontFamily: F.medium, fontSize: font, letterSpacing: -0.1 };
@@ -232,20 +223,9 @@ function Compare({
           borderColor: brand.sunflower,
         }}
       />
-      {/* Preview: the duck stands on top of the Pro column (his column), optionally ringing a bell. */}
-      {duck === 'sit' ? (
-        // Sitting on the column's top edge, feet hanging over the front.
-        <View
-          pointerEvents="none"
-          importantForAccessibility="no-hide-descendants"
-          accessibilityElementsHidden
-          style={{ position: 'absolute', right: PRO_INSET, width: colP, top: -14 - SIT_BODY_H + 2, alignItems: 'center' }}
-        >
-          <Image source={DUCK_BODY} style={{ width: SIT_W, height: SIT_BODY_H }} contentFit="contain" transition={0} />
-          <Image source={DUCK_FEET} style={{ width: SIT_W, height: SIT_FEET_H, marginTop: 3 }} contentFit="contain" transition={0} />
-        </View>
-      ) : duck === 'grip' ? (
-        // Peeking over the column with his wings on the edge, so the cut is on purpose.
+      {/* The duck peeks over his Pro column with his wings on the edge, so the cut is on purpose
+          (owner's pick E, Nov 19; DECISIONS #73). Never over a price or the button. */}
+      {duck ? (
         <View
           pointerEvents="none"
           importantForAccessibility="no-hide-descendants"
@@ -279,22 +259,6 @@ function Compare({
               borderColor: brand.ink,
             }}
           />
-        </View>
-      ) : duck ? (
-        <View
-          pointerEvents="none"
-          importantForAccessibility="no-hide-descendants"
-          accessibilityElementsHidden
-          style={{ position: 'absolute', right: PRO_INSET, width: colP, top: -14 - STAND_H + 3, height: STAND_H, alignItems: 'center', justifyContent: 'flex-end' }}
-        >
-          <Image source={DUCK_STAND} style={{ width: STAND_W, height: STAND_H }} contentFit="contain" transition={0} />
-          {duck === 'bell' ? (
-            <View style={{ position: 'absolute', left: colP / 2 - STAND_W / 2 - 16, top: 2, alignItems: 'center' }}>
-              <Bell color={brand.ink} fill={brand.white} size={22} />
-              <View style={{ position: 'absolute', left: -6, top: 3, width: 4, height: 2, borderRadius: 1, backgroundColor: brand.ink }} />
-              <View style={{ position: 'absolute', left: -7, top: 9, width: 5, height: 2, borderRadius: 1, backgroundColor: brand.ink }} />
-            </View>
-          ) : null}
         </View>
       ) : null}
       <View style={{ flexDirection: 'row', alignItems: 'center', height: 40 }} importantForAccessibility="no-hide-descendants">
@@ -383,10 +347,7 @@ export default function Paywall() {
   // `plan` (lifetime | yearly | weekly) picks the plan that's selected first, e.g. Settings → Ditch Pro's "Or pay once".
   // `bank` (a picker id, src/bank/banks.ts): opened from the bank picker (DECISIONS #70). The headline
   // names their bank, and after the purchase the bank sign-in opens straight away.
-  const { from, plan: planParam, bank: bankParam, pwduck } = useLocalSearchParams<{ from?: string; plan?: string; bank?: string; pwduck?: string }>();
-  // Where the duck sits (owner, Nov 19: "have the duck somewhere"). Preview-only switch while the owner picks.
-  const duckAt = (['promise', 'avatar', 'stand', 'bell', 'sit', 'grip'] as const).find((v) => v === pwduck) ?? 'none';
-  const tableDuck = duckAt === 'stand' || duckAt === 'bell' || duckAt === 'sit' || duckAt === 'grip' ? duckAt : undefined;
+  const { from, plan: planParam, bank: bankParam } = useLocalSearchParams<{ from?: string; plan?: string; bank?: string }>();
   const bankPick = bankParam ? bankEntry(bankParam) : null;
   // After onboarding (Settings, a PRO tag, the editor) vs. during onboarding. Decided by
   // whether onboarding is done, never by the link, so no link can rerun onboarding.
@@ -406,8 +367,6 @@ export default function Paywall() {
   const lifetime = planById('lifetime');
   const today = onboardingToday();
   const charge = addDays(today, yearly.trialDays);
-  // Ditch's own trial gets the usual two reminders before it renews (DECISIONS #15).
-  const trialReminders = headsUpDates(charge, today, { nowHour: new Date().getHours() });
   // Lifetime includes one bank scan a year (DECISIONS #65), so say so once the scan is on the table.
   const bank = showBankScan();
 
@@ -508,10 +467,7 @@ export default function Paywall() {
   const hero = (s: number) => (
     <View style={{ height: HERO_H, marginHorizontal: -EDGE_W, paddingHorizontal: EDGE_W }}>
       <View style={{ height: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-          {duckAt === 'avatar' ? <DuckIcon size={28} /> : null}
-          <ProLockup size={22} color={ink} />
-        </View>
+        <ProLockup size={22} color={ink} />
         <CloseX label={closeLabel} onPress={leaveFree} scale={s} color={ink} bg={dark ? '#3A3424' : 'rgba(22,20,15,0.12)'} />
       </View>
       <View style={{ height: 14 }} />
@@ -526,8 +482,6 @@ export default function Paywall() {
       >
         {head}
       </Txt>
-      {/* No duck here (owner, Nov 19: every duck placement on the paywall looked off; option A). The yellow
-          header and the raised Pro column carry the brand. He stays on welcome, reminders and the Ditched moment. */}
     </View>
   );
 
@@ -569,16 +523,6 @@ export default function Paywall() {
       {/* A fixed slot, so the button never moves when the plan changes. Price and the real start date by the
         button (App Review); no reminder text (owner, Nov 10). At least 13pt on screen at any scale. */}
       <View style={{ minHeight: 44, alignItems: 'center', justifyContent: 'center', paddingHorizontal: planId === 'yearly' ? 0 : 4 }}>
-        {/* The duck's job here: he watches your free week (DECISIONS #15, real reminders 3 days and 1 day before).
-            Fear of being charged is the top reason people skip a trial; saying we'll warn them answers it. */}
-        {duckAt === 'promise' && planId === 'yearly' && trialReminders.length ? (
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 6 / scale, marginBottom: 2 }}>
-            <DuckIcon size={18 / scale} />
-            <Txt v="fine" num style={{ fontSize: 13 / scale, lineHeight: 16 / scale, fontFamily: F.semi }}>
-              {`We’ll remind you ${trialReminders.map((d) => shortDate(d).replace(' ', NB)).join(' and ')}.`}
-            </Txt>
-          </View>
-        ) : null}
         <Txt v="fine" tone="fg2" num center accessibilityLiveRegion="polite" style={{ fontSize: 13 / scale, lineHeight: 16 / scale }}>
           {planId === 'yearly'
             ? // One line (owner, Nov 19): the yearly price and the real date say it renews.
@@ -629,7 +573,7 @@ export default function Paywall() {
                 }}
               >
                 {hero(topScale)}
-                <Compare rows={rows} width={CANVAS_W - EDGE_W * 2} overlap={40} font={tableFont} tiny={shortLabels} duck={tableDuck} />
+                <Compare rows={rows} width={CANVAS_W - EDGE_W * 2} overlap={40} font={tableFont} tiny={shortLabels} duck />
               </View>
             </View>
           </ScrollView>
@@ -670,7 +614,7 @@ export default function Paywall() {
           }}
         >
           {hero(scale)}
-          <Compare rows={rows} width={CANVAS_W - EDGE_W * 2} overlap={40} grow={rowGrow} font={tableFont} tiny={shortLabels} duck={tableDuck} />
+          <Compare rows={rows} width={CANVAS_W - EDGE_W * 2} overlap={40} grow={rowGrow} font={tableFont} tiny={shortLabels} duck />
           <View style={{ flex: 1 }} />
           {bottom}
         </View>

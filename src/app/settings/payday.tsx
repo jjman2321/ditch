@@ -16,10 +16,10 @@ export default function PaydayPage() {
   const p = usePalette();
   const app = useApp();
   const current = app.settings.payday;
-  // Fill each row edge to edge: as many 44pt+ circles as fit (7 on big phones, like a calendar).
+  // Fill each row edge to edge: as many 44pt+ circles as fit, at most 6, so it never reads as a 7-day week.
   const [w, setW] = useState(0);
   const GAP = 8;
-  const cols = w ? Math.min(7, Math.max(5, Math.floor((w + GAP) / (44 + GAP)))) : 6;
+  const cols = w ? Math.min(6, Math.max(5, Math.floor((w + GAP) / (44 + GAP)))) : 6;
   const cell = w ? Math.floor((w - (cols - 1) * GAP) / cols) : 44;
   const pick = async (day: number | null) => {
     haptic.select();

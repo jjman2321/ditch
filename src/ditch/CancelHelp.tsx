@@ -58,7 +58,18 @@ export function HowToSheet({ sub, visible, onClose }: { sub: Sub | null; visible
           <View style={{ marginTop: 16, gap: 14 }}>
             {h.steps.map((step, i) => (
               <View key={i} style={{ flexDirection: 'row', gap: 12, alignItems: 'flex-start' }}>
-                <View style={{ width: 28, height: 28, borderRadius: 14, backgroundColor: brand.sunflower, alignItems: 'center', justifyContent: 'center', borderWidth: p.dark ? 0 : 1.5, borderColor: brand.ink }}>
+                <View
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: 14,
+                    backgroundColor: brand.sunflower,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderWidth: p.dark ? 0 : 1.5,
+                    borderColor: brand.ink,
+                  }}
+                >
                   <Txt v="label" color={brand.ink} style={{ fontFamily: F.heavy, fontSize: 14 }}>
                     {i + 1}
                   </Txt>
@@ -69,6 +80,11 @@ export function HowToSheet({ sub, visible, onClose }: { sub: Sub | null; visible
               </View>
             ))}
           </View>
+          {h.checked ? (
+            <Txt v="sub" tone="mute" style={{ marginTop: 12 }}>
+              {`Steps checked ${shortDate(h.checked)}`}
+            </Txt>
+          ) : null}
           {h.appleNote ? (
             <Txt v="body" tone="fg2" style={{ marginTop: 18 }}>
               Paying through Apple? It’s in iPhone Settings → your name → Subscriptions.

@@ -3,6 +3,7 @@
 // at the top with "I cancelled it". Rewards are real money only (DECISIONS #13).
 
 import { Image } from 'expo-image';
+import { router } from 'expo-router';
 import { useMemo } from 'react';
 import { Pressable, ScrollView, View, useWindowDimensions } from 'react-native';
 
@@ -15,14 +16,14 @@ import { SubLogo } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
 import { ask } from '@/ui/alert';
 import { DUCK_DARK, DUCK_LIGHT } from '@/ui/sunflower/duckAsset';
-import { BottomFade, Card, ChevronRight, DitchedTag, F, ProLockup, RowDivider, SectionHeader, Txt, brand, haptic, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
+import { BottomFade, Button, Card, ChevronRight, DitchedTag, F, ProLockup, RowDivider, SectionHeader, Txt, brand, haptic, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
 
 export default function DitchedTab() {
   const p = usePalette();
   const insets = useInsets();
   const edge = usePageEdge();
-  // SE-sized screens: the shorter section title, so it and the amount share one line.
-  const narrow = useWindowDimensions().width < 400;
+  // SE and mini (375pt): shorter pill labels, so each stays on one line. Full words stay in the VoiceOver labels.
+  const narrow = useWindowDimensions().width < 380;
   const app = useApp();
   const money = useAppMoney();
   const help = useCancelHelp();
@@ -34,10 +35,7 @@ export default function DitchedTab() {
     .map((s) => ({ s, by: s.cancelBy && s.cancelBy >= app.today ? s.cancelBy : chargeOfSub(s, app.today) }))
     .sort((a, b) => (a.by ?? '9999').localeCompare(b.by ?? '9999'))
     .map((x) => x.s);
-  const confirmed = useMemo(
-    () => app.subs.filter(isConfirmed).sort((a, b) => ((a.confirmedOn ?? '') < (b.confirmedOn ?? '') ? 1 : -1)),
-    [app.subs],
-  );
+  const confirmed = useMemo(() => app.subs.filter(isConfirmed).sort((a, b) => ((a.confirmedOn ?? '') < (b.confirmedOn ?? '') ? 1 : -1)), [app.subs]);
   const saving = confirmedSavings(app.subs, home);
   const waiting = pendingSavings(app.subs, home);
   const main = saving[0];
@@ -68,7 +66,21 @@ export default function DitchedTab() {
             <View accessible={false} importantForAccessibility="no-hide-descendants" style={{ width: 260, alignItems: 'center' }}>
               <Image source={p.dark ? DUCK_DARK : DUCK_LIGHT} style={{ width: 150, height: 88, marginBottom: -3 }} contentFit="contain" />
               {/* A faint row for him to sit on: the art's flat bottom is made to tuck behind a card. */}
-              <View style={{ width: 260, height: 64, borderRadius: 18, borderWidth: 1.5, borderStyle: 'dashed', borderColor: p.cardBorder, backgroundColor: p.dark ? p.card : brand.white, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14 }}>
+              <View
+                style={{
+                  width: 260,
+                  height: 64,
+                  borderRadius: 18,
+                  borderWidth: 1.5,
+                  borderStyle: 'dashed',
+                  borderColor: p.cardBorder,
+                  backgroundColor: p.dark ? p.card : brand.white,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: 12,
+                  paddingHorizontal: 14,
+                }}
+              >
                 <View style={{ width: 36, height: 36, borderRadius: 9, backgroundColor: p.segBg }} />
                 <View style={{ flex: 1, gap: 7 }}>
                   <View style={{ width: '70%', height: 9, borderRadius: 5, backgroundColor: p.segBg }} />
@@ -82,6 +94,7 @@ export default function DitchedTab() {
             <Txt v="leadS" tone="fg2" center style={{ marginTop: 8, maxWidth: 300 }}>
               Hold a subscription on Home to ditch it. What you stop paying adds up here.
             </Txt>
+            <Button label="Go to my list" onPress={() => router.navigate('/')} style={{ marginTop: 24, width: '100%', maxWidth: 320 }} />
           </View>
         ) : (
           <>
@@ -137,7 +150,9 @@ export default function DitchedTab() {
                     Nothing cancelled yet.
                   </Txt>
                   <Txt v="leadS" num color={p.dark ? p.fg2 : '#4B4220'} style={{ marginTop: 6 }}>
-                    {waiting[0] ? `Cancel what you ditched and that’s ${money(waiting[0].yearlyMinor, waiting[0].currency, { whole: true })} a year you won’t pay.` : 'Cancel what you ditched and it adds up here.'}
+                    {waiting[0]
+                      ? `Cancel what you ditched and that’s ${money(waiting[0].yearlyMinor, waiting[0].currency, { whole: true })} a year you won’t pay.`
+                      : 'Cancel what you ditched and it adds up here.'}
                   </Txt>
                 </>
               )}
@@ -146,13 +161,15 @@ export default function DitchedTab() {
             {pending.length ? (
               <>
                 <SectionHeader
-                  title={narrow ? 'To cancel' : 'Waiting for you to cancel'}
-                  right={waiting[0] ? `+${money(waiting[0].yearlyMinor, waiting[0].currency)} a year` : undefined}
+                  title="To cancel"
+                  right={waiting[0] ? `${money(waiting[0].yearlyMinor, waiting[0].currency, { whole: true })} more a year` : undefined}
                   style={{ marginTop: 24, marginBottom: 8 }}
                 />
                 <Card>
                   {pending.map((s, i) => {
-                    const charge = s.cancelBy && s.cancelBy >= app.today ? s.cancelBy : chargeOfSub(s, app.today);
+                    // "Cancel by" only for a date the user set; otherwise it's just when it charges.
+                    const cancelBy = s.cancelBy && s.cancelBy >= app.today ? s.cancelBy : null;
+                    const charge = cancelBy ? null : chargeOfSub(s, app.today);
                     const price = isPricedSub(s) ? ` · ${money(s.amountMinor, s.currency)} ${CYCLE_WORDS[s.cycle]}` : '';
                     return (
                       <View key={s.id}>
@@ -171,12 +188,12 @@ export default function DitchedTab() {
                               <DitchedTag />
                             </View>
                             <Txt v="body" tone="mute" num style={{ fontSize: 14.5, marginTop: 2 }}>
-                              {charge ? `Cancel by ${weekdayDate(charge)}` : 'Cancel before it renews'}
+                              {cancelBy ? `Cancel by ${weekdayDate(cancelBy)}` : charge ? `Charges ${weekdayDate(charge)}` : 'Cancel before it renews'}
                               {price}
                             </Txt>
                             <View style={{ flexDirection: 'row', gap: 6, rowGap: 10, marginTop: 10, flexWrap: 'wrap' }}>
                               <Pill
-                                label="I cancelled it"
+                                label={narrow ? 'Cancelled' : 'I cancelled it'}
                                 a11y={`I cancelled ${s.name}`}
                                 filled
                                 onPress={async () => {
@@ -186,7 +203,7 @@ export default function DitchedTab() {
                                   setTimeout(() => app.maybeAskReview('cancelled').catch(() => {}), 1500);
                                 }}
                               />
-                              <Pill label="How to cancel" a11y={`How to cancel ${s.name}`} chevron onPress={() => help.open(s)} />
+                              <Pill label={narrow ? 'How to' : 'How to cancel'} a11y={`How to cancel ${s.name}`} chevron onPress={() => help.open(s)} />
                             </View>
                           </View>
                         </View>
@@ -209,7 +226,7 @@ export default function DitchedTab() {
                         <Pressable
                           accessibilityRole="button"
                           accessibilityLabel={`${s.name}, cancelled ${s.confirmedOn ? weekdayDate(s.confirmedOn) : ''}${y ? `, ${money(y.amountMinor, y.currency)} a year` : ''}`}
-                          accessibilityHint="Still paying? Put it back on your list."
+                          accessibilityHint="Opens options. Still paying? Put it back on your list."
                           onPress={() => reactivate(s)}
                           style={({ pressed }) => ({ minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, paddingVertical: 8, opacity: pressed ? 0.7 : 1 })}
                         >
@@ -232,6 +249,7 @@ export default function DitchedTab() {
                               </Txt>
                             </View>
                           ) : null}
+                          <ChevronRight color={p.mute} size={16} />
                         </Pressable>
                       </View>
                     );

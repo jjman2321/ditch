@@ -40,6 +40,12 @@ const CURRENCIES: [string, string][] = [
   ['MYR', 'Malaysian ringgit'],
   ['THB', 'Thai baht'],
   ['NGN', 'Nigerian naira'],
+  ['CNY', 'Chinese yuan'],
+  ['TWD', 'New Taiwan dollar'],
+  ['VND', 'Vietnamese dong'],
+  ['COP', 'Colombian peso'],
+  ['CLP', 'Chilean peso'],
+  ['ARS', 'Argentine peso'],
 ];
 
 export default function CurrencyPage() {
@@ -52,7 +58,20 @@ export default function CurrencyPage() {
   }, [q]);
   return (
     <SettingsPage title="Currency" intro="For new subscriptions. Ones you’ve already added keep their own currency.">
-      <View style={{ marginTop: 16, height: 46, borderRadius: 12, backgroundColor: p.chipBg, borderWidth: 1.5, borderColor: p.chipBorder, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, gap: 8 }}>
+      <View
+        style={{
+          marginTop: 16,
+          height: 46,
+          borderRadius: 12,
+          backgroundColor: p.chipBg,
+          borderWidth: 1.5,
+          borderColor: p.chipBorder,
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingHorizontal: 12,
+          gap: 8,
+        }}
+      >
         <Search color={p.mute} />
         <TextInput
           value={q}
@@ -63,33 +82,40 @@ export default function CurrencyPage() {
           style={{ flex: 1, height: 44, fontFamily: F.regular, fontSize: 16, color: p.fg, outlineStyle: 'none' } as object}
         />
       </View>
-      <Group style={{ marginTop: 14 }}>
-        {list.map(([code, name]) => {
-          const on = code === app.settings.currency;
-          return (
-            <Pressable
-              key={code}
-              accessibilityRole="radio"
-              accessibilityState={{ selected: on }}
-              accessibilityLabel={`${name}, ${code}`}
-              onPress={async () => {
-                haptic.select();
-                await app.updateSettings({ currency: code });
-                router.back();
-              }}
-              style={({ pressed }) => ({ minHeight: 50, flexDirection: 'row', alignItems: 'center', gap: 12, opacity: pressed ? 0.6 : 1 })}
-            >
-              <Txt v="label" num color={p.cardFg} style={{ width: 46, fontFamily: F.bold }}>
-                {code}
-              </Txt>
-              <Txt v="leadS" color={p.cardFg} style={{ flex: 1 }}>
-                {name}
-              </Txt>
-              {on ? <Check color={p.dark ? brand.sunflower : brand.ink} size={20} /> : null}
-            </Pressable>
-          );
-        })}
-      </Group>
+      {list.length ? null : (
+        <Txt v="leadS" tone="mute" style={{ marginTop: 18, marginHorizontal: 4 }}>
+          No currency matches
+        </Txt>
+      )}
+      {list.length ? (
+        <Group style={{ marginTop: 14 }}>
+          {list.map(([code, name]) => {
+            const on = code === app.settings.currency;
+            return (
+              <Pressable
+                key={code}
+                accessibilityRole="radio"
+                accessibilityState={{ selected: on }}
+                accessibilityLabel={`${name}, ${code}`}
+                onPress={async () => {
+                  haptic.select();
+                  await app.updateSettings({ currency: code });
+                  router.back();
+                }}
+                style={({ pressed }) => ({ minHeight: 50, flexDirection: 'row', alignItems: 'center', gap: 12, opacity: pressed ? 0.6 : 1 })}
+              >
+                <Txt v="label" num color={p.cardFg} style={{ minWidth: 46, fontFamily: F.bold }}>
+                  {code}
+                </Txt>
+                <Txt v="leadS" color={p.cardFg} style={{ flex: 1 }}>
+                  {name}
+                </Txt>
+                {on ? <Check color={p.dark ? brand.sunflower : brand.ink} size={20} /> : null}
+              </Pressable>
+            );
+          })}
+        </Group>
+      ) : null}
     </SettingsPage>
   );
 }

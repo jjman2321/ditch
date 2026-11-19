@@ -7,14 +7,7 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useRef } from 'react';
 import { AppState, Linking, Platform, Pressable, ScrollView, useWindowDimensions, View } from 'react-native';
-import Animated, {
-  Easing,
-  useAnimatedStyle,
-  useReducedMotion,
-  useSharedValue,
-  withDelay,
-  withTiming,
-} from 'react-native-reanimated';
+import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 
 import { APPLE_SUBSCRIPTIONS_URL } from '@/catalog/cancel';
 import { shortDate, toDateOnly, weekdayDate } from '@/domain/dates';
@@ -109,7 +102,9 @@ export default function Ditched() {
   if (!sub) return <Gone />;
 
   const trial = isProTrial(sub);
-  const charge = sub.cancelBy && sub.cancelBy >= app.today ? sub.cancelBy : chargeOfSub(sub, app.today);
+  // "Cancel by" only for a date the user set; otherwise it's just when it charges.
+  const cancelBy = sub.cancelBy && sub.cancelBy >= app.today ? sub.cancelBy : null;
+  const charge = chargeOfSub(sub, app.today);
   const yearly = isPricedSub(sub) ? yearlyMinor(sub.amountMinor, sub.cycle) : null;
   const priceLine = isPricedSub(sub) ? `${money(sub.amountMinor, sub.currency)} ${CYCLE_WORDS[sub.cycle]}` : null;
   const already = confirmedSavings(app.subs, app.settings.currency).find((s) => s.currency === sub.currency);
@@ -145,12 +140,17 @@ export default function Ditched() {
         }
       : charge
         ? { title: `It charges ${weekdayDate(charge)}`, line: 'Too close for a last check. Cancel now to be safe.' }
-        : { title: 'No date on this one', line: 'So there’s no last check. Cancel it before it renews.' };
+        : cancelBy
+          ? { title: `Cancel by ${weekdayDate(cancelBy)}`, line: 'No last check on this one. Cancel before then to be safe.' }
+          : { title: 'No date on this one', line: 'So there’s no last check. Cancel it before it renews.' };
 
   return (
     <SurfaceContext.Provider value="sun">
       <View style={{ flex: 1, backgroundColor: p.bg }}>
-        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: wide ? 'center' : undefined, paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, 12), paddingHorizontal: edge }} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, justifyContent: wide ? 'center' : undefined, paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, 12), paddingHorizontal: edge }}
+          showsVerticalScrollIndicator={false}
+        >
           {/* Done leaves it ditched (cancel later, the last check still comes). Undo only right
               after ditching; reopened, it's "Put it back", which asks first. */}
           <View style={{ height: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -165,7 +165,14 @@ export default function Ditched() {
                 {animate ? 'Undo' : 'Put it back'}
               </Txt>
             </Pressable>
-            <Pressable accessibilityRole="button" accessibilityLabel="Done" accessibilityHint="Keeps it ditched" onPress={() => router.back()} hitSlop={12} style={{ minHeight: 44, justifyContent: 'center', paddingLeft: 16 }}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Done"
+              accessibilityHint="Keeps it ditched"
+              onPress={() => router.back()}
+              hitSlop={12}
+              style={{ minHeight: 44, justifyContent: 'center', paddingLeft: 16 }}
+            >
               <Txt v="label" style={{ fontSize: 17, fontFamily: F.bold }}>
                 Done
               </Txt>
@@ -187,7 +194,7 @@ export default function Ditched() {
                   </Txt>
                 )}
                 <Txt v="body" tone="mute" num style={{ fontSize: compact ? 13.5 : 14, marginTop: 2 }} numberOfLines={2}>
-                  {charge ? `${trial ? 'Charges' : 'Cancel by'} ${(tiny ? shortDate : weekdayDate)(charge)}` : 'Cancel before it renews'}
+                  {cancelBy ? `Cancel by ${(tiny ? shortDate : weekdayDate)(cancelBy)}` : charge ? `Charges ${(tiny ? shortDate : weekdayDate)(charge)}` : 'Cancel before it renews'}
                   {priceLine ? ` · ${priceLine}` : ''}
                 </Txt>
               </View>
@@ -207,7 +214,15 @@ export default function Ditched() {
           <Animated.View style={[{ alignItems: 'center', marginTop: tiny ? 10 : compact ? 28 : 40 }, amountStyle]}>
             {yearly !== null && sub.currency ? (
               <>
-                <Txt v="displayXL" num center color={p.dark ? brand.sunflower : brand.ink} style={{ fontSize: tiny ? 44 : compact ? 54 : 66, lineHeight: tiny ? 48 : compact ? 58 : 70 }} adjustsFontSizeToFit numberOfLines={1}>
+                <Txt
+                  v="displayXL"
+                  num
+                  center
+                  color={p.dark ? brand.sunflower : brand.ink}
+                  style={{ fontSize: tiny ? 44 : compact ? 54 : 66, lineHeight: tiny ? 48 : compact ? 58 : 70 }}
+                  adjustsFontSizeToFit
+                  numberOfLines={1}
+                >
                   {money(yearly, sub.currency)}
                 </Txt>
                 <Txt v="title" center style={{ fontSize: tiny ? 18 : compact ? 20 : 24, lineHeight: tiny ? 21 : compact ? 23 : 28, marginTop: 2 }}>
@@ -230,7 +245,8 @@ export default function Ditched() {
             ) : null}
           </Animated.View>
 
-          <View style={wide ? { height: 40 } : { flex: 1, minHeight: compact ? 10 : 14 }} />
+          {/* Capped, so on big phones the amount and the reminder card stay together. */}
+          <View style={wide ? { height: 40 } : { flex: 1, minHeight: compact ? 10 : 14, maxHeight: 56 }} />
 
           <Animated.View style={restStyle}>
             {isPending(sub) ? (
@@ -243,7 +259,18 @@ export default function Ditched() {
                 onPress={() => (app.notif === 'denied' ? Linking.openSettings().catch(() => {}) : void app.askNotif())}
               >
                 <Card style={{ flexDirection: 'row', alignItems: 'center', gap: compact ? 12 : 14, paddingHorizontal: compact ? 14 : 16, paddingVertical: tiny ? 8 : compact ? 10 : 13 }}>
-                  <View style={{ width: compact ? 32 : 36, height: compact ? 32 : 36, borderRadius: 18, backgroundColor: brand.sunflower, borderWidth: p.dark ? 0 : 2, borderColor: brand.ink, alignItems: 'center', justifyContent: 'center' }}>
+                  <View
+                    style={{
+                      width: compact ? 32 : 36,
+                      height: compact ? 32 : 36,
+                      borderRadius: 18,
+                      backgroundColor: brand.sunflower,
+                      borderWidth: p.dark ? 0 : 2,
+                      borderColor: brand.ink,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
                     <Bell color={brand.ink} fill={brand.ink} size={16} />
                   </View>
                   <View style={{ flex: 1 }}>
@@ -268,10 +295,25 @@ export default function Ditched() {
               style={[{ marginTop: compact ? 10 : 12 }, compact && { minHeight: 50, borderRadius: 25 }]}
             />
             <Button kind="secondary" label="I already cancelled" onPress={cancelled} style={[{ marginTop: 8 }, compact && { minHeight: 46, borderRadius: 23 }]} />
-            <Pressable accessibilityRole="link" accessibilityLabel={trial ? 'Open Apple subscriptions to cancel Ditch Pro' : 'Billed by Apple? Open Apple subscriptions'} hitSlop={{ top: 7, bottom: 7 }} onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)} style={{ minHeight: compact ? 30 : 36, justifyContent: 'center', marginTop: 2 }}>
-              <Txt v="body" tone="fg2" center style={{ fontSize: 14 }}>
-                {trial ? 'Settings → your name → Subscriptions → Ditch.' : 'Billed by Apple? Settings → your name → Subscriptions.'}
-              </Txt>
+            <Pressable
+              accessibilityRole="link"
+              accessibilityLabel={trial ? 'Open Apple subscriptions to cancel Ditch Pro' : 'Billed by Apple? Open Apple subscriptions'}
+              hitSlop={{ top: 7, bottom: 7 }}
+              onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)}
+              style={{ minHeight: compact ? 30 : 36, justifyContent: 'center', marginTop: 2 }}
+            >
+              {trial ? (
+                <Txt v="body" tone="fg2" center style={{ fontSize: 14 }}>
+                  Settings → your name → Subscriptions → Ditch.
+                </Txt>
+              ) : (
+                <Txt v="body" tone="fg2" center style={{ fontSize: 14 }}>
+                  {'Billed by Apple? '}
+                  <Txt v="body" tone="fg2" style={{ fontSize: 14, fontFamily: F.semi, textDecorationLine: 'underline' }}>
+                    Open Apple subscriptions
+                  </Txt>
+                </Txt>
+              )}
             </Pressable>
           </Animated.View>
         </ScrollView>

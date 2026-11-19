@@ -85,7 +85,7 @@ export default function Settings() {
     <SettingsPage title="Settings" back="Home">
       <HealthCard />
 
-      <Group header="Reminders" note={pro ? undefined : 'Free covers 3 subscriptions. Pro covers all of them, on your own timing.'}>
+      <Group header="Reminders" note={pro ? undefined : 'Free reminds you about 3 subscriptions. Pro reminds you about all of them, when you like.'}>
         <Row label="Remind me" value={remindValue} onPress={() => router.push('/settings/remind-me')} />
         <Row label="Time" right={<TimeField value={settings.reminderTime} onChange={(t) => app.updateSettings({ reminderTime: t })} />} a11yValue={`, ${shortTimeLabel(settings.reminderTime)}`} />
         <Row label="Which subscriptions" value={whichValue} a11yValue={whichSpoken} onPress={() => router.push('/settings/which')} />

@@ -139,7 +139,7 @@ export default function Done() {
         ? { mark: 'ok', title: undated.length ? `Reminders on all ${n - undated.length} with a date` : `Reminders on all ${n}`, sub: '3 days and 1 day before. You pick the time.' }
         : remindedIds.length
           ? { mark: 'ok', title: remindedIds.length < n ? `Reminders on ${remindedIds.length} of ${n}` : 'Reminders are on', sub: '3 days and 1 day before. You pick the time.' }
-          : { mark: 'todo', title: 'No reminders picked yet', sub: 'Pick up to 3 from your list. Free covers 3.' }
+          : { mark: 'todo', title: 'No reminders picked yet', sub: 'Pick up to 3 from your list. Free reminds you about 3.' }
       : { mark: 'warn', title: 'Reminders are off', sub: 'We can’t remind you until you turn them\u00A0on.' },
   ];
   if (trialDays.length)

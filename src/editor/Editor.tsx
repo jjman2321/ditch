@@ -174,6 +174,9 @@ const OTHER_CYCLES: { value: Cycle; label: string }[] = [
   { value: 'semiannual', label: 'Every 6 months' },
 ];
 
+/** Up to this many plans wrap onto lines; more scroll sideways. */
+const WRAP_PLANS = 4;
+
 const COMMON = ['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'NZD', 'INR', 'JPY'];
 
 /** One labelled line in "For when you cancel". Empty saves as nothing, not "". */
@@ -331,6 +334,30 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
   // The plan they picked, or the one their price matches.
   const planSelected = (pl: (typeof plans)[number]) =>
     draft.planId ? pl.id === draft.planId : pl.amountMinor === draft.amountMinor && pl.cycle === draft.cycle && planRow?.currency === draft.currency;
+
+  // "With Ads $12.49/mo", "With Ads $124.99/yr": the plan, then its price.
+  const planLabel = (pl: (typeof plans)[number]) =>
+    `${shortPlanName(
+      pl.name,
+      draft.name,
+      plans.map((x) => x.name),
+    )
+      .replace(/\s*\((yearly|monthly|annual)\)$/i, '')
+      // "With Ads, yearly" + "/yr" says it twice: the price's "/yr" is enough.
+      .replace(/,?\s+(yearly|monthly|annual)$/i, '')} ${money(pl.amountMinor, planRow?.currency ?? draft.currency ?? settings.currency)}${CYCLE_SHORT[pl.cycle]}`;
+  const planChips = plans.map((pl) => (
+    <Chip
+      key={pl.id}
+      label={planLabel(pl)}
+      selected={planSelected(pl)}
+      onPress={() => {
+        haptic.select();
+        const next = fromPick(draft, choosePlan(asPick(draft), pl.id));
+        setDraft(next);
+        setAmount(amountText(next));
+      }}
+    />
+  ));
 
   // Reminders: free covers 3 (the Pro trial entry is always on).
   const othersOn = remindedIds(
@@ -584,29 +611,15 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
             {plans.length ? (
               <>
                 <FieldLabel>Plan</FieldLabel>
-                {/* Wrapped, not a sideways scroll: 2 to 4 plans, so every price is in view and none is cut at the edge. */}
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-                  {plans.map((pl) => (
-                    <Chip
-                      key={pl.id}
-                      label={`${shortPlanName(
-                        pl.name,
-                        draft.name,
-                        plans.map((x) => x.name),
-                      )
-                        .replace(/\s*\((yearly|monthly|annual)\)$/i, '')
-                        // "With Ads, yearly" + "/yr" says it twice: the price's "/yr" is enough.
-                        .replace(/,?\s+(yearly|monthly|annual)$/i, '')} ${money(pl.amountMinor, planRow?.currency ?? draft.currency ?? settings.currency)}${CYCLE_SHORT[pl.cycle]}`}
-                      selected={planSelected(pl)}
-                      onPress={() => {
-                        haptic.select();
-                        const next = fromPick(draft, choosePlan(asPick(draft), pl.id));
-                        setDraft(next);
-                        setAmount(amountText(next));
-                      }}
-                    />
-                  ))}
-                </View>
+                {plans.length <= WRAP_PLANS ? (
+                  // Up to 4 plans (most services): wrapped, so every price is in view and none is cut at the edge.
+                  <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>{planChips}</View>
+                ) : (
+                  // Long lists (Hulu's bundles, Disney+): one sideways row, so the form doesn't turn into a wall of chips.
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginHorizontal: -edge }} contentContainerStyle={{ gap: 8, paddingHorizontal: edge }}>
+                    {planChips}
+                  </ScrollView>
+                )}
                 {!isNew && draft.amountMinor && !plans.some(planSelected) ? (
                   <Txt v="sub" tone="mute" style={{ marginTop: 6, marginHorizontal: 2 }}>
                     Doesn’t match a plan. Fine if yours differs.

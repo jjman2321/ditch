@@ -285,9 +285,9 @@ describe('the Pro trial stays off your list but still reminds you', () => {
 
 describe('whenLabel', () => {
   it('says today, tomorrow, or the date, with the reminder time', () => {
-    expect(whenLabel(new Date(2026, 10, 10, 9, 0), '2026-11-10', '09:00')).toBe('Today, 9 AM');
-    expect(whenLabel(new Date(2026, 10, 11, 9, 0), '2026-11-10', '09:00')).toBe('Tomorrow, 9 AM');
-    expect(whenLabel(new Date(2026, 10, 14, 18, 30), '2026-11-10', '18:30')).toBe('Sat, Nov 14, 6:30 PM');
+    expect(whenLabel(new Date(2026, 10, 10, 9, 0), '2026-11-10', '09:00')).toBe('Today at 9 AM');
+    expect(whenLabel(new Date(2026, 10, 11, 9, 0), '2026-11-10', '09:00')).toBe('Tomorrow at 9 AM');
+    expect(whenLabel(new Date(2026, 10, 14, 18, 30), '2026-11-10', '18:30')).toBe('Sat, Nov 14 at 6:30 PM');
   });
 });
 

@@ -42,7 +42,7 @@ export default function Which() {
     }
     haptic.warning();
     setLimitHit(true);
-    AccessibilityInfo.announceForAccessibility(`Free covers ${FREE_REMINDERS}. Turn one off first to remind you about ${name}.`);
+    AccessibilityInfo.announceForAccessibility(`Your ${FREE_REMINDERS} free reminders are in use. Turn one off first to remind you about ${name}.`);
     if (!reduce)
       nudge.set(withSequence(withTiming(3, { duration: 30 }), withTiming(-3, { duration: 60 }), withTiming(3, { duration: 60 }), withTiming(-3, { duration: 60 }), withTiming(0, { duration: 30 })));
     router.push('/paywall?from=which');
@@ -62,7 +62,7 @@ export default function Which() {
       {!pro && limitHit ? (
         <View style={{ marginTop: 10, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: 6 }}>
           <Txt v="body" tone="fg2" style={{ fontSize: 15 }}>
-            Free covers {FREE_REMINDERS}. Turn one off, or
+            Your {FREE_REMINDERS} free reminders are in use. Turn one off, or
           </Txt>
           <TextLink label="see Pro" a11y="See Ditch Pro" onPress={() => router.push('/paywall?from=which')} style={{ fontSize: 15 }} />
         </View>

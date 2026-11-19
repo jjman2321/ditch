@@ -292,5 +292,5 @@ export function whenLabel(fireAt: Date, today: DateOnly, time: string): string {
   const day = toDateOnly(fireAt);
   const t = shortTimeLabel(time);
   const n = daysBetween(today, day);
-  return n === 0 ? `Today, ${t}` : n === 1 ? `Tomorrow, ${t}` : `${weekdayDate(day)}, ${t}`;
+  return n === 0 ? `Today at ${t}` : n === 1 ? `Tomorrow at ${t}` : `${weekdayDate(day)} at ${t}`;
 }

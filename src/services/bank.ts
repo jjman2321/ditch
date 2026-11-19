@@ -8,18 +8,10 @@
 //
 // Not wired to any screen yet; Plaid Link itself needs a new native build (docs/plans/bank-sync-build.md).
 
-import * as Crypto from 'expo-crypto';
-import * as SecureStore from 'expo-secure-store';
+import { requireOptionalNativeModule } from 'expo-modules-core';
+
 import { today } from './clock';
-import {
-  BankApiError,
-  createBankMock,
-  type BankListResponse,
-  type BankSyncResponse,
-  type EntitlementSyncResponse,
-  type ExchangeResponse,
-  type LinkTokenResponse,
-} from './bankShared';
+import { BankApiError, createBankMock, type BankListResponse, type BankSyncResponse, type EntitlementSyncResponse, type ExchangeResponse, type LinkTokenResponse } from './bankShared';
 
 export * from './bankShared';
 
@@ -30,8 +22,34 @@ export const BANK_LIVE = API_URL !== null;
 const ID_KEY = 'ditch.appUserId';
 const SECRET_KEY = 'ditch.installSecret';
 const ACK_KEY = 'ditch.bankSyncAck';
-// Readable after the first unlock, so background refresh can sync while the phone is locked.
-const KEYCHAIN = { keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK };
+
+// The Keychain and random-bytes modules are native code added after TestFlight build 5. Importing them
+// at the top crashed that build at launch, so iOS rolled every over-the-air update back (Nov 19). They're
+// loaded only when bank sync needs them, and only if this build has them; otherwise bank sync says it
+// needs the new build instead of taking the whole app down.
+type Natives = { SecureStore: typeof import('expo-secure-store'); Crypto: typeof import('expo-crypto') };
+let natives: Natives | null | undefined;
+function loadNatives(): Natives | null {
+  if (natives !== undefined) return natives;
+  if (!requireOptionalNativeModule('ExpoSecureStore') || !requireOptionalNativeModule('ExpoCrypto')) return (natives = null);
+  natives = {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    SecureStore: require('expo-secure-store'),
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    Crypto: require('expo-crypto'),
+  };
+  return natives;
+}
+function needNatives(): Natives {
+  const n = loadNatives();
+  if (!n) throw new BankApiError(0, 'needs_new_build', 'Bank sync needs the newest Ditch build.');
+  return n;
+}
+/** Readable after the first unlock, so background refresh can sync while the phone is locked. */
+const keychain = (n: Natives) => ({ keychainAccessible: n.SecureStore.AFTER_FIRST_UNLOCK });
+
+/** True when this build has what bank sync needs on the phone. */
+export const BANK_NATIVE_READY = () => loadNatives() !== null;
 
 type Identity = { id: string; secret: string };
 let identity: Promise<Identity> | null = null;
@@ -44,13 +62,15 @@ function base64Url(bytes: Uint8Array): string {
 
 function loadIdentity(): Promise<Identity> {
   identity ??= (async () => {
-    let id = await SecureStore.getItemAsync(ID_KEY, KEYCHAIN);
-    let secret = await SecureStore.getItemAsync(SECRET_KEY, KEYCHAIN);
+    const n = needNatives();
+    const { SecureStore, Crypto } = n;
+    let id = await SecureStore.getItemAsync(ID_KEY, keychain(n));
+    let secret = await SecureStore.getItemAsync(SECRET_KEY, keychain(n));
     if (!id || !secret) {
       id = Crypto.randomUUID().toLowerCase();
       secret = base64Url(Crypto.getRandomBytes(32));
-      await SecureStore.setItemAsync(ID_KEY, id, KEYCHAIN);
-      await SecureStore.setItemAsync(SECRET_KEY, secret, KEYCHAIN);
+      await SecureStore.setItemAsync(ID_KEY, id, keychain(n));
+      await SecureStore.setItemAsync(SECRET_KEY, secret, keychain(n));
     }
     return { id, secret };
   })();
@@ -109,7 +129,8 @@ export function exchangePublicToken(publicToken: string, provider?: 'plaid' | 's
 
 async function readAcks(): Promise<Record<string, string>> {
   try {
-    return JSON.parse((await SecureStore.getItemAsync(ACK_KEY, KEYCHAIN)) ?? '{}');
+    const n = needNatives();
+    return JSON.parse((await n.SecureStore.getItemAsync(ACK_KEY, keychain(n))) ?? '{}');
   } catch {
     return {};
   }
@@ -130,7 +151,8 @@ export async function confirmBankSync(res: BankSyncResponse): Promise<void> {
   if (!API_URL) return;
   const acks = await readAcks();
   for (const l of res.links) if (l.syncToken) acks[l.linkId] = l.syncToken;
-  await SecureStore.setItemAsync(ACK_KEY, JSON.stringify(acks), KEYCHAIN);
+  const n = needNatives();
+  await n.SecureStore.setItemAsync(ACK_KEY, JSON.stringify(acks), keychain(n));
 }
 
 /** Disconnects one bank (Settings → Bank → Disconnect), or all of them. */

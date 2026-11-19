@@ -22,7 +22,7 @@ export default function DitchedTab() {
   const p = usePalette();
   const insets = useInsets();
   const edge = usePageEdge();
-  // SE and mini (375pt): shorter pill labels, so each stays on one line. Full words stay in the VoiceOver labels.
+  // SE and mini (375pt): the two buttons get their own full-width row under the name, so the full labels fit.
   const narrow = useWindowDimensions().width < 380;
   const app = useApp();
   const money = useAppMoney();
@@ -51,6 +51,24 @@ export default function DitchedTab() {
     ]);
 
   const nothing = pending.length === 0 && confirmed.length === 0;
+
+  const pills = (s: Sub) => (
+    <View style={{ flexDirection: 'row', gap: narrow ? 8 : 6, rowGap: 10, marginTop: narrow ? 12 : 10, flexWrap: narrow ? 'nowrap' : 'wrap' }}>
+      <Pill
+        label="I cancelled it"
+        a11y={`I cancelled ${s.name}`}
+        filled
+        full={narrow}
+        onPress={async () => {
+          await app.confirmCancelled(s.id);
+          haptic.success();
+          // A win: offer the rating once the moment has landed.
+          setTimeout(() => app.maybeAskReview('cancelled').catch(() => {}), 1500);
+        }}
+      />
+      <Pill label="How to cancel" a11y={`How to cancel ${s.name}`} chevron full={narrow} onPress={() => help.open(s)} />
+    </View>
+  );
 
   return (
     <View style={{ flex: 1, backgroundColor: p.bg }}>
@@ -162,7 +180,7 @@ export default function DitchedTab() {
               <>
                 <SectionHeader
                   title="To cancel"
-                  right={waiting[0] ? `${money(waiting[0].yearlyMinor, waiting[0].currency, { whole: true })} more a year` : undefined}
+                  right={waiting[0] ? `${money(waiting[0].yearlyMinor, waiting[0].currency, { whole: true })} a year still to go` : undefined}
                   style={{ marginTop: 24, marginBottom: 8 }}
                 />
                 <Card>
@@ -174,38 +192,29 @@ export default function DitchedTab() {
                     return (
                       <View key={s.id}>
                         {i ? <RowDivider inset={16} /> : null}
-                        <View style={{ flexDirection: 'row', gap: 12, paddingHorizontal: 14, paddingTop: 14, paddingBottom: 14 }}>
-                          <SubLogo sub={s} />
-                          <View style={{ flex: 1 }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                              {s.kind === 'ditch_pro_trial' ? (
-                                <ProLockup size={16} suffix="trial" color={p.cardFg} />
-                              ) : (
-                                <Txt v="bodyStrong" color={p.cardFg} style={{ fontSize: 17, flexShrink: 1 }} numberOfLines={1}>
-                                  {s.name}
-                                </Txt>
-                              )}
-                              <DitchedTag />
-                            </View>
-                            <Txt v="body" tone="mute" num style={{ fontSize: 14.5, marginTop: 2 }}>
-                              {cancelBy ? `Cancel by ${weekdayDate(cancelBy)}` : charge ? `Charges ${weekdayDate(charge)}` : 'Cancel before it renews'}
-                              {price}
-                            </Txt>
-                            <View style={{ flexDirection: 'row', gap: 6, rowGap: 10, marginTop: 10, flexWrap: 'wrap' }}>
-                              <Pill
-                                label={narrow ? 'Cancelled' : 'I cancelled it'}
-                                a11y={`I cancelled ${s.name}`}
-                                filled
-                                onPress={async () => {
-                                  await app.confirmCancelled(s.id);
-                                  haptic.success();
-                                  // A win: offer the rating once the moment has landed.
-                                  setTimeout(() => app.maybeAskReview('cancelled').catch(() => {}), 1500);
-                                }}
-                              />
-                              <Pill label={narrow ? 'How to' : 'How to cancel'} a11y={`How to cancel ${s.name}`} chevron onPress={() => help.open(s)} />
+                        <View style={{ paddingHorizontal: 14, paddingTop: 14, paddingBottom: 14 }}>
+                          <View style={{ flexDirection: 'row', gap: 12 }}>
+                            <SubLogo sub={s} />
+                            <View style={{ flex: 1 }}>
+                              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                                {s.kind === 'ditch_pro_trial' ? (
+                                  <ProLockup size={16} suffix="trial" color={p.cardFg} />
+                                ) : (
+                                  <Txt v="bodyStrong" color={p.cardFg} style={{ fontSize: 17, flexShrink: 1 }} numberOfLines={1}>
+                                    {s.name}
+                                  </Txt>
+                                )}
+                                <DitchedTag />
+                              </View>
+                              <Txt v="body" tone="mute" num style={{ fontSize: 14.5, marginTop: 2 }}>
+                                {cancelBy ? `Cancel by ${weekdayDate(cancelBy)}` : charge ? `Charges ${weekdayDate(charge)}` : 'Cancel before it renews'}
+                                {price}
+                              </Txt>
+                              {narrow ? null : pills(s)}
                             </View>
                           </View>
+                          {/* Narrow phones (SE): full labels on their own full-width row, never "Cancelled", which reads like a status. */}
+                          {narrow ? pills(s) : null}
                         </View>
                       </View>
                     );
@@ -279,7 +288,7 @@ export default function DitchedTab() {
   );
 }
 
-function Pill({ label, a11y, onPress, filled, chevron }: { label: string; a11y?: string; onPress: () => void; filled?: boolean; chevron?: boolean }) {
+function Pill({ label, a11y, onPress, filled, chevron, full }: { label: string; a11y?: string; onPress: () => void; filled?: boolean; chevron?: boolean; full?: boolean }) {
   const p = usePalette();
   const bg = filled ? (p.dark ? brand.sunflower : brand.ink) : 'transparent';
   const fg = filled ? (p.dark ? brand.ink : brand.white) : p.cardFg;
@@ -290,11 +299,13 @@ function Pill({ label, a11y, onPress, filled, chevron }: { label: string; a11y?:
       onPress={onPress}
       hitSlop={{ top: 5, bottom: 5 }}
       style={({ pressed }) => ({
-        minHeight: 36,
-        borderRadius: 18,
+        minHeight: full ? 44 : 36,
+        borderRadius: full ? 22 : 18,
         paddingHorizontal: 11,
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
+        flex: full ? 1 : undefined,
         gap: 2,
         backgroundColor: bg,
         borderWidth: filled ? 0 : 1.5,

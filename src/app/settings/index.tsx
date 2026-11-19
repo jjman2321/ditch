@@ -45,7 +45,10 @@ export default function Settings() {
     }, [recheck]),
   );
 
-  const whichValue = pro ? (reminded.size === listed.length ? `All ${listed.length}` : `${reminded.size} of ${listed.length}`) : `${reminded.size} of ${FREE_REMINDERS}`;
+  // Free counts against the free allowance ("2 of 3 free"); Pro has no allowance, so it's just how many are on ("4 on").
+  const allOn = listed.length > 0 && reminded.size === listed.length;
+  const whichValue = pro ? (allOn ? `All ${listed.length}` : `${reminded.size} on`) : `${reminded.size} of ${FREE_REMINDERS} free`;
+  const whichSpoken = pro ? (allOn ? `, reminders on all ${listed.length}` : `, reminders on for ${reminded.size}`) : `, ${reminded.size} of ${FREE_REMINDERS} free reminders picked`;
   const proValue = !pro
     ? null
     : trial
@@ -77,7 +80,7 @@ export default function Settings() {
       <Group header="Reminders" note={pro ? undefined : 'Free covers 3 subscriptions. Pro covers all of them, on your own timing.'}>
         <Row label="Remind me" value={remindValue} onPress={() => router.push('/settings/remind-me')} />
         <Row label="Time" right={<TimeField value={settings.reminderTime} onChange={(t) => app.updateSettings({ reminderTime: t })} />} a11yValue={`, ${shortTimeLabel(settings.reminderTime)}`} />
-        <Row label="Which subscriptions" value={whichValue} onPress={() => router.push('/settings/which')} />
+        <Row label="Which subscriptions" value={whichValue} a11yValue={whichSpoken} onPress={() => router.push('/settings/which')} />
       </Group>
 
       <Group header="Your plan">
@@ -106,7 +109,7 @@ export default function Settings() {
         {pro ? null : <Row label="Restore purchases" onPress={() => void restore()} chevron={false} />}
       </Group>
 
-      <Group>
+      <Group header="Your list">
         <Row label="Currency" value={`${settings.currency} ${symbolOf(settings.currency)}`} onPress={() => router.push('/settings/currency')} />
         <Row label="Payday" value={settings.payday ? `The ${ordinal(settings.payday)}` : 'Off'} onPress={() => router.push('/settings/payday')} />
         <Row label="Your data" onPress={() => router.push('/settings/data')} />

@@ -274,9 +274,9 @@ export function SubRow({
                 element (a button inside a button can't be reached), so VoiceOver gets it as the row's "Turn reminder on/off" action. */}
             <View style={{ width: 20, minHeight: 20, alignItems: 'center', justifyContent: 'center' }} importantForAccessibility="no-hide-descendants">
               {bell === 'blocked' || pending ? (
-                <BellOff color={p.disabledFg} size={19} />
+                <BellOff color={p.bellOff} size={19} />
               ) : (
-                <Bell color={bell === 'on' ? (on ? brand.ink : p.dark ? brand.sunflower : brand.ink) : p.disabledFg} size={19} fill={bell === 'on' ? (on ? brand.ink : brand.sunflower) : undefined} />
+                <Bell color={bell === 'on' ? (on ? brand.ink : p.dark ? brand.sunflower : brand.ink) : p.bellOff} size={19} fill={bell === 'on' ? (on ? brand.ink : brand.sunflower) : undefined} />
               )}
             </View>
           </GestureDetector>

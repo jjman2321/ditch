@@ -41,7 +41,7 @@ const cream = {
   chipOnBg: brand.ink,
   chipOnFg: brand.white,
   controlBorder: '#D9D0BD',
-  radioBorder: '#B9B09D',
+  radioBorder: '#8F8776', // 3.6:1 on white, 3.3:1 on cream (WCAG 1.4.11 needs 3:1)
   tickBorder: '#C4BBA8',
   guessBorder: '#CFC6B3',
   guessFg: '#6B6559',
@@ -58,7 +58,9 @@ const cream = {
   iconBtn: 'rgba(22,20,15,0.12)',
   accent: brand.ink, // ticks, selected radios
   accentFg: brand.white,
-  disabledFg: '#A39B8A',
+  /** The empty (off) bell's outline: an off control still has to be seen (3:1). Same as `mute`. */
+  bellOff: '#6B6559',
+  disabledFg: '#8F8776', // 3.6:1 on white, 3.3:1 on cream: SubRow's off bell uses it too
   danger: '#B3361A',
   warn: brand.bill,
 };
@@ -103,7 +105,7 @@ const night: Palette = {
   chipOnBg: '#F6F0E3',
   chipOnFg: brand.ink,
   controlBorder: '#3A3630',
-  radioBorder: '#5A554C',
+  radioBorder: '#77705F', // 3.5:1 on the #1E1C18 card
   tickBorder: '#5A554C',
   guessBorder: '#4A463E',
   guessFg: '#BFB7A7',
@@ -120,6 +122,7 @@ const night: Palette = {
   iconBtn: '#2A2722',
   accent: brand.sunflower,
   accentFg: brand.ink,
+  bellOff: '#A9A192',
   disabledFg: '#6E685D',
   danger: '#FF8A65',
   warn: brand.bill,

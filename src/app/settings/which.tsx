@@ -52,22 +52,11 @@ export default function Which() {
   const upsellFg = p.dark ? brand.sunflower : brand.ink;
 
   return (
-    <SettingsPage title="Which subscriptions" intro={pro ? 'Pro reminds you about all of them. Switch off any you don’t need.' : `Pick ${FREE_REMINDERS} to get reminders.`}>
-      {pro ? null : (
-        <Animated.View
-          accessible
-          accessibilityLabel={`Reminders ${on.size} of ${FREE_REMINDERS}`}
-          style={[
-            { alignSelf: 'flex-start', marginTop: 14, height: 30, borderRadius: 15, backgroundColor: brand.sunflower, flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 12 },
-            nudgeStyle,
-          ]}
-        >
-          <Bell color={brand.ink} size={14} fill={brand.ink} />
-          <Txt v="label" color={brand.ink} num style={{ fontFamily: 'Inter_700Bold', fontSize: 13.5 }}>
-            Reminders {on.size} of {FREE_REMINDERS}
-          </Txt>
-        </Animated.View>
-      )}
+    <SettingsPage
+      title="Which subscriptions"
+      // The count lives in the intro (no yellow pill): the upsell card and the bells are the only yellow here.
+      intro={pro ? 'Pro reminds you about all of them. Switch off any you don’t need.' : `${on.size} of ${FREE_REMINDERS} picked. Tap a bell to ${on.size >= FREE_REMINDERS ? 'swap' : 'add one'}.`}
+    >
       {/* The 4th tap: say why, and offer the way out (DECISIONS #24). */}
       {!pro && limitHit ? (
         <View style={{ marginTop: 10, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: 6 }}>
@@ -79,36 +68,39 @@ export default function Which() {
       ) : null}
       {/* The way to all of them, above the list so it's on screen without scrolling (SE). Home total card colours. */}
       {pro ? null : (
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={`Get reminders on all of them. Try Pro free for ${planById('yearly').trialDays} days`}
-          onPress={() => router.push('/paywall?from=which')}
-          style={({ pressed }) => ({
-            marginTop: 14,
-            minHeight: 64,
-            borderRadius: 22,
-            paddingHorizontal: 18,
-            paddingVertical: 12,
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: 12,
-            backgroundColor: p.dark ? p.card : brand.sunflower,
-            borderWidth: p.dark ? 1 : 0,
-            borderColor: p.cardBorder,
-            opacity: pressed ? 0.8 : 1,
-          })}
-        >
-          <Bell color={upsellFg} fill={upsellFg} size={18} />
-          <View style={{ flex: 1 }}>
-            <Txt v="bodyStrong" color={upsellFg} style={{ fontFamily: F.bold }}>
-              Get reminders on all of them
-            </Txt>
-            <Txt v="sub" color={p.dark ? p.cardFg : brand.ink}>
-              Try Pro free for {planById('yearly').trialDays} days
-            </Txt>
-          </View>
-          <ChevronRight color={upsellFg} size={16} />
-        </Pressable>
+        // The 4th tap nudges this card: it's the way to more than 3.
+        <Animated.View style={nudgeStyle}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={`Get reminders on all of them. Try Pro free for ${planById('yearly').trialDays} days`}
+            onPress={() => router.push('/paywall?from=which')}
+            style={({ pressed }) => ({
+              marginTop: 14,
+              minHeight: 64,
+              borderRadius: 22,
+              paddingHorizontal: 18,
+              paddingVertical: 12,
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 12,
+              backgroundColor: p.dark ? p.card : brand.sunflower,
+              borderWidth: p.dark ? 1 : 0,
+              borderColor: p.cardBorder,
+              opacity: pressed ? 0.8 : 1,
+            })}
+          >
+            <Bell color={upsellFg} fill={upsellFg} size={18} />
+            <View style={{ flex: 1 }}>
+              <Txt v="bodyStrong" color={upsellFg} style={{ fontFamily: F.bold }}>
+                Get reminders on all of them
+              </Txt>
+              <Txt v="sub" color={p.dark ? p.cardFg : brand.ink}>
+                Try Pro free for {planById('yearly').trialDays} days
+              </Txt>
+            </View>
+            <ChevronRight color={upsellFg} size={16} />
+          </Pressable>
+        </Animated.View>
       )}
       {list.length ? (
         <Group style={{ marginTop: 14 }} note={pro ? undefined : 'The rest stay on your list with real dates and totals. You just won’t get a reminder.'}>

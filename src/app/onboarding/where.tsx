@@ -70,16 +70,11 @@ export default function Where() {
           </IconButton>
         </View>
         <Txt v="title" accessibilityRole="header" style={{ marginTop: 2, fontSize: 28, lineHeight: 34 }}>
-          Where should we look?
+          {'Where should we\u00A0look?'}
         </Txt>
         <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
           Pick one. You check everything before it’s added.
         </Txt>
-        {DEV_TOOLS ? (
-          <View style={{ opacity: 0.55 }}>
-            <SoonCard title="My bank" line="Read-only, takes a minute." tag="COMING SOON" />
-          </View>
-        ) : null}
         {showImport() ? (
           <>
             <RouteCard icon={PhoneList} title="Apple subscriptions" line="A screenshot of your list." tag="FREE ONCE" onPress={() => find('/find/apple')} />
@@ -87,6 +82,8 @@ export default function Where() {
           </>
         ) : null}
         <RouteCard icon={ListCheck} title="Pick them myself" line="Tick them from our list." onPress={() => router.push('/onboarding/services')} />
+        {/* Test builds only, last: nothing to tap yet, and full-contrast text (no faded card). */}
+        {DEV_TOOLS ? <SoonCard title="My bank" line="Read-only, takes a minute." tag="COMING SOON" /> : null}
         <Txt v="sub" tone="mute" center style={{ marginTop: 20, color: p.mute }}>
           Read on your iPhone. Screenshots and statements aren’t uploaded.
         </Txt>

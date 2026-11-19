@@ -2,7 +2,7 @@
 // "Ditched" tag appears with a firm buzz, the logo dims, the duck pops up over the row, then
 // "$X a year you won't pay, once you cancel." fades in. No stamp. Ditching doesn't cancel
 // anything: the user still has to cancel with the service, so the one
-// last check reminder stays, and "I already cancelled" is what confirms it.
+// last check reminder stays, and "I cancelled it" is what confirms it.
 
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useRef } from 'react';
@@ -294,7 +294,7 @@ export default function Ditched() {
               right={help1.kind === 'steps' ? undefined : <External color={p.dark ? brand.ink : brand.sunflower} size={19} />}
               style={[{ marginTop: compact ? 10 : 12 }, compact && { minHeight: 50, borderRadius: 25 }]}
             />
-            <Button kind="secondary" label="I already cancelled" onPress={cancelled} style={[{ marginTop: 8 }, compact && { minHeight: 46, borderRadius: 23 }]} />
+            <Button kind="secondary" label="I cancelled it" onPress={cancelled} style={[{ marginTop: 8 }, compact && { minHeight: 46, borderRadius: 23 }]} />
             <Pressable
               accessibilityRole="link"
               accessibilityLabel={trial ? 'Open Apple subscriptions to cancel Ditch Pro' : 'Billed by Apple? Open Apple subscriptions'}

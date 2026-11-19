@@ -50,7 +50,14 @@ function notice(title: string, message: string, buttons: { text: string; onPress
 }
 
 type Cell = 'yes' | 'no' | string;
-type Row = { label: string; free: Cell; pro: Cell; /** One plain line under the label: what it means for you. */ sub?: string };
+type Row = {
+  label: string;
+  free: Cell;
+  pro: Cell;
+  /** One plain line under the label: what it means for you. */ sub?: string;
+  /** Short phones drop rows with a `drop` rank, highest first, so the table never hides behind the plans. */
+  drop?: number;
+};
 
 // DECISIONS #26, #27, #30. Only Pro features that work in this build (App Review 2.1, 3.1.2):
 // a row appears when its feature does. The Lock Screen widget is v1.1 (#27).
@@ -66,16 +73,16 @@ function rowsFor(n: number): Row[] {
     // Price watch (DECISIONS #60).
     { label: 'Price hike alerts', free: 'no', pro: 'yes' },
     // The 30-day warning before yearly charges (DECISIONS #60).
-    { label: 'Yearly bill warnings', free: 'no', pro: 'yes' },
+    { label: 'Yearly bill warnings', free: 'no', pro: 'yes', drop: 2 },
     // Free can change the time of day; Pro picks the days before.
-    { label: 'Pick your reminder days', free: 'no', pro: 'yes' },
+    { label: 'Pick your reminder days', free: 'no', pro: 'yes', drop: 3 },
     ...(WIDGET_READY ? [{ label: `Lock${NB}Screen widget`, free: 'no', pro: 'yes' }] : []),
-    // The first import is free (DECISIONS #34), so Free says "Once".
-    ...(showImport() ? [{ label: 'Screenshot import', free: 'Once', pro: 'yes' }] : []),
+    // The first import is free (DECISIONS #34), so Free says "1 free".
+    ...(showImport() ? [{ label: 'Screenshot import', free: '1 free', pro: 'yes', drop: 1 }] : []),
   ];
 }
 
-/** 320pt wide: the same rows in fewer words, so each stays on one line. */
+/** Small phones (SE, mini): the same rows in fewer words, so each stays on one line. */
 const SHORT: Record<string, string> = {
   'Pick your reminder days': 'Pick the days',
 };
@@ -91,10 +98,14 @@ const CANVAS_BASE = 600;
 /** Table row height range: 52pt (SE) to 66pt (fewer rows get more air). Each row has a label and a line under it. */
 const ROW_MIN = 40;
 const ROW_MAX = 50;
-/** Short phone or big text: the hero and table shrink to fit, but never below this (labels stay ≥ 11pt). Under it they scroll. */
+/** Big text: the hero and table shrink to fit, but never below this. Under it they scroll. (Short phones drop rows instead.) */
 const TOP_MIN_SCALE = 0.8;
 /** Space between the table and the plans when the bottom part is pinned on its own (fits the Pro column's 8pt overhang). */
 const TOP_GAP = 18;
+/** The top part without its rows, in canvas units (hero + table header + table bottom − overlap + gap), until it's measured. */
+const TOP_FIXED_EST = HERO_H + 40 + 6 - 40 + TOP_GAP;
+/** Table text is never smaller than this on screen (points), whatever the canvas scale. */
+const TABLE_MIN_PT = 13;
 /** Space above the first plan card when the bottom part is pinned on its own. */
 const BOTTOM_PAD = 12;
 /** First guess of the bottom part's height (pad + plans + gap + button + price line + links), before it's measured. */
@@ -107,11 +118,28 @@ function slopFor(size: number, scale: number, base = 0): number {
   return Math.max(base, Math.ceil((MIN_TAP / scale - size) / 2));
 }
 
-const CELL_TEXT = { fontFamily: F.semi, fontSize: 14, lineHeight: 20 } as const;
-const LABEL_TEXT = { fontFamily: F.medium, fontSize: 14, letterSpacing: -0.1 } as const;
+/** Canvas font size for the table: 14 as designed, a bit bigger on narrow phones so it's at least 13pt on screen (max 15.5). */
+function tableFontFor(scale: number): number {
+  return Math.min(15.5, Math.max(14, Math.ceil((TABLE_MIN_PT / scale) * 2) / 2));
+}
+
+/** Rows that fit in `n` places: drops the highest `drop` ranks first, keeps the order. */
+function fitRowsTo(rows: Row[], n: number): Row[] {
+  if (rows.length <= n) return rows;
+  const cut = new Set(
+    rows
+      .filter((r) => r.drop)
+      .sort((a, b) => (b.drop ?? 0) - (a.drop ?? 0))
+      .slice(0, rows.length - n)
+      .map((r) => r.label),
+  );
+  return rows.filter((r) => !cut.has(r.label));
+}
 
 /** Free vs Pro. Fixed columns: Free 56pt; Pro fits "Unlimited" with 12pt either side. */
-function Compare({ rows, width, overlap, tiny, grow = 0 }: { rows: Row[]; width: number; overlap: number; tiny?: boolean; grow?: number }) {
+function Compare({ rows, width, overlap, tiny, grow = 0, font = 14 }: { rows: Row[]; width: number; overlap: number; tiny?: boolean; grow?: number; font?: number }) {
+  const CELL_TEXT = { fontFamily: F.semi, fontSize: font, lineHeight: Math.round(font * 1.43) };
+  const LABEL_TEXT = { fontFamily: F.medium, fontSize: font, letterSpacing: -0.1 };
   const p = usePalette();
   const dark = p.dark;
   const ink = dark ? '#F6F0E3' : brand.ink;
@@ -148,7 +176,7 @@ function Compare({ rows, width, overlap, tiny, grow = 0 }: { rows: Row[]; width:
         {rows.map((r) => (
           <Text
             key={r.label}
-            style={tiny ? [LABEL_TEXT, { fontSize: 13 }] : LABEL_TEXT}
+            style={[LABEL_TEXT, { fontFamily: F.semi }]}
             maxFontSizeMultiplier={1.4}
             onLayout={(e) => setLabelW((m) => (m[r.label] === e.nativeEvent.layout.width ? m : { ...m, [r.label]: e.nativeEvent.layout.width }))}
           >
@@ -172,7 +200,7 @@ function Compare({ rows, width, overlap, tiny, grow = 0 }: { rows: Row[]; width:
       />
       <View style={{ flexDirection: 'row', alignItems: 'center', height: 40 }} importantForAccessibility="no-hide-descendants">
         <View style={{ flex: 1 }} />
-        <Txt v="sub" tone="mute" center style={{ width: colF, fontFamily: F.semi }} maxFontSizeMultiplier={1.2}>
+        <Txt v="sub" tone="mute" center style={{ width: colF, fontFamily: F.semi, fontSize: font }} maxFontSizeMultiplier={1.2}>
           Free
         </Txt>
         <View style={{ width: colP, marginRight: PRO_INSET, alignItems: 'center' }}>
@@ -194,7 +222,7 @@ function Compare({ rows, width, overlap, tiny, grow = 0 }: { rows: Row[]; width:
           >
             {i ? <View style={{ position: 'absolute', top: 0, left: 16, right: colP + PRO_INSET, height: 1, backgroundColor: p.hair }} /> : null}
             <View style={{ flex: 1, paddingLeft: 16, paddingRight: 8, paddingVertical: 6 }}>
-              <Txt v="sub" color={p.cardFg} style={[LABEL_TEXT, { fontFamily: F.semi }, tiny && { fontSize: 13 }, { lineHeight: two ? 17 : 20 }]} maxFontSizeMultiplier={1.4}>
+              <Txt v="sub" color={p.cardFg} style={[LABEL_TEXT, { fontFamily: F.semi }, { lineHeight: two ? Math.round(font * 1.2) : Math.round(font * 1.43) }]} maxFontSizeMultiplier={1.4}>
                 {two ? balanceLines(tiny ? (SHORT[r.label] ?? r.label) : r.label) : tiny ? (SHORT[r.label] ?? r.label) : r.label}
               </Txt>
               {r.sub ? (
@@ -253,17 +281,20 @@ export default function Paywall() {
   const app = useApp();
   // Where it was opened from: 'app' (Settings, a PRO tag, the editor), 'which' (a 4th bell), 'remind'
   // (custom reminder days), 'import'. Only changes words, never the flow.
-  const { from } = useLocalSearchParams<{ from?: string }>();
+  // `plan` (lifetime | yearly | weekly) picks the plan that's selected first, e.g. Settings → Ditch Pro's "Or pay once".
+  const { from, plan: planParam } = useLocalSearchParams<{ from?: string; plan?: string }>();
   // After onboarding (Settings, a PRO tag, the editor) vs. during onboarding. Decided by
   // whether onboarding is done, never by the link, so no link can rerun onboarding.
   const inApp = app.settings.onboardingDone;
   const pickedList = usePickedList();
   const n = inApp ? listedUserSubs(app.subs).length : pickedList.length;
   const many = n > 3;
-  const [planId, setPlanId] = useState<PlanId>('yearly');
+  const [planId, setPlanId] = useState<PlanId>(planParam === 'lifetime' || planParam === 'weekly' ? planParam : 'yearly');
   // Measured heights (canvas units) of the two halves, used only when they're laid out apart (short phone or big text).
   const [topH, setTopH] = useState(0);
   const [bottomH, setBottomH] = useState(BOTTOM_EST);
+  // The measured top part minus its rows (canvas units), so we know how many rows fit under it.
+  const [topFixed, setTopFixed] = useState(TOP_FIXED_EST);
 
   const yearly = planById('yearly');
   const weekly = planById('weekly');
@@ -322,7 +353,7 @@ export default function Paywall() {
   const what = many ? `all ${n}${NB}renewals.` : `every${NB}renewal.`;
   const head = `Get a reminder before\n${what}`;
   const spokenHead = `Get a reminder before ${many ? `all ${n} renewals` : 'every renewal'}.`;
-  const rows = rowsFor(n);
+  const allRows = rowsFor(n);
   const ink = dark ? '#F6F0E3' : brand.ink;
   // One fixed design, scaled to fit (owner, Nov 18: "how it looks on other devices"). The paywall is laid
   // out once on a 440 x 860 canvas (Pro Max proportions) and the whole canvas is shrunk to fit the
@@ -332,23 +363,31 @@ export default function Paywall() {
   // Width decides the size, so every iPhone gets the same proportions; the table rows take up the small
   // height differences (40-50pt each).
   const byWidth = Math.min(1, f.width / CANVAS_W);
-  const rowsMin = rows.length * ROW_MIN;
-  const rowsMax = rows.length * ROW_MAX;
+  const rowsMin = allRows.length * ROW_MIN;
+  const rowsMax = allRows.length * ROW_MAX;
   const fitRows = Math.min(rowsMax, availH / byWidth - CANVAS_BASE);
   // Too short for the whole picture at width-fit (SE: 647pt tall), or big text (Dynamic Type): split it.
   // The bottom part (plans, button, price line, links) stays at width-fit size, pinned to the bottom; only
   // the hero and table shrink (down to TOP_MIN_SCALE) and scroll past that.
-  const split = fitRows < rowsMin || f.fontScale > 1.15;
+  const bigText = f.fontScale > 1.15;
+  const split = fitRows < rowsMin || bigText;
   const scale = byWidth;
+  // Table text at least 13pt on screen; small phones use the short labels so each row stays on one line.
+  const tableFont = tableFontFor(scale);
+  const shortLabels = f.small || f.width < 380;
   const rowsH = Math.max(rowsMin, Math.min(rowsMax, availH / scale - CANVAS_BASE));
   const CANVAS_H = CANVAS_BASE + rowsH;
-  const rowGrow = Math.floor(rowsH / rows.length) - ROW_MIN;
+  const rowGrow = Math.floor(rowsH / allRows.length) - ROW_MIN;
   const canvasTop = f.insets.top + (availH - CANVAS_H * scale) / 2;
   const yellowTo = canvasTop + HERO_H * scale;
 
   // Split layout sizes (points on screen).
   const bottomOnScreen = bottomH * scale;
   const topRoom = availH - bottomOnScreen;
+  // Short phone at the normal text size (SE): rather than shrink or hide the last rows behind the plans,
+  // show only the rows that fit at width-fit size (the least important go first). Big text scrolls instead.
+  const rowsThatFit = Math.max(3, Math.floor((topRoom / scale - topFixed) / ROW_MIN));
+  const rows = split && !bigText ? fitRowsTo(allRows, rowsThatFit) : allRows;
   const topScale = !split || !topH ? scale : f.fontScale > 1.15 ? scale : Math.min(scale, Math.max(TOP_MIN_SCALE, topRoom / topH));
   const topOnScreen = topH * topScale;
 
@@ -447,7 +486,10 @@ export default function Paywall() {
             <View style={{ position: 'absolute', left: 0, right: 0, top: -1000, height: 1000 + f.insets.top + HERO_H * topScale, backgroundColor: yellow }} />
             <View style={{ height: topOnScreen, opacity: topH ? 1 : 0 }}>
               <View
-                onLayout={(e) => setTopH(e.nativeEvent.layout.height)}
+                onLayout={(e) => {
+                  setTopH(e.nativeEvent.layout.height);
+                  setTopFixed(e.nativeEvent.layout.height - rows.length * ROW_MIN);
+                }}
                 style={{
                   position: 'absolute',
                   width: CANVAS_W,
@@ -459,7 +501,7 @@ export default function Paywall() {
                 }}
               >
                 {hero(topScale)}
-                <Compare rows={rows} width={CANVAS_W - EDGE_W * 2} overlap={40} />
+                <Compare rows={rows} width={CANVAS_W - EDGE_W * 2} overlap={40} font={tableFont} tiny={shortLabels} />
               </View>
             </View>
           </ScrollView>
@@ -500,7 +542,7 @@ export default function Paywall() {
           }}
         >
           {hero(scale)}
-          <Compare rows={rows} width={CANVAS_W - EDGE_W * 2} overlap={40} grow={rowGrow} />
+          <Compare rows={rows} width={CANVAS_W - EDGE_W * 2} overlap={40} grow={rowGrow} font={tableFont} tiny={shortLabels} />
           <View style={{ flex: 1 }} />
           {bottom}
         </View>

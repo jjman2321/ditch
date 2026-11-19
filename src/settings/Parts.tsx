@@ -6,7 +6,7 @@ import { router } from 'expo-router';
 import { Children, useRef, type ReactNode } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 
-import { Card, ChevronLeft, ChevronRight,  F, Txt, usePalette, useInsets, usePageEdge } from '@/ui/sunflower';
+import { Card, ChevronLeft, ChevronRight, F, Txt, usePalette, useInsets, usePageEdge } from '@/ui/sunflower';
 
 export function SettingsPage({ title, back = 'Settings', children, intro }: { title: string; back?: string; children: ReactNode; intro?: string }) {
   const p = usePalette();
@@ -27,7 +27,8 @@ export function SettingsPage({ title, back = 'Settings', children, intro }: { ti
             {back}
           </Txt>
         </Pressable>
-        <Txt v="displayM" accessibilityRole="header" style={{ fontSize: 32, lineHeight: 40, marginTop: 2 }}>
+        {/* One line on every phone: long titles shrink a little instead of wrapping (audit Nov 19). */}
+        <Txt v="displayM" accessibilityRole="header" numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.85} style={{ fontSize: 32, lineHeight: 40, marginTop: 2 }}>
           {title}
         </Txt>
         {intro ? (
@@ -106,18 +107,26 @@ export function Row({
         </Txt>
       )}
       <View style={{ flex: 1, alignItems: 'flex-end' }}>
-        {right ?? (value ? (
-          <Txt v="leadS" tone="mute" num numberOfLines={1} style={{ fontSize: 16 }}>
-            {value}
-          </Txt>
-        ) : null)}
+        {right ??
+          (value ? (
+            <Txt v="leadS" tone="mute" num numberOfLines={1} style={{ fontSize: 16 }}>
+              {value}
+            </Txt>
+          ) : null)}
       </View>
       {chevron ? <ChevronRight color={p.mute} size={16} /> : null}
     </View>
   );
   // A control on the right (the time picker, a switch) carries its own label, so the row
   // mustn't group it away from VoiceOver.
-  if (!onPress) return right ? body(false) : <View accessible accessibilityLabel={`${label}${a11yValue ?? (value ? `, ${value}` : '')}`}>{body(false)}</View>;
+  if (!onPress)
+    return right ? (
+      body(false)
+    ) : (
+      <View accessible accessibilityLabel={`${label}${a11yValue ?? (value ? `, ${value}` : '')}`}>
+        {body(false)}
+      </View>
+    );
   return (
     <Pressable accessibilityRole="button" accessibilityLabel={`${label}${a11yValue ?? (value ? `, ${value}` : '')}`} accessibilityHint={hint} onPress={press}>
       {({ pressed }) => body(pressed)}

@@ -5,7 +5,7 @@
 // Lifetime $119.99), never typed here.
 
 import { router } from 'expo-router';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import { APPLE_SUBSCRIPTIONS_URL } from '@/catalog/cancel';
 import { weekdayDate } from '@/domain/dates';
@@ -24,6 +24,7 @@ export default function ProPage() {
   const trial = runningProTrial(subs, app.today);
   const plan = settings.proPlan && settings.proPlan !== 'monthly' ? planById(settings.proPlan) : null;
   const yearly = planById('yearly');
+  const lifetime = planById('lifetime');
   const n = listedUserSubs(subs).length;
   const tick = <Check color={p.dark ? brand.sunflower : brand.ink} size={18} />;
   const restore = async () => {
@@ -65,9 +66,21 @@ export default function ProPage() {
           <Txt v="fine" tone="mute" num center style={{ marginTop: 8, fontSize: 13.5 }}>
             {`${yearly.trialDays} days free, then ${billedLabel(yearly)}`}
           </Txt>
+          {/* For people tired of subscriptions: straight to the paywall with Lifetime already picked. */}
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={`Or pay once, ${lifetime.priceString}`}
+            accessibilityHint="Opens Ditch Pro with Lifetime picked"
+            onPress={() => router.push('/paywall?from=app&plan=lifetime')}
+            style={({ pressed }) => ({ minHeight: 44, alignSelf: 'center', justifyContent: 'center', paddingHorizontal: 12, opacity: pressed ? 0.6 : 1 })}
+          >
+            <Txt v="label" color={p.fg} num>
+              {`Or pay once, ${lifetime.priceString} ›`}
+            </Txt>
+          </Pressable>
         </>
       )}
-      <Group note={`Lifetime is a one-time ${planById('lifetime').priceString} for Pro. Cancel a subscription anytime in iPhone Settings → your name → Subscriptions.`}>
+      <Group note={`${pro ? `Lifetime is a one-time ${lifetime.priceString} for Pro. ` : ''}Cancel a subscription anytime in iPhone Settings → your name → Subscriptions.`}>
         {pro && trial ? <Row label="Trial ends" value={weekdayDate(trial.anchor)} /> : null}
         {pro && settings.proPlan !== 'lifetime' ? <Row label="Manage" hint="Opens your Apple subscriptions" onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)} /> : null}
         <Row label="Restore purchases" onPress={restore} chevron={false} />

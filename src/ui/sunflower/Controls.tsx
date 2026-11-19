@@ -138,7 +138,7 @@ export function BellMark({ on }: { on: boolean }) {
         anim,
       ]}
     >
-      <Bell color={on ? brand.ink : p.disabledFg} size={19} fill={on ? brand.ink : undefined} />
+      <Bell color={on ? brand.ink : p.bellOff} size={19} fill={on ? brand.ink : undefined} />
     </Animated.View>
   );
 }

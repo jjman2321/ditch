@@ -432,10 +432,13 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
       ? moved
         ? `${draft.planName ?? 'This plan'} is ${money(moved.amountMinor, moved.currency)} now, checked ${shortDate(moved.checked)}. Change yours if it went up.`
         : typical
-          ? `Typical ${draft.planName ? `${draft.planName} ` : ''}price. Change it if yours is different.`
+          ? `Typical ${draft.name} price.`
           : null
       : null;
   const saving = trialEntry ? null : yearlySaving({ ...draft, currency: draft.currency ?? currency }, priceRow);
+  // One grey note under the price, not two: "Typical Hulu price. Yearly: $124.99 ($24.89 less)."
+  const yearlyLine = saving ? `Yearly: ${money(saving.yearlyMinor, saving.currency)} (${money(saving.lessBy, saving.currency)} less).` : null;
+  const priceNote = yearlyLine ? (catalogLine ? `${catalogLine} ${yearlyLine}` : yearlyLine) : catalogLine && typical && !moved ? `${catalogLine} Change it if yours is different.` : catalogLine;
 
   return (
     <View style={{ flex: 1 }}>
@@ -634,16 +637,11 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
               <Txt v="sub" color={p.danger} style={{ marginTop: 6, marginHorizontal: 2 }} accessibilityLiveRegion="polite">
                 {parsed !== null && parsed > MAX_MINOR ? 'That looks too big. Check the price.' : 'Check the price.'}
               </Txt>
-            ) : catalogLine ? (
+            ) : priceNote ? (
+              // Typical price and the cheaper-plan check (DECISIONS #60: the same plan billed yearly, from our checked prices, same currency only) share one line.
+              // Free too: the yearly price is already on a plan chip, so hiding the difference behind Pro hid nothing (audit, Nov 19).
               <Txt v="sub" tone="mute" num style={{ marginTop: 6, marginHorizontal: 2 }}>
-                {catalogLine}
-              </Txt>
-            ) : null}
-            {/* Cheaper-plan check (DECISIONS #60): the same plan billed yearly, from our checked prices. Same currency only.
-                Free too: the yearly price is already on a plan chip, so hiding the difference behind Pro hid nothing (audit, Nov 19). */}
-            {saving ? (
-              <Txt v="sub" num color={p.fg} style={{ marginTop: 6, marginHorizontal: 2 }}>
-                {`Paying yearly would be ${money(saving.yearlyMinor, saving.currency)} a year, ${money(saving.lessBy, saving.currency)} less than 12 months of this.`}
+                {priceNote}
               </Txt>
             ) : null}
 
@@ -804,7 +802,12 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
       <KeyboardDone />
       {searching ? null : (
         <View style={{ paddingTop: 10 }}>
-          <Button label={isNew ? (draft.isTrial ? 'Track trial' : `Add ${draft.name || query.trim() || 'it'}`) : 'Save'} disabled={!canSave || !changed} onPress={save} />
+          {/* Edit, nothing changed yet: an outlined Done that just closes (a greyed-out Save looked broken). The first change turns it into Save. */}
+          {changed ? (
+            <Button label={isNew ? (draft.isTrial ? 'Track trial' : `Add ${draft.name || query.trim() || 'it'}`) : 'Save'} disabled={!canSave} onPress={save} />
+          ) : (
+            <Button kind="secondary" label="Done" hint="Closes without changes" height={56} onPress={close} />
+          )}
         </View>
       )}
     </View>

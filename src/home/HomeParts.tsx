@@ -13,7 +13,7 @@ import { shortDate, weekdayDate } from '@/domain/dates';
 import type { BeforePayday } from '@/domain/subs';
 import { useCombinedTotal } from '@/services/fx';
 import { useApp, useAppMoney } from '@/state/app';
-import { Bang, Bell, BellOff, Button, Card, ChevronRight, Duck, F, LogoTile, Plus, Search, Txt, brand, usePalette } from '@/ui/sunflower';
+import { Bang, Bell, BellOff, Button, Card, ChevronRight, Close, Duck, F, LogoTile, Plus, Search, Txt, brand, usePalette } from '@/ui/sunflower';
 
 export function TotalCard({
   totals,
@@ -95,12 +95,14 @@ export function TotalCard({
         {of === 0 ? null : blocked ? <BellOff color={fg} size={16} /> : <Bell color={p.dark ? brand.sunflower : brand.ink} fill={p.dark ? brand.sunflower : brand.ink} size={15} />}
         {of === 0 ? null : (
           <Txt v="body" color={fg} style={{ fontSize: tiny ? 14 : 15.5, fontFamily: blocked ? F.bold : F.regular }}>
-            {blocked ? 'Reminders off' : tiny ? '' : 'Reminders on '}
+            {/* "2 of 6 reminded" / "All 6 reminded": the count first, short enough for every phone. VoiceOver keeps "Reminders on 2 of 6". */}
+            {blocked ? 'Reminders off' : null}
             {blocked ? null : (
               <Txt v="body" num color={fg} style={{ fontFamily: F.bold, fontSize: tiny ? 14 : 15.5 }}>
-                {reminders}
+                {all && of > 0 ? `All ${of}` : `${on} of ${of}`}
               </Txt>
             )}
+            {blocked ? null : ' reminded'}
           </Txt>
         )}
       </View>
@@ -203,20 +205,25 @@ export function NextReminderRow({ when, name, onPress }: { when: string; name: s
 export function PaydayRow({ before, money, onPress }: { before: BeforePayday; money: (minor: number, currency: string) => string; onPress: () => void }) {
   const p = usePalette();
   const amounts = before.totals.map((t) => money(t.amountMinor, t.currency)).join(' · ');
-  const title = before.count ? amounts : 'nothing due';
+  // "$17.99 due before payday" / "1 charge · payday Wed, Nov 25": the money first, then what it is.
   // Small phones: "Nov 25" so the date (the point of the line) never gets cut.
   const day = useWindowDimensions().width < 380 ? shortDate(before.payday) : weekdayDate(before.payday);
-  const line = before.count ? `${before.count} ${before.count === 1 ? 'charge' : 'charges'} until payday, ${day}` : `Payday is ${day}`;
+  const line = before.count ? `${before.count} ${before.count === 1 ? 'charge' : 'charges'} · payday ${day}` : `Payday is ${day}`;
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={`Before payday: ${title}. ${line}`} accessibilityHint="Opens the calendar" onPress={onPress}>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`${before.count ? `${amounts} due before payday` : 'Nothing due before payday'}. ${line.replace(' · ', ', ')}`}
+      accessibilityHint="Opens the calendar"
+      onPress={onPress}
+    >
       {({ pressed }) => (
         <Card style={{ minHeight: 56, borderRadius: 16, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, paddingVertical: 9, opacity: pressed ? 0.75 : 1 }}>
           <View style={{ flex: 1, minWidth: 0 }}>
             <Txt v="body" color={p.cardFg} num numberOfLines={1} style={{ fontSize: 15 }}>
-              <Txt v="body" color={p.cardFg} style={{ fontFamily: F.bold, fontSize: 15 }}>
-                Before payday:
+              <Txt v="body" color={p.cardFg} num style={{ fontFamily: F.bold, fontSize: 15 }}>
+                {before.count ? amounts : 'Nothing'}
               </Txt>
-              {` ${title}`}
+              {' due before payday'}
             </Txt>
             <Txt v="sub" tone="mute" num numberOfLines={1}>
               {line}
@@ -352,48 +359,50 @@ export function EmptyHome({ country, onAdd }: { country: string | null; onAdd: (
 }
 
 /**
- * "Netflix is on your list twice" / "2 music services" (DECISIONS #60). Free. A nudge toward the
- * ditch moment, never a scold: it states what they pay together and lets them decide.
- * "Pick one to ditch" opens the cheaper one (its sheet has the Ditch button; they can still pick the other).
- * "Got it" hides it until the set changes.
+ * "2 music services · $22.98/mo · Pick one ›" / "Netflix twice · $35.98/mo · Pick one ›" (DECISIONS #60). Free.
+ * One compact line, a nudge toward the ditch moment, never a scold: it states what they pay together and lets them decide.
+ * Tapping it opens the cheaper one (its sheet has the Ditch button; they can still pick the other).
+ * The × hides it until the set changes.
  */
 export function OverlapCard({ overlap, money, onDismiss, onPick }: { overlap: Overlap; money: (minor: number, currency: string) => string; onDismiss: () => void; onPick: () => void }) {
   const p = usePalette();
   const names = overlap.subs.map((s) => s.name);
   const listed = names.length > 2 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names.join(' and ');
-  const title =
-    overlap.kind === 'twice' ? `${overlap.label} is on your list ${overlap.subs.length === 2 ? 'twice' : `${overlap.subs.length} times`}.` : `${overlap.subs.length} ${overlap.label}: ${listed}.`;
-  // Mixed currencies stay apart (rule 1): "£11.99 · US$10.99 a month together", never with a "+".
-  const together = overlap.totals.map((t) => money(Math.round(t.monthlyMinor), t.currency)).join(' · ');
-  const line = together
-    ? `${together} a month together.${overlap.kind === 'twice' ? ' Same account twice, or one to ditch?' : ''}`
-    : overlap.kind === 'twice'
-      ? 'Same account twice, or one to ditch?'
-      : '';
+  const n = overlap.subs.length;
+  const what = overlap.kind === 'twice' ? `${overlap.label} ${n === 2 ? 'twice' : `${n} times`}` : `${n} ${overlap.label}`;
+  // Mixed currencies stay apart (rule 1): "£11.99/mo · US$10.99/mo", never with a "+".
+  const together = overlap.totals.map((t) => `${money(Math.round(t.monthlyMinor), t.currency)}/mo`).join(' · ');
+  const spokenTogether = overlap.totals.map((t) => money(Math.round(t.monthlyMinor), t.currency)).join(' and ');
+  const spoken =
+    overlap.kind === 'twice'
+      ? `${overlap.label} is on your list ${n === 2 ? 'twice' : `${n} times`}.${spokenTogether ? ` ${spokenTogether} a month together.` : ''}`
+      : `${n} ${overlap.label}: ${listed}.${spokenTogether ? ` ${spokenTogether} a month together.` : ''}`;
   return (
-    <Card style={{ borderRadius: 16, paddingHorizontal: 14, paddingTop: 12, paddingBottom: 6 }}>
-      <View accessible accessibilityLabel={`${title} ${line}`}>
-        <Txt v="body" color={p.cardFg} num style={{ fontFamily: F.bold, fontSize: 15 }}>
-          {title}
-        </Txt>
-        {line ? (
-          <Txt v="body" tone="mute" num style={{ fontSize: 14.5, marginTop: 2 }}>
-            {line}
-          </Txt>
-        ) : null}
-      </View>
-      <Button label="Pick one to ditch" hint="Opens the cheaper one" onPress={onPick} height={48} style={{ marginTop: 10 }} />
+    <Card style={{ minHeight: 48, borderRadius: 16, flexDirection: 'row', alignItems: 'center', paddingLeft: 14 }}>
+      <Pressable accessibilityRole="button" accessibilityLabel={`${spoken} Pick one to ditch`} accessibilityHint="Opens the cheaper one" onPress={onPick} style={{ flex: 1, minWidth: 0 }}>
+        {({ pressed }) => (
+          <View style={{ minHeight: 48, flexDirection: 'row', alignItems: 'center', gap: 4, paddingVertical: 8, opacity: pressed ? 0.7 : 1 }}>
+            <Txt v="body" color={p.cardFg} num style={{ flexShrink: 1, fontSize: 15 }}>
+              <Txt v="body" color={p.cardFg} style={{ fontFamily: F.bold, fontSize: 15 }}>
+                {what}
+              </Txt>
+              {together ? ` · ${together} · ` : ' · '}
+              <Txt v="body" color={p.cardFg} style={{ fontFamily: F.bold, fontSize: 15 }}>
+                {'Pick\u00A0one'}
+              </Txt>
+            </Txt>
+            <ChevronRight color={p.cardFg} size={14} />
+          </View>
+        )}
+      </Pressable>
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Got it"
+        accessibilityLabel="Hide this"
         accessibilityHint="Hides this until the list changes"
         onPress={onDismiss}
-        hitSlop={8}
-        style={{ alignSelf: 'center', minHeight: 44, justifyContent: 'center' }}
+        style={({ pressed }) => ({ width: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center', opacity: pressed ? 0.6 : 1 })}
       >
-        <Txt v="label" color={p.cardFg} style={{ fontSize: 15, textDecorationLine: 'underline' }}>
-          Got it
-        </Txt>
+        <Close color={p.mute} size={12} />
       </Pressable>
     </Card>
   );

@@ -20,11 +20,18 @@ export function useFindGate() {
 export default function FindHub() {
   const p = usePalette();
   const { free, go, pro } = useFindGate();
-  const tag = pro ? undefined : free ? 'FREE ONCE · THEN PRO' : 'PRO';
+  // Same tag as onboarding's "Where should we look?"; once the free one is used it says PRO.
+  const tag = pro ? undefined : free ? 'FREE ONCE' : 'PRO';
   return (
     <FindPage title="Find your subscriptions" back="Home" intro="Show us a list you already have. We read it on your phone, you pick what goes in.">
-      <RouteCard icon={PhoneList} title="Screenshot your Apple list" line="Every App Store subscription and free trial, with its renewal date. Banks can’t name these." tag={tag} onPress={() => go('/find/apple')} />
-      <RouteCard icon={StatementIcon} title="Drop in a statement" line="A bank or Apple Card file. We show the charges that repeat." tag={tag} onPress={() => go('/find/statement')} />
+      <RouteCard
+        icon={PhoneList}
+        title="Apple subscriptions"
+        line="A screenshot of your list: every App Store subscription and free trial, with its renewal date. Banks can’t name these."
+        tag={tag}
+        onPress={() => go('/find/apple')}
+      />
+      <RouteCard icon={StatementIcon} title="A bank statement" line="PDF or CSV from any bank or Apple Card. We show the charges that repeat." tag={tag} onPress={() => go('/find/statement')} />
 
       <Txt v="eyebrow" tone="mute" style={{ marginTop: 24, marginHorizontal: 4, marginBottom: 8 }}>
         Or check the usual places

@@ -31,6 +31,9 @@ export const type = {
   displayS: { fontFamily: F.display, fontSize: 30, lineHeight: 34, letterSpacing: -0.8, max: 1.2 },
   // design/v12 scale: line heights sit on the 4pt grid.
   title: { fontFamily: F.title, fontSize: 30, lineHeight: 36, letterSpacing: -1, max: 1.2 },
+  /** Smaller steps of `title` for long headings on small phones. */
+  titleS: { fontFamily: F.title, fontSize: 26, lineHeight: 30, letterSpacing: -0.8, max: 1.2 },
+  titleXS: { fontFamily: F.title, fontSize: 22, lineHeight: 26, letterSpacing: -0.6, max: 1.2 },
   moneyL: { fontFamily: F.wideHeavy, fontSize: 22, lineHeight: 28, letterSpacing: -0.4, max: 1.4 },
   moneyM: { fontFamily: F.wideHeavy, fontSize: 18, lineHeight: 24, letterSpacing: -0.3, max: 1.4 },
   moneyS: { fontFamily: F.wideBold, fontSize: 16, lineHeight: 20, letterSpacing: -0.2, max: 1.4 },
@@ -41,6 +44,7 @@ export const type = {
   strong: { fontFamily: F.semi, fontSize: 16, lineHeight: 24, letterSpacing: -0.2, max: 2 },
   bodyStrong: { fontFamily: F.semi, fontSize: 16, lineHeight: 20, letterSpacing: -0.2, max: 2 },
   body: { fontFamily: F.regular, fontSize: 15, lineHeight: 20, letterSpacing: -0.2, max: 2 },
+  bodyS: { fontFamily: F.regular, fontSize: 14.5, lineHeight: 20, letterSpacing: -0.15, max: 2 },
   label: { fontFamily: F.semi, fontSize: 15, lineHeight: 20, letterSpacing: -0.2, max: 2 },
   sub: { fontFamily: F.regular, fontSize: 14, lineHeight: 20, letterSpacing: -0.1, max: 2 },
   eyebrow: { fontFamily: F.bold, fontSize: 12, lineHeight: 16, letterSpacing: 1.2, textTransform: 'uppercase', max: 1.4 },
@@ -64,11 +68,5 @@ export function Txt({
 }: TextProps & { v?: TypeVariant; tone?: Tone; color?: string; num?: boolean; center?: boolean }) {
   const p = usePalette();
   const { max, ...t } = type[v] as Style;
-  return (
-    <Text
-      maxFontSizeMultiplier={maxFontSizeMultiplier ?? max}
-      {...rest}
-      style={[t, { color: color ?? p[tone] }, num && tabular, center && { textAlign: 'center' }, style]}
-    />
-  );
+  return <Text maxFontSizeMultiplier={maxFontSizeMultiplier ?? max} {...rest} style={[t, { color: color ?? p[tone] }, num && tabular, center && { textAlign: 'center' }, style]} />;
 }

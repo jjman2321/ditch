@@ -122,19 +122,26 @@ function Row({ s, pick, first, onToggle, onChange }: { s: CatalogService; pick: 
           {s.name}
         </Txt>
         <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', columnGap: 4 }}>
-          {line.text ? (
+          {line.text && line.link ? (
+            // The whole price line is the "change" control (audit Nov 19: seven "Change" links read as noise).
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={line.link === 'plan' ? `${line.text}. Change ${s.name} plan` : `${line.text}. Change your price for ${s.name}`}
+              onPress={() => onChange(line.link!)}
+              hitSlop={{ top: 12, bottom: 12 }}
+              style={{ flexDirection: 'row', alignItems: 'center', gap: 2 }}
+            >
+              <Txt v="sub" tone="mute" num>
+                {line.text}
+              </Txt>
+              <ChevronRight color={p.mute} size={14} />
+            </Pressable>
+          ) : line.text ? (
             <Txt v="sub" tone="mute" num>
               {line.text}
-              {line.link ? ' ·' : ''}
             </Txt>
           ) : null}
-          {line.link ? (
-            <TextLink
-              label={line.text ? 'Change' : 'Add your price'}
-              a11y={line.link === 'plan' ? `Change ${s.name} plan` : `${line.text ? 'Change' : 'Add'} your price for ${s.name}`}
-              onPress={() => onChange(line.link!)}
-            />
-          ) : null}
+          {line.link && !line.text ? <TextLink label="Add your price" a11y={`Add your price for ${s.name}`} onPress={() => onChange(line.link!)} /> : null}
         </View>
       </View>
       <View style={{ width: 44, height: 44, marginRight: -8, alignItems: 'center', justifyContent: 'center' }}>
@@ -158,7 +165,7 @@ function ImportCard() {
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel="Add them all at once. Snap a screenshot or upload a bank statement. We fill in the prices and dates."
+      accessibilityLabel="Add from a screenshot or statement. We fill in the prices and dates."
       onPress={() => {
         setFindTarget('onboarding');
         router.push('/onboarding/where');
@@ -192,7 +199,7 @@ function ImportCard() {
       </View>
       <View style={{ flex: 1, minWidth: 0 }}>
         <Txt v="label" color={p.cardFg} numberOfLines={compact ? 1 : undefined}>
-          Add them all at once
+          Add from a screenshot or statement
         </Txt>
         {compact ? null : (
           <Txt v="sub" tone="mute" style={{ marginTop: 2 }}>

@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { ordinal } from '@/domain/copy';
-import { Group, Row, SettingsPage } from '@/settings/Parts';
+import { SettingsPage } from '@/settings/Parts';
 import { useApp } from '@/state/app';
 import { F, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
 
@@ -27,7 +27,7 @@ export default function PaydayPage() {
     router.back();
   };
   return (
-    <SettingsPage title="Payday" intro="The day your pay usually lands. Home then shows what’s still due before it. Just the day, never an amount.">
+    <SettingsPage title="Payday" intro="The day you get paid. Home shows what’s due before it. Never the amount.">
       <View accessibilityRole="radiogroup" accessibilityLabel="Payday" onLayout={(e) => setW(e.nativeEvent.layout.width)} style={{ marginTop: 18, flexDirection: 'row', flexWrap: 'wrap', gap: GAP }}>
         {DAYS.map((d) => {
           const on = d === current;
@@ -60,10 +60,18 @@ export default function PaydayPage() {
       <Txt v="sub" tone="mute" style={{ marginTop: 10 }}>
         Paid on the last day? Pick 31: shorter months use their last day.
       </Txt>
+      {/* A quiet text link, not a card: it isn't a setting, it's the way out. */}
       {current ? (
-        <Group style={{ marginTop: 18 }}>
-          <Row label="Turn off payday" onPress={() => void pick(null)} chevron={false} />
-        </Group>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Turn off payday"
+          onPress={() => void pick(null)}
+          style={({ pressed }) => ({ marginTop: 14, minHeight: 44, minWidth: 44, alignSelf: 'center', justifyContent: 'center', paddingHorizontal: 12, opacity: pressed ? 0.6 : 1 })}
+        >
+          <Txt v="label" tone="mute" center>
+            Turn off payday
+          </Txt>
+        </Pressable>
       ) : null}
     </SettingsPage>
   );

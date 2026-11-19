@@ -36,6 +36,7 @@ import {
   useIsDark,
   usePalette,
   useScreenArrived,
+  SurfaceContext,
 } from '@/ui/sunflower';
 
 const NB = ' ';
@@ -286,7 +287,9 @@ export default function Total() {
           {f.tablet ? (
             <>
               <View style={{ flex: 1, minHeight: 16 }} />
-              <Button label="Set up reminders" onPress={() => router.push('/onboarding/dates')} />
+              <SurfaceContext.Provider value="cream">
+                <Button label="Set up reminders" onPress={() => router.push('/onboarding/dates')} />
+              </SurfaceContext.Provider>
             </>
           ) : null}
         </View>
@@ -294,7 +297,10 @@ export default function Total() {
       {/* Pinned, so "Show all" can never push it off the screen. */}
       {f.tablet ? null : (
         <View style={{ backgroundColor: cream.sheet, paddingHorizontal: f.edge, paddingTop: 8, paddingBottom: f.insets.bottom + 16 }}>
-          <Button label="Set up reminders" onPress={() => router.push('/onboarding/dates')} />
+          {/* It sits on the cream sheet, so it uses the cream button (white text), like every other cream screen. */}
+          <SurfaceContext.Provider value="cream">
+            <Button label="Set up reminders" onPress={() => router.push('/onboarding/dates')} />
+          </SurfaceContext.Provider>
         </View>
       )}
       <PriceSheet

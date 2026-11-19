@@ -108,7 +108,7 @@ export default function Reminders() {
           accessibilityRole="header"
           style={[{ marginTop: f.tiny ? 10 : 16 }, f.tiny ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 } : f.small ? { fontSize: 26, lineHeight: 32, letterSpacing: -0.8 } : null]}
         >
-          {f.tiny ? `Get a reminder\nbefore you’re${NB}charged.` : f.small ? `Get a reminder before\nyou’re${NB}charged.` : `Get a reminder before you’re${NB}charged.`}
+          {`Get a reminder\nbefore you’re${NB}charged.`}
         </Txt>
         <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
           {'3 days and 1 day before, at 9 AM.\nOnly about your subscriptions.'}
@@ -122,7 +122,8 @@ export default function Reminders() {
             style={{
               marginTop: f.tiny ? 12 : 20,
               flex: 1,
-              minHeight: f.tiny ? 196 : f.small ? 238 : 390,
+              // Grows into spare room, but never pushes the buttons below off screen (audit Nov 19).
+              minHeight: f.tiny ? 196 : f.small ? 238 : 300,
               borderRadius: 34,
               backgroundColor: brand.sunflower,
               overflow: 'hidden',

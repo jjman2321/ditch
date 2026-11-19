@@ -84,11 +84,11 @@ export default function Review() {
   if (!result) {
     return (
       <FindPage title="Nothing to check" intro="Your last check was cleared. Pick a screenshot or statement to start again.">
-        {/* The duck peeks over the button, like the other empty states (home/HomeParts.tsx). */}
-        <View style={{ marginTop: 28, alignItems: 'center' }}>
-          <Duck width={96} bottom={-2} style={{ position: 'relative' }} />
+        {/* The duck sits above the button with clear space, never on it (CLAUDE.md rule 8). */}
+        <View style={{ marginTop: 40, alignItems: 'center' }}>
+          <Duck width={96} bottom={0} style={{ position: 'relative' }} />
         </View>
-        <Button label="Find your subscriptions" onPress={() => router.replace(findTarget() === 'onboarding' ? '/onboarding/where' : '/find')} style={{ zIndex: 2 }} />
+        <Button label="Find your subscriptions" onPress={() => router.replace(findTarget() === 'onboarding' ? '/onboarding/where' : '/find')} style={{ marginTop: 20 }} />
       </FindPage>
     );
   }

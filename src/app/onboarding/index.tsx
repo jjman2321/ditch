@@ -128,7 +128,9 @@ function Stickers({ width, height, show }: { width: number; height: number; show
     return () => cancelAnimation(clock);
   }, [reduce, show, focused, clock]);
   // A drag on the picture: the stickers lean with your finger, closer ones more, then spring home.
+  // runOnJS: the callbacks run on the JS thread (like SubRow's gestures), so nothing here has to be a worklet.
   const pan = usePanGesture({
+    runOnJS: true,
     enabled: !reduce,
     minDistance: 2,
     onUpdate: (e) => {

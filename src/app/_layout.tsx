@@ -14,6 +14,27 @@ import { Button, EDGE, Txt, brand, paletteFor } from '@/ui/sunflower';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
+/**
+ * If any screen throws, show what happened instead of closing the app (Expo Router error boundary).
+ * The message is shown so a TestFlight tester can screenshot it; nothing is sent anywhere.
+ */
+export function ErrorBoundary({ error, retry }: { error: Error; retry: () => Promise<void> }) {
+  const dark = useColorScheme() === 'dark';
+  const p = paletteFor('cream', dark);
+  return (
+    <View style={{ flex: 1, backgroundColor: p.bg, padding: EDGE, justifyContent: 'center', gap: 12 }}>
+      <Txt v="title">Something went wrong.</Txt>
+      <Txt v="body" tone="fg2">
+        Your list is safe. Tap Try again. If it keeps happening, screenshot this and send it to us.
+      </Txt>
+      <Txt v="fine" tone="mute" selectable>
+        {String(error?.message ?? error).slice(0, 400)}
+      </Txt>
+      <Button label="Try again" onPress={() => void retry()} style={{ marginTop: 8 }} />
+    </View>
+  );
+}
+
 export default function RootLayout() {
   const dark = useColorScheme() === 'dark';
   const p = paletteFor('cream', dark);

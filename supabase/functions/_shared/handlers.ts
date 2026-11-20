@@ -33,6 +33,8 @@ export type Deps = {
   };
   plaidWebhook: { verify(rawBody: string, header: string | null): Promise<{ ok: boolean; why?: string }>; env: string };
   cronSecret: string;
+  /** Production access check only: a Plaid client on production, whatever PLAID_ENV says. Never used for users. */
+  plaidProduction?: () => BankProvider;
 };
 
 // ---------- helpers ----------

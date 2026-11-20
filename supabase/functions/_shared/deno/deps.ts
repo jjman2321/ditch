@@ -121,6 +121,15 @@ export function makeDeps(): Promise<Deps> {
           ),
       },
       cronSecret: env('CRON_SECRET') ?? '',
+      plaidProduction: () =>
+        new PlaidProvider({
+          clientId: need('PLAID_CLIENT_ID'),
+          secret: need('PLAID_SECRET_PRODUCTION'),
+          env: 'production',
+          webhookUrl: env('PLAID_WEBHOOK_URL') ?? `${supabaseUrl}/functions/v1/api/plaid-webhook`,
+          redirectUri: env('PLAID_REDIRECT_URI') ?? 'https://ditchsubs.app/plaid/oauth',
+          countryCodes: (env('PLAID_COUNTRY_CODES') ?? 'US,CA').split(',').map((s) => s.trim()),
+        }),
     } satisfies Deps;
   })();
   cached.catch(() => (cached = null));

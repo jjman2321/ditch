@@ -15,6 +15,16 @@ const sandboxSelfTest: (typeof routes)[string] = async (req, deps) => {
   try {
     const plaid = deps.provider('plaid') as PlaidProvider;
     const body = (await req.json().catch(() => ({}))) as { step?: string; linkToken?: string };
+    // Is production access on? A production Link token proves it; it connects no bank and bills nothing.
+    if (body.step === 'prod-check') {
+      if (!deps.plaidProduction) return json(500, { ok: false, code: 'NO_PRODUCTION_CLIENT' });
+      try {
+        await deps.plaidProduction().createLinkToken({ mode: 'new', appUserId: 'production-check' });
+        return json(200, { ok: true, production: 'approved' });
+      } catch (e) {
+        return json(200, { ok: false, production: 'not_yet', code: (e as { code?: string }).code ?? 'INTERNAL', message: (e as Error).message?.slice(0, 200) });
+      }
+    }
     if (body.step === 'hosted-link') return json(200, { ok: true, ...(await plaid.sandboxHostedLink()) });
     if (body.step === 'hosted-finish' && body.linkToken) return json(200, { ok: true, ...(await plaid.sandboxFinishHostedLink(body.linkToken)) });
     return json(200, { ok: true, ...(await plaid.sandboxSelfTest()) });

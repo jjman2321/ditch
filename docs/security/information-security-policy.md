@@ -1,6 +1,6 @@
 # Grasp Labs LLC: Information Security Policy
 
-**Owner:** Founder (security lead) · **Contact:** security@grasplabs.app · **Adopted:** Nov 20, 2026 · **Reviewed:** every 12 months, and after any incident or new vendor.
+**Owner:** Founder · **Contact:** support@ditchsubs.app · **Adopted:** Nov 20, 2026 · **Reviewed:** every 12 months, and after any incident or new vendor.
 
 Covers Ditch (iOS app, ditchsubs.app) and every system that touches user or bank data.
 
@@ -38,7 +38,7 @@ Supabase (database, server functions), Plaid (bank connection), Apple (App Store
 
 ## 8. Monitoring
 - Supabase logs and Plaid webhooks are checked for errors and unusual activity. Plaid errors and failed logins are logged as codes only.
-- security@grasplabs.app is monitored by the founder.
+- support@ditchsubs.app is monitored by the founder.
 
 ## 9. Incidents
 1. Contain: revoke or rotate the affected keys, pause the server function if needed.
@@ -49,5 +49,5 @@ Supabase (database, server functions), Plaid (bank connection), Apple (App Store
 ## 10. Founder checklist (keep true)
 - [ ] 2FA on: Apple ID / App Store Connect, Plaid, Supabase, RevenueCat, Cloudflare, Expo, GitHub, Zoho, Dynadot
 - [ ] Password manager in use
-- [ ] security@grasplabs.app alias set up and reaching your inbox
+- [ ] support@ditchsubs.app set up and reaching your inbox
 - [ ] Laptop and phone: screen lock, disk encryption (FileVault), automatic updates on

@@ -10,7 +10,7 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Linking, Platform, View } from 'react-native';
-import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withSpring } from 'react-native-reanimated';
 
 import { catalogPrice } from '@/catalog/prices';
 import { addDays, longDate, weekdayDate, weekdayName, type DateOnly } from '@/domain/dates';
@@ -19,7 +19,7 @@ import { useFirstReminders } from '@/onboarding/useFirstReminders';
 import { getNotifStatus, requestNotifPermission, type NotifStatus } from '@/services/notifications';
 import { isPriced as isPricedPick } from '@/state/picks';
 import { byYearlyDesc, onboardingToday, useMoney, useOnboarding, usePickedList } from '@/state/onboarding';
-import { Bell, Button, Camera, Duck, F, Flashlight, ForceLightContext, Lock, NotificationPreview, STEP_HEADER_H, Txt, brand, useFrame, usePalette } from '@/ui/sunflower';
+import { Bell, Button, Camera, Duck, F, Flashlight, ForceLightContext, Lock, NotificationPreview, STEP_HEADER_H, Txt, brand, haptic, useFrame, usePalette } from '@/ui/sunflower';
 
 const NB = ' ';
 
@@ -33,20 +33,28 @@ function LockButton({ children }: { children: React.ReactNode }) {
 }
 
 // The cards land 600 ms apart (motion doc fix 11: 900 kept you waiting before the duck).
-// Each one takes LAND ms, well inside the gap, so a card has settled before the next starts.
 const GAP = 600;
-const LAND = 320;
-/** How far a card drops from. Less than the 8pt gap between cards, so it never reaches the one above. */
-const DROP = 6;
+/** How far above its slot a card starts, like an iOS notification sliding down onto the lock screen. */
+const DROP = 22;
 
-/** One card in its own slot: invisible until it lands, then a short fade and drop. The slot never moves. */
+/**
+ * One card in its own slot, arriving the way a real iOS notification does (owner, Nov 20: "like actual
+ * Apple animations"): it springs down from just above, growing from 94% to full size as it fades in, with
+ * a light tap like the phone's own buzz. The slot never moves, so nothing else on screen shifts.
+ */
 function LandingCard({ landed, reduce, children }: { landed: boolean; reduce: boolean; children: React.ReactNode }) {
   const t = useSharedValue(landed || reduce ? 1 : 0);
   useEffect(() => {
     if (reduce) t.set(1);
-    else if (landed) t.set(withTiming(1, { duration: LAND, easing: Easing.out(Easing.cubic) }));
+    else if (landed) {
+      t.set(withSpring(1, { damping: 17, stiffness: 190, mass: 0.9 }));
+      haptic.light();
+    }
   }, [landed, reduce, t]);
-  const style = useAnimatedStyle(() => ({ opacity: t.get(), transform: [{ translateY: (t.get() - 1) * DROP }] }));
+  const style = useAnimatedStyle(() => {
+    const v = t.get();
+    return { opacity: Math.min(1, v * 1.8), transform: [{ translateY: (v - 1) * DROP }, { scale: 0.94 + 0.06 * v }] };
+  });
   return <Animated.View style={style}>{children}</Animated.View>;
 }
 

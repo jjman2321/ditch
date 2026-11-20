@@ -23,13 +23,14 @@ export function PhoneMock({ title, rows, label }: { title: string; rows: MockRow
       accessibilityRole="image"
       accessibilityLabel={label}
       style={{
-        marginTop: small ? 14 : 18,
-        height: small ? 150 : 200,
+        // SE: 110 so all three steps show above the buttons without scrolling (audit, Nov 20).
+        marginTop: small ? 10 : 18,
+        height: small ? 110 : 200,
         borderRadius: 20,
         backgroundColor: p.dark ? '#2A2516' : '#FFF1BC',
         overflow: 'hidden',
         alignItems: 'center',
-        paddingTop: small ? 14 : 18,
+        paddingTop: small ? 12 : 18,
       }}
     >
       <View

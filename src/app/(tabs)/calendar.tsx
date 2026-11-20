@@ -107,14 +107,7 @@ export default function Calendar() {
         key: a.month,
         label: i === 0 ? `Rest of ${MONTH_LONG[m - 1]}` : `${MONTH_LONG[m - 1]}${y !== t.y ? ` ${y}` : ''}`,
         amounts: fmt(a),
-        // Names only (the amount is on the right): "YouTube Premium, ExpressVPN +3 more", so long names never get cut.
-        bigs:
-          a.big.length > 2
-            ? `${a.big
-                .slice(0, 2)
-                .map((b) => b.sub.name)
-                .join(', ')} +${a.big.length - 2} more`
-            : a.big.map((b) => b.sub.name).join(', '),
+        bigs: a.big.map((b) => `${b.sub.name} ${money(b.sub.amountMinor, b.sub.currency)}`).join(' · '),
         bigsSpoken: a.big.map((b) => `${b.sub.name} ${money(b.sub.amountMinor, b.sub.currency)}`).join(', '),
         usual: false,
       });
@@ -157,9 +150,8 @@ export default function Calendar() {
   const dayCharges = sel?.charges ?? [];
   const shownCharges = allDay ? dayCharges : dayCharges.slice(0, FIRST_ROWS);
   const shownUndated = allUndated ? undated : undated.slice(0, FIRST_ROWS);
-  const owed = dayCharges.filter((c) => !c.pending).length;
-  const toCancel = dayCharges.length - owed;
-  const dayRight = [owed ? charges(owed) : '', toCancel ? `${count(toCancel)} to cancel` : ''].filter(Boolean).join(' · ') || undefined;
+  // Same words as before (owner, Nov 20: old wording); thousands separators only.
+  const dayRight = dayCharges.length ? charges(dayCharges.length) : undefined;
   const room = pro ? 0 : Math.max(0, FREE_REMINDERS - reminded.size);
   const title = view.y === t.y ? MONTH_LONG[view.m - 1] : `${MONTH_LONG[view.m - 1]} ${view.y}`;
 
@@ -200,7 +192,7 @@ export default function Calendar() {
         <View
           accessible
           accessibilityLabel={
-            due.totals.length ? `${due.totals.map((x) => money(x.amountMinor, x.currency)).join(', and ')} in ${MONTH_LONG[view.m - 1]}, ${charges(due.count)}` : `Nothing in ${MONTH_LONG[view.m - 1]}`
+            due.totals.length ? `${due.totals.map((x) => money(x.amountMinor, x.currency)).join(', and ')} due in ${MONTH_LONG[view.m - 1]}, ${charges(due.count)}` : `Nothing due in ${MONTH_LONG[view.m - 1]}`
           }
           style={{ marginTop: 8 }}
         >
@@ -236,12 +228,12 @@ export default function Calendar() {
             )}
           </View>
           <Txt v="leadS" tone="fg2" num style={{ fontSize: 15, letterSpacing: -0.3 }} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>
-            in {MONTH_LONG[view.m - 1]} · {charges(due.count)}
+            due in {MONTH_LONG[view.m - 1]} · {charges(due.count)}
           </Txt>
           {/* Other currencies: their own line each, no "+" (never added together). */}
           {due.totals.slice(1).map((x) => (
             <Txt key={x.currency} v="leadS" tone="fg2" num style={{ fontSize: 15, letterSpacing: -0.3 }}>
-              {money(x.amountMinor, x.currency)} in {MONTH_LONG[view.m - 1]}
+              {money(x.amountMinor, x.currency)} due in {MONTH_LONG[view.m - 1]}
             </Txt>
           ))}
         </View>
@@ -601,8 +593,6 @@ function ChargeRow({
   const short = (d: DateOnly) => `${weekdayShort(d)} ${parseDate(d).d}`;
   // Set as "charged today" in the day sheet: this day's charge is already paid (owner, Nov 20: it said "Charges today").
   const paid = s.dateSource === 'receipt' && c.date === s.anchor;
-  // Ditched: the charge is the deadline, unless they set an earlier cancel-by date.
-  const by = s.cancelBy && s.cancelBy >= today && s.cancelBy <= c.date ? s.cancelBy : c.date;
   // A past charge is history first: "Charged", never a reminder or free-plan line (audit, Nov 20).
   const line = paid
     ? c.date === today
@@ -615,13 +605,13 @@ function ChargeRow({
       : c.pending
         ? c.date === today
           ? 'Ditched · charges today'
-          : `Cancel by ${by === today ? 'today' : short(by)}`
+          : `Ditched · charges ${short(c.date)}`
         : !on
           ? pro
             ? 'Reminders off for this one'
             : room > 0
               ? `No reminder · ${room} free left`
-              : 'No reminder · free plan has 3'
+              : 'No reminder · 3 free in use'
           : blocked
             ? 'Reminders are off'
             : heads.length

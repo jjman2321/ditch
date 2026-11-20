@@ -44,9 +44,7 @@ export default function DitchedTab() {
   const main = saving[0];
   const steps = main ? savingsSteps(app.subs, main.currency) : [];
   const since = confirmed.length ? confirmed[confirmed.length - 1].confirmedOn : null;
-  // "since June", or "this month" when the first cancel was this month ("since November" in November reads oddly).
   const sinceWord = since ? sinceLabel(since, app.today) : '';
-  const sincePhrase = !sinceWord ? '' : sinceWord === 'this month' ? ' this month' : ` since ${sinceWord}`;
   // "From 3 subs you cancelled since June · $35.93 a month" needs about 440pt at 16pt text; the hero card has 20pt sides.
   const oneLine = (width - edge * 2 - 40) / Math.max(1, fontScale) >= 480;
 
@@ -127,7 +125,7 @@ export default function DitchedTab() {
               accessible
               accessibilityLabel={
                 main
-                  ? `You won’t pay ${money(main.yearlyMinor, main.currency, { whole: true })} a year, from ${main.count} ${main.count === 1 ? 'sub' : 'subs'} you cancelled${sincePhrase}. That’s ${money(main.monthlyMinor, main.currency)} a month.`
+                  ? `You won’t pay ${money(main.yearlyMinor, main.currency, { whole: true })} a year, from ${main.count} ${main.count === 1 ? 'sub' : 'subs'} you cancelled${sinceWord ? ` since ${sinceWord}` : ''}, ${money(main.monthlyMinor, main.currency)} a month.`
                   : confirmed.length
                     ? `${confirmed.length} cancelled. No price on ${confirmed.length === 1 ? 'it' : 'them'}, so there’s nothing to add up yet.`
                     : 'Nothing cancelled yet.'
@@ -158,8 +156,8 @@ export default function DitchedTab() {
                   <Txt v="leadS" num color={p.dark ? p.fg2 : '#4B4220'} style={{ marginTop: 6 }}>
                     {/* Too narrow for one line (every phone): the monthly gets its own line, no dot. Wide (iPad): one line,
                         with the dot glued to the word before it so a dot never starts a line. */}
-                    {`From ${main.count} ${main.count === 1 ? 'sub' : 'subs'} you cancelled${sincePhrase}.`}
-                    {`${oneLine ? ' ' : '\n'}${`That’s ${money(main.monthlyMinor, main.currency)} a month.`.replace(/ (\S+ \S+)$/, (m) => m.replace(/ /g, '\u00A0'))}`}
+                    {`From ${main.count} ${main.count === 1 ? 'sub' : 'subs'} you cancelled${sinceWord ? ` since ${sinceWord}` : ''}`}
+                    {oneLine ? `\u00A0· ${`${money(main.monthlyMinor, main.currency)} a month`.replace(/ /g, '\u00A0')}` : `\n${money(main.monthlyMinor, main.currency)} a month`}
                   </Txt>
                 </>
               ) : confirmed.length ? (
@@ -266,10 +264,9 @@ export default function DitchedTab() {
                             <Txt v="bodyStrong" color={p.cardFg} style={{ fontSize: 17 }} numberOfLines={2}>
                               {s.name}
                             </Txt>
-                            {/* Just the date: the section header already says Cancelled, and it fits at 320pt. */}
                             {s.confirmedOn ? (
                               <Txt v="body" tone="mute" num style={{ fontSize: 14.5, marginTop: 1 }}>
-                                {shortDate(s.confirmedOn)}
+                                Cancelled {shortDate(s.confirmedOn)}
                               </Txt>
                             ) : null}
                           </View>
@@ -411,6 +408,5 @@ function Pill({
 function sinceLabel(d: string, today: string): string {
   const { y, m } = parseDate(d);
   const t = parseDate(today);
-  if (y === t.y && m === t.m) return 'this month';
   return y === t.y ? MONTH_LONG[m - 1] : `${MONTH_LONG[m - 1]} ${y}`;
 }

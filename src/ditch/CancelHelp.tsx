@@ -46,7 +46,7 @@ export function HowToSheet({ sub, visible, onClose }: { sub: Sub | null; visible
   const p = usePalette();
   const h = sub ? helpFor(sub) : null;
   // The page button: the cancel page, Apple's page, or the service's help article.
-  const page = h?.url ? h.pageLabel : null;
+  const page = h?.url ? (h.kind === 'steps' ? `Open ${sub!.name} help` : h.label) : null;
   return (
     <Sheet visible={visible && !!sub} onClose={onClose} fit label={sub ? `How to cancel ${sub.name}` : 'How to cancel'}>
       {sub && h ? (

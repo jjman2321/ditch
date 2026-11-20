@@ -118,7 +118,7 @@ export default function Ditched() {
     router.back();
   };
   const putBack = () =>
-    ask(`Still paying for ${sub.name}?`, 'It goes back on your list.', [
+    ask(`Still paying for ${sub.name}?`, 'It goes back on your list with its reminders.', [
       { text: 'Keep it ditched', style: 'cancel' },
       { text: 'Put it back', onPress: () => void undo() },
     ]);
@@ -306,23 +306,20 @@ export default function Ditched() {
                 style={[{ marginTop: wide ? 12 : 0 }, compact && { minHeight: 50, borderRadius: 25 }]}
               />
               <Button kind="secondary" label="I cancelled it" onPress={cancelled} style={[{ marginTop: 8 }, compact && { minHeight: 46, borderRadius: 23 }]} />
-              {/* Only when the main button opens somewhere else: for Apple-billed ones (and the Pro trial) it already opens this page. */}
-              {help1.kind === 'apple' ? null : (
-                <Pressable
-                  accessibilityRole="link"
-                  accessibilityLabel="Billed by Apple? Open Apple subscriptions"
-                  hitSlop={{ top: 7, bottom: 7 }}
-                  onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)}
-                  style={{ minHeight: compact ? 30 : 36, justifyContent: 'center', marginTop: 2 }}
-                >
-                  <Txt v="body" tone="fg2" center style={{ fontSize: 14 }}>
-                    {'Billed by Apple? '}
-                    <Txt v="body" tone="fg2" style={{ fontSize: 14, fontFamily: F.semi, textDecorationLine: 'underline' }}>
-                      Open Apple subscriptions
-                    </Txt>
+              <Pressable
+                accessibilityRole="link"
+                accessibilityLabel={trial ? 'Open Apple subscriptions to cancel Ditch Pro' : 'Billed by Apple? Open Apple subscriptions'}
+                hitSlop={{ top: 7, bottom: 7 }}
+                onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)}
+                style={{ minHeight: compact ? 30 : 36, justifyContent: 'center', marginTop: 2 }}
+              >
+                <Txt v="body" tone="fg2" center style={{ fontSize: 14 }}>
+                  {trial ? 'Billed by Apple. ' : 'Billed by Apple? '}
+                  <Txt v="body" tone="fg2" style={{ fontSize: 14, fontFamily: F.semi, textDecorationLine: 'underline' }}>
+                    Open Apple subscriptions
                   </Txt>
-                </Pressable>
-              )}
+                </Txt>
+              </Pressable>
             </Animated.View>
           </View>
         </ScrollView>

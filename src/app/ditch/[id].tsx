@@ -225,39 +225,6 @@ export default function Ditched() {
                     </Animated.View>
                   </View>
 
-                  {/* The money: the one big thing on the screen. */}
-                  <Animated.View style={[{ marginTop: compact ? 14 : 18, paddingTop: compact ? 12 : 16, borderTopWidth: 1, borderTopColor: p.hair }, amountStyle]}>
-                    {yearly !== null && sub.currency ? (
-                      <>
-                        <Txt v="label" tone="mute" style={{ fontSize: 15 }}>
-                          You won’t pay
-                        </Txt>
-                        <Txt
-                          v="displayXL"
-                          num
-                          color={p.dark ? brand.sunflower : brand.ink}
-                          style={{ fontSize: tiny ? 42 : compact ? 48 : 56, lineHeight: tiny ? 48 : compact ? 54 : 62, marginTop: 2, marginLeft: -2 }}
-                          adjustsFontSizeToFit
-                          numberOfLines={1}
-                        >
-                          {money(yearly, sub.currency)}
-                        </Txt>
-                        <Txt v="label" color={p.cardFg} style={{ fontSize: 15 }}>
-                          a year, once you cancel
-                        </Txt>
-                      </>
-                    ) : (
-                      <Txt v="label" color={p.cardFg} style={{ fontSize: 17, lineHeight: 23 }}>
-                        {'Cancel it, and that’s one less\u00A0charge.'}
-                      </Txt>
-                    )}
-                    {trial ? (
-                      <Txt v="body" tone="mute" style={{ marginTop: 8, fontSize: 14.5 }}>
-                        You keep your whole list. Reminders drop back to 3.
-                      </Txt>
-                    ) : null}
-                  </Animated.View>
-
                   {/* When: the last reminder, or when it charges. Reminders off: tap to turn them on. */}
                   <Animated.View style={[{ marginTop: compact ? 12 : 16, borderTopWidth: 1, borderTopColor: p.hair }, restStyle]}>
                     {isPending(sub) ? (
@@ -290,6 +257,35 @@ export default function Ditched() {
                     )}
                   </Animated.View>
                 </Card>
+              </Animated.View>
+              {/* The money, on the yellow under the card like the website (option B, Nov 20): the one big thing on
+                  the screen. "once you cancel" stays: ditching doesn't cancel anything. */}
+              <Animated.View style={[{ marginTop: compact ? 14 : 22 }, amountStyle]}>
+                {yearly !== null && sub.currency ? (
+                  <>
+                    <Txt
+                      v="displayXL"
+                      num
+                      style={{ fontSize: tiny ? 46 : compact ? 54 : 64, lineHeight: tiny ? 52 : compact ? 60 : 70, marginLeft: -2 }}
+                      adjustsFontSizeToFit
+                      numberOfLines={1}
+                    >
+                      {money(yearly, sub.currency)}
+                    </Txt>
+                    <Txt v="lead" style={{ fontSize: tiny ? 17 : 19, lineHeight: tiny ? 22 : 25, fontFamily: F.wideBold }}>
+                      {'a year you won’t pay, once you\u00A0cancel.'}
+                    </Txt>
+                  </>
+                ) : (
+                  <Txt v="label" style={{ fontSize: 17, lineHeight: 23 }}>
+                    {'Cancel it, and that’s one less\u00A0charge.'}
+                  </Txt>
+                )}
+                {trial ? (
+                  <Txt v="body" tone="fg2" style={{ marginTop: 8, fontSize: 14.5 }}>
+                    You keep your whole list. Reminders drop back to 3.
+                  </Txt>
+                ) : null}
               </Animated.View>
               {wide ? <View style={{ height: 32 }} /> : <View style={{ flex: 1, minHeight: tiny ? 14 : 24 }} />}
             </View>

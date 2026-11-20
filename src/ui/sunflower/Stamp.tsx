@@ -73,29 +73,40 @@ export function Stamp({ date, width = 280, bg }: { date: DateOnly; width?: numbe
 // where the tag is the thing that lands. iOS adds the letter spacing after the last letter too, so the right
 // padding is the left one minus the tracking: the word sits optically centred in its box (owner, Nov 19).
 const TAG_SIZES = {
-  s: { fontSize: 10, lineHeight: 13, letterSpacing: 0.8, padLeft: 6, padV: 2.5, border: 1.25, radius: 5 },
-  m: { fontSize: 12, lineHeight: 16, letterSpacing: 1, padLeft: 9, padV: 4, border: 1.5, radius: 7 },
+  s: { fontSize: 10, lineHeight: 13, letterSpacing: 0.8, padLeft: 4, padRight: 8, padV: 3, tick: 13, gap: 4 },
+  m: { fontSize: 12, lineHeight: 16, letterSpacing: 1, padLeft: 5, padRight: 11, padV: 5, tick: 17, gap: 6 },
 } as const;
 
-/** The small "DITCHED" tag on a list row. Straight, not tilted (owner, Nov 19: the angle looked off). */
+/**
+ * The "DITCHED" tag, same as the website's (web/src/app/globals.css .dd-tag): a filled ink pill with
+ * sunflower letters and a tangerine tick, so it reads as done. Straight, not tilted (owner, Nov 19).
+ * Dark mode flips it: sunflower pill, ink letters.
+ */
 export function DitchedTag({ size = 's' }: { size?: 's' | 'm' }) {
   const p = usePalette();
-  const ink = p.dark ? brand.sunflower : brand.ink;
   const t = TAG_SIZES[size];
+  const bg = p.dark ? brand.sunflower : brand.ink;
+  const fg = p.dark ? brand.ink : brand.sunflower;
   return (
     <View
       accessible={false}
       style={{
-        borderWidth: t.border,
-        borderColor: ink,
-        borderRadius: t.radius,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: t.gap,
+        alignSelf: 'flex-start',
+        borderRadius: 999,
         paddingLeft: t.padLeft,
-        paddingRight: t.padLeft - t.letterSpacing,
+        paddingRight: t.padRight - t.letterSpacing,
         paddingVertical: t.padV,
-        backgroundColor: p.dark ? 'transparent' : brand.white,
+        backgroundColor: bg,
       }}
     >
-      <Text maxFontSizeMultiplier={1.2} style={{ fontFamily: F.wideHeavy, fontSize: t.fontSize, lineHeight: t.lineHeight, letterSpacing: t.letterSpacing, color: ink }}>
+      <Svg width={t.tick} height={t.tick} viewBox="0 0 16 16">
+        <Circle cx={8} cy={8} r={8} fill={brand.bill} />
+        <Path d="M4.6 8.3l2.2 2.2 4.6-4.8" stroke={brand.white} strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" fill="none" />
+      </Svg>
+      <Text maxFontSizeMultiplier={1.2} style={{ fontFamily: F.wideHeavy, fontSize: t.fontSize, lineHeight: t.lineHeight, letterSpacing: t.letterSpacing, color: fg }}>
         DITCHED
       </Text>
     </View>

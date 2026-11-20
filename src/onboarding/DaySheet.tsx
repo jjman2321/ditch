@@ -150,18 +150,19 @@ export function DayBody({
 
   // A no-break space keeps the last two words together.
   const head = monthly ? `Which day does ${pick.name}\u00A0charge?` : yearly ? `When does ${pick.name}\u00A0renew?` : `When does ${pick.name} charge\u00A0next?`;
-  const rule = !next
-    ? null
-    : isToday
-      ? // Say why today is picked, so a quick Save is a choice, not an accident (audit, Nov 19).
-        `Charged today, the ${ordinal(t.d)}.`
-      : monthly
-        ? day === 31
-          ? 'Charges on the last day of every month.'
-          : `Charges on the ${ordinal(day!)} of every month.`
-        : yearly
-          ? `Renews every year on ${shortDate(next)}.`
-          : `Charges ${EVERY[pick.cycle]}.`;
+  // Option A (owner, Nov 20: "the yellow box wording doesn't make much sense"): the date first,
+  // then how often, then (free, 3 in use) why there's no reminder, as a full sentence.
+  const every = !next
+    ? ''
+    : monthly
+      ? day === 31 && !isToday
+        ? 'Every month on the last day.'
+        : `Every month on the ${ordinal(isToday ? t.d : day!)}.`
+      : yearly
+        ? `Every year on ${shortDate(next)}.`
+        : `${EVERY[pick.cycle].replace('every', 'Every')}.`;
+  const rule = next ? `Next charge: ${nextChargeLabel(next, today)}` : null;
+  const small = next ? `${every}${off ? ' No reminder for this one. Free covers 3 subscriptions.' : ''}` : 'It’s in your bank app or the receipt email.';
 
   // The next charge is at most one cycle away.
   const max = addDays(today, yearly ? 365 : pick.cycle === 'semiannual' ? 184 : pick.cycle === 'quarterly' ? 92 : 31);
@@ -263,8 +264,7 @@ export function DayBody({
           {rule ?? (monthly ? 'Tap the day it charges.' : yearly ? 'Tap the day it renews next.' : 'Tap the day it charges next.')}
         </Txt>
         <Txt v="body" tone="fg2" num style={{ marginTop: 2 }}>
-          {/* One short line (owner, Nov 20: the box had too much text). The reminder days are on the reminders step. */}
-          {next ? `Next charge ${nextChargeLabel(next, today)}${off ? ' · no reminder on free' : ''}` : 'It’s in your bank app or the receipt email.'}
+          {small}
         </Txt>
       </View>
       <Button label="Save" disabled={!anchor} onPress={() => anchor && onDone(anchor, source)} style={{ marginTop: 16 }} />

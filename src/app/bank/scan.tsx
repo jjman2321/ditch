@@ -62,6 +62,7 @@ export default function BankScan() {
     return () => clearInterval(t);
   }, [phase]);
 
+  const [failWhy, setFailWhy] = useState<'offline' | 'build' | 'bank'>('bank');
   const read = async () => {
     if (!b) return;
     setPhase('reading');
@@ -100,6 +101,15 @@ export default function BankScan() {
         router.back();
         return;
       }
+      // Say what actually went wrong (audit, Nov 20: it blamed the bank for everything).
+      const err = e as { name?: string; message?: string };
+      setFailWhy(
+        e instanceof BankApiError && e.code === 'needs_new_build'
+          ? 'build'
+          : err?.name === 'AbortError' || err?.name === 'TypeError' || /network|internet|offline/i.test(err?.message ?? '')
+            ? 'offline'
+            : 'bank',
+      );
       setPhase('failed');
     }
   };
@@ -129,10 +139,10 @@ export default function BankScan() {
           <BankTile bank={b} size={56} />
         </View>
         <Txt v="title" accessibilityRole="header" style={{ marginTop: 18, fontSize: 32, lineHeight: 36 }}>
-          {`${name} isn’t answering.`}
+          {failWhy === 'offline' ? 'You’re offline.' : failWhy === 'build' ? 'Bank sync needs the newest Ditch.' : `${name} isn’t answering.`}
         </Txt>
         <Txt v="leadS" tone="fg2" style={{ marginTop: 10 }}>
-          That’s on their end. Try again in a bit.
+          {failWhy === 'offline' ? 'Check your connection, then try again.' : failWhy === 'build' ? 'Update Ditch, then try again. A statement works now.' : 'Try again in a bit, or use a statement.'}
         </Txt>
       </BankPage>
     );

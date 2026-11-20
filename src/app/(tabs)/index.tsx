@@ -34,6 +34,7 @@ import { EmptyHome, MissingStrip, NextReminderRow, NoDateRow, NoReminderRow, Off
 import { PriceColumnMeasure, SubRow, type BellState } from '@/home/SubRow';
 import { BankToastView, SyncCardView, type SyncHandlers } from '@/bank/HomeCards';
 import { openUrl } from '@/ditch/CancelHelp';
+import { tell } from '@/ui/alert';
 import { useApp, useAppMoney } from '@/state/app';
 import { useBank } from '@/state/bank';
 import { foundTagShows } from '@/state/bankLogic';
@@ -150,7 +151,7 @@ export default function Home() {
     },
     dismiss: (key) => void bank.dismissCard(key),
     markDitched: (id) => void ditch(id),
-    reconnect: (id) => void bank.reconnect(id),
+    reconnect: (id) => void bank.reconnect(id).catch(() => tell('Couldn’t reconnect', 'Check your connection and try again in a bit.')),
     later: (id) => void bank.later(id),
     answer: (key, yes) => {
       haptic.select();

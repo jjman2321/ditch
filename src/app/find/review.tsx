@@ -36,6 +36,7 @@ export default function Review() {
   const [on, setOn] = useState<Set<string>>(() => new Set(found.filter((f) => preTicked(f) && !alreadyOnList(f, app.subs)).map((f) => f.key)));
   const opts = { country: app.settings.country, currency: app.settings.currency, today: app.today };
   const picked = found.filter((f) => on.has(f.key));
+  const allListed = found.length > 0 && found.every((f) => alreadyOnList(f, app.subs));
   const monthly = useMemo(() => {
     const byCur = new Map<string, number>();
     for (const f of picked) {
@@ -84,10 +85,7 @@ export default function Review() {
   if (!result) {
     // Can show on a cold start too (the last check lives in memory), so it doesn't say "cleared".
     return (
-      <FindPage
-        title="Nothing to check yet"
-        footer={<Button label="Find your subscriptions" onPress={() => router.replace(findTarget() === 'onboarding' ? '/onboarding/where' : '/find')} />}
-      >
+      <FindPage title="Nothing to check yet" footer={<Button label="Find your subscriptions" onPress={() => router.replace(findTarget() === 'onboarding' ? '/onboarding/where' : '/find')} />}>
         {/* The duck peeks over the card's top edge, like everywhere else, and stays clear of the button (CLAUDE.md rule 8). */}
         <View style={{ marginTop: 92 }}>
           <Duck width={92} left={20} sink={2} />
@@ -103,10 +101,13 @@ export default function Review() {
 
   return (
     <FindPage
-      title={found.length ? `We spotted ${found.length}. Check them.` : 'Nothing repeats yet'}
-      intro={result.note ?? undefined}
+      title={found.length ? (allListed ? 'Already on your list' : `We spotted ${found.length}. Check them.`) : 'Nothing repeats yet'}
+      intro={allListed ? `All ${found.length === 1 ? 'of it is' : `${found.length} are`} on your list already. Nothing to add.` : (result.note ?? undefined)}
       footer={
-        found.length ? (
+        // Everything found is on the list already: a way out, not a disabled button (audit, Nov 20).
+        allListed ? (
+          <Button label="Done" onPress={() => router.dismissTo('/(tabs)')} />
+        ) : found.length ? (
           <>
             <Button label={picked.length ? `Add ${picked.length}${monthly ? ` · ${monthly} a month` : ''}` : 'Tick what you pay for'} disabled={!picked.length} onPress={add} />
             <Txt v="sub" tone="mute" center style={{ marginTop: 6 }}>

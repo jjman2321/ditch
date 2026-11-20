@@ -27,8 +27,13 @@ export default function BankConnections() {
 
   const reconnect = async (l: BankLink) => {
     haptic.select();
-    await bank.reconnect(l.id);
-    tell('Back on', `${l.name} is connected again. Ditch caught up on what it missed.`);
+    try {
+      await bank.reconnect(l.id);
+      tell('Back on', `${l.name} is connected again. Ditch caught up on what it missed.`);
+    } catch {
+      // It used to fail silently (audit, Nov 20).
+      tell(`Couldn’t reach ${l.name}`, 'Check your connection and try again in a bit.');
+    }
   };
 
   const disconnect = async () => {

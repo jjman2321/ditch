@@ -316,9 +316,12 @@ export function Picker({ onCustom, onTrial, onForgotten, onClose }: { onCustom: 
           );
         }}
       />
-      <View style={{ paddingTop: 10 }}>
-        <Button label={ticked.length ? `Add ${ticked.length}` : 'Tick what you pay for'} disabled={!ticked.length} onPress={add} />
-      </View>
+      {/* No results and nothing ticked: no greyed-out bar under the "add your own" rows. */}
+      {query.trim() && !data.length && !ticked.length ? null : (
+        <View style={{ paddingTop: 10 }}>
+          <Button label={ticked.length ? `Add ${ticked.length}` : 'Tick what you pay for'} disabled={!ticked.length} onPress={add} />
+        </View>
+      )}
     </View>
   );
 }

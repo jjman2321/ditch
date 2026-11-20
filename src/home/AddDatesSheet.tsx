@@ -64,7 +64,8 @@ function Body({ close }: { close: () => void }) {
         app.subs.filter((x) => x.id !== s.id),
         false,
       ).size < FREE_REMINDERS;
-    await app.saveSub({ ...s, anchor, dateSource, freePick: room });
+    // Not saved: the app has said so; stay on this one.
+    if (!(await app.storeSub({ ...s, anchor, dateSource, freePick: room }, { isNew: false }))) return;
     haptic.select();
     setEditing(null);
     if (list.length <= 1) close();

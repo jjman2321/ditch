@@ -29,6 +29,7 @@ import { ask } from '@/ui/alert';
 import { suggestService } from '@/settings/feedback';
 import { yearlySaving } from '@/domain/priceWatch';
 import {
+  Bang,
   Button,
   Card,
   ChevronRight,
@@ -228,6 +229,22 @@ function DetailInput({
   );
 }
 
+/** A field's problem, under it: "!" and one short line in the error colour (audit, Nov 20: grey text didn't read as an error). */
+function FieldError({ children }: { children: string }) {
+  const p = usePalette();
+  return (
+    <View accessibilityLiveRegion="polite" style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 6, marginHorizontal: 2 }}>
+      <Bang size={16} bg={p.danger} color={p.dark ? brand.ink : brand.white} />
+      <Txt v="sub" color={p.danger} style={{ flex: 1, fontFamily: F.semi, fontSize: 14 }}>
+        {children}
+      </Txt>
+    </View>
+  );
+}
+
+/** A field with a problem: a 2pt border in the error colour and a light tint of it. */
+const problemField = (p: { danger: string }) => ({ borderWidth: 2, borderColor: p.danger, backgroundColor: `${p.danger}14` });
+
 function FieldLabel({ children }: { children: string }) {
   return (
     <Txt v="eyebrow" tone="mute" style={{ marginTop: 18, marginBottom: 8, marginHorizontal: 2 }}>
@@ -270,7 +287,19 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
   const MAX_MINOR = 99_999 * 10 ** currencyDigits(currency);
   const parsed = parseAmountInput(amount, currency);
   const typed = parsed !== null && parsed > MAX_MINOR ? null : parsed;
-  const priceProblem = amount.trim() && typed === null;
+  // What's wrong with the typed price, in their currency: "Has to be more than $0", "That's over $99,999".
+  const digitsTyped = amount.replace(/[^\d]/g, '');
+  const priceProblem: string | null = !amount.trim()
+    ? null
+    : (parsed !== null && parsed > MAX_MINOR) || (parsed === null && /^\s*\d{6,}\s*$/.test(amount))
+      ? `That’s over ${money(MAX_MINOR, currency, { whole: true })}. Extra zero?`
+      : typed !== null
+        ? null
+        : digitsTyped && /^0+$/.test(digitsTyped)
+          ? `Has to be more than ${money(0, currency, { whole: true })}. Leave it empty if it’s free.`
+          : `Use a price like ${currencyDigits(currency) ? '12.99' : '1500'}.`;
+  // Edit: the name can't be cleared (the header keeps the saved one meanwhile).
+  const nameProblem = open.mode === 'edit' && !trialEntry && !query.trim() ? 'Add a name.' : null;
 
   const matches = useMemo(() => {
     if (!query.trim()) return popularIn(country, 6);
@@ -381,8 +410,9 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
     const name = (draft.name || query).trim();
     if (!name) return;
     const final: Sub = { ...draft, name, currency: draft.amountMinor ? currency : draft.currency };
-    if (isNew) await app.addSub(final);
-    else await app.saveSub(final);
+    // Not saved: the app has said so; the sheet stays open with what they typed.
+    const ok = await app.storeSub(final, { isNew });
+    if (!ok) return;
     haptic.select();
     close();
   };
@@ -402,8 +432,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
 
   const ditchIt = async () => {
     close();
-    await app.ditch(draft.id);
-    router.push(`/ditch/${draft.id}?fresh=1`);
+    if (await app.ditch(draft.id)) router.push(`/ditch/${draft.id}?fresh=1`);
   };
 
   if (step === 'date') {
@@ -509,10 +538,12 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                   : 'Track a free trial'
                 : draft.catalogId
                   ? `Add ${draft.name}`
-                  : 'Add a subscription'
+                  : query.trim()
+                    ? `Add ${query.trim()}`
+                    : 'Add a subscription'
               : trialEntry
                 ? 'Ditch Pro trial'
-                : draft.name}
+                : draft.name.trim() || existing?.name}
           </Txt>
         </View>
 
@@ -530,9 +561,10 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                 alignItems: 'center',
                 paddingHorizontal: 14,
                 gap: 8,
+                ...(nameProblem ? problemField(p) : null),
               }}
             >
-              {isNew ? <Search color={p.mute} /> : null}
+              {isNew && searching ? <Search color={p.mute} /> : null}
               <TextInput
                 value={query}
                 onChangeText={(t) => {
@@ -550,6 +582,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                 style={{ flex: 1, minWidth: 0, minHeight: 48, fontFamily: F.semi, fontSize: 17, color: p.fg, outlineStyle: 'none' } as object}
               />
             </View>
+            {nameProblem ? <FieldError>{nameProblem}</FieldError> : null}
             {searching ? (
               <Card style={{ marginTop: 8, paddingVertical: 4 }}>
                 {matches.map((svc) => {
@@ -643,6 +676,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                 alignItems: 'center',
                 paddingHorizontal: 16,
                 gap: 6,
+                ...(priceProblem ? problemField(p) : null),
               }}
             >
               <Txt v="moneyL" tone="mute">
@@ -665,9 +699,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
               </Txt>
             </View>
             {priceProblem ? (
-              <Txt v="sub" color={p.danger} style={{ marginTop: 6, marginHorizontal: 2 }} accessibilityLiveRegion="polite">
-                {parsed !== null && parsed > MAX_MINOR ? 'That looks too big. Check the price.' : 'Check the price.'}
-              </Txt>
+              <FieldError>{priceProblem}</FieldError>
             ) : priceNote ? (
               // Typical price and the cheaper-plan check (DECISIONS #60: the same plan billed yearly, from our checked prices, same currency only) share one line.
               // Free too: the yearly price is already on a plan chip, so hiding the difference behind Pro hid nothing (audit, Nov 19).
@@ -859,11 +891,12 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
       <KeyboardDone />
       {searching ? null : (
         <View style={{ paddingTop: 10 }}>
-          {/* Edit, nothing changed yet: an outlined Done that just closes (a greyed-out Save looked broken). The first change turns it into Save. */}
+          {/* Edit, nothing changed yet: a plain "Close" (a greyed-out Save looked broken, and an outlined Done looked like
+              the "Ditch X" button above it). The first change turns it into Save. */}
           {changed ? (
             <Button label={isNew ? (draft.isTrial ? 'Track trial' : `Add ${draft.name || query.trim() || 'it'}`) : 'Save'} disabled={!canSave} onPress={save} />
           ) : (
-            <Button kind="secondary" label="Done" hint="Closes without changes" height={56} onPress={close} />
+            <Button kind="text" label="Close" hint="Closes without changes" height={56} onPress={close} />
           )}
         </View>
       )}

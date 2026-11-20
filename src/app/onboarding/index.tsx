@@ -47,14 +47,14 @@ const W = 342;
 const H = 320;
 const CX = 171;
 const CY = 160;
-// Six main logos around the duck (x, y from the centre; tilt; size), then four faded ones in the corners.
-const INNER: { id: LogoId; x: number; y: number; r: number; s: number }[] = [
-  { id: 'youtube-premium', x: 0, y: -122, r: 3, s: 56 },
-  { id: 'netflix', x: -114, y: -54, r: -5, s: 66 },
-  { id: 'spotify', x: 114, y: -54, r: 5, s: 64 },
-  { id: 'chatgpt-plus', x: -102, y: 72, r: 4, s: 60 },
-  { id: 'disney-plus', x: 104, y: 72, r: -4, s: 60 },
-  { id: 'hulu', x: 0, y: 124, r: -2, s: 50 },
+// Six main logos around the duck (x, y from the centre; size), all square to the screen (audit Nov 20: no tilts), then four faded ones in the corners.
+const INNER: { id: LogoId; x: number; y: number; s: number }[] = [
+  { id: 'youtube-premium', x: 0, y: -122, s: 56 },
+  { id: 'netflix', x: -114, y: -54, s: 66 },
+  { id: 'spotify', x: 114, y: -54, s: 64 },
+  { id: 'chatgpt-plus', x: -102, y: 72, s: 60 },
+  { id: 'disney-plus', x: 104, y: 72, s: 60 },
+  { id: 'hulu', x: 0, y: 124, s: 50 },
 ];
 const OUTER: { id: LogoId; x: number; y: number; s: number; o: number }[] = [
   { id: 'adobe-cc', x: -140, y: -132, s: 32, o: 0.5 },
@@ -81,7 +81,6 @@ function Tile({
   id,
   x,
   y,
-  r,
   s,
   o = 1,
   i,
@@ -93,7 +92,6 @@ function Tile({
   id: LogoId;
   x: number;
   y: number;
-  r: number;
   s: number;
   o?: number;
   i: number;
@@ -126,7 +124,6 @@ function Tile({
         { translateX: -x * (1 - p) * 0.55 + Math.sin(TAU * (t * fx + ph)) * amp },
         { translateY: -y * (1 - p) * 0.55 + Math.cos(TAU * (t * fy + ph)) * amp },
         { scale: far ? 1 : 0.6 + 0.4 * p },
-        { rotate: `${r}deg` },
       ],
     };
   });
@@ -205,7 +202,7 @@ function Picture({ scale, show }: { scale: number; show: boolean }) {
           <Rect x={0} y={0} width={W} height={H} fill="url(#glow)" />
         </Svg>
         {OUTER.map((t, i) => (
-          <Tile key={t.id} {...t} r={0} i={i} clock={clock} delay={T.outer + i * 40} show={show} far />
+          <Tile key={t.id} {...t} i={i} clock={clock} delay={T.outer + i * 40} show={show} far />
         ))}
         {INNER.map((t, i) => (
           <Tile key={t.id} {...t} i={i} clock={clock} delay={T.logo + i * T.gap} show={show} />
@@ -248,7 +245,7 @@ function Bell({ size }: { size: number }) {
   );
 }
 
-/** "renews" in a sunflower pill, tilted 2°, with a bell. Slides in, then the bell rings once. */
+/** "renews" in a sunflower pill, square to the line, with a bell. Slides in, then the bell rings once. */
 function Pill({ fs, lh, show }: { fs: number; lh: number; show: boolean }) {
   const reduce = useReducedMotion();
   const k = useSharedValue(reduce ? 1 : 0);
@@ -271,7 +268,7 @@ function Pill({ fs, lh, show }: { fs: number; lh: number; show: boolean }) {
   }, [reduce, show, k, ring]);
   const pill = useAnimatedStyle(() => ({
     opacity: Math.min(1, k.get() * 1.5),
-    transform: [{ translateX: -10 * (1 - k.get()) }, { rotate: '-2deg' }, { scale: 0.92 + 0.08 * k.get() }],
+    transform: [{ translateX: -10 * (1 - k.get()) }, { scale: 0.92 + 0.08 * k.get() }],
   }));
   const bell = useAnimatedStyle(() => ({ transform: [{ rotate: `${-14 + ring.get() * 16}deg` }] }));
   const b = Math.round(fs * 0.68);

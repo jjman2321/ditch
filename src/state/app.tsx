@@ -37,6 +37,7 @@ import {
 } from '@/services/notifications';
 import { clearDraft } from '@/services/onboardingDraft';
 import { offerReview } from '@/services/review';
+import { tell } from '@/ui/alert';
 import { MARKETING_VERSION } from '@/settings/version';
 
 import { proTrialSub, subsFromOnboarding } from './fromOnboarding';
@@ -65,12 +66,15 @@ export type OnboardingResult = {
 };
 
 type Actions = {
+  /** A failed save is told to the user and taken back out of the list (see `commit`). */
   addSub: (s: Sub) => Promise<void>;
   /** Several at once (the Add picker), in one save and one reschedule. */
   addSubs: (s: Sub[]) => Promise<void>;
   saveSub: (s: Sub) => Promise<void>;
+  /** Add (`isNew`) or save one, for screens that stay open on a failure: false when it couldn't be saved. */
+  storeSub: (s: Sub, opts: { isNew: boolean }) => Promise<boolean>;
   removeSub: (id: string) => Promise<void>;
-  /** Returns the sub as it was, for Undo. */
+  /** Returns the sub as it was, for Undo. Null if it couldn't be saved. */
   ditch: (id: string) => Promise<Sub | null>;
   undoDitch: (before: Sub) => Promise<void>;
   confirmCancelled: (id: string) => Promise<void>;
@@ -179,9 +183,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
     };
   }, [set, reschedule, refreshNotif]);
 
-  /** Save changed subs, update memory, reschedule. */
+  /**
+   * Save changed subs, update memory, reschedule. If the save fails, this change is taken back out of
+   * memory (so the screen never shows what isn't stored), reminders follow, and the user is told once.
+   */
   const commit = useCallback(
-    async (input: Sub[]) => {
+    async (input: Sub[]): Promise<boolean> => {
       // Free: the 3 reminder slots stay exact, whatever changed (settleFreePicks).
       const changed = settleFreePicks(ref.current.subs, input, isPro(ref.current.settings));
       const byId = new Map(changed.map((s) => [s.id, s]));
@@ -190,9 +197,29 @@ export function AppProvider({ children }: { children: ReactNode }) {
         ...ref.current.subs.map((s) => byId.get(s.id) ?? s),
         ...changed.filter((s) => !existing.has(s.id)),
       ].filter((s) => s.status !== 'deleted');
+      const before = ref.current.subs;
       set({ subs });
       reschedule();
-      await repoRef.current?.saveSubs(changed);
+      try {
+        await repoRef.current?.saveSubs(changed);
+        return true;
+      } catch {
+        const ids = new Set(changed.map((s) => s.id));
+        const was = new Map(before.map((s) => [s.id, s]));
+        const now = ref.current.subs;
+        // Nothing else saved meanwhile: the list as it was. Otherwise only this change is undone.
+        const restored =
+          now === subs
+            ? before
+            : [
+                ...now.flatMap((s) => (ids.has(s.id) ? (was.has(s.id) ? [was.get(s.id)!] : []) : [s])),
+                ...before.filter((s) => ids.has(s.id) && !now.some((n) => n.id === s.id)),
+              ];
+        set({ subs: restored });
+        reschedule();
+        tell('Couldn’t save', 'Try again. Your list hasn’t changed.');
+        return false;
+      }
     },
     [set, reschedule],
   );
@@ -244,9 +271,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const actions: Actions = useMemo(
     () => ({
       maybeAskReview,
-      addSub: (s) => commit([s]),
-      addSubs: (list) => commit(list),
-      saveSub: (s) => commit([{ ...s, updatedAt: stamp() }]),
+      addSub: async (s) => {
+        await commit([s]);
+      },
+      addSubs: async (list) => {
+        await commit(list);
+      },
+      saveSub: async (s) => {
+        await commit([{ ...s, updatedAt: stamp() }]);
+      },
+      storeSub: (s, { isNew }) => commit([isNew ? s : { ...s, updatedAt: stamp() }]),
       removeSub: async (id) => {
         const s = find(id);
         if (s) await commit([{ ...s, status: 'deleted', updatedAt: stamp() }]);
@@ -254,11 +288,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
       ditch: async (id) => {
         const s = find(id);
         if (!s) return null;
-        await commit([ditchSub(s, ref.current.today, stamp())]);
+        if (!(await commit([ditchSub(s, ref.current.today, stamp())]))) return null;
         if (!ref.current.settings.holdHintDone) await updateSettings({ holdHintDone: true });
         return s;
       },
-      undoDitch: (before) => commit([{ ...before, updatedAt: stamp() }]),
+      undoDitch: async (before) => {
+        await commit([{ ...before, updatedAt: stamp() }]);
+      },
       confirmCancelled: async (id) => {
         const s = find(id);
         if (s) await commit([confirmCancel(s, ref.current.today, stamp())]);
@@ -279,6 +315,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
           return true;
         }
         if (on && !s.freePick && remindedIds(ref.current.subs, false).size >= FREE_REMINDERS) return false;
+        // A failed save has already said so: true here means "not the 3-limit", not "saved".
         await commit([{ ...s, freePick: on, muted: false, updatedAt: stamp() }]);
         return true;
       },
@@ -314,7 +351,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         set({ settings: { ...ref.current.settings, ...settings } });
         // The list is saved before "onboarding done", so a crash in between can't
         // leave someone past onboarding with an empty list.
-        await commit(subs);
+        // Not saved: stop before "onboarding done" is stored (the user has been told).
+        if (!(await commit(subs))) throw new Error('Couldn’t save the list');
         await repoRef.current?.saveSettings(settings);
         clearDraft();
         await refreshNotif();

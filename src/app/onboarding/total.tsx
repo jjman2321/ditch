@@ -276,7 +276,7 @@ export default function Total() {
                   style={{ flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 52 }}
                 >
                   {i ? <View style={{ position: 'absolute', top: 0, left: 44, right: 0, height: 1, backgroundColor: cream.hair }} /> : null}
-                  <BuildRow play={build} go={arrived} delay={ROW.first + i * ROW.gap} logo={<LogoTile id={x.id} size={32} />}>
+                  <BuildRow play={build} go={arrived} delay={ROW.first + i * ROW.gap} logo={<LogoTile id={x.id} size={32} color={x.color} ink={x.ink} mono={x.mono} />}>
                     <Txt v="label" color={cream.fg} numberOfLines={1} style={{ flex: 1, fontSize: 16 }}>
                       {x.name}
                     </Txt>
@@ -306,7 +306,7 @@ export default function Total() {
                   <View style={{ width: 32, flexDirection: 'row' }}>
                     {restMany.slice(0, 2).map((x, i) => (
                       <View key={x.id} style={{ marginLeft: i ? -8 : 0, borderRadius: 6, borderWidth: 2, borderColor: cream.sheet, margin: -2 }}>
-                        <LogoTile id={x.id} size={20} />
+                        <LogoTile id={x.id} size={20} color={x.color} ink={x.ink} mono={x.mono} />
                       </View>
                     ))}
                   </View>

@@ -239,7 +239,7 @@ export function DayBody({
   return (
     <View>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 16 }}>
-        <LogoTile id={pick.id} size={40} />
+        <LogoTile id={pick.id} size={40} color={pick.color} ink={pick.ink} mono={pick.mono} />
         <View style={{ flex: 1, minWidth: 0 }}>
           {progress ? (
             <Txt v="fine" tone="mute" num>

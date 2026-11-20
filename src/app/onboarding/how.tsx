@@ -45,14 +45,15 @@ function slidesFor(us: boolean): Slide[] {
       ? {
           key: 'pay',
           big: '$2,628',
-          title: 'a year on subscriptions.',
+          // "a year / on subscriptions." never "a year on / subscriptions." (one word alone on the last line).
+          title: `a year on${NB}subscriptions.`,
           body: `That’s what people pay on average, and they guess less than half. Let’s${NB}find${NB}yours.`,
           art: 'statement',
         }
       : {
           key: 'pay',
           big: 'Less than half',
-          title: `of what people really pay is what they${NB}guess.`,
+          title: `of what people really pay is what${NB}they${NB}guess.`,
           body: `That’s on average. Let’s${NB}find${NB}yours.`,
           art: 'statement',
         },

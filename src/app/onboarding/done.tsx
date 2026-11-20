@@ -117,12 +117,22 @@ export default function Done() {
   const [picking, setPicking] = useState(false);
   const sub2 = dark ? '#BFB7A7' : '#4B4220';
 
+  // Already said no to the iPhone prompt: iOS won't ask again, so the button opens Settings and says so (audit Nov 20).
+  const [denied, setDenied] = useState(false);
+  useEffect(() => {
+    if (on) return;
+    getNotifStatus()
+      .then((st) => setDenied(st === 'denied'))
+      .catch(() => {});
+  }, [on]);
+
   // Came back from iPhone Settings with reminders allowed: switch to "You're set".
   useEffect(() => {
     const s = AppState.addEventListener('change', async (state) => {
       if (state !== 'active' || on) return;
       const st = await getNotifStatus();
       if (st === 'granted' || st === 'quiet') setNotifications('granted');
+      else setDenied(st === 'denied');
     });
     return () => s.remove();
   }, [on, setNotifications]);
@@ -136,6 +146,7 @@ export default function Done() {
     }
     const st = await requestNotifPermission();
     setNotifications(st === 'granted' || st === 'quiet' ? 'granted' : 'denied');
+    if (st === 'denied') setDenied(true);
   };
 
   const finish = async () => {
@@ -253,7 +264,12 @@ export default function Done() {
           <Button label="Go to my list" disabled={saving} onPress={finish} />
         ) : (
           <>
-            <Button label="Turn on reminders" hint="Shows the iPhone permission prompt" left={<Bell color={p.ctaFg} size={20} />} onPress={turnOn} />
+            <Button
+              label={denied ? 'Open Settings' : 'Turn on reminders'}
+              hint={denied ? 'Opens iPhone Settings' : 'Shows the iPhone permission prompt'}
+              left={<Bell color={p.ctaFg} size={20} />}
+              onPress={turnOn}
+            />
             <Button kind="text" label="Go to my list" disabled={saving} onPress={finish} style={{ marginTop: 4 }} />
           </>
         )}

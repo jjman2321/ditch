@@ -78,7 +78,7 @@ function Body({ list, initial, onKeep }: { list: Picked[]; initial: string[]; on
               style={({ pressed }) => ({ minHeight: 64, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, backgroundColor: pressed ? p.hair : 'transparent' })}
             >
               {i ? <View style={{ position: 'absolute', top: 0, left: 66, right: 0, height: 1, backgroundColor: p.hair }} /> : null}
-              <LogoTile id={x.id} size={40} />
+              <LogoTile id={x.id} size={40} color={x.color} ink={x.ink} mono={x.mono} />
               <View style={{ flex: 1, minWidth: 0, paddingVertical: 10 }}>
                 <Txt v="bodyStrong" color={p.cardFg} numberOfLines={1}>
                   {x.name}

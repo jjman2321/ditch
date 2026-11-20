@@ -18,15 +18,18 @@ function Body({ pick, onPick, onClose, onOwnPrice }: { pick: Picked; onPick: (pl
   const money = useMoney();
   const row = priceRow(pick.id, pick.priceCountry);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  useEffect(() => () => {
-    if (timer.current) clearTimeout(timer.current);
-  }, []);
+  useEffect(
+    () => () => {
+      if (timer.current) clearTimeout(timer.current);
+    },
+    [],
+  );
   if (!row) return null;
   const common = shortPlanName(defaultPlan(row).name, pick.name);
   return (
     <View>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 16 }}>
-        <LogoTile id={pick.id} size={40} />
+        <LogoTile id={pick.id} size={40} color={pick.color} ink={pick.ink} mono={pick.mono} />
         <Txt v="heading" accessibilityRole="header" style={{ flex: 1 }}>
           {`Which ${pick.name} plan?`}
         </Txt>
@@ -76,19 +79,7 @@ function Body({ pick, onPick, onClose, onOwnPrice }: { pick: Picked; onPick: (pl
   );
 }
 
-export function PlanSheet({
-  pick,
-  visible,
-  onClose,
-  onPick,
-  onOwnPrice,
-}: {
-  pick: Picked | null;
-  visible: boolean;
-  onClose: () => void;
-  onPick: (planId: string) => void;
-  onOwnPrice: () => void;
-}) {
+export function PlanSheet({ pick, visible, onClose, onPick, onOwnPrice }: { pick: Picked | null; visible: boolean; onClose: () => void; onPick: (planId: string) => void; onOwnPrice: () => void }) {
   return (
     <Sheet visible={visible && !!pick} onClose={onClose} fit gap={0} label={pick ? `${pick.name} plan` : 'Plan'}>
       {pick ? <Body key={pick.id} pick={pick} onPick={onPick} onClose={onClose} onOwnPrice={onOwnPrice} /> : null}

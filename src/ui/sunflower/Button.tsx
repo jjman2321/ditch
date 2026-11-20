@@ -80,8 +80,11 @@ export function Button({
     else release();
   };
   const h = height ?? (kind === 'primary' ? 56 : kind === 'secondary' ? 52 : TAP);
-  const bg = kind === 'primary' ? p.cta : 'transparent';
-  const fg = kind === 'primary' ? p.ctaFg : danger ? p.danger : p.fg;
+  // Disabled in dark mode: a dimmed cream, the same neutral grey light mode gets from dimmed ink. Dimmed
+  // sunflower read as a muddy ochre that still looked tappable (audit Nov 20).
+  const offDark = kind === 'primary' && !!disabled && p.dark;
+  const bg = kind === 'primary' ? (offDark ? p.fg : p.cta) : 'transparent';
+  const fg = kind === 'primary' ? (offDark ? p.bg : p.ctaFg) : danger ? p.danger : p.fg;
   return (
     <AnimatedPressable
       accessibilityRole="button"
@@ -155,14 +158,9 @@ export function IconButton({
       disabled={disabled}
       hitSlop={Math.max(0, (TAP - size) / 2)}
       onPress={onPress}
-      style={({ pressed }) => [
-        { width: TAP, height: TAP, alignItems: 'center', justifyContent: 'center', opacity: disabled ? 0.3 : pressed ? 0.6 : 1 },
-        style,
-      ]}
+      style={({ pressed }) => [{ width: TAP, height: TAP, alignItems: 'center', justifyContent: 'center', opacity: disabled ? 0.3 : pressed ? 0.6 : 1 }, style]}
     >
-      <View style={{ width: size, height: size, borderRadius: size / 2, backgroundColor: bg, alignItems: 'center', justifyContent: 'center' }}>
-        {children}
-      </View>
+      <View style={{ width: size, height: size, borderRadius: size / 2, backgroundColor: bg, alignItems: 'center', justifyContent: 'center' }}>{children}</View>
     </Pressable>
   );
 }

@@ -21,7 +21,6 @@ import {
   homeGroups,
   homeTotals,
   isPending,
-  isPricedSub,
   isProTrial,
   listedUserSubs,
   remindedIds,
@@ -33,7 +32,7 @@ import {
 import { useEditor } from '@/editor/Editor';
 import { AddDatesSheet } from '@/home/AddDatesSheet';
 import { EmptyHome, MissingStrip, NextReminderRow, NoDateRow, NoReminderRow, OffBanner, OverlapCard, PaydayRow, PriceChangeCard, QuietRow, TotalCard, openPhoneSettings } from '@/home/HomeParts';
-import { PriceColumnMeasure, SubRow, type BellState } from '@/home/SubRow';
+import { PriceColumnMeasure, SubRow, rowPrice, type BellState } from '@/home/SubRow';
 import { BankToastView, SyncCardView, type SyncHandlers } from '@/bank/HomeCards';
 import { openUrl } from '@/ditch/CancelHelp';
 import { ask, tell } from '@/ui/alert';
@@ -224,7 +223,8 @@ export default function Home() {
   const next = blocked ? null : nextReminder(app.plan, subs);
   const money = useAppMoney();
   // The "/yr" sits under each price, so only the price itself sets the column's width.
-  const prices = useMemo(() => groups.flatMap((g) => g.rows.map((r) => (isPricedSub(r.sub) ? money(r.sub.amountMinor, r.sub.currency) : null))), [groups, money]);
+  // Measured the way the rows show them (1,000 and up without cents), so one big price doesn't widen every row.
+  const prices = useMemo(() => groups.flatMap((g) => g.rows.map((r) => rowPrice(r.sub, money))), [groups, money]);
   const [priceW, setPriceW] = useState<number | undefined>(undefined);
 
   const bellOf = (id: string): BellState => {

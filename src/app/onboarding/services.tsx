@@ -13,16 +13,47 @@ import { catalogPrice, defaultPlan, planChoices, priceRow } from '@/catalog/pric
 import { CHIP, FILTERS, type Filter } from '@/catalog/filters';
 import { SERVICES, availableIn, popularIn, searchServices, type CatalogService } from '@/catalog/services';
 import { shortPlanName } from '@/domain/copy';
+import { type DateOnly } from '@/domain/dates';
 import { CYCLE_SHORT } from '@/domain/money';
 import { CountrySheet } from '@/onboarding/CountrySheet';
 import { LinkButton, OnbRoot, TextLink } from '@/onboarding/Parts';
 import { PlanSheet } from '@/onboarding/PlanSheet';
 import { PriceSheet } from '@/onboarding/PriceSheet';
-import { isPriced, totalsFor, useCountry, useMoney, useOnboarding, usePickedList, type Picked } from '@/state/onboarding';
-import { Button, ChevronRight, EASE_OUT, F, LogoTile, POP, PRESS, RELEASE, Search, StepHeaderSpace, TickPop, Txt, haptic, radius, useFrame, usePalette } from '@/ui/sunflower';
+import { isPriced, onboardingToday, totalsFor, useCountry, useMoney, useOnboarding, usePickedList, type Picked } from '@/state/onboarding';
+import { setOwnPrice } from '@/state/picks';
+import { Button, ChevronRight, EASE_OUT, F, LogoTile, Plus, POP, PRESS, RELEASE, Search, StepHeaderSpace, TickPop, Txt, haptic, radius, useFrame, usePalette } from '@/ui/sunflower';
 
 const NB = ' ';
-@@HELPERS@@
+
+/** A plan name that's only a cycle word ("Monthly"): the price already says it ("$14.99/mo"). */
+const cycleWord = (name: string | null) => (name && /^(monthly|yearly|annual|annually|weekly|quarterly)$/i.test(name.trim()) ? null : name);
+
+/** Something not in our catalog, typed into search: saved by name, like one found on a statement. */
+function customPick(name: string, today: DateOnly): Picked {
+  const clean = name.trim();
+  return {
+    id: `custom:${clean.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+    name: clean,
+    color: '#E9E2D2',
+    ink: '#16140F',
+    mono: clean.slice(0, 1).toUpperCase() || '?',
+    cycle: 'monthly',
+    amountMinor: null,
+    currency: null,
+    planId: null,
+    planName: null,
+    priceSource: 'none',
+    priceCountry: null,
+    amountIsEstimate: false,
+    anchor: today,
+    dateSource: 'none',
+    custom: true,
+  };
+}
+
+/** A custom pick as a list row, so it shows (and can be unticked) like the rest. */
+const asService = (x: Picked): CatalogService => ({ id: x.id, name: x.name, category: 'Productivity', color: x.color, ink: x.ink, mono: x.mono, cycle: x.cycle });
+
 /** The second line of a row. Returns the text and whether "Change" / "Add your price" shows. */
 function useRowLine() {
   const money = useMoney();
@@ -41,7 +72,7 @@ function useRowLine() {
           )
         : null;
       // "Monthly · $14.99/mo" says it twice: drop a plan name that's only a cycle word.
-      const name = short && /^(monthly|yearly|annual|annually|weekly|quarterly)$/i.test(short.trim()) ? null : short;
+      const name = cycleWord(short);
       return { text: name ? `${name} · ${amount}` : amount, link: plans.length > 1 ? 'plan' : null };
     }
     // Not ticked yet: show the plan and price a tick will give, so ticking
@@ -50,12 +81,16 @@ function useRowLine() {
     const row = plans.length > 1 ? priceRow(s.id, country) : null;
     if (row) {
       const d = defaultPlan(row);
-      const name = shortPlanName(
-        d.name,
-        s.name,
-        plans.map((x) => x.name),
+      // Same words as once it's ticked, so a tick never changes the line (audit Nov 20).
+      const name = cycleWord(
+        shortPlanName(
+          d.name,
+          s.name,
+          plans.map((x) => x.name),
+        ),
       );
-      return { text: `${name} · ${money(d.amountMinor, row.currency)}${CYCLE_SHORT[d.cycle]}`, link: null };
+      const amount = `${money(d.amountMinor, row.currency)}${CYCLE_SHORT[d.cycle]}`;
+      return { text: name ? `${name} · ${amount}` : amount, link: null };
     }
     const c = catalogPrice(s.id, country);
     return { text: c ? `${money(c.amountMinor, c.currency)}${CYCLE_SHORT[c.cycle]}` : 'Add your price', link: null };
@@ -113,7 +148,7 @@ function Row({ s, pick, first, onToggle, onChange }: { s: CatalogService; pick: 
     >
       {first ? null : <View style={{ position: 'absolute', top: 0, left: 52, right: 0, height: 1, backgroundColor: p.hair }} />}
       <Animated.View style={logo.style}>
-        <LogoTile id={s.id} size={40} />
+        <LogoTile id={s.id} size={40} color={s.color} ink={s.ink} mono={s.mono} />
       </Animated.View>
       <View style={{ flex: 1, minWidth: 0, paddingVertical: 12 }}>
         <Txt v="bodyStrong" numberOfLines={1}>
@@ -237,22 +272,28 @@ export default function Services() {
   const p = usePalette();
   const f = useFrame();
   const list = usePickedList();
-  const { picked, toggleService, country, setCountry, setPrice, setPlan } = useOnboarding();
+  const { picked, toggleService, addPicks, country, setCountry, setPrice, setPlan } = useOnboarding();
   const [filter, setFilter] = useState<Filter>('Popular');
   const [query, setQuery] = useState('');
   const [countryOpen, setCountryOpen] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
   const [sheet, setSheet] = useState<'plan' | 'price' | null>(null);
   const [footerH, setFooterH] = useState(140);
+  // "+ Add “Kagi” yourself": the pick waiting on its price (nothing is added until it's saved).
+  const [custom, setCustom] = useState<Picked | null>(null);
 
   const data = useMemo(() => {
     // Anything already ticked stays findable (and untickable) even after a country change.
     const here = SERVICES.filter((s) => availableIn(s, country) || picked[s.id]);
-    if (query.trim()) return searchServices(query, here);
+    // Ones they added by name lead "Popular" and turn up in search.
+    const own = Object.values(picked)
+      .filter((x) => x.custom)
+      .map(asService);
+    if (query.trim()) return searchServices(query, [...own, ...here]);
     if (filter !== 'Popular') return here.filter((s) => s.category === filter);
     const popular = popularIn(country);
     const stray = here.filter((s) => picked[s.id] && !availableIn(s, country) && !popular.some((x) => x.id === s.id));
-    return [...popular, ...stray];
+    return [...own, ...popular, ...stray];
   }, [filter, query, country, picked]);
   const total = SERVICES.filter((s) => availableIn(s, country)).length;
   const editPick = editing ? (picked[editing] ?? null) : null;
@@ -262,7 +303,12 @@ export default function Services() {
     <OnbRoot surface="cream">
       <View style={{ flex: 1, paddingTop: f.top, paddingHorizontal: f.edge }}>
         <StepHeaderSpace />
-        <Txt v="title" accessibilityRole="header" style={[{ marginTop: f.tiny ? 10 : 16 }, f.tiny && { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 }]}>
+        {/* SE: 24pt keeps the title on one line, so the list shows a row more (audit Nov 20). */}
+        <Txt
+          v="title"
+          accessibilityRole="header"
+          style={[{ marginTop: f.tiny ? 10 : 16 }, f.tiny ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 } : f.small ? { fontSize: 24, lineHeight: 30, letterSpacing: -0.7 } : null]}
+        >
           {`What do you pay${NB}for?`}
         </Txt>
         <CountryLine onChange={() => setCountryOpen(true)} />
@@ -353,9 +399,32 @@ export default function Services() {
             />
           )}
           ListEmptyComponent={
-            <Txt v="leadS" tone="fg2" style={{ marginTop: 16 }}>
-              {`No match for “${query.trim()}”. You can add anything by hand from your list later.`}
-            </Txt>
+            query.trim() ? (
+              // Not in our list: add it by name with their own price, right here (audit Nov 20: a dead end).
+              <View>
+                <Txt v="sub" tone="mute" style={{ marginTop: 12 }}>
+                  {`No match for “${query.trim()}”.`}
+                </Txt>
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={`Add ${query.trim()} yourself`}
+                  accessibilityHint="Type what you pay for it"
+                  onPress={() => {
+                    haptic.select();
+                    setCustom(customPick(query, onboardingToday()));
+                  }}
+                  style={({ pressed }) => ({ minHeight: 64, flexDirection: 'row', alignItems: 'center', gap: 12, opacity: pressed ? 0.6 : 1 })}
+                >
+                  <View style={{ width: 40, height: 40, borderRadius: 10, borderWidth: 1.5, borderColor: p.chipBorder, backgroundColor: p.chipBg, alignItems: 'center', justifyContent: 'center' }}>
+                    <Plus color={p.fg} size={18} />
+                  </View>
+                  <Txt v="bodyStrong" numberOfLines={1} style={{ flex: 1, minWidth: 0 }}>
+                    {`Add “${query.trim()}” yourself`}
+                  </Txt>
+                  <ChevronRight color={p.mute} size={16} />
+                </Pressable>
+              </View>
+            ) : undefined
           }
         />
       </View>
@@ -391,6 +460,18 @@ export default function Services() {
         }}
       />
       <PlanSheet pick={editPick} visible={sheet === 'plan'} onClose={() => setSheet(null)} onPick={(planId) => editing && setPlan(editing, planId)} onOwnPrice={() => setSheet('price')} />
+      <PriceSheet
+        sub={custom}
+        visible={!!custom}
+        onClose={() => setCustom(null)}
+        onSave={(amount, currency, cycle) => {
+          if (custom) addPicks([setOwnPrice(custom, amount, currency, cycle)]);
+          setCustom(null);
+          // Back to the list, where it now leads "Popular", ticked.
+          setQuery('');
+          setFilter('Popular');
+        }}
+      />
       <PriceSheet
         sub={editPick}
         visible={sheet === 'price'}

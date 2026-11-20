@@ -58,7 +58,7 @@ function DateRow({ x, first, onPress }: { x: Picked; first: boolean; onPress: ()
       style={({ pressed }) => ({ flexDirection: 'row', alignItems: 'center', gap: 12, minHeight: 64, paddingVertical: 10, opacity: pressed ? 0.7 : 1 })}
     >
       {first ? null : <View style={{ position: 'absolute', top: 0, left: 52, right: 0, height: 1, backgroundColor: p.hair }} />}
-      <LogoTile id={x.id} size={40} />
+      <LogoTile id={x.id} size={40} color={x.color} ink={x.ink} mono={x.mono} />
       <View style={{ flex: 1, minWidth: 0 }}>
         <Txt v="bodyStrong" numberOfLines={1} color={p.cardFg}>
           {x.name}

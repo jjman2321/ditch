@@ -99,7 +99,6 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 - [ ] **Cancelled sub (Ditched tab):** tap one under Cancelled. A bottom sheet: the logo, "Cancelled Sep 17 · $10.99 a month", then **Put back on my list**, **I haven't cancelled it yet**, **Keep it cancelled**.
 - [ ] **Calendar:** a paid sub on today says "Paid today". A ditched one says "Ditched · charges Tue, Nov 24". Month header reads "$X in November".
 - [ ] **No AI chat overlap card:** having ChatGPT + Claude + Gemini never shows "Need both?".
-- [ ] **Paywall reminders row:** with 4 or 5 subs it says "Unlimited"; with 6+ it says "All 6".
 - [ ] **Busy day:** add 30 subs that all renew on the same day (Pro). The day before, each one's reminder still arrives (not just "Open Ditch").
 - [ ] **Typing prices:** "10,000" and "12,345.67" are accepted. "15.490" is still refused.
 

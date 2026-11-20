@@ -29,17 +29,19 @@ function Body({ sub, onSave }: { sub: Picked; onSave: (amountMinor: number, curr
   return (
     <View>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-        <LogoTile id={sub.id} size={40} />
+        <LogoTile id={sub.id} size={40} color={sub.color} ink={sub.ink} mono={sub.mono} />
         <View style={{ flex: 1 }}>
           <Txt v="bodyStrong" style={{ fontSize: 17 }} accessibilityRole="header">
             {sub.name}
           </Txt>
           <Txt v="body" tone="mute" style={{ fontSize: 14 }}>
-            {priceRow(sub.id, sub.priceCountry)
-              ? 'Paying something different? Type it here.'
-              : country
-                ? `We don’t have ${country.name} prices for this one yet.`
-                : 'We don’t have prices for your country yet.'}
+            {sub.custom
+              ? 'Not on our list yet. Type what you pay.'
+              : priceRow(sub.id, sub.priceCountry)
+                ? 'Paying something different? Type it here.'
+                : country
+                  ? `We don’t have ${country.name} prices for this one yet.`
+                  : 'We don’t have prices for your country yet.'}
           </Txt>
         </View>
       </View>
@@ -103,17 +105,7 @@ function Body({ sub, onSave }: { sub: Picked; onSave: (amountMinor: number, curr
   );
 }
 
-export function PriceSheet({
-  sub,
-  visible,
-  onClose,
-  onSave,
-}: {
-  sub: Picked | null;
-  visible: boolean;
-  onClose: () => void;
-  onSave: (amountMinor: number, currency: string, cycle: Cycle) => void;
-}) {
+export function PriceSheet({ sub, visible, onClose, onSave }: { sub: Picked | null; visible: boolean; onClose: () => void; onSave: (amountMinor: number, currency: string, cycle: Cycle) => void }) {
   return (
     <Sheet visible={visible && !!sub} onClose={onClose} fit avoidKeyboard label={sub ? `${sub.name} price` : 'Price'}>
       {sub ? <Body key={sub.id} sub={sub} onSave={onSave} /> : null}

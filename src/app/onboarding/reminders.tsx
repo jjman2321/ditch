@@ -9,10 +9,11 @@
 
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Linking, Platform, View } from 'react-native';
+import { AppState, Linking, Platform, View } from 'react-native';
 import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withSpring } from 'react-native-reanimated';
 
 import { catalogPrice } from '@/catalog/prices';
+import { stillUsingIt } from '@/domain/copy';
 import { addDays, longDate, weekdayDate, weekdayName, type DateOnly } from '@/domain/dates';
 import { FitScroll, OnbRoot } from '@/onboarding/Parts';
 import { useFirstReminders } from '@/onboarding/useFirstReminders';
@@ -72,6 +73,20 @@ export default function Reminders() {
         .then(setStatus)
         .catch(() => {});
   }, []);
+  // Back from iPhone Settings: check again, so the step shows what they chose there (like "You're set").
+  useEffect(() => {
+    if (Platform.OS === 'web') return;
+    const sub = AppState.addEventListener('change', (state) => {
+      if (state !== 'active') return;
+      getNotifStatus()
+        .then((st) => {
+          setStatus(st);
+          if (st === 'granted' || st === 'quiet') setNotifications('granted');
+        })
+        .catch(() => {});
+    });
+    return () => sub.remove();
+  }, [setNotifications]);
   const decided = status === 'granted' || status === 'quiet' || status === 'denied';
   const money = useMoney();
   const { reminders } = useFirstReminders(f.small ? 1 : 2);
@@ -89,7 +104,8 @@ export default function Reminders() {
         const charge = addDays(today, 9);
         if (biggest) {
           const price = isPricedPick(biggest) ? ` ${money(biggest.amountMinor, biggest.currency)}.` : '';
-          return [{ key: 'example', day: addDays(charge, -3), body: `${biggest.name} renews ${weekdayName(charge)}.${price} Still using it?` }];
+          // "Still watching?" for Netflix and the like, same as everywhere else (stillUsingIt).
+          return [{ key: 'example', day: addDays(charge, -3), body: `${biggest.name} renews ${weekdayName(charge)}.${price} ${stillUsingIt(biggest.category)}` }];
         }
         const local = catalogPrice('netflix', country);
         const price = local ? ` ${money(local.amountMinor, local.currency)}.` : '';
@@ -189,6 +205,12 @@ export default function Reminders() {
             </View>
 
             <View importantForAccessibility="no-hide-descendants" style={{ zIndex: 2, marginTop: 14, gap: 8 }}>
+              {/* No dates yet, so it's not theirs: say so above the card (audit Nov 20). */}
+              {example ? (
+                <Txt v="eyebrow" color={brand.ink} style={{ marginLeft: 4, marginBottom: -2, opacity: 0.7 }} maxFontSizeMultiplier={1.2}>
+                  Example
+                </Txt>
+              ) : null}
               {stack.map(({ s }, k) => (
                 <LandingCard key={s.key} landed={k < landed} reduce={reduce}>
                   {/* The newest (top) card is the bright one; older ones sit back. */}
@@ -228,7 +250,8 @@ export default function Reminders() {
             label="Open iPhone Settings"
             hint="Turn on notifications for Ditch there"
             left={<Bell color={p.ctaFg} size={20} />}
-            onPress={() => (setNotifications('denied'), Linking.openSettings().catch(() => {}), go())}
+            // Stays here: when they come back, the AppState check above updates the step (audit Nov 20).
+            onPress={() => (setNotifications('denied'), Linking.openSettings().catch(() => {}))}
             style={{ marginTop: 16 }}
           />
         ) : (

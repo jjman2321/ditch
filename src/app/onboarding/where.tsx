@@ -16,7 +16,7 @@ import { useApp } from '@/state/app';
 import { useOnboarding } from '@/state/onboarding';
 import { setFindTarget } from '@/import/session';
 import { OnbRoot } from '@/onboarding/Parts';
-import { Bank, ChevronLeft, IconButton, ListCheck, PhoneList, STEP_HEADER_H, StatementIcon, Txt, brand, paletteFor, useInsets, useIsDark, usePageEdge } from '@/ui/sunflower';
+import { Bank, ChevronLeft, IconButton, ListCheck, PhoneList, STEP_HEADER_H, StatementIcon, Txt, brand, paletteFor, useFrame, useInsets, useIsDark, usePageEdge } from '@/ui/sunflower';
 
 // No entrance of its own (motion pass 2): the cards arrive with the push itself, ready to tap on
 // the first frame. A stagger after the slide read as "slides in, then builds again". Each card
@@ -26,6 +26,8 @@ export default function Where() {
   const dark = useIsDark();
   const insets = useInsets();
   const edge = usePageEdge();
+  // iPad: the column sits in the middle of the screen, not at the top with most of it bare (audit Nov 20).
+  const { tablet } = useFrame();
   // The same back chevron as the step header (ui/sunflower/ProgressBar.tsx), without the progress bar.
   const chevron = dark ? paletteFor('cream', dark).fg : brand.ink;
   const find = (path: '/find/apple' | '/find/statement') => {
@@ -38,7 +40,10 @@ export default function Where() {
   const bank = showBankSync(country ?? app.settings.country, app.settings.currency);
   return (
     <OnbRoot surface="cream">
-      <ScrollView contentContainerStyle={{ paddingTop: insets.top, paddingHorizontal: edge, paddingBottom: 24 }} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={[{ paddingTop: insets.top, paddingHorizontal: edge, paddingBottom: 24 }, tablet && { flexGrow: 1, justifyContent: 'center', paddingBottom: insets.top + 24 }]}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={{ height: STEP_HEADER_H, flexDirection: 'row', alignItems: 'center' }}>
           <IconButton label="Back" onPress={() => (router.canGoBack() ? router.back() : router.replace('/onboarding/how'))} style={{ marginLeft: -12 }}>
             <ChevronLeft color={chevron} />
@@ -53,7 +58,7 @@ export default function Where() {
         {/* Four equal cards, most complete first (owner, Nov 19: the old card style, order matters).
             The bank finds everything and keeps watching, so it leads where we offer it; the
             free route is last. Tags say what each one costs, nothing else. */}
-        {bank ? <RouteCard icon={Bank} title="My bank or card" line="Finds them and spots new ones." tag="7 DAYS FREE" onPress={() => router.push('/bank?from=onboarding')} /> : null}
+        {bank ? <RouteCard icon={Bank} title="My bank or card" line="Finds them, spots new ones." tag="7 DAYS FREE" onPress={() => router.push('/bank?from=onboarding')} /> : null}
         {showImport() ? (
           <>
             <RouteCard icon={PhoneList} title="Apple subscriptions" line="A screenshot of your list." tag="FIRST ONE FREE" onPress={() => find('/find/apple')} />

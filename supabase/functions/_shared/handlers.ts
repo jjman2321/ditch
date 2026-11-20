@@ -225,7 +225,9 @@ export type SyncedLink = {
 };
 
 export async function handleSync(req: Request, deps: Deps): Promise<Response> {
-  const body = await postJson<{ linkId?: string; ack?: Record<string, string> }>(req);
+  // repaired: the link the phone just fixed in Plaid's update mode. Plaid sends no webhook for that
+  // (LOGIN_REPAIRED is only for Items that heal on their own), so the phone tells us.
+  const body = await postJson<{ linkId?: string; ack?: Record<string, string>; repaired?: string }>(req);
   if (body instanceof Response) return body;
   const user = await authenticate(req, deps.store);
   if (user instanceof Response) return user;
@@ -245,7 +247,8 @@ export async function handleSync(req: Request, deps: Deps): Promise<Response> {
   for (const link of links) {
     const entry: SyncedLink = { linkId: link.id, institutionName: link.institution_name, status: link.status, ready: false, added: [], modified: [], removed: [], syncToken: null };
     out.push(entry);
-    if (link.status === 'needs_relogin' || !link.access_token_enc) continue; // calling would only fail; the phone shows "Reconnect"
+    const repaired = body.repaired === link.id;
+    if ((link.status === 'needs_relogin' && !repaired) || !link.access_token_enc) continue; // calling would only fail; the phone shows "Reconnect"
 
     // The phone confirmed it saved the last batch: that cursor becomes the real one.
     let cursor = link.cursor;
@@ -263,7 +266,8 @@ export async function handleSync(req: Request, deps: Deps): Promise<Response> {
       entry.removed = delta.removed;
       const changed = delta.ready && delta.nextCursor && delta.nextCursor !== cursor;
       entry.syncToken = changed ? await syncToken(link.id, delta.nextCursor) : null;
-      const healed = link.status === 'error' || link.needs_relogin_since != null;
+      // A good sync heals errors and a lost login; "expiring" only clears once the person re-consented (repaired).
+      const healed = link.status === 'error' || link.needs_relogin_since != null || (repaired && link.status !== 'active');
       await store.updateLink(link.id, {
         pending_cursor: changed ? delta.nextCursor : null,
         updates_available: false,

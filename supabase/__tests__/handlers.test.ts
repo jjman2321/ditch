@@ -216,6 +216,29 @@ describe('bank-sync', () => {
     expect(ctx.provider.calls.length).toBe(before);
   });
 
+  it('update mode: after the phone repairs a lost login, the next sync tries again and clears the flag', async () => {
+    const ctx = await setup({ connect: 1 });
+    ctx.provider.syncResult = new ProviderError('ITEM_LOGIN_REQUIRED', 'login', 400);
+    await handleSync(req({}), ctx.deps);
+    const [broken] = await ctx.store.listLinks(USER);
+    expect(broken.status).toBe('needs_relogin');
+    ctx.provider.syncResult = { added: [txn('b')], modified: [], removed: [], nextCursor: 'cur-1', ready: true };
+    const b = await body(await handleSync(req({ repaired: broken.id }), ctx.deps));
+    expect(b.links[0]).toMatchObject({ status: 'active', added: [txn('b')] });
+    expect(await ctx.store.getLink(broken.id)).toMatchObject({ status: 'active', needs_relogin_since: null, last_error: null });
+  });
+
+  it('update mode: an expiring connection stays flagged until the person re-consents', async () => {
+    const ctx = await setup({ connect: 1 });
+    const [link] = await ctx.store.listLinks(USER);
+    await ctx.store.updateLink(link.id, { status: 'expiring' });
+    ctx.provider.syncResult = { added: [], modified: [], removed: [], nextCursor: 'cur-1', ready: true };
+    await handleSync(req({}), ctx.deps);
+    expect((await ctx.store.getLink(link.id))!.status).toBe('expiring');
+    await handleSync(req({ repaired: link.id }), ctx.deps);
+    expect((await ctx.store.getLink(link.id))!.status).toBe('active');
+  });
+
   it('a lapsed user gets 402 and the bank is removed', async () => {
     const ctx = await setup({ connect: 2 });
     ctx.clock.now = new Date(ctx.clock.now.getTime() + 30 * DAY);

@@ -143,9 +143,10 @@ async function readAcks(): Promise<Record<string, string>> {
  * on the phone, call confirmBankSync(result) so the server moves on; if the app dies before
  * that, the next sync sends the same batch again (nothing lost).
  */
-export async function syncBank(linkId?: string): Promise<BankSyncResponse> {
+export async function syncBank(linkId?: string, repaired?: string): Promise<BankSyncResponse> {
   if (!API_URL) return mock.syncBank();
-  return call('bank-sync', { linkId, ack: await readAcks() }, 90_000);
+  // repaired: the link just fixed in update mode, so the server clears its "needs sign-in"/"expiring" flag.
+  return call('bank-sync', { linkId, ack: await readAcks(), repaired }, 90_000);
 }
 
 /** Records that this sync's transactions are saved; sent along with the next syncBank(). */

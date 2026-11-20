@@ -115,7 +115,7 @@ export class PlaidProvider implements BankProvider {
    * Sandbox only: Plaid's "test your endpoints" step. Makes a test bank item (First Platypus Bank),
    * swaps the token, reads its accounts (/accounts/get), then removes the item. Returns counts only.
    */
-  async sandboxSelfTest(): Promise<{ accounts: number; types: string[]; webhookFired: boolean; webhookCode: string }> {
+  async sandboxSelfTest(): Promise<{ accounts: number; types: string[]; transactions: number; transactionsReady: boolean; webhookFired: boolean; webhookCode: string; loginRequiredDetected: boolean; updateModeToken: boolean }> {
     if (this.cfg.env !== 'sandbox') throw new ProviderError('NOT_SANDBOX', 'self-test runs in Sandbox only');
     const pub = await this.call<{ public_token: string }>('/sandbox/public_token/create', {
       institution_id: 'ins_109508',
@@ -125,6 +125,12 @@ export class PlaidProvider implements BankProvider {
     const ex = await this.call<{ access_token: string }>('/item/public_token/exchange', { public_token: pub.public_token });
     try {
       const r = await this.call<{ accounts: { type: string }[] }>('/accounts/get', { access_token: ex.access_token });
+      // Plaid's Transactions core workflow: /transactions/sync until the first pull is ready (a few seconds in Sandbox).
+      let tx = await this.sync(ex.access_token, null);
+      for (let k = 0; k < 6 && !tx.ready; k++) {
+        await new Promise((res) => setTimeout(res, 3000));
+        tx = await this.sync(ex.access_token, null);
+      }
       // Plaid's "test your webhook" step: ask Plaid to send NEW_ACCOUNTS_AVAILABLE to our receiver, and keep
       // the item alive a few seconds so it arrives (it shows in the function logs as a 200 on /plaid-webhook).
       // Items made with /sandbox/public_token/create aren't Account Select v2 items, so Plaid can refuse
@@ -133,7 +139,25 @@ export class PlaidProvider implements BankProvider {
         this.call<{ webhook_fired: boolean }>('/sandbox/item/fire_webhook', { access_token: ex.access_token, webhook_type, webhook_code }).then((x) => ({ ...x, code: webhook_code }));
       const w = await fire('ITEM', 'NEW_ACCOUNTS_AVAILABLE').catch(() => fire('TRANSACTIONS', 'SYNC_UPDATES_AVAILABLE'));
       await new Promise((res) => setTimeout(res, 8000));
-      return { accounts: r.accounts.length, types: [...new Set(r.accounts.map((a) => a.type))], webhookFired: !!w.webhook_fired, webhookCode: w.code };
+      // Update mode: break the login on purpose, check we see ITEM_LOGIN_REQUIRED, and that a fix-it Link token opens.
+      await this.call('/sandbox/item/reset_login', { access_token: ex.access_token });
+      let loginRequiredDetected = false;
+      try {
+        await this.sync(ex.access_token, null);
+      } catch (e) {
+        loginRequiredDetected = e instanceof ProviderError && e.needsRelogin;
+      }
+      const fix = await this.createLinkToken({ mode: 'update', appUserId: 'sandbox-selftest', accessToken: ex.access_token });
+      return {
+        accounts: r.accounts.length,
+        types: [...new Set(r.accounts.map((a) => a.type))],
+        transactions: tx.added.length,
+        transactionsReady: tx.ready,
+        webhookFired: !!w.webhook_fired,
+        webhookCode: w.code,
+        loginRequiredDetected,
+        updateModeToken: !!fix.linkToken,
+      };
     } finally {
       await this.remove(ex.access_token);
     }

@@ -64,7 +64,7 @@ type BankValue = {
   /** After the bank sign-in succeeds: saves the connection. Throws a BankApiError on failure (e.g. bank_limit). */
   connect: (b: BankEntry) => Promise<BankLink>;
   /** New charges from every bank, read on the phone. `onboarding`: keep the finds for the results screen only. */
-  runSync: (opts?: { toast?: boolean; onboarding?: boolean }) => Promise<{ added: Sub[] }>;
+  runSync: (opts?: { toast?: boolean; onboarding?: boolean; repaired?: string }) => Promise<{ added: Sub[] }>;
   reconnect: (linkId: string) => Promise<void>;
   later: (linkId: string) => Promise<void>;
   disconnect: (linkId?: string) => Promise<void>;
@@ -166,13 +166,13 @@ export function BankProvider({ children }: { children: ReactNode }) {
   );
 
   const runSync = useCallback(
-    (o: { toast?: boolean; onboarding?: boolean } = {}) => {
+    (o: { toast?: boolean; onboarding?: boolean; repaired?: string } = {}) => {
       if (!ref.current.links.length) return Promise.resolve({ added: [] as Sub[] });
       if (inFlight.current) return inFlight.current;
       const run = (async () => {
         setSyncing(true);
         try {
-          const res = await bank.syncBank();
+          const res = await bank.syncBank(undefined, o.repaired);
           // The practice bank forgets its banks when the app restarts; ours are saved, so keep them.
           const known = new Set(ref.current.links.map((l) => l.id));
           const r = await apply({ links: res.links.filter((l) => known.has(l.linkId)) }, o);
@@ -244,7 +244,9 @@ export function BankProvider({ children }: { children: ReactNode }) {
         const { linkToken } = await bank.createLinkToken({ mode: 'update', linkId });
         if (bank.BANK_LIVE) await signIn(linkToken);
         await put(setLinkStatus(ref.current, linkId, 'active'));
-        await runSync();
+        // A sync already in flight wouldn't carry the repair; wait for it, then send ours.
+        await inFlight.current?.catch(() => {});
+        await runSync({ repaired: linkId });
       },
       later: (linkId: string) => put(laterLink(ref.current, linkId, clockToday())),
       disconnect: async (linkId?: string) => {

@@ -11,7 +11,7 @@ import { shortDate } from '@/domain/dates';
 import { runningProTrial } from '@/domain/subs';
 import { setFindTarget } from '@/import/session';
 import { useApp } from '@/state/app';
-import { Button, Card, DuckIcon, Txt } from '@/ui/sunflower';
+import { Button, Card, Txt, Wordmark } from '@/ui/sunflower';
 
 export default function BankMissing() {
   const flow = useBankFlow();
@@ -36,9 +36,10 @@ export default function BankMissing() {
         </>
       }
     >
-      {/* An empty state, so it's centred around the duck (owner, Nov 20: plain screens get the brand mark). */}
+      {/* An empty state, centred under the ditch wordmark (owner, Nov 20: plain screens get the brand mark; the
+          text logo, not the app icon). */}
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingVertical: 24 }}>
-        <DuckIcon size={88} />
+        <Wordmark size={34} />
         <Txt v="title" accessibilityRole="header" center style={{ fontSize: 30, lineHeight: 34, marginTop: 22 }}>
           {'Didn’t find\nyour bank?'}
         </Txt>

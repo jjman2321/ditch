@@ -3,10 +3,11 @@
 // Tiles are letters in each bank's colours until the provider's logos arrive (src/bank/banks.ts).
 
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pressable, TextInput, View, useWindowDimensions } from 'react-native';
 
-import { searchBanks, type BankEntry } from '@/bank/banks';
+import { mergeBanks, searchBanks, type BankEntry } from '@/bank/banks';
+import { searchDirectory } from '@/bank/directory';
 import { BankPage, BankTile, BigTitle, TextLink } from '@/bank/Parts';
 import { useBankFlow } from '@/bank/flow';
 import { useBank } from '@/state/bank';
@@ -19,7 +20,22 @@ export default function BankPick() {
   const flow = useBankFlow();
   const bank = useBank();
   const [q, setQ] = useState('');
-  const list = searchBanks(q);
+  // Every bank the provider supports: the built-in ones match at once, the directory a moment later.
+  const [remote, setRemote] = useState<{ q: string; list: BankEntry[] }>({ q: '', list: [] });
+  useEffect(() => {
+    const query = q.trim();
+    if (query.length < 2) return;
+    let live = true;
+    const t = setTimeout(() => {
+      searchDirectory(query).then((list) => live && setRemote({ q: query, list }));
+    }, 300);
+    return () => {
+      live = false;
+      clearTimeout(t);
+    };
+  }, [q]);
+  const searching = q.trim().length >= 2 && remote.q !== q.trim();
+  const list = q.trim().length >= 2 && remote.q === q.trim() ? mergeBanks(searchBanks(q), remote.list) : searchBanks(q);
   // Three across, whatever the phone (10pt gaps).
   const edge = usePageEdge();
   const { width } = useWindowDimensions();
@@ -48,7 +64,7 @@ export default function BankPick() {
 
   return (
     <BankPage>
-      <BigTitle style={{ marginTop: 8 }}>Which bank pays your subscriptions?</BigTitle>
+      <BigTitle style={{ marginTop: 8 }}>{'Which bank pays\nyour subs?'}</BigTitle>
       <View
         style={{
           marginTop: 16,
@@ -109,7 +125,7 @@ export default function BankPick() {
         </View>
       ) : (
         <Txt v="leadS" tone="fg2" style={{ marginTop: 18 }}>
-          {`No bank called “${q.trim()}” yet.`}
+          {searching ? 'Searching…' : `No bank called “${q.trim()}”.`}
         </Txt>
       )}
       <Txt v="fine" tone="mute" center style={{ marginTop: 16 }}>

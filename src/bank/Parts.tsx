@@ -20,7 +20,7 @@ export function BankTile({ bank, size = 36, name }: { bank: BankEntry | null; si
   if (bank?.logo) {
     return (
       <View accessible={false} importantForAccessibility="no-hide-descendants" style={[box, { backgroundColor: '#FFFFFF', borderWidth: 0.5, borderColor: p.logoHair }]}>
-        <Image source={{ uri: bank.logo }} style={{ width: size, height: size }} contentFit="cover" transition={0} />
+        <Image source={typeof bank.logo === 'string' ? { uri: bank.logo } : bank.logo} style={{ width: size, height: size }} contentFit="contain" transition={0} />
       </View>
     );
   }

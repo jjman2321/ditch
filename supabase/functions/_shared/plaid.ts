@@ -45,6 +45,9 @@ export function linkTokenBody(cfg: PlaidConfig, req: LinkTokenRequest): Record<s
   return body;
 }
 
+/** One bank in the directory, as the app shows it. */
+export type Institution = { id: string; name: string; logo: string | null; color: string | null; country: 'US' | 'CA' };
+
 export class PlaidProvider implements BankProvider {
   readonly name = 'plaid' as const;
   constructor(
@@ -69,6 +72,42 @@ export class PlaidProvider implements BankProvider {
       throw new ProviderError(String(json.error_code ?? 'PLAID_HTTP_' + res.status), String(json.error_message ?? 'Plaid error'), res.status, typeof json.request_id === 'string' ? json.request_id : null);
     }
     return json as T;
+  }
+
+  /**
+   * The bank directory (public data; connects nothing, bills nothing): search by name, or look up ids.
+   * Only banks that can do Transactions in the US and Canada. Logos are Plaid's own (base64 PNG).
+   */
+  async institutions(req: { query?: string; ids?: string[] }): Promise<Institution[]> {
+    type Raw = { institution_id: string; name: string; logo?: string | null; primary_color?: string | null; country_codes?: string[]; url?: string | null };
+    const map = (i: Raw): Institution => ({
+      id: i.institution_id,
+      name: i.name,
+      logo: i.logo ?? null,
+      color: i.primary_color ?? null,
+      country: (i.country_codes ?? []).includes('US') ? 'US' : 'CA',
+    });
+    if (req.ids?.length) {
+      const out: Institution[] = [];
+      for (const id of req.ids.slice(0, 30)) {
+        try {
+          const r = await this.call<{ institution: Raw }>('/institutions/get_by_id', { institution_id: id, country_codes: ['US', 'CA'], options: { include_optional_metadata: true } });
+          out.push(map(r.institution));
+        } catch {
+          // an id Plaid no longer knows: skip it
+        }
+      }
+      return out;
+    }
+    const query = (req.query ?? '').trim().slice(0, 60);
+    if (query.length < 2) return [];
+    const r = await this.call<{ institutions: Raw[] }>('/institutions/search', {
+      query,
+      products: ['transactions'],
+      country_codes: ['US', 'CA'],
+      options: { include_optional_metadata: true },
+    });
+    return r.institutions.slice(0, 20).map(map);
   }
 
   async createLinkToken(req: LinkTokenRequest): Promise<LinkToken> {

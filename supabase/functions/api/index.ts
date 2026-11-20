@@ -54,6 +54,7 @@ const routes: Record<string, (req: Request, deps: Parameters<typeof h.handleSync
   'entitlement-sync': h.handleEntitlementSync,
   'bank-cleanup': h.handleCleanup,
   'link-event': h.handleLinkEvent,
+  'bank-institutions': h.handleInstitutions,
   'sandbox-selftest': (req, deps) => sandboxSelfTest(req, deps),
 };
 

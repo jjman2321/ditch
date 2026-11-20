@@ -135,6 +135,18 @@ export function makeDeps(): Promise<Deps> {
           ),
       },
       cronSecret: env('CRON_SECRET') ?? '',
+      // The bank directory comes from production when its secret is saved (the real, complete list; free,
+      // connects nothing), else from whatever PLAID_ENV uses.
+      institutions: (q) =>
+        (env('PLAID_SECRET_PRODUCTION')
+          ? new PlaidProvider({
+              clientId: need('PLAID_CLIENT_ID'),
+              secret: need('PLAID_SECRET_PRODUCTION'),
+              env: 'production',
+              webhookUrl: `${supabaseUrl}/functions/v1/api/plaid-webhook`,
+            })
+          : getPlaid()
+        ).institutions(q),
       revenuecat: env('REVENUECAT_SECRET_KEY')
         ? revenueCatClient({
             key: env('REVENUECAT_SECRET_KEY')!,

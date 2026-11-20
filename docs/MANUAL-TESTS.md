@@ -343,6 +343,15 @@ Web preview: add `&import=1` to the address. On the iPhone this needs the develo
 **Add-to-Ditch link (dev build)**
 - [ ] *In Safari, open `ditch://add?service=netflix`: Ditch opens Home with the Add sheet on Netflix. A made-up service just opens Add. Mid-onboarding, it just opens onboarding.
 
+## 1ad. Paywall, bank picker and Ditched fixes (Nov 20, owner screenshots)
+- [ ] Bank picker → Bank of America (and any long name) → paywall: headline is "Find every sub you pay for." on 2 lines, never under the table. Bank sync is the first row, then Reminders.
+- [ ] Any paywall (from a bell, Settings, onboarding): headline never more than 2 lines on any phone.
+- [ ] Bank intro reads "Connect once. We find the rest."
+- [ ] Picker heading "Which bank pays your subs?" on 2 lines. The 9 big banks show their real logos.
+- [ ] Search a small bank or credit union (e.g. "Navy Federal", "Golden 1", "Desjardins"): after a moment it appears with its logo (or a letter tile). Pick it: the paywall and the bank sign-in work the same as for Chase.
+- [ ] "Didn't find your bank?": the ditch wordmark sits above the centred text.
+- [ ] Ditched tab yellow card: at most 2 lines under "a year." on every phone ("From 1 sub you cancelled since Nov" / "$17.99 a month").
+
 ## 1ac. Pro upsell at 3 of 3 reminders (Nov 20, DECISIONS #82)
 - [ ] Free, 3 reminders in use, more subs with dates: Home shows "X charges <day> · No reminder on it · Try Pro" when one charges in 2–7 days. Try Pro opens the paywall; × hides it until the next charge without a reminder.
 - [ ] Nothing charging in 2–7 days: the card reads "X has no reminder · Pro reminds you about every one".

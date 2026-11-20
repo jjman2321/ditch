@@ -14,6 +14,7 @@ import { bankAccess, deriveEntitlement, isNewer, type BankAccess } from './entit
 import { fail, json, parseJson, readBody, UUID_RE } from './http.ts';
 import { canAddLink, duplicateOf, isLive, linkTokenAllowed, planCleanup, RENEWAL_GRACE_MS } from './policy.ts';
 import { plaidWebhookAction, type PlaidWebhookBody } from './plaidWebhook.ts';
+import type { Institution } from './plaid.ts';
 import { ProviderError, type BankProvider } from './provider.ts';
 import type { Store } from './store.ts';
 import type { AppUser, BankLink, BankTxn, Entitlement, EntitlementKind, ProviderName } from './types.ts';
@@ -38,6 +39,8 @@ export type Deps = {
    * every access check asks it (falling back to the last stored answer if RevenueCat can't be reached).
    */
   revenuecat?: { entitlements(appUserId: string): Promise<Entitlement[]> };
+  /** The bank directory for the picker (src/bank): names, logos, colours. Public data; connects nothing. */
+  institutions?: (req: { query?: string; ids?: string[] }) => Promise<Institution[]>;
   /** Production access check only: a Plaid client on production, whatever PLAID_ENV says. Never used for users. */
   plaidProduction?: () => BankProvider;
 };
@@ -599,6 +602,28 @@ export async function handleCleanup(req: Request, deps: Deps): Promise<Response>
   for (const r of plan) if (await removeLink(deps, byId.get(r.linkId)!, `cleanup_${r.reason}`)) removed++;
   await deps.store.logEvent({ kind: 'cleanup_run', detail: { live: links.length, planned: plan.length, removed } });
   return json(200, { live: links.length, planned: plan.length, removed, failed: plan.length - removed });
+}
+
+// ---------- bank-institutions (the picker's bank directory) ----------
+
+/**
+ * Search every bank the provider supports, or look up a few by id, with their logos. No sign-in needed:
+ * people pick their bank before they pay (design/v32 screen 3), and it's public directory data. Short
+ * queries only, at most 20 results, cached by the phone's HTTP stack for a day.
+ */
+export async function handleInstitutions(req: Request, deps: Deps): Promise<Response> {
+  const body = await postJson<{ query?: unknown; ids?: unknown }>(req, 4 * 1024);
+  if (body instanceof Response) return body;
+  if (!deps.institutions) return fail(503, 'unavailable');
+  const query = typeof body.query === 'string' ? body.query : undefined;
+  const ids = Array.isArray(body.ids) ? body.ids.filter((x): x is string => typeof x === 'string' && /^ins_\d{1,12}$/.test(x)).slice(0, 30) : undefined;
+  if (!ids?.length && (!query || query.trim().length < 2)) return json(200, { institutions: [] });
+  try {
+    const institutions = await deps.institutions(ids?.length ? { ids } : { query });
+    return new Response(JSON.stringify({ institutions }), { status: 200, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=86400' } });
+  } catch (e) {
+    return fail(502, 'provider_error', { code: errCode(e) });
+  }
 }
 
 // ---------- link-event (Plaid Link exits from the phone, for troubleshooting) ----------

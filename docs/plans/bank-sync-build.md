@@ -4,6 +4,13 @@ The server side of always-on bank sync (DECISIONS #64, #67, #69). Cost rules: `d
 
 Status: code and tests are done, and it runs against fakes. **Not deployed. Not yet tried against Plaid Sandbox or Apple's sandbox.** Nothing on screen uses it yet.
 
+## 0. Live setup (Nov 20, 2026)
+- Supabase project **ditch-api**, ref `olqpjlcaksdsbmffryoh`, US East, Free plan (centile paused to make room). Move to Pro before real users: free projects pause after a week idle.
+- Database: both migrations applied, plus `20261120130000_bank_cleanup_via_api.sql`. Vault has `project_url`; `cron_secret` still to add (same value as the CRON_SECRET function secret).
+- Server: ONE Edge Function `api` (supabase/functions/api/index.ts) serves every route at `https://olqpjlcaksdsbmffryoh.supabase.co/functions/v1/api/<route>`. Deployed as an esbuild bundle through the Supabase MCP (the saved SUPABASE_ACCESS_TOKEN is rejected as invalid). To redeploy: `npx esbuild supabase/functions/api/index.ts --bundle --format=esm --platform=neutral --target=es2022 --external:'npm:*' --legal-comments=none` and upload the output as `index.ts` (verify_jwt off), or `npx supabase functions deploy api --project-ref olqpjlcaksdsbmffryoh --no-verify-jwt` once a valid access token exists.
+- App (EAS env, later): `EXPO_PUBLIC_API_URL=https://olqpjlcaksdsbmffryoh.supabase.co/functions/v1/api`. Plaid webhook URL: `.../functions/v1/api/plaid-webhook`. Apple notifications URL: `.../functions/v1/api/apple-notifications`.
+- Secrets still to add (Supabase → Edge Functions → Secrets): PLAID_CLIENT_ID, PLAID_SECRET, PLAID_ENV=sandbox, PLAID_WEBHOOK_URL, TOKEN_ENC_KEY, CRON_SECRET, APPLE_BUNDLE_ID=app.ditchsubs.ditch.
+
 ## 1. How it fits together
 
 ```

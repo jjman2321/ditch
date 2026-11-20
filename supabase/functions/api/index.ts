@@ -13,7 +13,11 @@ const sandboxSelfTest: (typeof routes)[string] = async (req, deps) => {
   if (req.method !== 'POST') return json(405, { error: 'method_not_allowed' });
   if (!deps.cronSecret || !timingSafeEqual(req.headers.get('x-cron-secret') ?? '', deps.cronSecret)) return json(401, { error: 'unauthorized' });
   try {
-    return json(200, { ok: true, ...(await (deps.provider('plaid') as PlaidProvider).sandboxSelfTest()) });
+    const plaid = deps.provider('plaid') as PlaidProvider;
+    const body = (await req.json().catch(() => ({}))) as { step?: string; linkToken?: string };
+    if (body.step === 'hosted-link') return json(200, { ok: true, ...(await plaid.sandboxHostedLink()) });
+    if (body.step === 'hosted-finish' && body.linkToken) return json(200, { ok: true, ...(await plaid.sandboxFinishHostedLink(body.linkToken)) });
+    return json(200, { ok: true, ...(await plaid.sandboxSelfTest()) });
   } catch (e) {
     return json(502, { ok: false, code: (e as { code?: string }).code ?? 'INTERNAL' });
   }

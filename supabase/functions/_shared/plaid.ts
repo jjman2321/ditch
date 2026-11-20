@@ -139,6 +139,37 @@ export class PlaidProvider implements BankProvider {
     }
   }
 
+  /**
+   * Sandbox only, step 1 of the Account Select test: a Hosted Link page (Plaid's real sign-in screen on the web),
+   * so the item is made with Account Select v2 and NEW_ACCOUNTS_AVAILABLE can fire.
+   */
+  async sandboxHostedLink(): Promise<{ linkToken: string; url: string }> {
+    if (this.cfg.env !== 'sandbox') throw new ProviderError('NOT_SANDBOX', 'self-test runs in Sandbox only');
+    const r = await this.call<{ link_token: string; hosted_link_url: string }>('/link/token/create', {
+      ...linkTokenBody(this.cfg, { mode: 'new', appUserId: 'sandbox-selftest' }),
+      redirect_uri: undefined,
+      hosted_link: {},
+    });
+    return { linkToken: r.link_token, url: r.hosted_link_url };
+  }
+
+  /** Step 2: swap the finished Hosted Link session, fire NEW_ACCOUNTS_AVAILABLE, then remove the test item. */
+  async sandboxFinishHostedLink(linkToken: string): Promise<{ webhookFired: boolean; accounts: number }> {
+    if (this.cfg.env !== 'sandbox') throw new ProviderError('NOT_SANDBOX', 'self-test runs in Sandbox only');
+    type Session = { results?: { item_add_results?: { public_token: string; accounts?: unknown[] }[] } };
+    const got = await this.call<{ link_sessions?: Session[] }>('/link/token/get', { link_token: linkToken });
+    const add = (got.link_sessions ?? []).flatMap((s) => s.results?.item_add_results ?? [])[0];
+    if (!add) throw new ProviderError('NO_LINK_RESULT', 'Hosted Link not finished yet');
+    const ex = await this.call<{ access_token: string }>('/item/public_token/exchange', { public_token: add.public_token });
+    try {
+      const w = await this.call<{ webhook_fired: boolean }>('/sandbox/item/fire_webhook', { access_token: ex.access_token, webhook_type: 'ITEM', webhook_code: 'NEW_ACCOUNTS_AVAILABLE' });
+      await new Promise((res) => setTimeout(res, 8000));
+      return { webhookFired: !!w.webhook_fired, accounts: add.accounts?.length ?? 0 };
+    } finally {
+      await this.remove(ex.access_token);
+    }
+  }
+
   /** For webhook verification (plaidWebhook.ts). */
   async webhookKey(kid: string): Promise<PlaidJwk> {
     const r = await this.call<{ key: PlaidJwk }>('/webhook_verification_key/get', { key_id: kid });

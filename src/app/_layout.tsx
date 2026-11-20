@@ -2,6 +2,7 @@ import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold, In
 import { useFonts } from 'expo-font';
 import { DarkTheme, DefaultTheme, router, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
+import * as Updates from 'expo-updates';
 import { useEffect } from 'react';
 import { Linking, Platform, useColorScheme, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -57,6 +58,23 @@ export default function RootLayout() {
   useEffect(() => {
     if (loaded) SplashScreen.hideAsync().catch(() => {});
   }, [loaded]);
+
+  // TestFlight only: when a newer update is out, download it and restart into it straight away, so a
+  // tester sees it on the first open instead of the second (owner, Nov 19: "it's literally not changing").
+  // App Store users keep the default (it applies on the next open), so nobody gets a surprise restart.
+  useEffect(() => {
+    if (Platform.OS === 'web' || __DEV__ || !Updates.isEnabled || Updates.channel !== 'testflight') return;
+    (async () => {
+      try {
+        const check = await Updates.checkForUpdateAsync();
+        if (!check.isAvailable) return;
+        const got = await Updates.fetchUpdateAsync();
+        if (got.isNew) await Updates.reloadAsync();
+      } catch {
+        // Offline or the update server is down: carry on with what's on the phone.
+      }
+    })();
+  }, []);
 
   if (!loaded) return null;
 

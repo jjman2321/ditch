@@ -5,7 +5,7 @@ import { View } from 'react-native';
 
 import { openUrl } from '@/ditch/CancelHelp';
 import { Group, Row, SettingsPage } from '@/settings/Parts';
-import { APP_VERSION } from '@/settings/version';
+import { APP_VERSION, updateLabel } from '@/settings/version';
 import { DuckIcon, Txt, Wordmark } from '@/ui/sunflower';
 
 export default function About() {
@@ -25,6 +25,9 @@ export default function About() {
       </Group>
       <Txt v="fine" tone="mute" style={{ textAlign: 'center', marginTop: 24 }}>
         Version {APP_VERSION} · Grasp Labs LLC
+      </Txt>
+      <Txt v="fine" tone="mute" style={{ textAlign: 'center', marginTop: 4 }}>
+        {updateLabel()}
       </Txt>
     </SettingsPage>
   );

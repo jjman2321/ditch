@@ -32,3 +32,4 @@ expo-env.d.ts
 __pycache__/
 *.part[0-9]*
 dist-web/
+.claude/settings.local.json

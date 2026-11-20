@@ -124,11 +124,16 @@ export function Plus({ color, size = 22 }: P) {
 }
 
 /** Bell with a slash: reminders are off. */
-export function BellOff({ color, size = 17 }: P) {
+/**
+ * The whole bell with a clean slash across it (owner, Nov 20: the old one, drawn with gaps, looked cut off).
+ * `bg` is the colour behind it: a thin gap in that colour runs along the slash so it reads at small sizes.
+ */
+export function BellOff({ color, size = 17, bg }: P & { bg?: string }) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <Path d="M6 16V11a6 6 0 0110.2-4.3M18 11v5l1.6 2.2H7" stroke={color} strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" />
+      <Path d="M6 16V11a6 6 0 1112 0v5l1.6 2.2H4.4L6 16z" stroke={color} strokeWidth={2} strokeLinejoin="round" />
       <Path d="M10 20.5a2 2 0 004 0" stroke={color} strokeWidth={2} strokeLinecap="round" />
+      {bg ? <Path d="M4 3.5l16.5 17" stroke={bg} strokeWidth={5} strokeLinecap="round" /> : null}
       <Path d="M4 3.5l16.5 17" stroke={color} strokeWidth={2} strokeLinecap="round" />
     </Svg>
   );

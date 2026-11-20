@@ -291,7 +291,7 @@ export function NoDateRow({ count, onPress }: { count: number; onPress: () => vo
     <Pressable accessibilityRole="button" accessibilityLabel={`${count} ${one ? 'has' : 'have'} no date yet, so no reminders. Add ${one ? 'it' : 'dates'}.`} onPress={onPress}>
       {({ pressed }) => (
         <Card style={{ minHeight: 56, borderRadius: 16, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, paddingVertical: 9, opacity: pressed ? 0.75 : 1 }}>
-          <Bell color={p.mute} size={17} />
+          <BellOff color={p.mute} size={17} bg={p.card} />
           <View style={{ flex: 1, minWidth: 0 }}>
             <Txt v="body" color={p.cardFg} numberOfLines={1} style={{ fontFamily: F.bold, fontSize: 15 }}>
               {`${count} ${one ? 'has' : 'have'} no date yet`}
@@ -327,7 +327,7 @@ export function NoReminderRow({ names, total, onPress, onDismiss }: { names: str
         onPress={onPress}
         style={({ pressed }) => ({ flex: 1, minWidth: 0, minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 9, opacity: pressed ? 0.75 : 1 })}
       >
-        <Bell color={p.mute} size={17} />
+        <BellOff color={p.mute} size={17} bg={p.card} />
         <View style={{ flex: 1, minWidth: 0 }}>
           <Txt v="body" color={p.cardFg} numberOfLines={1} style={{ fontFamily: F.bold, fontSize: 15 }}>
             {title}

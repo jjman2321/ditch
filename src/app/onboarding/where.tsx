@@ -23,7 +23,6 @@ import { Bank, ChevronLeft, IconButton, ListCheck, PhoneList, STEP_HEADER_H, Sta
 // presses in on touch (RouteCard).
 
 export default function Where() {
-  const p = usePalette();
   const dark = useIsDark();
   const insets = useInsets();
   const edge = usePageEdge();

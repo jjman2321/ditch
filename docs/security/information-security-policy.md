@@ -15,6 +15,7 @@ Covers Ditch (iOS app, ditchsubs.app) and every system that touches user or bank
 - **Two-factor authentication is on for every one of those accounts.** Passwords live in a password manager, never in chat, code or email.
 - Database tables have row-level security on; the app can't read tables directly, only through our API.
 - Contractors or new staff get the least access they need, removed the day they leave.
+- Every 12 months the founder reviews who has access to each system and removes anything not needed.
 
 ## 3. Secrets and keys
 - API keys and the token encryption key live only in Supabase secrets, EAS environment variables or App Store Connect. Never in the code repository (`.env` files are git-ignored and checked before every commit).

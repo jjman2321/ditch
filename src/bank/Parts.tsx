@@ -8,7 +8,7 @@ import { Pressable, ScrollView, View, type StyleProp, type ViewStyle } from 'rea
 import { Image } from 'expo-image';
 
 import { OnbRoot } from '@/onboarding/Parts';
-import { Bank, Button, Check, ChevronLeft, F, IconButton, STEP_HEADER_H, Sheet, Txt, brand, tileRadius, useInsets, usePageEdge, usePalette } from '@/ui/sunflower';
+import { Bank, Button, Check, ChevronLeft, F, IconButton, STEP_HEADER_H, Sheet, Txt, Wordmark, brand, tileRadius, useInsets, usePageEdge, usePalette } from '@/ui/sunflower';
 
 import type { BankEntry } from './banks';
 
@@ -47,13 +47,19 @@ export function BankTile({ bank, size = 36, name }: { bank: BankEntry | null; si
 }
 
 /** The bank screens' frame: the bare back chevron (like Where should we look?), a scroll body, an optional pinned footer. */
-export function BankPage({ children, footer, onBack, scroll = true }: { children: ReactNode; footer?: ReactNode; onBack?: () => void; scroll?: boolean }) {
+/** `brand`: the ditch wordmark centred in the top bar, for screens that would otherwise look bare (owner, Nov 20). */
+export function BankPage({ children, footer, onBack, scroll = true, brand: showBrand = false }: { children: ReactNode; footer?: ReactNode; onBack?: () => void; scroll?: boolean; brand?: boolean }) {
   const p = usePalette();
   const insets = useInsets();
   const edge = usePageEdge();
   const back = onBack ?? (() => (router.canGoBack() ? router.back() : router.replace('/(tabs)')));
   const head = (
     <View style={{ height: STEP_HEADER_H, flexDirection: 'row', alignItems: 'center' }}>
+      {showBrand ? (
+        <View pointerEvents="none" style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
+          <Wordmark size={25} />
+        </View>
+      ) : null}
       <IconButton label="Back" onPress={back} style={{ marginLeft: -12 }}>
         <ChevronLeft color={p.fg} />
       </IconButton>

@@ -11,7 +11,7 @@ import { shortDate } from '@/domain/dates';
 import { runningProTrial } from '@/domain/subs';
 import { setFindTarget } from '@/import/session';
 import { useApp } from '@/state/app';
-import { Button, Card, Txt, Wordmark } from '@/ui/sunflower';
+import { Button, Card, Txt } from '@/ui/sunflower';
 
 export default function BankMissing() {
   const flow = useBankFlow();
@@ -28,6 +28,7 @@ export default function BankMissing() {
       : 'Your Apple list and bank statements work without connecting anything. You haven’t paid anything.';
   return (
     <BankPage
+      brand
       footer={
         <>
           <Button label="Try another bank or card" onPress={() => router.replace(`/bank/pick?${flow.q()}`)} />
@@ -36,11 +37,10 @@ export default function BankMissing() {
         </>
       }
     >
-      {/* An empty state, centred under the ditch wordmark (owner, Nov 20: plain screens get the brand mark; the
-          text logo, not the app icon). */}
+      {/* An empty state: centred text, the ditch wordmark in the top bar (owner, Nov 20: plain screens get the
+          brand mark, the text logo at the top, not the app icon). */}
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingVertical: 24 }}>
-        <Wordmark size={34} />
-        <Txt v="title" accessibilityRole="header" center style={{ fontSize: 30, lineHeight: 34, marginTop: 22 }}>
+        <Txt v="title" accessibilityRole="header" center style={{ fontSize: 30, lineHeight: 34 }}>
           {'Didn’t find\nyour bank?'}
         </Txt>
         <Txt v="leadS" tone="fg2" center style={{ marginTop: 10, maxWidth: 340 }}>

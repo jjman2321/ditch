@@ -180,32 +180,9 @@ export default function Calendar() {
     <View style={{ flex: 1, backgroundColor: p.bg }}>
       <ScrollView contentContainerStyle={{ paddingTop: insets.top + 8, paddingHorizontal: edge, paddingBottom: 28 }} showsVerticalScrollIndicator={false}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Txt v="displayM" accessibilityRole="header" style={{ flex: 1, fontSize: narrow ? 26 : isThisMonth ? 32 : 28, lineHeight: 40 }} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
+          <Txt v="displayM" accessibilityRole="header" style={{ flex: 1, fontSize: narrow ? 26 : 32, lineHeight: 40 }} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
             {title}
           </Txt>
-          {isThisMonth ? null : (
-            // Away from this month: one tap back (Apple Calendar, Fantastical).
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="Back to this month"
-              onPress={backToToday}
-              hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}
-              style={({ pressed }) => ({
-                minHeight: 32,
-                paddingHorizontal: 12,
-                borderRadius: 16,
-                borderWidth: 1.5,
-                borderColor: p.fg,
-                justifyContent: 'center',
-                marginRight: 2,
-                opacity: pressed ? 0.6 : 1,
-              })}
-            >
-              <Txt v="label" color={p.fg} style={{ fontSize: 14, fontFamily: F.bold }}>
-                Today
-              </Txt>
-            </Pressable>
-          )}
           <IconButton label="Previous month" onPress={() => move(-1)}>
             <ChevronLeft color={p.fg} size={26} />
           </IconButton>
@@ -229,9 +206,35 @@ export default function Calendar() {
         >
           {/* The total always on its own line, the "due in" line always one line under it: the block is the same
               height every month and on every width, so the grid never jumps when the total passes $100. */}
-          <Txt v="displayM" tone="money" num style={{ fontSize: 31, lineHeight: 38 }} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
-            {due.totals[0] ? money(due.totals[0].amountMinor, due.totals[0].currency) : money(0, settings.currency)}
-          </Txt>
+          {/* The month name keeps its full size: "Today" sits on the total's line, where there's room. */}
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Txt v="displayM" tone="money" num style={{ flex: 1, fontSize: 31, lineHeight: 38 }} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
+              {due.totals[0] ? money(due.totals[0].amountMinor, due.totals[0].currency) : money(0, settings.currency)}
+            </Txt>
+            {isThisMonth ? null : (
+              // Away from this month: one tap back (Apple Calendar, Fantastical).
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="Back to this month"
+                onPress={backToToday}
+                hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}
+                style={({ pressed }) => ({
+                  minHeight: 32,
+                  paddingHorizontal: 12,
+                  borderRadius: 16,
+                  borderWidth: 1.5,
+                  borderColor: p.fg,
+                  justifyContent: 'center',
+                  marginLeft: 8,
+                  opacity: pressed ? 0.6 : 1,
+                })}
+              >
+                <Txt v="label" color={p.fg} style={{ fontSize: 14, fontFamily: F.bold }}>
+                  Today
+                </Txt>
+              </Pressable>
+            )}
+          </View>
           <Txt v="leadS" tone="fg2" num style={{ fontSize: 15, letterSpacing: -0.3 }} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>
             in {MONTH_LONG[view.m - 1]} · {charges(due.count)}
           </Txt>

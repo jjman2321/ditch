@@ -343,6 +343,13 @@ Web preview: add `&import=1` to the address. On the iPhone this needs the develo
 **Add-to-Ditch link (dev build)**
 - [ ] *In Safari, open `ditch://add?service=netflix`: Ditch opens Home with the Add sheet on Netflix. A made-up service just opens Add. Mid-onboarding, it just opens onboarding.
 
+## 1ab. Ditched screen option B (Nov 20, matches the website)
+- [ ] Hold Netflix on Home to ditch it. The card shows Netflix with a **filled black "✓ DITCHED" pill** (orange tick, yellow letters) and the last reminder. Nothing else in the card.
+- [ ] Under the card, on the yellow: a big **$239.88** and "a year you won't pay, once you cancel." The duck still pops up on the card's corner.
+- [ ] "Open Netflix to cancel", "I cancelled it" and "Open Apple subscriptions" are all on screen without scrolling, even on a small phone.
+- [ ] Dark mode: the tag is a yellow pill with black letters; the number is light.
+- [ ] Home and the Ditched tab: rows waiting to be cancelled show the same small filled tag.
+
 ## 1h. Ditched moment, new billing cycles, Bobby gaps (Nov 15)
 - [ ] Hold a subscription on Home to ditch it. The Ditched screen: no big stamp. The row's DITCHED tag appears with a firm buzz, the logo dims, the duck pops up over the row, then "$X a year you won't pay, once you cancel." fades in. The number never moves.
 - [ ] Turn on Reduce Motion (iPhone Settings → Accessibility → Motion) and ditch another: everything shows finished with a short fade, the buzz still comes.

@@ -86,7 +86,19 @@ type Display = 'symbol' | 'narrowSymbol' | 'code';
  * iPhone's JavaScript engine (Hermes) has a smaller Intl than browsers and Node:
  * no formatToParts, and some options can throw. Build formatters defensively.
  */
+const formats = new Map<string, Intl.NumberFormat>();
+/** Cached: making a formatter costs ~60µs, and the reminder plan formats thousands of prices (audit, Nov 20). */
 function currencyFormat(locale: string, currency: string, fraction: number, display: Display): Intl.NumberFormat {
+  const key = `${locale}|${currency}|${fraction}|${display}`;
+  let f = formats.get(key);
+  if (!f) {
+    f = makeCurrencyFormat(locale, currency, fraction, display);
+    formats.set(key, f);
+  }
+  return f;
+}
+
+function makeCurrencyFormat(locale: string, currency: string, fraction: number, display: Display): Intl.NumberFormat {
   const base = { style: 'currency' as const, currency, minimumFractionDigits: fraction, maximumFractionDigits: fraction };
   try {
     return new Intl.NumberFormat(locale, { ...base, currencyDisplay: display });
@@ -206,8 +218,9 @@ export function parseAmountInput(text: string, currency: string): number | null 
   // instead of guessing $129,911.
   const groups = whole.split(/[.,]/);
   if (groups.length > 1 && (groups[0].length < 1 || groups[0].length > 3 || groups.slice(1).some((g) => g.length !== 3))) return null;
-  // One group that makes it 10,000 or more ("15.490") is almost always a typo for 15.49, not a price.
-  if (digits > 0 && groups.length === 2 && Number(groups.join('')) >= 10_000) return null;
+  // One dot group that makes it 10,000 or more ("15.490") is almost always a typo for 15.49, not a price.
+  // Not with a comma ("10,000") or with cents ("12,345.67"): those are what they say (audit, Nov 20).
+  if (digits > 0 && !frac && groups.length === 2 && whole.includes('.') && Number(groups.join('')) >= 10_000) return null;
   whole = groups.join('');
   t = whole || '0';
   const minor = Number(t) * 10 ** digits + Number((frac + '00').slice(0, digits) || 0);

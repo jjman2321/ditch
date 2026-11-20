@@ -68,6 +68,11 @@ describe('parseAmountInput typos', () => {
     expect(parseAmountInput('1.299,00', 'EUR')).toBe(129900);
     expect(parseAmountInput('1,299.00', 'GBP')).toBe(129900);
   });
+  it('keeps "10,000" and "12,345.67" (audit, Nov 20: they were refused)', () => {
+    expect(parseAmountInput('10,000', 'USD')).toBe(1000000);
+    expect(parseAmountInput('12,345.67', 'USD')).toBe(1234567);
+    expect(parseAmountInput('10000', 'USD')).toBe(1000000);
+  });
 });
 
 describe('parseAmountInput while typing (audit, Nov 16)', () => {

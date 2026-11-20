@@ -211,7 +211,7 @@ export function Picker({ onCustom, onTrial, onForgotten, onClose }: { onCustom: 
       {showImport() ? (
         <View style={{ marginTop: 14 }}>
           {/* One button: it asks Photo library (screenshots) or Files (statements). */}
-          <ImportRow title="Find your subscriptions" sub="From your Apple list or a statement, read on your phone" onPress={() => (onClose(), router.push('/find'))} />
+          <ImportRow title="Find your subscriptions" sub="From your Apple list or a bank statement" onPress={() => (onClose(), router.push('/find'))} />
         </View>
       ) : null}
       <View style={{ marginTop: 14 }}>

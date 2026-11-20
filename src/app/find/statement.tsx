@@ -6,7 +6,7 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { ActivityIndicator } from 'react-native';
 
-import { FindPage, SHOW_SAMPLES } from '@/find/Parts';
+import { FindPage, PrivateNote, SHOW_SAMPLES } from '@/find/Parts';
 import { PhoneMock, Steps, type MockRow } from '@/find/Visual';
 import { readDocument } from '@/import/device';
 import { SAMPLE_STATEMENT } from '@/import/samples';
@@ -105,6 +105,7 @@ export default function Statement() {
       footer={
         <>
           <Button label={busy ? 'Reading…' : 'Pick 1–3 files'} hint="CSV or PDF statements" disabled={busy} onPress={pick} />
+          <PrivateNote text="Read on your iPhone. Never uploaded or kept." />
           {SHOW_SAMPLES ? <Button kind="text" label="Try with a sample (test builds)" onPress={() => finish(SAMPLE_STATEMENT)} /> : null}
         </>
       }
@@ -119,9 +120,6 @@ export default function Statement() {
           {problem}
         </Txt>
       ) : null}
-      <Txt v="sub" tone="mute" center style={{ marginTop: 18 }}>
-        Read on your iPhone. Never uploaded or kept.
-      </Txt>
     </FindPage>
   );
 }

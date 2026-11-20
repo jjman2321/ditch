@@ -80,7 +80,7 @@ export function ForgottenBody({ onAdd, onDone }: { onAdd: () => void; onDone: ()
           Subscriptions hide in a few places. Check each one, then add what you find.
         </Txt>
         {showImport() ? (
-          <Button kind="secondary" label="Or let Ditch read a list for you" hint="Your Apple list or a statement, read on your phone" onPress={() => (onDone(), router.push('/find'))} style={{ marginTop: 14 }} />
+          <Button kind="secondary" label="Or let Ditch read a list for you" hint="From your Apple list or a bank statement" onPress={() => (onDone(), router.push('/find'))} style={{ marginTop: 14 }} />
         ) : null}
         <View style={{ marginTop: 16, backgroundColor: p.card, borderRadius: 20, paddingHorizontal: 16 }}>
           {PLACES.map((pl, i) => (

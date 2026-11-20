@@ -62,9 +62,6 @@ export default function Where() {
           </>
         ) : null}
         <RouteCard icon={ListCheck} title="Pick them myself" line="Tick them from our list." onPress={() => router.push('/onboarding/services')} />
-        <Txt v="sub" tone="mute" center style={{ marginTop: 20, color: p.mute }}>
-          {'Screenshots and statements are read on your iPhone, never uploaded.'}
-        </Txt>
       </ScrollView>
     </OnbRoot>
   );

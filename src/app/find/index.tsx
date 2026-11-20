@@ -31,7 +31,7 @@ export default function FindHub() {
     <FindPage
       title="Find your subscriptions"
       back="Home"
-      intro={bank ? 'Connect your bank, or show us a list you already have. You pick what stays.' : 'Show us a list you already have. We read it on your phone, you pick what goes in.'}
+      intro={bank ? 'Connect your bank, or show us a list you already have. You pick what stays.' : 'Show us a list you already have. You pick what goes in.'}
     >
       {bank ? <BankHero title="Your bank or card" line="Finds them and spots new ones." tag={pro ? undefined : 'PRO · 7 DAYS FREE'} onPress={() => router.push('/bank?from=find')} /> : null}
       <RouteCard
@@ -68,9 +68,6 @@ export default function FindHub() {
           </Pressable>
         ))}
       </View>
-      <Txt v="sub" tone="mute" center style={{ marginTop: 16 }}>
-        Read on your iPhone. Never uploaded.
-      </Txt>
     </FindPage>
   );
 }

@@ -8,7 +8,7 @@ import { ActivityIndicator, useWindowDimensions } from 'react-native';
 
 import { APPLE_SUBSCRIPTIONS_URL } from '@/catalog/cancel';
 import { openUrl } from '@/ditch/CancelHelp';
-import { FindPage, SHOW_SAMPLES } from '@/find/Parts';
+import { FindPage, PrivateNote, SHOW_SAMPLES } from '@/find/Parts';
 import { PhoneMock, Steps } from '@/find/Visual';
 import { readAppleSubscriptions } from '@/import/appleScreenshot';
 import { canReadImages, readImage } from '@/import/device';
@@ -68,6 +68,7 @@ export default function AppleScreenshot() {
         <>
           <Button label="Open Apple subscriptions" hint="Opens outside Ditch" right={<External color={p.ctaFg} size={19} />} onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)} />
           <Button kind="secondary" label={busy ? 'Reading…' : 'Pick screenshots'} disabled={busy} onPress={pick} style={{ marginTop: 6 }} />
+          <PrivateNote />
           {SHOW_SAMPLES ? <Button kind="text" label="Try with a sample (test builds)" onPress={() => finish(SAMPLE_APPLE_LINES)} /> : null}
         </>
       }
@@ -89,9 +90,6 @@ export default function AppleScreenshot() {
           {problem}
         </Txt>
       ) : null}
-      <Txt v="sub" tone="mute" center style={{ marginTop: 18 }}>
-        Read on your iPhone. Never uploaded.
-      </Txt>
     </FindPage>
   );
 }

@@ -6,10 +6,23 @@ import { Platform, Pressable, ScrollView, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { DEV_TOOLS } from '@/dev/flags';
-import { BottomFade, ChevronLeft, ChevronRight, F, Txt, brand, useInsets, usePageEdge, usePalette, usePressScale } from '@/ui/sunflower';
+import { BottomFade, ChevronLeft, ChevronRight, F, Lock, Txt, brand, useInsets, usePageEdge, usePalette, usePressScale } from '@/ui/sunflower';
 
 /** Sample buttons: web preview and test builds only, never the App Store build. */
 export const SHOW_SAMPLES = Platform.OS === 'web' || DEV_TOOLS;
+
+/** The one place we say it: right under the button that picks the screenshot or statement (owner, Nov 20: it was everywhere). */
+export function PrivateNote({ text = 'Read on your iPhone. Never uploaded.' }: { text?: string }) {
+  const p = usePalette();
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: 8 }} accessible accessibilityLabel={text}>
+      <Lock color={p.mute} size={13} />
+      <Txt v="sub" tone="mute" style={{ fontSize: 13 }}>
+        {text}
+      </Txt>
+    </View>
+  );
+}
 
 export function FindPage({ title, back = 'Back', intro, children, footer }: { title: string; back?: string; intro?: string; children: ReactNode; footer?: ReactNode }) {
   const p = usePalette();

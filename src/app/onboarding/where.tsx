@@ -16,7 +16,7 @@ import { useApp } from '@/state/app';
 import { useOnboarding } from '@/state/onboarding';
 import { setFindTarget } from '@/import/session';
 import { OnbRoot } from '@/onboarding/Parts';
-import { Bank, ChevronLeft, IconButton, ListCheck, PhoneList, STEP_HEADER_H, StatementIcon, Txt, brand, paletteFor, useInsets, useIsDark, usePageEdge, usePalette } from '@/ui/sunflower';
+import { Bank, ChevronLeft, IconButton, ListCheck, PhoneList, STEP_HEADER_H, StatementIcon, Txt, brand, paletteFor, useInsets, useIsDark, usePageEdge } from '@/ui/sunflower';
 
 // No entrance of its own (motion pass 2): the cards arrive with the push itself, ready to tap on
 // the first frame. A stagger after the slide read as "slides in, then builds again". Each card

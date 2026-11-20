@@ -71,7 +71,9 @@ function rowsFor(n: number): Row[] {
     // The headline feature once it ships (DECISIONS #64, trial-gated). Test builds only until then. Provider never named.
     ...(showBankScan() ? [{ label: 'Scan your bank', free: 'no', pro: 'yes' }] : []),
     // Personal: "All 6" when they track more than the free 3.
-    { label: 'Reminders', free: '3', pro: n > 3 ? `All ${n}` : 'Unlimited' },
+    // Owner, Nov 20: "Unlimited" or "All 4"? With 4 or 5, "3 vs All 4" makes Pro look like one extra
+    // reminder, so say Unlimited. From 6 the number itself shows the gap (TradingView's "3 vs 20" on Mobbin).
+    { label: 'Reminders', free: '3', pro: n >= 6 ? `All ${n}` : 'Unlimited' },
     // Price watch (DECISIONS #60).
     { label: 'Price rise check', free: 'no', pro: 'yes' },
     // The 30-day warning before yearly charges (DECISIONS #60).

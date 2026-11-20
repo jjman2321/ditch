@@ -34,7 +34,10 @@
       },
       "runtimeVersion": {
         "policy": "appVersion"
-      }
+      },
+      "associatedDomains": [
+        "applinks:ditchsubs.app"
+      ]
     },
     "android": {
       "adaptiveIcon": {

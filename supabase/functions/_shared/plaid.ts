@@ -111,6 +111,22 @@ export class PlaidProvider implements BankProvider {
     }
   }
 
+  /**
+   * Sandbox only: Plaid's "test your endpoints" step. Makes a test bank item (First Platypus Bank),
+   * swaps the token, reads its accounts (/accounts/get), then removes the item. Returns counts only.
+   */
+  async sandboxSelfTest(): Promise<{ accounts: number; types: string[] }> {
+    if (this.cfg.env !== 'sandbox') throw new ProviderError('NOT_SANDBOX', 'self-test runs in Sandbox only');
+    const pub = await this.call<{ public_token: string }>('/sandbox/public_token/create', { institution_id: 'ins_109508', initial_products: ['transactions'] });
+    const ex = await this.call<{ access_token: string }>('/item/public_token/exchange', { public_token: pub.public_token });
+    try {
+      const r = await this.call<{ accounts: { type: string }[] }>('/accounts/get', { access_token: ex.access_token });
+      return { accounts: r.accounts.length, types: [...new Set(r.accounts.map((a) => a.type))] };
+    } finally {
+      await this.remove(ex.access_token);
+    }
+  }
+
   /** For webhook verification (plaidWebhook.ts). */
   async webhookKey(kid: string): Promise<PlaidJwk> {
     const r = await this.call<{ key: PlaidJwk }>('/webhook_verification_key/get', { key_id: kid });

@@ -1,6 +1,9 @@
 // Builds the Deps every function uses, from Edge Function secrets (Deno.env). Deno only.
 // Secret NAMES are listed in supabase/functions/.env.example; values live in
 // Supabase -> Project settings -> Edge Functions -> Secrets (never in the repo or chat).
+// Fallback (Nov 20): any of VAULT_NAMES missing from Deno.env is read from Supabase Vault (lowercase name)
+// through the service-role-only RPC public.app_secrets. TOKEN_ENC_KEY and CRON_SECRET were generated
+// inside Vault so no person ever saw them; the Plaid keys can go in either place.
 
 import { verifyAppleJws } from '../appleJws.ts';
 import { importTokenKey } from '../crypto.ts';
@@ -12,7 +15,8 @@ import { StripeFcProvider } from '../stripe.ts';
 import type { EntitlementKind, ProviderName } from '../types.ts';
 import { SupabaseStore } from './supabaseStore.ts';
 
-const env = (k: string) => Deno.env.get(k)?.trim() || undefined;
+const fromVault: Record<string, string> = {};
+const env = (k: string) => Deno.env.get(k)?.trim() || fromVault[k] || undefined;
 const need = (k: string) => {
   const v = env(k);
   if (!v) throw new Error(`missing secret ${k}`);
@@ -49,10 +53,30 @@ function products(): Record<string, EntitlementKind> {
 const KEY_TTL_MS = 24 * 60 * 60 * 1000;
 const plaidKeys = new Map<string, { key: PlaidJwk; at: number }>();
 
+const VAULT_NAMES = ['PLAID_CLIENT_ID', 'PLAID_SECRET', 'TOKEN_ENC_KEY', 'CRON_SECRET'];
+
+async function loadVault(url: string, key: string) {
+  const missing = VAULT_NAMES.filter((k) => !Deno.env.get(k)?.trim());
+  if (!missing.length) return;
+  const res = await fetch(`${url}/rest/v1/rpc/app_secrets`, {
+    method: 'POST',
+    headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ names: missing.map((k) => k.toLowerCase()) }),
+  });
+  if (!res.ok) throw new Error(`vault read failed ${res.status}`);
+  const got = (await res.json()) as Record<string, string>;
+  for (const k of missing) {
+    const v = got[k.toLowerCase()]?.trim();
+    if (v) fromVault[k] = v;
+  }
+}
+
 let cached: Promise<Deps> | null = null;
 
 export function makeDeps(): Promise<Deps> {
   cached ??= (async () => {
+    const supabaseUrl = need('SUPABASE_URL');
+    await loadVault(supabaseUrl, serviceKey());
     const plaidEnv = (env('PLAID_ENV') ?? 'sandbox') === 'production' ? 'production' : 'sandbox';
     let plaid: PlaidProvider | null = null;
     const getPlaid = () =>
@@ -60,22 +84,22 @@ export function makeDeps(): Promise<Deps> {
         clientId: need('PLAID_CLIENT_ID'),
         secret: need('PLAID_SECRET'),
         env: plaidEnv,
-        webhookUrl: need('PLAID_WEBHOOK_URL'),
-        redirectUri: env('PLAID_REDIRECT_URI'),
+        webhookUrl: env('PLAID_WEBHOOK_URL') ?? `${supabaseUrl}/functions/v1/api/plaid-webhook`,
+        redirectUri: env('PLAID_REDIRECT_URI') ?? 'https://ditchsubs.app/plaid/oauth',
         countryCodes: (env('PLAID_COUNTRY_CODES') ?? 'US,CA').split(',').map((s) => s.trim()),
       }));
     let stripe: StripeFcProvider | null = null;
     const getStripe = () => (stripe ??= new StripeFcProvider(need('STRIPE_SECRET_KEY')));
 
     return {
-      store: SupabaseStore.fromEnv(need('SUPABASE_URL'), serviceKey()),
+      store: SupabaseStore.fromEnv(supabaseUrl, serviceKey()),
       provider: (name: ProviderName): BankProvider => (name === 'stripe' ? getStripe() : getPlaid()),
       defaultProvider: env('BANK_PROVIDER') === 'stripe' ? 'stripe' : 'plaid',
       tokenKey: await importTokenKey(env('TOKEN_ENC_KEY')),
       now: () => new Date(),
       apple: {
         verify: <T>(jws: string) => verifyAppleJws<T>(jws),
-        bundleId: need('APPLE_BUNDLE_ID'),
+        bundleId: env('APPLE_BUNDLE_ID') ?? 'app.ditchsubs.ditch',
         environments: (env('APPLE_ENVIRONMENTS') ?? 'Production,Sandbox').split(',').map((s) => s.trim()),
         products: products(),
       },

@@ -36,7 +36,7 @@ export default function DataPage() {
       file.write(csv);
       await Sharing.shareAsync(file.uri, { mimeType: 'text/csv', UTI: 'public.comma-separated-values-text', dialogTitle: 'Your Ditch list' });
     } catch {
-      tell('Couldn’t export', 'Something went wrong making the file. Try again in a moment.');
+      tell('Couldn’t export', 'Your list is fine. Try again. If it still won’t export, your iPhone may be low on space.');
     }
   };
 

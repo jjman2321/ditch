@@ -4,40 +4,41 @@
 
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import { AccessibilityInfo, Linking, View, useWindowDimensions } from 'react-native';
+import { AccessibilityInfo, Linking, View } from 'react-native';
 
 import { DEV_TOOLS } from '@/dev/flags';
 import { weekdayDate, toDateOnly } from '@/domain/dates';
 import { nextReminder } from '@/domain/reminders';
 import { effectiveLeads, formatTime, leadsLabel, shortTimeLabel } from '@/domain/settings';
 import { FREE_REMINDERS, hasDate, listedUserSubs, remindedIds, runningProTrial } from '@/domain/subs';
+import { useEditor } from '@/editor/Editor';
 import { pendingCount } from '@/services/notifications';
 import { planById, restorePurchases } from '@/services/purchases';
 import { ordinal } from '@/domain/copy';
 import { Group, Row, SettingsPage } from '@/settings/Parts';
-import { rateDitch, type FeedbackKind } from '@/settings/feedback';
+import { RESTORE_NONE, RESTORE_NONE_TITLE } from '@/settings/restore';
+import { CAN_RATE, rateDitch, type FeedbackKind } from '@/settings/feedback';
 import { FeedbackSheet } from '@/settings/FeedbackSheet';
 import { SHORT_VERSION } from '@/settings/version';
 import { TimeField } from '@/settings/TimeField';
 import { useApp } from '@/state/app';
 import { useBank } from '@/state/bank';
 import { needsSignIn } from '@/state/bankLogic';
-import { tell } from '@/ui/alert';
+import { ask, tell } from '@/ui/alert';
 import { Bang, Bell, Button, Card, Check, F, ProLockup, SunSwitch, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
 
 /** Non-breaking space: keeps "at 9 AM" (the real time) together on one line. */
 const NB = '\u00A0';
 
 export default function Settings() {
-  // 320pt wide: "3 days, 1 day" (the row already says Remind me), so it never gets cut.
-  const narrow = useWindowDimensions().width < 350;
   const app = useApp();
   const { settings, pro, subs } = app;
   const listed = listedUserSubs(subs);
   const reminded = remindedIds(subs, pro);
   const trial = runningProTrial(subs, app.today);
   const leadWords = leadsLabel(effectiveLeads(settings, pro)).replace(/ and (?=[^,]*$)/, ', ');
-  const remindValue = narrow ? leadWords.replace(/ before$/, '') : leadWords;
+  // Under 350pt wide (or with large text) the row puts this under its label, so it's never cut.
+  const remindValue = leadWords;
 
   // Feedback & help: one in-app form, opened on the row they tapped.
   const [feedback, setFeedback] = useState<{ visible: boolean; kind: FeedbackKind; session: number }>({ visible: false, kind: 'problem', session: 0 });
@@ -60,7 +61,7 @@ export default function Settings() {
   const proValue = !pro
     ? null
     : trial
-      ? `Trial, ends ${weekdayDate(trial.anchor).split(', ')[1]}`
+      ? `Trial ends ${weekdayDate(trial.anchor).split(', ')[1]}`
       : settings.proPlan === 'lifetime'
         ? 'Lifetime'
         : settings.proPlan === 'weekly'
@@ -83,7 +84,7 @@ export default function Settings() {
   const bankValue = links.length ? (links.length === 1 ? links[0].name : `${links[0].name} + ${links.length - 1}`) : 'None';
   const restore = async () => {
     const r = await restorePurchases();
-    tell(r.restored ? 'Restored' : 'Nothing to restore', r.restored ? 'Ditch Pro is back on.' : 'We couldn’t find a Ditch Pro purchase on this Apple Account.');
+    tell(r.restored ? 'Restored' : RESTORE_NONE_TITLE, r.restored ? 'Ditch Pro is back on.' : RESTORE_NONE);
   };
 
   return (
@@ -146,9 +147,10 @@ export default function Settings() {
       {/* Feedback & help: a person reads every one (reviews: a developer who answers turns 1★ into 5★). */}
       <Group header="Feedback & help" note="A real person reads every one.">
         <Row label="Report a problem" hint="Opens a short form" onPress={() => openFeedback('problem')} />
-        <Row label="Suggest a feature" hint="Opens a short form" onPress={() => openFeedback('idea')} />
+        <Row label="Share an idea" hint="Opens a short form" onPress={() => openFeedback('idea')} />
         <Row label="Suggest a subscription" hint="Missing one? We’ll add it to the list" onPress={() => openFeedback('service')} />
-        <Row label="Rate Ditch" hint="Opens the App Store" onPress={rateDitch} />
+        {/* Hidden until the App Store listing exists: Apple's own prompt is never tied to a button (DECISIONS #38). */}
+        {CAN_RATE ? <Row label="Rate Ditch" hint="Opens the App Store" onPress={rateDitch} /> : null}
       </Group>
       <FeedbackSheet {...feedback} onClose={() => setFeedback((f) => ({ ...f, visible: false }))} />
 
@@ -190,6 +192,7 @@ type Health = {
 function HealthCard() {
   const p = usePalette();
   const app = useApp();
+  const editor = useEditor();
   const { notif, plan, subs, pro } = app;
   const [sent, setSent] = useState(false);
   useEffect(() => {
@@ -213,12 +216,18 @@ function HealthCard() {
     h = {
       icon: 'warn',
       title: 'On, but quiet',
-      line: 'Banners are off, so reminders slip into Notification Center without a sound.',
+      line: 'Banners are off, so reminders go quietly to Notification Center. Easy to miss.',
       button: { label: 'Change in iPhone Settings', onPress: openPhone },
       test: true,
     };
   } else if (!listed.length) {
-    h = { icon: 'ok', title: 'All set up', line: 'Nothing on your list yet. Add a subscription and reminders start once it has a date.', test: true };
+    h = {
+      icon: 'ok',
+      title: 'All set up',
+      line: 'Nothing on your list yet. Add a subscription and reminders start once it has a date.',
+      button: { label: 'Add a subscription', onPress: () => editor.openAdd() },
+      test: true,
+    };
   } else if (!anyDated) {
     h = {
       icon: 'bell',
@@ -239,7 +248,8 @@ function HealthCard() {
     h = {
       icon: 'ok',
       title: 'All good',
-      line: `Next one: ${next.name}, ${weekdayDate(toDateOnly(next.fireAt)).replace(/ (\d+)$/, `${NB}$1`)} at${NB}${shortTimeLabel(formatTime(next.fireAt.getHours(), next.fireAt.getMinutes()))}`,
+      // Name on line 1, "Wed, Nov 11 at 9 AM" on line 2, held together so it never splits mid-date.
+      line: `Next one: ${next.name}\n${`${weekdayDate(toDateOnly(next.fireAt))} at ${shortTimeLabel(formatTime(next.fireAt.getHours(), next.fireAt.getMinutes()))}`.replace(/ /g, NB)}`,
       test: true,
     };
   } else {
@@ -254,7 +264,11 @@ function HealthCard() {
     if (ok) {
       setSent(true);
       AccessibilityInfo.announceForAccessibility('Sent. It arrives in a second.');
-    } else tell('Couldn’t send it', 'Check that notifications for Ditch are on in iPhone Settings.');
+    } else
+      ask('Couldn’t send it', 'Notifications for Ditch look off. Turn them on and try again.', [
+        { text: 'Not now', style: 'cancel' },
+        { text: 'Open Settings', onPress: () => void Linking.openSettings().catch(() => {}) },
+      ]);
   };
 
   return (

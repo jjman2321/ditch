@@ -1,12 +1,23 @@
 // About Ditch: terms, privacy, sources, version. (Rating lives in Settings → Feedback & help.)
 
 import { router } from 'expo-router';
-import { View } from 'react-native';
+import * as Updates from 'expo-updates';
+import { Platform, View } from 'react-native';
 
 import { openUrl } from '@/ditch/CancelHelp';
 import { Group, Row, SettingsPage } from '@/settings/Parts';
-import { APP_VERSION, updateLabel } from '@/settings/version';
+import { SHORT_VERSION, updateLabel } from '@/settings/version';
 import { DuckIcon, Txt, Wordmark } from '@/ui/sunflower';
+
+/** Testers need to know which update they're on; App Store users don't (owner: no clutter). */
+function onTestFlight(): boolean {
+  if (Platform.OS === 'web') return false;
+  try {
+    return Updates.channel === 'testflight';
+  } catch {
+    return false;
+  }
+}
 
 export default function About() {
   return (
@@ -24,11 +35,13 @@ export default function About() {
         <Row label="Sources" hint="The studies behind the numbers in Ditch" onPress={() => router.push('/settings/sources')} />
       </Group>
       <Txt v="fine" tone="mute" style={{ textAlign: 'center', marginTop: 24 }}>
-        Version {APP_VERSION} · Grasp Labs LLC
+        Ditch {SHORT_VERSION} · Grasp Labs LLC
       </Txt>
-      <Txt v="fine" tone="mute" style={{ textAlign: 'center', marginTop: 4 }}>
-        {updateLabel()}
-      </Txt>
+      {onTestFlight() ? (
+        <Txt v="fine" tone="mute" style={{ textAlign: 'center', marginTop: 4 }}>
+          {updateLabel()}
+        </Txt>
+      ) : null}
     </SettingsPage>
   );
 }

@@ -76,8 +76,18 @@ function Stepper({ value, onChange, onDone }: { value: string; onChange: (t: str
         Remind me at {timeLabel(value)}
       </Txt>
       <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 20 }}>
-        {col('hour', String(h % 12 === 0 ? 12 : h % 12) + (h < 12 ? 'a' : 'p'), () => set(h - 1, m), () => set(h + 1, m))}
-        {col('minute', String(m).padStart(2, '0'), () => set(h, m - 1), () => set(h, m + 1))}
+        {col(
+          'hour',
+          String(h % 12 === 0 ? 12 : h % 12) + (h < 12 ? 'a' : 'p'),
+          () => set(h - 1, m),
+          () => set(h + 1, m),
+        )}
+        {col(
+          'minute',
+          String(m).padStart(2, '0'),
+          () => set(h, m - 1),
+          () => set(h, m + 1),
+        )}
       </View>
       <View style={{ flex: 1 }} />
       <Button label="Done" onPress={onDone} />

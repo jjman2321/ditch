@@ -14,6 +14,7 @@ import { listedUserSubs, runningProTrial } from '@/domain/subs';
 import { openUrl } from '@/ditch/CancelHelp';
 import { planById, restorePurchases } from '@/services/purchases';
 import { Group, Row, SettingsPage } from '@/settings/Parts';
+import { RESTORE_NONE, RESTORE_NONE_TITLE } from '@/settings/restore';
 import { useApp } from '@/state/app';
 import { tell } from '@/ui/alert';
 import { Button, Card, Check, DuckIcon, ProLockup, Txt, brand, usePalette } from '@/ui/sunflower';
@@ -27,10 +28,11 @@ export default function ProPage() {
   const yearly = planById('yearly');
   const lifetime = planById('lifetime');
   const n = listedUserSubs(subs).length;
+  const isLifetime = pro && settings.proPlan === 'lifetime';
   const tick = <Check color={p.dark ? brand.sunflower : brand.ink} size={18} />;
   const restore = async () => {
     const r = await restorePurchases();
-    tell(r.restored ? 'Restored' : 'Nothing to restore', r.restored ? 'Ditch Pro is back on.' : 'We couldn’t find a Ditch Pro purchase on this Apple Account.');
+    tell(r.restored ? 'Restored' : RESTORE_NONE_TITLE, r.restored ? 'Ditch Pro is back on.' : RESTORE_NONE);
   };
   return (
     <SettingsPage title="Ditch Pro">
@@ -83,9 +85,19 @@ export default function ProPage() {
           </Pressable>
         </>
       )}
-      <Group note={pro ? `Lifetime is a one-time ${lifetime.priceString} for Pro. Cancel anytime in your Apple subscriptions.` : 'Cancel anytime in your Apple subscriptions.'}>
+      <Group note={isLifetime ? 'Nothing renews, nothing to cancel.' : 'Cancel anytime in your Apple subscriptions.'}>
         {pro && trial ? <Row label="Trial ends" value={weekdayDate(trial.anchor)} /> : null}
-        {pro && settings.proPlan !== 'lifetime' ? <Row label="Manage subscriptions" hint="Opens your Apple subscriptions" onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)} /> : null}
+        {pro && !isLifetime ? <Row label="Manage subscriptions" hint="Opens your Apple subscriptions" onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)} /> : null}
+        {/* Tired of renewing? The paywall opens with Lifetime already picked. */}
+        {pro && (settings.proPlan === 'yearly' || settings.proPlan === 'weekly') ? (
+          <Row
+            label="Switch to Lifetime"
+            value={lifetime.priceString}
+            a11yValue={`, pay once, ${lifetime.priceString}`}
+            hint="Opens Ditch Pro with Lifetime picked"
+            onPress={() => router.push('/paywall?from=app&plan=lifetime')}
+          />
+        ) : null}
         <Row label="Restore purchases" onPress={restore} chevron={false} />
       </Group>
     </SettingsPage>

@@ -18,21 +18,28 @@ SplashScreen.preventAutoHideAsync().catch(() => {});
 
 /**
  * If any screen throws, show what happened instead of closing the app (Expo Router error boundary).
- * The message is shown so a TestFlight tester can screenshot it; nothing is sent anywhere.
+ * The raw message sits small at the bottom so a TestFlight tester can screenshot it; nothing is sent anywhere.
  */
 export function ErrorBoundary({ error, retry }: { error: Error; retry: () => Promise<void> }) {
   const dark = useColorScheme() === 'dark';
   const p = paletteFor('cream', dark);
+  const detail = String(error?.message ?? error).slice(0, 400);
+  const email = () =>
+    Linking.openURL(`mailto:support@ditchsubs.app?subject=${encodeURIComponent('Something broke in Ditch')}&body=${encodeURIComponent(`What I was doing:\n\n\n—\n${detail}`)}`).catch(() => {});
   return (
-    <View style={{ flex: 1, backgroundColor: p.bg, padding: EDGE, justifyContent: 'center', gap: 12 }}>
-      <Txt v="title">Something went wrong.</Txt>
-      <Txt v="body" tone="fg2">
-        Your list is safe. Tap Try again. If it keeps happening, screenshot this and send it to us.
+    <View style={{ flex: 1, backgroundColor: p.bg, padding: EDGE, justifyContent: 'center' }}>
+      <Txt v="title" accessibilityRole="header">
+        Something broke on this screen.
       </Txt>
-      <Txt v="fine" tone="mute" selectable>
-        {String(error?.message ?? error).slice(0, 400)}
+      <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
+        Your list is safe. Try again, or go back to your list.
       </Txt>
-      <Button label="Try again" onPress={() => void retry()} style={{ marginTop: 8 }} />
+      <Button label="Try again" onPress={() => void retry()} style={{ marginTop: 24 }} />
+      <Button kind="secondary" label="Go to my list" onPress={() => router.replace('/(tabs)')} style={{ marginTop: 10 }} />
+      <Button kind="text" label="Email us" onPress={email} />
+      <Txt v="fine" tone="mute" selectable style={{ marginTop: 20, fontSize: 12, lineHeight: 16 }}>
+        {detail}
+      </Txt>
     </View>
   );
 }

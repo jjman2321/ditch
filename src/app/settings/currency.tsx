@@ -89,7 +89,7 @@ export default function CurrencyPage() {
       </View>
       {list.length ? null : (
         <Txt v="leadS" tone="mute" style={{ marginTop: 18, marginHorizontal: 4 }}>
-          No currency matches
+          No match. Try the 3-letter code, like EUR.
         </Txt>
       )}
       {list.length ? (

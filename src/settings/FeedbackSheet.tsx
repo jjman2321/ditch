@@ -5,19 +5,19 @@
 // The list itself never leaves the phone. Offline? The text stays, and Mail is the fallback.
 
 import { useEffect, useState } from 'react';
-import { AccessibilityInfo, Pressable, ScrollView, TextInput, View } from 'react-native';
+import { AccessibilityInfo, ScrollView, TextInput, View } from 'react-native';
 
 import { effectiveLeads } from '@/domain/settings';
 import { pendingCount } from '@/services/notifications';
 import { useApp } from '@/state/app';
-import { Button, Chip, Duck, F, KEYBOARD_DONE, KeyboardDone, Sheet, SunSwitch, Txt, haptic, usePalette, useSheetScroll } from '@/ui/sunflower';
+import { Button, DuckIcon, F, KEYBOARD_DONE, KeyboardDone, Notice, Segmented, Sheet, SunSwitch, Txt, haptic, usePalette, useSheetScroll } from '@/ui/sunflower';
 
 import { FEEDBACK_MAX, buildFeedback, diagnosticsLine, emailFeedback, isEmail, sendFeedback, type FeedbackKind } from './feedback';
 
 const KINDS: { value: FeedbackKind; label: string }[] = [
   { value: 'problem', label: 'Problem' },
   { value: 'idea', label: 'Idea' },
-  { value: 'service', label: 'Missing subscription' },
+  { value: 'service', label: 'Subscription' },
 ];
 
 const PLACEHOLDER: Record<FeedbackKind, string> = {
@@ -42,6 +42,8 @@ function Body({ initialKind, draft, setDraft, onDone }: { initialKind: FeedbackK
   const [infoChoice, setInfoChoice] = useState<boolean | null>(null);
   const includeInfo = infoChoice ?? kind === 'problem';
   const [status, setStatus] = useState<Status>('form');
+  // The email is checked when they leave the box or tap Send, never mid-word.
+  const [emailChecked, setEmailChecked] = useState(false);
 
   // Counts only (see diagnosticsLine). Worked out once, when the sheet opens.
   const { subs, settings, pro, notif } = app;
@@ -59,13 +61,20 @@ function Body({ initialKind, draft, setDraft, onDone }: { initialKind: FeedbackK
 
   const form = { kind, message, email, appInfo, includeAppInfo: includeInfo };
   const check = buildFeedback(form);
-  const badEmail = email.trim().length > 0 && !isEmail(email.trim());
+  const badEmail = emailChecked && email.trim().length > 0 && !isEmail(email.trim());
   const sending = status === 'sending';
   const iosGrey = p.dark ? 'rgba(235,235,245,0.3)' : 'rgba(60,60,67,0.3)';
   const box = { borderRadius: 14, backgroundColor: p.chipBg, borderWidth: 1.5, borderColor: p.chipBorder } as const;
 
   const send = async () => {
-    if (!check.ok || sending) return;
+    if (sending) return;
+    if (!check.ok) {
+      if (check.error === 'email') {
+        setEmailChecked(true);
+        AccessibilityInfo.announceForAccessibility('That email doesn’t look right.');
+      }
+      return;
+    }
     setStatus('sending');
     const ok = await sendFeedback(check.payload);
     if (ok) {
@@ -74,9 +83,8 @@ function Body({ initialKind, draft, setDraft, onDone }: { initialKind: FeedbackK
       setStatus('sent');
       AccessibilityInfo.announceForAccessibility('Sent. Thanks! A real person reads every one.');
     } else {
-      haptic.warning();
+      // The Notice below buzzes and reads itself out.
       setStatus('failed');
-      AccessibilityInfo.announceForAccessibility('Couldn’t send. Check your connection and try again.');
     }
   };
 
@@ -84,7 +92,7 @@ function Body({ initialKind, draft, setDraft, onDone }: { initialKind: FeedbackK
     return (
       <View style={{ flex: 1, justifyContent: 'center', paddingBottom: 24 }}>
         <View style={{ alignItems: 'center' }}>
-          <Duck width={92} bottom={0} delay={120} style={{ position: 'relative' }} />
+          <DuckIcon size={72} />
         </View>
         <Txt v="titleXS" center accessibilityRole="header" style={{ marginTop: 16 }}>
           Thanks!
@@ -115,20 +123,8 @@ function Body({ initialKind, draft, setDraft, onDone }: { initialKind: FeedbackK
           Write to us
         </Txt>
 
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 16 }}>
-          {KINDS.map((k) => (
-            <Chip
-              key={k.value}
-              label={k.label}
-              selected={kind === k.value}
-              onPress={() => {
-                if (kind === k.value) return;
-                haptic.select();
-                setKind(k.value);
-              }}
-            />
-          ))}
-        </View>
+        {/* One row on every phone (chips wrapped to two lines on the SE). */}
+        <Segmented label="What it’s about" options={KINDS} value={kind} onChange={setKind} height={44} style={{ marginTop: 16 }} />
 
         <TextInput
           value={message}
@@ -145,18 +141,22 @@ function Body({ initialKind, draft, setDraft, onDone }: { initialKind: FeedbackK
           style={{ ...box, marginTop: 16, minHeight: 120, maxHeight: 220, paddingHorizontal: 14, paddingTop: 12, paddingBottom: 12, fontFamily: F.regular, fontSize: 16, lineHeight: 22, color: p.fg }}
         />
 
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline', marginTop: 16, marginHorizontal: 2 }}>
-          <Txt v="label">Email </Txt>
-          <Txt v="sub" tone="mute">
-            (optional), only if you want a reply
+        <View style={{ marginTop: 16, marginHorizontal: 2 }}>
+          <Txt v="label">Email (optional)</Txt>
+          <Txt v="sub" tone="mute" style={{ marginTop: 2 }}>
+            Only if you’d like a reply.
           </Txt>
         </View>
         <TextInput
           value={email}
-          onChangeText={(t) => setDraft({ ...draft, email: t })}
+          onChangeText={(t) => {
+            setEmailChecked(false);
+            setDraft({ ...draft, email: t });
+          }}
+          onBlur={() => setEmailChecked(true)}
           placeholder="you@example.com"
           placeholderTextColor={iosGrey}
-          accessibilityLabel="Email, optional. Only if you want a reply"
+          accessibilityLabel={badEmail ? 'Email, optional. That email doesn’t look right' : 'Email, optional. Only if you’d like a reply'}
           keyboardType="email-address"
           textContentType="emailAddress"
           autoComplete="email"
@@ -165,7 +165,17 @@ function Body({ initialKind, draft, setDraft, onDone }: { initialKind: FeedbackK
           maxLength={254}
           inputAccessoryViewID={KEYBOARD_DONE}
           editable={!sending}
-          style={{ ...box, marginTop: 8, height: 48, paddingHorizontal: 14, fontFamily: F.regular, fontSize: 16, color: p.fg }}
+          style={{
+            ...box,
+            ...(badEmail ? { borderColor: p.danger } : null),
+            marginTop: 8,
+            minHeight: 48,
+            paddingHorizontal: 14,
+            paddingVertical: 12,
+            fontFamily: F.regular,
+            fontSize: 16,
+            color: p.fg,
+          }}
         />
         {badEmail ? (
           <Txt v="sub" color={p.danger} style={{ marginTop: 6, marginHorizontal: 2 }} accessibilityLiveRegion="polite">
@@ -190,30 +200,21 @@ function Body({ initialKind, draft, setDraft, onDone }: { initialKind: FeedbackK
         ) : null}
 
         {status === 'failed' ? (
-          <View style={{ marginTop: 16 }} accessibilityLiveRegion="polite">
-            <Txt v="sub" color={p.danger}>
-              Couldn’t send. Check your connection and try again.
-            </Txt>
-            <Pressable
-              accessibilityRole="link"
-              accessibilityLabel="Email us instead"
-              accessibilityHint="Opens Mail with your message"
-              onPress={() => check.ok && emailFeedback(check.payload)}
-              style={{ minHeight: 44, justifyContent: 'center', alignSelf: 'flex-start' }}
-            >
-              <Txt v="sub" style={{ textDecorationLine: 'underline' }}>
-                Email us instead
-              </Txt>
-            </Pressable>
-          </View>
+          <Notice
+            title="Couldn’t send"
+            line="Check your connection and try again. Your message is still here."
+            action="Email us instead"
+            onAction={() => check.ok && emailFeedback(check.payload)}
+            style={{ marginTop: 16 }}
+          />
         ) : null}
 
         <Button
           label={sending ? 'Sending…' : status === 'failed' ? 'Try again' : 'Send'}
-          disabled={!check.ok || sending}
+          disabled={(!check.ok && check.error !== 'email') || sending}
           hint={!check.ok && check.error === 'short' ? 'Type a few words first' : undefined}
           onPress={send}
-          style={{ marginTop: status === 'failed' ? 4 : 20 }}
+          style={{ marginTop: status === 'failed' ? 14 : 20 }}
         />
         <Txt v="fine" tone="mute" center style={{ marginTop: 12 }}>
           Sent to Ditch only. Your subscription list stays on your phone.

@@ -110,10 +110,19 @@ export function emailFeedback(p: FeedbackPayload) {
 /** "Not on our list?" in the editor (Nov 15: Bobby lets people submit services; we add them to the catalog for everyone). */
 export function suggestService(name?: string) {
   const n = name?.trim();
-  mail(n ? `Please add ${n} to Ditch` : 'Please add a subscription to Ditch', `${n ? `Name: ${n}` : 'Name:'}\nCountry:\nIts website (if you know it):\n\nThanks! We add the price from the service’s own page.\n`);
+  mail(
+    n ? `Please add ${n} to Ditch` : 'Please add a subscription to Ditch',
+    `${n ? `Name: ${n}` : 'Name:'}\nCountry:\nIts website (if you know it):\n\nThanks! We add the price from the service’s own page.\n`,
+  );
 }
+
+/**
+ * "Rate Ditch" only shows once there's an App Store listing to open. Apple's own rating prompt
+ * (expo-store-review) is never tied to a button (DECISIONS #38): iOS may skip it, and a row that
+ * sometimes does nothing reads as broken.
+ */
+export const CAN_RATE = APP_STORE_ID !== null;
 
 export function rateDitch() {
   if (APP_STORE_ID) Linking.openURL(`https://apps.apple.com/app/id${APP_STORE_ID}?action=write-review`).catch(() => {});
-  else tell('Not yet', 'Rating opens once Ditch is in the App Store. Thanks for wanting to!');
 }

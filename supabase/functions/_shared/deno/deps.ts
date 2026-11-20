@@ -53,7 +53,7 @@ function products(): Record<string, EntitlementKind> {
 const KEY_TTL_MS = 24 * 60 * 60 * 1000;
 const plaidKeys = new Map<string, { key: PlaidJwk; at: number }>();
 
-const VAULT_NAMES = ['PLAID_CLIENT_ID', 'PLAID_SECRET', 'TOKEN_ENC_KEY', 'CRON_SECRET'];
+const VAULT_NAMES = ['PLAID_CLIENT_ID', 'PLAID_SECRET', 'PLAID_SECRET_SANDBOX', 'PLAID_SECRET_PRODUCTION', 'TOKEN_ENC_KEY', 'CRON_SECRET'];
 
 async function loadVault(url: string, key: string) {
   const missing = VAULT_NAMES.filter((k) => !Deno.env.get(k)?.trim());
@@ -82,7 +82,8 @@ export function makeDeps(): Promise<Deps> {
     const getPlaid = () =>
       (plaid ??= new PlaidProvider({
         clientId: need('PLAID_CLIENT_ID'),
-        secret: need('PLAID_SECRET'),
+        // Both secrets can be saved; PLAID_ENV (default sandbox) picks which one is used. Going live = PLAID_ENV=production.
+        secret: env(plaidEnv === 'production' ? 'PLAID_SECRET_PRODUCTION' : 'PLAID_SECRET_SANDBOX') ?? need('PLAID_SECRET'),
         env: plaidEnv,
         webhookUrl: env('PLAID_WEBHOOK_URL') ?? `${supabaseUrl}/functions/v1/api/plaid-webhook`,
         redirectUri: env('PLAID_REDIRECT_URI') ?? 'https://ditchsubs.app/plaid/oauth',

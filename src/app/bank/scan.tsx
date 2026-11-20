@@ -142,7 +142,7 @@ export default function BankScan() {
           {failWhy === 'offline' ? 'You’re offline.' : failWhy === 'build' ? 'Bank sync needs the newest Ditch.' : `${name} isn’t answering.`}
         </Txt>
         <Txt v="leadS" tone="fg2" style={{ marginTop: 10 }}>
-          {failWhy === 'offline' ? 'Check your connection, then try again.' : failWhy === 'build' ? 'Update Ditch, then try again. A statement works now.' : 'Try again in a bit, or use a statement.'}
+          {failWhy === 'offline' ? 'Check your connection, then try again.' : failWhy === 'build' ? 'Update Ditch, then try again. A statement works now.' : 'That’s on their end. Try again in a bit.'}
         </Txt>
       </BankPage>
     );

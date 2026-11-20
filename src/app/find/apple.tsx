@@ -17,11 +17,11 @@ import { setFindResult } from '@/import/session';
 import { useApp } from '@/state/app';
 import { Button, External, Notice, usePalette } from '@/ui/sunflower';
 
-type Problem = { title: string; line: string; action?: 'statement' };
+type Problem = { title: string; line?: string; action?: 'statement' };
 // This build has no text reader: point to what works now.
-const NO_READER: Problem = { title: 'Screenshots need the newest Ditch', line: 'Use a bank statement for now.', action: 'statement' };
+const NO_READER: Problem = { title: 'This iPhone can’t read screenshots yet. Use a statement or pick them yourself.', action: 'statement' };
 // The reader ran but failed on this picture.
-const BAD_PICTURE: Problem = { title: 'We couldn’t read that picture', line: 'Try a fresh screenshot of the Subscriptions page.' };
+const BAD_PICTURE: Problem = { title: 'This iPhone can’t read screenshots yet. Use a statement or pick them yourself.' };
 
 export default function AppleScreenshot() {
   const p = usePalette();
@@ -36,7 +36,7 @@ export default function AppleScreenshot() {
   const finish = (lines: string[]) => {
     const found = readAppleSubscriptions(lines, app.today, app.settings.currency, dayFirst ? 'dmy' : 'mdy');
     if (!found.length) {
-      setProblem({ title: 'No subscriptions in that one', line: 'Make sure it’s the Subscriptions list, then pick it again.' });
+      setProblem({ title: 'We couldn’t read any subscriptions in that. Make sure it’s the Subscriptions list, then try again.' });
       return;
     }
     setFindResult({ found, source: 'apple', appleCharges: 0, note: null });

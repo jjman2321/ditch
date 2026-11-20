@@ -183,7 +183,7 @@ export default function Total() {
       <View style={{ height: f.top + STEP_HEADER_H }} />
       <FitScroll style={{ paddingHorizontal: f.edge, paddingBottom: f.tablet ? f.bottom : 0 }}>
         <Txt v="label" style={{ marginTop: f.tiny ? 4 : f.small ? 8 : 24, fontSize: 17, lineHeight: 24 }}>
-          You pay
+          {main ? 'You pay' : 'Add your prices to see your total'}
         </Txt>
 
         {/* Measures the total at full size, drawn the same way, so it can shrink to fit. */}

@@ -16,11 +16,11 @@ import { useApp } from '@/state/app';
 import { Button, Notice, Segmented } from '@/ui/sunflower';
 
 type Asset = DocumentPicker.DocumentPickerAsset;
-type Problem = { title: string; line: string };
+type Problem = { title: string; line?: string };
 const PROBLEMS = {
   password: { title: 'This PDF has a password', line: 'Your bank’s PDFs often do. Type it once and we’ll read it. It isn’t saved.' },
-  noPdf: { title: 'PDFs need the newest Ditch', line: 'Export a CSV from your bank instead. That works now.' },
-  broken: { title: 'That file wouldn’t open', line: 'Download it again from your bank, or use the CSV.' },
+  noPdf: { title: 'Reading PDFs needs the new Ditch build. A CSV export works now.' },
+  broken: { title: 'We couldn’t open that file. Try exporting it again as CSV.' },
 } satisfies Record<string, Problem>;
 
 type Source = 'bank' | 'card' | 'paypal';
@@ -78,7 +78,7 @@ export default function Statement() {
   const finish = (text: string | string[], skipped = 0) => {
     const r = readStatement(text, app.today, app.settings.currency, dayFirst ? 'dmy' : 'mdy');
     if (!r.read) {
-      setProblem({ title: 'No charges in that file', line: 'Try the CSV export, or a different month.' });
+      setProblem({ title: 'We couldn’t find any charges in that file. Try the CSV export, or a different month.' });
       return;
     }
     const skippedLine = skipped ? ` We couldn’t open ${skipped === 1 ? '1 file' : `${skipped} files`}, so we skipped ${skipped === 1 ? 'it' : 'them'}.` : '';

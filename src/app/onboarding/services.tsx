@@ -81,13 +81,10 @@ function useRowLine() {
     const row = plans.length > 1 ? priceRow(s.id, country) : null;
     if (row) {
       const d = defaultPlan(row);
-      // Same words as once it's ticked, so a tick never changes the line (audit Nov 20).
-      const name = cycleWord(
-        shortPlanName(
-          d.name,
-          s.name,
-          plans.map((x) => x.name),
-        ),
+      const name = shortPlanName(
+        d.name,
+        s.name,
+        plans.map((x) => x.name),
       );
       const amount = `${money(d.amountMinor, row.currency)}${CYCLE_SHORT[d.cycle]}`;
       return { text: name ? `${name} · ${amount}` : amount, link: null };

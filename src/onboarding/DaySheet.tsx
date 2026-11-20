@@ -217,9 +217,7 @@ export function DayBody({
     ? null
     : isToday
       ? // Say why today is picked, so a quick Save is a choice, not an accident (audit, Nov 19).
-        yearly
-        ? `Charged today, ${shortDate(today)}.`
-        : `Charged today, the ${ordinal(t.d)}.`
+        `Charged today, the ${ordinal(t.d)}.`
       : monthly
         ? day === 31
           ? 'Charges on the last day of every month.'

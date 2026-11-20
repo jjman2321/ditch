@@ -125,4 +125,5 @@ export const CAN_RATE = APP_STORE_ID !== null;
 
 export function rateDitch() {
   if (APP_STORE_ID) Linking.openURL(`https://apps.apple.com/app/id${APP_STORE_ID}?action=write-review`).catch(() => {});
+  else tell('Not yet', 'Rating opens once Ditch is in the App Store. Thanks for wanting to!');
 }

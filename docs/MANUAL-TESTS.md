@@ -87,6 +87,7 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
 ## 1y. Video round 3 + big audit (Nov 20)
+- [ ] **Wording is the old wording (owner, Nov 20: "revert back to old wording").** Only the things the owner asked for read differently: errors now sit in the peach box (same words), You're set, the pick-3 sheet, the day box, the calendar Paid/Ditched labels, the cancelled-sub sheet, Missing any?, and the feedback form. New messages appear only where there used to be none (e.g. "Couldn't save", password PDFs).
 - [ ] **Errors look like errors:** Find → Apple subscriptions → Pick screenshots on a build without the reader (or a bad picture): a peach box with an orange "!" sits right above the buttons, even on an SE, and the phone buzzes once. "Use a statement" in the box goes to the statement screen.
 - [ ] **Password PDF:** drop a bank statement PDF that has a password. iPhone asks for it ("This PDF has a password"). Wrong password: it says so and asks again. Cancel: the peach box offers "Enter password".
 - [ ] **Several statements, one broken:** pick 3 files where one is damaged. The good ones are read, and the review screen says one was skipped.

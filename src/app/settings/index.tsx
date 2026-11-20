@@ -17,7 +17,7 @@ import { planById, restorePurchases } from '@/services/purchases';
 import { ordinal } from '@/domain/copy';
 import { Group, Row, SettingsPage } from '@/settings/Parts';
 import { RESTORE_NONE, RESTORE_NONE_TITLE } from '@/settings/restore';
-import { CAN_RATE, rateDitch, type FeedbackKind } from '@/settings/feedback';
+import { rateDitch, type FeedbackKind } from '@/settings/feedback';
 import { FeedbackSheet } from '@/settings/FeedbackSheet';
 import { SHORT_VERSION } from '@/settings/version';
 import { TimeField } from '@/settings/TimeField';
@@ -150,7 +150,7 @@ export default function Settings() {
         <Row label="Suggest a feature" hint="Opens a short form" onPress={() => openFeedback('idea')} />
         <Row label="Suggest a subscription" hint="Missing one? We’ll add it to the list" onPress={() => openFeedback('service')} />
         {/* Hidden until the App Store listing exists: Apple's own prompt is never tied to a button (DECISIONS #38). */}
-        {CAN_RATE ? <Row label="Rate Ditch" hint="Opens the App Store" onPress={rateDitch} /> : null}
+        <Row label="Rate Ditch" hint="Opens the App Store" onPress={rateDitch} />
       </Group>
       <FeedbackSheet {...feedback} onClose={() => setFeedback((f) => ({ ...f, visible: false }))} />
 

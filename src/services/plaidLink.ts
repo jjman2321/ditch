@@ -18,7 +18,19 @@ function load(): Sdk | null {
 /** True when this build can show Plaid's sign-in. */
 export const PLAID_READY = () => load() !== null;
 
-export type LinkResult = { status: 'success'; publicToken: string; accounts: string | null } | { status: 'exit'; errorCode: string | null; message: string | null };
+export type LinkResult =
+  | { status: 'success'; publicToken: string; accounts: string | null; linkSessionId: string | null }
+  | {
+      status: 'exit';
+      errorCode: string | null;
+      message: string | null;
+      /** For troubleshooting with Plaid: logged on our server (IDs and codes only). */
+      linkSessionId: string | null;
+      requestId: string | null;
+      errorType: string | null;
+      step: string | null;
+      institutionId: string | null;
+    };
 
 /**
  * Opens Plaid's sign-in with a Link token from our server and waits for the person to finish or
@@ -36,8 +48,19 @@ export async function openPlaidLink(token: string): Promise<LinkResult> {
           publicToken: x.publicToken,
           // "Checking ending 1005 · Visa ending 4821", for Settings → Bank connections.
           accounts: x.metadata.accounts.length ? x.metadata.accounts.map((a) => `${a.name}${a.mask ? ` ending ${a.mask}` : ''}`).join(' · ') : null,
+          linkSessionId: x.metadata.linkSessionId ?? null,
         }),
-      onExit: (x) => resolve({ status: 'exit', errorCode: x.error?.errorCode ?? null, message: x.error?.displayMessage ?? null }),
+      onExit: (x) =>
+        resolve({
+          status: 'exit',
+          errorCode: x.error?.errorCode ?? null,
+          message: x.error?.displayMessage ?? null,
+          linkSessionId: x.metadata?.linkSessionId ?? null,
+          requestId: x.metadata?.requestId ?? null,
+          errorType: x.error?.errorType ?? null,
+          step: x.metadata?.status ?? null,
+          institutionId: x.metadata?.institution?.id ?? null,
+        }),
       onEvent: () => {},
     })
       .then((session) => session.open())

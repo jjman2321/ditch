@@ -137,8 +137,23 @@ export function createLinkToken(opts: LinkTokenRequest = { mode: 'new' }): Promi
 }
 
 /** After the bank sign-in succeeds: hand the one-time public token to the server. */
-export function exchangePublicToken(publicToken: string, provider?: 'plaid' | 'stripe'): Promise<ExchangeResponse> {
-  return API_URL ? call('bank-exchange', { publicToken, provider }) : mock.exchangePublicToken();
+export function exchangePublicToken(publicToken: string, provider?: 'plaid' | 'stripe', linkSessionId?: string | null): Promise<ExchangeResponse> {
+  return API_URL ? call('bank-exchange', { publicToken, provider, linkSessionId: linkSessionId ?? undefined }) : mock.exchangePublicToken();
+}
+
+/** How Plaid's sign-in ended when it didn't finish: IDs and codes for troubleshooting with Plaid. Best effort. */
+export async function logLinkExit(info: {
+  linkId?: string;
+  mode: 'new' | 'update';
+  linkSessionId: string | null;
+  requestId: string | null;
+  errorCode: string | null;
+  errorType: string | null;
+  step: string | null;
+  institutionId: string | null;
+}): Promise<void> {
+  if (!API_URL) return;
+  await call('link-event', info).catch(() => undefined);
 }
 
 async function readAcks(): Promise<Record<string, string>> {

@@ -33,6 +33,7 @@ const routes: Record<string, (req: Request, deps: Parameters<typeof h.handleSync
   'apple-notifications': h.handleAppleNotification,
   'entitlement-sync': h.handleEntitlementSync,
   'bank-cleanup': h.handleCleanup,
+  'link-event': h.handleLinkEvent,
   'sandbox-selftest': (req, deps) => sandboxSelfTest(req, deps),
 };
 

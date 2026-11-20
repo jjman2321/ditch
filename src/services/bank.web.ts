@@ -18,7 +18,9 @@ export function syncEntitlements(_transactions: string[], _renewals: string[] = 
 }
 export const listBanks = () => mock.listBanks();
 export const createLinkToken = (opts?: LinkTokenRequest) => mock.createLinkToken(opts);
-export const exchangePublicToken = (_publicToken: string, _provider?: 'plaid' | 'stripe') => mock.exchangePublicToken();
+export const exchangePublicToken = (_publicToken: string, _provider?: 'plaid' | 'stripe', _linkSessionId?: string | null) => mock.exchangePublicToken();
+/** The web preview has no Plaid sign-in, so nothing to log. */
+export const logLinkExit = async (_info: unknown): Promise<void> => undefined;
 export const syncBank = (_linkId?: string, _repaired?: string): Promise<BankSyncResponse> => mock.syncBank();
 export async function confirmBankSync(_res: BankSyncResponse): Promise<void> {}
 export const removeBank = (linkId?: string) => mock.removeBank(linkId);

@@ -66,7 +66,7 @@ export class PlaidProvider implements BankProvider {
     const json = (await res.json().catch(() => ({}))) as Record<string, unknown>;
     if (!res.ok) {
       // Plaid errors: { error_type, error_code, error_message, display_message }. Safe to keep the code.
-      throw new ProviderError(String(json.error_code ?? 'PLAID_HTTP_' + res.status), String(json.error_message ?? 'Plaid error'), res.status);
+      throw new ProviderError(String(json.error_code ?? 'PLAID_HTTP_' + res.status), String(json.error_message ?? 'Plaid error'), res.status, typeof json.request_id === 'string' ? json.request_id : null);
     }
     return json as T;
   }

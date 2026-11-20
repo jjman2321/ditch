@@ -32,6 +32,8 @@ export class ProviderError extends Error {
     readonly code: string,
     message: string,
     readonly status = 0,
+    /** Plaid's request_id, for the Item Debugger and support tickets. */
+    readonly requestId: string | null = null,
   ) {
     super(message);
   }

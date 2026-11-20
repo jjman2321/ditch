@@ -6,6 +6,7 @@ import {
   handleLinkToken,
   handleList,
   handlePlaidWebhook,
+  handleLinkEvent,
   handleRemove,
   handleSync,
 } from '../functions/_shared/handlers.ts';
@@ -445,4 +446,33 @@ afterAll(() => {
   // No response the phone could ever see carries an access token.
   expect(allResponses.length).toBeGreaterThan(3);
   for (const r of allResponses) expect(r).not.toMatch(/access-sandbox|v1:/);
+});
+
+describe('troubleshooting log (Plaid IDs)', () => {
+  it('a new connection logs item_id, institution_id and link_session_id', async () => {
+    const ctx = await setup();
+    await handleExchange(req({ publicToken: 'public-sandbox-1', linkSessionId: 'sess-123' }), ctx.deps);
+    const ev = ctx.store.events.find((e) => e.kind === 'link_created')!;
+    expect(ev.detail).toMatchObject({ link_session_id: 'sess-123' });
+    expect(typeof (ev.detail as { item_id: string }).item_id).toBe('string');
+  });
+
+  it('a failed sync logs the item_id and Plaid request_id', async () => {
+    const ctx = await setup({ connect: 1 });
+    ctx.provider.syncResult = new ProviderError('INSTITUTION_DOWN', 'down', 400, 'req-abc');
+    await handleSync(req({}), ctx.deps);
+    const ev = ctx.store.events.find((e) => e.kind === 'sync_failed')!;
+    expect(ev.detail).toMatchObject({ code: 'INSTITUTION_DOWN', request_id: 'req-abc' });
+    expect((ev.detail as { item_id: string }).item_id).toBeTruthy();
+  });
+
+  it('link-event keeps IDs and codes only, and drops anything that is not a plain ID', async () => {
+    const ctx = await setup();
+    await handleLinkEvent(req({ linkSessionId: 'sess-9', requestId: 'req-9', errorCode: 'INVALID_CREDENTIALS', errorType: 'ITEM_ERROR', status: 'requires_credentials', institutionId: 'ins_3', email: 'a@b.c' }), ctx.deps);
+    await handleLinkEvent(req({ linkSessionId: 'has spaces and <html>' }), ctx.deps);
+    const evs = ctx.store.events.filter((e) => e.kind === 'link_exit');
+    expect(evs[0].detail).toEqual({ link_session_id: 'sess-9', request_id: 'req-9', code: 'INVALID_CREDENTIALS', error_type: 'ITEM_ERROR', status: 'requires_credentials', institution_id: 'ins_3', mode: 'new' });
+    expect((evs[1].detail as { link_session_id: string | null }).link_session_id).toBeNull();
+    expect(JSON.stringify(evs)).not.toContain('a@b.c');
+  });
 });

@@ -98,10 +98,14 @@ const Ctx = createContext<BankValue | null>(null);
  * Plaid's sign-in sheet. Closed without finishing: 'link_closed' (the screen shows "didn't finish").
  * This build has no Plaid code yet: 'needs_new_build'.
  */
-async function signIn(linkToken: string): Promise<{ publicToken: string; accounts: string | null }> {
+async function signIn(linkToken: string, where: { mode: 'new' | 'update'; linkId?: string }): Promise<{ publicToken: string; accounts: string | null; linkSessionId: string | null }> {
   if (!PLAID_READY()) throw new bank.BankApiError(0, 'needs_new_build', 'Bank sync needs the newest Ditch build.');
   const r = await openPlaidLink(linkToken);
-  if (r.status === 'exit') throw new bank.BankApiError(0, r.errorCode ? 'link_failed' : 'link_closed', r.message ?? undefined);
+  if (r.status === 'exit') {
+    // Plaid's IDs go to our server log (no personal data), so a stuck sign-in can be traced with Plaid.
+    void bank.logLinkExit({ ...where, linkSessionId: r.linkSessionId, requestId: r.requestId, errorCode: r.errorCode, errorType: r.errorType, step: r.step, institutionId: r.institutionId });
+    throw new bank.BankApiError(0, r.errorCode ? 'link_failed' : 'link_closed', r.message ?? undefined);
+  }
   return r;
 }
 
@@ -225,12 +229,14 @@ export function BankProvider({ children }: { children: ReactNode }) {
         // Real server: Plaid's own sign-in opens and hands back a one-time token. Practice bank: a fixed one.
         let publicToken = 'practice-public-token';
         let accounts: string | null = null;
+        let linkSessionId: string | null = null;
         if (bank.BANK_LIVE) {
-          const r = await signIn(linkToken);
+          const r = await signIn(linkToken, { mode: 'new' });
           publicToken = r.publicToken;
           accounts = r.accounts;
+          linkSessionId = r.linkSessionId;
         }
-        const { link } = await bank.exchangePublicToken(publicToken);
+        const { link } = await bank.exchangePublicToken(publicToken, undefined, linkSessionId);
         const today = clockToday();
         const next: BankLink = {
           id: link.id,
@@ -251,7 +257,7 @@ export function BankProvider({ children }: { children: ReactNode }) {
         const newAccounts = !!ref.current.links.find((l) => l.id === linkId)?.newAccounts;
         const { linkToken } = await bank.createLinkToken({ mode: 'update', linkId, ...(newAccounts ? { newAccounts } : {}) });
         let accounts: string | null = null;
-        if (bank.BANK_LIVE) accounts = (await signIn(linkToken)).accounts;
+        if (bank.BANK_LIVE) accounts = (await signIn(linkToken, { mode: 'update', linkId })).accounts;
         let next = setLinkStatus(ref.current, linkId, 'active');
         if (newAccounts) next = clearNewAccounts(next, linkId, accounts);
         await put(next);
@@ -264,7 +270,7 @@ export function BankProvider({ children }: { children: ReactNode }) {
         // Same connection, opened in update mode with Account Select: the person ticks the new account. No exchange.
         const { linkToken } = await bank.createLinkToken({ mode: 'update', linkId, newAccounts: true });
         let accounts: string | null = null;
-        if (bank.BANK_LIVE) accounts = (await signIn(linkToken)).accounts;
+        if (bank.BANK_LIVE) accounts = (await signIn(linkToken, { mode: 'update', linkId })).accounts;
         await put(clearNewAccounts(ref.current, linkId, accounts));
         // Like reconnect: wait for a sync in flight, then send ours, which also clears the flag on the server.
         await inFlight.current?.catch(() => {});

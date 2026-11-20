@@ -41,6 +41,10 @@ const HOUR = 60 * 60 * 1000;
 const aad = (provider: ProviderName, itemId: string) => `${provider}:${itemId}`;
 const syncToken = async (linkId: string, cursor: string) => (await sha256Hex(`${linkId}:${cursor}`)).slice(0, 32);
 const errCode = (e: unknown) => (e instanceof ProviderError ? e.code : 'INTERNAL');
+/** For troubleshooting with Plaid (Item Debugger, support tickets): the error code plus Plaid's request_id. */
+const errInfo = (e: unknown) => ({ code: errCode(e), request_id: e instanceof ProviderError ? e.requestId : null });
+/** Short, plain IDs from the phone only (link_session_id, request_id, codes): never free text. */
+const idOrNull = (v: unknown) => (typeof v === 'string' && /^[A-Za-z0-9_.:-]{1,128}$/.test(v) ? v : null);
 
 /** What the phone may see about a connection. No tokens, no cursors. */
 export function publicLink(l: BankLink) {
@@ -92,7 +96,7 @@ export async function removeLink(deps: Deps, link: BankLink, reason: string): Pr
     }
   } catch (e) {
     await store.updateLink(link.id, { remove_attempts: link.remove_attempts + 1, last_error: errCode(e) });
-    await store.logEvent({ kind: 'remove_failed', app_user_id: link.app_user_id, link_id: link.id, detail: { reason, code: errCode(e) } });
+    await store.logEvent({ kind: 'remove_failed', app_user_id: link.app_user_id, link_id: link.id, detail: { reason, item_id: link.item_id, ...errInfo(e) } });
     return false;
   }
   await store.updateLink(link.id, {
@@ -103,7 +107,7 @@ export async function removeLink(deps: Deps, link: BankLink, reason: string): Pr
     pending_cursor: null,
     updates_available: false,
   });
-  await store.logEvent({ kind: 'link_removed', app_user_id: link.app_user_id, link_id: link.id, detail: { reason } });
+  await store.logEvent({ kind: 'link_removed', app_user_id: link.app_user_id, link_id: link.id, detail: { reason, item_id: link.item_id } });
   return true;
 }
 
@@ -151,6 +155,7 @@ export async function handleLinkToken(req: Request, deps: Deps): Promise<Respons
     await deps.store.logEvent({ kind: 'link_token', app_user_id: user.id, detail: { mode: 'new', provider: providerName } });
     return json(200, { linkToken: lt.linkToken, expiration: lt.expiration, provider: providerName, mode: 'new' });
   } catch (e) {
+    await deps.store.logEvent({ kind: 'link_token_failed', app_user_id: user.id, link_id: body.mode === 'update' ? (body.linkId ?? null) : null, detail: { mode: body.mode ?? 'new', ...errInfo(e) } });
     return fail(502, 'provider_error', { code: errCode(e) });
   }
 }
@@ -158,7 +163,8 @@ export async function handleLinkToken(req: Request, deps: Deps): Promise<Respons
 // ---------- bank-exchange ----------
 
 export async function handleExchange(req: Request, deps: Deps): Promise<Response> {
-  const body = await postJson<{ publicToken?: string; provider?: ProviderName }>(req);
+  // linkSessionId: Plaid Link's session id from the phone, logged for troubleshooting with Plaid.
+  const body = await postJson<{ publicToken?: string; provider?: ProviderName; linkSessionId?: string }>(req);
   if (body instanceof Response) return body;
   const user = await authenticate(req, deps.store);
   if (user instanceof Response) return user;
@@ -173,6 +179,7 @@ export async function handleExchange(req: Request, deps: Deps): Promise<Response
   try {
     ex = await provider.exchange(body.publicToken);
   } catch (e) {
+    await deps.store.logEvent({ kind: 'exchange_failed', app_user_id: user.id, detail: { link_session_id: idOrNull(body.linkSessionId), ...errInfo(e) } });
     return fail(502, 'provider_error', { code: errCode(e) });
   }
 
@@ -183,7 +190,7 @@ export async function handleExchange(req: Request, deps: Deps): Promise<Response
     const others = dup ? links.filter((l) => l.id !== dup.id) : links;
     if (!canAddLink(others)) {
       await provider.remove(ex.accessToken);
-      await deps.store.logEvent({ kind: 'exchange_over_cap', app_user_id: user.id });
+      await deps.store.logEvent({ kind: 'exchange_over_cap', app_user_id: user.id, detail: { item_id: ex.itemId, link_session_id: idOrNull(body.linkSessionId) } });
       return fail(409, 'bank_limit', { max: 3 });
     }
     // Same bank again (usually a re-link): the old connection goes first, so the cap holds.
@@ -205,11 +212,16 @@ export async function handleExchange(req: Request, deps: Deps): Promise<Response
       remove_attempts: 0,
       removed_at: null,
     });
-    await deps.store.logEvent({ kind: 'link_created', app_user_id: user.id, link_id: row.id, detail: { provider: providerName } });
+    await deps.store.logEvent({
+      kind: 'link_created',
+      app_user_id: user.id,
+      link_id: row.id,
+      detail: { provider: providerName, item_id: ex.itemId, institution_id: ex.institutionId, link_session_id: idOrNull(body.linkSessionId) },
+    });
     return json(200, { link: publicLink(row), replaced: dup?.id ?? null });
   } catch (e) {
     await provider.remove(ex.accessToken).catch(() => undefined);
-    await deps.store.logEvent({ kind: 'exchange_failed', app_user_id: user.id, detail: { code: errCode(e) } });
+    await deps.store.logEvent({ kind: 'exchange_failed', app_user_id: user.id, detail: { item_id: ex.itemId, link_session_id: idOrNull(body.linkSessionId), ...errInfo(e) } });
     return fail(500, 'exchange_failed');
   }
 }
@@ -296,11 +308,12 @@ export async function handleSync(req: Request, deps: Deps): Promise<Response> {
       if (sharedNew) entry.newAccounts = false;
     } catch (e) {
       if (e instanceof ProviderError && e.needsRelogin) {
+        await store.logEvent({ kind: 'needs_relogin', app_user_id: user.id, link_id: link.id, detail: { item_id: link.item_id, ...errInfo(e) } });
         await store.updateLink(link.id, { status: 'needs_relogin', needs_relogin_since: link.needs_relogin_since ?? deps.now().toISOString(), last_error: e.code });
         entry.status = 'needs_relogin';
       } else {
         await store.updateLink(link.id, { last_error: errCode(e) });
-        await store.logEvent({ kind: 'sync_failed', app_user_id: user.id, link_id: link.id, detail: { code: errCode(e) } });
+        await store.logEvent({ kind: 'sync_failed', app_user_id: user.id, link_id: link.id, detail: { item_id: link.item_id, ...errInfo(e) } });
         entry.status = 'error';
       }
     }
@@ -350,7 +363,7 @@ export async function handlePlaidWebhook(req: Request, deps: Deps): Promise<Resp
   const link = await deps.store.getLinkByItem('plaid', action.itemId);
   if (!link || link.status === 'removed') {
     // An Item we don't hold a token for can't be removed by us; log it for the monthly bill check.
-    await deps.store.logEvent({ kind: 'webhook_unknown_item', detail: { code: body.webhook_code } });
+    await deps.store.logEvent({ kind: 'webhook_unknown_item', detail: { code: body.webhook_code, item_id: action.itemId } });
     return json(200, { ignored: 'unknown_item' });
   }
   const now = deps.now().toISOString();
@@ -377,7 +390,7 @@ export async function handlePlaidWebhook(req: Request, deps: Deps): Promise<Resp
       await deps.store.updateLink(link.id, { new_accounts: true });
       break;
   }
-  await deps.store.logEvent({ kind: 'plaid_webhook', app_user_id: link.app_user_id, link_id: link.id, detail: { type: body.webhook_type, code: body.webhook_code, action: action.kind } });
+  await deps.store.logEvent({ kind: 'plaid_webhook', app_user_id: link.app_user_id, link_id: link.id, detail: { type: body.webhook_type, code: body.webhook_code, action: action.kind, item_id: action.itemId } });
   return json(200, { ok: true });
 }
 
@@ -517,4 +530,35 @@ export async function handleCleanup(req: Request, deps: Deps): Promise<Response>
   for (const r of plan) if (await removeLink(deps, byId.get(r.linkId)!, `cleanup_${r.reason}`)) removed++;
   await deps.store.logEvent({ kind: 'cleanup_run', detail: { live: links.length, planned: plan.length, removed } });
   return json(200, { live: links.length, planned: plan.length, removed, failed: plan.length - removed });
+}
+
+// ---------- link-event (Plaid Link exits from the phone, for troubleshooting) ----------
+
+/**
+ * The phone reports how Plaid Link ended when it didn't finish: link_session_id, request_id, error code
+ * and type, the step it stopped at, and the bank's id. IDs and codes only; nothing about the person.
+ */
+export async function handleLinkEvent(req: Request, deps: Deps): Promise<Response> {
+  const body = await postJson<Record<string, unknown>>(req);
+  if (body instanceof Response) return body;
+  const user = await authenticate(req, deps.store);
+  if (user instanceof Response) return user;
+  const now = deps.now().getTime();
+  // A little flood guard: plenty for real use, too few to fill the log.
+  if ((await deps.store.countEvents(user.id, 'link_exit', new Date(now - HOUR).toISOString())) >= 30) return json(200, { ok: true, dropped: true });
+  await deps.store.logEvent({
+    kind: 'link_exit',
+    app_user_id: user.id,
+    link_id: idOrNull(body.linkId),
+    detail: {
+      link_session_id: idOrNull(body.linkSessionId),
+      request_id: idOrNull(body.requestId),
+      code: idOrNull(body.errorCode),
+      error_type: idOrNull(body.errorType),
+      status: idOrNull(body.status),
+      institution_id: idOrNull(body.institutionId),
+      mode: body.mode === 'update' ? 'update' : 'new',
+    },
+  });
+  return json(200, { ok: true });
 }

@@ -31,7 +31,7 @@ import {
 } from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
 import { AddDatesSheet } from '@/home/AddDatesSheet';
-import { EmptyHome, MissingStrip, NextReminderRow, NoDateRow, NoReminderRow, OffBanner, OverlapCard, PaydayRow, PriceChangeCard, QuietRow, TotalCard, openPhoneSettings } from '@/home/HomeParts';
+import { EmptyHome, ForgottenRow, NextReminderRow, NoDateRow, NoReminderRow, OffBanner, OverlapCard, PaydayRow, PriceChangeCard, QuietRow, TotalCard, openPhoneSettings } from '@/home/HomeParts';
 import { PriceColumnMeasure, SubRow, rowPrice, type BellState } from '@/home/SubRow';
 import { BankToastView, SyncCardView, type SyncHandlers } from '@/bank/HomeCards';
 import { openUrl } from '@/ditch/CancelHelp';
@@ -410,9 +410,10 @@ export default function Home() {
 
   // Short lists only: a small "Missing any?" row so Home isn't bare (owner, Nov 20). Long lists don't need it.
   const footer =
-    !empty && listed.length <= 8 && !cardOn ? (
-      <View style={{ marginTop: 28 }}>
-        <MissingStrip country={settings.country} have={new Set(subs.map((s) => s.catalogId).filter((c): c is string => !!c))} onAdd={(id) => editor.openAdd(id)} />
+    // Short lists: the older "Missing any?" card (owner, Nov 20: logos could get cluttered). Gone once they've been through it.
+    !empty && listed.length <= 8 && !cardOn && !settings.forgottenDone ? (
+      <View style={{ marginTop: 22 }}>
+        <ForgottenRow onPress={() => editor.openForgotten()} />
       </View>
     ) : undefined;
 

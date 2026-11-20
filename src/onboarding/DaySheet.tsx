@@ -1,8 +1,8 @@
 // "Pick day" → which day it charges (design/v13-dates screens 2 and 4,
 // DECISIONS #33: no guesses). Monthly: the 31 days and "Last day of the
 // month", like Apple Wallet; the anchor day is kept and clamps in short
-// months. Yearly: the month, then the day. Weekly and every 3 months: a
-// calendar for the next charge. The yellow box says exactly what will
+// months. Every other cycle, yearly included: a calendar for the next charge
+// (owner, Nov 20: yearly went month-then-day). The yellow box says exactly what will
 // happen, reminders included. "I'm not sure" leaves it with no date.
 // Today is picked to start with (owner, Nov 19, replaces the "Paid it today" button):
 // most people add a subscription the day it charges. Today's day counts as already
@@ -16,22 +16,7 @@ import { HEADS_UP_LEADS, chargeFrom, ordinal } from '@/domain/charges';
 import { chargesSoonLine, shortPlanName } from '@/domain/copy';
 import { paidToday } from '@/domain/paidToday';
 import { reminderDaysFor } from '@/domain/reminders';
-import {
-  addDays,
-  anchorForDayOfMonth,
-  daysBetween,
-  anchorForMonthDay,
-  daysInMonth,
-  longDate,
-  monthGrid,
-  monthTitle,
-  nextChargeDate,
-  parseDate,
-  shiftMonth,
-  shortDate,
-  weekdayDate,
-  type DateOnly,
-} from '@/domain/dates';
+import { addDays, anchorForDayOfMonth, daysBetween, longDate, monthGrid, monthTitle, nextChargeDate, parseDate, shiftMonth, shortDate, weekdayDate, type DateOnly } from '@/domain/dates';
 import { now as clockNow } from '@/services/clock';
 import { onboardingToday, usePickPrice, type Picked } from '@/state/onboarding';
 import { Button, ChevronLeft, ChevronRight, F, IconButton, LogoTile, Sheet, Txt, haptic, usePalette } from '@/ui/sunflower';
@@ -40,7 +25,6 @@ import { CloseButton } from './Parts';
 
 const WEEKDAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 const EVERY = { weekly: 'every week', biweekly: 'every 2 weeks', monthly: 'every month', quarterly: 'every 3 months', semiannual: 'every 6 months', yearly: 'every year' } as const;
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 /**
  * "Reminders Fri, Nov 13 and Sun, Nov 15 at 9 AM." (or why there are none).
@@ -85,38 +69,6 @@ function DayCell({ label, on, disabled, a11y, onPress }: { label: string; on: bo
     >
       <View style={{ width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: on ? p.accent : 'transparent' }}>
         <Txt v="label" num color={on ? p.accentFg : disabled ? p.disabledFg : p.fg} style={{ fontSize: 16 }} maxFontSizeMultiplier={1.2}>
-          {label}
-        </Txt>
-      </View>
-    </Pressable>
-  );
-}
-
-function MonthChip({ label, on, onPress }: { label: string; on: boolean; onPress: () => void }) {
-  const p = usePalette();
-  return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={label}
-      accessibilityState={{ selected: on }}
-      onPress={() => {
-        haptic.select();
-        onPress();
-      }}
-      style={{ flex: 1, height: 44, alignItems: 'center', justifyContent: 'center' }}
-    >
-      <View
-        style={{
-          alignSelf: 'stretch',
-          marginHorizontal: 2,
-          height: 36,
-          borderRadius: 10,
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: on ? p.accent : p.dark ? '#26241F' : '#EFE8D8',
-        }}
-      >
-        <Txt v="label" color={on ? p.accentFg : p.fg} style={{ fontSize: 14 }} maxFontSizeMultiplier={1.2}>
           {label}
         </Txt>
       </View>
@@ -179,32 +131,17 @@ export function DayBody({
   // Monthly: the day of the month (31 = last day). Yearly: month + day. Others: the next charge itself.
   const t = parseDate(today);
   const paid = paidToday(pick.cycle, today);
-  const [day, setDayRaw] = useState<number | null>(monthly || yearly ? (known ? parseDate(pick.anchor).d : t.d) : null);
-  const [month, setMonthRaw] = useState<number | null>(yearly ? (known ? parseDate(pick.anchor).m : t.m) : null);
-  const [date, setDateRaw] = useState<DateOnly | null>(!monthly && !yearly ? (known ? knownNext : paid.next) : null);
+  const [day, setDayRaw] = useState<number | null>(monthly ? (known ? parseDate(pick.anchor).d : t.d) : null);
+  // Yearly: straight to the calendar, starting on today (owner, Nov 20: no month-then-day step).
+  const [date, setDateRaw] = useState<DateOnly | null>(!monthly ? (known ? knownNext : yearly ? today : paid.next) : null);
   const setDay = (d: number) => (setTouched(true), setDayRaw(d));
-  const setMonth = (m: number) => (setTouched(true), setMonthRaw(m));
   const setDate = (d: DateOnly) => (setTouched(true), setDateRaw(d));
   const keep = pick.dateSource === 'receipt' && !touched;
   const [view, setView] = useState(() => parseDate(date ?? today));
 
-  const yearDays = month ? (month === 2 ? 29 : daysInMonth(2024, month)) : 31;
   // Today's own day means it charged today: save today as the last charge, next one a cycle later.
-  const isToday = !keep && ((monthly && day === t.d) || (yearly && month === t.m && day === t.d));
-  const anchor =
-    keep || isToday
-      ? keep
-        ? pick.anchor
-        : today
-      : monthly
-        ? day
-          ? anchorForDayOfMonth(day, today)
-          : null
-        : yearly
-          ? month && day && day <= yearDays
-            ? anchorForMonthDay(month, day, today)
-            : null
-          : date;
+  const isToday = !keep && ((monthly && day === t.d) || (yearly && date === today));
+  const anchor = keep || isToday ? (keep ? pick.anchor : today) : monthly ? (day ? anchorForDayOfMonth(day, today) : null) : date;
   const source: 'next' | 'receipt' = keep || isToday ? 'receipt' : 'next';
   const next = keep ? knownNext : isToday ? paid.next : anchor ? nextChargeDate(anchor, pick.cycle, today) : null;
   const price = priceOf(pick, 'short');
@@ -227,10 +164,10 @@ export function DayBody({
           : `Charges ${EVERY[pick.cycle]}.`;
 
   // The next charge is at most one cycle away.
-  const max = addDays(today, pick.cycle === 'semiannual' ? 184 : pick.cycle === 'quarterly' ? 92 : 31);
+  const max = addDays(today, yearly ? 365 : pick.cycle === 'semiannual' ? 184 : pick.cycle === 'quarterly' ? 92 : 31);
   const canPrev = view.y * 12 + view.m > parseDate(today).y * 12 + parseDate(today).m;
   const canNext = view.y * 12 + view.m < parseDate(max).y * 12 + parseDate(max).m;
-  const cells = monthly || yearly ? [] : monthGrid(view.y, view.m);
+  const cells = monthly ? [] : monthGrid(view.y, view.m);
   const weeks: (DateOnly | null)[][] = [];
   for (let i = 0; i < cells.length; i += 7) weeks.push([...cells.slice(i, i + 7), ...Array(Math.max(0, i + 7 - cells.length)).fill(null)]);
 
@@ -282,19 +219,6 @@ export function DayBody({
             </Txt>
           </Pressable>
         </>
-      ) : yearly ? (
-        <>
-          <View style={{ marginTop: 12 }} accessibilityRole="radiogroup" accessibilityLabel="Month">
-            {[0, 1].map((r) => (
-              <View key={r} style={{ flexDirection: 'row' }}>
-                {MONTHS.slice(r * 6, r * 6 + 6).map((mName, i) => (
-                  <MonthChip key={mName} label={mName} on={month === r * 6 + i + 1} onPress={() => setMonth(r * 6 + i + 1)} />
-                ))}
-              </View>
-            ))}
-          </View>
-          <DayGrid days={yearDays} value={day && day <= yearDays ? day : null} onPick={setDay} />
-        </>
       ) : (
         <View style={{ marginTop: 8 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -336,7 +260,7 @@ export function DayBody({
       {/* Says exactly what will happen, so the reminders are real before the paywall. */}
       <View accessible accessibilityLiveRegion="polite" style={{ marginTop: 14, borderRadius: 16, backgroundColor: p.dark ? '#2A2721' : '#FFF1BC', paddingVertical: 12, paddingHorizontal: 14 }}>
         <Txt v="body" num style={{ fontFamily: F.semi }}>
-          {rule ?? (monthly ? 'Tap the day it charges.' : yearly ? 'Tap the month, then the day.' : 'Tap the day it charges next.')}
+          {rule ?? (monthly ? 'Tap the day it charges.' : yearly ? 'Tap the day it renews next.' : 'Tap the day it charges next.')}
         </Txt>
         <Txt v="body" tone="fg2" num style={{ marginTop: 2 }}>
           {/* One short line (owner, Nov 20: the box had too much text). The reminder days are on the reminders step. */}

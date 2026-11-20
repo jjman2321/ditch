@@ -1,7 +1,7 @@
 // Feedback & help → one sheet for all three rows (owner, Nov 20: "you didn't do the form").
 // Pattern from Substack's feedback sheet, Yami and Clue (Mobbin): pick what it's about,
 // one big text box, an optional email, send without leaving the app.
-// Sends only what they type, plus a line of counts if "Include app info" is on.
+// Sends only what they type, plus a line of counts and settings (always; never names or prices).
 // The list itself never leaves the phone. Offline? The text stays, and Mail is the fallback.
 
 import { useEffect, useState } from 'react';
@@ -10,7 +10,7 @@ import { AccessibilityInfo, ScrollView, TextInput, View } from 'react-native';
 import { effectiveLeads } from '@/domain/settings';
 import { pendingCount } from '@/services/notifications';
 import { useApp } from '@/state/app';
-import { Button, DuckIcon, F, KEYBOARD_DONE, KeyboardDone, Notice, Segmented, Sheet, SunSwitch, Txt, haptic, usePalette, useSheetScroll } from '@/ui/sunflower';
+import { Button, DuckIcon, F, KEYBOARD_DONE, KeyboardDone, Notice, Segmented, Sheet, Txt, haptic, usePalette, useSheetScroll } from '@/ui/sunflower';
 
 import { FEEDBACK_MAX, buildFeedback, diagnosticsLine, emailFeedback, isEmail, sendFeedback, type FeedbackKind } from './feedback';
 
@@ -39,8 +39,7 @@ function Body({ initialKind, draft, setDraft, onDone }: { initialKind: FeedbackK
   const { message, email } = draft;
   // On for a problem (it's how we find out why a reminder didn't come), off otherwise,
   // until they flip it themselves.
-  const [infoChoice, setInfoChoice] = useState<boolean | null>(null);
-  const includeInfo = infoChoice ?? kind === 'problem';
+  const includeInfo = true;
   const [status, setStatus] = useState<Status>('form');
   // The email is checked when they leave the box or tap Send, never mid-word.
   const [emailChecked, setEmailChecked] = useState(false);
@@ -183,21 +182,7 @@ function Body({ initialKind, draft, setDraft, onDone }: { initialKind: FeedbackK
           </Txt>
         ) : null}
 
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 14, minHeight: 44 }}>
-          <View style={{ flex: 1 }}>
-            <Txt v="label">Include app info</Txt>
-            <Txt v="fine" tone="mute" style={{ marginTop: 2 }}>
-              Counts and settings only. No names or prices.
-            </Txt>
-          </View>
-          <SunSwitch value={includeInfo} onValueChange={setInfoChoice} label="Include app info" hint="Adds counts and settings, never names or prices" disabled={sending} />
-        </View>
-        {includeInfo ? (
-          // Show exactly what's added, so nobody has to take our word for it.
-          <Txt v="fine" tone="mute" style={{ marginTop: 6 }} accessibilityLabel={`Adds: ${appInfo}`}>
-            {appInfo}
-          </Txt>
-        ) : null}
+        {/* App info (counts and settings, never names or prices) always goes along: no switch, no line (owner, Nov 20). */}
 
         {status === 'failed' ? (
           <Notice

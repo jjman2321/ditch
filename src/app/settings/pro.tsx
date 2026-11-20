@@ -68,7 +68,7 @@ export default function ProPage() {
         <>
           {/* What Pro adds, in the user's own numbers (same rows as the paywall table). */}
           <Group header="With Pro">
-            {showBankScan() ? <Row label="Scan your bank" right={tick} /> : null}
+            {showBankScan() ? <Row label="Bank sync" right={tick} /> : null}
             <Row label={n > 3 ? `Reminders on all ${n}` : 'Reminders on everything'} right={tick} />
             <Row label="Pick your reminder days" right={tick} />
             <Row label="Price rise check" right={tick} />

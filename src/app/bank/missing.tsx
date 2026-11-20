@@ -11,7 +11,7 @@ import { shortDate } from '@/domain/dates';
 import { runningProTrial } from '@/domain/subs';
 import { setFindTarget } from '@/import/session';
 import { useApp } from '@/state/app';
-import { Button, Card, Txt } from '@/ui/sunflower';
+import { Button, Card, DuckIcon, Txt } from '@/ui/sunflower';
 
 export default function BankMissing() {
   const flow = useBankFlow();
@@ -36,18 +36,21 @@ export default function BankMissing() {
         </>
       }
     >
-      <View style={{ flex: 0.6 }} />
-      <Txt v="title" accessibilityRole="header" style={{ fontSize: 32, lineHeight: 36 }}>
-        {'Didn’t find\nyour bank?'}
-      </Txt>
-      <Txt v="leadS" tone="fg2" style={{ marginTop: 10 }}>
-        Some banks and credit unions can’t connect yet. The card you pay subscriptions with might work.
-      </Txt>
-      <Card style={{ marginTop: 18, padding: 16 }}>
-        <Txt v="bodyS" tone="fg2">
-          {note}
+      {/* An empty state, so it's centred around the duck (owner, Nov 20: plain screens get the brand mark). */}
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingVertical: 24 }}>
+        <DuckIcon size={88} />
+        <Txt v="title" accessibilityRole="header" center style={{ fontSize: 30, lineHeight: 34, marginTop: 22 }}>
+          {'Didn’t find\nyour bank?'}
         </Txt>
-      </Card>
+        <Txt v="leadS" tone="fg2" center style={{ marginTop: 10, maxWidth: 340 }}>
+          Some banks and credit unions can’t connect yet. The card you pay subscriptions with might work.
+        </Txt>
+        <Card style={{ marginTop: 18, padding: 16, alignSelf: 'stretch' }}>
+          <Txt v="bodyS" tone="fg2" center>
+            {note}
+          </Txt>
+        </Card>
+      </View>
     </BankPage>
   );
 }

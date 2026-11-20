@@ -68,11 +68,14 @@ type Row = {
 // subscription" is free on both sides, so it said nothing). Only features that work in this build (App Review 2.1).
 function rowsFor(n: number): Row[] {
   // Owner, Nov 18: "way too much text". One short name per row, no second line. Only real, working features.
+  // Order (owner, Nov 20: "have bank sync first"): Bank sync always leads, then Reminders.
+  // Provider never named. Always-on now (DECISIONS #67), so "Bank sync", not "Scan your bank".
+  const bank = showBankScan() ? [{ label: 'Bank sync', free: 'no', pro: 'yes' }] : [];
+  // Personal: "All 6" when they track more than the free 3.
+  const reminders = { label: 'Reminders', free: '3', pro: n > 3 ? `All ${n}` : 'Unlimited' };
   return [
-    // The headline feature once it ships (DECISIONS #64, trial-gated). Test builds only until then. Provider never named.
-    ...(showBankScan() ? [{ label: 'Scan your bank', free: 'no', pro: 'yes' }] : []),
-    // Personal: "All 6" when they track more than the free 3.
-    { label: 'Reminders', free: '3', pro: n > 3 ? `All ${n}` : 'Unlimited' },
+    ...bank,
+    reminders,
     // Price watch (DECISIONS #60).
     { label: 'Price rise check', free: 'no', pro: 'yes' },
     // The 30-day warning before yearly charges (DECISIONS #60).
@@ -451,8 +454,10 @@ export default function Paywall() {
 
   // The same headline from onboarding, a 4th bell (from=which) or custom days (from=remind): "all N" once they track more than 3.
   const what = many ? `all ${n}${NB}renewals.` : `every${NB}renewal.`;
-  const head = bankPick ? `See what\n${bankPick.name}${NB}knows.` : `Get a reminder before\n${what}`;
-  const spokenHead = bankPick ? `See what ${bankPick.name} knows.` : `Get a reminder before ${many ? `all ${n} renewals` : 'every renewal'}.`;
+  // Bank: never the bank's name in the headline (owner, Nov 20: "See what Bank of America knows" made no sense and
+  // long names ran to 3 lines, under the table). Always 2 lines.
+  const head = bankPick || from === 'bank' ? `Find every sub\nyou${NB}pay${NB}for.` : `Get a reminder before\n${what}`;
+  const spokenHead = bankPick || from === 'bank' ? 'Find every sub you pay for.' : `Get a reminder before ${many ? `all ${n} renewals` : 'every renewal'}.`;
   const allRows = rowsFor(n);
   const ink = dark ? '#F6F0E3' : brand.ink;
   // One fixed design, scaled to fit (owner, Nov 18: "how it looks on other devices"). The paywall is laid
@@ -506,6 +511,10 @@ export default function Paywall() {
         accessibilityLabel={spokenHead}
         style={{ fontSize: 30, lineHeight: 36, letterSpacing: -1 }}
         maxFontSizeMultiplier={1}
+        // The hero has room for 2 lines; anything longer shrinks instead of running under the table.
+        numberOfLines={2}
+        adjustsFontSizeToFit
+        minimumFontScale={0.7}
       >
         {head}
       </Txt>

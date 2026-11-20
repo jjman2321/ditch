@@ -7,7 +7,7 @@ import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, View, useWindowDimensions } from 'react-native';
 
-import { MONTH_LONG, parseDate, shortDate, weekdayDate } from '@/domain/dates';
+import { MONTH_SHORT, parseDate, shortDate, weekdayDate } from '@/domain/dates';
 import { CYCLE_SHORT, CYCLE_WORDS } from '@/domain/money';
 import { chargeOfSub, confirmedSavings, isConfirmed, isPending, isPricedSub, pendingSavings, savingsSteps, snapYearly, type Sub } from '@/domain/subs';
 import { useCancelHelp } from '@/ditch/CancelHelp';
@@ -153,12 +153,18 @@ export default function DitchedTab() {
                       + {money(t.yearlyMinor, t.currency, { whole: true })} a year
                     </Txt>
                   ))}
-                  <Txt v="leadS" num color={p.dark ? p.fg2 : '#4B4220'} style={{ marginTop: 6 }}>
-                    {/* Too narrow for one line (every phone): the monthly gets its own line, no dot. Wide (iPad): one line,
-                        with the dot glued to the word before it so a dot never starts a line. */}
+                  {/* Never more than 2 lines under "a year." on any phone (owner, Nov 20): each line is capped at one
+                      line and shrinks a little rather than wrap. Wide (iPad): both on one line, the dot glued to the
+                      word before it so a dot never starts a line. */}
+                  <Txt v="leadS" num color={p.dark ? p.fg2 : '#4B4220'} style={{ marginTop: 6 }} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>
                     {`From ${main.count} ${main.count === 1 ? 'sub' : 'subs'} you cancelled${sinceWord ? ` since ${sinceWord}` : ''}`}
-                    {oneLine ? `\u00A0· ${`${money(main.monthlyMinor, main.currency)} a month`.replace(/ /g, '\u00A0')}` : `\n${money(main.monthlyMinor, main.currency)} a month`}
+                    {oneLine ? `\u00A0· ${`${money(main.monthlyMinor, main.currency)} a month`.replace(/ /g, '\u00A0')}` : ''}
                   </Txt>
+                  {oneLine ? null : (
+                    <Txt v="leadS" num color={p.dark ? p.fg2 : '#4B4220'} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>
+                      {`${money(main.monthlyMinor, main.currency)} a month`}
+                    </Txt>
+                  )}
                 </>
               ) : confirmed.length ? (
                 // Cancelled, but nothing had a price: say so instead of "nothing cancelled".
@@ -408,5 +414,6 @@ function Pill({
 function sinceLabel(d: string, today: string): string {
   const { y, m } = parseDate(d);
   const t = parseDate(today);
-  return y === t.y ? MONTH_LONG[m - 1] : `${MONTH_LONG[m - 1]} ${y}`;
+  // Short month ("since Nov") so the line fits one line on every phone.
+  return y === t.y ? MONTH_SHORT[m - 1] : `${MONTH_SHORT[m - 1]} ${y}`;
 }

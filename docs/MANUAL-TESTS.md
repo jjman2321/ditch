@@ -171,7 +171,7 @@ Best on the smallest phone you have (SE or mini) and a big one if you can borrow
 ## 1s. Bank sync on the practice bank (Nov 19, design/v32, DECISIONS #70)
 Test build only, iPhone Region set to the US or Canada. The bank sign-in is a **practice sheet** ("Practice bank (test build)"): no real bank, made-up charges.
 1. Fresh onboarding → Where should we look?: "My bank or card" is the big card on top with "PRO · 7 DAYS FREE"; the free routes sit below under "Or do it yourself".
-2. Tap it → "Your bank already knows." with 3 ticks, "What we see" opens a short sheet, the price line is at the bottom.
+2. Tap it → "Connect once. We find the rest." with 3 ticks, "What we see" opens a short sheet, the price line is at the bottom.
 3. Choose my bank → 9 banks, 3 across. Search "navy" finds Navy Federal; "zzz" says no bank by that name. "Bank not here?" → "Didn't find your bank?" with 3 ways out.
 4. Pick Chase → the paywall says "See what Chase knows." Start my free week (Preview Pro) → the practice sheet opens over "Reading Chase…". Cancel → "Didn't find your bank?".
 5. Connect practice Chase → the 4 steps tick one by one, logos drop in → "Found 5 at Chase. $924 a year." Untick Netflix: the year total drops. Yes/No on the 2 unsure ones are the same size. Looks right → your total, without Netflix.

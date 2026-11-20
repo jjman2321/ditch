@@ -55,9 +55,10 @@ export default function BankExplainer() {
         </>
       }
     >
-      <BigTitle style={{ marginTop: 8 }}>{'Your bank\nalready knows.'}</BigTitle>
+      {/* Owner, Nov 20: "Your bank already knows" didn't make sense. Says what happens instead (9/10 of 3 options). */}
+      <BigTitle style={{ marginTop: 8 }}>{'Connect once.\nWe find the rest.'}</BigTitle>
       <Txt v="leadS" tone="fg2" style={{ marginTop: 10 }}>
-        Connect it once. Ditch finds what you pay for, adds it to your list and spots new ones as they start.
+        Ditch finds what you pay for, adds it to your list and spots new ones as they start.
       </Txt>
       <View style={{ marginTop: 18 }}>
         <TickLine>Read-only. Ditch can’t move money.</TickLine>

@@ -330,7 +330,8 @@ export function DayBody({
           {rule ?? (monthly ? 'Tap the day it charges.' : yearly ? 'Tap the month, then the day.' : 'Tap the day it charges next.')}
         </Txt>
         <Txt v="body" tone="fg2" num style={{ marginTop: 2 }}>
-          {next ? `Next: ${weekdayDate(next)}. ${remindersLine(next, today, leads, time, { reminderTime, off })}` : 'It’s in your bank app or the receipt email.'}
+          {/* One short line (owner, Nov 20: the box had too much text). The reminder days are on the reminders step. */}
+          {next ? `Next charge ${weekdayDate(next)}${off ? ' · no reminder on free' : ''}` : 'It’s in your bank app or the receipt email.'}
         </Txt>
       </View>
       <Button label="Save" disabled={!anchor} onPress={() => anchor && onDone(anchor, source)} style={{ marginTop: 16 }} />

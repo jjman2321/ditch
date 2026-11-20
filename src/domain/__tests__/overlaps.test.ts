@@ -43,17 +43,25 @@ describe('overlaps (DECISIONS #60)', () => {
     const key = overlapToShow(three, [])!.key;
     expect(overlapToShow(three.slice(0, 2), [key])).toBeNull();
   });
-  it('the card reads naturally: "You pay for 2 AI chat apps" (owner, Nov 19)', () => {
-    const [ai] = overlaps([sub('c', 'ChatGPT Plus', 'chatgpt-plus'), sub('k', 'Claude Pro', 'claude-pro')]);
-    expect(overlapWhat(ai)).toBe('You pay for 2 AI chat apps');
-    expect(overlapWhat(ai, { short: true })).toBe('2 AI chat apps');
+  it('never flags AI chat apps: people use several on purpose (owner, Nov 20)', () => {
+    expect(overlaps([sub('c', 'ChatGPT Plus', 'chatgpt-plus'), sub('k', 'Claude Pro', 'claude-pro'), sub('g', 'Google AI Pro', 'google-ai-pro')])).toEqual([]);
+  });
+  it('video streaming only from 4 services (two or three is normal)', () => {
+    const vids = ['netflix', 'disney-plus', 'max', 'hulu'].map((id, i) => sub(String(i), id, id));
+    expect(overlaps(vids.slice(0, 3))).toEqual([]);
+    expect(overlapWhat(overlaps(vids)[0])).toBe('You pay for 4 video streaming services');
+  });
+  it('the card reads naturally: "You pay for 2 music apps" (owner, Nov 19)', () => {
+    const [music] = overlaps([sub('s', 'Spotify', 'spotify'), sub('m', 'Apple Music', 'apple-music')]);
+    expect(overlapWhat(music)).toBe('You pay for 2 music apps');
+    expect(overlapWhat(music, { short: true })).toBe('2 music apps');
     const [twice] = overlaps([sub('a', 'Netflix', 'netflix'), sub('b', 'Netflix', 'netflix')]);
     expect(overlapWhat(twice)).toBe('You pay for Netflix twice');
     const [three] = overlaps([sub('a', 'Netflix', 'netflix'), sub('b', 'Netflix', 'netflix'), sub('c', 'Netflix', 'netflix')]);
     expect(overlapWhat(three, { short: true })).toBe('Netflix 3 times');
   });
   it('every group label is a plural noun that follows "You pay for 2"', () => {
-    expect(GROUPS.map((g) => g.label)).toEqual(['music apps', 'AI chat apps', 'cloud storage plans', 'video streaming services']);
+    expect(GROUPS.map((g) => g.label)).toEqual(['music apps', 'cloud storage plans', 'video streaming services']);
   });
 });
 

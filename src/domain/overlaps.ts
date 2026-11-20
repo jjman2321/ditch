@@ -18,7 +18,7 @@ export type Overlap = {
 
 export const GROUPS: { label: string; ids: string[]; min: number }[] = [
   { label: 'music apps', ids: ['spotify', 'apple-music', 'youtube-music', 'amazon-music', 'tidal', 'deezer', 'pandora', 'qobuz', 'soundcloud', 'jiosaavn', 'gaana'], min: 2 },
-  { label: 'AI chat apps', ids: ['chatgpt-plus', 'claude-pro', 'google-ai-pro', 'perplexity', 'grok', 'copilot-pro', 'le-chat'], min: 2 },
+  // No AI chat group (owner, Nov 20): plenty of people use Claude and Gemini side by side on purpose.
   { label: 'cloud storage plans', ids: ['icloud', 'google-one', 'dropbox', 'onedrive'], min: 2 },
   {
     label: 'video streaming services',

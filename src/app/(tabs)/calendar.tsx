@@ -162,8 +162,8 @@ export default function Calendar() {
           accessible
           accessibilityLabel={
             due.totals.length
-              ? `${due.totals.map((x) => money(x.amountMinor, x.currency)).join(', and ')} due in ${MONTH_LONG[view.m - 1]}, ${due.count} ${due.count === 1 ? 'charge' : 'charges'}`
-              : `Nothing due in ${MONTH_LONG[view.m - 1]}`
+              ? `${due.totals.map((x) => money(x.amountMinor, x.currency)).join(', and ')} in ${MONTH_LONG[view.m - 1]}, ${due.count} ${due.count === 1 ? 'charge' : 'charges'}`
+              : `Nothing in ${MONTH_LONG[view.m - 1]}`
           }
           style={{ marginTop: 8 }}
         >
@@ -173,12 +173,12 @@ export default function Calendar() {
             {due.totals[0] ? money(due.totals[0].amountMinor, due.totals[0].currency) : money(0, settings.currency)}
           </Txt>
           <Txt v="leadS" tone="fg2" num style={{ fontSize: 15, letterSpacing: -0.3 }} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>
-            due in {MONTH_LONG[view.m - 1]} · {due.count} {due.count === 1 ? 'charge' : 'charges'}
+            in {MONTH_LONG[view.m - 1]} · {due.count} {due.count === 1 ? 'charge' : 'charges'}
           </Txt>
           {/* Other currencies: their own line each, no "+" (never added together). */}
           {due.totals.slice(1).map((x) => (
             <Txt key={x.currency} v="leadS" tone="fg2" num style={{ fontSize: 15, letterSpacing: -0.3 }}>
-              {money(x.amountMinor, x.currency)} due in {MONTH_LONG[view.m - 1]}
+              {money(x.amountMinor, x.currency)} in {MONTH_LONG[view.m - 1]}
             </Txt>
           ))}
         </View>
@@ -464,9 +464,18 @@ function ChargeRow({
   const sent = all.filter((d) => d < today && d >= s.createdAt.slice(0, 10));
   // One line that says when the reminders land: "Reminders Mon 16, Wed 18" (no pills; the time is in Settings and VoiceOver).
   const short = (d: DateOnly) => `${weekdayShort(d)} ${parseDate(d).d}`;
-  const line = c.pending
-    ? 'Ditched. Cancel before it charges.'
-    : !on
+  // Set as "charged today" in the day sheet: this day's charge is already paid (owner, Nov 20: it said "Charges today").
+  const paid = s.dateSource === 'receipt' && c.date === s.anchor;
+  const line = paid
+    ? c.date === today
+      ? c.pending
+        ? 'Ditched · paid today'
+        : 'Paid today'
+      : 'Paid'
+    : c.pending
+      ? // Short so it never cuts off: when it charges is the deadline to cancel.
+        `Ditched · charges ${c.date === today ? 'today' : short(c.date)}`
+      : !on
       ? pro
         ? 'Reminders off for this one'
         : room > 0

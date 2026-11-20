@@ -4,7 +4,7 @@
 
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, View, useWindowDimensions } from 'react-native';
 
 import { MONTH_LONG, parseDate, shortDate, weekdayDate } from '@/domain/dates';
@@ -14,9 +14,9 @@ import { useCancelHelp } from '@/ditch/CancelHelp';
 import { StepChart } from '@/ditched/StepChart';
 import { SubLogo } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
-import { ask } from '@/ui/alert';
 import { DUCK_DARK, DUCK_LIGHT } from '@/ui/sunflower/duckAsset';
-import { BottomFade, Button, Card, ChevronRight, DitchedTag, F, ProLockup, RowDivider, SectionHeader, Txt, brand, haptic, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
+import { BottomFade, Button, Card, ChevronRight, DitchedTag, F, ProLockup, RowDivider, SectionHeader, Sheet, Txt, brand, haptic, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
+import { CloseButton } from '@/onboarding/Parts';
 
 export default function DitchedTab() {
   const p = usePalette();
@@ -46,12 +46,10 @@ export default function DitchedTab() {
   // "From 3 subs you cancelled since June · $35.93 a month" needs about 440pt at 16pt text; the hero card has 20pt sides.
   const oneLine = (width - edge * 2 - 40) / Math.max(1, fontScale) >= 440;
 
-  const reactivate = (s: Sub) =>
-    ask(`Still paying for ${s.name}?`, 'Put it back on your list, or back with the ones waiting for you to cancel.', [
-      { text: 'Keep it cancelled', style: 'cancel' },
-      { text: 'Not cancelled yet', onPress: () => void app.unconfirmCancelled(s.id) },
-      { text: 'Put it back on my list', onPress: () => void app.reactivate(s.id) },
-    ]);
+  // Tapping a cancelled one opens a sheet with plain choices (owner, Nov 20: the old pop-up wasn't
+  // intuitive). Like Rocket Money's inactive sheet: the sub on top, the choices stacked under it.
+  const [sheetFor, setSheetFor] = useState<Sub | null>(null);
+  const reactivate = (s: Sub) => setSheetFor(s);
 
   const nothing = pending.length === 0 && confirmed.length === 0;
 
@@ -296,6 +294,48 @@ export default function DitchedTab() {
           </>
         )}
       </ScrollView>
+      <Sheet visible={!!sheetFor} onClose={() => setSheetFor(null)} fit gap={0} maxContent={420} label={sheetFor ? `${sheetFor.name}, cancelled` : 'Cancelled'}>
+        {sheetFor ? (
+          <View>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 16 }}>
+              <SubLogo sub={sheetFor} size={44} ditched />
+              <View style={{ flex: 1, minWidth: 0 }}>
+                <Txt v="strong" accessibilityRole="header" numberOfLines={1}>
+                  {sheetFor.name}
+                </Txt>
+                <Txt v="sub" tone="mute" num numberOfLines={1}>
+                  {`Cancelled${sheetFor.confirmedOn ? ` ${shortDate(sheetFor.confirmedOn)}` : ''}`}
+                  {isPricedSub(sheetFor) ? ` · ${money(sheetFor.amountMinor, sheetFor.currency)} ${CYCLE_WORDS[sheetFor.cycle]}` : ''}
+                </Txt>
+              </View>
+              <CloseButton onPress={() => setSheetFor(null)} />
+            </View>
+            <Button
+              label="Put back on my list"
+              hint="It gets its total and reminders again"
+              onPress={() => {
+                const id = sheetFor.id;
+                setSheetFor(null);
+                haptic.light();
+                void app.reactivate(id);
+              }}
+              style={{ marginTop: 20 }}
+            />
+            <Button
+              kind="secondary"
+              label="I haven’t cancelled it yet"
+              hint="Moves it back to To cancel"
+              onPress={() => {
+                const id = sheetFor.id;
+                setSheetFor(null);
+                void app.unconfirmCancelled(id);
+              }}
+              style={{ marginTop: 10 }}
+            />
+            <Button kind="text" label="Keep it cancelled" onPress={() => setSheetFor(null)} style={{ marginTop: 4 }} />
+          </View>
+        ) : null}
+      </Sheet>
       {/* As tall as the bottom padding, so the last line is never faded once you reach the end. */}
       <BottomFade height={16} />
       {help.sheet}

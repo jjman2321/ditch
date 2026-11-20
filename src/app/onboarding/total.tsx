@@ -80,6 +80,9 @@ function BuildRow({ play, go, delay, children, logo }: { play: boolean; go: bool
   );
 }
 
+/** The total the roll last counted up to, so a new total rolls again. */
+let lastHero: string | null = null;
+
 export default function Total() {
   const p = usePalette();
   const dark = useIsDark();
@@ -100,9 +103,13 @@ export default function Total() {
   const [showAll, setShowAll] = useState(false);
   const [priceFor, setPriceFor] = useState<string | null>(null);
 
-  // Play once per session; Reduce Motion gets a short fade instead.
-  const [play] = useState(() => !totalShown && !reduce);
   const hero = main ? money(main.yearlyMinor, main.currency, { whole: true }) : '';
+  // Count up whenever the total is new (owner, Nov 20: after going back and adding one, it should
+  // visibly recalculate), not just the first time. Same total again: show it at rest. Reduce Motion: no roll.
+  const [play] = useState(() => !reduce && (!totalShown || lastHero !== hero));
+  useEffect(() => {
+    lastHero = hero;
+  }, [hero]);
   const landed = play ? rollDuration(hero) : 0;
   // The roll waits for the screen to finish sliding in, so it plays in front of still eyes (motion doc fix 6).
   const arrived = useScreenArrived();

@@ -34,6 +34,11 @@ Covers Ditch (iOS app, ditchsubs.app) and every system that touches user or bank
 - Dependencies come from the official npm registry; new SDKs are reviewed for what data they send before they're added.
 - Plaid Sandbox is used for testing; real bank data never goes into test or development systems.
 
+## 6b. Vulnerability management
+- **Code dependencies:** GitHub Dependabot scans the app and website dependencies weekly; `npm audit` runs before releases. Critical and high findings are patched within 7 days, moderate within 30.
+- **Production:** we run no servers of our own. Supabase (database, server functions) and Cloudflare patch the underlying machines. Supabase's security advisor scans our database setup after every change and at least monthly; warnings are fixed before release.
+- **Laptops and phones:** automatic OS and security updates on, built-in malware protection (macOS XProtect) on, apps kept up to date.
+
 ## 7. Vendors
 Supabase (database, server functions), Plaid (bank connection), Apple (App Store, payments), RevenueCat (purchase status, random id only), Cloudflare (website), Expo (app builds). Each is checked for SOC 2 or equivalent before use and reviewed yearly.
 

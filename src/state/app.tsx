@@ -13,10 +13,12 @@ import { formatMoney, formatWholeMoney } from '@/domain/money';
 import { planReminders, type PlannedReminder } from '@/domain/reminders';
 import { markAsked, pastReminderDays, REVIEW_REMINDER_DAYS, shouldAskForReview, type ReviewMoment } from '@/domain/review';
 import { DEFAULT_SETTINGS, effectiveLeads, type ProPlan, type Settings } from '@/domain/settings';
-import { FREE_REMINDERS, confirmCancel, ditchSub, isProTrial, reactivateSub, defaultFreePicks, remindedIds, settleFreePicks, unconfirmCancel, type Sub } from '@/domain/subs';
+import { FREE_REMINDERS, confirmCancel, ditchSub, isProTrial, lapsedFreePicks, reactivateSub, remindedIds, settleFreePicks, unconfirmCancel, type Sub } from '@/domain/subs';
 import { now as clockNow, today as clockToday } from '@/services/clock';
 import { applyPlan, cancelAllReminders, getNotifStatus, requestNotifPermission, sendTestReminder, setupNotifications, type NotifStatus } from '@/services/notifications';
 import { clearDraft } from '@/services/onboardingDraft';
+import { currentEntitlement, onEntitlementChange, planById, startPurchases } from '@/services/purchases';
+import { reconcilePro } from '@/services/storeLogic';
 import { offerReview } from '@/services/review';
 import { tell } from '@/ui/alert';
 import { MARKETING_VERSION } from '@/settings/version';
@@ -68,8 +70,12 @@ type Actions = {
   setReminder: (id: string, on: boolean) => Promise<boolean>;
   setFreePicks: (ids: string[]) => Promise<void>;
   updateSettings: (patch: Partial<Settings>) => Promise<void>;
-  /** Stub until RevenueCat. A yearly trial adds Ditch's own trial to the list. */
-  setPro: (plan: ProPlan | null, opts?: { startTrial?: boolean }) => Promise<void>;
+  /**
+   * Switches Pro on (a plan) or off (null). A yearly trial adds Ditch's own trial to the list. The App Store
+   * has the last word: launch and foreground checks set this to what StoreKit says (`preview` = a test build's
+   * "Preview Pro", which the store doesn't know about, so it isn't switched off by those checks).
+   */
+  setPro: (plan: ProPlan | null, opts?: { startTrial?: boolean; preview?: boolean }) => Promise<void>;
   finishOnboarding: (r: OnboardingResult) => Promise<void>;
   /** After a failed load: open the list again. */
   retryLoad: () => void;
@@ -241,6 +247,55 @@ export function AppProvider({ children }: { children: ReactNode }) {
     };
   }, [data.ready, maybeAskReview]);
 
+  // A test build's "Preview Pro" (Settings), which the App Store checks below leave alone. Not saved: a relaunch ends it.
+  const previewRef = useRef(false);
+  const setPro = useCallback(
+    async (plan: ProPlan | null, opts?: { startTrial?: boolean; preview?: boolean }) => {
+      previewRef.current = !!opts?.preview && plan !== null;
+      const now = () => new Date().toISOString();
+      await updateSettings({ proPlan: plan });
+      const hasTrial = ref.current.subs.some((s) => isProTrial(s) && s.status === 'active');
+      // No trial entry when this Apple Account can't get the free week (it was charged today instead).
+      if (plan === 'yearly' && opts?.startTrial && !hasTrial && planById('yearly').trialDays > 0) await commit([proTrialSub(ref.current.today, now())]);
+      // Ditch's trial entry (and its "trial ends" reminders) only belongs to a yearly trial.
+      const trials = ref.current.subs.filter((s) => isProTrial(s) && s.status === 'active');
+      if (plan !== 'yearly' && trials.length) await commit(trials.map((s) => ({ ...s, status: 'deleted' as const, updatedAt: now() })));
+      if (!plan) {
+        // Pro ended: keep everything; reminders drop back to 3 (CLAUDE.md rule 6, SPEC §6).
+        const fill = lapsedFreePicks(ref.current.subs);
+        if (fill.length) await commit(fill.map((s) => ({ ...s, updatedAt: now() })));
+      }
+    },
+    [updateSettings, commit],
+  );
+
+  // The App Store has the last word on Pro (StoreKit 2, DECISIONS #59): on launch, when the app comes back to
+  // the front, and after a purchase, restore or store update. No StoreKit in this build (Expo Go, web, older
+  // TestFlight builds) or no answer: nothing changes. Only after onboarding, which saves its own pick.
+  const checkPro = useCallback(async () => {
+    if (!ref.current.ready || !ref.current.settings.onboardingDone) return;
+    const ent = await currentEntitlement();
+    if (!ent || !ref.current.ready || !ref.current.settings.onboardingDone) return;
+    const change = reconcilePro(ref.current.settings.proPlan, ent.plan, { preview: previewRef.current });
+    if (change) await setPro(change.plan);
+  }, [setPro]);
+
+  useEffect(() => {
+    startPurchases();
+    const off = onEntitlementChange(() => void checkPro().catch(() => {}));
+    const sub = AppState.addEventListener('change', (state) => {
+      if (state === 'active') checkPro().catch(() => {});
+    });
+    return () => {
+      off();
+      sub.remove();
+    };
+  }, [checkPro]);
+
+  useEffect(() => {
+    if (data.ready && data.settings.onboardingDone) checkPro().catch(() => {});
+  }, [data.ready, data.settings.onboardingDone, data.generation, checkPro]);
+
   const actions: Actions = useMemo(
     () => ({
       maybeAskReview,
@@ -298,22 +353,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         await commit(changed);
       },
       updateSettings,
-      setPro: async (plan, opts) => {
-        await updateSettings({ proPlan: plan });
-        const hasTrial = ref.current.subs.some((s) => isProTrial(s) && s.status === 'active');
-        if (plan === 'yearly' && opts?.startTrial && !hasTrial) await commit([proTrialSub(ref.current.today, stamp())]);
-        // Ditch's trial entry (and its "trial ends" reminders) only belongs to a yearly trial.
-        const trials = ref.current.subs.filter((s) => isProTrial(s) && s.status === 'active');
-        if (plan !== 'yearly' && trials.length) await commit(trials.map((s) => ({ ...s, status: 'deleted' as const, updatedAt: stamp() })));
-        if (!plan) {
-          // Pro ended: keep everything; reminders drop back to 3. If fewer than 3 are
-          // picked, the biggest ones with a date fill the gap (SPEC §6).
-          const subs = ref.current.subs;
-          const have = remindedIds(subs, false);
-          const fill = defaultFreePicks(subs.filter((s) => !have.has(s.id))).slice(0, Math.max(0, FREE_REMINDERS - have.size));
-          if (fill.length) await commit(subs.filter((s) => fill.includes(s.id)).map((s) => ({ ...s, freePick: true, updatedAt: stamp() })));
-        }
-      },
+      setPro,
       retryLoad: () => {
         set({ loadFailed: false });
         setAttempt((a) => a + 1);
@@ -351,7 +391,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         return notif;
       },
     }),
-    [commit, updateSettings, refreshNotif, reschedule, set, maybeAskReview],
+    [commit, updateSettings, refreshNotif, reschedule, set, maybeAskReview, setPro],
   );
 
   const value = useMemo(() => ({ ...data, ...actions, pro: isPro(data.settings) }), [data, actions]);

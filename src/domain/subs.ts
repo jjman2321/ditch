@@ -246,6 +246,17 @@ export function defaultFreePicks(subs: Sub[]): string[] {
     .map((s) => s.id);
 }
 
+/**
+ * Pro ended (CLAUDE.md rule 6): nothing is deleted or hidden; reminders drop back to 3. The ones
+ * already picked keep theirs, and if fewer than 3 are picked the biggest ones with a date fill the
+ * gap (SPEC §6). Returns only the subs that change (they gain freePick).
+ */
+export function lapsedFreePicks(subs: Sub[]): Sub[] {
+  const have = remindedIds(subs, false);
+  const fill = new Set(defaultFreePicks(subs.filter((s) => !have.has(s.id))).slice(0, Math.max(0, FREE_REMINDERS - have.size)));
+  return subs.filter((s) => fill.has(s.id)).map((s) => ({ ...s, freePick: true }));
+}
+
 // ---------- Home groups ----------
 
 export type HomeGroup = 'This week' | 'Next week' | 'Later' | 'No date yet';

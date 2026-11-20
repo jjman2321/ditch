@@ -19,6 +19,7 @@ import { reminderDaysFor } from '@/domain/reminders';
 import {
   addDays,
   anchorForDayOfMonth,
+  daysBetween,
   anchorForMonthDay,
   daysInMonth,
   longDate,
@@ -58,6 +59,14 @@ export function remindersLine(
   if (heads.length === 0) return `${chargesSoonLine(next, today)}, so no reminder this time.`;
   if (heads.length === 1) return `Reminder ${weekdayDate(heads[0])} at ${time}.`;
   return `Reminders ${heads.slice(0, -1).map(weekdayDate).join(', ')} and ${weekdayDate(heads[heads.length - 1])} at ${time}.`;
+}
+
+/**
+ * The next charge, worded for the box and the dates list: "Fri, Dec 19", or with the year once it's
+ * 6+ months away ("Nov 19, 2027"), so a yearly one picked as today never reads like this week.
+ */
+export function nextChargeLabel(next: DateOnly, today: DateOnly): string {
+  return daysBetween(today, next) >= 180 ? `${shortDate(next)}, ${parseDate(next).y}` : weekdayDate(next);
 }
 
 function DayCell({ label, on, disabled, a11y, onPress }: { label: string; on: boolean; disabled?: boolean; a11y: string; onPress: () => void }) {
@@ -208,7 +217,9 @@ export function DayBody({
     ? null
     : isToday
       ? // Say why today is picked, so a quick Save is a choice, not an accident (audit, Nov 19).
-        `Charged today, the ${ordinal(t.d)}.`
+        yearly
+        ? `Charged today, ${shortDate(today)}.`
+        : `Charged today, the ${ordinal(t.d)}.`
       : monthly
         ? day === 31
           ? 'Charges on the last day of every month.'
@@ -331,7 +342,7 @@ export function DayBody({
         </Txt>
         <Txt v="body" tone="fg2" num style={{ marginTop: 2 }}>
           {/* One short line (owner, Nov 20: the box had too much text). The reminder days are on the reminders step. */}
-          {next ? `Next charge ${weekdayDate(next)}${off ? ' · no reminder on free' : ''}` : 'It’s in your bank app or the receipt email.'}
+          {next ? `Next charge ${nextChargeLabel(next, today)}${off ? ' · no reminder on free' : ''}` : 'It’s in your bank app or the receipt email.'}
         </Txt>
       </View>
       <Button label="Save" disabled={!anchor} onPress={() => anchor && onDone(anchor, source)} style={{ marginTop: 16 }} />

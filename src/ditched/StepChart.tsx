@@ -11,6 +11,8 @@ import { F, Txt, brand, usePalette } from '@/ui/sunflower';
 
 type Step = { date: DateOnly; totalMinor: number; name: string };
 
+const LABEL_W = 72;
+
 export function StepChart({ steps, currency }: { steps: Step[]; currency: string }) {
   const p = usePalette();
   const money = useAppMoney();
@@ -29,12 +31,18 @@ export function StepChart({ steps, currency }: { steps: Step[]; currency: string
   line += ` H${w - pad}`;
   const area = `${line} V${H - 8} H${xAt(0)} Z`;
   const ink = p.dark ? brand.sunflower : brand.ink;
-  const shown = n <= 3 ? steps.map((s, i) => ({ s, i })) : [0, n - 2, n - 1].map((i) => ({ s: steps[i], i }));
-  const label = (s: Step) => `${MONTH_SHORT[parseDate(s.date).m - 1]} · ${money(s.totalMinor, currency)}`;
+  // Each label sits under its own dot (clamped to the card), month over the amount in whole dollars.
+  // The last one always shows; the one before it and the first only when they don't bump into a neighbour.
+  const clampX = (i: number) => Math.min(Math.max(xAt(i) - LABEL_W / 2, 0), Math.max(0, w - LABEL_W));
+  const shown: number[] = [];
+  for (const i of [n - 1, n - 2, 0]) {
+    if (i < 0 || shown.includes(i)) continue;
+    if (shown.every((j) => Math.abs(clampX(j) - clampX(i)) >= LABEL_W + 4)) shown.push(i);
+  }
   return (
     <View
       accessible
-      accessibilityLabel={`Adding up: ${steps.map((s) => `after ${s.name}, ${money(s.totalMinor, currency)} a year`).join('; ')}`}
+      accessibilityLabel={`Adding up: ${steps.map((s) => `after ${s.name}, ${money(s.totalMinor, currency, { whole: true })} a year`).join('; ')}`}
       onLayout={(e) => setW(e.nativeEvent.layout.width)}
     >
       {w ? (
@@ -48,12 +56,25 @@ export function StepChart({ steps, currency }: { steps: Step[]; currency: string
       ) : (
         <View style={{ height: H }} />
       )}
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 6, gap: 8 }}>
-        {shown.map(({ s, i }) => (
-          <Txt key={i} v="sub" num tone={i === n - 1 ? 'fg' : 'mute'} style={{ fontSize: 13.5, fontFamily: i === n - 1 ? F.bold : F.regular }}>
-            {label(s)}
-          </Txt>
-        ))}
+      <View style={{ height: 40, marginTop: 4 }}>
+        {w
+          ? shown.map((i) => {
+              const left = clampX(i);
+              // Centred under the dot, unless the card's edge pushed it over: then it lines up with that edge.
+              const align = left <= 0 ? 'left' : left >= w - LABEL_W ? 'right' : 'center';
+              const strong = i === n - 1;
+              return (
+                <View key={i} style={{ position: 'absolute', left, width: LABEL_W }}>
+                  <Txt v="sub" tone="mute" style={{ fontSize: 12.5, lineHeight: 16, textAlign: align }} maxFontSizeMultiplier={1.2}>
+                    {MONTH_SHORT[parseDate(steps[i].date).m - 1]}
+                  </Txt>
+                  <Txt v="sub" num tone={strong ? 'fg' : 'mute'} style={{ fontSize: 14, lineHeight: 19, textAlign: align, fontFamily: strong ? F.bold : F.regular }} maxFontSizeMultiplier={1.2}>
+                    {money(steps[i].totalMinor, currency, { whole: true })}
+                  </Txt>
+                </View>
+              );
+            })
+          : null}
       </View>
     </View>
   );

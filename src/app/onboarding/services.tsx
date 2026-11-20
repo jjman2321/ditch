@@ -22,7 +22,7 @@ import { isPriced, totalsFor, useCountry, useMoney, useOnboarding, usePickedList
 import { Button, ChevronRight, EASE_OUT, F, LogoTile, POP, PRESS, RELEASE, Search, StepHeaderSpace, TickPop, Txt, haptic, radius, useFrame, usePalette } from '@/ui/sunflower';
 
 const NB = ' ';
-
+@@HELPERS@@
 /** The second line of a row. Returns the text and whether "Change" / "Add your price" shows. */
 function useRowLine() {
   const money = useMoney();

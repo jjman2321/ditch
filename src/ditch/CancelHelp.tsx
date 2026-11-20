@@ -9,10 +9,12 @@ import { RIGHTS_CHECKED, RIGHTS_DISCLAIMER, rightsFor, rightsPlace } from '@/cat
 import { shortDate } from '@/domain/dates';
 import { isProTrial, type Sub } from '@/domain/subs';
 import { useApp } from '@/state/app';
+import { tell } from '@/ui/alert';
 import { Button, ChevronRight, External, F, Sheet, Txt, brand, usePalette } from '@/ui/sunflower';
 
-export function openUrl(url: string) {
-  Linking.openURL(url).catch(() => {});
+/** Opens a page outside Ditch. If iOS can't open it, say so (with what to search for when it's a cancel page) instead of doing nothing. */
+export function openUrl(url: string, name?: string) {
+  Linking.openURL(url).catch(() => tell('Couldn’t open that page', name ? `Try again, or search ‘cancel ${name}’ in Safari.` : 'Try again in a moment.'));
 }
 
 export function helpFor(sub: Sub) {
@@ -33,7 +35,7 @@ export function useCancelHelp() {
   };
   const go = (s: Sub) => {
     const h = helpFor(s);
-    if (h.kind !== 'steps' && h.url) openUrl(h.url);
+    if (h.kind !== 'steps' && h.url) openUrl(h.url, h.kind === 'apple' ? undefined : s.name);
     else open(s);
   };
   const sheet = <HowToSheet sub={sub} visible={visible} onClose={() => setVisible(false)} />;
@@ -44,7 +46,7 @@ export function HowToSheet({ sub, visible, onClose }: { sub: Sub | null; visible
   const p = usePalette();
   const h = sub ? helpFor(sub) : null;
   // The page button: the cancel page, Apple's page, or the service's help article.
-  const page = h?.url ? (h.kind === 'steps' ? `Open ${sub!.name} help` : h.label) : null;
+  const page = h?.url ? h.pageLabel : null;
   return (
     <Sheet visible={visible && !!sub} onClose={onClose} fit label={sub ? `How to cancel ${sub.name}` : 'How to cancel'}>
       {sub && h ? (
@@ -92,7 +94,9 @@ export function HowToSheet({ sub, visible, onClose }: { sub: Sub | null; visible
           ) : null}
           <YourRights />
           <View style={{ marginTop: 20, gap: 8 }}>
-            {page && h.url ? <Button label={page} hint="Opens outside Ditch" right={<External color={p.ctaFg} size={19} />} onPress={() => openUrl(h.url!)} /> : null}
+            {page && h.url ? (
+              <Button label={page} hint="Opens outside Ditch" right={<External color={p.ctaFg} size={19} />} onPress={() => openUrl(h.url!, h.kind === 'apple' ? undefined : sub.name)} />
+            ) : null}
             {h.appleNote ? <Button kind={page ? 'text' : 'secondary'} label="Open Apple subscriptions" hint="Opens outside Ditch" onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)} /> : null}
             <Button kind="text" label="Done" onPress={onClose} />
           </View>

@@ -5,7 +5,7 @@
 // Letting go early drains the ring and nothing changes. No haptic at 100%:
 // the stamp's heavy impact on the next screen is the completion haptic.
 
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef, useState, type ComponentRef } from 'react';
 import { Platform, useWindowDimensions, View } from 'react-native';
 import { GestureDetector, useExclusiveGestures, useLongPressGesture, useTapGesture } from 'react-native-gesture-handler';
 import Animated, { Easing, interpolateColor, ReduceMotion, useAnimatedProps, useAnimatedStyle, useReducedMotion, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
@@ -13,7 +13,7 @@ import Svg, { Circle } from 'react-native-svg';
 import { scheduleOnRN } from 'react-native-worklets';
 
 import { daysBetween, shortDate, weekdayDate, type DateOnly } from '@/domain/dates';
-import { CYCLE_SHORT, CYCLE_WORDS, yearlyMinor } from '@/domain/money';
+import { CYCLE_SHORT, CYCLE_WORDS, currencyDigits, yearlyMinor } from '@/domain/money';
 import { inTrial, isPending, isPricedSub, isProTrial, type Sub } from '@/domain/subs';
 import { useAppMoney } from '@/state/app';
 import { Bell, BellOff, DitchedTag, DuckIcon, F, LogoTile, ProLockup, Txt, brand, haptic, tileRadius, usePalette } from '@/ui/sunflower';
@@ -21,8 +21,8 @@ import { Bell, BellOff, DitchedTag, DuckIcon, F, LogoTile, ProLockup, Txt, brand
 const HOLD_MS = 1200;
 const LIFT_AFTER = 150;
 const TILE = 36;
-const RING_R = 24.5;
-const RING_BOX = 56;
+const RING_R = 23.5;
+const RING_BOX = 52;
 const CIRC = 2 * Math.PI * RING_R;
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
@@ -34,8 +34,19 @@ function relative(charge: DateOnly, today: DateOnly): string {
   return n <= 0 ? 'today' : n === 1 ? 'tomorrow' : `in ${n} days`;
 }
 
-/** The grey line under the name. No date yet: "Add date" (DECISIONS #33). */
-export function rowLine(sub: Sub, charge: DateOnly | null, today: DateOnly, narrow = false): string {
+/**
+ * A row's price. 1,000 or more (in the currency's own units) drops the cents: "$14,985" instead of "$14,985.00",
+ * so one big price doesn't widen the shared price column and cut every row's date line.
+ * Home should measure its price column with this too.
+ */
+export function rowPrice(sub: Sub, money: (amountMinor: number, currency: string, opts?: { whole?: boolean }) => string): string | null {
+  if (!isPricedSub(sub)) return null;
+  const big = sub.amountMinor / 10 ** currencyDigits(sub.currency) >= 1000;
+  return money(sub.amountMinor, sub.currency, big ? { whole: true } : undefined);
+}
+
+/** The grey line under the name. No date yet: "Add date" (DECISIONS #33). `tiny` (under 350pt): no weekday, "Nov 19 · today". */
+export function rowLine(sub: Sub, charge: DateOnly | null, today: DateOnly, narrow = false, tiny = false): string {
   if (!charge) return isPending(sub) ? 'Cancel before it renews' : 'Add date';
   // "Cancel by" only for a date the user chose; otherwise the charge day itself (too late to call it a deadline).
   if (isPending(sub)) return sub.cancelBy && sub.cancelBy >= today ? `Cancel by ${weekdayDate(sub.cancelBy)}` : `Charges ${weekdayDate(charge)}`;
@@ -44,7 +55,8 @@ export function rowLine(sub: Sub, charge: DateOnly | null, today: DateOnly, narr
   // "in N days" only for the coming week (further out the date says it). Narrow iPhones
   // (SE, mini) keep it for today and tomorrow only, so the line never gets cut off.
   const n = daysBetween(today, charge);
-  return n <= (narrow ? 1 : 6) ? `${weekdayDate(charge)} · ${relative(charge, today)}` : weekdayDate(charge);
+  const day = tiny ? shortDate(charge) : weekdayDate(charge);
+  return n <= (narrow ? 1 : 6) ? `${day} · ${relative(charge, today)}` : day;
 }
 
 /**
@@ -102,7 +114,7 @@ export function PriceColumnMeasure({ prices, onWidth }: { prices: (string | null
   );
 }
 
-export function SubRow({
+export const SubRow = memo(function SubRow({
   sub,
   charge,
   today,
@@ -146,6 +158,11 @@ export function SubRow({
   const dim = useSharedValue(dimmed ? 1 : 0);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const done = useRef(false);
+  // Low on the screen (bottom 40%), the hint under the row would sit behind the tab bar on an SE: show it above the row instead.
+  const box = useRef<ComponentRef<typeof View>>(null);
+  const screenH = useWindowDimensions().height;
+  const [hintAbove, setHintAbove] = useState(false);
+  const measure = () => box.current?.measureInWindow((_x, y, _w, h) => setHintAbove(y + h / 2 > screenH * 0.6));
 
   useEffect(() => {
     dim.set(withTiming(dimmed ? 1 : 0, { duration: 200 }));
@@ -198,6 +215,8 @@ export function SubRow({
     maxDistance: 12,
     enabled: canHold,
     runOnJS: true,
+    // Measured on touch-down, so it's ready by the time the hold starts 150 ms later.
+    onBegin: measure,
     onActivate: start,
     onFinalize: () => stop(),
   });
@@ -214,19 +233,20 @@ export function SubRow({
   });
   // Only the logo and its ring grow while you hold; the name and price never move (owner, Nov 16; CLAUDE.md rule 8).
   const rowStyle = useAnimatedStyle(() => ({ opacity: 1 - 0.45 * dim.get() }));
-  const logoLift = useAnimatedStyle(() => ({ transform: [{ scale: 1 + 0.08 * lift.get() }] }));
+  const logoLift = useAnimatedStyle(() => ({ transform: [{ scale: 1 + 0.04 * lift.get() }] }));
   const fill = useAnimatedStyle(() =>
     p.dark
       ? { borderColor: interpolateColor(lift.get(), [0, 1], ['rgba(255,204,46,0)', brand.sunflower]) }
       : { backgroundColor: interpolateColor(lift.get(), [0, 1], ['rgba(255,204,46,0)', brand.sunflower]) },
   );
 
-  const price = isPricedSub(sub) ? money(sub.amountMinor, sub.currency) : null;
+  const price = rowPrice(sub, money);
   const yearly = isPricedSub(sub) ? money(yearlyMinor(sub.amountMinor, sub.cycle), sub.currency) : null;
   // Short date line when the row is tight: small phones, or a wide price column ("US$120.00").
   // The "/yr" sits under the price now, so one yearly row no longer cuts "in 5 days" from the others.
-  const narrow = useWindowDimensions().width < 380 || (priceWidth ?? 0) > 80;
-  const line = rowLine(sub, charge, today, narrow);
+  const screenW = useWindowDimensions().width;
+  const narrow = screenW < 380 || (priceWidth ?? 0) > 70;
+  const line = rowLine(sub, charge, today, narrow, screenW < 350);
   const shown = pending ? pendingLine(sub, charge, today, narrow) : line;
   const per = sub.cycle === 'monthly' ? '' : CYCLE_SHORT[sub.cycle];
   const on = holding && !p.dark;
@@ -237,6 +257,7 @@ export function SubRow({
   return (
     <GestureDetector gesture={gesture}>
       <Animated.View
+        ref={box}
         accessible
         accessibilityRole="button"
         accessibilityLabel={label}
@@ -325,7 +346,31 @@ export function SubRow({
           </View>
         </View>
         {holding ? (
-          <View style={{ marginHorizontal: 12, marginBottom: 12, marginTop: -2, borderRadius: 14, padding: 12, paddingHorizontal: 14, backgroundColor: p.dark ? '#2A2722' : 'rgba(255,255,255,0.78)' }}>
+          <View
+            style={
+              hintAbove
+                ? // Above the row: floats over the row before it (the name and price never move), solid so the row under it doesn't show through.
+                  {
+                    position: 'absolute',
+                    left: 12,
+                    right: 12,
+                    bottom: '100%',
+                    marginBottom: 8,
+                    borderRadius: 14,
+                    padding: 12,
+                    paddingHorizontal: 14,
+                    backgroundColor: p.dark ? '#2A2722' : brand.white,
+                    borderWidth: p.dark ? 1 : 0,
+                    borderColor: p.cardBorder,
+                    shadowColor: '#463200',
+                    shadowOpacity: 0.16,
+                    shadowRadius: 14,
+                    shadowOffset: { width: 0, height: 4 },
+                    elevation: 6,
+                  }
+                : { marginHorizontal: 12, marginBottom: 12, marginTop: -2, borderRadius: 14, padding: 12, paddingHorizontal: 14, backgroundColor: p.dark ? '#2A2722' : 'rgba(255,255,255,0.78)' }
+            }
+          >
             <Txt v="body" color={p.dark ? p.fg : brand.ink} style={{ fontSize: 15, lineHeight: 20 }}>
               <Txt v="body" color={p.dark ? brand.sunflower : brand.ink} style={{ fontFamily: F.bold, fontSize: 15 }}>
                 Keep holding to ditch.
@@ -346,7 +391,7 @@ export function SubRow({
       </Animated.View>
     </GestureDetector>
   );
-}
+});
 
 /** The ink tag on a row the bank just added ("FOUND IN YOUR BANK", 7 days). Sunflower on night in dark mode. */
 export function FoundTag() {

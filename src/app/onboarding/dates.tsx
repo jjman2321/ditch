@@ -11,8 +11,8 @@ import { Pressable, ScrollView, View, useWindowDimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { ordinal } from '@/domain/charges';
-import { addDays, parseDate, shortDate, weekdayDate } from '@/domain/dates';
-import { DaySheet } from '@/onboarding/DaySheet';
+import { addDays, daysBetween, parseDate, shortDate, weekdayDate } from '@/domain/dates';
+import { DaySheet, nextChargeLabel } from '@/onboarding/DaySheet';
 import { OnbRoot } from '@/onboarding/Parts';
 import { byYearlyDesc, chargeOf, onboardingToday, pickHasDate, useOnboarding, usePickedList, type Picked } from '@/state/onboarding';
 import { Button, F, LogoTile, StepHeaderSpace, Txt, brand, haptic, useFrame, usePalette } from '@/ui/sunflower';
@@ -36,6 +36,8 @@ function subLine(x: Picked, narrow = false): string {
   const today = onboardingToday();
   if (next === today) return 'Next: today';
   if (next === addDays(today, 1)) return 'Next: tomorrow';
+  // 6+ months away (a yearly one paid today): the year, never a weekday that reads like this week.
+  if (daysBetween(today, next) >= 180) return `Next: ${nextChargeLabel(next, today)}`;
   return `Next: ${narrow ? shortDate(next) : weekdayDate(next)}`;
 }
 

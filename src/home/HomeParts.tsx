@@ -16,17 +16,24 @@ import { useCombinedTotal } from '@/services/fx';
 import { useApp, useAppMoney } from '@/state/app';
 import { Bang, Bell, BellOff, Button, Card, CardIcon, ChevronRight, Close, Duck, F, LogoTile, Plus, Search, Txt, brand, usePalette } from '@/ui/sunflower';
 
+/** "3,000", not "3000": counts read like the money next to them. */
+const count = (n: number) => n.toLocaleString('en-US');
+
 export function TotalCard({
   totals,
   on,
   of,
+  listed,
   all,
   blocked,
   trials,
 }: {
   totals: SpendTotal[];
   on: number;
+  /** Subs that can be reminded (they have a date). */
   of: number;
+  /** Everything on the list, dated or not. */
+  listed: number;
   all: boolean;
   blocked: boolean;
   /** Free trials still running: "+ 1 trial, then $13.99 a month" (SPEC §3.2). */
@@ -38,35 +45,39 @@ export function TotalCard({
   const fg = p.dark ? p.fg : brand.ink;
   // 320pt wide (SE with Display Zoom): a smaller total so "a month" and the reminder line stay on one line each.
   const tiny = useWindowDimensions().width < 350;
+  const hero = first ? money(first.monthlyMinor, first.currency) : '';
+  // Big totals step down so "a month" stays beside them ("$1,234.56", "$130,385.78"); the fit below catches the rest.
+  const heroSize = hero.length >= 12 ? 28 : hero.length >= 11 ? 30 : hero.length >= 10 ? 32 : hero.length >= 9 ? 34 : 42;
+  const heroStyle = tiny
+    ? { fontSize: Math.min(32, heroSize - 6), lineHeight: Math.min(36, heroSize - 2), letterSpacing: -1.2 }
+    : { fontSize: heroSize, lineHeight: heroSize + 2, letterSpacing: heroSize >= 42 ? -1.6 : -1.2 };
   // 2+ currencies: one rough line in their own currency. Never replaces the real totals.
   const combined = useCombinedTotal(totals, useApp().settings.currency);
   const approx = combined ? approxLine(money(combined.monthlyMinor, combined.currency, { whole: true }), 'a month', combined.date) : null;
-  const reminders = blocked ? 'Reminders off' : all && of > 0 ? `all ${of}` : `${on} of ${of}`;
+  const reminders = all && of > 0 ? `all ${count(of)}` : `${count(on)} of ${count(of)}`;
   // One currency: "+ 1 trial, then $13.99 a month". Mixed or unpriced: just the count.
   const trialLine = trials?.count
     ? `+ ${trials.count} ${trials.count === 1 ? 'trial' : 'trials'}${trials.monthly.length === 1 ? `, then ${money(trials.monthly[0].monthlyMinor, trials.monthly[0].currency)} a month` : ''}`
     : null;
   const a11y = first
-    ? `${money(first.monthlyMinor, first.currency)} a month, ${money(first.yearlyMinor, first.currency, { whole: true })} a year. ${rest.map((t) => `And ${money(t.monthlyMinor, t.currency)} a month, kept separate.`).join(' ')}${approx ? ` ${approx.spoken}` : ''} ${trialLine ? ` ${trialLine}.` : ''} ${blocked ? 'Reminders are off.' : `Reminders on ${reminders}.`}`
+    ? `${money(first.monthlyMinor, first.currency)} a month, ${money(first.yearlyMinor, first.currency, { whole: true })} a year. ${rest.map((t) => `And ${money(t.monthlyMinor, t.currency)} a month, kept separate.`).join(' ')}${approx ? ` ${approx.spoken}` : ''} ${trialLine ? ` ${trialLine}.` : ''} ${blocked ? 'Reminders are off.' : of > 0 ? `Reminders on ${reminders}.` : ''}`
     : `${trialLine ? `Nothing charging yet. ${trialLine}.` : 'No prices yet.'}`;
   const fs = tiny ? 14 : 15.5;
   const reminderRow = rest.length > 0;
   // "2 of 6 reminded" / "All 6 reminded": the count first, short enough for every phone. VoiceOver keeps "Reminders on 2 of 6".
-  // Everything ditched: no "Reminders on 0 of 0".
+  // Everything ditched (or nothing dated yet): no "Reminders on 0 of 0". Reminders off: the banner above says it, so not twice.
+  // The bell and its words are one unit, so they wrap to the next line together.
   const remindersBit =
-    of === 0 ? null : (
-      <>
-        {blocked ? <BellOff color={fg} size={16} /> : <Bell color={p.dark ? brand.sunflower : brand.ink} fill={p.dark ? brand.sunflower : brand.ink} size={15} />}
-        <Txt v="body" color={fg} style={{ fontSize: fs, fontFamily: blocked ? F.bold : F.regular }}>
-          {blocked ? 'Reminders off' : null}
-          {blocked ? null : (
-            <Txt v="body" num color={fg} style={{ fontFamily: F.bold, fontSize: fs }}>
-              {all && of > 0 ? `All ${of}` : `${on} of ${of}`}
-            </Txt>
-          )}
-          {blocked ? null : ' reminded'}
+    of === 0 || blocked ? null : (
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+        <Bell color={p.dark ? brand.sunflower : brand.ink} fill={p.dark ? brand.sunflower : brand.ink} size={15} />
+        <Txt v="body" num color={fg} style={{ fontSize: fs }}>
+          <Txt v="body" num color={fg} style={{ fontFamily: F.bold, fontSize: fs }}>
+            {all && of > 0 ? `All ${count(of)}` : `${count(on)} of ${count(of)}`}
+          </Txt>
+          {' reminded'}
         </Txt>
-      </>
+      </View>
     );
   return (
     <View
@@ -79,13 +90,8 @@ export function TotalCard({
     >
       {first ? (
         <View style={{ flexDirection: 'row', alignItems: 'baseline', flexWrap: 'wrap', columnGap: 8 }}>
-          <Txt
-            v="displayM"
-            num
-            color={p.dark ? brand.sunflower : brand.ink}
-            style={tiny ? { fontSize: 32, lineHeight: 36, letterSpacing: -1.2 } : { fontSize: 42, lineHeight: 44, letterSpacing: -1.6 }}
-          >
-            {money(first.monthlyMinor, first.currency)}
+          <Txt v="displayM" num numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.6} color={p.dark ? brand.sunflower : brand.ink} style={[heroStyle, { flexShrink: 1 }]}>
+            {hero}
           </Txt>
           <Txt v="lead" color={fg} style={{ fontFamily: F.semi, fontSize: 17 }}>
             a month
@@ -93,7 +99,7 @@ export function TotalCard({
         </View>
       ) : (
         <Txt v="heading" color={fg}>
-          {trialLine ? 'Nothing charging yet' : of === 0 ? 'Nothing active right now' : 'Add prices to see your total'}
+          {trialLine ? 'Nothing charging yet' : listed === 0 ? 'Nothing active right now' : 'Add prices to see your total'}
         </Txt>
       )}
       {trialLine ? (
@@ -108,7 +114,7 @@ export function TotalCard({
             <Txt v="body" num color={fg} style={{ fontFamily: F.bold, fontSize: fs }}>
               {money(first.yearlyMinor, first.currency, { whole: true })}
             </Txt>
-            {reminderRow ? ' a year' : ' a year ·'}
+            {reminderRow || !remindersBit ? ' a year' : ' a year ·'}
           </Txt>
         ) : null}
         {reminderRow ? null : remindersBit}
@@ -133,12 +139,12 @@ export function TotalCard({
         </Txt>
       ) : null}
       {/* 2+ currencies: the reminder count gets its own line, so it doesn't read as part of the first currency. */}
-      {reminderRow && remindersBit ? <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 6 }}>{remindersBit}</View> : null}
+      {reminderRow && remindersBit ? <View style={{ flexDirection: 'row', marginTop: 6 }}>{remindersBit}</View> : null}
     </View>
   );
 }
 
-/** "Reminders are off. Nothing can reach you. [Turn on]" (9c). */
+/** "Reminders are off. Turn them on to get warned. [Turn on]" (9c). */
 export function OffBanner({ status, onTurnOn }: { status: NotifStatus; onTurnOn: () => void }) {
   const p = usePalette();
   const asked = status === 'denied';
@@ -152,10 +158,10 @@ export function OffBanner({ status, onTurnOn }: { status: NotifStatus; onTurnOn:
       <Bang color={brand.ink} bg={brand.bill} />
       <View style={{ flex: 1 }} accessible accessibilityRole="text">
         <Txt v="label" color="#F6F0E3" style={{ fontFamily: F.bold, fontSize: 16 }}>
-          {asked ? 'Reminders are off.' : 'Reminders aren’t on yet.'}
+          Reminders are off
         </Txt>
         <Txt v="body" color="#CFC7B6" style={{ fontSize: 14.5 }}>
-          {asked ? 'Nothing can reach you.' : 'Ditch needs your OK to send them.'}
+          Turn them on to get warned.
         </Txt>
       </View>
       <Pressable
@@ -178,6 +184,33 @@ export function OffBanner({ status, onTurnOn }: { status: NotifStatus; onTurnOn:
         </Txt>
       </Pressable>
     </View>
+  );
+}
+
+/**
+ * Notifications allowed but banners (or sounds) off: reminders land in Notification Center without a sound,
+ * which reads as "Ditch never reminded me". One line, with a way to fix it.
+ */
+export function QuietRow({ onFix }: { onFix: () => void }) {
+  const p = usePalette();
+  return (
+    <Pressable accessibilityRole="button" accessibilityLabel="Banners are off, so reminders arrive silently. Fix" accessibilityHint="Opens iPhone Settings" onPress={onFix}>
+      {({ pressed }) => (
+        <Card style={{ minHeight: 56, borderRadius: 16, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, paddingVertical: 9, opacity: pressed ? 0.75 : 1 }}>
+          <BellOff color={p.cardFg} size={17} bg={p.card} />
+          <Txt v="body" color={p.cardFg} style={{ flex: 1, minWidth: 0, fontSize: 15 }}>
+            <Txt v="body" color={p.cardFg} style={{ fontFamily: F.bold, fontSize: 15 }}>
+              Banners are off,
+            </Txt>
+            {' so reminders arrive silently.'}
+          </Txt>
+          <Txt v="label" color={p.cardFg} style={{ fontSize: 15 }}>
+            Fix
+          </Txt>
+          <ChevronRight color={p.cardFg} size={16} />
+        </Card>
+      )}
+    </Pressable>
   );
 }
 
@@ -287,14 +320,15 @@ export function ForgottenRow({ onPress }: { onPress: () => void }) {
 export function NoDateRow({ count, onPress }: { count: number; onPress: () => void }) {
   const p = usePalette();
   const one = count === 1;
+  const countLabel = count.toLocaleString('en-US');
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={`${count} ${one ? 'has' : 'have'} no date yet, so no reminders. Add ${one ? 'it' : 'dates'}.`} onPress={onPress}>
+    <Pressable accessibilityRole="button" accessibilityLabel={`${countLabel} ${one ? 'has' : 'have'} no date yet, so no reminders. Add ${one ? 'it' : 'dates'}.`} onPress={onPress}>
       {({ pressed }) => (
         <Card style={{ minHeight: 56, borderRadius: 16, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, paddingVertical: 9, opacity: pressed ? 0.75 : 1 }}>
           <BellOff color={p.mute} size={17} bg={p.card} />
           <View style={{ flex: 1, minWidth: 0 }}>
             <Txt v="body" color={p.cardFg} numberOfLines={1} style={{ fontFamily: F.bold, fontSize: 15 }}>
-              {`${count} ${one ? 'has' : 'have'} no date yet`}
+              {`${countLabel} ${one ? 'has' : 'have'} no date yet`}
             </Txt>
             <Txt v="sub" tone="mute" numberOfLines={1}>
               {one ? 'No reminder yet' : 'No reminders yet'}
@@ -312,13 +346,13 @@ export function NoDateRow({ count, onPress }: { count: number; onPress: () => vo
 
 /**
  * Free plan, 3 reminders in use, and a dated subscription has none (owner, Nov 20): the moment Pro is
- * worth the most, so say exactly what's unprotected and offer Pro once. "Copilot Pro has no reminder" /
- * "Pro reminds you about every one". The × hides it until another one is left without a reminder.
+ * worth the most, so say exactly what's unprotected and offer Pro once. "Copilot Pro: no reminder" /
+ * "Pro covers every one". Short enough for an SE, so nothing is cut. The × hides it until another one is left without a reminder.
  */
 export function NoReminderRow({ names, total, onPress, onDismiss }: { names: string[]; total: number; onPress: () => void; onDismiss: () => void }) {
   const p = usePalette();
   const one = names.length === 1;
-  const title = one ? `${names[0]} has no reminder` : `${names.length} have no reminder`;
+  const title = one ? `${names[0]}: no reminder` : `${count(names.length)} have no reminder`;
   return (
     <Card style={{ minHeight: 56, borderRadius: 16, flexDirection: 'row', alignItems: 'center', paddingLeft: 14 }}>
       <Pressable
@@ -333,7 +367,7 @@ export function NoReminderRow({ names, total, onPress, onDismiss }: { names: str
             {title}
           </Txt>
           <Txt v="sub" tone="mute" numberOfLines={1}>
-            Pro reminds you about every one
+            Pro covers every one
           </Txt>
         </View>
         <View style={{ paddingHorizontal: 10, height: 28, borderRadius: 14, backgroundColor: brand.sunflower, alignItems: 'center', justifyContent: 'center' }}>
@@ -352,7 +386,6 @@ export function NoReminderRow({ names, total, onPress, onDismiss }: { names: str
 const QUICK = ['netflix', 'spotify', 'chatgpt-plus', 'amazon-prime', 'disney-plus', 'max', 'apple-music', 'hulu'];
 const SHORT_NAME: Record<string, string> = { 'chatgpt-plus': 'ChatGPT', max: 'HBO Max', 'amazon-prime': 'Prime', 'disney-plus': 'Disney+', 'apple-music': 'Apple Music' };
 
-/** 11 · Nothing on the list yet. */
 /**
  * "Missing any?" under a short list (owner, Nov 20 video: "the other subs, just a small one, so it's not
  * so plain"). Not a card: a label and one row of popular services they don't have yet, each one tap to add.
@@ -409,6 +442,7 @@ export function MissingStrip({ country, have, onAdd }: { country: string | null;
   );
 }
 
+/** 11 · Nothing on the list yet. */
 export function EmptyHome({ country, onAdd }: { country: string | null; onAdd: (catalogId?: string) => void }) {
   const p = usePalette();
   const ids = [...QUICK, ...POPULAR_ORDER].filter((id, i, a) => a.indexOf(id) === i && SERVICE_BY_ID[id] && availableIn(SERVICE_BY_ID[id], country)).slice(0, 8);
@@ -432,7 +466,7 @@ export function EmptyHome({ country, onAdd }: { country: string | null; onAdd: (
             {'Nothing to watch\u00A0yet.'}
           </Txt>
           <Txt v="leadS" center color={p.dark ? p.fg2 : '#4B4220'} style={{ marginTop: 10 }}>
-            Add what you pay for. Ditch reminds you before it charges.
+            {'Add what you pay for. We’ll remind\u00A0you.'}
           </Txt>
           <Button label="Add a subscription" onPress={() => onAdd()} style={{ marginTop: 18, alignSelf: 'stretch' }} left={<Plus color={p.dark ? brand.ink : brand.sunflower} size={20} />} />
         </View>
@@ -594,20 +628,33 @@ export function PriceChangeCard({
   const p = usePalette();
   const s = change.sub;
   if (!pro) {
+    // The × works like the overlap card's: hidden for this price change.
     return (
-      <Pressable accessibilityRole="button" accessibilityLabel={`A price on your list ${change.up ? 'went up' : 'changed'}. See it with Pro`} onPress={onPro}>
-        {({ pressed }) => (
-          <Card style={{ minHeight: 48, borderRadius: 16, flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 14, paddingVertical: 10, opacity: pressed ? 0.75 : 1 }}>
-            <Txt v="body" color={p.cardFg} style={{ flex: 1, fontSize: 15 }}>
-              <Txt v="body" color={p.cardFg} style={{ fontFamily: F.bold, fontSize: 15 }}>
-                {`A price on your list ${change.up ? 'went up' : 'changed'}.`}
+      <Card style={{ minHeight: 48, borderRadius: 16, flexDirection: 'row', alignItems: 'center', paddingLeft: 14 }}>
+        <Pressable accessibilityRole="button" accessibilityLabel={`A price on your list ${change.up ? 'went up' : 'changed'}. See it with Pro`} onPress={onPro} style={{ flex: 1, minWidth: 0 }}>
+          {({ pressed }) => (
+            <View style={{ minHeight: 48, flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 10, opacity: pressed ? 0.75 : 1 }}>
+              <Txt v="body" color={p.cardFg} style={{ flex: 1, fontSize: 15 }}>
+                <Txt v="body" color={p.cardFg} style={{ fontFamily: F.bold, fontSize: 15 }}>
+                  {`A price on your list ${change.up ? 'went up' : 'changed'}.`}
+                </Txt>
+                {' Price watch is in Pro.'}
               </Txt>
-              {' Price watch is in Pro.'}
-            </Txt>
-            <ChevronRight color={p.cardFg} size={16} />
-          </Card>
-        )}
-      </Pressable>
+              <ChevronRight color={p.cardFg} size={16} />
+            </View>
+          )}
+        </Pressable>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Hide this"
+          accessibilityHint="Hides this price change"
+          onPress={onDismiss}
+          hitSlop={8}
+          style={({ pressed }) => ({ width: 28, minHeight: 44, marginLeft: 4, marginRight: 4, alignItems: 'center', justifyContent: 'center', opacity: pressed ? 0.6 : 1 })}
+        >
+          <Close color={p.mute} size={12} />
+        </Pressable>
+      </Card>
     );
   }
   const was = money(change.was, s.currency);

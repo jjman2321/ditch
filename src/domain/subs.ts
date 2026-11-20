@@ -413,8 +413,9 @@ export function chargesBetween(s: Sub, from: DateOnly, to: DateOnly): DateOnly[]
  * One month of the calendar: each day's charges and whether a heads-up
  * lands on it. Receipt anchors are on-cycle, so the same maths applies.
  * Ditched-and-confirmed subs don't show; waiting ones show as pending.
+ * `extraHeads`: more reminder days to dot, e.g. each ditched sub's one last check (taken from the reminder plan).
  */
-export function calendarMonth(subs: Sub[], y: number, m: number, today: DateOnly, reminded: Set<string>, leads: readonly number[]): (CalendarDay | null)[] {
+export function calendarMonth(subs: Sub[], y: number, m: number, today: DateOnly, reminded: Set<string>, leads: readonly number[], extraHeads: readonly DateOnly[] = []): (CalendarDay | null)[] {
   const cells = monthGrid(y, m);
   const days = cells.filter((c): c is DateOnly => !!c);
   const from = days[0];
@@ -442,6 +443,7 @@ export function calendarMonth(subs: Sub[], y: number, m: number, today: DateOnly
       }
     }
   }
+  for (const h of extraHeads) if (h >= from && h <= to && h >= today) heads.add(h);
   return cells.map((d) =>
     d
       ? {

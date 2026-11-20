@@ -16,8 +16,10 @@ export type CancelHelp = {
    * cancel page. steps: no direct page, so the steps first.
    */
   kind: 'apple' | 'url' | 'steps';
-  /** The main button. */
+  /** The main button on the Ditched screen. */
   label: string;
+  /** The page button inside the how-to sheet. Step 1 says "Tap <this> below", so the two always match. */
+  pageLabel: string;
   /** The page the main button opens (apple, url), or a help article (steps). */
   url?: string;
   steps: string[];
@@ -45,15 +47,32 @@ export function pointAtButton(steps: string[], name: string): string[] {
 
 const APPLE_STEPS = ['Open iPhone Settings and tap your name', 'Tap Subscriptions', 'Pick it, then tap Cancel Subscription'];
 
+/** Longer names make "Open YouTube Premium to cancel" wrap onto two lines on an SE, so those buttons say "the cancel page". */
+const LONG_NAME = 14;
+
 /** The main button on the Ditched screen, and the how-to sheet. */
 export function cancelHelp({ name, catalogId, proTrial }: { name: string; catalogId: string | null; proTrial?: boolean }): CancelHelp {
-  const apple: CancelHelp = { kind: 'apple', url: APPLE_SUBSCRIPTIONS_URL, label: 'Open Apple subscriptions to cancel', steps: APPLE_STEPS, appleNote: false };
+  const apple: CancelHelp = { kind: 'apple', url: APPLE_SUBSCRIPTIONS_URL, label: 'Open Apple subscriptions', pageLabel: 'Open Apple subscriptions', steps: APPLE_STEPS, appleNote: false };
   if (proTrial) return apple;
   const svc = catalogId ? SERVICE_BY_ID[catalogId] : undefined;
   const guide = catalogId ? CANCEL_GUIDES[catalogId] : undefined;
   if (guide?.apple) return { ...apple, steps: guide.steps, checked: CANCEL_CHECKED };
   if (svc?.billedVia === 'apple') return apple;
-  if (guide?.url) return { kind: 'url', url: guide.url, label: `Open ${name} to cancel`, steps: pointAtButton(guide.steps, name), appleNote: !!guide.appleNote, checked: CANCEL_CHECKED };
-  if (guide) return { kind: 'steps', url: guide.helpUrl, label: `How to cancel ${name}`, steps: guide.steps, appleNote: !!guide.appleNote, checked: CANCEL_CHECKED };
-  return { kind: 'steps', label: `How to cancel ${name}`, steps: cancelSteps(name), appleNote: true };
+  const long = name.length > LONG_NAME;
+  if (guide?.url) {
+    const target = long ? 'the cancel page' : name;
+    return {
+      kind: 'url',
+      url: guide.url,
+      label: long ? 'Open the cancel page' : `Open ${name} to cancel`,
+      pageLabel: `Open ${target}`,
+      steps: pointAtButton(guide.steps, target),
+      appleNote: !!guide.appleNote,
+      checked: CANCEL_CHECKED,
+    };
+  }
+  const how = long ? 'How to cancel it' : `How to cancel ${name}`;
+  if (guide)
+    return { kind: 'steps', url: guide.helpUrl, label: how, pageLabel: long ? 'Open the help page' : `Open ${name} help`, steps: guide.steps, appleNote: !!guide.appleNote, checked: CANCEL_CHECKED };
+  return { kind: 'steps', label: how, pageLabel: '', steps: cancelSteps(name), appleNote: true };
 }

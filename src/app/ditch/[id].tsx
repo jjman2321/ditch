@@ -18,7 +18,7 @@ import { chargeOfSub, isPending, isPricedSub, isProTrial } from '@/domain/subs';
 import { helpFor, openUrl, useCancelHelp } from '@/ditch/CancelHelp';
 import { SubLogo } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
-import { ask } from '@/ui/alert';
+import { ask, tell } from '@/ui/alert';
 import { Bell, Button, Card, DitchedTag, Duck, EDGE, External, F, ProLockup, SurfaceContext, Txt, brand, haptic, paletteFor, useInsets, useIsDark, usePageEdge } from '@/ui/sunflower';
 
 // The website's timing: tag at 0.35 s (with the buzz), duck at 0.5 s, the number at 0.75 s, the rest after.
@@ -118,7 +118,7 @@ export default function Ditched() {
     router.back();
   };
   const putBack = () =>
-    ask(`Still paying for ${sub.name}?`, 'It goes back on your list with its reminders.', [
+    ask(`Still paying for ${sub.name}?`, 'It goes back on your list.', [
       { text: 'Keep it ditched', style: 'cancel' },
       { text: 'Put it back', onPress: () => void undo() },
     ]);
@@ -149,10 +149,7 @@ export default function Ditched() {
   return (
     <SurfaceContext.Provider value="sun">
       <View style={{ flex: 1, backgroundColor: p.bg }}>
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1, justifyContent: wide ? 'center' : undefined, paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, 12), paddingHorizontal: edge }}
-          showsVerticalScrollIndicator={false}
-        >
+        <ScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, 12), paddingHorizontal: edge }} showsVerticalScrollIndicator={false}>
           {/* Done leaves it ditched (cancel later, the last check still comes). Undo only right
               after ditching; reopened, it's "Put it back", which asks first. */}
           <View style={{ height: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -184,139 +181,150 @@ export default function Ditched() {
           {/* One headline, then ONE receipt card that holds everything about this sub (owner, Nov 19: the
               loose pieces floated and felt flat). Like Wise, Chime and Wealthsimple's "done" screens: say what
               happened, show the money in a card, then the next step. The duck pops over the card's corner. */}
-          <View style={wide ? null : { flex: 1 }}>
-            <Animated.View style={[{ marginTop: tiny ? 6 : compact ? 12 : 24 }, cardStyle]}>
-              <Txt v="displayL" accessibilityRole="header" style={{ fontSize: tiny ? 34 : compact ? 40 : 46, lineHeight: tiny ? 38 : compact ? 44 : 50, letterSpacing: tiny ? -1.2 : -1.6 }}>
-                Ditched.
-              </Txt>
-              <Txt v="leadS" tone="fg2" style={{ marginTop: 6, fontSize: tiny ? 15 : 16.5, lineHeight: tiny ? 20 : 22 }}>
-                {trial ? 'Next, cancel it in your Apple subscriptions.' : `Next, cancel it with ${sub.name}.`}
-              </Txt>
-            </Animated.View>
+          {/* iPad: Undo and Done stay at the top like every other screen; only the rest is centred. */}
+          <View style={wide ? { flex: 1, justifyContent: 'center', paddingBottom: 44 } : { flex: 1 }}>
+            <View style={wide ? null : { flex: 1 }}>
+              <Animated.View style={[{ marginTop: tiny ? 6 : compact ? 12 : 24 }, cardStyle]}>
+                <Txt v="displayL" accessibilityRole="header" style={{ fontSize: tiny ? 34 : compact ? 40 : 46, lineHeight: tiny ? 38 : compact ? 44 : 50, letterSpacing: tiny ? -1.2 : -1.6 }}>
+                  Ditched.
+                </Txt>
+                <Txt v="leadS" tone="fg2" style={{ marginTop: 6, fontSize: tiny ? 15 : 16.5, lineHeight: tiny ? 20 : 22 }}>
+                  {trial ? 'Next, cancel it in your Apple subscriptions.' : `Next, cancel it with ${sub.name}.`}
+                </Txt>
+              </Animated.View>
 
-            {/* Spare height splits above and below the card, so it never floats with one big gap (room for the duck at least). */}
-            {wide ? <View style={{ height: 92 }} /> : <View style={{ flex: 1, minHeight: tiny ? 44 : compact ? 64 : 92, maxHeight: 150 }} />}
-            <Animated.View style={cardStyle}>
-              <Duck width={tiny ? 76 : compact ? 92 : 116} right={18} sink={3} delay={animate ? DUCK_MS : 0} />
-              <Card style={{ paddingHorizontal: 18, paddingTop: compact ? 14 : 18, paddingBottom: compact ? 4 : 6 }}>
-                {/* The sub: logo greys as the tag lands. */}
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-                  <View style={{ width: compact ? 36 : 40, height: compact ? 36 : 40 }}>
-                    <SubLogo sub={sub} size={compact ? 36 : 40} ditched />
-                    <Animated.View style={[StyleSheet.absoluteFill, logoStyle]}>
-                      <SubLogo sub={sub} size={compact ? 36 : 40} />
+              {/* Spare height splits above and below the card, so it never floats with one big gap (room for the duck at least). */}
+              {wide ? <View style={{ height: 92 }} /> : <View style={{ flex: 1, minHeight: tiny ? 44 : compact ? 64 : 92, maxHeight: 150 }} />}
+              <Animated.View style={cardStyle}>
+                <Duck width={tiny ? 76 : compact ? 92 : 116} right={18} sink={3} delay={animate ? DUCK_MS : 0} />
+                <Card style={{ paddingHorizontal: 18, paddingTop: compact ? 14 : 18, paddingBottom: compact ? 4 : 6 }}>
+                  {/* The sub: logo greys as the tag lands. */}
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+                    <View style={{ width: compact ? 36 : 40, height: compact ? 36 : 40 }}>
+                      <SubLogo sub={sub} size={compact ? 36 : 40} ditched />
+                      <Animated.View style={[StyleSheet.absoluteFill, logoStyle]}>
+                        <SubLogo sub={sub} size={compact ? 36 : 40} />
+                      </Animated.View>
+                    </View>
+                    <View style={{ flex: 1 }}>
+                      {trial ? (
+                        <ProLockup size={17} suffix="trial" color={p.cardFg} />
+                      ) : (
+                        <Txt v="bodyStrong" color={p.cardFg} style={{ fontSize: 17, lineHeight: 21 }} numberOfLines={2}>
+                          {sub.name}
+                        </Txt>
+                      )}
+                      {priceLine ? (
+                        <Txt v="body" tone="mute" num style={{ fontSize: 14, marginTop: 2 }} numberOfLines={1}>
+                          {priceLine}
+                        </Txt>
+                      ) : null}
+                    </View>
+                    <Animated.View style={tagStyle} accessible accessibilityLabel="Ditched">
+                      <DitchedTag size="m" />
                     </Animated.View>
                   </View>
-                  <View style={{ flex: 1 }}>
-                    {trial ? (
-                      <ProLockup size={17} suffix="trial" color={p.cardFg} />
+
+                  {/* The money: the one big thing on the screen. */}
+                  <Animated.View style={[{ marginTop: compact ? 14 : 18, paddingTop: compact ? 12 : 16, borderTopWidth: 1, borderTopColor: p.hair }, amountStyle]}>
+                    {yearly !== null && sub.currency ? (
+                      <>
+                        <Txt v="label" tone="mute" style={{ fontSize: 15 }}>
+                          You won’t pay
+                        </Txt>
+                        <Txt
+                          v="displayXL"
+                          num
+                          color={p.dark ? brand.sunflower : brand.ink}
+                          style={{ fontSize: tiny ? 42 : compact ? 48 : 56, lineHeight: tiny ? 48 : compact ? 54 : 62, marginTop: 2, marginLeft: -2 }}
+                          adjustsFontSizeToFit
+                          numberOfLines={1}
+                        >
+                          {money(yearly, sub.currency)}
+                        </Txt>
+                        <Txt v="label" color={p.cardFg} style={{ fontSize: 15 }}>
+                          a year, once you cancel
+                        </Txt>
+                      </>
                     ) : (
-                      <Txt v="bodyStrong" color={p.cardFg} style={{ fontSize: 17 }} numberOfLines={1}>
-                        {sub.name}
+                      <Txt v="label" color={p.cardFg} style={{ fontSize: 17, lineHeight: 23 }}>
+                        {'Cancel it, and that’s one less\u00A0charge.'}
                       </Txt>
                     )}
-                    {priceLine ? (
-                      <Txt v="body" tone="mute" num style={{ fontSize: 14, marginTop: 2 }} numberOfLines={1}>
-                        {priceLine}
+                    {trial ? (
+                      <Txt v="body" tone="mute" style={{ marginTop: 8, fontSize: 14.5 }}>
+                        You keep your whole list. Reminders drop back to 3.
                       </Txt>
                     ) : null}
-                  </View>
-                  <Animated.View style={tagStyle} accessible accessibilityLabel="Ditched">
-                    <DitchedTag size="m" />
                   </Animated.View>
-                </View>
 
-                {/* The money: the one big thing on the screen. */}
-                <Animated.View style={[{ marginTop: compact ? 14 : 18, paddingTop: compact ? 12 : 16, borderTopWidth: 1, borderTopColor: p.hair }, amountStyle]}>
-                  {yearly !== null && sub.currency ? (
-                    <>
-                      <Txt v="label" tone="mute" style={{ fontSize: 15 }}>
-                        You won’t pay
-                      </Txt>
-                      <Txt
-                        v="displayXL"
-                        num
-                        color={p.dark ? brand.sunflower : brand.ink}
-                        style={{ fontSize: tiny ? 42 : compact ? 48 : 56, lineHeight: tiny ? 48 : compact ? 54 : 62, marginTop: 2, marginLeft: -2 }}
-                        adjustsFontSizeToFit
-                        numberOfLines={1}
+                  {/* When: the last reminder, or when it charges. Reminders off: tap to turn them on. */}
+                  <Animated.View style={[{ marginTop: compact ? 12 : 16, borderTopWidth: 1, borderTopColor: p.hair }, restStyle]}>
+                    {isPending(sub) ? (
+                      <Pressable
+                        accessible
+                        accessibilityRole={blocked ? 'button' : 'text'}
+                        accessibilityLabel={`${check.title}. ${check.line}`}
+                        disabled={!blocked}
+                        accessibilityHint={app.notif === 'denied' ? 'Opens iPhone Settings' : 'Shows the iPhone permission prompt'}
+                        onPress={() =>
+                          app.notif === 'denied' ? Linking.openSettings().catch(() => tell('Couldn’t open Settings', 'Open iPhone Settings, then Notifications, then Ditch.')) : void app.askNotif()
+                        }
+                        style={{ flexDirection: 'row', alignItems: 'center', gap: 10, minHeight: compact ? 48 : 54 }}
                       >
-                        {money(yearly, sub.currency)}
-                      </Txt>
-                      <Txt v="label" color={p.cardFg} style={{ fontSize: 15 }}>
-                        a year, once you cancel
-                      </Txt>
-                    </>
-                  ) : (
-                    <Txt v="label" color={p.cardFg} style={{ fontSize: 17, lineHeight: 23 }}>
-                      {'Cancel it, and that’s one less\u00A0charge.'}
-                    </Txt>
-                  )}
-                  {trial ? (
-                    <Txt v="body" tone="mute" style={{ marginTop: 8, fontSize: 14.5 }}>
-                      You keep your whole list. Reminders drop back to 3.
-                    </Txt>
-                  ) : null}
-                </Animated.View>
-
-                {/* When: the last reminder, or when it charges. Reminders off: tap to turn them on. */}
-                <Animated.View style={[{ marginTop: compact ? 12 : 16, borderTopWidth: 1, borderTopColor: p.hair }, restStyle]}>
-                  {isPending(sub) ? (
-                    <Pressable
-                      accessible
-                      accessibilityRole={blocked ? 'button' : 'text'}
-                      accessibilityLabel={`${check.title}. ${check.line}`}
-                      disabled={!blocked}
-                      accessibilityHint={app.notif === 'denied' ? 'Opens iPhone Settings' : 'Shows the iPhone permission prompt'}
-                      onPress={() => (app.notif === 'denied' ? Linking.openSettings().catch(() => {}) : void app.askNotif())}
-                      style={{ flexDirection: 'row', alignItems: 'center', gap: 10, minHeight: compact ? 48 : 54 }}
-                    >
-                      <Bell color={p.cardFg} fill={blocked ? undefined : p.dark ? brand.sunflower : brand.ink} size={16} />
-                      <Txt v="body" num color={p.cardFg} style={{ flex: 1, fontSize: 15, fontFamily: F.semi }}>
-                        {check.title}
+                        {/* Off: a hollow bell and a small "Turn on" pill on the right, like a settings row, not a link in the sentence. */}
+                        <Bell color={blocked ? p.mute : p.cardFg} fill={blocked ? undefined : p.dark ? brand.sunflower : brand.ink} size={16} />
+                        <Txt v="body" num color={p.cardFg} style={{ flex: 1, fontSize: 15, fontFamily: F.semi }}>
+                          {check.title}
+                        </Txt>
                         {blocked ? (
-                          <Txt v="body" color={p.cardFg} style={{ fontSize: 15, fontFamily: F.semi, textDecorationLine: 'underline' }}>
-                            {' · Turn on'}
-                          </Txt>
+                          <View style={{ minHeight: 32, paddingHorizontal: 14, borderRadius: 16, justifyContent: 'center', backgroundColor: p.dark ? brand.sunflower : brand.ink }}>
+                            <Txt v="label" color={p.dark ? brand.ink : brand.white} style={{ fontSize: 14, fontFamily: F.bold }}>
+                              Turn on
+                            </Txt>
+                          </View>
                         ) : null}
-                      </Txt>
-                    </Pressable>
-                  ) : (
-                    <View style={{ height: 12 }} />
-                  )}
-                </Animated.View>
-              </Card>
-            </Animated.View>
-            {wide ? <View style={{ height: 32 }} /> : <View style={{ flex: 1, minHeight: tiny ? 14 : 24 }} />}
-          </View>
+                      </Pressable>
+                    ) : (
+                      <View style={{ height: 12 }} />
+                    )}
+                  </Animated.View>
+                </Card>
+              </Animated.View>
+              {wide ? <View style={{ height: 32 }} /> : <View style={{ flex: 1, minHeight: tiny ? 14 : 24 }} />}
+            </View>
 
-          <Animated.View style={actionsStyle}>
-            <Button
-              label={help1.label}
-              hint={help1.kind === 'steps' ? 'Shows the steps' : 'Opens outside Ditch'}
-              onPress={() => {
-                if (help1.kind !== 'steps') away.current = { name: sub.name, done: () => void cancelled() };
-                help.go(sub);
-              }}
-              right={help1.kind === 'steps' ? undefined : <External color={p.dark ? brand.ink : brand.sunflower} size={19} />}
-              style={[{ marginTop: wide ? 12 : 0 }, compact && { minHeight: 50, borderRadius: 25 }]}
-            />
-            <Button kind="secondary" label="I cancelled it" onPress={cancelled} style={[{ marginTop: 8 }, compact && { minHeight: 46, borderRadius: 23 }]} />
-            <Pressable
-              accessibilityRole="link"
-              accessibilityLabel={trial ? 'Open Apple subscriptions to cancel Ditch Pro' : 'Billed by Apple? Open Apple subscriptions'}
-              hitSlop={{ top: 7, bottom: 7 }}
-              onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)}
-              style={{ minHeight: compact ? 30 : 36, justifyContent: 'center', marginTop: 2 }}
-            >
-              <Txt v="body" tone="fg2" center style={{ fontSize: 14 }}>
-                {trial ? 'Billed by Apple. ' : 'Billed by Apple? '}
-                <Txt v="body" tone="fg2" style={{ fontSize: 14, fontFamily: F.semi, textDecorationLine: 'underline' }}>
-                  Open Apple subscriptions
-                </Txt>
-              </Txt>
-            </Pressable>
-          </Animated.View>
+            <Animated.View style={actionsStyle}>
+              <Button
+                label={help1.label}
+                hint={help1.kind === 'steps' ? 'Shows the steps' : 'Opens outside Ditch'}
+                onPress={() => {
+                  if (help1.kind !== 'steps') away.current = { name: sub.name, done: () => void cancelled() };
+                  help.go(sub);
+                }}
+                right={help1.kind === 'steps' ? undefined : <External color={p.dark ? brand.ink : brand.sunflower} size={19} />}
+                style={[{ marginTop: wide ? 12 : 0 }, compact && { minHeight: 50, borderRadius: 25 }]}
+              />
+              <Button kind="secondary" label="I cancelled it" onPress={cancelled} style={[{ marginTop: 8 }, compact && { minHeight: 46, borderRadius: 23 }]} />
+              {/* Only when the main button opens somewhere else: for Apple-billed ones (and the Pro trial) it already opens this page. */}
+              {help1.kind === 'apple' ? null : (
+                <Pressable
+                  accessibilityRole="link"
+                  accessibilityLabel="Billed by Apple? Open Apple subscriptions"
+                  hitSlop={{ top: 7, bottom: 7 }}
+                  onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)}
+                  style={{ minHeight: compact ? 30 : 36, justifyContent: 'center', marginTop: 2 }}
+                >
+                  <Txt v="body" tone="fg2" center style={{ fontSize: 14 }}>
+                    {'Billed by Apple? '}
+                    <Txt v="body" tone="fg2" style={{ fontSize: 14, fontFamily: F.semi, textDecorationLine: 'underline' }}>
+                      Open Apple subscriptions
+                    </Txt>
+                  </Txt>
+                </Pressable>
+              )}
+            </Animated.View>
+          </View>
         </ScrollView>
         {help.sheet}
       </View>

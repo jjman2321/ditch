@@ -195,6 +195,16 @@ describe('calendar', () => {
     expect(nov14.charges[0].pending).toBe(true);
     expect(monthDue(d, 'USD').totals[0].amountMinor).toBe(6597 - 1999);
   });
+
+  it('a ditched sub’s last check gets a dot (passed in from the plan); past or other-month days are ignored', () => {
+    const subs = demo().map((s) => (s.name === 'Netflix' ? ditchSub(s, TODAY) : s));
+    const reminded = remindedIds(subs, false);
+    const without = calendarMonth(subs, 2026, 11, TODAY, reminded, [3, 1]);
+    expect(without.find((x) => x?.date === '2026-11-13')!.headsUp).toBe(false);
+    const d = calendarMonth(subs, 2026, 11, TODAY, reminded, [3, 1], ['2026-11-13', '2026-11-02', '2026-12-05']);
+    expect(d.find((x) => x?.date === '2026-11-13')!.headsUp).toBe(true);
+    expect(d.find((x) => x?.date === '2026-11-02')!.headsUp).toBe(false);
+  });
 });
 
 describe('settings', () => {

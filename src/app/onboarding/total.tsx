@@ -11,8 +11,8 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { Pressable, View } from 'react-native';
 import Animated, { Easing, FadeIn, useAnimatedStyle, useReducedMotion, useSharedValue, withDelay, withSpring, withTiming } from 'react-native-reanimated';
 
-import { approxLine } from '@/domain/copy';
-import { yearlyMinor } from '@/domain/money';
+import { approxLine, possessive } from '@/domain/copy';
+import { currencyDigits, formatMoney, yearlyMinor } from '@/domain/money';
 import { FitScroll, OnbRoot, TextLink } from '@/onboarding/Parts';
 import { PriceSheet } from '@/onboarding/PriceSheet';
 import { useCombinedTotal } from '@/services/fx';
@@ -22,6 +22,7 @@ import {
   ChevronDown,
   F,
   LogoTile,
+  fitSize,
   POP,
   ROLL,
   RollingMeasure,
@@ -103,13 +104,27 @@ export default function Total() {
   const [showAll, setShowAll] = useState(false);
   const [priceFor, setPriceFor] = useState<string | null>(null);
 
-  const hero = main ? money(main.yearlyMinor, main.currency, { whole: true }) : '';
+  // 104pt (80 on SE, 128 on iPad), shrunk only if a big total won't fit.
+  const base = f.tablet ? 128 : f.tiny ? 56 : f.small ? 80 : 104;
+  const wholeHero = main ? money(main.yearlyMinor, main.currency, { whole: true }) : '';
+  // Under 1,000 a year the total keeps its cents, so it matches the list below ("$239.88", not "$240", audit Nov 20),
+  // but only while it still fits at 80% of the full size or more; otherwise the whole amount, as before.
+  const digits = main ? currencyDigits(main.currency) : 0;
+  const centsHero = main && digits > 0 && main.yearlyMinor < 1000 * 10 ** digits ? money(main.yearlyMinor, main.currency) : null;
+  const [centsW, setCentsW] = useState<number | null>(null);
+  const cents = !!centsHero && centsW !== null && fitSize(base, f.content - 4, centsW) >= Math.round(base * 0.8);
+  const hero = cents && centsHero ? centsHero : wholeHero;
+  // Nothing priced yet: "$—" in their currency, where the total will be.
+  const cur = country?.currency ?? list.find((x) => x.currency)?.currency ?? 'USD';
+  const dash = `${formatMoney(0, cur, { home: country?.currency }).replace(/[\d.,\s]/g, '')}—`;
+  const firstUnpriced = sorted.find((x) => !isPriced(x)) ?? null;
   // Count up whenever the total is new (owner, Nov 20: after going back and adding one, it should
   // visibly recalculate), not just the first time. Same total again: show it at rest. Reduce Motion: no roll.
-  const [play] = useState(() => !reduce && (!totalShown || lastHero !== hero));
+  const heroKey = main ? `${main.yearlyMinor} ${main.currency}` : '';
+  const [play] = useState(() => !reduce && (!totalShown || lastHero !== heroKey));
   useEffect(() => {
-    lastHero = hero;
-  }, [hero]);
+    lastHero = heroKey;
+  }, [heroKey]);
   const landed = play ? rollDuration(hero) : 0;
   // The roll waits for the screen to finish sliding in, so it plays in front of still eyes (motion doc fix 6).
   const arrived = useScreenArrived();
@@ -137,8 +152,6 @@ export default function Total() {
     return () => clearTimeout(t);
   }, [play, arrived, lastRowAt]);
 
-  // 104pt (80 on SE, 128 on iPad), shrunk only if a big total won't fit.
-  const base = f.tablet ? 128 : f.tiny ? 56 : f.small ? 80 : 104;
   // A little air on the right so the last digit never touches the edge.
   const [size, onMeasure] = useFitSize(base, f.content - 4);
   // Archivo's own line is 1.09× the size (ascent 0.88, descent 0.21). A shorter line crops the tops of the
@@ -170,15 +183,20 @@ export default function Total() {
       <View style={{ height: f.top + STEP_HEADER_H }} />
       <FitScroll style={{ paddingHorizontal: f.edge, paddingBottom: f.tablet ? f.bottom : 0 }}>
         <Txt v="label" style={{ marginTop: f.tiny ? 4 : f.small ? 8 : 24, fontSize: 17, lineHeight: 24 }}>
-          {main ? 'You pay' : 'Add your prices to see your total'}
+          You pay
         </Txt>
 
         {/* Measures the total at full size, drawn the same way, so it can shrink to fit. */}
-        <RollingMeasure text={hero} style={{ fontFamily: F.display, fontSize: base, letterSpacing: -0.045 * base }} onWidth={onMeasure} />
+        <RollingMeasure text={main ? hero : dash} style={{ fontFamily: F.display, fontSize: base, letterSpacing: -0.045 * base }} onWidth={onMeasure} />
+        {centsHero ? <RollingMeasure text={centsHero} style={{ fontFamily: F.display, fontSize: base, letterSpacing: -0.045 * base }} onWidth={setCentsW} /> : null}
 
         {main ? (
           <>
-            <Animated.View entering={reduce ? FadeIn.duration(150) : undefined} style={{ marginTop: 8 - pullTop, marginBottom: -pullBottom, marginLeft: -4 }}>
+            {/* Hidden for the one frame before the cents version is measured, so it never flips from "$240" to "$239.88". */}
+            <Animated.View
+              entering={reduce ? FadeIn.duration(150) : undefined}
+              style={{ marginTop: 8 - pullTop, marginBottom: -pullBottom, marginLeft: -4, opacity: centsHero && centsW === null ? 0 : 1 }}
+            >
               <RollingNumber text={hero} style={heroStyle} lineHeight={lh} play={play} go={arrived} accessibilityLabel={`${hero} a year`} />
             </Animated.View>
             <Animated.View style={yearStyle}>
@@ -197,7 +215,27 @@ export default function Total() {
               ) : null}
             </Animated.View>
           </>
-        ) : null}
+        ) : (
+          // No prices yet (e.g. only YouTube Premium in the US): the total's place stays, with one clear way to fill it.
+          <>
+            <View style={{ marginTop: 8 - pullTop, marginBottom: -pullBottom, marginLeft: -4 }}>
+              <Txt v="displayL" accessibilityLabel="No total yet" maxFontSizeMultiplier={1} style={{ ...heroStyle, lineHeight: lh }}>
+                {dash}
+              </Txt>
+            </View>
+            <Txt v="heading" style={{ fontSize: 22, marginTop: f.tablet ? 16 : 12 }}>
+              {'Add a price to see your\u00A0year.'}
+            </Txt>
+            {firstUnpriced ? (
+              <Button
+                kind="secondary"
+                label={`Add ${possessive(firstUnpriced.name)} price`}
+                onPress={() => setPriceFor(firstUnpriced.id)}
+                style={{ marginTop: f.small ? 12 : 16, alignSelf: 'flex-start' }}
+              />
+            ) : null}
+          </>
+        )}
 
         <Animated.View style={restStyle}>
           {main ? (
@@ -214,16 +252,20 @@ export default function Total() {
 
         <View style={{ height: f.tiny ? 10 : f.small ? 16 : 24 }} />
 
-        <View style={[{ flex: 1, backgroundColor: cream.sheet }, sheetPad, dark && { borderTopWidth: 1, borderColor: '#2C2924' }]}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 16 }}>
-            <Txt v="eyebrow" color={cream.mute}>
-              Biggest first
-            </Txt>
-            <Txt v="eyebrow" color={cream.mute}>
-              Per year
-            </Txt>
-          </View>
-          <View style={{ marginTop: 4 }}>
+        {/* iPad: the card hugs its rows and the button sits at the foot of the column, like the phones' pinned one (audit Nov 20: half the card was bare). */}
+        <View style={[{ flex: f.tablet ? 0 : 1, backgroundColor: cream.sheet }, sheetPad, dark && { borderTopWidth: 1, borderColor: '#2C2924' }]}>
+          {/* No prices yet: no column headers over a list with no amounts. */}
+          {main ? (
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 16 }}>
+              <Txt v="eyebrow" color={cream.mute}>
+                Biggest first
+              </Txt>
+              <Txt v="eyebrow" color={cream.mute}>
+                Per year
+              </Txt>
+            </View>
+          ) : null}
+          <View style={{ marginTop: main ? 4 : 0 }}>
             {visible.map((x, i) => {
               const amount = isPriced(x) ? money(yearlyMinor(x.amountMinor, x.cycle), x.currency) : null;
               return (
@@ -281,11 +323,13 @@ export default function Total() {
               </Animated.View>
             ) : null}
           </View>
-          <Animated.View style={moreStyle}>
-            <Txt v="strong" color={cream.fg} style={{ marginTop: f.small ? 12 : 16 }}>
-              {f.tiny ? 'Not using one? Ditch it.' : `Not using one? Ditch it before it${NB}renews.`}
-            </Txt>
-          </Animated.View>
+          {main ? (
+            <Animated.View style={moreStyle}>
+              <Txt v="strong" color={cream.fg} style={{ marginTop: f.small ? 12 : 16 }}>
+                {f.tiny ? 'Not using one? Ditch it.' : `Not using one? Ditch it before it${NB}renews.`}
+              </Txt>
+            </Animated.View>
+          ) : null}
           {/* One fact in the spare room above the button on taller phones (C+R Research via CNBC, 2022: people guess
               $86 a month, they pay $219). Hidden on SE-size phones so the button never moves. */}
           {main && !f.small && !f.tablet ? (
@@ -298,15 +342,13 @@ export default function Total() {
               </Animated.View>
             </>
           ) : null}
-          {f.tablet ? (
-            <>
-              <View style={{ flex: 1, minHeight: 16 }} />
-              <SurfaceContext.Provider value="cream">
-                <Button label="Set up reminders" onPress={() => router.push('/onboarding/dates')} />
-              </SurfaceContext.Provider>
-            </>
-          ) : null}
         </View>
+        {f.tablet ? (
+          <>
+            <View style={{ flex: 1, minHeight: 24 }} />
+            <Button label="Set up reminders" onPress={() => router.push('/onboarding/dates')} />
+          </>
+        ) : null}
       </FitScroll>
       {/* Pinned, so "Show all" can never push it off the screen. */}
       {f.tablet ? null : (

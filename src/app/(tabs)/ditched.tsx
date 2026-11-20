@@ -25,6 +25,8 @@ export default function DitchedTab() {
   const { width, fontScale } = useWindowDimensions();
   // SE and mini (375pt): the two buttons get their own full-width row under the name, so the full labels fit.
   const narrow = width < 380;
+  // 320pt (iPad Slide Over, Display Zoom on an SE): the two buttons stack, one per row.
+  const tiny = width < 350;
   const app = useApp();
   const money = useAppMoney();
   const help = useCancelHelp();
@@ -42,9 +44,11 @@ export default function DitchedTab() {
   const main = saving[0];
   const steps = main ? savingsSteps(app.subs, main.currency) : [];
   const since = confirmed.length ? confirmed[confirmed.length - 1].confirmedOn : null;
+  // "since June", or "this month" when the first cancel was this month ("since November" in November reads oddly).
   const sinceWord = since ? sinceLabel(since, app.today) : '';
+  const sincePhrase = !sinceWord ? '' : sinceWord === 'this month' ? ' this month' : ` since ${sinceWord}`;
   // "From 3 subs you cancelled since June · $35.93 a month" needs about 440pt at 16pt text; the hero card has 20pt sides.
-  const oneLine = (width - edge * 2 - 40) / Math.max(1, fontScale) >= 440;
+  const oneLine = (width - edge * 2 - 40) / Math.max(1, fontScale) >= 480;
 
   // Tapping a cancelled one opens a sheet with plain choices (owner, Nov 20: the old pop-up wasn't
   // intuitive). Like Rocket Money's inactive sheet: the sub on top, the choices stacked under it.
@@ -54,12 +58,13 @@ export default function DitchedTab() {
   const nothing = pending.length === 0 && confirmed.length === 0;
 
   const pills = (s: Sub) => (
-    <View style={{ flexDirection: 'row', gap: narrow ? 8 : 6, rowGap: 10, marginTop: narrow ? 12 : 10, flexWrap: narrow ? 'nowrap' : 'wrap' }}>
+    <View style={{ flexDirection: tiny ? 'column' : 'row', gap: narrow ? 8 : 6, rowGap: tiny ? 8 : 10, marginTop: narrow ? 12 : 10, flexWrap: narrow ? 'nowrap' : 'wrap' }}>
       <Pill
         label="I cancelled it"
         a11y={`I cancelled ${s.name}`}
         filled
         full={narrow}
+        stacked={tiny}
         onPress={async () => {
           await app.confirmCancelled(s.id);
           haptic.success();
@@ -67,7 +72,7 @@ export default function DitchedTab() {
           setTimeout(() => app.maybeAskReview('cancelled').catch(() => {}), 1500);
         }}
       />
-      <Pill label="How to cancel" a11y={`How to cancel ${s.name}`} chevron full={narrow} onPress={() => help.open(s)} />
+      <Pill label="How to cancel" a11y={`How to cancel ${s.name}`} chevron full={narrow} stacked={tiny} onPress={() => help.open(s)} />
     </View>
   );
 
@@ -122,7 +127,7 @@ export default function DitchedTab() {
               accessible
               accessibilityLabel={
                 main
-                  ? `You won’t pay ${money(main.yearlyMinor, main.currency, { whole: true })} a year, from ${main.count} ${main.count === 1 ? 'sub' : 'subs'} you cancelled${sinceWord ? ` since ${sinceWord}` : ''}, ${money(main.monthlyMinor, main.currency)} a month.`
+                  ? `You won’t pay ${money(main.yearlyMinor, main.currency, { whole: true })} a year, from ${main.count} ${main.count === 1 ? 'sub' : 'subs'} you cancelled${sincePhrase}. That’s ${money(main.monthlyMinor, main.currency)} a month.`
                   : confirmed.length
                     ? `${confirmed.length} cancelled. No price on ${confirmed.length === 1 ? 'it' : 'them'}, so there’s nothing to add up yet.`
                     : 'Nothing cancelled yet.'
@@ -153,8 +158,8 @@ export default function DitchedTab() {
                   <Txt v="leadS" num color={p.dark ? p.fg2 : '#4B4220'} style={{ marginTop: 6 }}>
                     {/* Too narrow for one line (every phone): the monthly gets its own line, no dot. Wide (iPad): one line,
                         with the dot glued to the word before it so a dot never starts a line. */}
-                    {`From ${main.count} ${main.count === 1 ? 'sub' : 'subs'} you cancelled${sinceWord ? ` since ${sinceWord}` : ''}`}
-                    {oneLine ? `\u00A0· ${`${money(main.monthlyMinor, main.currency)} a month`.replace(/ /g, '\u00A0')}` : `\n${money(main.monthlyMinor, main.currency)} a month`}
+                    {`From ${main.count} ${main.count === 1 ? 'sub' : 'subs'} you cancelled${sincePhrase}.`}
+                    {`${oneLine ? ' ' : '\n'}${`That’s ${money(main.monthlyMinor, main.currency)} a month.`.replace(/ (\S+ \S+)$/, (m) => m.replace(/ /g, '\u00A0'))}`}
                   </Txt>
                 </>
               ) : confirmed.length ? (
@@ -185,8 +190,8 @@ export default function DitchedTab() {
               <>
                 <SectionHeader
                   title="To cancel"
-                  // Cents, like the Ditched screen it came from ($17.99 a month is $215.88 a year there, not $216).
-                  right={waiting[0] ? `${money(waiting[0].yearlyMinor, waiting[0].currency)} a year left to cancel` : undefined}
+                  // Whole dollars, like every yearly figure on this tab (audit, Nov 20).
+                  right={waiting[0] ? `${money(waiting[0].yearlyMinor, waiting[0].currency, { whole: true })} a year left to cancel` : undefined}
                   style={{ marginTop: 24, marginBottom: 8 }}
                 />
                 <Card>
@@ -195,9 +200,8 @@ export default function DitchedTab() {
                     const cancelBy = s.cancelBy && s.cancelBy >= app.today ? s.cancelBy : null;
                     const charge = cancelBy ? null : chargeOfSub(s, app.today);
                     // Glued with no-break spaces so "a month" never wraps on its own. SE: "Nov 24 · $17.99/mo" fits one line.
-                    const price = isPricedSub(s)
-                      ? ` · ${(narrow ? `${money(s.amountMinor, s.currency)}${CYCLE_SHORT[s.cycle]}` : `${money(s.amountMinor, s.currency)} ${CYCLE_WORDS[s.cycle]}`).replace(/ /g, '\u00A0')}`
-                      : '';
+                    // The price gets its own line under the date, so a "·" never hangs at the end of a wrapped line.
+                    const price = isPricedSub(s) ? (narrow ? `${money(s.amountMinor, s.currency)}${CYCLE_SHORT[s.cycle]}` : `${money(s.amountMinor, s.currency)} ${CYCLE_WORDS[s.cycle]}`) : null;
                     const day = narrow ? shortDate : weekdayDate;
                     return (
                       <View key={s.id}>
@@ -206,20 +210,27 @@ export default function DitchedTab() {
                           <View style={{ flexDirection: 'row', gap: 12 }}>
                             <SubLogo sub={s} ditched />
                             <View style={{ flex: 1 }}>
-                              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                                {s.kind === 'ditch_pro_trial' ? (
-                                  <ProLockup size={16} suffix="trial" color={p.cardFg} />
-                                ) : (
-                                  <Txt v="bodyStrong" color={p.cardFg} style={{ fontSize: 17, flexShrink: 1 }} numberOfLines={1}>
-                                    {s.name}
-                                  </Txt>
-                                )}
-                                <DitchedTag size="s" />
+                              {/* The name gets two lines before it cuts off; the DITCHED tag leads the date line, like Home's rows. */}
+                              {s.kind === 'ditch_pro_trial' ? (
+                                <ProLockup size={16} suffix="trial" color={p.cardFg} />
+                              ) : (
+                                <Txt v="bodyStrong" color={p.cardFg} style={{ fontSize: 17 }} numberOfLines={2}>
+                                  {s.name}
+                                </Txt>
+                              )}
+                              <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 6, marginTop: 3 }}>
+                                <View style={{ marginTop: 2 }}>
+                                  <DitchedTag size="s" />
+                                </View>
+                                <Txt v="body" tone="mute" num style={{ fontSize: 14.5, flex: 1 }}>
+                                  {cancelBy ? `Cancel by ${day(cancelBy)}` : charge ? `Charges ${day(charge)}` : 'Cancel before it renews'}
+                                </Txt>
                               </View>
-                              <Txt v="body" tone="mute" num style={{ fontSize: 14.5, marginTop: 2 }}>
-                                {cancelBy ? `Cancel by ${day(cancelBy)}` : charge ? `Charges ${day(charge)}` : 'Cancel before it renews'}
-                                {price}
-                              </Txt>
+                              {price ? (
+                                <Txt v="body" tone="mute" num style={{ fontSize: 14.5, marginTop: 1 }}>
+                                  {price}
+                                </Txt>
+                              ) : null}
                               {narrow ? null : pills(s)}
                             </View>
                           </View>
@@ -244,7 +255,7 @@ export default function DitchedTab() {
                         {i ? <RowDivider inset={62} /> : null}
                         <Pressable
                           accessibilityRole="button"
-                          accessibilityLabel={`${s.name}, cancelled ${s.confirmedOn ? weekdayDate(s.confirmedOn) : ''}${y ? `, ${money(y.amountMinor, y.currency)} a year` : ''}`}
+                          accessibilityLabel={`${s.name}, cancelled ${s.confirmedOn ? weekdayDate(s.confirmedOn) : ''}${y ? `, ${money(y.amountMinor, y.currency, { whole: true })} a year` : ''}`}
                           accessibilityHint="Opens options. Still paying? Put it back on your list."
                           onPress={() => reactivate(s)}
                           style={({ pressed }) => ({ minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, paddingVertical: 8, opacity: pressed ? 0.7 : 1 })}
@@ -255,15 +266,18 @@ export default function DitchedTab() {
                             <Txt v="bodyStrong" color={p.cardFg} style={{ fontSize: 17 }} numberOfLines={2}>
                               {s.name}
                             </Txt>
-                            <Txt v="body" tone="mute" num style={{ fontSize: 14.5, marginTop: 1 }}>
-                              Cancelled {s.confirmedOn ? shortDate(s.confirmedOn) : ''}
-                            </Txt>
+                            {/* Just the date: the section header already says Cancelled, and it fits at 320pt. */}
+                            {s.confirmedOn ? (
+                              <Txt v="body" tone="mute" num style={{ fontSize: 14.5, marginTop: 1 }}>
+                                {shortDate(s.confirmedOn)}
+                              </Txt>
+                            ) : null}
                           </View>
                           {y ? (
                             <View style={{ alignItems: 'flex-end' }}>
                               {/* Struck through: a price they no longer pay. Same ink, so it stays easy to read. */}
                               <Txt v="moneyM" num color={p.cardFg} style={{ fontSize: 17, textDecorationLine: 'line-through' }}>
-                                {money(y.amountMinor, y.currency)}
+                                {money(y.amountMinor, y.currency, { whole: true })}
                               </Txt>
                               <Txt v="sub" tone="mute">
                                 a year
@@ -343,7 +357,24 @@ export default function DitchedTab() {
   );
 }
 
-function Pill({ label, a11y, onPress, filled, chevron, full }: { label: string; a11y?: string; onPress: () => void; filled?: boolean; chevron?: boolean; full?: boolean }) {
+function Pill({
+  label,
+  a11y,
+  onPress,
+  filled,
+  chevron,
+  full,
+  stacked,
+}: {
+  label: string;
+  a11y?: string;
+  onPress: () => void;
+  filled?: boolean;
+  chevron?: boolean;
+  full?: boolean;
+  /** In a column (320pt): full width, natural height. */
+  stacked?: boolean;
+}) {
   const p = usePalette();
   const bg = filled ? (p.dark ? brand.sunflower : brand.ink) : 'transparent';
   const fg = filled ? (p.dark ? brand.ink : brand.white) : p.cardFg;
@@ -360,7 +391,7 @@ function Pill({ label, a11y, onPress, filled, chevron, full }: { label: string; 
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        flex: full ? 1 : undefined,
+        flex: full && !stacked ? 1 : undefined,
         gap: 2,
         backgroundColor: bg,
         borderWidth: filled ? 0 : 1.5,
@@ -379,5 +410,7 @@ function Pill({ label, a11y, onPress, filled, chevron, full }: { label: string; 
 /** "June", or "June 2025" when it's not this year. */
 function sinceLabel(d: string, today: string): string {
   const { y, m } = parseDate(d);
-  return y === parseDate(today).y ? MONTH_LONG[m - 1] : `${MONTH_LONG[m - 1]} ${y}`;
+  const t = parseDate(today);
+  if (y === t.y && m === t.m) return 'this month';
+  return y === t.y ? MONTH_LONG[m - 1] : `${MONTH_LONG[m - 1]} ${y}`;
 }

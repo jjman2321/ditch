@@ -6,7 +6,7 @@ import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, View, useWindowDimensions } from 'react-native';
 
-import { MONTH_LONG, WEEKDAY_LONG, addDays, parseDate, shiftMonth, toDateOnly, weekdayDate, weekdayOf, weekdayShort, type DateOnly } from '@/domain/dates';
+import { MONTH_LONG, WEEKDAY_LONG, addDays, daysInMonth, parseDate, shiftMonth, toDateOnly, weekdayDate, weekdayOf, weekdayShort, type DateOnly } from '@/domain/dates';
 import { HEADS_UP_LEADS } from '@/domain/charges';
 import { chargesSoonLine } from '@/domain/copy';
 import { effectiveLeads, shortTimeLabel, timeLabel } from '@/domain/settings';
@@ -14,6 +14,7 @@ import {
   FREE_REMINDERS,
   calendarMonth,
   homeFirst,
+  isActive,
   isPending,
   isPricedSub,
   isProTrial,
@@ -30,10 +31,17 @@ import { useEditor } from '@/editor/Editor';
 import { OffBanner, openPhoneSettings } from '@/home/HomeParts';
 import { SubLogo } from '@/home/SubRow';
 import { useApp, useAppMoney } from '@/state/app';
-import { BottomFade, Card, ChevronLeft, ChevronRight, F, IconButton, SectionHeader, Txt, brand, haptic, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
+import { Bang, BottomFade, Button, Card, ChevronLeft, ChevronRight, F, IconButton, SectionHeader, Txt, brand, haptic, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
 
 const WEEK = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 const GAP = 4;
+/** A day with hundreds of charges (or a long "No date yet") shows this many rows, then "Show all". */
+const FIRST_ROWS = 20;
+
+/** "1,341": counts with thousands separators. */
+const count = (n: number) => n.toLocaleString('en-US');
+/** "1 charge", "1,341 charges". */
+const charges = (n: number) => `${count(n)} ${n === 1 ? 'charge' : 'charges'}`;
 
 export default function Calendar() {
   const p = usePalette();
@@ -49,7 +57,13 @@ export default function Calendar() {
   const [view, setView] = useState({ y: t.y, m: t.m });
   const reminded = useMemo(() => remindedIds(subs, pro), [subs, pro]);
   const leads = useMemo(() => effectiveLeads(settings, pro), [settings, pro]);
-  const days = useMemo(() => calendarMonth(subs, view.y, view.m, today, reminded, leads), [subs, view, today, reminded, leads]);
+  // A ditched sub's one last check ("Did you cancel Netflix?") is a reminder too, so it gets a dot. Taken from the plan, like the day list.
+  const lastChecks = useMemo(() => app.plan.filter((r) => r.kind === 'last-check').map((r) => toDateOnly(r.fireAt)), [app.plan]);
+  const days = useMemo(() => calendarMonth(subs, view.y, view.m, today, reminded, leads, lastChecks), [subs, view, today, reminded, leads, lastChecks]);
+  // Nothing tracked yet: an empty card with "Add a subscription" under the grid, and no legend.
+  const empty = !subs.some((s) => (isActive(s) || isPending(s)) && !isProTrial(s));
+  // Their payday this month (clamped to short months), marked on the grid.
+  const paydayDate = settings.payday ? `${view.y}-${String(view.m).padStart(2, '0')}-${String(Math.min(settings.payday, daysInMonth(view.y, view.m))).padStart(2, '0')}` : null;
   const due = monthDue(days, settings.currency);
   // This month only: what's still to come from today (Monzo/Orbit-style "still to pay"). One currency only, so nothing is added across currencies.
   const isThisMonth = view.y === t.y && view.m === t.m;
@@ -83,7 +97,7 @@ export default function Calendar() {
     full.forEach((a) => counts.set(fmt(a), (counts.get(fmt(a)) ?? 0) + 1));
     const usual = [...counts.entries()].sort((a, b) => b[1] - a[1])[0];
     if (!usual || ahead.every((a) => !a.totals.length)) return [];
-    const rows = [{ key: 'usual', label: usual[1] === 12 ? 'Every month' : 'Most months', amounts: usual[0], bigs: '', usual: true }];
+    const rows = [{ key: 'usual', label: usual[1] === 12 ? 'Every month' : 'Most months', amounts: usual[0], bigs: '', bigsSpoken: '', usual: true }];
     for (const [i, a] of ahead.entries()) {
       if (fmt(a) === usual[0] && !a.big.length) continue;
       if (i >= 12 && !a.big.length) continue;
@@ -93,7 +107,15 @@ export default function Calendar() {
         key: a.month,
         label: i === 0 ? `Rest of ${MONTH_LONG[m - 1]}` : `${MONTH_LONG[m - 1]}${y !== t.y ? ` ${y}` : ''}`,
         amounts: fmt(a),
-        bigs: a.big.map((b) => `${b.sub.name} ${money(b.sub.amountMinor, b.sub.currency)}`).join(' · '),
+        // Names only (the amount is on the right): "YouTube Premium, ExpressVPN +3 more", so long names never get cut.
+        bigs:
+          a.big.length > 2
+            ? `${a.big
+                .slice(0, 2)
+                .map((b) => b.sub.name)
+                .join(', ')} +${a.big.length - 2} more`
+            : a.big.map((b) => b.sub.name).join(', '),
+        bigsSpoken: a.big.map((b) => `${b.sub.name} ${money(b.sub.amountMinor, b.sub.currency)}`).join(', '),
         usual: false,
       });
     }
@@ -111,23 +133,33 @@ export default function Calendar() {
   const sel = days.find((d) => d?.date === selected) ?? null;
 
   const cellW = (gridW - GAP * 6) / 7;
+  // iPad: cells are ~100pt wide, so a fixed 64pt height looks squashed. Taller cells and bigger logos there.
+  const big = cellW > 80;
+  const cellH = big ? Math.round(cellW * 0.85) : 64;
   const rows: (CalendarDay | null)[][] = [];
   for (let i = 0; i < days.length; i += 7) rows.push(days.slice(i, i + 7));
   const blocked = app.notif === 'denied' || app.notif === 'undetermined';
   // A day with no charge but a reminder: say which one, e.g. "Reminder at 9 AM: Netflix charges Sat, Nov 14."
+  // A ditched sub's last check: "Last reminder at 9 AM: cancel Netflix before Tue, Nov 24."
   const dayReminders = sel ? app.plan.filter((r) => r.kind !== 'keep-going' && toDateOnly(r.fireAt) === sel.date) : [];
   const names = dayReminders.map((r) => {
     const s = subs.find((x) => x.id === r.subId);
     const trial = !!s && isProTrial(s);
+    if (r.kind === 'last-check') return `cancel ${s?.name ?? 'it'} before ${weekdayDate(r.chargeDate)}`;
     return `${trial ? 'your Ditch Pro trial' : (s?.name ?? 'Ditch')} ${trial ? 'ends' : 'charges'} ${weekdayDate(r.chargeDate)}`;
   });
-  const emptyDayLine = !sel?.headsUp
-    ? 'Nothing charges this day.'
-    : blocked
-      ? 'Reminders are off, so this one won’t arrive.'
-      : names.length
-        ? `Reminder at ${shortTimeLabel(settings.reminderTime)}: ${names.join('; ')}.`.replace(/ (\S+)$/, '\u00A0$1')
-        : `A reminder goes off at ${shortTimeLabel(settings.reminderTime)}. Nothing charges this day.`;
+  const onlyLast = dayReminders.length > 0 && dayReminders.every((r) => r.kind === 'last-check');
+  const reminderLine = names.length ? `${onlyLast ? 'Last reminder' : 'Reminder'} at ${shortTimeLabel(settings.reminderTime)}: ${names.join('; ')}.`.replace(/ (\S+)$/, '\u00A0$1') : null;
+  const emptyDayLine = !sel?.headsUp ? 'Nothing charges this day.' : (reminderLine ?? `A reminder goes off at ${shortTimeLabel(settings.reminderTime)}. Nothing charges this day.`);
+  // The day list: the first 20, then "Show all" (a day can hold hundreds when the list is huge).
+  const [allDay, setAllDay] = useState(false);
+  const [allUndated, setAllUndated] = useState(false);
+  const dayCharges = sel?.charges ?? [];
+  const shownCharges = allDay ? dayCharges : dayCharges.slice(0, FIRST_ROWS);
+  const shownUndated = allUndated ? undated : undated.slice(0, FIRST_ROWS);
+  const owed = dayCharges.filter((c) => !c.pending).length;
+  const toCancel = dayCharges.length - owed;
+  const dayRight = [owed ? charges(owed) : '', toCancel ? `${count(toCancel)} to cancel` : ''].filter(Boolean).join(' · ') || undefined;
   const room = pro ? 0 : Math.max(0, FREE_REMINDERS - reminded.size);
   const title = view.y === t.y ? MONTH_LONG[view.m - 1] : `${MONTH_LONG[view.m - 1]} ${view.y}`;
 
@@ -135,15 +167,45 @@ export default function Calendar() {
     haptic.select();
     setView(shiftMonth(view.y, view.m, n));
     setPicked(null);
+    setAllDay(false);
+  };
+  const backToToday = () => {
+    haptic.select();
+    setView({ y: t.y, m: t.m });
+    setPicked(null);
+    setAllDay(false);
   };
 
   return (
     <View style={{ flex: 1, backgroundColor: p.bg }}>
       <ScrollView contentContainerStyle={{ paddingTop: insets.top + 8, paddingHorizontal: edge, paddingBottom: 28 }} showsVerticalScrollIndicator={false}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Txt v="displayM" accessibilityRole="header" style={{ flex: 1, fontSize: narrow ? 26 : 32, lineHeight: 40 }} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
+          <Txt v="displayM" accessibilityRole="header" style={{ flex: 1, fontSize: narrow ? 26 : isThisMonth ? 32 : 28, lineHeight: 40 }} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
             {title}
           </Txt>
+          {isThisMonth ? null : (
+            // Away from this month: one tap back (Apple Calendar, Fantastical).
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Back to this month"
+              onPress={backToToday}
+              hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}
+              style={({ pressed }) => ({
+                minHeight: 32,
+                paddingHorizontal: 12,
+                borderRadius: 16,
+                borderWidth: 1.5,
+                borderColor: p.fg,
+                justifyContent: 'center',
+                marginRight: 2,
+                opacity: pressed ? 0.6 : 1,
+              })}
+            >
+              <Txt v="label" color={p.fg} style={{ fontSize: 14, fontFamily: F.bold }}>
+                Today
+              </Txt>
+            </Pressable>
+          )}
           <IconButton label="Previous month" onPress={() => move(-1)}>
             <ChevronLeft color={p.fg} size={26} />
           </IconButton>
@@ -161,9 +223,7 @@ export default function Calendar() {
         <View
           accessible
           accessibilityLabel={
-            due.totals.length
-              ? `${due.totals.map((x) => money(x.amountMinor, x.currency)).join(', and ')} in ${MONTH_LONG[view.m - 1]}, ${due.count} ${due.count === 1 ? 'charge' : 'charges'}`
-              : `Nothing in ${MONTH_LONG[view.m - 1]}`
+            due.totals.length ? `${due.totals.map((x) => money(x.amountMinor, x.currency)).join(', and ')} in ${MONTH_LONG[view.m - 1]}, ${charges(due.count)}` : `Nothing in ${MONTH_LONG[view.m - 1]}`
           }
           style={{ marginTop: 8 }}
         >
@@ -173,7 +233,7 @@ export default function Calendar() {
             {due.totals[0] ? money(due.totals[0].amountMinor, due.totals[0].currency) : money(0, settings.currency)}
           </Txt>
           <Txt v="leadS" tone="fg2" num style={{ fontSize: 15, letterSpacing: -0.3 }} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>
-            in {MONTH_LONG[view.m - 1]} · {due.count} {due.count === 1 ? 'charge' : 'charges'}
+            in {MONTH_LONG[view.m - 1]} · {charges(due.count)}
           </Txt>
           {/* Other currencies: their own line each, no "+" (never added together). */}
           {due.totals.slice(1).map((x) => (
@@ -203,45 +263,76 @@ export default function Calendar() {
             <View key={r} style={{ flexDirection: 'row', gap: GAP }}>
               {Array.from({ length: 7 }, (_, i) => row[i] ?? null).map((d, i) =>
                 d ? (
-                  <DayCell key={d.date} day={d} w={cellW} selected={d.date === selected} blocked={blocked} onPress={() => (haptic.select(), setPicked(d.date))} />
+                  <DayCell
+                    key={d.date}
+                    day={d}
+                    w={cellW}
+                    h={cellH}
+                    logo={big ? 30 : 24}
+                    payday={d.date === paydayDate}
+                    selected={d.date === selected}
+                    blocked={blocked}
+                    onPress={() => (haptic.select(), setPicked(d.date), setAllDay(false))}
+                  />
                 ) : (
-                  <View key={`x${i}`} style={{ width: cellW, height: 64 }} />
+                  <View key={`x${i}`} style={{ width: cellW, height: cellH }} />
                 ),
               )}
             </View>
           ))}
         </View>
 
-        <Legend />
-
-        <SectionHeader
-          title={weekdayDate(selected).toUpperCase()}
-          right={sel?.charges.length ? `${sel.charges.length} ${sel.charges.length === 1 ? 'charge' : 'charges'}` : undefined}
-          style={{ marginTop: 20, marginBottom: 8 }}
-        />
-        {sel && sel.charges.length ? (
-          <Card style={{ paddingVertical: 4 }}>
-            {sel.charges.map((c, i) => (
-              <ChargeRow
-                key={c.sub.id}
-                c={c}
-                pro={pro}
-                first={i === 0}
-                today={today}
-                leads={isProTrial(c.sub) ? [...HEADS_UP_LEADS] : leads}
-                time={settings.reminderTime}
-                blocked={blocked}
-                room={room}
-                onPress={() => (isPending(c.sub) ? router.push(`/ditch/${c.sub.id}`) : editor.openEdit(c.sub.id))}
-              />
-            ))}
+        {empty ? (
+          // Nothing tracked yet: say what this screen is for, and one way in (no legend, no empty day list).
+          <Card style={{ marginTop: 20, paddingHorizontal: 18, paddingVertical: 18 }}>
+            <Txt v="bodyStrong" color={p.cardFg} style={{ fontSize: 17 }}>
+              Nothing on your calendar yet.
+            </Txt>
+            <Txt v="body" tone="mute" style={{ marginTop: 4 }}>
+              Add what you pay for and every charge shows up here.
+            </Txt>
+            <Button label="Add a subscription" onPress={() => editor.openAdd()} style={{ marginTop: 16 }} />
           </Card>
         ) : (
-          <Card style={{ paddingHorizontal: 16, paddingVertical: 16 }}>
-            <Txt v="body" tone="mute">
-              {emptyDayLine}
-            </Txt>
-          </Card>
+          <>
+            <Legend blocked={blocked} />
+
+            <SectionHeader title={`${weekdayDate(selected).toUpperCase()}${selected === paydayDate ? ' · PAYDAY' : ''}`} right={dayRight} style={{ marginTop: 20, marginBottom: 8 }} />
+            {sel && dayCharges.length ? (
+              <>
+                <Card style={{ paddingVertical: 4 }}>
+                  {shownCharges.map((c, i) => (
+                    <ChargeRow
+                      key={c.sub.id}
+                      c={c}
+                      pro={pro}
+                      first={i === 0}
+                      today={today}
+                      leads={isProTrial(c.sub) ? [...HEADS_UP_LEADS] : leads}
+                      time={settings.reminderTime}
+                      blocked={blocked}
+                      room={room}
+                      onPress={() => (isPending(c.sub) ? router.push(`/ditch/${c.sub.id}`) : editor.openEdit(c.sub.id))}
+                    />
+                  ))}
+                  {shownCharges.length < dayCharges.length ? <ShowAll n={dayCharges.length} onPress={() => setAllDay(true)} /> : null}
+                </Card>
+                {/* A reminder for something else lands on this day too (e.g. a ditched sub's last check). */}
+                {reminderLine ? (
+                  <Txt v="sub" tone="mute" num style={{ marginTop: 6, marginHorizontal: 2 }}>
+                    {reminderLine}
+                  </Txt>
+                ) : null}
+              </>
+            ) : (
+              <Card style={{ paddingVertical: 4 }}>
+                <Txt v="body" tone="mute" style={{ paddingHorizontal: 16, paddingVertical: 12 }}>
+                  {emptyDayLine}
+                </Txt>
+                {sel?.headsUp && blocked ? <OffRow /> : null}
+              </Card>
+            )}
+          </>
         )}
 
         {aheadRows.length ? (
@@ -252,14 +343,15 @@ export default function Calendar() {
                 <View
                   key={r.key}
                   accessible
-                  accessibilityLabel={`${r.label}: ${r.amounts.split('\n').join(', and ')}${r.bigs ? `. Big ones: ${r.bigs}` : ''}`}
+                  accessibilityLabel={`${r.label}: ${r.amounts.split('\n').join(', and ')}${r.bigsSpoken ? `. Big ones: ${r.bigsSpoken}` : ''}`}
                   style={{ minHeight: 48, paddingHorizontal: 14, paddingVertical: 10, borderTopWidth: i ? 1 : 0, borderTopColor: p.hair }}
                 >
                   <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 12 }}>
+                    {/* "Most months": a grey label but a readable amount; the months that differ are bold. */}
                     <Txt v="label" color={r.usual ? p.mute : p.cardFg} style={{ flex: 1, fontSize: 16 }}>
                       {r.label}
                     </Txt>
-                    <Txt v="label" num color={r.usual ? p.mute : p.cardFg} style={{ fontSize: 16, fontFamily: r.usual ? undefined : F.bold, textAlign: 'right' }}>
+                    <Txt v="label" num color={p.cardFg} style={{ fontSize: 16, fontFamily: r.usual ? undefined : F.bold, textAlign: 'right' }}>
                       {r.amounts}
                     </Txt>
                   </View>
@@ -283,7 +375,7 @@ export default function Calendar() {
           <>
             <SectionHeader title="No date yet" right="No reminders" style={{ marginTop: 20, marginBottom: 8 }} />
             <Card style={{ paddingVertical: 4 }}>
-              {undated.map((u, i) => (
+              {shownUndated.map((u, i) => (
                 <Pressable
                   key={u.id}
                   accessibilityRole="button"
@@ -309,6 +401,7 @@ export default function Calendar() {
                   </Txt>
                 </Pressable>
               ))}
+              {shownUndated.length < undated.length ? <ShowAll n={undated.length} onPress={() => setAllUndated(true)} /> : null}
             </Card>
           </>
         ) : null}
@@ -318,13 +411,31 @@ export default function Calendar() {
   );
 }
 
-function DayCell({ day, w, selected, blocked, onPress }: { day: CalendarDay; w: number; selected: boolean; blocked: boolean; onPress: () => void }) {
+function DayCell({
+  day,
+  w,
+  h,
+  logo,
+  payday,
+  selected,
+  blocked,
+  onPress,
+}: {
+  day: CalendarDay;
+  w: number;
+  h: number;
+  logo: number;
+  payday: boolean;
+  selected: boolean;
+  blocked: boolean;
+  onPress: () => void;
+}) {
   const p = usePalette();
   const { d } = parseDate(day.date);
   const first = day.charges[0];
   const label = `${WEEKDAY_LONG[weekdayOf(day.date)]}, ${MONTH_LONG[parseDate(day.date).m - 1]} ${d}${day.today ? ', today' : ''}${
     day.charges.length ? `, ${day.charges.map((c) => c.sub.name).join(', ')}` : ''
-  }${day.headsUp ? (blocked ? ', reminder day, but reminders are off' : ', reminder day') : ''}`;
+  }${day.headsUp ? (blocked ? ', reminder day, but reminders are off' : ', reminder day') : ''}${payday ? ', payday' : ''}`;
   const numColor = selected ? brand.ink : day.past ? p.mute : p.cardFg;
   return (
     <Pressable
@@ -334,7 +445,7 @@ function DayCell({ day, w, selected, blocked, onPress }: { day: CalendarDay; w: 
       onPress={onPress}
       style={({ pressed }) => ({
         width: w,
-        height: 64,
+        height: h,
         borderRadius: 12,
         backgroundColor: selected ? brand.sunflower : p.card,
         borderWidth: selected ? 2.5 : p.dark ? 1 : 0,
@@ -377,9 +488,16 @@ function DayCell({ day, w, selected, blocked, onPress }: { day: CalendarDay; w: 
         // More on the same day: a small "+N" badge on the logo's corner.
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <View>
-            <SubLogo sub={first.sub} size={24} ditched={first.pending} />
+            <SubLogo sub={first.sub} size={logo} ditched={first.pending} />
             {day.charges.length > 1 ? <MoreBadge n={day.charges.length - 1} ring={selected ? brand.sunflower : p.card} /> : null}
           </View>
+        </View>
+      ) : payday ? (
+        // Payday with nothing charged: a small word where a logo would sit. With a charge, the day list's header says it.
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginHorizontal: -5 }}>
+          <Txt v="sub" color={selected ? brand.ink : p.fg2} style={{ fontSize: 9.5, lineHeight: 13, letterSpacing: -0.3, fontFamily: F.bold }} numberOfLines={1} maxFontSizeMultiplier={1}>
+            Payday
+          </Txt>
         </View>
       ) : null}
     </Pressable>
@@ -407,20 +525,34 @@ function MoreBadge({ n, ring }: { n: number; ring: string }) {
       }}
     >
       <Txt v="label" num color={p.dark ? brand.ink : brand.white} style={{ fontFamily: F.bold, fontSize: 9.5, lineHeight: 11, letterSpacing: -0.2 }} maxFontSizeMultiplier={1}>
-        {`+${n}`}
+        {n > 99 ? '99+' : `+${n}`}
       </Txt>
     </View>
   );
 }
 
-function Legend() {
+function Legend({ blocked }: { blocked: boolean }) {
   const p = usePalette();
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 16, marginTop: 14, flexWrap: 'wrap' }} accessible accessibilityLabel="Key: dot means a reminder, filled circle means today">
+    <View
+      style={{ flexDirection: 'row', alignItems: 'center', gap: 16, marginTop: 14, flexWrap: 'wrap' }}
+      accessible
+      accessibilityLabel={`Key: ${blocked ? 'hollow dot means a reminder, but reminders are off' : 'dot means a reminder'}, filled circle means today`}
+    >
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-        <View style={{ width: 11, height: 11, borderRadius: 6, backgroundColor: brand.sunflower, borderWidth: p.dark ? 0 : 1.5, borderColor: brand.ink }} />
+        {/* Reminders off: hollow, like the dots on the grid, since nothing will arrive. */}
+        <View
+          style={{
+            width: 11,
+            height: 11,
+            borderRadius: 6,
+            backgroundColor: blocked ? 'transparent' : brand.sunflower,
+            borderWidth: blocked || !p.dark ? 1.5 : 0,
+            borderColor: blocked ? p.mute : brand.ink,
+          }}
+        />
         <Txt v="body" tone="fg2" style={{ fontSize: 14.5 }}>
-          Reminder
+          {blocked ? 'Reminder (off)' : 'Reminder'}
         </Txt>
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
@@ -466,31 +598,35 @@ function ChargeRow({
   const short = (d: DateOnly) => `${weekdayShort(d)} ${parseDate(d).d}`;
   // Set as "charged today" in the day sheet: this day's charge is already paid (owner, Nov 20: it said "Charges today").
   const paid = s.dateSource === 'receipt' && c.date === s.anchor;
+  // Ditched: the charge is the deadline, unless they set an earlier cancel-by date.
+  const by = s.cancelBy && s.cancelBy >= today && s.cancelBy <= c.date ? s.cancelBy : c.date;
+  // A past charge is history first: "Charged", never a reminder or free-plan line (audit, Nov 20).
   const line = paid
     ? c.date === today
       ? c.pending
         ? 'Ditched · paid today'
         : 'Paid today'
       : 'Paid'
-    : c.pending
-      ? // Short so it never cuts off: when it charges is the deadline to cancel.
-        `Ditched · charges ${c.date === today ? 'today' : short(c.date)}`
-      : !on
-      ? pro
-        ? 'Reminders off for this one'
-        : room > 0
-          ? `No reminder · ${room} free left`
-          : 'No reminder · 3 free in use'
-      : blocked
-        ? 'Reminders are off'
-        : c.date < today
-          ? 'Charged'
-          : heads.length
-            ? `${heads.length === 1 ? 'Reminder' : 'Reminders'} ${heads.map(short).join(', ')}`
-            : sent.length
-              ? `Reminded ${sent.map(short).join(', ')}`
-              : // Too soon for its reminders: just say when it charges (owner, Nov 19).
-                chargesSoonLine(c.date, today);
+    : c.date < today
+      ? 'Charged'
+      : c.pending
+        ? c.date === today
+          ? 'Ditched · charges today'
+          : `Cancel by ${by === today ? 'today' : short(by)}`
+        : !on
+          ? pro
+            ? 'Reminders off for this one'
+            : room > 0
+              ? `No reminder · ${room} free left`
+              : 'No reminder · free plan has 3'
+          : blocked
+            ? 'Reminders are off'
+            : heads.length
+              ? `${heads.length === 1 ? 'Reminder' : 'Reminders'} ${heads.map(short).join(', ')}`
+              : sent.length
+                ? `Reminded ${sent.map(short).join(', ')}`
+                : // Too soon for its reminders: just say when it charges (owner, Nov 19).
+                  chargesSoonLine(c.date, today);
   return (
     <Pressable
       accessibilityRole="button"
@@ -504,7 +640,7 @@ function ChargeRow({
           <Txt v="bodyStrong" color={p.cardFg} style={{ fontSize: 17 }} numberOfLines={1}>
             {isProTrial(s) ? 'Ditch Pro trial' : s.name}
           </Txt>
-          <Txt v="body" tone="mute" style={{ fontSize: 14.5, marginTop: 1 }} numberOfLines={1}>
+          <Txt v="body" tone="mute" style={{ fontSize: 14.5, marginTop: 1 }} numberOfLines={2}>
             {line}
           </Txt>
         </View>
@@ -513,5 +649,49 @@ function ChargeRow({
         </Txt>
       </View>
     </Pressable>
+  );
+}
+
+/** "Show all 1,341": the last row of a long list, opens the rest in place. */
+function ShowAll({ n, onPress }: { n: number; onPress: () => void }) {
+  const p = usePalette();
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`Show all ${count(n)}`}
+      onPress={onPress}
+      style={({ pressed }) => ({ minHeight: 48, justifyContent: 'center', alignItems: 'center', borderTopWidth: 1, borderTopColor: p.hair, opacity: pressed ? 0.6 : 1 })}
+    >
+      <Txt v="label" num color={p.cardFg} style={{ fontSize: 15.5, fontFamily: F.bold }}>
+        {`Show all ${count(n)}`}
+      </Txt>
+    </Pressable>
+  );
+}
+
+/** Reminders are off: a tangerine row with a "!" so it reads as a problem, not a note (same colours as Notice). */
+function OffRow() {
+  const p = usePalette();
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
+        marginHorizontal: 8,
+        marginBottom: 8,
+        paddingHorizontal: 10,
+        paddingVertical: 9,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: p.dark ? '#7A3F22' : '#F3B79B',
+        backgroundColor: p.dark ? '#2E1F17' : '#FFEDE3',
+      }}
+    >
+      <Bang size={18} bg={brand.bill} color={brand.ink} />
+      <Txt v="body" color={p.dark ? '#F6F0E3' : brand.ink} style={{ flex: 1, fontSize: 14.5, lineHeight: 19, fontFamily: F.semi }}>
+        Reminders are off, so this one won’t arrive.
+      </Txt>
+    </View>
   );
 }

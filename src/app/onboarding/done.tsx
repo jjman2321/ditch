@@ -208,7 +208,7 @@ export default function Done() {
         {/* One white card, rows split by hairlines (Nibble, Facebook "You're all done", Fuse on Mobbin):
             the checklist reads as a finished set-up, not loose text on yellow. The first row shows their
             own logos, so it's their list at a glance (owner, Nov 19: "super plain"). */}
-        <View style={{ marginTop: f.small ? 10 : 22, backgroundColor: p.dark ? '#1F1D19' : brand.white, borderRadius: 20, paddingHorizontal: 16 }}>
+        <View style={{ marginTop: f.small ? 16 : 22, backgroundColor: p.dark ? '#1F1D19' : brand.white, borderRadius: 20, paddingHorizontal: 16 }}>
           {items.map((it, i) => (
             // They fade in one by one (no motion near a price).
             <Animated.View key={it.title} entering={reduce ? undefined : FadeIn.delay(150 + i * 160).duration(260)}>

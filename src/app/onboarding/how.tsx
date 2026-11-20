@@ -396,7 +396,15 @@ export default function How() {
                         {s.big}
                       </Txt>
                     ) : null}
-                    <Txt v="title" accessibilityRole={s.big ? undefined : 'header'} style={[{ marginTop: s.big ? 2 : 0 }, f.small && { fontSize: 26, lineHeight: 31 }]}>
+                    {/* Under a big number the title stays on one line on small phones (audit, Nov 20: 4 lines on SE). */}
+                    <Txt
+                      v="title"
+                      accessibilityRole={s.big ? undefined : 'header'}
+                      numberOfLines={s.big && f.small ? 1 : undefined}
+                      adjustsFontSizeToFit={!!s.big && f.small}
+                      minimumFontScale={0.75}
+                      style={[{ marginTop: s.big ? 2 : 0 }, f.small && (s.big ? { fontSize: 21, lineHeight: 26 } : { fontSize: 26, lineHeight: 31 })]}
+                    >
                       {s.title}
                     </Txt>
                     <Txt v="lead" tone="fg2" style={{ marginTop: 8 }}>

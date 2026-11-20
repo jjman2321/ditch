@@ -41,7 +41,7 @@ export default function Where() {
   return (
     <OnbRoot surface="cream">
       <ScrollView
-        contentContainerStyle={[{ paddingTop: insets.top, paddingHorizontal: edge, paddingBottom: 24 }, tablet && { flexGrow: 1, justifyContent: 'center', paddingBottom: insets.top + 24 }]}
+        contentContainerStyle={[{ flexGrow: 1, paddingTop: insets.top, paddingHorizontal: edge, paddingBottom: 24 }, tablet && { flexGrow: 1, justifyContent: 'center', paddingBottom: insets.top + 24 }]}
         showsVerticalScrollIndicator={false}
       >
         <View style={{ height: STEP_HEADER_H, flexDirection: 'row', alignItems: 'center' }}>
@@ -49,6 +49,9 @@ export default function Where() {
             <ChevronLeft color={chevron} />
           </IconButton>
         </View>
+        {/* Tall phones: up to 96pt of the spare room goes above the title, the rest below the cards (audit, Nov 20:
+            240-385pt was all at the bottom). SE has no spare room, so nothing moves there. */}
+        {tablet ? null : <View style={{ flexGrow: 1, maxHeight: 96 }} />}
         <Txt v="title" accessibilityRole="header" style={{ marginTop: 16 }}>
           {'Where should we\u00A0look?'}
         </Txt>
@@ -58,7 +61,7 @@ export default function Where() {
         {/* Four equal cards, most complete first (owner, Nov 19: the old card style, order matters).
             The bank finds everything and keeps watching, so it leads where we offer it; the
             free route is last. Tags say what each one costs, nothing else. */}
-        {bank ? <RouteCard icon={Bank} title="My bank or card" line="Finds them and spots new ones." tag="7 DAYS FREE" onPress={() => router.push('/bank?from=onboarding')} /> : null}
+        {bank ? <RouteCard icon={Bank} title="My bank or card" line="Finds them, spots new ones." tag="7 DAYS FREE" onPress={() => router.push('/bank?from=onboarding')} /> : null}
         {showImport() ? (
           <>
             <RouteCard icon={PhoneList} title="Apple subscriptions" line="A screenshot of your list." tag="FIRST ONE FREE" onPress={() => find('/find/apple')} />

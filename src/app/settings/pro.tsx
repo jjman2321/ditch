@@ -43,7 +43,7 @@ export default function ProPage() {
   };
   return (
     <SettingsPage title="Ditch Pro">
-      <Card style={{ marginTop: 18, padding: 16, flexDirection: 'row', gap: 14, alignItems: 'center' }}>
+      <Card style={{ marginTop: 12, padding: 16, flexDirection: 'row', gap: 14, alignItems: 'center' }}>
         <DuckIcon size={48} />
         <View style={{ flex: 1 }}>
           {pro ? (
@@ -75,7 +75,7 @@ export default function ProPage() {
             {showImport() ? <Row label="Read as many lists as you like" right={tick} /> : null}
           </Group>
           {/* No free trial left on this Apple Account (the store says so): no "free" promise. */}
-          <Button label={yearly.trialDays > 0 ? `Try Pro free for ${yearly.trialDays} days` : 'See Ditch Pro'} onPress={() => router.push('/paywall?from=app')} style={{ marginTop: 18 }} />
+          <Button label={yearly.trialDays > 0 ? `Try Pro free for ${yearly.trialDays} days` : 'See Ditch Pro'} onPress={() => router.push('/paywall?from=app')} style={{ marginTop: 14 }} />
           <Txt v="fine" tone="mute" num center style={{ marginTop: 8, fontSize: 13.5 }}>
             {yearly.trialDays > 0 ? `Free until ${weekdayDate(addDays(app.today, yearly.trialDays))}, then ${yearly.priceString} a year.` : `${yearly.priceString} a year.`}
           </Txt>
@@ -91,12 +91,24 @@ export default function ProPage() {
               {`Or pay once, ${lifetime.priceString} ›`}
             </Txt>
           </Pressable>
+          {/* Restore always in sight (CLAUDE.md rule 4), even on an SE where the rows below start off screen. */}
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Restore purchases"
+            onPress={restore}
+            style={({ pressed }) => ({ minHeight: 44, alignSelf: 'center', justifyContent: 'center', paddingHorizontal: 12, opacity: pressed ? 0.6 : 1 })}
+          >
+            <Txt v="fine" tone="mute" style={{ fontSize: 13.5, textDecorationLine: 'underline' }}>
+              Restore purchases
+            </Txt>
+          </Pressable>
         </>
       )}
       <Group note={pro ? `Lifetime is a one-time ${lifetime.priceString} for Pro. Cancel anytime in your Apple subscriptions.` : 'Cancel anytime in your Apple subscriptions.'}>
         {pro && trial ? <Row label="Trial ends" value={weekdayDate(trial.anchor)} /> : null}
         {pro && !isLifetime ? <Row label="Manage subscriptions" hint="Opens your Apple subscriptions" onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)} /> : null}
-        <Row label="Restore purchases" onPress={restore} chevron={false} />
+        {/* Free has the Restore link above; Pro keeps it here with Manage. */}
+        {pro ? <Row label="Restore purchases" onPress={restore} chevron={false} /> : null}
       </Group>
     </SettingsPage>
   );

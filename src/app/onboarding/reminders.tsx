@@ -173,7 +173,8 @@ export default function Reminders() {
             accessibilityLabel={`${example ? 'An example reminder' : 'Your first reminders'}: ${shown.map((s) => `${weekdayDate(s.day)}, 9 AM: ${s.body}`).join('. ')}`}
             style={{
               marginTop: f.tiny ? 12 : f.small ? 20 : 12,
-              flex: 1,
+              // SE: no stretching (the duck and lock-screen extras are hidden there, so it left plain yellow).
+              flex: f.small ? undefined : 1,
               // Grows into spare room, but never pushes the buttons below off screen (audit Nov 19).
               minHeight: f.tiny ? 196 : f.small ? 238 : 300,
               borderRadius: 34,

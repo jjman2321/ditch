@@ -125,7 +125,7 @@ export default function Dates() {
       <View pointerEvents="box-none" onLayout={(e) => setFooterH(e.nativeEvent.layout.height)} style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }}>
         <LinearGradient pointerEvents="none" colors={[p.bg + '00', p.bg]} style={{ height: 24 }} />
         <View style={{ backgroundColor: p.bg, paddingHorizontal: f.edge, paddingBottom: f.bottom }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 12, marginHorizontal: 2 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 12 }}>
             <Txt v="label" num accessibilityLabel={`${set} of ${list.length} set`}>
               {`${set} of ${list.length} set`}
             </Txt>

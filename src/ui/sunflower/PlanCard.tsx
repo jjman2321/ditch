@@ -29,7 +29,11 @@ export function PlanCard({
   badgeRight,
   noteStrong,
   badgeFg,
+  scale = 1,
 }: {
+  /** The paywall draws its cards on a canvas scaled to the phone. Small lines and badges grow by 1/scale so
+   *  they never show under 12pt (lines) or 10.5pt (badges) on screen (audit, Nov 20: ~11pt and ~9.4pt on SE). */
+  scale?: number;
   /** Fill for the selected card (the plan we want picked). */
   tint?: string;
   /** A strip across the top of the card, e.g. "7 DAYS FREE · SAVE 83%" (Cal AI / Deepstash pattern). */
@@ -58,6 +62,8 @@ export function PlanCard({
   height?: number;
 }) {
   const p = usePalette();
+  const fine = { fontSize: Math.max(13, 12 / scale), lineHeight: Math.max(16, 15 / scale) };
+  const badgeSize = Math.max(11, 10.5 / scale);
   const border = selected ? (p.dark ? brand.sunflower : p.fg) : p.dark ? '#3A3630' : p.controlBorder;
   return (
     <Pressable accessibilityRole="radio" accessibilityState={{ selected }} accessibilityLabel={a11y} onPress={onPress} style={({ pressed }) => ({ opacity: pressed ? 0.9 : 1 })}>
@@ -102,7 +108,7 @@ export function PlanCard({
               v="fine"
               tone={noteStrong ? undefined : 'fg2'}
               color={noteStrong ? p.cardFg : undefined}
-              style={noteStrong ? { fontFamily: F.bold } : undefined}
+              style={noteStrong ? [fine, { fontFamily: F.bold }] : fine}
               numberOfLines={1}
               maxFontSizeMultiplier={1.3}
             >
@@ -115,7 +121,7 @@ export function PlanCard({
             {price}
           </Txt>
           {sub ? (
-            <Txt v="fine" tone="mute" num>
+            <Txt v="fine" tone="mute" num style={fine}>
               {sub}
             </Txt>
           ) : null}
@@ -136,7 +142,7 @@ export function PlanCard({
             backgroundColor: badgeBg ?? (p.dark ? brand.sunflower : p.fg),
           }}
         >
-          <Txt v="fine" color={badgeFg ?? (p.dark ? brand.ink : p.bg)} style={{ fontFamily: F.bold, fontSize: 11, lineHeight: 20, letterSpacing: 0.4 }} maxFontSizeMultiplier={1.2}>
+          <Txt v="fine" color={badgeFg ?? (p.dark ? brand.ink : p.bg)} style={{ fontFamily: F.bold, fontSize: badgeSize, lineHeight: 20, letterSpacing: 0.4 }} maxFontSizeMultiplier={1.2}>
             {badge}
           </Txt>
         </View>

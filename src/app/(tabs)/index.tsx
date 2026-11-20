@@ -8,7 +8,7 @@ import { memo, useCallback, useLayoutEffect, useMemo, useRef, useState, type Rea
 import { AppState, ScrollView, SectionList, View } from 'react-native';
 
 import { DISMISSED_KEEP } from '@/domain/settings';
-import { longDate } from '@/domain/dates';
+import { weekdayShort } from '@/domain/dates';
 import { shouldShowOpenUpsell, soonUnreminded } from '@/domain/upsell';
 import { nextReminder, whenLabel } from '@/domain/reminders';
 import { overlapToShow } from '@/domain/overlaps';
@@ -410,7 +410,7 @@ export default function Home() {
               <NoReminderRow
                 names={unreminded.map((s) => s.name)}
                 total={reminded.size + unreminded.length}
-                soon={soonShows && soon ? { name: soon.sub.name, when: longDate(soon.charge).split(',')[0] } : undefined}
+                soon={soonShows && soon ? { name: soon.sub.name, when: weekdayShort(soon.charge) } : undefined}
                 onPress={() => router.push('/paywall?from=which')}
                 onDismiss={() => dismiss(soonShows ? soonKey : noRemindKey)}
               />

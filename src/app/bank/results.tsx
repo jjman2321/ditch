@@ -29,6 +29,8 @@ function proof(f: Pick<BankFind, 'evidence' | 'next'>): string {
 
 export default function BankResults() {
   const p = usePalette();
+  // SE-width phones: a smaller heading so a long bank name never runs to a 3rd line (audit, Nov 20).
+  const narrow = useWindowDimensions().width < 380;
   const app = useApp();
   const money = useAppMoney();
   const bank = useBank();
@@ -120,7 +122,7 @@ export default function BankResults() {
           <Duck width={92} bottom={0} style={{ position: 'relative' }} />
         </View>
         {/* Long bank names shrink a little instead of a 3rd line (audit, Nov 20). */}
-        <Txt v="title" accessibilityRole="header" numberOfLines={2} adjustsFontSizeToFit minimumFontScale={0.75} style={{ marginTop: 18, fontSize: 32, lineHeight: 36 }}>
+        <Txt v="title" accessibilityRole="header" numberOfLines={2} adjustsFontSizeToFit minimumFontScale={0.75} style={[{ marginTop: 18, fontSize: 32, lineHeight: 36 }, narrow && { fontSize: 27, lineHeight: 32 }]}>
           {`Nothing repeating at ${name}.`}
         </Txt>
         <Txt v="leadS" tone="fg2" style={{ marginTop: 10 }}>

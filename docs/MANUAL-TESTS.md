@@ -353,7 +353,7 @@ Web preview: add `&import=1` to the address. On the iPhone this needs the develo
 - [ ] Ditched tab yellow card: at most 2 lines under "a year." on every phone ("From 1 sub you cancelled since Nov" / "$17.99 a month").
 
 ## 1ac. Pro upsell at 3 of 3 reminders (Nov 20, DECISIONS #82)
-- [ ] Free, 3 reminders in use, more subs with dates: Home shows "X charges <day> · No reminder on it · Try Pro" when one charges in 2–7 days. Try Pro opens the paywall; × hides it until the next charge without a reminder.
+- [ ] Free, 3 reminders in use, more subs with dates: Home shows "<name> · Wed" over "No reminder on it", with Try Pro when one charges in 2–7 days. Try Pro opens the paywall; × hides it until the next charge without a reminder.
 - [ ] Nothing charging in 2–7 days: the card reads "X has no reminder · Pro reminds you about every one".
 - [ ] Weekly paywall: on a phone installed 3+ days ago, open Ditch to Home. About a second later the paywall opens by itself, once. Close it; reopen the app: it doesn't come back for 7 days.
 - [ ] It never opens in Pro, with notifications off, or on the day the rating prompt showed.

@@ -33,7 +33,7 @@ export default function FindHub() {
       back="Home"
       intro={bank ? 'Connect your bank, or show us a list you already have. You pick what stays.' : 'Show us a list you already have. You pick what goes in.'}
     >
-      {bank ? <BankHero title="Your bank or card" line="Finds them and spots new ones." tag={pro ? undefined : 'PRO · 7 DAYS FREE'} onPress={() => router.push('/bank?from=find')} /> : null}
+      {bank ? <BankHero title="Your bank or card" line="Finds them, spots new ones." tag={pro ? undefined : 'PRO · 7 DAYS FREE'} onPress={() => router.push('/bank?from=find')} /> : null}
       <RouteCard icon={PhoneList} title="Apple subscriptions" line="Every App Store subscription and free trial, with dates. Banks can’t name these." tag={tag} onPress={() => go('/find/apple')} />
       <RouteCard icon={StatementIcon} title="A bank statement" line="A PDF or CSV from your bank. We find the charges that repeat." tag={tag} onPress={() => go('/find/statement')} />
 

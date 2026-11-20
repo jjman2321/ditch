@@ -493,6 +493,9 @@ export default function Paywall() {
   // show only the rows that fit at width-fit size (the least important go first). Big text scrolls instead.
   const rowsThatFit = Math.max(3, Math.floor((topRoom / scale - topFixed) / ROW_MIN));
   const rows = split && !bigText ? fitRowsTo(allRows, rowsThatFit) : allRows;
+  // Short phones (SE): the rows that fit share the spare height (up to ROW_MAX), so there's no empty band
+  // between the table and the plans (audit, Nov 20: 54pt of cream on SE).
+  const splitGrow = split && !bigText ? Math.max(0, Math.min(ROW_MAX - ROW_MIN, Math.floor((topRoom / scale - topFixed) / rows.length) - ROW_MIN)) : 0;
   const topScale = !split || !topH ? scale : f.fontScale > 1.15 ? scale : Math.min(scale, Math.max(TOP_MIN_SCALE, topRoom / topH));
   const topOnScreen = topH * topScale;
 
@@ -526,8 +529,8 @@ export default function Paywall() {
   const bottom = (
     <>
       <View accessibilityRole="radiogroup" accessibilityLabel="Plans" style={{ gap: 10 }}>
-        <PlanCard title="Weekly" price={billedLabel(weekly)} selected={planId === 'weekly'} onPress={() => select('weekly')} height={58} a11y={`Weekly, ${weekly.priceString} a week, no free trial`} />
-        <PlanCard
+        <PlanCard scale={scale} title="Weekly" price={billedLabel(weekly)} selected={planId === 'weekly'} onPress={() => select('weekly')} height={58} a11y={`Weekly, ${weekly.priceString} a week, no free trial`} />
+        <PlanCard scale={scale}
           title="Yearly"
           note={trial ? `Free for ${yearly.trialDays} days` : undefined}
           noteStrong
@@ -542,7 +545,7 @@ export default function Paywall() {
           height={58}
           a11y={`Yearly, ${yearly.priceString} a year, ${perWeek} a week, ${trial ? `${yearly.trialDays} days free, ` : ''}${badge.toLowerCase()}`}
         />
-        <PlanCard
+        <PlanCard scale={scale}
           title="Lifetime"
           note="Pay once. No subscription."
           price={lifetime.priceString}
@@ -599,7 +602,7 @@ export default function Paywall() {
               <View
                 onLayout={(e) => {
                   setTopH(e.nativeEvent.layout.height);
-                  setTopFixed(e.nativeEvent.layout.height - rows.length * ROW_MIN);
+                  setTopFixed(e.nativeEvent.layout.height - rows.length * (ROW_MIN + splitGrow));
                 }}
                 style={{
                   position: 'absolute',
@@ -612,7 +615,7 @@ export default function Paywall() {
                 }}
               >
                 {hero(topScale)}
-                <Compare rows={rows} width={CANVAS_W - EDGE_W * 2} overlap={40} font={tableFont} tiny={shortLabels} duck />
+                <Compare rows={rows} width={CANVAS_W - EDGE_W * 2} overlap={40} grow={splitGrow} font={tableFont} tiny={shortLabels} duck />
               </View>
             </View>
           </ScrollView>

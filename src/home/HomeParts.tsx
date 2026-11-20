@@ -369,14 +369,15 @@ export function NoReminderRow({
 }) {
   const p = usePalette();
   const one = names.length === 1;
-  const title = soon ? `${soon.name} charges ${soon.when}` : one ? `${names[0]} has no reminder` : `${count(names.length)} have no reminder`;
+  // Timely version: the name alone as the title (fits any name), when it charges underneath (audit, Nov 20).
+  const title = soon ? `${soon.name} · ${soon.when}` : one ? `${names[0]} has no reminder` : `${count(names.length)} have no reminder`;
   // One line for the title on every phone (audit, Nov 20): it shrinks a touch rather than wrap.
-  const line = soon ? 'No reminder on it.' : 'Pro reminds you about every one';
+  const line = soon ? 'No reminder on it' : 'Pro reminds you about every one';
   return (
     <Card style={{ minHeight: 56, borderRadius: 16, flexDirection: 'row', alignItems: 'center', paddingLeft: 14 }}>
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel={`${title}. ${soon ? 'No reminder on it. ' : ''}Only 3 reminders are free. Pro reminds you about every one. Try Pro.`}
+        accessibilityLabel={`${title}. ${soon ? `Charges ${soon.when}, no reminder on it. ` : ''}Only 3 reminders are free. Pro reminds you about every one. Try Pro.`}
         onPress={onPress}
         style={({ pressed }) => ({ flex: 1, minWidth: 0, minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 9, opacity: pressed ? 0.75 : 1 })}
       >
@@ -385,7 +386,7 @@ export function NoReminderRow({
           <Txt v="body" color={p.cardFg} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8} style={{ fontFamily: F.bold, fontSize: 15 }}>
             {title}
           </Txt>
-          <Txt v="sub" tone="mute">
+          <Txt v="sub" tone="mute" numberOfLines={1}>
             {line}
           </Txt>
         </View>

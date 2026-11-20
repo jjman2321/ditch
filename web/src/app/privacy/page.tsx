@@ -27,7 +27,7 @@ export default function Privacy() {
       </p>
       <ul>
         <li>
-          <b>Purchases:</b> Ditch Pro is sold through Apple. Your iPhone checks with Apple whether you have Pro; no other company is involved and nothing goes to us. Apple’s App Store label for Ditch reads “Data Not Collected”.
+          <b>Purchases:</b> Ditch Pro is sold through Apple. Your iPhone checks with Apple whether you have Pro; no other company is involved and nothing goes to us.
         </li>
         <li>
           <b>Exchange rates:</b> once a day the app may download the same public exchange-rate file everyone gets, to show a rough total for mixed currencies. The request carries nothing about you or your list.

@@ -12,16 +12,12 @@ export const metadata: Metadata = {
 export default function Terms() {
   return (
     <Doc
-      effective="Effective Nov 19, 2026 · Version 2"
-      title="Terms"
-      short={[
-        { t: 'The app uses Apple’s standard license', d: 'Apple’s Licensed Application End User License Agreement applies to Ditch.' },
-        { t: 'Pro renews until you cancel', d: `Yearly ${PLANS.yearly} after a ${PLANS.trialDays}-day free trial, or weekly ${PLANS.weekly}. Cancel anytime in iPhone Settings.` },
-        { t: 'Lifetime is Pro, once', d: `${PLANS.lifetime} one time. Ditch Pro for good, plus bank sync for the first year. After that, bank sync is optional at ${PLANS.syncAddOn} a year.` },
-        { t: 'Bank sync stays on while you pay', d: 'US and Canadian banks. We disconnect your bank when your trial or subscription ends. Your list stays.' },
-        { t: 'Guides and prices are information', d: 'We read them on each service’s own pages, but services change. Their own pages are always right.' },
-      ]}
+      kind="legal"
+      effective="Last updated 19 November 2026"
+      title="Terms of Use"
     >
+      <p>These terms cover the Ditch iPhone app and ditchsubs.app, operated by {COMPANY}. By using them, you agree to these terms.</p>
+
       <h2 id="license">1. The app</h2>
       <p>
         Ditch is licensed to you under Apple’s{' '}

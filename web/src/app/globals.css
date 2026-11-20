@@ -1943,3 +1943,16 @@ main > :first-child, main > :first-child > :first-child { scroll-margin-top: 200
 .g5-rights-more summary::after { content: "+"; margin-left: 8px; text-decoration: none; display: inline-block; }
 .g5-rights-more[open] summary::after { content: "−"; }
 .g5-rights-more .g5-facts { margin-top: 8px; }
+
+/* Policies (privacy, terms) look like ankidecks.ai's (owner, Nov 20): plain sans text in a narrow column,
+   bold H1, "Last updated" under it, small bold numbered headings. */
+.wrap.doc.legal { max-width: calc(640px + 2 * var(--pad)); padding-top: 56px; padding-bottom: 64px; }
+.doc.legal h1 { font-family: var(--body); font-weight: 700; font-size: clamp(2rem, 1.6rem + 1.4vw, 2.5rem); line-height: 1.1; letter-spacing: -.02em; margin-top: 0; }
+.doc.legal .updated { font-size: 14px; color: var(--mute); margin-top: 8px; }
+.doc.legal .prose { font-size: 16px; line-height: 1.65; color: var(--fg2); margin-top: 28px; }
+.doc.legal .prose > p:first-child { margin-top: 0; }
+.doc.legal .prose h2 { font-family: var(--body); font-weight: 700; font-size: 18px; line-height: 1.3; letter-spacing: 0; color: var(--ink); margin-top: 36px; }
+.doc.legal .prose p, .doc.legal .prose ul, .doc.legal .prose ol { margin-top: 10px; }
+.doc.legal .prose li + li { margin-top: 4px; }
+.doc.legal .prose b { color: var(--ink); font-weight: 600; }
+.doc.legal .prose a { color: var(--ink); }

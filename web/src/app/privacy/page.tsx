@@ -12,15 +12,14 @@ export const metadata: Metadata = {
 export default function Privacy() {
   return (
     <Doc
-      effective="Effective Nov 20, 2026 · Version 3"
-      title="Privacy"
-      short={[
-        { t: 'Your list stays on your phone', d: 'Your subscriptions, prices and dates are stored on your iPhone, not on our servers. When iCloud backup arrives for Pro, it will go to your own iCloud.' },
-        { t: 'No account. Bank sync only if you choose it', d: 'Ditch never needs an account. If you turn on bank sync, you sign in to your bank through Plaid, never in Ditch, and we never see your bank password.' },
-        { t: 'Apple takes the payment', d: 'If you buy Pro, Apple handles the payment and we never see your card. RevenueCat checks the purchase using a random ID, not your name or email.' },
-        { t: 'No ads, no tracking, no selling', d: 'We don’t use advertising or analytics that follow you, in the app or on this site.' },
-      ]}
+      kind="legal"
+      effective="Last updated 20 November 2026"
+      title="Privacy Policy"
     >
+      <p>
+        Ditch (the iPhone app and ditchsubs.app) is operated by {COMPANY}. This policy explains what information we collect, how we use it, and the choices you have. The short version: your list stays on your phone, there’s no account, and we don’t do ads, tracking or selling data.
+      </p>
+
       <h2 id="app">1. The Ditch app</h2>
       <p>
         Everything you add (services, prices, dates, notes) is saved in a database on your iPhone. Reminders are local notifications scheduled by your iPhone; no server sends them. We can’t see your list.
@@ -96,7 +95,7 @@ export default function Privacy() {
 
       <h2 id="changes">8. Changes and contact</h2>
       <p>
-        If this policy changes, we’ll update the date and version above and keep the old version available on request. Questions: <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>. Ditch is made by {COMPANY}.
+        If this policy changes, we’ll update the date above and keep the old one available on request. Questions: <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>. Ditch is made by {COMPANY}.
       </p>
     </Doc>
   );

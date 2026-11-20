@@ -3,7 +3,7 @@
 // fills and the border goes 1.5 → 2.5pt with no layout shift. The "SAVE 83%"
 // ribbon sits on the top edge, so it never touches the price.
 // Plans (DECISIONS #69): Weekly $6.99, Yearly $59.99 with a 7-day trial, Lifetime $119.99.
-// Purchases go through StoreKit 2 directly (DECISIONS #59).
+// Purchases go through RevenueCat (DECISIONS #79).
 
 import { Pressable, View } from 'react-native';
 

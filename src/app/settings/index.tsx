@@ -119,8 +119,8 @@ export default function Settings() {
                 {proValue}
               </Txt>
             ) : (
-              // "Try free" only while this Apple Account can still get the intro trial (StoreKit's
-              // isEligibleForIntroOffer, via planById); otherwise "See Pro".
+              // "Try free" only while this Apple Account can still get the intro trial (RevenueCat's
+              // trial eligibility check, via planById); otherwise "See Pro".
               <View style={{ backgroundColor: brand.sunflower, borderRadius: 14, paddingHorizontal: 12, paddingVertical: 5 }}>
                 <Txt v="label" color={brand.ink} style={{ fontFamily: F.bold, fontSize: 15 }}>
                   {yearly.trialDays > 0 ? 'Try free' : 'See Pro'}

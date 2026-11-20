@@ -72,7 +72,7 @@ type Actions = {
   updateSettings: (patch: Partial<Settings>) => Promise<void>;
   /**
    * Switches Pro on (a plan) or off (null). A yearly trial adds Ditch's own trial to the list. The App Store
-   * has the last word: launch and foreground checks set this to what StoreKit says (`preview` = a test build's
+   * has the last word: launch and foreground checks set this to what RevenueCat says (`preview` = a test build's
    * "Preview Pro", which the store doesn't know about, so it isn't switched off by those checks).
    */
   setPro: (plan: ProPlan | null, opts?: { startTrial?: boolean; preview?: boolean; trialEndsOn?: DateOnly | null }) => Promise<void>;

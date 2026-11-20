@@ -1,7 +1,6 @@
-// Ditch Pro: the plan, restore, manage. Purchases go through StoreKit 2
-// directly (DECISIONS #59, no RevenueCat) once Milestone 2 lands; until then
-// they're stubbed, so this never charges anything. Prices and the trial come
-// from PLANS (DECISIONS #69: Weekly $6.99, Yearly $59.99 with 7 days free,
+// Ditch Pro: the plan, restore, manage. Purchases go through RevenueCat
+// (DECISIONS #79, src/services/purchases.ts); builds without it never charge
+// anything. Prices and the trial come from the store, or from PLANS (DECISIONS #69: Weekly $6.99, Yearly $59.99 with 7 days free,
 // Lifetime $119.99), never typed here.
 
 import { router } from 'expo-router';
@@ -75,7 +74,7 @@ export default function ProPage() {
             <Row label="Price rise check" right={tick} />
             {showImport() ? <Row label="Read as many lists as you like" right={tick} /> : null}
           </Group>
-          {/* No free trial left on this Apple Account (StoreKit says so): no "free" promise. */}
+          {/* No free trial left on this Apple Account (the store says so): no "free" promise. */}
           <Button label={yearly.trialDays > 0 ? `Try Pro free for ${yearly.trialDays} days` : 'See Ditch Pro'} onPress={() => router.push('/paywall?from=app')} style={{ marginTop: 18 }} />
           <Txt v="fine" tone="mute" num center style={{ marginTop: 8, fontSize: 13.5 }}>
             {yearly.trialDays > 0 ? `Free until ${weekdayDate(addDays(app.today, yearly.trialDays))}, then ${yearly.priceString} a year.` : `${yearly.priceString} a year.`}

@@ -1,6 +1,6 @@
 // Paywall price lines (docs/research/pricing-regional-and-plans.md).
 // Works on store prices in minor units plus a currency code, so it keeps
-// working when StoreKit 2 (DECISIONS #59) hands us live, local prices.
+// working when RevenueCat (DECISIONS #79) hands us live, local prices.
 // Current plans (DECISIONS #69): Weekly $6.99, Yearly $59.99 with a 7-day
 // trial, Lifetime $119.99. Never a typed "$".
 

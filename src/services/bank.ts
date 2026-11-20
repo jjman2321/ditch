@@ -2,8 +2,8 @@
 // supabase/functions. Without EXPO_PUBLIC_API_URL (Expo Go, local dev) it uses sample data.
 //
 // Identity: no accounts. A random app user id + a per-install secret live in the iOS Keychain
-// (expo-secure-store). The same id goes to StoreKit as appAccountToken, so Apple's server
-// notifications can be matched to this phone. The secret never leaves the phone except as a
+// (expo-secure-store). The same id is the RevenueCat app user id (src/services/purchases.ts), so
+// the bank server can later ask RevenueCat whether this phone has Pro. The secret never leaves the phone except as a
 // header to our own server, which keeps only a hash of it.
 //
 // Not wired to any screen yet; Plaid Link itself needs a new native build (docs/plans/bank-sync-build.md).
@@ -78,7 +78,7 @@ function loadIdentity(): Promise<Identity> {
   return identity;
 }
 
-/** The random app user id. Pass it to StoreKit purchases as `appAccountToken`. */
+/** The random app user id. Also RevenueCat's app user id (src/services/purchases.ts). */
 export async function getAppUserId(): Promise<string> {
   return (await loadIdentity()).id;
 }
@@ -108,6 +108,8 @@ const mock = createBankMock(today);
  * Sends StoreKit 2's signed transactions (Transaction.jwsRepresentation for each current
  * entitlement) and renewal info. Call after a purchase, on launch and on restore. The server
  * creates the user on first proof and removes banks if access ended.
+ * Not called since purchases moved to RevenueCat (Nov 20): the server will check Pro through
+ * RevenueCat instead (docs/plans/revenuecat-setup.md).
  */
 export function syncEntitlements(transactions: string[], renewals: string[] = []): Promise<EntitlementSyncResponse> {
   return API_URL ? call('entitlement-sync', { transactions, renewals }) : mock.syncEntitlements();

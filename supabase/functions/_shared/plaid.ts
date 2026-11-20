@@ -115,13 +115,25 @@ export class PlaidProvider implements BankProvider {
    * Sandbox only: Plaid's "test your endpoints" step. Makes a test bank item (First Platypus Bank),
    * swaps the token, reads its accounts (/accounts/get), then removes the item. Returns counts only.
    */
-  async sandboxSelfTest(): Promise<{ accounts: number; types: string[] }> {
+  async sandboxSelfTest(): Promise<{ accounts: number; types: string[]; webhookFired: boolean; webhookCode: string }> {
     if (this.cfg.env !== 'sandbox') throw new ProviderError('NOT_SANDBOX', 'self-test runs in Sandbox only');
-    const pub = await this.call<{ public_token: string }>('/sandbox/public_token/create', { institution_id: 'ins_109508', initial_products: ['transactions'] });
+    const pub = await this.call<{ public_token: string }>('/sandbox/public_token/create', {
+      institution_id: 'ins_109508',
+      initial_products: ['transactions'],
+      options: { webhook: this.cfg.webhookUrl },
+    });
     const ex = await this.call<{ access_token: string }>('/item/public_token/exchange', { public_token: pub.public_token });
     try {
       const r = await this.call<{ accounts: { type: string }[] }>('/accounts/get', { access_token: ex.access_token });
-      return { accounts: r.accounts.length, types: [...new Set(r.accounts.map((a) => a.type))] };
+      // Plaid's "test your webhook" step: ask Plaid to send NEW_ACCOUNTS_AVAILABLE to our receiver, and keep
+      // the item alive a few seconds so it arrives (it shows in the function logs as a 200 on /plaid-webhook).
+      // Items made with /sandbox/public_token/create aren't Account Select v2 items, so Plaid can refuse
+      // NEW_ACCOUNTS_AVAILABLE (SANDBOX_ACCOUNT_SELECT_V2_NOT_ENABLED); then send SYNC_UPDATES_AVAILABLE instead.
+      const fire = (webhook_type: string, webhook_code: string) =>
+        this.call<{ webhook_fired: boolean }>('/sandbox/item/fire_webhook', { access_token: ex.access_token, webhook_type, webhook_code }).then((x) => ({ ...x, code: webhook_code }));
+      const w = await fire('ITEM', 'NEW_ACCOUNTS_AVAILABLE').catch(() => fire('TRANSACTIONS', 'SYNC_UPDATES_AVAILABLE'));
+      await new Promise((res) => setTimeout(res, 8000));
+      return { accounts: r.accounts.length, types: [...new Set(r.accounts.map((a) => a.type))], webhookFired: !!w.webhook_fired, webhookCode: w.code };
     } finally {
       await this.remove(ex.access_token);
     }

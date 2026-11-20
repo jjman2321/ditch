@@ -41,6 +41,7 @@ export default function BankExplainer() {
 
   return (
     <BankPage
+      brand
       footer={
         <>
           <Button label="Choose my bank" tapHaptic onPress={() => router.push(`/bank/pick?${flow.q()}`)} />

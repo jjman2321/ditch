@@ -76,6 +76,7 @@ function pendingLine(sub: Sub, charge: DateOnly | null, today: DateOnly, narrow:
  * out instead (works on iOS, Android and web). The name next to it keeps its full contrast.
  */
 export function SubLogo({ sub, size = TILE, ditched }: { sub: Sub; size?: number; ditched?: boolean }) {
+  const dark = usePalette().dark;
   const tile = isProTrial(sub) ? (
     <DuckIcon size={size} />
   ) : (
@@ -83,7 +84,8 @@ export function SubLogo({ sub, size = TILE, ditched }: { sub: Sub; size?: number
   );
   if (!ditched) return tile;
   return (
-    <View style={[{ width: size, height: size, opacity: 0.6, borderRadius: tileRadius(size), overflow: 'hidden' }, continuous]}>
+    // Dark mode: greyed logos at 0.6 nearly vanished on the night card (audit, Nov 20).
+    <View style={[{ width: size, height: size, opacity: dark ? 0.85 : 0.6, borderRadius: tileRadius(size), overflow: 'hidden' }, continuous]}>
       {tile}
       <View pointerEvents="none" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#808080', mixBlendMode: 'saturation' }} />
     </View>

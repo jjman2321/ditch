@@ -20,7 +20,7 @@ import { subFromPick } from '@/state/fromOnboarding';
 import { suggestService } from '@/settings/feedback';
 import { useApp, useAppMoney } from '@/state/app';
 import { newPick } from '@/state/picks';
-import { Bell, Button, Camera, ChevronRight, F, LogoTile, Search, Tick, Txt, haptic, radius, usePalette } from '@/ui/sunflower';
+import { Bell, Button, Camera, ChevronRight, F, LogoTile, Search, Tick, Txt, haptic, radius, usePalette, useSheetScroll } from '@/ui/sunflower';
 
 function ImportRow({ title, sub, onPress }: { title: string; sub: string; onPress: () => void }) {
   const p = usePalette();
@@ -296,9 +296,13 @@ export function Picker({ onCustom, onTrial, onForgotten, onClose }: { onCustom: 
     </View>
   );
 
+  const onSheetScroll = useSheetScroll();
   return (
     <View style={{ flex: 1 }}>
       <FlatList
+        // Tells the sheet the list moved, so its × steps aside instead of sitting on the first row (audit, Nov 20).
+        onScroll={onSheetScroll}
+        scrollEventThrottle={32}
         data={data}
         keyExtractor={(s) => s.id}
         ListHeaderComponent={header}

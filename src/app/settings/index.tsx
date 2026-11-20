@@ -259,7 +259,7 @@ function HealthCard() {
       icon: 'ok',
       title: 'All good',
       // Name on line 1, "Wed, Nov 11 at 9 AM" on line 2, held together so it never splits mid-date.
-      line: `Next one: ${next.name}, ${weekdayDate(toDateOnly(next.fireAt)).replace(/ (\d+)$/, `${NB}$1`)} at${NB}${shortTimeLabel(formatTime(next.fireAt.getHours(), next.fireAt.getMinutes()))}`,
+      line: `Next one: ${next.name}, ${`${weekdayDate(toDateOnly(next.fireAt))} at ${shortTimeLabel(formatTime(next.fireAt.getHours(), next.fireAt.getMinutes()))}`.replace(/ /g, NB)}`,
       test: true,
     };
   } else {

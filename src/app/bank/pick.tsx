@@ -63,7 +63,7 @@ export default function BankPick() {
   };
 
   return (
-    <BankPage>
+    <BankPage brand>
       <BigTitle style={{ marginTop: 8 }}>{'Which bank pays\nyour subs?'}</BigTitle>
       <View
         style={{
@@ -109,7 +109,8 @@ export default function BankPick() {
                 borderRadius: 16,
                 backgroundColor: p.card,
                 alignItems: 'center',
-                justifyContent: 'center',
+                justifyContent: 'flex-start',
+                paddingTop: 14,
                 gap: 8,
                 borderWidth: p.dark ? 1 : 0,
                 borderColor: p.cardBorder,
@@ -117,9 +118,12 @@ export default function BankPick() {
               })}
             >
               <BankTile bank={b} size={36} />
-              <Txt v="sub" center numberOfLines={2} color={p.cardFg} style={{ fontFamily: F.semi, fontSize: 13, lineHeight: 16 }}>
-                {b.name}
-              </Txt>
+              {/* Room for 2 lines on every tile, so one long name doesn't lift its logo above the others (audit, Nov 20). */}
+              <View style={{ minHeight: 32, justifyContent: 'center' }}>
+                <Txt v="sub" center numberOfLines={2} color={p.cardFg} style={{ fontFamily: F.semi, fontSize: 13, lineHeight: 16 }}>
+                  {b.name}
+                </Txt>
+              </View>
             </Pressable>
           ))}
         </View>

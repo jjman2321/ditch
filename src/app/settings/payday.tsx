@@ -29,7 +29,10 @@ export default function PaydayPage() {
   const MAX_CELL = 56;
   const cols = w ? Math.min(6, Math.max(5, Math.floor((w + GAP) / (44 + GAP)))) : 6;
   const cell = w ? Math.min(MAX_CELL, Math.floor((w - (cols - 1) * GAP) / cols)) : 44;
-  const gridWidth = cols * cell + (cols - 1) * GAP;
+  // Big phones: the circles stop at 56pt and the spare width goes into the gaps (up to 16pt), so the grid
+  // lines up with both margins instead of leaving an empty strip on the right (audit, Nov 20).
+  const gap = w && cols > 1 ? Math.min(16, Math.max(GAP, Math.floor((w - cols * cell) / (cols - 1)))) : GAP;
+  const gridWidth = cols * cell + (cols - 1) * gap;
   const pick = async (day: number | null) => {
     haptic.select();
     await app.updateSettings({ payday: day });
@@ -39,7 +42,7 @@ export default function PaydayPage() {
     <SettingsPage title="Payday" intro="The day you get paid. Home shows what’s due before then. We never ask how much.">
       {/* Measured on the full-width wrapper; the grid inside is exactly `cols` circles wide, on the left. */}
       <View onLayout={(e) => setW(e.nativeEvent.layout.width)} style={{ marginTop: 18 }}>
-        <View accessibilityRole="radiogroup" accessibilityLabel="Payday" style={{ width: gridWidth, alignSelf: 'flex-start', flexDirection: 'row', flexWrap: 'wrap', gap: GAP }}>
+        <View accessibilityRole="radiogroup" accessibilityLabel="Payday" style={{ width: gridWidth, alignSelf: 'center', flexDirection: 'row', flexWrap: 'wrap', gap }}>
           {DAYS.map((d) => {
             const on = d === current;
             return (

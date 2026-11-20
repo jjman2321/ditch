@@ -273,7 +273,7 @@ export default function Ditched() {
                       {money(yearly, sub.currency)}
                     </Txt>
                     <Txt v="lead" style={{ fontSize: tiny ? 17 : 19, lineHeight: tiny ? 22 : 25, fontFamily: F.wideBold }}>
-                      {'a year you won’t pay, once you\u00A0cancel.'}
+                      {'a year you won’t pay,\nonce\u00A0you\u00A0cancel.'}
                     </Txt>
                   </>
                 ) : (

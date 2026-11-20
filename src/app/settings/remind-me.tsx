@@ -87,7 +87,8 @@ export default function RemindMe() {
                 {d ? ' before' : ''}
               </Txt>
               {locked ? <Tag label="PRO" /> : null}
-              {on ? <Check color={p.dark ? brand.sunflower : brand.ink} size={20} /> : <View style={{ width: 20 }} />}
+              {/* One trailing column: a tick, the PRO tag, or an empty tick-sized slot. */}
+              {on ? <Check color={p.dark ? brand.sunflower : brand.ink} size={20} /> : locked ? null : <View style={{ width: 20 }} />}
             </Pressable>
           );
         })}

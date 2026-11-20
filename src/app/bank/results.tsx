@@ -101,6 +101,7 @@ export default function BankResults() {
   if (nothing) {
     return (
       <BankPage
+        brand
         footer={
           <>
             {canAddLink(bank.state) ? <Button label="Add another card" onPress={() => router.replace(`/bank/pick?${flow.q()}`)} /> : null}
@@ -118,7 +119,8 @@ export default function BankResults() {
         <View style={{ alignItems: 'flex-start' }}>
           <Duck width={92} bottom={0} style={{ position: 'relative' }} />
         </View>
-        <Txt v="title" accessibilityRole="header" style={{ marginTop: 18, fontSize: 32, lineHeight: 36 }}>
+        {/* Long bank names shrink a little instead of a 3rd line (audit, Nov 20). */}
+        <Txt v="title" accessibilityRole="header" numberOfLines={2} adjustsFontSizeToFit minimumFontScale={0.75} style={{ marginTop: 18, fontSize: 32, lineHeight: 36 }}>
           {`Nothing repeating at ${name}.`}
         </Txt>
         <Txt v="leadS" tone="fg2" style={{ marginTop: 10 }}>

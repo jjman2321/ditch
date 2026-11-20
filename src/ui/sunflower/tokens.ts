@@ -121,7 +121,7 @@ const night: Palette = {
   gtagBg: '#2E2B25',
   gtagFg: '#CFC7B6',
   segBg: '#2A2722',
-  segOn: '#3A3630',
+  segOn: '#F6F0E3',
   segFg: '#BFB7A7',
   logoHair: 'rgba(246,240,227,0.18)',
   scrim: 'rgba(0,0,0,0.6)',

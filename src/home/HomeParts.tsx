@@ -63,7 +63,8 @@ export function TotalCard({
     ? `${money(first.monthlyMinor, first.currency)} a month, ${money(first.yearlyMinor, first.currency, { whole: true })} a year. ${rest.map((t) => `And ${money(t.monthlyMinor, t.currency)} a month, kept separate.`).join(' ')}${approx ? ` ${approx.spoken}` : ''} ${trialLine ? ` ${trialLine}.` : ''} ${blocked ? 'Reminders are off.' : of > 0 ? `Reminders on ${reminders}.` : ''}`
     : `${trialLine ? `Nothing charging yet. ${trialLine}.` : 'No prices yet.'}`;
   const fs = tiny ? 14 : 15.5;
-  const reminderRow = rest.length > 0;
+  // The reminder count always shares the first year line, so 2+ currencies add one line each, not two (audit, Nov 20).
+  const reminderRow = false;
   // "2 of 6 reminded" / "All 6 reminded": the count first, short enough for every phone. VoiceOver keeps "Reminders on 2 of 6".
   // Everything ditched (or nothing dated yet): no "Reminders on 0 of 0".
   // The bell and its words are one unit, so they wrap to the next line together (audit, Nov 20).
@@ -369,6 +370,7 @@ export function NoReminderRow({
   const p = usePalette();
   const one = names.length === 1;
   const title = soon ? `${soon.name} charges ${soon.when}` : one ? `${names[0]} has no reminder` : `${count(names.length)} have no reminder`;
+  // One line for the title on every phone (audit, Nov 20): it shrinks a touch rather than wrap.
   const line = soon ? 'No reminder on it.' : 'Pro reminds you about every one';
   return (
     <Card style={{ minHeight: 56, borderRadius: 16, flexDirection: 'row', alignItems: 'center', paddingLeft: 14 }}>
@@ -380,7 +382,7 @@ export function NoReminderRow({
       >
         <BellOff color={p.mute} size={17} bg={p.card} />
         <View style={{ flex: 1, minWidth: 0 }}>
-          <Txt v="body" color={p.cardFg} style={{ fontFamily: F.bold, fontSize: 15 }}>
+          <Txt v="body" color={p.cardFg} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8} style={{ fontFamily: F.bold, fontSize: 15 }}>
             {title}
           </Txt>
           <Txt v="sub" tone="mute">

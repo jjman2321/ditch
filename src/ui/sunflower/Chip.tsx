@@ -3,7 +3,7 @@
 import { Pressable, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { haptic } from './haptics';
-import { radius, usePalette } from './tokens';
+import { brand, radius, usePalette } from './tokens';
 import { Txt } from './type';
 
 export function Chip({ label, selected, onPress }: { label: string; selected?: boolean; onPress: () => void }) {
@@ -81,7 +81,7 @@ export function Segmented<T extends string>({
               ...(on && !p.dark ? { shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 3, shadowOffset: { width: 0, height: 1 } } : null),
             }}
           >
-            <Txt v="label" color={on ? p.fg : p.segFg} style={{ fontSize }} numberOfLines={1} maxFontSizeMultiplier={1.3}>
+            <Txt v="label" color={on ? (p.dark ? brand.ink : p.fg) : p.segFg} style={{ fontSize }} numberOfLines={1} maxFontSizeMultiplier={1.3}>
               {o.label}
             </Txt>
           </Pressable>

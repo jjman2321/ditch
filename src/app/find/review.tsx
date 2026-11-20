@@ -10,6 +10,7 @@ import { SERVICE_BY_ID } from '@/catalog/services';
 import { shortDate } from '@/domain/dates';
 import { CYCLE_SHORT, monthlyMinorExact, roundMinor } from '@/domain/money';
 import { FREE_REMINDERS, remindedIds, yearlyOfSub } from '@/domain/subs';
+import { BankPage } from '@/bank/Parts';
 import { FindPage } from '@/find/Parts';
 import { findTarget, setFindResult, setFindTarget, useFindResult } from '@/import/session';
 import { alreadyOnList, foundToSub } from '@/import/toSubs';
@@ -17,7 +18,7 @@ import { preTicked, type Found } from '@/import/types';
 import { useApp, useAppMoney } from '@/state/app';
 import { onboardingToday, useOnboarding } from '@/state/onboarding';
 import { pickFromFound } from '@/state/picks';
-import { Button, Card, Duck, F, LogoTile, Tick, Txt, haptic, usePalette } from '@/ui/sunflower';
+import { Button, F, LogoTile, Tick, Txt, haptic, usePalette } from '@/ui/sunflower';
 
 function line(f: Found): string {
   if (f.source === 'statement') return f.evidence.replace(/^/, f.confidence === 'maybe' && !f.evidence.includes(',') ? 'One charge: ' : '');
@@ -85,17 +86,18 @@ export default function Review() {
   if (!result) {
     // Can show on a cold start too (the last check lives in memory), so it doesn't say "cleared".
     return (
-      <FindPage title="Nothing to check yet" footer={<Button label="Find your subscriptions" onPress={() => router.replace(findTarget() === 'onboarding' ? '/onboarding/where' : '/find')} />}>
-        {/* The duck peeks over the card's top edge, like everywhere else, and stays clear of the button (CLAUDE.md rule 8). */}
-        <View style={{ marginTop: 92 }}>
-          <Duck width={92} left={20} sink={2} />
-          <Card style={{ padding: 18 }}>
-            <Txt v="leadS" color={p.cardFg}>
-              Pick a screenshot or a statement and what we find shows up here.
-            </Txt>
-          </Card>
+      // An empty state like "Didn't find your bank?" (audit, Nov 20): wordmark in the top bar, the message centred
+      // exactly between the bar and the button.
+      <BankPage brand footer={<Button label="Find your subscriptions" onPress={() => router.replace(findTarget() === 'onboarding' ? '/onboarding/where' : '/find')} />}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 44, paddingBottom: 24 }}>
+          <Txt v="title" accessibilityRole="header" center style={{ fontSize: 30, lineHeight: 34 }}>
+            Nothing to check yet
+          </Txt>
+          <Txt v="leadS" tone="fg2" center style={{ marginTop: 10, maxWidth: 320 }}>
+            Pick a screenshot or a statement and what we find shows up here.
+          </Txt>
         </View>
-      </FindPage>
+      </BankPage>
     );
   }
 

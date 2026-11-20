@@ -343,6 +343,12 @@ Web preview: add `&import=1` to the address. On the iPhone this needs the develo
 **Add-to-Ditch link (dev build)**
 - [ ] *In Safari, open `ditch://add?service=netflix`: Ditch opens Home with the Add sheet on Netflix. A made-up service just opens Add. Mid-onboarding, it just opens onboarding.
 
+## 1ac. Pro upsell at 3 of 3 reminders (Nov 20, DECISIONS #82)
+- [ ] Free, 3 reminders in use, more subs with dates: Home shows "X charges <day> · No reminder on it · Try Pro" when one charges in 2–7 days. Try Pro opens the paywall; × hides it until the next charge without a reminder.
+- [ ] Nothing charging in 2–7 days: the card reads "X has no reminder · Pro reminds you about every one".
+- [ ] Weekly paywall: on a phone installed 3+ days ago, open Ditch to Home. About a second later the paywall opens by itself, once. Close it; reopen the app: it doesn't come back for 7 days.
+- [ ] It never opens in Pro, with notifications off, or on the day the rating prompt showed.
+
 ## 1ab. Ditched screen option B (Nov 20, matches the website)
 - [ ] Hold Netflix on Home to ditch it. The card shows Netflix with a **filled black "✓ DITCHED" pill** (orange tick, yellow letters) and the last reminder. Nothing else in the card.
 - [ ] Under the card, on the yellow: a big **$239.88** and "a year you won't pay, once you cancel." The duck still pops up on the card's corner.

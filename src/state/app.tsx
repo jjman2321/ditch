@@ -220,6 +220,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const { settings, subs, notif } = ref.current;
       const today = clockToday();
       if (!shouldAskForReview(settings.review, { today, version: MARKETING_VERSION, onboardingDone: settings.onboardingDone })) return;
+      // The weekly Pro paywall already opened today: never two asks in one day (DECISIONS #82).
+      if (settings.upsellShownOn === today) return;
       if (moment === 'reminders-worked') {
         if (notif !== 'granted' && notif !== 'quiet') return;
         const pro = isPro(settings);

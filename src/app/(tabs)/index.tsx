@@ -3,11 +3,13 @@
 // count-up here (MOTION.md §1).
 // The list is a SectionList, so only the rows near the screen are drawn: 3,000 subs open as fast as 3 (audit, Nov 20).
 
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { memo, useCallback, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { ScrollView, SectionList, View } from 'react-native';
+import { AppState, ScrollView, SectionList, View } from 'react-native';
 
 import { DISMISSED_KEEP } from '@/domain/settings';
+import { chargeDay } from '@/domain/copy';
+import { shouldShowOpenUpsell, soonUnreminded } from '@/domain/upsell';
 import { nextReminder, whenLabel } from '@/domain/reminders';
 import { overlapToShow } from '@/domain/overlaps';
 import { priceChanges } from '@/domain/priceWatch';
@@ -198,7 +200,51 @@ export default function Home() {
     .map((s) => s.id)
     .sort()
     .join(',')}`;
-  const showNoRemind = unreminded.length > 0 && reminded.size >= FREE_REMINDERS && !settings.dismissedOverlaps.includes(noRemindKey);
+  // Timely version (option C, DECISIONS #82): one of them charges within a week. Hiding it hides that charge only,
+  // so the next charge without a reminder brings it back.
+  const soon = useMemo(() => (reminded.size >= FREE_REMINDERS ? soonUnreminded(unreminded, today) : null), [unreminded, reminded, today]);
+  const soonKey = soon ? `noremind-soon:${soon.sub.id}:${soon.charge}` : '';
+  const soonShows = !!soon && !settings.dismissedOverlaps.includes(soonKey);
+  const showNoRemind = unreminded.length > 0 && reminded.size >= FREE_REMINDERS && (soonShows || !settings.dismissedOverlaps.includes(noRemindKey));
+
+  // The weekly Pro paywall on open (DECISIONS #82): only on Home, a moment after it shows, at most once a week.
+  const upsellRef = useRef({ settings, pro, blocked, reminded: reminded.size, unreminded: unreminded.length, today });
+  useLayoutEffect(() => {
+    upsellRef.current = { settings, pro, blocked, reminded: reminded.size, unreminded: unreminded.length, today };
+  });
+  useFocusEffect(
+    useCallback(() => {
+      let timer: ReturnType<typeof setTimeout> | undefined;
+      const check = () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          const u = upsellRef.current;
+          const show = shouldShowOpenUpsell({
+            pro: u.pro,
+            onboardingDone: u.settings.onboardingDone,
+            blocked: u.blocked,
+            installedOn: u.settings.review.installedOn,
+            lastShownOn: u.settings.upsellShownOn,
+            reviewAskedOn: u.settings.review.lastAskedOn,
+            remindedCount: u.reminded,
+            unremindedCount: u.unreminded,
+            freeReminders: FREE_REMINDERS,
+            today: u.today,
+          });
+          if (!show) return;
+          void app.updateSettings({ upsellShownOn: u.today });
+          router.push('/paywall?from=open');
+        }, 1200);
+      };
+      check();
+      const sub = AppState.addEventListener('change', (st) => (st === 'active' ? check() : clearTimeout(timer)));
+      return () => {
+        clearTimeout(timer);
+        sub.remove();
+      };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
   const changeNow = change && (pro || !(undated.length && !blocked));
   const other = sync
     ? 'sync'
@@ -364,8 +410,9 @@ export default function Home() {
               <NoReminderRow
                 names={unreminded.map((s) => s.name)}
                 total={reminded.size + unreminded.length}
+                soon={soonShows && soon ? { name: soon.sub.name, when: chargeDay(soon.charge, today) } : undefined}
                 onPress={() => router.push('/paywall?from=which')}
-                onDismiss={() => dismiss(noRemindKey)}
+                onDismiss={() => dismiss(soonShows ? soonKey : noRemindKey)}
               />
             </View>
           ) : null}

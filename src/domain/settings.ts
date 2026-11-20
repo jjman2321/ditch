@@ -2,6 +2,7 @@
 // Parsing is forgiving: anything missing or broken falls back to the default.
 
 import { HEADS_UP_HOUR, HEADS_UP_LEADS } from './charges';
+import type { DateOnly } from './dates';
 import { EMPTY_REVIEW, parseReview, type ReviewState } from './review';
 
 /** 'monthly' is no longer sold (DECISIONS #66); still read so an old test value keeps Pro on. */
@@ -32,6 +33,8 @@ export type Settings = {
   payday: number | null;
   /** The one free find (Apple screenshot or statement) has been used (DECISIONS #34, #63). After that it's Pro. */
   freeFindUsed: boolean;
+  /** Last day the weekly Pro paywall opened by itself (src/domain/upsell.ts). Null = never. */
+  upsellShownOn: DateOnly | null;
 };
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -47,6 +50,7 @@ export const DEFAULT_SETTINGS: Settings = {
   dismissedOverlaps: [],
   payday: null,
   freeFindUsed: false,
+  upsellShownOn: null,
 };
 
 /** Lead days people can choose (Remind me page). */
@@ -132,6 +136,7 @@ export function parseSettings(kv: Record<string, string>): Settings {
     review: parseReview(kv.review),
     dismissedOverlaps: parseList(kv.dismissed_overlaps),
     freeFindUsed: kv.free_find_used === '1',
+    upsellShownOn: kv.upsell_shown_on && /^\d{4}-\d{2}-\d{2}$/.test(kv.upsell_shown_on) ? (kv.upsell_shown_on as DateOnly) : null,
     payday: kv.payday && /^\d{1,2}$/.test(kv.payday) && Number(kv.payday) >= 1 && Number(kv.payday) <= 31 ? Number(kv.payday) : null,
   };
 }
@@ -152,6 +157,7 @@ export function settingsToKv(patch: Partial<Settings>): Record<string, string | 
   if (patch.dismissedOverlaps !== undefined) out.dismissed_overlaps = JSON.stringify(patch.dismissedOverlaps.slice(-DISMISSED_KEEP));
   if (patch.payday !== undefined) out.payday = patch.payday === null ? null : String(patch.payday);
   if (patch.freeFindUsed !== undefined) out.free_find_used = patch.freeFindUsed ? '1' : '0';
+  if (patch.upsellShownOn !== undefined) out.upsell_shown_on = patch.upsellShownOn;
   return out;
 }
 

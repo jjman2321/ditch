@@ -352,15 +352,29 @@ export function NoDateRow({ count, onPress }: { count: number; onPress: () => vo
  * worth the most, so say exactly what's unprotected and offer Pro once. "Copilot Pro has no reminder" /
  * "Pro reminds you about every one". Both lines wrap instead of being cut on small phones (audit, Nov 20). The × hides it until another one is left without a reminder.
  */
-export function NoReminderRow({ names, total, onPress, onDismiss }: { names: string[]; total: number; onPress: () => void; onDismiss: () => void }) {
+export function NoReminderRow({
+  names,
+  total,
+  soon,
+  onPress,
+  onDismiss,
+}: {
+  names: string[];
+  total: number;
+  /** One of them charges within a week (DECISIONS #82): say which and when. */
+  soon?: { name: string; when: string };
+  onPress: () => void;
+  onDismiss: () => void;
+}) {
   const p = usePalette();
   const one = names.length === 1;
-  const title = one ? `${names[0]} has no reminder` : `${count(names.length)} have no reminder`;
+  const title = soon ? `${soon.name} charges ${soon.when}` : one ? `${names[0]} has no reminder` : `${count(names.length)} have no reminder`;
+  const line = soon ? 'No reminder on it.' : 'Pro reminds you about every one';
   return (
     <Card style={{ minHeight: 56, borderRadius: 16, flexDirection: 'row', alignItems: 'center', paddingLeft: 14 }}>
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel={`${title}. Only 3 reminders are free. Pro reminds you about every one. Try Pro.`}
+        accessibilityLabel={`${title}. ${soon ? 'No reminder on it. ' : ''}Only 3 reminders are free. Pro reminds you about every one. Try Pro.`}
         onPress={onPress}
         style={({ pressed }) => ({ flex: 1, minWidth: 0, minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 9, opacity: pressed ? 0.75 : 1 })}
       >
@@ -370,7 +384,7 @@ export function NoReminderRow({ names, total, onPress, onDismiss }: { names: str
             {title}
           </Txt>
           <Txt v="sub" tone="mute">
-            Pro reminds you about every one
+            {line}
           </Txt>
         </View>
         <View style={{ paddingHorizontal: 10, height: 28, borderRadius: 14, backgroundColor: brand.sunflower, alignItems: 'center', justifyContent: 'center' }}>

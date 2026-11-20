@@ -35,6 +35,8 @@ export type BankLink = {
   institution_name: string | null;
   needs_relogin_since: string | null;
   updates_available: boolean;
+  /** Plaid NEW_ACCOUNTS_AVAILABLE: an account at this bank isn't shared with Ditch yet. Cleared after an Account Select update. */
+  new_accounts: boolean;
   last_error: string | null;
   remove_attempts: number;
   created_at: string;

@@ -36,6 +36,8 @@ export function linkTokenBody(cfg: PlaidConfig, req: LinkTokenRequest): Record<s
   if (req.mode === 'update') {
     // Update mode: same Item, user logs in again. No products, no new access token afterwards.
     body.access_token = req.accessToken;
+    // NEW_ACCOUNTS_AVAILABLE: Account Select lets the person tick the bank's new accounts.
+    if (req.newAccounts) body.update = { account_selection_enabled: true };
   } else {
     body.products = ['transactions'];
     body.transactions = { days_requested: cfg.daysRequested ?? 730 };

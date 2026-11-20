@@ -17,6 +17,7 @@ const link = (o: Partial<BankLink> = {}): BankLink => ({
   institution_name: 'Bank',
   needs_relogin_since: null,
   updates_available: false,
+  new_accounts: false,
   last_error: null,
   remove_attempts: 0,
   created_at: new Date(NOW.getTime() - n * 1000).toISOString(),

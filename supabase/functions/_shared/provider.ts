@@ -5,7 +5,7 @@ import type { BankTxn, ProviderName } from './types.ts';
 
 export type LinkTokenRequest =
   | { mode: 'new'; appUserId: string }
-  | { mode: 'update'; appUserId: string; accessToken: string };
+  | { mode: 'update'; appUserId: string; accessToken: string; /** Update mode with Account Select, to share new accounts. */ newAccounts?: boolean };
 
 export type LinkToken = { linkToken: string; expiration: string | null };
 

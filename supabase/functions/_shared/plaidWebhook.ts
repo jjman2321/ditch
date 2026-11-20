@@ -61,6 +61,7 @@ export type PlaidAction =
   | { kind: 'expiring'; itemId: string; at: string | null }
   | { kind: 'repaired'; itemId: string }
   | { kind: 'revoked'; itemId: string }
+  | { kind: 'new_accounts'; itemId: string }
   | { kind: 'ignore'; reason: string };
 
 /** One webhook -> one thing to do. Unknown codes are ignored (and logged by the caller). */
@@ -87,8 +88,10 @@ export function plaidWebhookAction(b: PlaidWebhookBody): PlaidAction {
         return { kind: 'repaired', itemId };
       case 'USER_PERMISSION_REVOKED':
         return { kind: 'revoked', itemId };
+      case 'NEW_ACCOUNTS_AVAILABLE': // the bank has an account the person hasn't shared yet
+        return { kind: 'new_accounts', itemId };
       default:
-        // USER_ACCOUNT_REVOKED (one account only), NEW_ACCOUNTS_AVAILABLE, WEBHOOK_UPDATE_ACKNOWLEDGED
+        // USER_ACCOUNT_REVOKED (one account only), WEBHOOK_UPDATE_ACKNOWLEDGED
         return { kind: 'ignore', reason: `ITEM:${code}` };
     }
   }

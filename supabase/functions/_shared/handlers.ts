@@ -50,6 +50,7 @@ export function publicLink(l: BankLink) {
     status: l.status,
     needsReloginSince: l.needs_relogin_since,
     updatesAvailable: l.updates_available,
+    newAccounts: l.new_accounts,
     createdAt: l.created_at,
   };
 }
@@ -115,7 +116,8 @@ async function removeAllLinks(deps: Deps, userId: string, reason: string): Promi
 // ---------- bank-link-token ----------
 
 export async function handleLinkToken(req: Request, deps: Deps): Promise<Response> {
-  const body = await postJson<{ mode?: 'new' | 'update'; linkId?: string; provider?: ProviderName }>(req);
+  // newAccounts (update mode only): open Account Select so the person can share the bank's new accounts.
+  const body = await postJson<{ mode?: 'new' | 'update'; linkId?: string; provider?: ProviderName; newAccounts?: boolean }>(req);
   if (body instanceof Response) return body;
   const user = await authenticate(req, deps.store);
   if (user instanceof Response) return user;
@@ -136,8 +138,9 @@ export async function handleLinkToken(req: Request, deps: Deps): Promise<Respons
       const link = links.find((l) => l.id === body.linkId && isLive(l) && l.status !== 'removing');
       if (!link?.access_token_enc) return fail(404, 'link_not_found');
       const token = await decryptToken(deps.tokenKey, link.access_token_enc, aad(link.provider, link.item_id));
-      const lt = await deps.provider(link.provider).createLinkToken({ mode: 'update', appUserId: user.id, accessToken: token });
-      await deps.store.logEvent({ kind: 'link_token', app_user_id: user.id, link_id: link.id, detail: { mode: 'update' } });
+      const newAccounts = body.newAccounts === true;
+      const lt = await deps.provider(link.provider).createLinkToken({ mode: 'update', appUserId: user.id, accessToken: token, ...(newAccounts ? { newAccounts } : {}) });
+      await deps.store.logEvent({ kind: 'link_token', app_user_id: user.id, link_id: link.id, detail: { mode: 'update', ...(newAccounts ? { newAccounts } : {}) } });
       return json(200, { linkToken: lt.linkToken, expiration: lt.expiration, provider: link.provider, mode: 'update' });
     }
     // A cancelled trial keeps its banks until the end date, but adds no new ones (each new bank bills a month).
@@ -197,6 +200,7 @@ export async function handleExchange(req: Request, deps: Deps): Promise<Response
       institution_name: ex.institutionName,
       needs_relogin_since: null,
       updates_available: false,
+      new_accounts: false,
       last_error: null,
       remove_attempts: 0,
       removed_at: null,
@@ -216,6 +220,8 @@ export type SyncedLink = {
   linkId: string;
   institutionName: string | null;
   status: BankLink['status'];
+  /** The bank has an account not shared with Ditch yet (Plaid NEW_ACCOUNTS_AVAILABLE). */
+  newAccounts: boolean;
   ready: boolean;
   added: BankTxn[];
   modified: BankTxn[];
@@ -245,7 +251,17 @@ export async function handleSync(req: Request, deps: Deps): Promise<Response> {
   const links = (await store.listLinks(user.id)).filter((l) => isLive(l) && l.status !== 'removing' && (!body.linkId || l.id === body.linkId));
   const out: SyncedLink[] = [];
   for (const link of links) {
-    const entry: SyncedLink = { linkId: link.id, institutionName: link.institution_name, status: link.status, ready: false, added: [], modified: [], removed: [], syncToken: null };
+    const entry: SyncedLink = {
+      linkId: link.id,
+      institutionName: link.institution_name,
+      status: link.status,
+      newAccounts: link.new_accounts,
+      ready: false,
+      added: [],
+      modified: [],
+      removed: [],
+      syncToken: null,
+    };
     out.push(entry);
     const repaired = body.repaired === link.id;
     if ((link.status === 'needs_relogin' && !repaired) || !link.access_token_enc) continue; // calling would only fail; the phone shows "Reconnect"
@@ -268,12 +284,16 @@ export async function handleSync(req: Request, deps: Deps): Promise<Response> {
       entry.syncToken = changed ? await syncToken(link.id, delta.nextCursor) : null;
       // A good sync heals errors and a lost login; "expiring" only clears once the person re-consented (repaired).
       const healed = link.status === 'error' || link.needs_relogin_since != null || (repaired && link.status !== 'active');
+      // The phone just finished update mode (Account Select for new accounts included): the new-account flag is done.
+      const sharedNew = repaired && link.new_accounts;
       await store.updateLink(link.id, {
         pending_cursor: changed ? delta.nextCursor : null,
         updates_available: false,
         ...(healed ? { status: 'active', needs_relogin_since: null, last_error: null } : {}),
+        ...(sharedNew ? { new_accounts: false } : {}),
       });
       if (healed) entry.status = 'active';
+      if (sharedNew) entry.newAccounts = false;
     } catch (e) {
       if (e instanceof ProviderError && e.needsRelogin) {
         await store.updateLink(link.id, { status: 'needs_relogin', needs_relogin_since: link.needs_relogin_since ?? deps.now().toISOString(), last_error: e.code });
@@ -352,6 +372,9 @@ export async function handlePlaidWebhook(req: Request, deps: Deps): Promise<Resp
       break;
     case 'revoked':
       await removeLink(deps, link, 'user_revoked_at_bank');
+      break;
+    case 'new_accounts':
+      await deps.store.updateLink(link.id, { new_accounts: true });
       break;
   }
   await deps.store.logEvent({ kind: 'plaid_webhook', app_user_id: link.app_user_id, link_id: link.id, detail: { type: body.webhook_type, code: body.webhook_code, action: action.kind } });

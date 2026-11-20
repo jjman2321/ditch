@@ -85,6 +85,16 @@ describe('Plaid link token (cost rules)', () => {
     expect(b.access_token).toBe('access-x');
     expect(b.products).toBeUndefined();
     expect(b.transactions).toBeUndefined();
+    expect(b.update).toBeUndefined();
+  });
+
+  it('update mode for new accounts: Account Select on, still no products', () => {
+    const b = linkTokenBody(cfg, { mode: 'update', appUserId: 'u-1', accessToken: 'access-x', newAccounts: true });
+    expect(b.access_token).toBe('access-x');
+    expect(b.update).toEqual({ account_selection_enabled: true });
+    expect(b.products).toBeUndefined();
+    // A new connection never gets the update block, even if asked.
+    expect(linkTokenBody(cfg, { mode: 'new', appUserId: 'u-1' }).update).toBeUndefined();
   });
 });
 

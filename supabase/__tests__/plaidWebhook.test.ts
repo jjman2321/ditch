@@ -55,7 +55,8 @@ describe('plaidWebhookAction (dispatch)', () => {
     expect(a({ webhook_type: 'ITEM', webhook_code: 'PENDING_EXPIRATION', consent_expiration_time: 'x' })).toEqual({ kind: 'expiring', itemId: 'i', at: 'x' });
     expect(a({ webhook_type: 'ITEM', webhook_code: 'LOGIN_REPAIRED' })).toEqual({ kind: 'repaired', itemId: 'i' });
     expect(a({ webhook_type: 'ITEM', webhook_code: 'USER_PERMISSION_REVOKED' })).toEqual({ kind: 'revoked', itemId: 'i' });
-    expect(a({ webhook_type: 'ITEM', webhook_code: 'NEW_ACCOUNTS_AVAILABLE' }).kind).toBe('ignore');
+    expect(a({ webhook_type: 'ITEM', webhook_code: 'NEW_ACCOUNTS_AVAILABLE' })).toEqual({ kind: 'new_accounts', itemId: 'i' });
+    expect(a({ webhook_type: 'ITEM', webhook_code: 'WEBHOOK_UPDATE_ACKNOWLEDGED' }).kind).toBe('ignore');
     expect(a({ webhook_type: 'TRANSACTIONS', webhook_code: 'DEFAULT_UPDATE' }).kind).toBe('ignore');
     expect(plaidWebhookAction({ webhook_type: 'ITEM', webhook_code: 'ERROR' }).kind).toBe('ignore');
   });

@@ -128,6 +128,17 @@ describe('bank-link-token', () => {
     expect(ctx.provider.calls.find((c) => c.op === 'link')!.arg).toEqual({ mode: 'update', appUserId: USER, accessToken: 'access-sandbox-SECRET-1' });
   });
 
+  it('update mode with newAccounts asks for Account Select; a new connection ignores it', async () => {
+    const ctx = await setup({ connect: 1 });
+    const [link] = await ctx.store.listLinks(USER);
+    const res = await capture(await handleLinkToken(req({ mode: 'update', linkId: link.id, newAccounts: true }), ctx.deps));
+    expect(await body(res)).toMatchObject({ linkToken: 'link-sandbox-update', mode: 'update' });
+    expect(ctx.provider.calls.filter((c) => c.op === 'link').pop()!.arg).toEqual({ mode: 'update', appUserId: USER, accessToken: 'access-sandbox-SECRET-1', newAccounts: true });
+    expect(ctx.store.events.filter((e) => e.kind === 'link_token').pop()!.detail).toEqual({ mode: 'update', newAccounts: true });
+    await handleLinkToken(req({ newAccounts: true }), ctx.deps);
+    expect(ctx.provider.calls.filter((c) => c.op === 'link').pop()!.arg).toEqual({ mode: 'new', appUserId: USER });
+  });
+
   it('is rate limited', async () => {
     const ctx = await setup();
     for (let i = 0; i < 10; i++) expect((await handleLinkToken(req({}), ctx.deps)).status).toBe(200);
@@ -239,6 +250,31 @@ describe('bank-sync', () => {
     expect((await ctx.store.getLink(link.id))!.status).toBe('active');
   });
 
+  it('new accounts: each entry says so; a good sync after the Account Select update clears it', async () => {
+    const ctx = await setup({ connect: 2 });
+    const [link, other] = await ctx.store.listLinks(USER);
+    await ctx.store.updateLink(link.id, { new_accounts: true });
+    await ctx.store.updateLink(other.id, { new_accounts: true });
+    let b = await body(await handleSync(req({}), ctx.deps));
+    expect(b.links.map((l: { newAccounts: boolean }) => l.newAccounts)).toEqual([true, true]);
+    // A normal sync doesn't clear it.
+    expect((await ctx.store.getLink(link.id))!.new_accounts).toBe(true);
+    b = await body(await handleSync(req({ repaired: link.id }), ctx.deps));
+    expect(b.links.map((l: { newAccounts: boolean }) => l.newAccounts)).toEqual([false, true]);
+    expect((await ctx.store.getLink(link.id))!.new_accounts).toBe(false);
+    expect((await ctx.store.getLink(other.id))!.new_accounts).toBe(true);
+  });
+
+  it('new accounts: a failed sync after the update keeps the flag', async () => {
+    const ctx = await setup({ connect: 1 });
+    const [link] = await ctx.store.listLinks(USER);
+    await ctx.store.updateLink(link.id, { new_accounts: true });
+    ctx.provider.syncResult = new ProviderError('INSTITUTION_DOWN', 'down', 400);
+    const b = await body(await handleSync(req({ repaired: link.id }), ctx.deps));
+    expect(b.links[0]).toMatchObject({ status: 'error', newAccounts: true });
+    expect((await ctx.store.getLink(link.id))!.new_accounts).toBe(true);
+  });
+
   it('a lapsed user gets 402 and the bank is removed', async () => {
     const ctx = await setup({ connect: 2 });
     ctx.clock.now = new Date(ctx.clock.now.getTime() + 30 * DAY);
@@ -259,7 +295,8 @@ describe('bank-remove and bank-list', () => {
     const list = await body(await capture(await handleList(req({}), ctx.deps)));
     expect(list.links.map((l: { status: string }) => l.status)).toEqual(['removing']);
     expect(list.access).toMatchObject({ allowed: true });
-    expect(Object.keys(list.links[0]).sort()).toEqual(['createdAt', 'id', 'institutionName', 'needsReloginSince', 'status', 'updatesAvailable']);
+    expect(Object.keys(list.links[0]).sort()).toEqual(['createdAt', 'id', 'institutionName', 'needsReloginSince', 'newAccounts', 'status', 'updatesAvailable']);
+    expect(list.links[0].newAccounts).toBe(false);
   });
 });
 
@@ -285,6 +322,20 @@ describe('plaid-webhook', () => {
     expect((await ctx.store.getLink(link.id))!.status).toBe('expiring');
     await handlePlaidWebhook(hook({ ...item, webhook_type: 'ITEM', webhook_code: 'USER_PERMISSION_REVOKED' }), ctx.deps);
     expect((await ctx.store.getLink(link.id))!.status).toBe('removed');
+  });
+
+  it('new accounts at the bank -> flag on the link, shown in bank-list, logged', async () => {
+    const ctx = await setup({ connect: 1 });
+    const [link] = await ctx.store.listLinks(USER);
+    const res = await handlePlaidWebhook(hook({ item_id: link.item_id, webhook_type: 'ITEM', webhook_code: 'NEW_ACCOUNTS_AVAILABLE' }), ctx.deps);
+    expect(await body(res)).toEqual({ ok: true });
+    expect(await ctx.store.getLink(link.id)).toMatchObject({ new_accounts: true, status: 'active' });
+    expect(ctx.store.events.filter((e) => e.kind === 'plaid_webhook').pop()).toMatchObject({
+      link_id: link.id,
+      detail: { type: 'ITEM', code: 'NEW_ACCOUNTS_AVAILABLE', action: 'new_accounts' },
+    });
+    const list = await body(await handleList(req({}), ctx.deps));
+    expect(list.links[0]).toMatchObject({ id: link.id, newAccounts: true });
   });
 
   it('ignores other environments and unknown items', async () => {

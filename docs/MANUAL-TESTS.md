@@ -633,20 +633,21 @@ Compare with `docs/research/settings.md` (Layout A), not render 14.
 - [ ] Start the trial (sandbox account). A "Ditch Pro trial" entry appears in your list, with a reminder 2 days before the charge.
 - [ ] No weekly plan, no countdown timer, no fake strike-through price.
 
-### 11b. Real purchases, StoreKit 2 (built Nov 20; needs a new TestFlight build + docs/plans/storekit-setup.md)
-On the **old** TestFlight build (or Expo Go):
+### 11b. Real purchases, RevenueCat (built Nov 20; needs docs/plans/revenuecat-setup.md + a new TestFlight build)
+On the **old** TestFlight build (or Expo Go), or a new build without the RevenueCat key:
 - [ ] The paywall looks exactly like before ($6.99/wk, $59.99/yr, $119.99, "Free for 7 days", "$0 due today"). Tapping the button still says "Not switched on yet". The app doesn't crash.
 
 On the **new** TestFlight build, signed in with a Sandbox tester (Settings → App Store → Sandbox Account):
 - [ ] Paywall prices are the App Store's (same numbers in the US; change the tester's country to see local prices).
 - [ ] Yearly → "Start my free week": Apple's sheet shows the 7-day free trial. Confirm. The paywall closes, Pro is on, and a "Ditch Pro trial" entry is in your list.
-- [ ] Open the paywall again from a fresh tester that already had the trial (or after it ran out): Yearly shows no "Free for 7 days", the button says "Subscribe for $59.99 a year", there's no "$0 due today", and the line says "$59.99 today, then every year until you cancel."
+- [ ] RevenueCat → Customers shows the purchase under a random id (no name or email).
+- [ ] Open the paywall with a tester that already had the trial: Yearly shows no "Free for 7 days", the button says "Subscribe for $59.99 a year", there's no "$0 due today", and the line says "$59.99 today, then every year until you cancel." Settings shows "See Pro" instead of "Try free".
 - [ ] Weekly and Lifetime: Apple's sheet shows the right price; after buying, Settings → Ditch Pro shows the plan.
 - [ ] Close Apple's sheet without buying: nothing happens, nothing changes.
-- [ ] Restore (paywall, Settings, Ditch Pro page) after deleting and reinstalling: "Restored", and Pro comes back by itself.
+- [ ] Delete and reinstall Ditch, then Restore (paywall, Settings, or the Ditch Pro page): "Restored", and Pro comes back by itself. Restoring during the free week brings back the "Ditch Pro trial" entry with the right end date.
 - [ ] Restore with a tester that bought nothing: "Nothing to restore".
 - [ ] Airplane mode, tap Restore in Settings: "Couldn’t reach the App Store. Try again in a moment."
-- [ ] Pro ends: buy Weekly with a tester and wait about 40 minutes (sandbox renews 12 times, ~3 min each, then stops). Bring Ditch to the front: Pro is off, every subscription is still there, and only 3 have reminders.
+- [ ] Pro ends: buy Weekly with a tester and wait about 40 minutes (sandbox renews about 12 times, ~3 min each, then stops). Bring Ditch to the front: Pro is off, every subscription is still there, and only 3 have reminders.
 - [ ] Settings → Preview Pro (test builds) still works and isn't switched off when you come back to the app.
 
 ## 12. States and failures ⏳ (partly built)

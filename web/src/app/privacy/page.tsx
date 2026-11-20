@@ -38,6 +38,9 @@ export default function Privacy() {
         <li>
           <b>Email to support:</b> if you email us, we see what you send. The app’s “Report a problem” adds counts only (like “12 subscriptions”), never names or prices.
         </li>
+        <li>
+          <b>Feedback form:</b> if you send feedback from the app, we store your message, your email if you add one (only so we can reply), the optional counts line, and the date in our Cloudflare database. The app never adds anything from your list.
+        </li>
       </ul>
 
       <h2 id="site">2. This website</h2>

@@ -15,7 +15,8 @@ import { pendingCount } from '@/services/notifications';
 import { planById, restorePurchases } from '@/services/purchases';
 import { ordinal } from '@/domain/copy';
 import { Group, Row, SettingsPage } from '@/settings/Parts';
-import { SUPPORT_EMAIL, rateDitch, reportProblem, suggestFeature, suggestService } from '@/settings/feedback';
+import { rateDitch, type FeedbackKind } from '@/settings/feedback';
+import { FeedbackSheet } from '@/settings/FeedbackSheet';
 import { SHORT_VERSION } from '@/settings/version';
 import { TimeField } from '@/settings/TimeField';
 import { useApp } from '@/state/app';
@@ -37,6 +38,10 @@ export default function Settings() {
   const trial = runningProTrial(subs, app.today);
   const leadWords = leadsLabel(effectiveLeads(settings, pro)).replace(/ and (?=[^,]*$)/, ', ');
   const remindValue = narrow ? leadWords.replace(/ before$/, '') : leadWords;
+
+  // Feedback & help: one in-app form, opened on the row they tapped.
+  const [feedback, setFeedback] = useState<{ visible: boolean; kind: FeedbackKind; session: number }>({ visible: false, kind: 'problem', session: 0 });
+  const openFeedback = (kind: FeedbackKind) => setFeedback((f) => ({ visible: true, kind, session: f.session + 1 }));
 
   // Health check every time Settings opens.
   const { recheck } = app;
@@ -139,16 +144,13 @@ export default function Settings() {
       </Group>
 
       {/* Feedback & help: a person reads every one (reviews: a developer who answers turns 1★ into 5★). */}
-      <Group header="Feedback & help" note="A real person reads every email.">
-        <Row
-          label="Report a problem"
-          hint="Opens an email with a line of counts, no names or prices"
-          onPress={() => void reportProblem({ subs, settings, pro, notif: app.notif, leads: effectiveLeads(settings, pro) })}
-        />
-        <Row label="Suggest a feature" hint={`Opens an email to ${SUPPORT_EMAIL}`} onPress={suggestFeature} />
-        <Row label="Suggest a subscription" hint="Missing one? We’ll add it to the list" onPress={() => suggestService()} />
+      <Group header="Feedback & help" note="A real person reads every one.">
+        <Row label="Report a problem" hint="Opens a short form" onPress={() => openFeedback('problem')} />
+        <Row label="Suggest a feature" hint="Opens a short form" onPress={() => openFeedback('idea')} />
+        <Row label="Suggest a subscription" hint="Missing one? We’ll add it to the list" onPress={() => openFeedback('service')} />
         <Row label="Rate Ditch" hint="Opens the App Store" onPress={rateDitch} />
       </Group>
+      <FeedbackSheet {...feedback} onClose={() => setFeedback((f) => ({ ...f, visible: false }))} />
 
       <Group>
         <Row label="About Ditch" onPress={() => router.push('/settings/about')} />

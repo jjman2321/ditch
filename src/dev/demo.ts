@@ -7,6 +7,7 @@ import type { Settings } from '@/domain/settings';
 import { makeSub, type Sub } from '@/domain/subs';
 import { SERVICES } from '@/catalog/services';
 import { proTrialSub } from '@/state/fromOnboarding';
+import { webParam } from './webParams';
 
 export type DemoName = 'demo' | 'pro' | 'off' | 'ditched' | 'empty' | 'onboarding' | 'mixed' | 'overlap' | `n${number}`;
 
@@ -100,9 +101,15 @@ function countData(count: number, today: DateOnly): { subs: Sub[]; settings: Par
   const settings: Partial<Settings> = { onboardingDone: true, country: 'US', currency: 'USD', holdHintDone: true };
   const pool = [...SERVICES].sort((a, b) => (a.rank ?? 999) - (b.rank ?? 999));
   const cycles = ['monthly', 'monthly', 'monthly', 'yearly', 'monthly', 'weekly', 'monthly', 'quarterly'] as const;
-  const subs = pool.slice(0, count).map((x, i) => {
+  // ?x=10 multiplies every price, for big-spend checks ($200 to $3,000 a month).
+  const mult = Math.max(0.01, Number(webParam('x') ?? '1') || 1);
+  // Past the catalog's size (?seed=n3000) the names repeat with a number, like "Netflix 2".
+  const subs = Array.from({ length: count }, (_, i) => {
+    const round = Math.floor(i / pool.length);
+    const x0 = pool[i % pool.length];
+    const x = round ? { ...x0, name: `${x0.name} ${round + 1}` } : x0;
     const cycle = cycles[i % cycles.length];
-    const base = [1799, 1199, 2000, 999, 1499, 699, 2999, 499][i % 8];
+    const base = Math.round([1799, 1199, 2000, 999, 1499, 699, 2999, 499][i % 8] * mult);
     const amountMinor = cycle === 'yearly' ? base * 10 : cycle === 'weekly' ? Math.round(base / 4) : cycle === 'quarterly' ? base * 3 : base;
     // Every 7th has no date yet; the rest spread over the next 5 weeks.
     const extra: Partial<Sub> = { cycle, freePick: i < 3, ...(i % 7 === 6 ? { dateSource: 'none' as const } : {}) };

@@ -251,10 +251,17 @@ export default function Home() {
     if (before) router.push(`/ditch/${id}?fresh=1`);
   };
 
+  // Opening a row the bank added counts as seen: its "Found in your bank" tag goes (owner, Nov 20: "removable").
+  const open = (s: Sub) => {
+    if (s.foundInBankOn) void app.saveSub({ ...s, foundInBankOn: null });
+    if (isPending(s)) router.push(`/ditch/${s.id}`);
+    else editor.openEdit(s.id);
+  };
+
   // The rows get handlers that never change; these refs always point at this render's versions.
-  const latest = useRef({ toggleBell, ditch, open: (s: Sub) => (isPending(s) ? router.push(`/ditch/${s.id}`) : editor.openEdit(s.id)) });
+  const latest = useRef({ toggleBell, ditch, open });
   useLayoutEffect(() => {
-    latest.current = { toggleBell, ditch, open: (s: Sub) => (isPending(s) ? router.push(`/ditch/${s.id}`) : editor.openEdit(s.id)) };
+    latest.current = { toggleBell, ditch, open };
   });
   const rowHandlers = useMemo<RowHandlers>(
     () => ({

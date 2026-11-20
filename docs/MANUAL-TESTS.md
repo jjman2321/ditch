@@ -771,3 +771,9 @@ Why: an app feels premium when the bad moments are handled well, not only the ha
 - [ ] /support starts with a small box: Ditch isn't on the App Store yet, with a waitlist link.
 - [ ] /how-we-check: the 4 steps show one number each (no "1. 1.").
 - [ ] /cancel/netflix: the Questions section no longer repeats the refund, Apple and "your stuff" answers that sit higher up the page.
+
+
+## 1aa. "Found in your bank" tag goes once you've seen it (Nov 20)
+1. Test build, Settings → Bank connections → Practice: a new subscription. Back to Home: the new row has the FOUND IN YOUR BANK tag.
+2. Tap that row, then close the sheet. The tag is gone from that row.
+3. Other rows the bank added keep their tag until you open them (or 7 days pass).

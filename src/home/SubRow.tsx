@@ -129,7 +129,7 @@ export const SubRow = memo(function SubRow({
   priceWidth,
   foundTag,
 }: {
-  /** "FOUND IN YOUR BANK" for 7 days after the bank added it (DECISIONS #67). */
+  /** "FOUND IN YOUR BANK" for 7 days after the bank added it (DECISIONS #67), or until the row is opened once. */
   foundTag?: boolean;
   /** Free plan: tapping the bell turns this one's reminder on or off (one of the 3). Not set: the bell is just a sign. */
   onBell?: (sub: Sub) => void;

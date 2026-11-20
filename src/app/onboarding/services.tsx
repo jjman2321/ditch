@@ -403,7 +403,7 @@ export default function Services() {
               // Not in our list: add it by name with their own price, right here (audit Nov 20: a dead end).
               <View>
                 <Txt v="sub" tone="mute" style={{ marginTop: 12 }}>
-                  {`No match for “${query.trim()}”.`}
+                  {`No match for “${query.trim()}”. You can add anything by hand from your list later.`}
                 </Txt>
                 <Pressable
                   accessibilityRole="button"

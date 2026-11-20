@@ -108,11 +108,11 @@ export default function Total() {
   const base = f.tablet ? 128 : f.tiny ? 56 : f.small ? 80 : 104;
   const wholeHero = main ? money(main.yearlyMinor, main.currency, { whole: true }) : '';
   // Under 1,000 a year the total keeps its cents, so it matches the list below ("$239.88", not "$240", audit Nov 20),
-  // but only while it still fits at 80% of the full size or more; otherwise the whole amount, as before.
+  // but only while it still fits at 65% of the full size or more (about 70% on a 390pt iPhone); otherwise the whole amount, as before.
   const digits = main ? currencyDigits(main.currency) : 0;
   const centsHero = main && digits > 0 && main.yearlyMinor < 1000 * 10 ** digits ? money(main.yearlyMinor, main.currency) : null;
   const [centsW, setCentsW] = useState<number | null>(null);
-  const cents = !!centsHero && centsW !== null && fitSize(base, f.content - 4, centsW) >= Math.round(base * 0.8);
+  const cents = !!centsHero && centsW !== null && fitSize(base, f.content - 4, centsW) >= Math.round(base * 0.65);
   const hero = cents && centsHero ? centsHero : wholeHero;
   // Nothing priced yet: "$—" in their currency, where the total will be.
   const cur = country?.currency ?? list.find((x) => x.currency)?.currency ?? 'USD';
@@ -253,7 +253,7 @@ export default function Total() {
         <View style={{ height: f.tiny ? 10 : f.small ? 16 : 24 }} />
 
         {/* iPad: the card hugs its rows and the button sits at the foot of the column, like the phones' pinned one (audit Nov 20: half the card was bare). */}
-        <View style={[{ flex: f.tablet ? 0 : 1, backgroundColor: cream.sheet }, sheetPad, dark && { borderTopWidth: 1, borderColor: '#2C2924' }]}>
+        <View style={[{ backgroundColor: cream.sheet }, !f.tablet && { flex: 1 }, sheetPad, dark && { borderTopWidth: 1, borderColor: '#2C2924' }]}>
           {/* No prices yet: no column headers over a list with no amounts. */}
           {main ? (
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: 16 }}>
@@ -346,7 +346,10 @@ export default function Total() {
         {f.tablet ? (
           <>
             <View style={{ flex: 1, minHeight: 24 }} />
-            <Button label="Set up reminders" onPress={() => router.push('/onboarding/dates')} />
+            {/* The same ink button with white text as the phones' one. */}
+            <SurfaceContext.Provider value="cream">
+              <Button label="Set up reminders" onPress={() => router.push('/onboarding/dates')} />
+            </SurfaceContext.Provider>
           </>
         ) : null}
       </FitScroll>

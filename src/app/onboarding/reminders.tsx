@@ -13,7 +13,6 @@ import { AppState, Linking, Platform, View } from 'react-native';
 import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withSpring } from 'react-native-reanimated';
 
 import { catalogPrice } from '@/catalog/prices';
-import { stillUsingIt } from '@/domain/copy';
 import { addDays, longDate, weekdayDate, weekdayName, type DateOnly } from '@/domain/dates';
 import { FitScroll, OnbRoot } from '@/onboarding/Parts';
 import { useFirstReminders } from '@/onboarding/useFirstReminders';
@@ -104,8 +103,7 @@ export default function Reminders() {
         const charge = addDays(today, 9);
         if (biggest) {
           const price = isPricedPick(biggest) ? ` ${money(biggest.amountMinor, biggest.currency)}.` : '';
-          // "Still watching?" for Netflix and the like, same as everywhere else (stillUsingIt).
-          return [{ key: 'example', day: addDays(charge, -3), body: `${biggest.name} renews ${weekdayName(charge)}.${price} ${stillUsingIt(biggest.category)}` }];
+          return [{ key: 'example', day: addDays(charge, -3), body: `${biggest.name} renews ${weekdayName(charge)}.${price} Still using it?` }];
         }
         const local = catalogPrice('netflix', country);
         const price = local ? ` ${money(local.amountMinor, local.currency)}.` : '';

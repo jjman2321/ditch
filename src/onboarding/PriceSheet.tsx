@@ -35,13 +35,11 @@ function Body({ sub, onSave }: { sub: Picked; onSave: (amountMinor: number, curr
             {sub.name}
           </Txt>
           <Txt v="body" tone="mute" style={{ fontSize: 14 }}>
-            {sub.custom
-              ? 'Not on our list yet. Type what you pay.'
-              : priceRow(sub.id, sub.priceCountry)
-                ? 'Paying something different? Type it here.'
-                : country
-                  ? `We don’t have ${country.name} prices for this one yet.`
-                  : 'We don’t have prices for your country yet.'}
+            {priceRow(sub.id, sub.priceCountry)
+              ? 'Paying something different? Type it here.'
+              : country
+                ? `We don’t have ${country.name} prices for this one yet.`
+                : 'We don’t have prices for your country yet.'}
           </Txt>
         </View>
       </View>

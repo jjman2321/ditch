@@ -30,7 +30,7 @@ import {
 } from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
 import { AddDatesSheet } from '@/home/AddDatesSheet';
-import { EmptyHome, NextReminderRow, NoDateRow, NoReminderRow, OffBanner, OverlapCard, PaydayRow, PriceChangeCard, TotalCard, openPhoneSettings } from '@/home/HomeParts';
+import { EmptyHome, MissingStrip, NextReminderRow, NoDateRow, NoReminderRow, OffBanner, OverlapCard, PaydayRow, PriceChangeCard, TotalCard, openPhoneSettings } from '@/home/HomeParts';
 import { PriceColumnMeasure, SubRow, type BellState } from '@/home/SubRow';
 import { BankToastView, SyncCardView, type SyncHandlers } from '@/bank/HomeCards';
 import { openUrl } from '@/ditch/CancelHelp';
@@ -309,7 +309,12 @@ export default function Home() {
                   </Card>
                 </View>
               ))}
-              {/* No "Missing any?" / find cards on Home (owner, Nov 19: too much for the main page). They live in the + sheet. */}
+              {/* Short lists only: a small "Missing any?" row so Home isn't bare (owner, Nov 20). Long lists don't need it. */}
+              {listed.length <= 8 && !cardOn ? (
+                <View style={{ marginTop: 28 }}>
+                  <MissingStrip country={settings.country} have={new Set(subs.map((s) => s.catalogId).filter((c): c is string => !!c))} onAdd={(id) => editor.openAdd(id)} />
+                </View>
+              ) : null}
             </>
           )}
         </ScrollView>

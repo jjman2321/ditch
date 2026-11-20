@@ -353,6 +353,62 @@ const QUICK = ['netflix', 'spotify', 'chatgpt-plus', 'amazon-prime', 'disney-plu
 const SHORT_NAME: Record<string, string> = { 'chatgpt-plus': 'ChatGPT', max: 'HBO Max', 'amazon-prime': 'Prime', 'disney-plus': 'Disney+', 'apple-music': 'Apple Music' };
 
 /** 11 · Nothing on the list yet. */
+/**
+ * "Missing any?" under a short list (owner, Nov 20 video: "the other subs, just a small one, so it's not
+ * so plain"). Not a card: a label and one row of popular services they don't have yet, each one tap to add.
+ * "More" opens the full add sheet. Replaces DECISIONS #71's "no Missing any? on Home" for short lists only.
+ */
+export function MissingStrip({ country, have, onAdd }: { country: string | null; have: Set<string>; onAdd: (catalogId?: string) => void }) {
+  const p = usePalette();
+  const ids = [...QUICK, ...POPULAR_ORDER].filter((id, i, a) => a.indexOf(id) === i && !have.has(id) && SERVICE_BY_ID[id] && availableIn(SERVICE_BY_ID[id], country)).slice(0, 4);
+  if (!ids.length) return null;
+  const tile = { width: '20%', alignItems: 'center' } as const;
+  return (
+    <View>
+      <Txt v="eyebrow" tone="mute" accessibilityRole="header" style={{ marginBottom: 12, marginHorizontal: 4 }}>
+        Missing any?
+      </Txt>
+      <View style={{ flexDirection: 'row' }}>
+        {ids.map((id) => (
+          <Pressable key={id} accessibilityRole="button" accessibilityLabel={`Add ${SERVICE_BY_ID[id].name}`} onPress={() => onAdd(id)} style={({ pressed }) => ({ ...tile, opacity: pressed ? 0.7 : 1 })}>
+            <View>
+              <LogoTile id={id} size={44} />
+              <View
+                style={{
+                  position: 'absolute',
+                  right: -7,
+                  bottom: -6,
+                  width: 20,
+                  height: 20,
+                  borderRadius: 10,
+                  backgroundColor: p.dark ? brand.sunflower : brand.ink,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderWidth: 2,
+                  borderColor: p.bg,
+                }}
+              >
+                <Plus color={p.dark ? brand.ink : brand.sunflower} size={11} />
+              </View>
+            </View>
+            <Txt v="sub" center numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8} style={{ marginTop: 8, fontSize: 13, width: 72 }}>
+              {SHORT_NAME[id] ?? SERVICE_BY_ID[id].name}
+            </Txt>
+          </Pressable>
+        ))}
+        <Pressable accessibilityRole="button" accessibilityLabel="See all subscriptions to add" onPress={() => onAdd()} style={({ pressed }) => ({ ...tile, opacity: pressed ? 0.7 : 1 })}>
+          <View style={{ width: 44, height: 44, borderRadius: 12, borderWidth: 1.5, borderStyle: 'dashed', borderColor: p.chipBorder, alignItems: 'center', justifyContent: 'center' }}>
+            <Plus color={p.fg} size={18} />
+          </View>
+          <Txt v="sub" center numberOfLines={1} style={{ marginTop: 8, fontSize: 13, width: 72 }}>
+            More
+          </Txt>
+        </Pressable>
+      </View>
+    </View>
+  );
+}
+
 export function EmptyHome({ country, onAdd }: { country: string | null; onAdd: (catalogId?: string) => void }) {
   const p = usePalette();
   const ids = [...QUICK, ...POPULAR_ORDER].filter((id, i, a) => a.indexOf(id) === i && SERVICE_BY_ID[id] && availableIn(SERVICE_BY_ID[id], country)).slice(0, 8);

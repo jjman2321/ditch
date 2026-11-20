@@ -86,6 +86,11 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
+## 1x. Pro nudge when the free reminders run out (Nov 20)
+- [ ] Free plan, 4+ subs with dates, 3 bells on: Home shows "X has no reminder · Pro reminds you about every one" with a yellow **Try Pro** pill. Tap it: the paywall opens. Tap ×: it hides until another sub is left without a reminder.
+- [ ] Open a sub with no reminder: under "Remind me" it says "Your 3 free reminders are in use." and a yellow row "Reminders on everything · Try Pro". No "Tap a bell on Home" text.
+- [ ] White cards on Home have a faint edge in light mode.
+
 ## 1w. Internal audit fixes (Nov 19, design/v35/audit.png)
 - [ ] **DITCHED tag:** even space on both sides of the word. Smaller on Home and Ditched rows, bigger on the ditch screen card. On Home it sits on the date line, so long names never push it to its own line.
 - [ ] **Ditch screen:** the card, amount and "Last reminder …" sit together in the middle. The Netflix logo turns the same grey as on the Ditched tab.

@@ -35,6 +35,7 @@ import {
   Chip,
   F,
   KEYBOARD_DONE,
+  Bell,
   KeyboardDone,
   LogoTile,
   NotificationPreview,
@@ -369,7 +370,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
   const toggleRemind = (v: boolean) => {
     if (v && atLimit) {
       haptic.warning();
-      AccessibilityInfo.announceForAccessibility('Your 3 free reminders are in use. Tap a bell on Home to free one up, or try Pro.');
+      AccessibilityInfo.announceForAccessibility('Your 3 free reminders are in use. Pro reminds you about all of them.');
       return;
     }
     haptic.select();
@@ -476,7 +477,9 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
   // One grey note under the price, not two: "Typical price. Yearly is $124.99, $24.89 less."
   const yearlyLine = saving ? `Yearly is ${money(saving.yearlyMinor, saving.currency)}, ${money(saving.lessBy, saving.currency)} less.` : null;
   // The last two words share a line, so the note never ends on one word alone.
-  const priceNote = keepLastTwo(yearlyLine ? (catalogLine ? `${catalogLine} ${yearlyLine}` : yearlyLine) : catalogLine && typical && !moved ? `${catalogLine} Change it if yours is different.` : catalogLine);
+  const priceNote = keepLastTwo(
+    yearlyLine ? (catalogLine ? `${catalogLine} ${yearlyLine}` : yearlyLine) : catalogLine && typical && !moved ? `${catalogLine} Change it if yours is different.` : catalogLine,
+  );
 
   return (
     <View style={{ flex: 1 }}>
@@ -740,7 +743,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                   <Txt v="label">Remind me</Txt>
                   <Txt v="sub" tone="mute" num>
                     {atLimit
-                      ? `Your ${FREE_REMINDERS} free reminders are in use. Tap a bell on Home to free one up, or try Pro.`
+                      ? `Your ${FREE_REMINDERS} free reminders are in use.`
                       : !charge && !trialEntry
                         ? 'Starts once it has a date'
                         : skippedNow && remindOn
@@ -769,9 +772,10 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                 </View>
               ) : null}
               {atLimit ? (
-                <Button
-                  kind="text"
-                  label="Try Pro for reminders on everything"
+                // The upsell where it matters (owner, Nov 20): this one can't get a reminder on free.
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel="Reminders on everything with Pro. Try Pro."
                   onPress={async () => {
                     // Keep what they typed: save it (no reminder yet), then show Pro.
                     const name = (draft.name || query).trim();
@@ -783,8 +787,29 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                     close();
                     router.push('/paywall?from=app');
                   }}
-                  style={{ alignSelf: 'flex-start', marginLeft: -20, marginTop: -6 }}
-                />
+                  style={({ pressed }) => ({
+                    marginBottom: 12,
+                    minHeight: 52,
+                    borderRadius: 16,
+                    paddingLeft: 14,
+                    paddingRight: 8,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 10,
+                    backgroundColor: p.dark ? '#2A2721' : '#FFF1BC',
+                    opacity: pressed ? 0.8 : 1,
+                  })}
+                >
+                  <Bell color={p.dark ? brand.sunflower : brand.ink} fill={p.dark ? brand.sunflower : brand.ink} size={16} />
+                  <Txt v="label" color={p.dark ? p.fg : brand.ink} style={{ flex: 1, fontSize: 15 }}>
+                    Reminders on everything
+                  </Txt>
+                  <View style={{ paddingHorizontal: 12, height: 32, borderRadius: 16, backgroundColor: p.dark ? brand.sunflower : brand.ink, alignItems: 'center', justifyContent: 'center' }}>
+                    <Txt v="label" color={p.dark ? brand.ink : brand.sunflower} style={{ fontFamily: F.bold, fontSize: 14 }} maxFontSizeMultiplier={1.3}>
+                      Try Pro
+                    </Txt>
+                  </View>
+                </Pressable>
               ) : null}
             </Card>
 
@@ -794,13 +819,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                 <FieldLabel>For when you cancel</FieldLabel>
                 <Card style={{ paddingHorizontal: 16, paddingVertical: 4 }}>
                   <DetailInput label="Paid with" placeholder="Card or account" value={draft.paidWith} onChange={(v) => setDraft({ ...draft, paidWith: v })} />
-                  <DetailInput
-                    label="Email"
-                    placeholder="Email you signed up with"
-                    value={draft.accountEmail}
-                    onChange={(v) => setDraft({ ...draft, accountEmail: v })}
-                    keyboard="email-address"
-                  />
+                  <DetailInput label="Email" placeholder="Email you signed up with" value={draft.accountEmail} onChange={(v) => setDraft({ ...draft, accountEmail: v })} keyboard="email-address" />
                   <DetailInput label="Notes" placeholder="Add a note" value={draft.notes} onChange={(v) => setDraft({ ...draft, notes: v })} last />
                 </Card>
               </>

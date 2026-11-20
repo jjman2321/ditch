@@ -14,7 +14,8 @@ export function Card({ children, style }: { children: ReactNode; style?: StylePr
         { backgroundColor: p.card, borderRadius: radius.card },
         p.dark
           ? { borderWidth: 1, borderColor: p.cardBorder }
-          : { shadowColor: '#463200', shadowOpacity: 0.07, shadowRadius: 20, shadowOffset: { width: 0, height: 6 }, elevation: 2 },
+          : // A hairline edge keeps white cards crisp on the cream background (owner review, Nov 20).
+            { borderWidth: 1, borderColor: 'rgba(22,20,15,0.05)', shadowColor: '#463200', shadowOpacity: 0.07, shadowRadius: 20, shadowOffset: { width: 0, height: 6 }, elevation: 2 },
         style,
       ]}
     >

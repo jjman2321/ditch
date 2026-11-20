@@ -12,6 +12,7 @@ import { overlapToShow } from '@/domain/overlaps';
 import { priceChanges } from '@/domain/priceWatch';
 import { priceRow } from '@/catalog/prices';
 import {
+  FREE_REMINDERS,
   beforePayday,
   cheapestSub,
   hasDate,
@@ -29,7 +30,7 @@ import {
 } from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
 import { AddDatesSheet } from '@/home/AddDatesSheet';
-import { EmptyHome, NextReminderRow, NoDateRow, OffBanner, OverlapCard, PaydayRow, PriceChangeCard, TotalCard, openPhoneSettings } from '@/home/HomeParts';
+import { EmptyHome, NextReminderRow, NoDateRow, NoReminderRow, OffBanner, OverlapCard, PaydayRow, PriceChangeCard, TotalCard, openPhoneSettings } from '@/home/HomeParts';
 import { PriceColumnMeasure, SubRow, type BellState } from '@/home/SubRow';
 import { BankToastView, SyncCardView, type SyncHandlers } from '@/bank/HomeCards';
 import { openUrl } from '@/ditch/CancelHelp';
@@ -99,7 +100,17 @@ export default function Home() {
   // about real money that just moved), then a duplicate/overlap, then before payday
   // (then price watch, the other suggestion), then dates missing.
   // The overlap card can be dismissed, so it goes before payday; payday only when something is actually due (audit, Nov 19).
-  const other = sync ? 'sync' : overlap ? 'overlap' : payday?.count ? 'payday' : change ? 'change' : undated.length && !blocked ? 'undated' : null;
+  // Free plan with every free reminder in use: dated subs left without one get one Pro card (owner, Nov 20).
+  const unreminded = useMemo(
+    () => (pro || blocked ? [] : listed.filter((s) => s.status === 'active' && hasDate(s) && !isProTrial(s) && !reminded.has(s.id)).sort((a, b) => yearlyOfSub(b) - yearlyOfSub(a))),
+    [pro, blocked, listed, reminded],
+  );
+  const noRemindKey = `noremind:${unreminded
+    .map((s) => s.id)
+    .sort()
+    .join(',')}`;
+  const showNoRemind = unreminded.length > 0 && reminded.size >= FREE_REMINDERS && !settings.dismissedOverlaps.includes(noRemindKey);
+  const other = sync ? 'sync' : showNoRemind ? 'noremind' : overlap ? 'overlap' : payday?.count ? 'payday' : change ? 'change' : undated.length && !blocked ? 'undated' : null;
   // The very next one, so it's plain that reminders are scheduled.
   const next = blocked ? null : nextReminder(app.plan, subs);
   const money = useAppMoney();
@@ -204,6 +215,16 @@ export default function Home() {
               {payday && other === 'payday' ? (
                 <View style={{ marginTop: 10 }}>
                   <PaydayRow before={payday} money={money} onPress={() => router.push('/calendar')} />
+                </View>
+              ) : null}
+              {other === 'noremind' ? (
+                <View style={{ marginTop: 10 }}>
+                  <NoReminderRow
+                    names={unreminded.map((s) => s.name)}
+                    total={reminded.size + unreminded.length}
+                    onPress={() => router.push('/paywall?from=which')}
+                    onDismiss={() => void app.updateSettings({ dismissedOverlaps: [...settings.dismissedOverlaps, noRemindKey].slice(-DISMISSED_KEEP) })}
+                  />
                 </View>
               ) : null}
               {other === 'undated' ? (

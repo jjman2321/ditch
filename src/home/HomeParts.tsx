@@ -291,7 +291,7 @@ export function NoDateRow({ count, onPress }: { count: number; onPress: () => vo
     <Pressable accessibilityRole="button" accessibilityLabel={`${count} ${one ? 'has' : 'have'} no date yet, so no reminders. Add ${one ? 'it' : 'dates'}.`} onPress={onPress}>
       {({ pressed }) => (
         <Card style={{ minHeight: 56, borderRadius: 16, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 14, paddingVertical: 9, opacity: pressed ? 0.75 : 1 }}>
-          <BellOff color={p.mute} size={17} />
+          <Bell color={p.mute} size={17} />
           <View style={{ flex: 1, minWidth: 0 }}>
             <Txt v="body" color={p.cardFg} numberOfLines={1} style={{ fontFamily: F.bold, fontSize: 15 }}>
               {`${count} ${one ? 'has' : 'have'} no date yet`}
@@ -307,6 +307,45 @@ export function NoDateRow({ count, onPress }: { count: number; onPress: () => vo
         </Card>
       )}
     </Pressable>
+  );
+}
+
+/**
+ * Free plan, 3 reminders in use, and a dated subscription has none (owner, Nov 20): the moment Pro is
+ * worth the most, so say exactly what's unprotected and offer Pro once. "Copilot Pro has no reminder" /
+ * "Pro reminds you about every one". The × hides it until another one is left without a reminder.
+ */
+export function NoReminderRow({ names, total, onPress, onDismiss }: { names: string[]; total: number; onPress: () => void; onDismiss: () => void }) {
+  const p = usePalette();
+  const one = names.length === 1;
+  const title = one ? `${names[0]} has no reminder` : `${names.length} have no reminder`;
+  return (
+    <Card style={{ minHeight: 56, borderRadius: 16, flexDirection: 'row', alignItems: 'center', paddingLeft: 14 }}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`${title}. Only 3 reminders are free. Pro reminds you about every one. Try Pro.`}
+        onPress={onPress}
+        style={({ pressed }) => ({ flex: 1, minWidth: 0, minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 9, opacity: pressed ? 0.75 : 1 })}
+      >
+        <Bell color={p.mute} size={17} />
+        <View style={{ flex: 1, minWidth: 0 }}>
+          <Txt v="body" color={p.cardFg} numberOfLines={1} style={{ fontFamily: F.bold, fontSize: 15 }}>
+            {title}
+          </Txt>
+          <Txt v="sub" tone="mute" numberOfLines={1}>
+            Pro reminds you about every one
+          </Txt>
+        </View>
+        <View style={{ paddingHorizontal: 10, height: 28, borderRadius: 14, backgroundColor: brand.sunflower, alignItems: 'center', justifyContent: 'center' }}>
+          <Txt v="label" color={brand.ink} style={{ fontFamily: F.bold, fontSize: 13.5 }} maxFontSizeMultiplier={1.3}>
+            Try Pro
+          </Txt>
+        </View>
+      </Pressable>
+      <Pressable accessibilityRole="button" accessibilityLabel="Hide" hitSlop={8} onPress={onDismiss} style={{ width: 44, height: 56, alignItems: 'center', justifyContent: 'center' }}>
+        <Close color={p.mute} size={12} />
+      </Pressable>
+    </Card>
   );
 }
 

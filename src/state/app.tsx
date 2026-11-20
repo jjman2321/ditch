@@ -13,28 +13,9 @@ import { formatMoney, formatWholeMoney } from '@/domain/money';
 import { planReminders, type PlannedReminder } from '@/domain/reminders';
 import { markAsked, pastReminderDays, REVIEW_REMINDER_DAYS, shouldAskForReview, type ReviewMoment } from '@/domain/review';
 import { DEFAULT_SETTINGS, effectiveLeads, type ProPlan, type Settings } from '@/domain/settings';
-import {
-  FREE_REMINDERS,
-  confirmCancel,
-  ditchSub,
-  isProTrial,
-  reactivateSub,
-  defaultFreePicks,
-  remindedIds,
-  settleFreePicks,
-  unconfirmCancel,
-  type Sub,
-} from '@/domain/subs';
+import { FREE_REMINDERS, confirmCancel, ditchSub, isProTrial, reactivateSub, defaultFreePicks, remindedIds, settleFreePicks, unconfirmCancel, type Sub } from '@/domain/subs';
 import { now as clockNow, today as clockToday } from '@/services/clock';
-import {
-  applyPlan,
-  cancelAllReminders,
-  getNotifStatus,
-  requestNotifPermission,
-  sendTestReminder,
-  setupNotifications,
-  type NotifStatus,
-} from '@/services/notifications';
+import { applyPlan, cancelAllReminders, getNotifStatus, requestNotifPermission, sendTestReminder, setupNotifications, type NotifStatus } from '@/services/notifications';
 import { clearDraft } from '@/services/onboardingDraft';
 import { offerReview } from '@/services/review';
 import { tell } from '@/ui/alert';
@@ -193,10 +174,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const changed = settleFreePicks(ref.current.subs, input, isPro(ref.current.settings));
       const byId = new Map(changed.map((s) => [s.id, s]));
       const existing = new Set(ref.current.subs.map((s) => s.id));
-      const subs = [
-        ...ref.current.subs.map((s) => byId.get(s.id) ?? s),
-        ...changed.filter((s) => !existing.has(s.id)),
-      ].filter((s) => s.status !== 'deleted');
+      const subs = [...ref.current.subs.map((s) => byId.get(s.id) ?? s), ...changed.filter((s) => !existing.has(s.id))].filter((s) => s.status !== 'deleted');
       const before = ref.current.subs;
       set({ subs });
       reschedule();
@@ -209,12 +187,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         const now = ref.current.subs;
         // Nothing else saved meanwhile: the list as it was. Otherwise only this change is undone.
         const restored =
-          now === subs
-            ? before
-            : [
-                ...now.flatMap((s) => (ids.has(s.id) ? (was.has(s.id) ? [was.get(s.id)!] : []) : [s])),
-                ...before.filter((s) => ids.has(s.id) && !now.some((n) => n.id === s.id)),
-              ];
+          now === subs ? before : [...now.flatMap((s) => (ids.has(s.id) ? (was.has(s.id) ? [was.get(s.id)!] : []) : [s])), ...before.filter((s) => ids.has(s.id) && !now.some((n) => n.id === s.id))];
         set({ subs: restored });
         reschedule();
         tell('Couldn’t save', 'Try again. Your list hasn’t changed.');
@@ -395,8 +368,7 @@ export function useApp(): AppValue {
 export function useAppMoney() {
   const home = useApp().settings.currency;
   return useCallback(
-    (amountMinor: number, currency: string, opts: { whole?: boolean } = {}) =>
-      opts.whole ? formatWholeMoney(amountMinor, currency, { home }) : formatMoney(amountMinor, currency, { home }),
+    (amountMinor: number, currency: string, opts: { whole?: boolean } = {}) => (opts.whole ? formatWholeMoney(amountMinor, currency, { home }) : formatMoney(amountMinor, currency, { home })),
     [home],
   );
 }

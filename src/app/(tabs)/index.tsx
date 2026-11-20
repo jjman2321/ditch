@@ -54,10 +54,7 @@ const SHADOW_BOTTOM = 32;
 function CardSlice({ first, last, children }: { first: boolean; last: boolean; children: ReactNode }) {
   return (
     <View>
-      <View
-        pointerEvents="none"
-        style={{ position: 'absolute', left: -SHADOW_X, right: -SHADOW_X, top: first ? -SHADOW_TOP : 0, bottom: last ? -SHADOW_BOTTOM : 0, overflow: 'hidden' }}
-      >
+      <View pointerEvents="none" style={{ position: 'absolute', left: -SHADOW_X, right: -SHADOW_X, top: first ? -SHADOW_TOP : 0, bottom: last ? -SHADOW_BOTTOM : 0, overflow: 'hidden' }}>
         <Card style={{ position: 'absolute', left: SHADOW_X, right: SHADOW_X, top: first ? SHADOW_TOP : -60, bottom: last ? SHADOW_BOTTOM : -60 }}>{null}</Card>
       </View>
       {/* The card's 1pt border sits outside the rows, as it did. */}
@@ -349,7 +346,12 @@ export default function Home() {
           ) : null}
           {other === 'noremind' ? (
             <View style={{ marginTop: 10 }}>
-              <NoReminderRow names={unreminded.map((s) => s.name)} total={reminded.size + unreminded.length} onPress={() => router.push('/paywall?from=which')} onDismiss={() => dismiss(noRemindKey)} />
+              <NoReminderRow
+                names={unreminded.map((s) => s.name)}
+                total={reminded.size + unreminded.length}
+                onPress={() => router.push('/paywall?from=which')}
+                onDismiss={() => dismiss(noRemindKey)}
+              />
             </View>
           ) : null}
           {other === 'undated' ? (

@@ -128,7 +128,7 @@ describe('a tracked free trial', () => {
     const plan = planReminders([hulu], FREE, NOW);
     expect(plan.slice(0, 3).map((r) => [r.kind, r.body])).toEqual([
       ['trial', 'Your Hulu trial ends Friday. Then it’s $9.99 a month.'],
-      ['trial', 'Your Hulu trial ends tomorrow, then it’s $9.99 a month. Cancel today if you don’t want it.'],
+      ['trial', 'Your Hulu trial ends tomorrow. It’ll charge $9.99.'],
       ['heads-up', 'Hulu renews Sunday. $9.99. Still watching?'],
     ]);
   });
@@ -333,7 +333,7 @@ describe('second nudge (Pro)', () => {
     const nudges = planReminders([n], PRO, NOW).filter((r) => r.kind === 'nudge' && r.chargeDate === '2026-11-20');
     expect(nudges).toHaveLength(1);
     expect(nudges[0].fireAt).toEqual(new Date(2026, 10, 19, 19, 0));
-    expect(nudges[0].body).toBe('Netflix charges tomorrow. $17.99. Cancel tonight if you’re done.');
+    expect(nudges[0].body).toBe('Netflix charges tomorrow. $17.99. Last call.');
   });
   it('free gets none', () => {
     expect(planReminders([{ ...n, freePick: true }], FREE, NOW).some((r) => r.kind === 'nudge')).toBe(false);
@@ -396,15 +396,15 @@ describe('Pro evening nudge follows the real last reminder (audit, Nov 16)', () 
     const plan = planReminders(yearly(), { ...PRO, leadDays: [0] }, NOW);
     expect(plan.filter((r) => r.kind === 'nudge')).toEqual([]);
   });
-  it('with 3 days and on the day, the 3-day one gets no "Cancel tonight"', () => {
+  it('with 3 days and on the day, the 3-day one gets no "Last call"', () => {
     const plan = planReminders(yearly(), { ...PRO, leadDays: [3, 0] }, NOW);
     expect(plan.filter((r) => r.kind === 'nudge')).toEqual([]);
   });
-  it('with 3 days and 1 day, the nudge is the evening before and says Cancel tonight', () => {
+  it('with 3 days and 1 day, the nudge is the evening before and says Last call', () => {
     const nudges = planReminders(yearly(), { ...PRO, leadDays: [3, 1] }, NOW).filter((r) => r.kind === 'nudge');
     expect(nudges).toHaveLength(1);
     expect(nudges[0].fireAt.getTime()).toBe(at(2027, 1, 19, 19));
-    expect(nudges[0].body).toMatch(/Cancel tonight if you’re done\.$/);
+    expect(nudges[0].body).toMatch(/Last call\.$/);
   });
   it('every 2 weeks never gets a 2-week lead (it would land on the last charge)', () => {
     const s = sub({ id: 'g', name: 'Gym', anchor: '2026-11-20', cycle: 'biweekly' });

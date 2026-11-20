@@ -84,8 +84,7 @@ export function yearlyWarningBody(s: Sub, charge: DateOnly, money: Money): strin
 export function trialBody(s: Sub, charge: DateOnly, fireDay: DateOnly, money: Money): string {
   const when = whenWords(charge, fireDay);
   const price = priceOf(s, money);
-  // The last one says what to do, and by when: "Your Hulu trial ends tomorrow, then it's $7.99 a month. Cancel today if you don't want it."
-  if (daysBetween(fireDay, charge) <= 1) return `Your ${s.name} trial ends ${when}${price ? `, then it’s ${price} ${CYCLE_WORDS[s.cycle]}` : ''}. Cancel today if you don’t want it.`;
+  if (daysBetween(fireDay, charge) <= 1) return `Your ${s.name} trial ends ${when}.${price ? ` It’ll charge ${price}.` : ''}`;
   return `Your ${s.name} trial ends ${when}.${price ? ` Then it’s ${price} ${CYCLE_WORDS[s.cycle]}.` : ''}`;
 }
 
@@ -102,14 +101,14 @@ export function lastCheckBody(s: Sub): string {
   return isProTrial(s) ? 'Did you cancel your Ditch Pro trial? It charges tomorrow.' : `Did you cancel ${s.name}? It charges tomorrow.`;
 }
 
-/** Pro's second nudge, the evening of the last reminder (DECISIONS #27): "Netflix charges tomorrow. $17.99. Cancel tonight if you're done." */
+/** Pro's second nudge, the evening of the last reminder (DECISIONS #27): "Netflix charges tomorrow. $17.99. Last call." */
 export function nudgeBody(s: Sub, charge: DateOnly, fireDay: DateOnly, money: Money): string {
   const price = priceOf(s, money);
   const when = whenWords(charge, fireDay);
   if (isProTrial(s)) return `Your Ditch Pro trial ends ${when}.${price ? ` ${price} ${CYCLE_WORDS[s.cycle]} after that.` : ''} Last call to cancel in iPhone Settings.`;
   const what = s.isTrial ? `Your ${s.name} trial ends` : `${s.name} charges`;
-  // "Cancel tonight" only when it really is the last evening; Pro can pick leads a week or more out.
-  const tail = daysBetween(fireDay, charge) <= 1 ? 'Cancel tonight if you’re done.' : 'Still using it?';
+  // "Last call" only when it really is the last day; Pro can pick leads a week or more out.
+  const tail = daysBetween(fireDay, charge) <= 1 ? 'Last call.' : 'Still using it?';
   return `${what} ${when}.${price ? ` ${price}.` : ''} ${tail}`;
 }
 

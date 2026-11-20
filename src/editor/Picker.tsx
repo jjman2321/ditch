@@ -150,7 +150,13 @@ export function Picker({ onCustom, onTrial, onForgotten, onClose }: { onCustom: 
     const d = defaultPlan(row);
     const plans = planChoices(s.id, country);
     const amount = `${money(d.amountMinor, row.currency)}${CYCLE_SHORT[d.cycle]}`;
-    return plans.length > 1 ? `${shortPlanName(d.name, s.name, plans.map((x) => x.name))} · ${amount}` : amount;
+    return plans.length > 1
+      ? `${shortPlanName(
+          d.name,
+          s.name,
+          plans.map((x) => x.name),
+        )} · ${amount}`
+      : amount;
   };
 
   const toggle = (id: string) => {
@@ -196,7 +202,10 @@ export function Picker({ onCustom, onTrial, onForgotten, onClose }: { onCustom: 
           style={{ minHeight: 44, justifyContent: 'center' }}
         >
           <Txt v="sub" tone="mute">
-            Not on our list? <Txt v="sub" style={{ textDecorationLine: 'underline' }}>Ask us to add it</Txt>
+            Not on our list?{' '}
+            <Txt v="sub" style={{ textDecorationLine: 'underline' }}>
+              Ask us to add it
+            </Txt>
           </Txt>
         </Pressable>
       ) : null}
@@ -264,7 +273,17 @@ export function Picker({ onCustom, onTrial, onForgotten, onClose }: { onCustom: 
                 }}
                 style={({ pressed }) => ({ height: 44, justifyContent: 'center', opacity: pressed ? 0.75 : 1 })}
               >
-                <View style={{ height: 36, paddingHorizontal: 16, borderRadius: radius.chip, justifyContent: 'center', backgroundColor: on ? p.chipOnBg : p.chipBg, borderWidth: on ? 0 : 1.5, borderColor: p.chipBorder }}>
+                <View
+                  style={{
+                    height: 36,
+                    paddingHorizontal: 16,
+                    borderRadius: radius.chip,
+                    justifyContent: 'center',
+                    backgroundColor: on ? p.chipOnBg : p.chipBg,
+                    borderWidth: on ? 0 : 1.5,
+                    borderColor: p.chipBorder,
+                  }}
+                >
                   <Txt v="label" color={on ? p.chipOnFg : p.fg} style={{ fontSize: 15 }}>
                     {CHIP[x] ?? x}
                   </Txt>

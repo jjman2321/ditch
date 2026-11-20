@@ -406,7 +406,13 @@ export function MissingStrip({ country, have, onAdd }: { country: string | null;
       </Txt>
       <View style={{ flexDirection: 'row' }}>
         {ids.map((id) => (
-          <Pressable key={id} accessibilityRole="button" accessibilityLabel={`Add ${SERVICE_BY_ID[id].name}`} onPress={() => onAdd(id)} style={({ pressed }) => ({ ...tile, opacity: pressed ? 0.7 : 1 })}>
+          <Pressable
+            key={id}
+            accessibilityRole="button"
+            accessibilityLabel={`Add ${SERVICE_BY_ID[id].name}`}
+            onPress={() => onAdd(id)}
+            style={({ pressed }) => ({ ...tile, opacity: pressed ? 0.7 : 1 })}
+          >
             <View>
               <LogoTile id={id} size={44} />
               <View

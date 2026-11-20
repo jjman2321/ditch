@@ -93,6 +93,11 @@ export default function BankScan() {
       router.replace(`/bank/results?${flow.q({ link: link.id })}`);
     } catch (e) {
       if (!alive.current) return;
+      // Closed Plaid's sign-in without finishing: the same "didn't finish" screen as the practice sheet's ×.
+      if (e instanceof BankApiError && e.code === 'link_closed') {
+        router.replace(`/bank/missing?${flow.q({ closed: '1' })}`);
+        return;
+      }
       if (e instanceof BankApiError && e.code === 'bank_limit') {
         ask('3 is the limit', 'You can connect up to 3. Disconnect one to add another.', [
           { text: 'Not now', style: 'cancel' },
@@ -113,6 +118,15 @@ export default function BankScan() {
       setPhase('failed');
     }
   };
+
+  // Real server: open Plaid's sign-in as soon as the screen shows (no practice sheet in between).
+  const started = useRef(false);
+  useEffect(() => {
+    if (!bank.live || started.current) return;
+    started.current = true;
+    void read();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bank.live]);
 
   const leave = () => {
     left.current = true;
@@ -195,7 +209,8 @@ export default function BankScan() {
         </Card>
       ) : null}
 
-      <PracticeSignIn visible={phase === 'signin'} bankName={name} live={bank.live} onConnect={read} onClose={() => router.replace(`/bank/missing?${flow.q({ closed: '1' })}`)} />
+      {/* Real server: Plaid's own sign-in opens straight away (read() below). Practice bank: the labelled test sheet. */}
+      <PracticeSignIn visible={phase === 'signin' && !bank.live} bankName={name} live={bank.live} onConnect={read} onClose={() => router.replace(`/bank/missing?${flow.q({ closed: '1' })}`)} />
     </BankPage>
   );
 }

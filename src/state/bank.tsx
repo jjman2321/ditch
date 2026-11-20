@@ -10,6 +10,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { AppState } from 'react-native';
+import { PLAID_READY, openPlaidLink } from '@/services/plaidLink';
 
 import { bankEntry, type BankEntry } from '@/bank/banks';
 import { showBankSync } from '@/config/features';
@@ -86,6 +87,17 @@ type BankValue = {
 };
 
 const Ctx = createContext<BankValue | null>(null);
+
+/**
+ * Plaid's sign-in sheet. Closed without finishing: 'link_closed' (the screen shows "didn't finish").
+ * This build has no Plaid code yet: 'needs_new_build'.
+ */
+async function signIn(linkToken: string): Promise<{ publicToken: string; accounts: string | null }> {
+  if (!PLAID_READY()) throw new bank.BankApiError(0, 'needs_new_build', 'Bank sync needs the newest Ditch build.');
+  const r = await openPlaidLink(linkToken);
+  if (r.status === 'exit') throw new bank.BankApiError(0, r.errorCode ? 'link_failed' : 'link_closed', r.message ?? undefined);
+  return r;
+}
 
 export function BankProvider({ children }: { children: ReactNode }) {
   const app = useApp();
@@ -203,16 +215,23 @@ export function BankProvider({ children }: { children: ReactNode }) {
   const actions = useMemo(
     () => ({
       connect: async (b: BankEntry) => {
-        await bank.createLinkToken({ mode: 'new' });
-        // The real bank sign-in (native, later) hands back a one-time token here.
-        const { link } = await bank.exchangePublicToken('practice-public-token');
+        const { linkToken } = await bank.createLinkToken({ mode: 'new' });
+        // Real server: Plaid's own sign-in opens and hands back a one-time token. Practice bank: a fixed one.
+        let publicToken = 'practice-public-token';
+        let accounts: string | null = null;
+        if (bank.BANK_LIVE) {
+          const r = await signIn(linkToken);
+          publicToken = r.publicToken;
+          accounts = r.accounts;
+        }
+        const { link } = await bank.exchangePublicToken(publicToken);
         const today = clockToday();
         const next: BankLink = {
           id: link.id,
           bankId: b.id,
           name: b.name,
           status: link.status,
-          accounts: bank.BANK_LIVE ? null : 'Visa ending 4821 · Checking ending 1005',
+          accounts: bank.BANK_LIVE ? accounts : 'Visa ending 4821 · Checking ending 1005',
           connectedOn: today,
           checkedAt: null,
           laterUntil: null,
@@ -221,8 +240,9 @@ export function BankProvider({ children }: { children: ReactNode }) {
         return next;
       },
       reconnect: async (linkId: string) => {
-        // The real repair flow opens the bank's sign-in in update mode (often just a code).
-        await bank.createLinkToken({ mode: 'update', linkId });
+        // The repair flow opens the bank's sign-in in update mode (often just a code). Same connection, no exchange.
+        const { linkToken } = await bank.createLinkToken({ mode: 'update', linkId });
+        if (bank.BANK_LIVE) await signIn(linkToken);
         await put(setLinkStatus(ref.current, linkId, 'active'));
         await runSync();
       },

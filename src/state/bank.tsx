@@ -247,9 +247,14 @@ export function BankProvider({ children }: { children: ReactNode }) {
       },
       reconnect: async (linkId: string) => {
         // The repair flow opens the bank's sign-in in update mode (often just a code). Same connection, no exchange.
-        const { linkToken } = await bank.createLinkToken({ mode: 'update', linkId });
-        if (bank.BANK_LIVE) await signIn(linkToken);
-        await put(setLinkStatus(ref.current, linkId, 'active'));
+        // A new account waiting at this bank rides along (Account Select), since the sync after a repair clears it on the server.
+        const newAccounts = !!ref.current.links.find((l) => l.id === linkId)?.newAccounts;
+        const { linkToken } = await bank.createLinkToken({ mode: 'update', linkId, ...(newAccounts ? { newAccounts } : {}) });
+        let accounts: string | null = null;
+        if (bank.BANK_LIVE) accounts = (await signIn(linkToken)).accounts;
+        let next = setLinkStatus(ref.current, linkId, 'active');
+        if (newAccounts) next = clearNewAccounts(next, linkId, accounts);
+        await put(next);
         // A sync already in flight wouldn't carry the repair; wait for it, then send ours.
         await inFlight.current?.catch(() => {});
         await runSync({ repaired: linkId });

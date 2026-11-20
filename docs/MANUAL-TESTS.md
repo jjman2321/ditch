@@ -86,6 +86,17 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
+## 1z. New account at your bank (Nov 20, Plaid NEW_ACCOUNTS_AVAILABLE)
+Test build, Region US or Canada, practice Chase connected (section 1s).
+- [ ] Settings → Bank connections → **Practice: bank finds a new account** → back to Home: an amber-edged card like the reconnect one, with the Chase tile and an orange dot: **"New account at Chase"**, "Add it so Ditch can check it too.", buttons **Add it** and **Not now**.
+- [ ] Back in Settings → Bank connections: under Chase, an orange dot and **"New account found"** where "Checked …" was, and a black **Add** pill on the right (no arrow).
+- [ ] Tap **Add** (practice bank: no sign-in sheet): the line goes back to "Checked just now" with the arrow. Home: the card is gone.
+- [ ] Send it again → Home → **Not now**: the card goes. Close and reopen Ditch: still gone. Settings still shows "New account found" with Add.
+- [ ] Send it again, then **Practice: bank signs Ditch out**: Home shows only "Sign back in to Chase." (no new-account card). Settings shows "Needs sign-in" with Reconnect. Tap Reconnect: one sign-in fixes both, so afterwards neither the reconnect card nor the new-account card is on Home, and Settings says "Checked just now".
+- [ ] Only one bank card on Home at a time: the new-account card comes right after reconnect and before "charged more" / "no charge since" / "Is this a subscription?".
+- [ ] VoiceOver: the Settings pill reads "Add new account at Chase, button". The card's buttons say "Opens Chase's sign-in" and "Hides this for 30 days". Dark mode: the card and pill are readable.
+- [ ] Later, with a real server and a dev build: Plaid's sheet opens with the account list so you can tick the new one; after it closes, the card and the Settings line are gone. Closing Plaid's sheet without finishing shows no error.
+
 ## 1y. Video round 3 + big audit (Nov 20)
 - [ ] **Wording is the old wording (owner, Nov 20: "revert back to old wording").** Only the things the owner asked for read differently: errors now sit in the peach box (same words), You're set, the pick-3 sheet, the day box, the calendar Paid/Ditched labels, the cancelled-sub sheet, Missing any?, and the feedback form. New messages appear only where there used to be none (e.g. "Couldn't save", password PDFs).
 - [ ] **Errors look like errors:** Find → Apple subscriptions → Pick screenshots on a build without the reader (or a bad picture): a peach box with an orange "!" sits right above the buttons, even on an SE, and the phone buzzes once. "Use a statement" in the box goes to the statement screen.

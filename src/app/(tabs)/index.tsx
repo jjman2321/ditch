@@ -35,7 +35,7 @@ import { EmptyHome, MissingStrip, NextReminderRow, NoDateRow, NoReminderRow, Off
 import { PriceColumnMeasure, SubRow, rowPrice, type BellState } from '@/home/SubRow';
 import { BankToastView, SyncCardView, type SyncHandlers } from '@/bank/HomeCards';
 import { openUrl } from '@/ditch/CancelHelp';
-import { ask, tell } from '@/ui/alert';
+import { tell } from '@/ui/alert';
 import { useApp, useAppMoney } from '@/state/app';
 import { useBank } from '@/state/bank';
 import { foundTagShows } from '@/state/bankLogic';
@@ -235,7 +235,7 @@ export default function Home() {
   };
 
   // Free plan: tap a bell to move one of the 3 reminders (same rules as Settings → Which subscriptions).
-  // A 4th one says why first, then offers Pro (audit, Nov 20: it jumped to the paywall with no word).
+  // A 4th one opens Pro instead.
   const toggleBell = async (s: Sub) => {
     const ok = await app.setReminder(s.id, !reminded.has(s.id));
     if (ok) {
@@ -243,10 +243,7 @@ export default function Home() {
       return;
     }
     haptic.warning();
-    ask('Your 3 free reminders are in use', 'Turn one off, or get Pro to be reminded about every one.', [
-      { text: 'Not now', style: 'cancel' },
-      { text: 'See Pro', onPress: () => router.push('/paywall?from=which') },
-    ]);
+    router.push('/paywall?from=which');
   };
 
   const ditch = async (id: string) => {

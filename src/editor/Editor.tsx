@@ -287,17 +287,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
   const MAX_MINOR = 99_999 * 10 ** currencyDigits(currency);
   const parsed = parseAmountInput(amount, currency);
   const typed = parsed !== null && parsed > MAX_MINOR ? null : parsed;
-  // What's wrong with the typed price, in their currency: "Has to be more than $0", "That's over $99,999".
-  const digitsTyped = amount.replace(/[^\d]/g, '');
-  const priceProblem: string | null = !amount.trim()
-    ? null
-    : (parsed !== null && parsed > MAX_MINOR) || (parsed === null && /^\s*\d{6,}\s*$/.test(amount))
-      ? `That’s over ${money(MAX_MINOR, currency, { whole: true })}. Extra zero?`
-      : typed !== null
-        ? null
-        : digitsTyped && /^0+$/.test(digitsTyped)
-          ? `Has to be more than ${money(0, currency, { whole: true })}. Leave it empty if it’s free.`
-          : `Use a price like ${currencyDigits(currency) ? '12.99' : '1500'}.`;
+  const priceProblem: string | null = !amount.trim() || typed !== null ? null : parsed !== null && parsed > MAX_MINOR ? 'That looks too big. Check the price.' : 'Check the price.';
   // Edit: the name can't be cleared (the header keeps the saved one meanwhile).
   const nameProblem = open.mode === 'edit' && !trialEntry && !query.trim() ? 'Add a name.' : null;
 
@@ -538,9 +528,7 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
                   : 'Track a free trial'
                 : draft.catalogId
                   ? `Add ${draft.name}`
-                  : query.trim()
-                    ? `Add ${query.trim()}`
-                    : 'Add a subscription'
+                  : 'Add a subscription'
               : trialEntry
                 ? 'Ditch Pro trial'
                 : draft.name.trim() || existing?.name}
@@ -891,12 +879,12 @@ function EditorBody({ open, close }: { open: Open; close: () => void }) {
       <KeyboardDone />
       {searching ? null : (
         <View style={{ paddingTop: 10 }}>
-          {/* Edit, nothing changed yet: a plain "Close" (a greyed-out Save looked broken, and an outlined Done looked like
-              the "Ditch X" button above it). The first change turns it into Save. */}
+          {/* Edit, nothing changed yet: a plain text Done that just closes (a greyed-out Save looked broken, and an outlined
+              Done looked like the "Ditch X" button above it). The first change turns it into Save. */}
           {changed ? (
             <Button label={isNew ? (draft.isTrial ? 'Track trial' : `Add ${draft.name || query.trim() || 'it'}`) : 'Save'} disabled={!canSave} onPress={save} />
           ) : (
-            <Button kind="text" label="Close" hint="Closes without changes" height={56} onPress={close} />
+            <Button kind="text" label="Done" hint="Closes without changes" height={56} onPress={close} />
           )}
         </View>
       )}

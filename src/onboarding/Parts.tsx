@@ -30,13 +30,7 @@ export function OnbRoot({ surface, children, bg }: { surface: Surface; children:
  */
 export function FitScroll({ children, style }: { children: ReactNode; style?: StyleProp<ViewStyle> }) {
   return (
-    <ScrollView
-      style={{ flex: 1 }}
-      contentContainerStyle={[{ flexGrow: 1 }, style]}
-      showsVerticalScrollIndicator={false}
-      alwaysBounceVertical={false}
-      keyboardShouldPersistTaps="handled"
-    >
+    <ScrollView style={{ flex: 1 }} contentContainerStyle={[{ flexGrow: 1 }, style]} showsVerticalScrollIndicator={false} alwaysBounceVertical={false} keyboardShouldPersistTaps="handled">
       {children}
     </ScrollView>
   );
@@ -46,22 +40,16 @@ export function FitScroll({ children, style }: { children: ReactNode; style?: St
  * "Change": underlined and semibold. Lay it out in a row next to the text
  * it belongs to; its tap area is padded out to 44pt (12pt above and below).
  */
-export function TextLink({
-  label,
-  onPress,
-  a11y,
-  style,
-  color,
-}: {
-  label: string;
-  onPress: () => void;
-  a11y?: string;
-  style?: StyleProp<TextStyle>;
-  color?: string;
-}) {
+export function TextLink({ label, onPress, a11y, style, color }: { label: string; onPress: () => void; a11y?: string; style?: StyleProp<TextStyle>; color?: string }) {
   const p = usePalette();
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={a11y ?? label} onPress={onPress} hitSlop={{ top: 12, bottom: 12, left: 8, right: 8 }} style={({ pressed }) => ({ opacity: pressed ? 0.6 : 1 })}>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={a11y ?? label}
+      onPress={onPress}
+      hitSlop={{ top: 12, bottom: 12, left: 8, right: 8 }}
+      style={({ pressed }) => ({ opacity: pressed ? 0.6 : 1 })}
+    >
       <Txt v="sub" style={[{ fontFamily: F.semi, color: color ?? p.fg, textDecorationLine: 'underline' }, style]}>
         {label}
       </Txt>

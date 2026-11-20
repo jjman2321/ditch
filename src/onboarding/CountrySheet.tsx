@@ -6,17 +6,7 @@ import { Pressable, ScrollView, View } from 'react-native';
 import { COUNTRIES } from '@/catalog/prices';
 import { Check, RowDivider, Sheet, Txt, haptic, usePalette } from '@/ui/sunflower';
 
-export function CountrySheet({
-  visible,
-  value,
-  onClose,
-  onPick,
-}: {
-  visible: boolean;
-  value: string | null;
-  onClose: () => void;
-  onPick: (code: string) => void;
-}) {
+export function CountrySheet({ visible, value, onClose, onPick }: { visible: boolean; value: string | null; onClose: () => void; onPick: (code: string) => void }) {
   const p = usePalette();
   return (
     <Sheet visible={visible} onClose={onClose} maxHeight={700} label="Prices for which country">

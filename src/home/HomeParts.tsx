@@ -54,7 +54,7 @@ export function TotalCard({
   // 2+ currencies: one rough line in their own currency. Never replaces the real totals.
   const combined = useCombinedTotal(totals, useApp().settings.currency);
   const approx = combined ? approxLine(money(combined.monthlyMinor, combined.currency, { whole: true }), 'a month', combined.date) : null;
-  const reminders = all && of > 0 ? `all ${count(of)}` : `${count(on)} of ${count(of)}`;
+  const reminders = blocked ? 'Reminders off' : all && of > 0 ? `all ${count(of)}` : `${count(on)} of ${count(of)}`;
   // One currency: "+ 1 trial, then $13.99 a month". Mixed or unpriced: just the count.
   const trialLine = trials?.count
     ? `+ ${trials.count} ${trials.count === 1 ? 'trial' : 'trials'}${trials.monthly.length === 1 ? `, then ${money(trials.monthly[0].monthlyMinor, trials.monthly[0].currency)} a month` : ''}`
@@ -65,17 +65,20 @@ export function TotalCard({
   const fs = tiny ? 14 : 15.5;
   const reminderRow = rest.length > 0;
   // "2 of 6 reminded" / "All 6 reminded": the count first, short enough for every phone. VoiceOver keeps "Reminders on 2 of 6".
-  // Everything ditched (or nothing dated yet): no "Reminders on 0 of 0". Reminders off: the banner above says it, so not twice.
-  // The bell and its words are one unit, so they wrap to the next line together.
+  // Everything ditched (or nothing dated yet): no "Reminders on 0 of 0".
+  // The bell and its words are one unit, so they wrap to the next line together (audit, Nov 20).
   const remindersBit =
-    of === 0 || blocked ? null : (
+    of === 0 ? null : (
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flexShrink: 0 }}>
-        <Bell color={p.dark ? brand.sunflower : brand.ink} fill={p.dark ? brand.sunflower : brand.ink} size={15} />
-        <Txt v="body" num color={fg} style={{ fontSize: fs }}>
-          <Txt v="body" num color={fg} style={{ fontFamily: F.bold, fontSize: fs }}>
-            {all && of > 0 ? `All ${count(of)}` : `${count(on)} of ${count(of)}`}
-          </Txt>
-          {' reminded'}
+        {blocked ? <BellOff color={fg} size={16} /> : <Bell color={p.dark ? brand.sunflower : brand.ink} fill={p.dark ? brand.sunflower : brand.ink} size={15} />}
+        <Txt v="body" num color={fg} style={{ fontSize: fs, fontFamily: blocked ? F.bold : F.regular }}>
+          {blocked ? 'Reminders off' : null}
+          {blocked ? null : (
+            <Txt v="body" num color={fg} style={{ fontFamily: F.bold, fontSize: fs }}>
+              {all && of > 0 ? `All ${count(of)}` : `${count(on)} of ${count(of)}`}
+            </Txt>
+          )}
+          {blocked ? null : ' reminded'}
         </Txt>
       </View>
     );
@@ -144,7 +147,7 @@ export function TotalCard({
   );
 }
 
-/** "Reminders are off. Turn them on to get warned. [Turn on]" (9c). */
+/** "Reminders are off. Nothing can reach you. [Turn on]" (9c). */
 export function OffBanner({ status, onTurnOn }: { status: NotifStatus; onTurnOn: () => void }) {
   const p = usePalette();
   const asked = status === 'denied';
@@ -158,10 +161,10 @@ export function OffBanner({ status, onTurnOn }: { status: NotifStatus; onTurnOn:
       <Bang color={brand.ink} bg={brand.bill} />
       <View style={{ flex: 1 }} accessible accessibilityRole="text">
         <Txt v="label" color="#F6F0E3" style={{ fontFamily: F.bold, fontSize: 16 }}>
-          Reminders are off
+          {asked ? 'Reminders are off.' : 'Reminders aren’t on yet.'}
         </Txt>
         <Txt v="body" color="#CFC7B6" style={{ fontSize: 14.5 }}>
-          Turn them on to get warned.
+          {asked ? 'Nothing can reach you.' : 'Ditch needs your OK to send them.'}
         </Txt>
       </View>
       <Pressable
@@ -346,13 +349,13 @@ export function NoDateRow({ count, onPress }: { count: number; onPress: () => vo
 
 /**
  * Free plan, 3 reminders in use, and a dated subscription has none (owner, Nov 20): the moment Pro is
- * worth the most, so say exactly what's unprotected and offer Pro once. "Copilot Pro: no reminder" /
- * "Pro covers every one". Short enough for an SE, so nothing is cut. The × hides it until another one is left without a reminder.
+ * worth the most, so say exactly what's unprotected and offer Pro once. "Copilot Pro has no reminder" /
+ * "Pro reminds you about every one". Both lines wrap instead of being cut on small phones (audit, Nov 20). The × hides it until another one is left without a reminder.
  */
 export function NoReminderRow({ names, total, onPress, onDismiss }: { names: string[]; total: number; onPress: () => void; onDismiss: () => void }) {
   const p = usePalette();
   const one = names.length === 1;
-  const title = one ? `${names[0]}: no reminder` : `${count(names.length)} have no reminder`;
+  const title = one ? `${names[0]} has no reminder` : `${count(names.length)} have no reminder`;
   return (
     <Card style={{ minHeight: 56, borderRadius: 16, flexDirection: 'row', alignItems: 'center', paddingLeft: 14 }}>
       <Pressable
@@ -363,11 +366,11 @@ export function NoReminderRow({ names, total, onPress, onDismiss }: { names: str
       >
         <BellOff color={p.mute} size={17} bg={p.card} />
         <View style={{ flex: 1, minWidth: 0 }}>
-          <Txt v="body" color={p.cardFg} numberOfLines={1} style={{ fontFamily: F.bold, fontSize: 15 }}>
+          <Txt v="body" color={p.cardFg} style={{ fontFamily: F.bold, fontSize: 15 }}>
             {title}
           </Txt>
-          <Txt v="sub" tone="mute" numberOfLines={1}>
-            Pro covers every one
+          <Txt v="sub" tone="mute">
+            Pro reminds you about every one
           </Txt>
         </View>
         <View style={{ paddingHorizontal: 10, height: 28, borderRadius: 14, backgroundColor: brand.sunflower, alignItems: 'center', justifyContent: 'center' }}>
@@ -466,7 +469,7 @@ export function EmptyHome({ country, onAdd }: { country: string | null; onAdd: (
             {'Nothing to watch\u00A0yet.'}
           </Txt>
           <Txt v="leadS" center color={p.dark ? p.fg2 : '#4B4220'} style={{ marginTop: 10 }}>
-            {'Add what you pay for. We’ll remind\u00A0you.'}
+            Add what you pay for. Ditch reminds you before it charges.
           </Txt>
           <Button label="Add a subscription" onPress={() => onAdd()} style={{ marginTop: 18, alignSelf: 'stretch' }} left={<Plus color={p.dark ? brand.ink : brand.sunflower} size={20} />} />
         </View>

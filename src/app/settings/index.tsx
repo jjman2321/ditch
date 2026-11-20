@@ -13,10 +13,10 @@ import { effectiveLeads, formatTime, leadsLabel, shortTimeLabel } from '@/domain
 import { FREE_REMINDERS, hasDate, listedUserSubs, remindedIds, runningProTrial } from '@/domain/subs';
 import { useEditor } from '@/editor/Editor';
 import { pendingCount } from '@/services/notifications';
-import { planById, restorePurchases } from '@/services/purchases';
+import { planById, restorePurchases, usePlans } from '@/services/purchases';
 import { ordinal } from '@/domain/copy';
 import { Group, Row, SettingsPage } from '@/settings/Parts';
-import { RESTORE_NONE, RESTORE_NONE_TITLE } from '@/settings/restore';
+import { RESTORE_FAILED, RESTORE_FAILED_TITLE, RESTORE_NONE, RESTORE_NONE_TITLE } from '@/settings/restore';
 import { rateDitch, type FeedbackKind } from '@/settings/feedback';
 import { FeedbackSheet } from '@/settings/FeedbackSheet';
 import { SHORT_VERSION } from '@/settings/version';
@@ -70,10 +70,13 @@ export default function Settings() {
             ? 'Monthly'
             : 'Yearly';
   // VoiceOver hears the plan and its price, not just the row name (prices from PLANS, never typed here).
+  usePlans();
   const yearly = planById('yearly');
   const proPlan = settings.proPlan && settings.proPlan !== 'monthly' ? planById(settings.proPlan) : null;
   const proSpoken = !pro
-    ? `, try free for ${yearly.trialDays} days, then ${yearly.priceString} a year`
+    ? yearly.trialDays > 0
+      ? `, try free for ${yearly.trialDays} days, then ${yearly.priceString} a year`
+      : `, ${yearly.priceString} a year`
     : proPlan?.id === 'lifetime'
       ? `, Lifetime, paid once`
       : `, ${proValue}${proPlan ? `, ${proPlan.priceString} a ${proPlan.period}` : ''}`;
@@ -82,8 +85,15 @@ export default function Settings() {
   const links = bank.state.links;
   const broken = links.some(needsSignIn);
   const bankValue = links.length ? (links.length === 1 ? links[0].name : `${links[0].name} + ${links.length - 1}`) : 'None';
+  // Pro itself follows the App Store (src/state/app.tsx), so this only says what it found.
   const restore = async () => {
-    const r = await restorePurchases();
+    let r: Awaited<ReturnType<typeof restorePurchases>>;
+    try {
+      r = await restorePurchases();
+    } catch {
+      tell(RESTORE_FAILED_TITLE, RESTORE_FAILED);
+      return;
+    }
     tell(r.restored ? 'Restored' : RESTORE_NONE_TITLE, r.restored ? 'Ditch Pro is back on.' : RESTORE_NONE);
   };
 
@@ -109,11 +119,11 @@ export default function Settings() {
                 {proValue}
               </Txt>
             ) : (
-              // TODO(M2, StoreKit 2): show "Try free" only when the Apple Account is still eligible for the
-              // intro trial (Product.SubscriptionInfo.isEligibleForIntroOffer); otherwise "See Pro".
+              // "Try free" only while this Apple Account can still get the intro trial (StoreKit's
+              // isEligibleForIntroOffer, via planById); otherwise "See Pro".
               <View style={{ backgroundColor: brand.sunflower, borderRadius: 14, paddingHorizontal: 12, paddingVertical: 5 }}>
                 <Txt v="label" color={brand.ink} style={{ fontFamily: F.bold, fontSize: 15 }}>
-                  Try free
+                  {yearly.trialDays > 0 ? 'Try free' : 'See Pro'}
                 </Txt>
               </View>
             )
@@ -319,7 +329,7 @@ function DevTools() {
   };
   return (
     <Group header="Test build only" note={`Planned: ${plan.length} · waiting on this iPhone: ${pending ?? '…'}`}>
-      <Row label="Preview Pro" right={<SunSwitch label="Preview Pro" value={app.pro} onValueChange={(v) => app.setPro(v ? 'yearly' : null, { startTrial: v })} />} />
+      <Row label="Preview Pro" right={<SunSwitch label="Preview Pro" value={app.pro} onValueChange={(v) => app.setPro(v ? 'yearly' : null, { startTrial: v, preview: true })} />} />
       <Row label="Reminder time: 1 minute from now" onPress={inOneMinute} chevron={false} />
     </Group>
   );

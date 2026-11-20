@@ -104,7 +104,7 @@ export default function Which() {
         <Animated.View style={nudgeStyle}>
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel={`Get reminders on all of them. Try Pro free for ${planById('yearly').trialDays} days`}
+            accessibilityLabel={`Get reminders on all of them. ${planById('yearly').trialDays > 0 ? `Try Pro free for ${planById('yearly').trialDays} days` : 'See Ditch Pro'}`}
             onPress={() => router.push('/paywall?from=which')}
             style={({ pressed }) => ({
               marginTop: 14,
@@ -127,7 +127,7 @@ export default function Which() {
                 Get reminders on all of them
               </Txt>
               <Txt v="sub" color={p.dark ? p.cardFg : brand.ink}>
-                Try Pro free for {planById('yearly').trialDays} days
+                {planById('yearly').trialDays > 0 ? `Try Pro free for ${planById('yearly').trialDays} days` : 'See Ditch Pro'}
               </Txt>
             </View>
             <ChevronRight color={upsellFg} size={16} />

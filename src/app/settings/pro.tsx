@@ -12,9 +12,9 @@ import { showBankScan, showImport } from '@/config/features';
 import { addDays, weekdayDate } from '@/domain/dates';
 import { listedUserSubs, runningProTrial } from '@/domain/subs';
 import { openUrl } from '@/ditch/CancelHelp';
-import { planById, restorePurchases } from '@/services/purchases';
+import { planById, restorePurchases, usePlans } from '@/services/purchases';
 import { Group, Row, SettingsPage } from '@/settings/Parts';
-import { RESTORE_NONE, RESTORE_NONE_TITLE } from '@/settings/restore';
+import { RESTORE_FAILED, RESTORE_FAILED_TITLE, RESTORE_NONE, RESTORE_NONE_TITLE } from '@/settings/restore';
 import { useApp } from '@/state/app';
 import { tell } from '@/ui/alert';
 import { Button, Card, Check, DuckIcon, ProLockup, Txt, brand, usePalette } from '@/ui/sunflower';
@@ -25,13 +25,21 @@ export default function ProPage() {
   const { pro, settings, subs } = app;
   const trial = runningProTrial(subs, app.today);
   const plan = settings.proPlan && settings.proPlan !== 'monthly' ? planById(settings.proPlan) : null;
+  usePlans();
   const yearly = planById('yearly');
   const lifetime = planById('lifetime');
   const n = listedUserSubs(subs).length;
   const isLifetime = pro && settings.proPlan === 'lifetime';
   const tick = <Check color={p.dark ? brand.sunflower : brand.ink} size={18} />;
+  // Pro itself follows the App Store (src/state/app.tsx), so this only says what it found.
   const restore = async () => {
-    const r = await restorePurchases();
+    let r: Awaited<ReturnType<typeof restorePurchases>>;
+    try {
+      r = await restorePurchases();
+    } catch {
+      tell(RESTORE_FAILED_TITLE, RESTORE_FAILED);
+      return;
+    }
     tell(r.restored ? 'Restored' : RESTORE_NONE_TITLE, r.restored ? 'Ditch Pro is back on.' : RESTORE_NONE);
   };
   return (
@@ -67,9 +75,10 @@ export default function ProPage() {
             <Row label="Price rise check" right={tick} />
             {showImport() ? <Row label="Read as many lists as you like" right={tick} /> : null}
           </Group>
-          <Button label={`Try Pro free for ${yearly.trialDays} days`} onPress={() => router.push('/paywall?from=app')} style={{ marginTop: 18 }} />
+          {/* No free trial left on this Apple Account (StoreKit says so): no "free" promise. */}
+          <Button label={yearly.trialDays > 0 ? `Try Pro free for ${yearly.trialDays} days` : 'See Ditch Pro'} onPress={() => router.push('/paywall?from=app')} style={{ marginTop: 18 }} />
           <Txt v="fine" tone="mute" num center style={{ marginTop: 8, fontSize: 13.5 }}>
-            {`Free until ${weekdayDate(addDays(app.today, yearly.trialDays))}, then ${yearly.priceString} a year.`}
+            {yearly.trialDays > 0 ? `Free until ${weekdayDate(addDays(app.today, yearly.trialDays))}, then ${yearly.priceString} a year.` : `${yearly.priceString} a year.`}
           </Txt>
           {/* For people tired of subscriptions: straight to the paywall with Lifetime already picked. */}
           <Pressable

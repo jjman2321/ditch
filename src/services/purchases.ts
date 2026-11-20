@@ -153,9 +153,11 @@ async function syncWithServer() {
 }
 
 /** On app start: connect, load prices and eligibility, and pick up anything bought while the app was closed. */
+let started = false;
 export function startPurchases(): void {
   const m = loadIap();
-  if (!m) return;
+  if (!m || started) return;
+  started = true;
   connect(m)
     .then(() => refreshPlans())
     .then(() => syncWithServer())

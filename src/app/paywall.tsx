@@ -29,7 +29,7 @@ import { formatWholeMoney } from '@/domain/money';
 import { perWeekFromYearly, yearlyBadgeVsWeekly } from '@/domain/pricing';
 import { listedUserSubs } from '@/domain/subs';
 import { OnbRoot } from '@/onboarding/Parts';
-import { PURCHASES_LIVE, billedLabel, planById, purchase, restorePurchases, type PlanId } from '@/services/purchases';
+import { PURCHASES_LIVE, billedLabel, planById, purchase, restorePurchases, usePlans, type PlanId } from '@/services/purchases';
 import { RESTORE_NONE, RESTORE_NONE_TITLE } from '@/settings/restore';
 import { onboardingToday, useOnboarding, usePickedList } from '@/state/onboarding';
 import { useApp } from '@/state/app';
@@ -363,7 +363,12 @@ export default function Paywall() {
   // The measured top part minus its rows (canvas units), so we know how many rows fit under it.
   const [topFixed, setTopFixed] = useState(TOP_FIXED_EST);
 
+  // The App Store's own prices and trial once they're in (static ones until then, or if it can't be
+  // reached). Asks again on open: this Apple Account may have used the free trial since.
+  usePlans({ refresh: true });
   const yearly = planById('yearly');
+  // 0 when this Apple Account already had the free trial: then Yearly is charged today, like Weekly.
+  const trial = yearly.trialDays > 0;
   const weekly = planById('weekly');
   const lifetime = planById('lifetime');
   const today = onboardingToday();
@@ -410,6 +415,11 @@ export default function Paywall() {
       await activate(planId);
       return;
     }
+    // Ask to Buy: a parent approves it later; Pro switches on then (src/services/purchases.ts).
+    if (r.status === 'pending') {
+      notice('Sent for approval', 'Ditch Pro switches on once it’s approved.');
+      return;
+    }
     if (!PURCHASES_LIVE) {
       const buttons: { text: string; onPress?: () => void }[] = [{ text: 'OK' }];
       // Test builds only: see the Pro version of the next screen. Never in the App Store build.
@@ -425,11 +435,13 @@ export default function Paywall() {
       storeDown();
       return;
     }
+    // In the app, Pro follows the App Store by itself (src/state/app.tsx). Onboarding keeps its own pick.
+    if (r.restored && r.plan && !inApp) setOnboardingPro(r.plan);
     notice(r.restored ? 'Restored' : RESTORE_NONE_TITLE, r.restored ? 'Ditch Pro is back on.' : RESTORE_NONE);
   };
 
   const cta = {
-    yearly: yearly.trialDays === 7 ? 'Start my free week' : `Start my ${yearly.trialDays}-day free trial`,
+    yearly: !trial ? `Subscribe for ${yearly.priceString} a year` : yearly.trialDays === 7 ? 'Start my free week' : `Start my ${yearly.trialDays}-day free trial`,
     weekly: `Subscribe for ${weekly.priceString} a week`,
     lifetime: `Pay ${lifetime.priceString} once`,
   }[planId];
@@ -508,7 +520,7 @@ export default function Paywall() {
         <PlanCard title="Weekly" price={billedLabel(weekly)} selected={planId === 'weekly'} onPress={() => select('weekly')} height={58} a11y={`Weekly, ${weekly.priceString} a week, no free trial`} />
         <PlanCard
           title="Yearly"
-          note={`Free for ${yearly.trialDays} days`}
+          note={trial ? `Free for ${yearly.trialDays} days` : undefined}
           noteStrong
           badge={badge}
           badgeBg={brand.sunflower}
@@ -519,7 +531,7 @@ export default function Paywall() {
           selected={planId === 'yearly'}
           onPress={() => select('yearly')}
           height={58}
-          a11y={`Yearly, ${yearly.priceString} a year, ${perWeek} a week, ${yearly.trialDays} days free, ${badge.toLowerCase()}`}
+          a11y={`Yearly, ${yearly.priceString} a year, ${perWeek} a week, ${trial ? `${yearly.trialDays} days free, ` : ''}${badge.toLowerCase()}`}
         />
         <PlanCard
           title="Lifetime"
@@ -534,19 +546,22 @@ export default function Paywall() {
       </View>
 
       <View style={{ height: 14 }} />
-      <Button label={cta} sub={planId === 'yearly' ? `${formatWholeMoney(0, yearly.currency)} due today` : undefined} onPress={buy} height={60} />
+      <Button label={cta} sub={planId === 'yearly' && trial ? `${formatWholeMoney(0, yearly.currency)} due today` : undefined} onPress={buy} height={60} />
       {/* A fixed slot, so the button never moves when the plan changes. Price and the real start date by the
         button (App Review); no reminder text (owner, Nov 10). At least 13pt on screen at any scale. */}
       <View style={{ minHeight: 44, alignItems: 'center', justifyContent: 'center', paddingHorizontal: planId === 'yearly' ? 0 : 4 }}>
         <Txt v="fine" tone="fg2" num center accessibilityLiveRegion="polite" style={{ fontSize: 13 / scale, lineHeight: 16 / scale }}>
-          {planId === 'yearly'
+          {planId === 'yearly' && trial
             ? // One line (owner, Nov 19): the yearly price and the real date say it renews.
               `Then ${yearly.priceString}/yr from ${shortDate(charge).replace(' ', NB)}. Cancel${NB}anytime.`
-            : planId === 'weekly'
-              ? `${weekly.priceString} today, then every week until you${NB}cancel.`
-              : bank
-                ? `${lifetime.priceString} once. Pro for good. Bank sync for the first year.`
-                : `${lifetime.priceString} once. Pro for good, nothing${NB}renews.`}
+            : planId === 'yearly'
+              ? // No free trial for this Apple Account: charged today, like Weekly.
+                `${yearly.priceString} today, then every year until you${NB}cancel.`
+              : planId === 'weekly'
+                ? `${weekly.priceString} today, then every week until you${NB}cancel.`
+                : bank
+                  ? `${lifetime.priceString} once. Pro for good. Bank sync for the first year.`
+                  : `${lifetime.priceString} once. Pro for good, nothing${NB}renews.`}
         </Txt>
       </View>
       <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 4 }}>

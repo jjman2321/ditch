@@ -33,7 +33,9 @@ export function useFirstReminders(max: number) {
   const today = onboardingToday();
   return useMemo(() => {
     const subs = toSetSubs(list, today);
-    const trialCharge = pro === 'yearly' ? addDays(today, planById('yearly').trialDays) : null;
+    // No trial (this Apple Account already had it): nothing to remind about.
+    const trialDays = planById('yearly').trialDays;
+    const trialCharge = pro === 'yearly' && trialDays > 0 ? addDays(today, trialDays) : null;
     // Ditch's own trial isn't one of their subscriptions, so it never shows here (owner, Nov 10).
     const rows = firstReminderRows({ subs, remindedIds, today, nowHour: clockNow().getHours(), max });
     const money = (a: number, c: string) => formatMoney(a, c, { home });

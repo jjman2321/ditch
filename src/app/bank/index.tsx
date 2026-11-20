@@ -46,7 +46,11 @@ export default function BankExplainer() {
           <Button label="Choose my bank" tapHaptic onPress={() => router.push(`/bank/pick?${flow.q()}`)} />
           <Button kind="text" label="Not now" onPress={() => (router.canGoBack() ? router.back() : router.replace('/(tabs)'))} style={{ marginTop: 4 }} />
           <Txt v="fine" tone="mute" center num style={{ marginTop: 2 }}>
-            {flow.pro ? 'US & Canada. Part of your Pro.' : `US & Canada. Part of Pro: ${yearly.trialDays} days free, then ${yearly.priceString}/yr.`}
+            {flow.pro
+              ? 'US & Canada. Part of your Pro.'
+              : yearly.trialDays > 0
+                ? `US & Canada. Part of Pro: ${yearly.trialDays} days free, then ${yearly.priceString}/yr.`
+                : `US & Canada. Part of Pro: ${yearly.priceString}/yr.`}
           </Txt>
         </>
       }

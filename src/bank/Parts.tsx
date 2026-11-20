@@ -56,7 +56,8 @@ export function BankPage({ children, footer, onBack, scroll = true, brand: showB
   const head = (
     <View style={{ height: STEP_HEADER_H, flexDirection: 'row', alignItems: 'center' }}>
       {showBrand ? (
-        <View pointerEvents="none" style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' }}>
+        // paddingTop 2: the wordmark has no descenders, so this puts its middle level with the back arrow's.
+        <View pointerEvents="none" style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, paddingTop: 2, alignItems: 'center', justifyContent: 'center' }}>
           <Wordmark size={25} />
         </View>
       ) : null}

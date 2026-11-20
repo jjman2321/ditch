@@ -39,7 +39,8 @@ export default function BankMissing() {
     >
       {/* An empty state: centred text, the ditch wordmark in the top bar (owner, Nov 20: plain screens get the
           brand mark, the text logo at the top, not the app icon). */}
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingVertical: 24 }}>
+      {/* Measured (Nov 20): 44 on top, 24 below puts the block exactly midway between the top bar and the buttons. */}
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 44, paddingBottom: 24 }}>
         <Txt v="title" accessibilityRole="header" center style={{ fontSize: 30, lineHeight: 34 }}>
           {'Didn’t find\nyour bank?'}
         </Txt>

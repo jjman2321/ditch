@@ -15,7 +15,7 @@ const SOURCES: Source[] = [
     who: 'C+R Research, 2022',
     found: 'People guessed they spent $86 a month on subscriptions. Added up line by line, it was $219: about 2.5× the guess.',
     sample: '1,000 US adults, April–May 2022',
-    where: 'onboarding: “the real total was 2.5× what people thought”',
+    where: 'Your total: “the real total was 2.5× what people thought”',
     url: 'https://www.crresearch.com/blog/subscription-service-statistics-and-costs/',
     host: 'crresearch.com',
   },
@@ -73,7 +73,7 @@ function SourceCard({ s, link }: { s: Source; link: string }) {
       </Txt>
       {s.where ? (
         <Txt v="sub" tone="mute" style={{ marginTop: 4 }}>
-          {`Used in ${s.where}`}
+          {`Used on ${s.where}`}
         </Txt>
       ) : null}
       <Pressable

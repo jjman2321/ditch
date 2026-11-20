@@ -85,19 +85,9 @@ export default function ProPage() {
           </Pressable>
         </>
       )}
-      <Group note={isLifetime ? 'Nothing renews, nothing to cancel.' : 'Cancel anytime in your Apple subscriptions.'}>
+      <Group note={pro ? `Lifetime is a one-time ${lifetime.priceString} for Pro. Cancel anytime in your Apple subscriptions.` : 'Cancel anytime in your Apple subscriptions.'}>
         {pro && trial ? <Row label="Trial ends" value={weekdayDate(trial.anchor)} /> : null}
         {pro && !isLifetime ? <Row label="Manage subscriptions" hint="Opens your Apple subscriptions" onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)} /> : null}
-        {/* Tired of renewing? The paywall opens with Lifetime already picked. */}
-        {pro && (settings.proPlan === 'yearly' || settings.proPlan === 'weekly') ? (
-          <Row
-            label="Switch to Lifetime"
-            value={lifetime.priceString}
-            a11yValue={`, pay once, ${lifetime.priceString}`}
-            hint="Opens Ditch Pro with Lifetime picked"
-            onPress={() => router.push('/paywall?from=app&plan=lifetime')}
-          />
-        ) : null}
         <Row label="Restore purchases" onPress={restore} chevron={false} />
       </Group>
     </SettingsPage>

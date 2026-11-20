@@ -61,7 +61,7 @@ export default function Settings() {
   const proValue = !pro
     ? null
     : trial
-      ? `Trial ends ${weekdayDate(trial.anchor).split(', ')[1]}`
+      ? `Trial, ends ${weekdayDate(trial.anchor).split(', ')[1]}`
       : settings.proPlan === 'lifetime'
         ? 'Lifetime'
         : settings.proPlan === 'weekly'
@@ -147,7 +147,7 @@ export default function Settings() {
       {/* Feedback & help: a person reads every one (reviews: a developer who answers turns 1★ into 5★). */}
       <Group header="Feedback & help" note="A real person reads every one.">
         <Row label="Report a problem" hint="Opens a short form" onPress={() => openFeedback('problem')} />
-        <Row label="Share an idea" hint="Opens a short form" onPress={() => openFeedback('idea')} />
+        <Row label="Suggest a feature" hint="Opens a short form" onPress={() => openFeedback('idea')} />
         <Row label="Suggest a subscription" hint="Missing one? We’ll add it to the list" onPress={() => openFeedback('service')} />
         {/* Hidden until the App Store listing exists: Apple's own prompt is never tied to a button (DECISIONS #38). */}
         {CAN_RATE ? <Row label="Rate Ditch" hint="Opens the App Store" onPress={rateDitch} /> : null}
@@ -216,7 +216,7 @@ function HealthCard() {
     h = {
       icon: 'warn',
       title: 'On, but quiet',
-      line: 'Banners are off, so reminders go quietly to Notification Center. Easy to miss.',
+      line: 'Banners are off, so reminders slip into Notification Center without a sound.',
       button: { label: 'Change in iPhone Settings', onPress: openPhone },
       test: true,
     };
@@ -249,7 +249,7 @@ function HealthCard() {
       icon: 'ok',
       title: 'All good',
       // Name on line 1, "Wed, Nov 11 at 9 AM" on line 2, held together so it never splits mid-date.
-      line: `Next one: ${next.name}\n${`${weekdayDate(toDateOnly(next.fireAt))} at ${shortTimeLabel(formatTime(next.fireAt.getHours(), next.fireAt.getMinutes()))}`.replace(/ /g, NB)}`,
+      line: `Next one: ${next.name}, ${weekdayDate(toDateOnly(next.fireAt)).replace(/ (\d+)$/, `${NB}$1`)} at${NB}${shortTimeLabel(formatTime(next.fireAt.getHours(), next.fireAt.getMinutes()))}`,
       test: true,
     };
   } else {
@@ -265,7 +265,7 @@ function HealthCard() {
       setSent(true);
       AccessibilityInfo.announceForAccessibility('Sent. It arrives in a second.');
     } else
-      ask('Couldn’t send it', 'Notifications for Ditch look off. Turn them on and try again.', [
+      ask('Couldn’t send it', 'Check that notifications for Ditch are on in iPhone Settings.', [
         { text: 'Not now', style: 'cancel' },
         { text: 'Open Settings', onPress: () => void Linking.openSettings().catch(() => {}) },
       ]);

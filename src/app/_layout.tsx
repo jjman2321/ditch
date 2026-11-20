@@ -29,10 +29,10 @@ export function ErrorBoundary({ error, retry }: { error: Error; retry: () => Pro
   return (
     <View style={{ flex: 1, backgroundColor: p.bg, padding: EDGE, justifyContent: 'center' }}>
       <Txt v="title" accessibilityRole="header">
-        Something broke on this screen.
+        Something went wrong.
       </Txt>
       <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
-        Your list is safe. Try again, or go back to your list.
+        Your list is safe. Tap Try again. If it keeps happening, screenshot this and send it to us.
       </Txt>
       <Button label="Try again" onPress={() => void retry()} style={{ marginTop: 24 }} />
       <Button kind="secondary" label="Go to my list" onPress={() => router.replace('/(tabs)')} style={{ marginTop: 10 }} />

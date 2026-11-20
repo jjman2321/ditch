@@ -6,7 +6,7 @@
 // on screen are drawn (audit, Nov 20: 3,000 subs took 18 s to open).
 
 import { router } from 'expo-router';
-import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AccessibilityInfo, FlatList, Pressable, View, useWindowDimensions } from 'react-native';
 import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withSequence, withTiming } from 'react-native-reanimated';
 
@@ -17,6 +17,7 @@ import { useEditor } from '@/editor/Editor';
 import { SubLogo } from '@/home/SubRow';
 import { planById } from '@/services/purchases';
 import { SettingsHeader, useSettingsPagePadding } from '@/settings/Parts';
+import { TextLink } from '@/onboarding/Parts';
 import { useApp, useAppMoney } from '@/state/app';
 import { Bell, BellMark, Button, ChevronRight, F, SunSwitch, Txt, brand, haptic, radius, usePalette } from '@/ui/sunflower';
 
@@ -46,6 +47,7 @@ export default function Which() {
         }),
     [subs, today, narrow, money, on],
   );
+  const [limitHit, setLimitHit] = useState(false);
   const nudge = useSharedValue(0);
   const nudgeStyle = useAnimatedStyle(() => ({ transform: [{ translateX: nudge.get() }] }));
 
@@ -63,6 +65,7 @@ export default function Which() {
         return;
       }
       haptic.warning();
+      setLimitHit(true);
       AccessibilityInfo.announceForAccessibility(`Your ${FREE_REMINDERS} free reminders are in use. Turn one off first to remind you about ${name}.`);
       if (!still)
         nudge.set(withSequence(withTiming(3, { duration: 30 }), withTiming(-3, { duration: 60 }), withTiming(3, { duration: 60 }), withTiming(-3, { duration: 60 }), withTiming(0, { duration: 30 })));
@@ -79,12 +82,21 @@ export default function Which() {
     ? undefined
     : pro
       ? 'Pro reminds you about all of them. Switch off any you don’t need.'
-      : `${on.size} of ${FREE_REMINDERS} picked. ${on.size >= FREE_REMINDERS ? 'Turn one off to pick another.' : 'Tap a bell to add one.'}`;
+      : `${on.size} of ${FREE_REMINDERS} picked. Tap a bell to ${on.size >= FREE_REMINDERS ? 'swap' : 'add one'}.`;
 
   const header = (
     <>
       {/* Same title as the Settings row that opens it. */}
       <SettingsHeader title="Which subscriptions" intro={intro} />
+      {/* The 4th tap: say why, and offer the way out (DECISIONS #24). */}
+      {!pro && limitHit ? (
+        <View style={{ marginTop: 10, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', columnGap: 6 }}>
+          <Txt v="body" tone="fg2" style={{ fontSize: 15 }}>
+            Your {FREE_REMINDERS} free reminders are in use. Turn one off, or
+          </Txt>
+          <TextLink label="see Pro" a11y="See Ditch Pro" onPress={() => router.push('/paywall?from=which')} style={{ fontSize: 15 }} />
+        </View>
+      ) : null}
       {/* The way to all of them, above the list so it's on screen without scrolling (SE). Home total card colours.
           Nothing to remind about yet, so no upsell on an empty list. */}
       {pro || empty ? null : (

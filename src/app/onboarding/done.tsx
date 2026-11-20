@@ -8,14 +8,13 @@
 import { getLocales } from 'expo-localization';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { AccessibilityInfo, AppState, Linking, Text, View } from 'react-native';
+import { AppState, Linking, Pressable, Text, View } from 'react-native';
 import Animated, { FadeIn, useReducedMotion } from 'react-native-reanimated';
 
-import { namesLine } from '@/domain/copy';
 import { headsUpDates } from '@/domain/charges';
 import { weekdayDate } from '@/domain/dates';
 import { shortTimeLabel } from '@/domain/settings';
-import { FitScroll, OnbRoot, TextLink } from '@/onboarding/Parts';
+import { FitScroll, OnbRoot } from '@/onboarding/Parts';
 import { useFirstReminders } from '@/onboarding/useFirstReminders';
 import { Which3Sheet } from '@/onboarding/Which3Sheet';
 import { now as clockNow } from '@/services/clock';
@@ -65,13 +64,38 @@ function LogoPile({ ids }: { ids: string[] }) {
   );
 }
 
+/** "Change" on the reminders row: opens the pick-3 sheet. */
+function ChangePill({ onPress }: { onPress: () => void }) {
+  const dark = useIsDark();
+  return (
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel="Change which 3 get reminders"
+      hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}
+      style={({ pressed }) => ({
+        minHeight: 34,
+        paddingHorizontal: 14,
+        borderRadius: 17,
+        justifyContent: 'center',
+        backgroundColor: dark ? '#2C2924' : '#F4EEDF',
+        opacity: pressed ? 0.7 : 1,
+      })}
+    >
+      <Txt v="label" color={dark ? '#F6F0E3' : brand.ink} style={{ fontFamily: F.bold, fontSize: 14 }} maxFontSizeMultiplier={1.3}>
+        Change
+      </Txt>
+    </Pressable>
+  );
+}
+
 export default function Done() {
   const p = usePalette();
   const dark = useIsDark();
   const { pro: proPlan } = useOnboarding();
   const f = useFrame({ maxContent: 480, colH: proPlan ? 820 : 760 });
   const { pro, notifications, setNotifications, setReminderPicks, country } = useOnboarding();
-  const { finishOnboarding, sendTest, settings } = useApp();
+  const { finishOnboarding, settings } = useApp();
   // The real reminder time (9 AM unless they changed it), never a hard-coded one.
   const time = shortTimeLabel(settings.reminderTime);
   const countryInfo = useCountry();
@@ -83,7 +107,6 @@ export default function Done() {
   const on = notifications === 'granted';
   const { reminders, undated, trialCharge } = useFirstReminders(pro || (f.small && notifications !== 'granted') ? 2 : 3);
   const [saving, setSaving] = useState(false);
-  const [tested, setTested] = useState(false);
   const reduce = useReducedMotion();
   const first = reminders[0];
   // A soft success buzz once the checklist has landed.
@@ -130,41 +153,28 @@ export default function Done() {
   // Ditch's own trial gets the same two reminders (DECISIONS #15).
   const trialDays = trialCharge ? headsUpDates(trialCharge, onboardingToday(), { nowHour: clockNow().getHours() }) : [];
 
-  const items: { mark: Mark; title: string; sub: string }[] = [
+  // One short line under each title (owner, Nov 20: "too much text, cluttered").
+  const items: { mark: Mark; title: string; sub: string; change?: boolean }[] = [
     n
       ? { mark: 'ok', title: `${n} ${n === 1 ? 'subscription' : 'subscriptions'}`, sub: yearly ? `${yearly} a year` : 'Add prices to see your total' }
-      : { mark: 'todo', title: 'Your list is ready', sub: 'Add what you pay for, and we’ll remind you before it charges.' },
+      : { mark: 'todo', title: 'Your list is ready', sub: 'Add what you pay for' },
     on
       ? pro
-        ? { mark: 'ok', title: undated.length ? `Reminders on all ${n - undated.length} with a date` : `Reminders on all ${n}`, sub: '3 days and 1 day before. You pick the time.' }
+        ? { mark: 'ok', title: undated.length ? `Reminders on all ${n - undated.length} with a date` : `Reminders on all ${n}`, sub: '3 days and 1 day before' }
         : remindedIds.length
-          ? { mark: 'ok', title: remindedIds.length < n ? `Reminders on ${remindedIds.length} of ${n}` : 'Reminders are on', sub: '3 days and 1 day before. You pick the time.' }
-          : { mark: 'todo', title: 'No reminders picked yet', sub: 'Pick up to 3 from your list. Free reminds you about 3.' }
-      : { mark: 'warn', title: 'Reminders are off', sub: 'We can’t remind you until you turn them\u00A0on.' },
+          ? { mark: 'ok', title: remindedIds.length < n ? `Reminders on ${remindedIds.length} of ${n}` : 'Reminders are on', sub: '3 days and 1 day before', change: many }
+          : { mark: 'todo', title: 'No reminders picked yet', sub: 'Free reminds you about 3', change: many }
+      : { mark: 'warn', title: 'Reminders are off', sub: 'Turn them on below' },
   ];
   if (trialDays.length)
     items.push(
       on
-        ? { mark: 'ok', title: 'We’ll remind you before your trial ends', sub: trialDays.map(weekdayDate).join(' and ') }
-        : { mark: 'warn', title: 'Trial reminders are paused', sub: `Turn on reminders so we can warn you before ${weekdayDate(trialCharge!)}.` },
+        ? { mark: 'ok', title: 'Trial reminders on', sub: trialDays.map(weekdayDate).join(' and ') }
+        : { mark: 'warn', title: 'Trial reminders paused', sub: `Your trial ends ${weekdayDate(trialCharge!)}` },
     );
-  // No guesses (DECISIONS #33): say plainly which ones have no reminder yet.
-  // Free with more than 3: a date alone doesn't bring a reminder, so say free covers 3 (CLAUDE.md rule 6).
-  if (n)
-    items.push(
-      undated.length
-        ? {
-            mark: 'todo',
-            title: `${undated.length} with no date yet`,
-            sub:
-              !pro && many
-                ? 'Add their dates. Free reminds you about\u00A03.'
-                : `Add ${undated.length === 1 ? 'its date' : 'dates'} for ${namesLine(undated)} to get ${undated.length === 1 ? 'its' : 'their'}\u00A0reminders`,
-          }
-        : { mark: 'ok', title: 'Every date is set', sub: 'Reminders land on the right day.' },
-    );
-
-  const seeLabel = 'Pick which 3 get reminders';
+  // No guesses (DECISIONS #33): say plainly how many have no reminder yet. Only when there are some;
+  // an "every date is set" row was one more thing to read.
+  if (n && undated.length) items.push({ mark: 'todo', title: `${undated.length} with no date yet`, sub: 'Add dates from your list' });
 
   const title = on ? 'You’re set.' : 'Almost set.';
   const titleBase = f.tablet ? 80 : 60;
@@ -208,11 +218,13 @@ export default function Done() {
                   <Txt v="strong" color={p.dark ? '#F6F0E3' : brand.ink}>
                     {it.title}
                   </Txt>
-                  <Txt v="sub" num tone="mute">
+                  <Txt v="sub" num tone="mute" numberOfLines={1}>
                     {it.sub}
                   </Txt>
                 </View>
                 {i === 0 && n ? <LogoPile ids={list.map((x) => x.id)} /> : null}
+                {/* Free with more than 3: which 3 get reminders, changed right on the row (it was a link under the reminder). */}
+                {it.change && !pro ? <ChangePill onPress={() => setPicking(true)} /> : null}
               </View>
             </Animated.View>
           ))}
@@ -233,33 +245,6 @@ export default function Done() {
                 <NotificationPreview faded={!on} time={time} message={noOrphan(first.body)} />
               </View>
             </View>
-            {!pro && many ? (
-              <View style={{ alignItems: 'center', marginTop: 8 }}>
-                {/* VoiceOver reads the words on screen first (Voice Control matches them), then what it does. */}
-                <TextLink label={seeLabel} a11y={`${seeLabel}. Change which 3 get reminders`} onPress={() => setPicking(true)} style={{ fontSize: 15 }} />
-              </View>
-            ) : remindedIds.length > 1 ? (
-              <Txt v="sub" num color={sub2} center style={{ marginTop: 10 }}>
-                {`Then ${remindedIds.length - 1} more, each 3 days and 1 day before.`}
-              </Txt>
-            ) : null}
-            {/* Prove it now: a trial lasts 7 days, the first real charge may be weeks away. */}
-            {on ? (
-              <View style={{ alignItems: 'center', marginTop: 2 }}>
-                <TextLink
-                  label={tested ? 'Sent. Check the top of your screen.' : 'Send me a test now'}
-                  a11y={tested ? 'Test reminder sent' : 'Send me a test reminder now'}
-                  onPress={async () => {
-                    if (tested) return;
-                    if (await sendTest()) {
-                      setTested(true);
-                      AccessibilityInfo.announceForAccessibility('Sent. It arrives in a second.');
-                    }
-                  }}
-                  style={{ fontSize: 15 }}
-                />
-              </View>
-            ) : null}
           </View>
         ) : null}
 

@@ -27,7 +27,7 @@ It's the owner's first app. The goal is to learn the whole Apple pipeline and st
 - `expo-sqlite` with numbered migrations from day one.
 - `expo-notifications`: local notifications only. No push, no server.
 - Reanimated for restrained animation. `expo-haptics` for meaningful actions.
-- Payments straight through Apple's StoreKit 2 (no RevenueCat; owner, Nov 16, DECISIONS #59): Pro yearly, lifetime, weekly (DECISIONS #66). Library picked at Milestone 2 (candidate: `expo-iap`). No third-party payment SDK, no server.
+- Payments through RevenueCat (`react-native-purchases`, owner, Nov 20, DECISIONS #79; replaces #59): Pro yearly, lifetime, weekly (DECISIONS #66). Our own paywall, not RevenueCat's paywall UI. Lazy-load the native module.
 - WidgetKit through an App Group. Later.
 - EAS Build / TestFlight.
 - On-phone import later: `expo-text-extractor`, `expo-pdf-text-extract`, `expo-share-intent`. **These need an EAS development build, not Expo Go.**
@@ -35,8 +35,8 @@ It's the owner's first app. The goal is to learn the whole Apple pipeline and st
 - **No backend, no bank link, no analytics that collect personal data, no crash reporter that sends subscription contents.**
 
 ### Privacy label
-- Goal and plan: **"Data Not Collected"** (owner, Nov 16, DECISIONS #59: no RevenueCat, so no third party receives purchase data; 7 direct rivals show this label).
-- Purchases go straight through Apple's StoreKit 2. Apple handles them; we run no server and send nothing about the user anywhere.
+- Label declares Other User Content + Email Address for the feedback form (DECISIONS #78) and Purchases for RevenueCat (DECISIONS #79). Nothing linked to identity, no tracking.
+- Apple takes the payment; RevenueCat checks it and tells the app if Pro is on, using a random app user id. No name, email or ad id goes to RevenueCat.
 - The daily exchange-rate download (DECISIONS #32) is the same public file for everyone and sends nothing about the user, so it doesn't change the label.
 - Re-check this before each App Store submission, and again if any SDK is added.
 

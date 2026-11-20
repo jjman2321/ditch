@@ -30,6 +30,7 @@ import { perWeekFromYearly, yearlyBadgeVsWeekly } from '@/domain/pricing';
 import { listedUserSubs } from '@/domain/subs';
 import { OnbRoot } from '@/onboarding/Parts';
 import { PURCHASES_LIVE, billedLabel, planById, purchase, restorePurchases, type PlanId } from '@/services/purchases';
+import { RESTORE_NONE, RESTORE_NONE_TITLE } from '@/settings/restore';
 import { onboardingToday, useOnboarding, usePickedList } from '@/state/onboarding';
 import { useApp } from '@/state/app';
 import { Button, Card, Check, Close, F, PlanCard, ProLockup, Txt, brand, haptic, useFrame, useIsDark, usePalette } from '@/ui/sunflower';
@@ -73,7 +74,7 @@ function rowsFor(n: number): Row[] {
     // Personal: "All 6" when they track more than the free 3.
     // Owner, Nov 20: "Unlimited" or "All 4"? With 4 or 5, "3 vs All 4" makes Pro look like one extra
     // reminder, so say Unlimited. From 6 the number itself shows the gap (TradingView's "3 vs 20" on Mobbin).
-    { label: 'Reminders', free: '3', pro: n >= 6 ? `All ${n}` : 'Unlimited' },
+    { label: 'Reminders', free: '3', pro: n >= 6 ? `All ${n.toLocaleString('en-US')}` : 'Unlimited' },
     // Price watch (DECISIONS #60).
     { label: 'Price rise check', free: 'no', pro: 'yes' },
     // The 30-day warning before yearly charges (DECISIONS #60).
@@ -396,9 +397,17 @@ export default function Paywall() {
     if (id !== planId) haptic.select();
     setPlanId(id);
   };
+  // A thrown store error used to leave the button doing nothing (audit, Nov 20).
+  const storeDown = () => notice('Couldn’t reach the App Store', 'Nothing was charged. Try again in a moment.');
   const buy = async () => {
     haptic.medium();
-    const r = await purchase(planId);
+    let r: Awaited<ReturnType<typeof purchase>>;
+    try {
+      r = await purchase(planId);
+    } catch {
+      storeDown();
+      return;
+    }
     if (r.status === 'purchased') {
       await activate(planId);
       return;
@@ -411,8 +420,14 @@ export default function Paywall() {
     }
   };
   const restore = async () => {
-    const r = await restorePurchases();
-    notice(r.restored ? 'Restored' : 'Nothing to restore', r.restored ? 'Ditch Pro is back on.' : 'We couldn’t find a Ditch Pro purchase on this Apple Account.');
+    let r: Awaited<ReturnType<typeof restorePurchases>>;
+    try {
+      r = await restorePurchases();
+    } catch {
+      storeDown();
+      return;
+    }
+    notice(r.restored ? 'Restored' : RESTORE_NONE_TITLE, r.restored ? 'Ditch Pro is back on.' : RESTORE_NONE);
   };
 
   const cta = {
@@ -425,9 +440,20 @@ export default function Paywall() {
   const badge = yearlyBadgeVsWeekly({ amountMinor: weekly.priceMinor, currency: weekly.currency }, { amountMinor: yearly.priceMinor, currency: yearly.currency }).toUpperCase();
 
   // The same headline from onboarding, a 4th bell (from=which) or custom days (from=remind): "all N" once they track more than 3.
-  const what = many ? `all ${n}${NB}renewals.` : `every${NB}renewal.`;
-  const head = bankPick ? `See what\n${bankPick.name}${NB}knows.` : `Get a reminder before\n${what}`;
-  const spokenHead = bankPick ? `See what ${bankPick.name} knows.` : `Get a reminder before ${many ? `all ${n} renewals` : 'every renewal'}.`;
+  const nWords = n.toLocaleString('en-US');
+  // 4+ digits ran into the duck: past 999 "every renewal" says the same thing.
+  const what = many && n < 1000 ? `all ${nWords}${NB}renewals.` : `every${NB}renewal.`;
+  // Long bank names ("Bank of America") took three lines and the last one hid under the table (audit, Nov 20).
+  const bankName = bankPick && bankPick.name.length <= 12 ? bankPick.name : 'your bank';
+  // The words follow what they tapped (import, custom days); the flow never changes.
+  const head = bankPick
+    ? `See what\n${bankName.replace(/ /g, NB)}${NB}knows.`
+    : from === 'import'
+      ? `Import every list,\nnot just${NB}the${NB}first.`
+      : from === 'remind'
+        ? `Pick your own\nreminder${NB}days.`
+        : `Get a reminder before\n${what}`;
+  const spokenHead = head.replace(/\n/g, ' ').replace(new RegExp(NB, 'g'), ' ');
   const allRows = rowsFor(n);
   const ink = dark ? '#F6F0E3' : brand.ink;
   // One fixed design, scaled to fit (owner, Nov 18: "how it looks on other devices"). The paywall is laid
@@ -532,7 +558,7 @@ export default function Paywall() {
             : planId === 'weekly'
               ? `${weekly.priceString} today, then every week until you${NB}cancel.`
               : bank
-                ? `${lifetime.priceString} once. Pro for good. Bank sync for the first year.`
+                ? `${lifetime.priceString} once. Pro for good, 1 year of bank${NB}sync.`
                 : `${lifetime.priceString} once. Pro for good, nothing${NB}renews.`}
         </Txt>
       </View>

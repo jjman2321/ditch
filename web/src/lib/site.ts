@@ -31,12 +31,15 @@ export const SUPPORT_EMAIL = 'support@ditchsubs.app';
 export const AUTHOR = { name: 'Aribo', url: '/about' };
 export const COMPANY = 'Grasp Labs LLC';
 
-/** Pro prices as on the paywall (US). Lifetime covers Pro only; never promise products that don't exist yet. */
-/** The same prices in cents, for maths (a test checks they match PRO). */
-export const PRO_MINOR = { yearly: 2999, monthly: 499, lifetime: 4999 };
-export const PRO = { yearly: '$29.99', yearlyPerMonth: '$2.50', monthly: '$4.99', lifetime: '$49.99', trialDays: 7 };
-/** Current plans (DECISIONS #66, #67, #69). The home page pricing block still uses PRO above until it's redesigned. */
-export const PLANS = { weekly: '$6.99', yearly: '$59.99', lifetime: '$119.99', trialDays: 7, syncAddOn: '$19.99' };
+/**
+ * Pro prices exactly as on the app's paywall (US; DECISIONS #66, #69, #80): Yearly with 7 days free,
+ * Weekly, Lifetime. Never promise products that don't exist yet.
+ * The same prices in cents, for maths (a test checks they match PRO).
+ */
+export const PRO_MINOR = { yearly: 5999, weekly: 699, lifetime: 11999 };
+export const PRO = { yearly: '$59.99', yearlyPerWeek: '$1.15', weekly: '$6.99', lifetime: '$119.99', trialDays: 7 };
+/** Terms page names (same prices) plus Lifetime's bank-sync add-on after year one (DECISIONS #67). */
+export const PLANS = { weekly: PRO.weekly, yearly: PRO.yearly, lifetime: PRO.lifetime, trialDays: PRO.trialDays, syncAddOn: '$19.99' };
 
 /** App Store: null until the app is live. Then the hero CTA becomes the badge and the Smart App Banner turns on. */
 export const APP_STORE_ID: string | null = null;

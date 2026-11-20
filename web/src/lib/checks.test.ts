@@ -60,8 +60,9 @@ describe('Pro prices', () => {
   it('the cents match the shown prices', async () => {
     const { PRO, PRO_MINOR } = await import('./site');
     expect(formatMoney(PRO_MINOR.yearly, 'USD')).toBe(PRO.yearly);
-    expect(formatMoney(PRO_MINOR.monthly, 'USD')).toBe(PRO.monthly);
+    expect(formatMoney(PRO_MINOR.weekly, 'USD')).toBe(PRO.weekly);
     expect(formatMoney(PRO_MINOR.lifetime, 'USD')).toBe(PRO.lifetime);
-    expect(formatMoney(Math.round(PRO_MINOR.yearly / 12), 'USD')).toBe(PRO.yearlyPerMonth);
+    // Same rounding as the app's paywall: yearly ÷ 52, rounded down to the cent ($59.99 → $1.15).
+    expect(formatMoney(Math.floor(PRO_MINOR.yearly / 52), 'USD')).toBe(PRO.yearlyPerWeek);
   });
 });

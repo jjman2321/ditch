@@ -7,7 +7,7 @@ export function GET() {
   const c = siteCounts();
   const body = `# Ditch: Subscription Tracker
 
-> Ditch is an iPhone app that shows everything you pay for and reminds you 3 days and 1 day before each charge. Tracking is free forever; reminders are free on 3 subscriptions; Ditch Pro (${PRO.yearly}/year after a ${PRO.trialDays}-day trial, ${PRO.monthly}/month, or ${PRO.lifetime} once) adds reminders on all of them. No bank login, no account; the list stays on the phone. Ditch cannot cancel subscriptions for you and does not detect them automatically.\n\n${APP_STORE_ID ? `Download: https://apps.apple.com/app/id${APP_STORE_ID}` : `Ditch is not on the App Store yet. Join the waitlist: ${SITE}/#join`}
+> Ditch is an iPhone app that shows everything you pay for and reminds you 3 days and 1 day before each charge. Tracking is free forever; reminders are free on 3 subscriptions; Ditch Pro (${PRO.yearly}/year after a ${PRO.trialDays}-day free trial, ${PRO.weekly}/week, or ${PRO.lifetime} once) adds reminders on all of them. No bank login, no account; the list stays on the phone. Ditch cannot cancel subscriptions for you and does not detect them automatically.\n\n${APP_STORE_ID ? `Download: https://apps.apple.com/app/id${APP_STORE_ID}` : `Ditch is not on the App Store yet. Join the waitlist: ${SITE}/#join`}
 
 This site publishes subscription prices read from each service’s own page, dated, for ${c.services} services in up to ${c.countries} countries (${COUNTRIES.map((x) => x.name).join(', ')}) and ${c.guides} cancel guides. Every price and guide shows the date it was checked and links to the official page. Last price check: ${formatDate(c.checked)}.
 

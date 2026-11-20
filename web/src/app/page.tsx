@@ -25,8 +25,8 @@ const HERO_ROTATION = [
 
 const FAQ = [
   { q: 'Is Ditch free?', a: 'Yes. Tracking is free forever: your full list, your totals and the calendar, with no card and no account. Reminders are free on 3 subscriptions you pick. Pro adds reminders on all of them.' },
-  { q: 'Why pay for a subscription tracker?', a: `Fair question. Pro is ${PRO.yearly} a year, about ${PRO.yearlyPerMonth} a month. In a 2025 CNET survey, Americans said they spend ${STATS.wasted.text} on ${STATS.wasted.on}. Rather not subscribe? Lifetime is ${PRO.lifetime}, once.` },
-  { q: 'What’s the difference between Pro and Lifetime?', a: `Nothing in the app. Pro renews (${PRO.yearly} a year or ${PRO.monthly} a month). Lifetime is ${PRO.lifetime} once and never renews.` },
+  { q: 'Why pay for a subscription tracker?', a: `Fair question. Pro is ${PRO.yearly} a year, about ${PRO.yearlyPerWeek} a week, with ${PRO.trialDays} days free first. In a 2025 CNET survey, Americans said they spend ${STATS.wasted.text} on ${STATS.wasted.on}. Rather not subscribe? Lifetime is ${PRO.lifetime}, once.` },
+  { q: 'What’s the difference between Pro and Lifetime?', a: `Pro renews (${PRO.yearly} a year or ${PRO.weekly} a week). Lifetime is ${PRO.lifetime} once and never renews.` },
   { q: 'Can Ditch cancel subscriptions for me?', a: 'No. Ditch can’t, and it won’t pretend to. Ditch reminds you before each charge and opens the official cancel page, with the steps.' },
   { q: 'Do I need to link my bank?', a: 'No. You add what you pay for: tap the logos or type a name, and the price fills in for your country. Ditch never reads your bank or your email.' },
   { q: 'Do reminders work when the app is closed?', a: 'Yes. Reminders are set on your iPhone, so they arrive even when Ditch is closed. Opening it now and then keeps them topped up.' },
@@ -62,7 +62,8 @@ export default function Home() {
   });
   const nf = priceFor('netflix', 'US')!;
   const nfPlan = defaultPlan(nf);
-  const yearlySave = Math.floor((1 - PRO_MINOR.yearly / (PRO_MINOR.monthly * 12)) * 100);
+  // Same badge as the app: yearly vs 52 weeks of Weekly ($59.99 vs $363.48 → 83%).
+  const yearlySave = Math.floor((1 - PRO_MINOR.yearly / (PRO_MINOR.weekly * 52)) * 100);
 
   const org = { '@id': `${SITE}/#org` };
   const ld = [
@@ -289,12 +290,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. Price + lifetime (owner pick C): Free card, big Pro card with yearly and monthly, Lifetime strip */}
+      {/* 6. Price + lifetime (owner pick C): Free card, big Pro card with yearly and weekly (same plans as the app), Lifetime strip */}
       <section id="pricing" className="sec" style={{ paddingTop: 0 }} aria-labelledby="price-h" data-has-cta>
         <div className="wrap">
           <div className="price-head">
             <h2 id="price-h" className="h2">
-              Less than a coffee a month. Remember the renewals you’d forget.
+              About $1 a week. Remember the renewals you’d forget.
             </h2>
             <p className="lead">Tracking is free forever. Pro puts reminders on every subscription. Rather not subscribe? Pay once.</p>
           </div>
@@ -325,12 +326,12 @@ export default function Home() {
                   <p className="k">Yearly</p>
                   <p className="amt num">{PRO.yearly}</p>
                   <p className="per">
-                    {PRO.yearlyPerMonth} a month
+                    {PRO.yearlyPerWeek} a week
                   </p>
                 </div>
                 <div className="pc-opt">
-                  <p className="k">Monthly</p>
-                  <p className="amt num">{PRO.monthly}</p>
+                  <p className="k">Weekly</p>
+                  <p className="amt num">{PRO.weekly}</p>
                   <p className="per">No free trial</p>
                 </div>
               </div>
@@ -348,7 +349,7 @@ export default function Home() {
             <div className="pc-life">
               <p className="amt num">{PRO.lifetime}</p>
               <div className="t">
-                <h3 className="lh">Lifetime. Pay once.</h3>
+                <h3 className="lh">Lifetime. Pay once. No subscription.</h3>
                 <span>Everything in Pro, and it never renews. For people who are done with subscriptions.</span>
               </div>
               <Link className="btn" href="/#join" prefetch={false}>

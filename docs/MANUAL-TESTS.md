@@ -86,6 +86,23 @@ Delete Ditch's data first so the onboarding shows again: Settings → Your data 
 **Settings → About → Sources**
 - [ ] Settings → About Ditch → **Sources** lists the studies (C+R Research 2022, Self Financial 2026, CNET/YouGov 2025, Chase 2021, West Monroe 2021) and each link opens the study.
 
+## 1y. Video round 3 + big audit (Nov 20)
+- [ ] **Errors look like errors:** Find → Apple subscriptions → Pick screenshots on a build without the reader (or a bad picture): a peach box with an orange "!" sits right above the buttons, even on an SE, and the phone buzzes once. "Use a statement" in the box goes to the statement screen.
+- [ ] **Password PDF:** drop a bank statement PDF that has a password. iPhone asks for it ("This PDF has a password"). Wrong password: it says so and asks again. Cancel: the peach box offers "Enter password".
+- [ ] **Several statements, one broken:** pick 3 files where one is damaged. The good ones are read, and the review screen says one was skipped.
+- [ ] **Everything already on your list:** import a statement whose subs you already have. Title "Already on your list" and a **Done** button (no greyed-out button).
+- [ ] **Privacy line:** "🔒 Read on your iPhone. Never uploaded." shows only under the pick buttons on the Apple and statement screens, nowhere else.
+- [ ] **You're set:** each row is one short line. "Change" sits on the reminders row (free, 4+ subs). No "Pick which 3" or "Send me a test" links under the notification.
+- [ ] **Change (pick 3):** one list with round checks and "3 of 3 picked". Tap a 4th: it buzzes and says "Untick one first". The sheet is only as tall as it needs, no empty band on top.
+- [ ] **Reminders step:** the cards slide down from just above and settle with a tiny tap, like real iPhone notifications. With Reduce Motion on, they're just there.
+- [ ] **Home with a short list (8 or fewer):** under the list, "Missing any?" with 4 popular services you don't have yet and "More". Tap a logo: the add sheet opens on it. With 9+ subs it's gone.
+- [ ] **Cancelled sub (Ditched tab):** tap one under Cancelled. A bottom sheet: the logo, "Cancelled Sep 17 · $10.99 a month", then **Put back on my list**, **I haven't cancelled it yet**, **Keep it cancelled**.
+- [ ] **Calendar:** a paid sub on today says "Paid today". A ditched one says "Ditched · charges Tue, Nov 24". Month header reads "$X in November".
+- [ ] **No AI chat overlap card:** having ChatGPT + Claude + Gemini never shows "Need both?".
+- [ ] **Paywall reminders row:** with 4 or 5 subs it says "Unlimited"; with 6+ it says "All 6".
+- [ ] **Busy day:** add 30 subs that all renew on the same day (Pro). The day before, each one's reminder still arrives (not just "Open Ditch").
+- [ ] **Typing prices:** "10,000" and "12,345.67" are accepted. "15.490" is still refused.
+
 ## 1x. Pro nudge when the free reminders run out (Nov 20)
 - [ ] Free plan, 4+ subs with dates, 3 bells on: Home shows "X has no reminder · Pro reminds you about every one" with a yellow **Try Pro** pill. Tap it: the paywall opens. Tap ×: it hides until another sub is left without a reminder.
 - [ ] Open a sub with no reminder: under "Remind me" it says "Your 3 free reminders are in use." and a yellow row "Reminders on everything · Try Pro". No "Tap a bell on Home" text.

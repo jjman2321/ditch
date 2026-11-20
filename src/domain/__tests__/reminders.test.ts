@@ -1,15 +1,7 @@
 import { demoData } from '@/dev/demo';
 import { proTrialSub } from '@/state/fromOnboarding';
 
-import {
-  MAX_PENDING,
-  atTime,
-  fingerprint,
-  nextReminder,
-  planReminders,
-  reconcile,
-  type PlanSettings,
-  type PlannedReminder, reminderDaysFor, whenLabel } from '../reminders';
+import { MAX_PENDING, atTime, fingerprint, nextReminder, planReminders, reconcile, type PlanSettings, type PlannedReminder, reminderDaysFor, whenLabel } from '../reminders';
 import { DEFAULT_SETTINGS } from '../settings';
 import { confirmCancel, ditchSub, makeSub, type Sub } from '../subs';
 
@@ -66,7 +58,11 @@ describe('who gets them', () => {
     const plan = planReminders(subs, { ...PRO, leadDays: [7, 1] }, NOW);
     // Disney+ is muted; Amazon Prime has no date yet.
     expect([...new Set(plan.filter((r) => r.kind !== 'keep-going').map((r) => r.subId))].sort()).toEqual(['chatgpt', 'netflix', 'spotify', 'youtube']);
-    expect(forSub(plan, 'chatgpt').slice(0, 2).map((r) => r.lead)).toEqual([7, 1]);
+    expect(
+      forSub(plan, 'chatgpt')
+        .slice(0, 2)
+        .map((r) => r.lead),
+    ).toEqual([7, 1]);
   });
 
   it('free ignores custom lead times (custom timing is Pro)', () => {
@@ -85,7 +81,11 @@ describe('no date, no reminder (DECISIONS #33)', () => {
     const plain = sub({ id: 'x', name: 'Spotify', amountMinor: 1199, dateSource: 'none' });
     expect(planReminders([plain], PRO, NOW)).toEqual([]);
     const dated = { ...plain, anchor: '2026-11-16', dateSource: 'next' as const };
-    expect(planReminders([dated], PRO, NOW).slice(0, 2).map((r) => r.body)).toEqual([
+    expect(
+      planReminders([dated], PRO, NOW)
+        .slice(0, 2)
+        .map((r) => r.body),
+    ).toEqual([
       'Spotify renews Monday. $11.99. Still watching?', // the test helper's category is Streaming
       'Spotify renews tomorrow. $11.99. Last call if you’re done with it.',
     ]);
@@ -128,7 +128,7 @@ describe('a tracked free trial', () => {
     const plan = planReminders([hulu], FREE, NOW);
     expect(plan.slice(0, 3).map((r) => [r.kind, r.body])).toEqual([
       ['trial', 'Your Hulu trial ends Friday. Then it’s $9.99 a month.'],
-      ['trial', 'Your Hulu trial ends tomorrow. It’ll charge $9.99.'],
+      ['trial', 'Your Hulu trial ends tomorrow, then it’s $9.99 a month. Cancel today if you don’t want it.'],
       ['heads-up', 'Hulu renews Sunday. $9.99. Still watching?'],
     ]);
   });
@@ -176,14 +176,7 @@ describe('month-end and leap-year anchors', () => {
   it('monthly on the 31st: Jan 31 → Feb 28 → Mar 31, reminders follow the clamp', () => {
     const s = sub({ id: 'm', name: 'Gym', anchor: '2027-01-31', category: null });
     const plan = planReminders([s], FREE, new Date(2027, 0, 20, 12));
-    expect(plan.slice(0, 6).map((r) => r.fireAt.getTime())).toEqual([
-      at(2027, 1, 28),
-      at(2027, 1, 30),
-      at(2027, 2, 25),
-      at(2027, 2, 27),
-      at(2027, 3, 28),
-      at(2027, 3, 30),
-    ]);
+    expect(plan.slice(0, 6).map((r) => r.fireAt.getTime())).toEqual([at(2027, 1, 28), at(2027, 1, 30), at(2027, 2, 25), at(2027, 2, 27), at(2027, 3, 28), at(2027, 3, 30)]);
   });
 
   it('yearly on Feb 29: Feb 28 in 2027, Feb 29 again in 2028', () => {
@@ -216,11 +209,34 @@ describe('no duplicates, at most 64, soonest first', () => {
     const keep = plan.filter((r) => r.kind === 'keep-going');
     expect(keep).toHaveLength(1);
     expect(keep[0].id).toMatch(/^keep:/);
-    // Everything kept is the soonest, in order; nothing that didn't fit is due before the ask.
+    // Real reminders outrank the evening nudges (audit, Nov 20): what's kept is the soonest real ones,
+    // in order, and no real one that didn't fit is due before the ask.
+    const real = all.filter((r) => r.kind !== 'nudge');
     const kept = plan.filter((r) => r.kind !== 'keep-going');
-    expect(kept).toEqual(all.slice(0, kept.length));
-    for (const r of all.slice(kept.length)) expect(r.fireAt.getTime()).toBeGreaterThan(keep[0].fireAt.getTime());
+    expect(kept.every((r) => r.kind !== 'nudge')).toBe(true);
+    expect(kept).toEqual(real.slice(0, kept.length));
+    for (const r of real.slice(kept.length)) expect(r.fireAt.getTime()).toBeGreaterThan(keep[0].fireAt.getTime());
     for (let i = 1; i < plan.length; i++) expect(plan[i].fireAt.getTime()).toBeGreaterThanOrEqual(plan[i - 1].fireAt.getTime());
+  });
+
+  it('a busy day (30 renewing on the same day) still gets its reminders (audit, Nov 20)', () => {
+    // Before: the cut fell between whole days, the busy day alone filled the cap, and only "Open Ditch" was kept.
+    const many = Array.from({ length: 30 }, (_, i) => sub({ id: `b${i}`, name: `Busy ${i}`, anchor: '2026-12-01' }));
+    const plan = planReminders(many, PRO, new Date(2026, 10, 29, 8, 0));
+    const real = plan.filter((r) => r.kind === 'heads-up');
+    expect(real.length).toBeGreaterThanOrEqual(29);
+    expect(plan.length).toBeLessThanOrEqual(MAX_PENDING);
+    expect(plan.filter((r) => r.kind === 'nudge')).toHaveLength(0);
+    // The next one shown is a real reminder, not "Open Ditch".
+    expect(nextReminder(plan, many)?.name).toMatch(/^Busy /);
+  });
+
+  it('3,000 subs plan quickly and still fill the cap with real reminders', () => {
+    const many = Array.from({ length: 3000 }, (_, i) => sub({ id: `m${i}`, name: `Many ${i}`, anchor: `2026-11-${String(10 + (i % 20)).padStart(2, '0')}` }));
+    const t0 = Date.now();
+    const plan = planReminders(many, PRO, NOW);
+    expect(Date.now() - t0).toBeLessThan(4000);
+    expect(plan.filter((r) => r.kind === 'heads-up').length).toBeGreaterThanOrEqual(MAX_PENDING / 2);
   });
 
   it('a full plan never drops a reminder that is due before "Open Ditch" (audit, Nov 16)', () => {
@@ -317,7 +333,7 @@ describe('second nudge (Pro)', () => {
     const nudges = planReminders([n], PRO, NOW).filter((r) => r.kind === 'nudge' && r.chargeDate === '2026-11-20');
     expect(nudges).toHaveLength(1);
     expect(nudges[0].fireAt).toEqual(new Date(2026, 10, 19, 19, 0));
-    expect(nudges[0].body).toBe('Netflix charges tomorrow. $17.99. Last call.');
+    expect(nudges[0].body).toBe('Netflix charges tomorrow. $17.99. Cancel tonight if you’re done.');
   });
   it('free gets none', () => {
     expect(planReminders([{ ...n, freePick: true }], FREE, NOW).some((r) => r.kind === 'nudge')).toBe(false);
@@ -380,15 +396,15 @@ describe('Pro evening nudge follows the real last reminder (audit, Nov 16)', () 
     const plan = planReminders(yearly(), { ...PRO, leadDays: [0] }, NOW);
     expect(plan.filter((r) => r.kind === 'nudge')).toEqual([]);
   });
-  it('with 3 days and on the day, the 3-day one gets no "Last call"', () => {
+  it('with 3 days and on the day, the 3-day one gets no "Cancel tonight"', () => {
     const plan = planReminders(yearly(), { ...PRO, leadDays: [3, 0] }, NOW);
     expect(plan.filter((r) => r.kind === 'nudge')).toEqual([]);
   });
-  it('with 3 days and 1 day, the nudge is the evening before and says Last call', () => {
+  it('with 3 days and 1 day, the nudge is the evening before and says Cancel tonight', () => {
     const nudges = planReminders(yearly(), { ...PRO, leadDays: [3, 1] }, NOW).filter((r) => r.kind === 'nudge');
     expect(nudges).toHaveLength(1);
     expect(nudges[0].fireAt.getTime()).toBe(at(2027, 1, 19, 19));
-    expect(nudges[0].body).toMatch(/Last call\.$/);
+    expect(nudges[0].body).toMatch(/Cancel tonight if you’re done\.$/);
   });
   it('every 2 weeks never gets a 2-week lead (it would land on the last charge)', () => {
     const s = sub({ id: 'g', name: 'Gym', anchor: '2026-11-20', cycle: 'biweekly' });

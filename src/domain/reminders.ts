@@ -84,7 +84,8 @@ export function yearlyWarningBody(s: Sub, charge: DateOnly, money: Money): strin
 export function trialBody(s: Sub, charge: DateOnly, fireDay: DateOnly, money: Money): string {
   const when = whenWords(charge, fireDay);
   const price = priceOf(s, money);
-  if (daysBetween(fireDay, charge) <= 1) return `Your ${s.name} trial ends ${when}.${price ? ` It’ll charge ${price}.` : ''}`;
+  // The last one says what to do, and by when: "Your Hulu trial ends tomorrow, then it's $7.99 a month. Cancel today if you don't want it."
+  if (daysBetween(fireDay, charge) <= 1) return `Your ${s.name} trial ends ${when}${price ? `, then it’s ${price} ${CYCLE_WORDS[s.cycle]}` : ''}. Cancel today if you don’t want it.`;
   return `Your ${s.name} trial ends ${when}.${price ? ` Then it’s ${price} ${CYCLE_WORDS[s.cycle]}.` : ''}`;
 }
 
@@ -92,8 +93,7 @@ export function trialBody(s: Sub, charge: DateOnly, fireDay: DateOnly, money: Mo
 export function proTrialBody(s: Sub, charge: DateOnly, fireDay: DateOnly, money: Money): string {
   const when = whenWords(charge, fireDay);
   const price = priceOf(s, money);
-  if (daysBetween(fireDay, charge) <= 1)
-    return `Your Ditch Pro trial ends ${when}.${price ? ` ${price} ${CYCLE_WORDS[s.cycle]} after that.` : ''} Cancel in iPhone Settings if you’re done.`;
+  if (daysBetween(fireDay, charge) <= 1) return `Your Ditch Pro trial ends ${when}.${price ? ` ${price} ${CYCLE_WORDS[s.cycle]} after that.` : ''} Cancel in iPhone Settings if you’re done.`;
   return `Your Ditch Pro trial ends ${when}.${price ? ` Then it’s ${price} ${CYCLE_WORDS[s.cycle]}.` : ''} Keep it, or cancel in iPhone Settings.`;
 }
 
@@ -102,14 +102,14 @@ export function lastCheckBody(s: Sub): string {
   return isProTrial(s) ? 'Did you cancel your Ditch Pro trial? It charges tomorrow.' : `Did you cancel ${s.name}? It charges tomorrow.`;
 }
 
-/** Pro's second nudge, the evening of the last reminder (DECISIONS #27): "Netflix charges tomorrow. $17.99. Last call." */
+/** Pro's second nudge, the evening of the last reminder (DECISIONS #27): "Netflix charges tomorrow. $17.99. Cancel tonight if you're done." */
 export function nudgeBody(s: Sub, charge: DateOnly, fireDay: DateOnly, money: Money): string {
   const price = priceOf(s, money);
   const when = whenWords(charge, fireDay);
   if (isProTrial(s)) return `Your Ditch Pro trial ends ${when}.${price ? ` ${price} ${CYCLE_WORDS[s.cycle]} after that.` : ''} Last call to cancel in iPhone Settings.`;
   const what = s.isTrial ? `Your ${s.name} trial ends` : `${s.name} charges`;
-  // "Last call" only when it really is the last day; Pro can pick leads a week or more out.
-  const tail = daysBetween(fireDay, charge) <= 1 ? 'Last call.' : 'Still using it?';
+  // "Cancel tonight" only when it really is the last evening; Pro can pick leads a week or more out.
+  const tail = daysBetween(fireDay, charge) <= 1 ? 'Cancel tonight if you’re done.' : 'Still using it?';
   return `${what} ${when}.${price ? ` ${price}.` : ''} ${tail}`;
 }
 
@@ -123,33 +123,32 @@ export const TEST_BODY = 'Test from Ditch. If you can read this, you’re set.';
  * Anything at or before `now` is left out: a 9:00 heads-up today is only
  * planned while it's still before 9:00.
  */
-export function planReminders(
-  subs: Sub[],
-  settings: PlanSettings,
-  now: Date,
-  { cap = MAX_PENDING, horizonDays = HORIZON_DAYS }: { cap?: number; horizonDays?: number } = {},
-): PlannedReminder[] {
+export function planReminders(subs: Sub[], settings: PlanSettings, now: Date, { cap = MAX_PENDING, horizonDays = HORIZON_DAYS }: { cap?: number; horizonDays?: number } = {}): PlannedReminder[] {
   const today = toDateOnly(now);
   const until = addDays(today, horizonDays);
   const money: Money = (a, c) => formatMoney(a, c, { home: settings.currency });
   const time = settings.reminderTime;
   const leads = effectiveLeads(settings, settings.pro);
   const reminded = remindedIds(subs, settings.pro);
-  const out = new Map<string, PlannedReminder>();
-  const add = (r: Omit<PlannedReminder, 'fireAt' | 'title'> & { fireDay: DateOnly }, at: string = time) => {
+  // Drafts carry a function that writes the message, called only for the ones that make the cut:
+  // a long list has tens of thousands of drafts and formatting each price was the slow part (audit, Nov 20).
+  type Draft = Omit<PlannedReminder, 'body' | 'title'> & { make: () => string };
+  const out = new Map<string, Draft>();
+  const add = (r: Omit<Draft, 'fireAt' | 'make'> & { fireDay: DateOnly; body: () => string }, at: string = time) => {
     const fireAt = atTime(r.fireDay, at);
     if (fireAt.getTime() <= now.getTime()) return; // never in the past
     if (out.has(r.id)) return; // never twice
-    const { fireDay: _f, ...rest } = r;
-    out.set(r.id, { ...rest, fireAt, title: '' });
+    const { fireDay: _f, body, ...rest } = r;
+    out.set(r.id, { ...rest, fireAt, make: body });
   };
+  const byId = new Map(subs.map((s) => [s.id, s]));
 
   for (const s of subs) {
     if (isPending(s)) {
       // Exactly one: the day before the charge it has to be cancelled by.
       const charge = s.cancelBy && s.cancelBy >= today ? s.cancelBy : chargeOfSub(s, today);
       if (!charge) continue; // no date yet: nothing to check against
-      add({ id: `last:${s.id}:${charge}`, subId: s.id, kind: 'last-check', chargeDate: charge, lead: 1, fireDay: addDays(charge, -1), body: lastCheckBody(s) });
+      add({ id: `last:${s.id}:${charge}`, subId: s.id, kind: 'last-check', chargeDate: charge, lead: 1, fireDay: addDays(charge, -1), body: () => lastCheckBody(s) });
       continue;
     }
     if (!isActive(s)) continue;
@@ -160,7 +159,7 @@ export function planReminders(
       if (!charge || charge !== s.anchor) continue; // the trial is over
       for (const lead of HEADS_UP_LEADS) {
         const fireDay = addDays(charge, -lead);
-        add({ id: `pro:${s.id}:${charge}:${lead}`, subId: s.id, kind: 'pro-trial', chargeDate: charge, lead, fireDay, body: proTrialBody(s, charge, fireDay, money) });
+        add({ id: `pro:${s.id}:${charge}:${lead}`, subId: s.id, kind: 'pro-trial', chargeDate: charge, lead, fireDay, body: () => proTrialBody(s, charge, fireDay, money) });
       }
       continue;
     }
@@ -183,7 +182,15 @@ export function planReminders(
       // Pro: one more, a month before big charges (yearly and every 6 months). Not for trial ends.
       if (settings.pro && !trial && (s.cycle === 'yearly' || s.cycle === 'semiannual') && !theseLeads.includes(YEARLY_WARNING_LEAD)) {
         const fireDay = addDays(charge, -YEARLY_WARNING_LEAD);
-        add({ id: `sub:${s.id}:${charge}:${YEARLY_WARNING_LEAD}`, subId: s.id, kind: 'heads-up', chargeDate: charge, lead: YEARLY_WARNING_LEAD, fireDay, body: yearlyWarningBody(s, charge, money) });
+        add({
+          id: `sub:${s.id}:${charge}:${YEARLY_WARNING_LEAD}`,
+          subId: s.id,
+          kind: 'heads-up',
+          chargeDate: charge,
+          lead: YEARLY_WARNING_LEAD,
+          fireDay,
+          body: () => yearlyWarningBody(s, charge, money),
+        });
       }
       for (const lead of theseLeads) {
         const fireDay = addDays(charge, -lead);
@@ -194,7 +201,7 @@ export function planReminders(
           chargeDate: charge,
           lead,
           fireDay,
-          body: trial ? trialBody(s, charge, fireDay, money) : headsUpBody(s, charge, fireDay, money),
+          body: () => (trial ? trialBody(s, charge, fireDay, money) : headsUpBody(s, charge, fireDay, money)),
         });
       }
     }
@@ -205,7 +212,7 @@ export function planReminders(
   // opened the app after it, they've seen it, so the nudge isn't planned any more.
   const nudgeOk = parseTime(time).h * 60 + parseTime(time).m <= 17 * 60;
   if (settings.pro && nudgeOk) {
-    const lastOf = new Map<string, PlannedReminder>();
+    const lastOf = new Map<string, Draft>();
     for (const r of out.values()) {
       if (r.kind !== 'heads-up' && r.kind !== 'trial' && r.kind !== 'pro-trial') continue;
       if (r.lead >= YEARLY_WARNING_LEAD) continue; // the month-ahead warning is never "the last one"
@@ -215,27 +222,50 @@ export function planReminders(
     }
     for (const r of lastOf.values()) {
       if (r.lead < 1) continue; // an on-the-day reminder is the last one: no evening nudge after the charge
-      const s = subs.find((x) => x.id === r.subId);
+      const s = byId.get(r.subId);
       if (!s) continue;
       const day = toDateOnly(r.fireAt);
-      add({ id: `nudge:${r.subId}:${r.chargeDate}`, subId: r.subId, kind: 'nudge', chargeDate: r.chargeDate, lead: r.lead, fireDay: day, body: nudgeBody(s, r.chargeDate, day, money) }, NUDGE_TIME);
+      add(
+        { id: `nudge:${r.subId}:${r.chargeDate}`, subId: r.subId, kind: 'nudge', chargeDate: r.chargeDate, lead: r.lead, fireDay: day, body: () => nudgeBody(s, r.chargeDate, day, money) },
+        NUDGE_TIME,
+      );
     }
   }
 
-  const sorted = [...out.values()].sort((a, b) => a.fireAt.getTime() - b.fireAt.getTime() || (a.id < b.id ? -1 : 1));
-  if (sorted.length <= cap) return sorted;
-  // More than fit: keep the soonest, and use the last slot to ask them to open Ditch,
-  // so a long list never just goes quiet (reminders are only lined up when the app opens).
-  // The cut falls between whole days, and the ask comes the day BEFORE the first day we
-  // couldn't fit, so opening Ditch then lines those up before any of them is due.
-  const firstOut = sorted[Math.max(0, cap - 1)];
+  const order = (a: { fireAt: Date; id: string }, b: { fireAt: Date; id: string }) => a.fireAt.getTime() - b.fireAt.getTime() || (a.id < b.id ? -1 : 1);
+  const write = (list: Draft[]): PlannedReminder[] => list.map(({ make, ...r }) => ({ ...r, title: '', body: make() }));
+  const sorted = [...out.values()].sort(order);
+  if (sorted.length <= cap) return write(sorted);
+
+  // More than fit. The evening nudges are only a backup, so they go first: every real reminder
+  // outranks them. One slot is kept back to ask them to open Ditch, so a long list never just goes quiet
+  // (reminders are only lined up when the app opens).
+  const core = sorted.filter((r) => r.kind !== 'nudge');
+  if (core.length <= cap - 1) {
+    const room = cap - 1 - core.length;
+    const nudges = sorted.filter((r) => r.kind === 'nudge').slice(0, room);
+    // Only backups were left out and every real one is in: no need to ask them to open Ditch.
+    return write([...core, ...nudges].sort(order));
+  }
+
+  // Still too many real ones: keep the soonest. The cut falls between whole days, so no day is half
+  // reminded, and the ask comes the day BEFORE the first day that didn't fit, so opening Ditch then lines
+  // those up before any is due. But if one busy day would leave fewer than half the slots used (30 subs
+  // renewing on the 1st), cut by time instead (audit, Nov 20: the day cut kept nothing at all).
+  const firstOut = core[cap - 1];
   const cutDay = toDateOnly(firstOut.fireAt);
-  const kept = sorted.filter((r) => toDateOnly(r.fireAt) < cutDay);
+  let kept = core.filter((r) => toDateOnly(r.fireAt) < cutDay);
   let at = atTime(addDays(cutDay, -1), time);
+  if (kept.length < cap / 2) {
+    kept = core.slice(0, cap - 1);
+    // Before the first one left out, and after the ones kept that same day.
+    at = new Date(firstOut.fireAt.getTime() - 30 * 60_000);
+  }
   if (at.getTime() <= now.getTime()) at = new Date(firstOut.fireAt.getTime() - 30 * 60_000);
-  if (at.getTime() <= now.getTime()) return kept;
-  const keep: PlannedReminder = { id: `keep:${cutDay}`, subId: '', kind: 'keep-going', fireAt: at, chargeDate: cutDay, lead: 0, title: '', body: KEEP_GOING_BODY };
-  return [...kept, keep].sort((a, b) => a.fireAt.getTime() - b.fireAt.getTime() || (a.id < b.id ? -1 : 1));
+  if (at.getTime() <= now.getTime()) return write(kept);
+  const keepId = `keep:${toDateOnly(at)}`;
+  const keep: Draft = { id: keepId, subId: '', kind: 'keep-going', fireAt: at, chargeDate: cutDay, lead: 0, make: () => KEEP_GOING_BODY };
+  return write([...kept, keep].sort(order));
 }
 
 export const KEEP_GOING_BODY = 'Open Ditch so your next reminders get lined up. Takes a second.';
@@ -269,7 +299,8 @@ export function reconcile(existing: ScheduledInfo[], plan: PlannedReminder[]): {
 
 /** The next reminder in the plan, for "Next one: Netflix, Fri, Nov 13 at 9 AM". */
 export function nextReminder(plan: PlannedReminder[], subs: Sub[]): { name: string; fireAt: Date } | null {
-  const r = plan[0];
+  // "Open Ditch so your next reminders get lined up" isn't a reminder about a sub.
+  const r = plan.find((x) => x.kind !== 'keep-going');
   if (!r) return null;
   const s = subs.find((x) => x.id === r.subId);
   return { name: s ? (isProTrial(s) ? 'Ditch Pro trial' : s.name) : 'Ditch', fireAt: r.fireAt };

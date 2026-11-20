@@ -9,6 +9,7 @@ import { verifyAppleJws } from '../appleJws.ts';
 import { importTokenKey } from '../crypto.ts';
 import type { Deps } from '../handlers.ts';
 import { PlaidProvider, type PlaidJwk } from '../plaid.ts';
+import { revenueCatClient } from '../revenuecat.ts';
 import { verifyPlaidWebhook } from '../plaidWebhook.ts';
 import type { BankProvider } from '../provider.ts';
 import { StripeFcProvider } from '../stripe.ts';
@@ -46,6 +47,19 @@ function products(): Record<string, EntitlementKind> {
   add('APPLE_PRODUCT_WEEKLY', 'weekly');
   add('APPLE_PRODUCT_LIFETIME', 'lifetime');
   add('APPLE_PRODUCT_BANK_ADDON', 'bank_addon');
+  return map;
+}
+
+/**
+ * RevenueCat product ids (prod…) → kind. Defaults are Ditch's project (set up Nov 20); REVENUECAT_PRODUCTS
+ * ("prodA:yearly,prodB:weekly,…") overrides them, e.g. when the bank add-on product is added.
+ */
+function rcProducts(): Record<string, EntitlementKind> {
+  const map: Record<string, EntitlementKind> = { prodc88d66725a: 'yearly', prod12517f8454: 'weekly', prodc2043a8435: 'lifetime' };
+  for (const pair of (env('REVENUECAT_PRODUCTS') ?? '').split(',')) {
+    const [id, kind] = pair.split(':').map((x) => x?.trim());
+    if (id && (kind === 'yearly' || kind === 'weekly' || kind === 'lifetime' || kind === 'bank_addon')) map[id] = kind;
+  }
   return map;
 }
 
@@ -121,6 +135,14 @@ export function makeDeps(): Promise<Deps> {
           ),
       },
       cronSecret: env('CRON_SECRET') ?? '',
+      revenuecat: env('REVENUECAT_SECRET_KEY')
+        ? revenueCatClient({
+            key: env('REVENUECAT_SECRET_KEY')!,
+            projectId: env('REVENUECAT_PROJECT_ID') ?? 'proj39b23ed3',
+            config: { products: rcProducts(), entitlement: 'pro', environments: (env('APPLE_ENVIRONMENTS') ?? 'Production,Sandbox').split(',').map((s) => s.trim()) },
+            now: () => new Date(),
+          })
+        : undefined,
       plaidProduction: () =>
         new PlaidProvider({
           clientId: need('PLAID_CLIENT_ID'),

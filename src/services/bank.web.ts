@@ -13,7 +13,7 @@ const mock = createBankMock(today);
 export async function getAppUserId(): Promise<string> {
   return '00000000-0000-4000-8000-000000000000';
 }
-export function syncEntitlements(_transactions: string[], _renewals: string[] = []): Promise<EntitlementSyncResponse> {
+export function syncEntitlements(): Promise<EntitlementSyncResponse> {
   return mock.syncEntitlements();
 }
 export const listBanks = () => mock.listBanks();

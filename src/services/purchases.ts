@@ -159,8 +159,7 @@ let changes = 0;
 function changed() {
   changes++;
   changeListeners.forEach((l) => l());
-  // TODO(bank sync): the bank server will check Pro through RevenueCat's REST API or webhook
-  // (docs/plans/revenuecat-setup.md), so the app no longer sends Apple's receipts to it.
+  // Bank sync's server asks RevenueCat itself (same app user id), on every bank call and hourly.
 }
 
 /** On app start: set up RevenueCat and load prices and eligibility. */

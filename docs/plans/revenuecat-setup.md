@@ -129,8 +129,8 @@ then submit it to TestFlight as usual. Expo Go and the web preview keep showing 
 - To see the trial again, make a new sandbox tester.
 - RevenueCat → **Customers** shows each test purchase (look for the random id), handy if something looks wrong.
 
-## Bank sync's server (later)
-Bank sync's server will check Pro by asking RevenueCat, either through its REST API with the app user id or through a RevenueCat webhook. The app no longer sends Apple's receipts there (`syncEntitlements` isn't called). That will need a secret RevenueCat key in the Supabase Edge Function secrets, added when bank sync goes live. Not now.
+## Bank sync's server (done Nov 20)
+The server asks RevenueCat's REST API v2 about the app user id (the same random id the app gives RevenueCat) on every bank call, on `entitlement-sync`, and in the hourly cleanup (`supabase/functions/_shared/revenuecat.ts`). Key: a V2 secret key with **Customer information: Read only**, saved in Supabase → Edge Functions → Secrets as `REVENUECAT_SECRET_KEY`. Product ids live in `deps.ts` (override with `REVENUECAT_PROJECT_ID` / `REVENUECAT_PRODUCTS`). If RevenueCat can't be reached, the last stored answer is used, so nobody loses their bank over a blip. Check it any time with the `rc-check` self-test step.
 
 ## What the app does with all this
 - **Prices:** on launch it loads the `default` offering and shows Apple's own price text in the person's currency. If the store can't be reached, it shows the planned US prices, exactly like before.

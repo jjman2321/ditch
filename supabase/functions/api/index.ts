@@ -25,6 +25,16 @@ const sandboxSelfTest: (typeof routes)[string] = async (req, deps) => {
         return json(200, { ok: false, production: 'not_yet', code: (e as { code?: string }).code ?? 'INTERNAL', message: (e as Error).message?.slice(0, 200) });
       }
     }
+    // Can the server ask RevenueCat? Looks up a random id (RevenueCat answers "never seen", nothing is created).
+    if (body.step === 'rc-check') {
+      if (!deps.revenuecat) return json(200, { ok: false, revenuecat: 'no_key' });
+      try {
+        const ents = await deps.revenuecat.entitlements(crypto.randomUUID());
+        return json(200, { ok: true, revenuecat: 'reachable', entitlements: ents.length });
+      } catch (e) {
+        return json(200, { ok: false, revenuecat: 'failed', code: (e as Error).message?.slice(0, 60) });
+      }
+    }
     if (body.step === 'hosted-link') return json(200, { ok: true, ...(await plaid.sandboxHostedLink()) });
     if (body.step === 'hosted-finish' && body.linkToken) return json(200, { ok: true, ...(await plaid.sandboxFinishHostedLink(body.linkToken)) });
     return json(200, { ok: true, ...(await plaid.sandboxSelfTest()) });

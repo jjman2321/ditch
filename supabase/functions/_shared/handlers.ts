@@ -16,7 +16,7 @@ import { canAddLink, duplicateOf, isLive, linkTokenAllowed, planCleanup, RENEWAL
 import { plaidWebhookAction, type PlaidWebhookBody } from './plaidWebhook.ts';
 import { ProviderError, type BankProvider } from './provider.ts';
 import type { Store } from './store.ts';
-import type { AppUser, BankLink, BankTxn, EntitlementKind, ProviderName } from './types.ts';
+import type { AppUser, BankLink, BankTxn, Entitlement, EntitlementKind, ProviderName } from './types.ts';
 
 export type Deps = {
   store: Store;
@@ -33,6 +33,11 @@ export type Deps = {
   };
   plaidWebhook: { verify(rawBody: string, header: string | null): Promise<{ ok: boolean; why?: string }>; env: string };
   cronSecret: string;
+  /**
+   * Pro from RevenueCat (DECISIONS #79), looked up by the app user id. When set, it is the only source:
+   * every access check asks it (falling back to the last stored answer if RevenueCat can't be reached).
+   */
+  revenuecat?: { entitlements(appUserId: string): Promise<Entitlement[]> };
   /** Production access check only: a Plaid client on production, whatever PLAID_ENV says. Never used for users. */
   plaidProduction?: () => BankProvider;
 };
@@ -78,8 +83,31 @@ async function postJson<T>(req: Request, maxBytes?: number): Promise<T | Respons
   return parseJson<T>(text) ?? fail(400, 'bad_json');
 }
 
+/**
+ * This user's entitlements now. With RevenueCat: ask it, store the answer (so the cleanup can fall back
+ * on it), and mark rows it no longer lists (e.g. a restore moved the purchase to a new app user id) as
+ * expired. If RevenueCat can't be reached, the last stored answer is used.
+ */
+async function currentEntitlements(deps: Deps, userId: string): Promise<Entitlement[]> {
+  if (!deps.revenuecat) return deps.store.getEntitlements(userId);
+  let fresh: Entitlement[];
+  try {
+    fresh = await deps.revenuecat.entitlements(userId);
+  } catch (e) {
+    await deps.store.logEvent({ kind: 'revenuecat_failed', app_user_id: userId, detail: { code: e instanceof Error ? e.message.slice(0, 40) : 'error' } });
+    return deps.store.getEntitlements(userId);
+  }
+  const listed = new Set(fresh.map((e) => e.original_transaction_id));
+  const stamp = deps.now().toISOString();
+  for (const old of await deps.store.getEntitlements(userId)) {
+    if (!listed.has(old.original_transaction_id) && old.status !== 'expired' && old.status !== 'revoked') await deps.store.putEntitlement({ ...old, status: 'expired', updated_at: stamp });
+  }
+  for (const e of fresh) await deps.store.putEntitlement(e);
+  return fresh;
+}
+
 async function accessFor(deps: Deps, userId: string, graceMs = 0): Promise<BankAccess> {
-  return bankAccess(await deps.store.getEntitlements(userId), deps.now(), graceMs);
+  return bankAccess(await currentEntitlements(deps, userId), deps.now(), graceMs);
 }
 
 /**
@@ -456,6 +484,7 @@ export async function handleAppleNotification(req: Request, deps: Deps): Promise
 const ROTATE_MAX_AGE_MS = 24 * HOUR;
 
 export async function handleEntitlementSync(req: Request, deps: Deps): Promise<Response> {
+  if (deps.revenuecat) return handleProSync(req, deps);
   const body = await postJson<{ transactions?: unknown; renewals?: unknown }>(req, 256 * 1024);
   if (body instanceof Response) return body;
   const id = req.headers.get('x-ditch-user')?.toLowerCase() ?? '';
@@ -518,6 +547,42 @@ export async function handleEntitlementSync(req: Request, deps: Deps): Promise<R
   });
 }
 
+/**
+ * entitlement-sync with RevenueCat: the phone sends nothing but its id and secret. The server asks
+ * RevenueCat. A user row is created the first time RevenueCat shows Pro for this id; an existing
+ * user's secret never changes (the id and secret live together in the Keychain). Banks go if access ended.
+ */
+async function handleProSync(req: Request, deps: Deps): Promise<Response> {
+  const body = await postJson<Record<string, unknown>>(req, 16 * 1024);
+  if (body instanceof Response) return body;
+  const id = req.headers.get('x-ditch-user')?.toLowerCase() ?? '';
+  const secret = req.headers.get('x-ditch-secret') ?? '';
+  if (!UUID_RE.test(id) || secret.length < 32) return fail(401, 'unauthorized');
+  const secretHash = await hashSecret(secret);
+  const user = await deps.store.getUser(id);
+  if (user && !timingSafeEqual(user.secret_hash, secretHash)) return fail(401, 'unauthorized');
+  if (!user) {
+    let ents: Entitlement[];
+    try {
+      ents = await deps.revenuecat!.entitlements(id);
+    } catch {
+      return fail(503, 'store_unavailable');
+    }
+    // Only someone who has (or had) Pro gets a row; everyone else is simply not entitled.
+    if (!ents.length) return fail(402, 'not_entitled', { reason: 'none' });
+    await deps.store.createUser(id, secretHash);
+    await deps.store.logEvent({ kind: 'user_created', app_user_id: id, detail: { via: 'revenuecat' } });
+  }
+  const ents = await currentEntitlements(deps, id);
+  const access = bankAccess(ents, deps.now(), RENEWAL_GRACE_MS);
+  const removed = access.allowed ? 0 : await removeAllLinks(deps, id, `entitlement_${access.reason}`);
+  return json(200, {
+    access,
+    removed,
+    entitlements: ents.map((e) => ({ kind: e.kind, status: e.status, expiresAt: e.expires_at, inTrial: e.in_trial })),
+  });
+}
+
 // ---------- bank-cleanup (pg_cron, hourly) ----------
 
 export async function handleCleanup(req: Request, deps: Deps): Promise<Response> {
@@ -526,6 +591,8 @@ export async function handleCleanup(req: Request, deps: Deps): Promise<Response>
   const links = await deps.store.listLiveLinks();
   const userIds = [...new Set(links.map((l) => l.app_user_id))];
   const [users, ents] = await Promise.all([deps.store.existingUsers(userIds), deps.store.getEntitlementsFor(userIds)]);
+  // With RevenueCat, ask it about everyone who still has a bank (falls back to the stored answer per user).
+  if (deps.revenuecat) for (const u of userIds) if (users.has(u)) ents.set(u, await currentEntitlements(deps, u));
   const plan = planCleanup(links, ents, users, deps.now());
   let removed = 0;
   const byId = new Map(links.map((l) => [l.id, l]));

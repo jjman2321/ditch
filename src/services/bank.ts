@@ -93,6 +93,18 @@ export async function getAppUserId(): Promise<string> {
 }
 
 async function call<T>(fn: string, body: unknown = {}, timeoutMs = 30_000): Promise<T> {
+  try {
+    return await send<T>(fn, body, timeoutMs);
+  } catch (e) {
+    // The server only knows a phone once RevenueCat shows Pro for its id. First bank call (or the server
+    // forgot it): register through entitlement-sync, then try once more.
+    if (fn === 'entitlement-sync' || !(e instanceof BankApiError) || e.status !== 401) throw e;
+    await send('entitlement-sync', {}, timeoutMs);
+    return send<T>(fn, body, timeoutMs);
+  }
+}
+
+async function send<T>(fn: string, body: unknown, timeoutMs: number): Promise<T> {
   const { id, secret } = await loadIdentity();
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeoutMs);
@@ -114,14 +126,12 @@ async function call<T>(fn: string, body: unknown = {}, timeoutMs = 30_000): Prom
 const mock = createBankMock(today);
 
 /**
- * Sends StoreKit 2's signed transactions (Transaction.jwsRepresentation for each current
- * entitlement) and renewal info. Call after a purchase, on launch and on restore. The server
- * creates the user on first proof and removes banks if access ended.
- * Not called since purchases moved to RevenueCat (Nov 20): the server will check Pro through
- * RevenueCat instead (docs/plans/revenuecat-setup.md).
+ * Asks the server to check Pro with RevenueCat (same app user id). The server creates this phone's
+ * row the first time RevenueCat shows Pro, and removes banks if access ended. Bank calls do this on
+ * their own when the server doesn't know the phone yet.
  */
-export function syncEntitlements(transactions: string[], renewals: string[] = []): Promise<EntitlementSyncResponse> {
-  return API_URL ? call('entitlement-sync', { transactions, renewals }) : mock.syncEntitlements();
+export function syncEntitlements(): Promise<EntitlementSyncResponse> {
+  return API_URL ? call('entitlement-sync', {}) : mock.syncEntitlements();
 }
 
 export function listBanks(): Promise<BankListResponse> {

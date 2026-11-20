@@ -661,6 +661,14 @@ On the **new** TestFlight build, signed in with a Sandbox tester (Settings → A
 - [ ] Pro ends: buy Weekly with a tester and wait about 40 minutes (sandbox renews about 12 times, ~3 min each, then stops). Bring Ditch to the front: Pro is off, every subscription is still there, and only 3 have reminders.
 - [ ] Settings → Preview Pro (test builds) still works and isn't switched off when you come back to the app.
 
+### 11c. Bank sync checks Pro with RevenueCat (server, Nov 20)
+New TestFlight build (has the server address), US/Canada, Sandbox tester. The bank server is still on Plaid's practice banks.
+- [ ] **Without Pro** (fresh tester, Preview Pro off): Find → My bank or card goes to the paywall, never to the bank sign-in.
+- [ ] **Buy Yearly** (free trial) → connect a bank → pick "First Platypus Bank", user `user_good`, password `pass_good`. It connects and finds subscriptions. (The very first bank call registers this phone with the server; you won't see anything for that.)
+- [ ] Close and reopen Ditch: the bank still shows in Settings → Banks, and new charges load.
+- [ ] **Pro ends** (Weekly tester, wait ~40 minutes until renewals stop): within an hour the bank disappears from Settings → Banks. Your subscriptions stay.
+- [ ] **Preview Pro** (test builds) does NOT open the real bank sign-in: the server only trusts a real purchase.
+
 ## 12. States and failures ⏳ (partly built)
 Why: an app feels premium when the bad moments are handled well, not only the happy path. See `docs/research/premium-states.md`.
 - [x] Ditch a sub. A message says what you'll save, and **Undo** brings it back. (Built: §6.)

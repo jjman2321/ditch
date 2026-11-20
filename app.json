@@ -79,8 +79,7 @@
           "microphonePermission": false
         }
       ],
-      "expo-document-picker",
-      "expo-iap"
+      "expo-document-picker"
     ],
     "experiments": {
       "typedRoutes": true,

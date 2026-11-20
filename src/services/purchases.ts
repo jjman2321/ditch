@@ -105,13 +105,17 @@ export function refreshPlans(): Promise<void> {
 // ---------- connection, updates and entitlements ----------
 
 let connected: Promise<void> | null = null;
+let listening = false;
 function connect(m: Iap): Promise<void> {
+  if (!listening) {
+    // Before connecting, so nothing StoreKit replays at launch is missed. Renewals, Ask to Buy approvals,
+    // purchases from another device and unfinished transactions all arrive here: finish them and tell
+    // the app to check Pro again.
+    m.purchaseUpdatedListener((p) => void onStoreUpdate(m, p));
+    listening = true;
+  }
   connected ??= m.initConnection().then(
-    () => {
-      // Renewals, Ask to Buy approvals, purchases from another device and unfinished transactions all
-      // arrive here: finish them and tell the app to check Pro again.
-      m.purchaseUpdatedListener((p) => void onStoreUpdate(m, p));
-    },
+    () => {},
     (e) => {
       connected = null;
       throw e;
@@ -201,6 +205,7 @@ export async function purchase(planId: PlanId): Promise<PurchaseResult> {
   const m = loadIap();
   if (!m) return { status: 'unavailable' };
   buying++;
+  let done = false;
   try {
     await connect(m);
     const sku = PRODUCT_IDS[planId];
@@ -217,18 +222,19 @@ export async function purchase(planId: PlanId): Promise<PurchaseResult> {
     }
     const list: Purchase[] = Array.isArray(result) ? result : result ? [result] : [];
     const bought = list.find((p) => p.productId === sku);
-    if (!bought) {
+    if (bought?.purchaseState === 'pending') return { status: 'pending' };
+    if (bought) await m.finishTransaction({ purchase: bought, isConsumable: false }).catch(() => {});
+    else {
       // Nothing came back: believe only what the store now says we own.
-      const owned = await m.getAvailablePurchases({ onlyIncludeActiveItemsIOS: true });
-      if (activePlan(owned.filter((p) => p.productId === sku), Date.now()) !== planId) return { status: 'cancelled' };
-    } else {
-      if (bought.purchaseState === 'pending') return { status: 'pending' };
-      await m.finishTransaction({ purchase: bought, isConsumable: false }).catch(() => {});
+      const owned = (await m.getAvailablePurchases({ onlyIncludeActiveItemsIOS: true })).filter((p) => p.productId === sku);
+      if (activePlan(owned, Date.now()) !== planId) return { status: 'cancelled' };
     }
-    changed();
+    done = true;
     return { status: 'purchased' };
   } finally {
     buying--;
+    // After `buying` drops, so the app's check of Pro right after sees the new purchase.
+    if (done) changed();
   }
 }
 

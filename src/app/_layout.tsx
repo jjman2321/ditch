@@ -12,7 +12,7 @@ import { EditorProvider } from '@/editor/Editor';
 import { AppProvider, useApp } from '@/state/app';
 import { BankProvider } from '@/state/bank';
 import { OnboardingProvider } from '@/state/onboarding';
-import { Button, EDGE, Txt, brand, paletteFor } from '@/ui/sunflower';
+import { Button, EDGE, Txt, Wordmark, brand, paletteFor } from '@/ui/sunflower';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
@@ -27,17 +27,21 @@ export function ErrorBoundary({ error, retry }: { error: Error; retry: () => Pro
   const email = () =>
     Linking.openURL(`mailto:support@ditchsubs.app?subject=${encodeURIComponent('Something broke in Ditch')}&body=${encodeURIComponent(`What I was doing:\n\n\n—\n${detail}`)}`).catch(() => {});
   return (
+    // A bare screen, so it's centred under the ditch wordmark like the other empty states (owner, Nov 20).
     <View style={{ flex: 1, backgroundColor: p.bg, padding: EDGE, justifyContent: 'center' }}>
-      <Txt v="title" accessibilityRole="header">
-        Something went wrong.
-      </Txt>
-      <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
-        Your list is safe. Tap Try again. If it keeps happening, screenshot this and send it to us.
-      </Txt>
+      <View style={{ alignItems: 'center' }}>
+        <Wordmark size={34} color={p.fg} />
+        <Txt v="title" accessibilityRole="header" center style={{ marginTop: 22 }}>
+          Something went wrong.
+        </Txt>
+        <Txt v="leadS" tone="fg2" center style={{ marginTop: 8, maxWidth: 340 }}>
+          Your list is safe. Tap Try again. If it keeps happening, screenshot this and send it to us.
+        </Txt>
+      </View>
       <Button label="Try again" onPress={() => void retry()} style={{ marginTop: 24 }} />
       <Button kind="secondary" label="Go to my list" onPress={() => router.replace('/(tabs)')} style={{ marginTop: 10 }} />
       <Button kind="text" label="Email us" onPress={email} />
-      <Txt v="fine" tone="mute" selectable style={{ marginTop: 20, fontSize: 12, lineHeight: 16 }}>
+      <Txt v="fine" tone="mute" selectable center style={{ marginTop: 20, fontSize: 12, lineHeight: 16 }}>
         {detail}
       </Txt>
     </View>

@@ -32,6 +32,8 @@ describe('sample bank data (Expo Go / web preview)', () => {
       await m.exchangePublicToken();
     }
     await expect(m.createLinkToken()).rejects.toMatchObject({ code: 'bank_limit' });
+    // Update mode (reconnect, a new account at the bank) works on a bank already counted.
+    expect(await m.createLinkToken({ mode: 'update', linkId: 'sample-bank-1', newAccounts: true })).toMatchObject({ mode: 'update' });
     const first = await m.syncBank();
     expect(first.links[0].added.length).toBeGreaterThan(10);
     expect((await m.syncBank()).links[0].added).toEqual([]);

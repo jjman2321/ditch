@@ -22,6 +22,8 @@ export type SyncHandlers = {
   markDitched: (subId: string) => void;
   reconnect: (linkId: string) => void;
   later: (linkId: string) => void;
+  addAccounts: (linkId: string) => void;
+  laterAccounts: (linkId: string) => void;
   answer: (key: string, yes: boolean) => void;
   howToCancel: () => void;
 };
@@ -75,6 +77,16 @@ export function SyncCardView({ card, today, h }: { card: SyncCard; today: DateOn
       <Notice amber>
         <Head dot logo={<BankTile bank={bankOf(l)} size={36} name={l.name} />} title={`Sign back in to ${l.name}.`} line="Banks do this every few months. Your list and reminders still work." />
         <Pair a={{ label: 'Reconnect', onPress: () => h.reconnect(l.id), hint: `Opens ${l.name}’s sign-in` }} b={{ label: 'Later', onPress: () => h.later(l.id), hint: 'Hides this for 3 days' }} />
+      </Notice>
+    );
+  }
+  if (card.kind === 'newAccounts') {
+    // Plaid NEW_ACCOUNTS_AVAILABLE: same look as the reconnect card.
+    const l = card.link;
+    return (
+      <Notice amber>
+        <Head dot logo={<BankTile bank={bankOf(l)} size={36} name={l.name} />} title={`New account at ${l.name}`} line="Add it so Ditch can check it too." />
+        <Pair a={{ label: 'Add it', onPress: () => h.addAccounts(l.id), hint: `Opens ${l.name}’s sign-in` }} b={{ label: 'Not now', onPress: () => h.laterAccounts(l.id), hint: 'Hides this for 30 days' }} />
       </Notice>
     );
   }

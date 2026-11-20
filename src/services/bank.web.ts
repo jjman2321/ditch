@@ -2,7 +2,7 @@
 // sample data, so screens can be laid out and screenshotted.
 
 import { today } from './clock';
-import { createBankMock, type BankSyncResponse, type EntitlementSyncResponse } from './bankShared';
+import { createBankMock, type BankSyncResponse, type EntitlementSyncResponse, type LinkTokenRequest } from './bankShared';
 
 export * from './bankShared';
 
@@ -17,8 +17,8 @@ export function syncEntitlements(_transactions: string[], _renewals: string[] = 
   return mock.syncEntitlements();
 }
 export const listBanks = () => mock.listBanks();
-export const createLinkToken = (_opts?: { mode: 'new' } | { mode: 'update'; linkId: string }) => mock.createLinkToken();
+export const createLinkToken = (opts?: LinkTokenRequest) => mock.createLinkToken(opts);
 export const exchangePublicToken = (_publicToken: string, _provider?: 'plaid' | 'stripe') => mock.exchangePublicToken();
-export const syncBank = (_linkId?: string): Promise<BankSyncResponse> => mock.syncBank();
+export const syncBank = (_linkId?: string, _repaired?: string): Promise<BankSyncResponse> => mock.syncBank();
 export async function confirmBankSync(_res: BankSyncResponse): Promise<void> {}
 export const removeBank = (linkId?: string) => mock.removeBank(linkId);

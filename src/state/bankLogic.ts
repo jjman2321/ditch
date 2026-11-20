@@ -7,7 +7,7 @@
 //   Undo removes the sub and its key stays remembered, so it never comes back.
 // - Unsure finds are only added after a Yes.
 // - A price change or a "looks cancelled" is only ever a card: nothing changes without a tap.
-// - One sync card on Home at a time: reconnect > price change > looks cancelled > check these > trial recap.
+// - One sync card on Home at a time: reconnect > new account > price change > looks cancelled > check these > trial recap.
 
 import { addDays, daysBetween, type DateOnly } from '@/domain/dates';
 import { formatMoney, yearlyMinor } from '@/domain/money';
@@ -22,6 +22,8 @@ export const MAX_LINKS = 3;
 export const FOUND_TAG_DAYS = 7;
 /** "Later" on the reconnect card hides it this long. */
 export const LATER_DAYS = 3;
+/** "Not now" on the new-account card hides it this long. */
+export const NEW_ACCOUNTS_LATER_DAYS = 30;
 /** The added toast stays this long (and until dismissed while VoiceOver is on). */
 export const TOAST_MS = 8000;
 /** The trial recap shows from day 5 of the 7-day trial: 2 days or fewer left. */
@@ -41,6 +43,10 @@ export type BankLink = {
   checkedAt: string | null;
   /** Reconnect card hidden until this day ("Later"). */
   laterUntil: DateOnly | null;
+  /** The bank has an account not shared with Ditch yet (Plaid NEW_ACCOUNTS_AVAILABLE). */
+  newAccounts?: boolean;
+  /** New-account card hidden until this day ("Not now"). */
+  newAccountsLaterUntil?: DateOnly | null;
 };
 
 /** One thing the bank added or the user said yes to, kept for the results screen and the trial recap. */
@@ -153,7 +159,20 @@ export function laterLink(s: BankState, id: string, today: DateOnly): BankState 
   return { ...s, links: s.links.map((l) => (l.id === id ? { ...l, laterUntil: addDays(today, LATER_DAYS) } : l)) };
 }
 
+/** "Not now" on the new-account card: hidden for 30 days. Settings still shows it. */
+export function laterNewAccounts(s: BankState, id: string, today: DateOnly): BankState {
+  return { ...s, links: s.links.map((l) => (l.id === id ? { ...l, newAccountsLaterUntil: addDays(today, NEW_ACCOUNTS_LATER_DAYS) } : l)) };
+}
+
+/** The new accounts were shared (update mode with Account Select): the card and the Settings line go. */
+export function clearNewAccounts(s: BankState, id: string, accounts?: string | null): BankState {
+  return { ...s, links: s.links.map((l) => (l.id === id ? { ...l, newAccounts: false, newAccountsLaterUntil: null, ...(accounts ? { accounts } : {}) } : l)) };
+}
+
 export const needsSignIn = (l: BankLink) => l.status === 'needs_relogin' || l.status === 'expiring' || l.status === 'error';
+
+/** The bank has a new account to add, and nothing else stands in the way (Settings → Bank connections shows "New account found"). */
+export const newAccountsWaiting = (l: BankLink) => !!l.newAccounts && !needsSignIn(l) && l.status !== 'removing';
 
 export function linkName(s: BankState, id: string | null | undefined): string {
   return s.links.find((l) => l.id === id)?.name ?? (s.links.length === 1 ? s.links[0].name : 'your bank');
@@ -178,7 +197,12 @@ export function applySync(s: BankState, res: BankSyncResponse, subs: Sub[], opts
   const byLink = new Map(res.links.map((l) => [l.linkId, l]));
   const links = s.links.map((l) => {
     const r = byLink.get(l.id);
-    return r ? { ...l, status: r.status, checkedAt: r.ready ? opts.nowIso : l.checkedAt, laterUntil: r.status === 'active' ? null : l.laterUntil } : l;
+    if (!r) return l;
+    // New accounts: the server's word when it sends one (older servers and the practice bank don't). Once it's
+    // cleared, "Not now" is forgotten too, so the next new account shows right away.
+    const na = r.newAccounts ?? l.newAccounts;
+    const newAccts = na === undefined ? {} : { newAccounts: na, newAccountsLaterUntil: na ? (l.newAccountsLaterUntil ?? null) : null };
+    return { ...l, status: r.status, checkedAt: r.ready ? opts.nowIso : l.checkedAt, laterUntil: r.status === 'active' ? null : l.laterUntil, ...newAccts };
   });
 
   const r = analyzeBank(txns, subs, s.memory, opts.today);
@@ -277,12 +301,13 @@ export function dismiss(s: BankState, key: string): BankState {
 
 export type SyncCard =
   | { kind: 'reconnect'; key: string; link: BankLink }
+  | { kind: 'newAccounts'; key: string; link: BankLink }
   | { kind: 'price'; key: string; change: PriceChange; sub: Sub; bank: string }
   | { kind: 'cancelled'; key: string; gone: LooksCancelled; sub: Sub }
   | { kind: 'check'; key: string; items: (Found & { linkId: string | null })[] }
   | { kind: 'recap'; key: string; trialEnds: DateOnly; found: number; totals: { currency: string; yearlyMinor: number }[]; bank: string; caught: Caught | null };
 
-const ORDER: SyncCard['kind'][] = ['reconnect', 'price', 'cancelled', 'check', 'recap'];
+const ORDER: SyncCard['kind'][] = ['reconnect', 'newAccounts', 'price', 'cancelled', 'check', 'recap'];
 
 export const priceKey = (c: PriceChange) => `bank-price:${c.subId}:${c.toMinor}:${c.date}`;
 export const cancelKey = (c: LooksCancelled) => `bank-gone:${c.subId}:${c.expected}`;
@@ -303,6 +328,9 @@ export function syncCards(s: BankState, subs: Sub[], today: DateOnly, trialEnds:
   const out: SyncCard[] = [];
   const subById = new Map(subs.map((x) => [x.id, x]));
   for (const link of s.links) if (needsSignIn(link) && !(link.laterUntil && link.laterUntil > today)) out.push({ kind: 'reconnect', key: `bank-relogin:${link.id}`, link });
+  // A bank that needs a sign-in shows only Reconnect; the new account waits until it's back.
+  for (const link of s.links)
+    if (newAccountsWaiting(link) && !(link.newAccountsLaterUntil && link.newAccountsLaterUntil > today)) out.push({ kind: 'newAccounts', key: `bank-newaccounts:${link.id}`, link });
   for (const c of s.priceChanges) {
     const sub = subById.get(c.subId);
     // Only while the list still has the old price (Update clears it), and never twice.

@@ -1,5 +1,5 @@
 // Settings → Bank connections (design/v32 screen 12, spec h). Each bank with its status in words,
-// Reconnect right on the row when it needs a sign-in, up to 3 banks. No "check now" (banks update
+// Reconnect right on the row when it needs a sign-in (Add when the bank has a new account), up to 3 banks. No "check now" (banks update
 // a few times a day). Tap a bank (or the VoiceOver action) to disconnect: one sheet that says what
 // stays. Test builds also get the practice bank's switches, to try every Home card.
 
@@ -12,7 +12,8 @@ import { DEV_TOOLS } from '@/dev/flags';
 import { shortDate } from '@/domain/dates';
 import { Group, Row, SettingsPage } from '@/settings/Parts';
 import { bankOf, useBank } from '@/state/bank';
-import { MAX_LINKS, canAddLink, linkStatusWords, needsSignIn, type BankLink } from '@/state/bankLogic';
+import { BankApiError } from '@/services/bank';
+import { MAX_LINKS, canAddLink, linkStatusWords, needsSignIn, newAccountsWaiting, type BankLink } from '@/state/bankLogic';
 import { tell } from '@/ui/alert';
 import { Button, Card, ChevronRight, F, Plus, RowDivider, Sheet, Txt, brand, haptic, usePalette } from '@/ui/sunflower';
 
@@ -32,6 +33,18 @@ export default function BankConnections() {
       tell('Back on', `${l.name} is connected again. Ditch caught up on what it missed.`);
     } catch {
       // It used to fail silently (audit, Nov 20).
+      tell(`Couldn’t reach ${l.name}`, 'Check your connection and try again in a bit.');
+    }
+  };
+
+  // The bank has a new account: its sign-in opens with Account Select, and the line goes once it's added.
+  const addAccounts = async (l: BankLink) => {
+    haptic.select();
+    try {
+      await bank.addAccounts(l.id);
+    } catch (e) {
+      // Closing the bank's sheet without finishing isn't an error.
+      if (e instanceof BankApiError && e.code === 'link_closed') return;
       tell(`Couldn’t reach ${l.name}`, 'Check your connection and try again in a bit.');
     }
   };
@@ -57,9 +70,11 @@ export default function BankConnections() {
       {links.length ? (
         <Card style={{ marginTop: 18 }}>
           {links.map((l, i) => {
-            const st = linkStatusWords(l, now);
-            const color = st.tone === 'ok' ? p.ok : st.tone === 'warn' ? p.amber : p.mute;
             const broken = needsSignIn(l);
+            // Same place as the reconnect state: an amber dot, the line, and the button on the row.
+            const fresh = newAccountsWaiting(l);
+            const st = fresh ? { text: 'New account found', tone: 'warn' as const } : linkStatusWords(l, now);
+            const color = st.tone === 'ok' ? p.ok : st.tone === 'warn' ? p.amber : p.mute;
             return (
               <View key={l.id}>
                 {i ? <RowDivider inset={64} /> : null}
@@ -68,8 +83,12 @@ export default function BankConnections() {
                     accessibilityRole="button"
                     accessibilityLabel={`${l.name}${l.accounts ? `, ${l.accounts.replace(' · ', ', ')}` : ''}, ${st.text}`}
                     accessibilityHint="Opens disconnect"
-                    accessibilityActions={broken ? [{ name: 'activate' }, { name: 'reconnect', label: 'Reconnect' }] : [{ name: 'activate' }]}
-                    onAccessibilityAction={(e) => (e.nativeEvent.actionName === 'reconnect' ? void reconnect(l) : setLeaving(l))}
+                    accessibilityActions={
+                      broken ? [{ name: 'activate' }, { name: 'reconnect', label: 'Reconnect' }] : fresh ? [{ name: 'activate' }, { name: 'addAccounts', label: 'Add new account' }] : [{ name: 'activate' }]
+                    }
+                    onAccessibilityAction={(e) =>
+                      e.nativeEvent.actionName === 'reconnect' ? void reconnect(l) : e.nativeEvent.actionName === 'addAccounts' ? void addAccounts(l) : setLeaving(l)
+                    }
                     onPress={() => setLeaving(l)}
                     style={({ pressed }) => ({ flex: 1, minHeight: 72, flexDirection: 'row', alignItems: 'center', gap: 12, paddingLeft: 14, paddingVertical: 12, opacity: pressed ? 0.7 : 1 })}
                   >
@@ -84,13 +103,13 @@ export default function BankConnections() {
                         </Txt>
                       ) : null}
                       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 1 }}>
-                        {broken ? <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: p.amber }} /> : null}
+                        {broken || fresh ? <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: p.amber }} /> : null}
                         <Txt v="sub" color={color} style={{ fontSize: 13, lineHeight: 18, fontFamily: F.semi }}>
                           {st.text}
                         </Txt>
                       </View>
                     </View>
-                    {broken ? null : <ChevronRight color={p.mute} size={16} />}
+                    {broken || fresh ? null : <ChevronRight color={p.mute} size={16} />}
                   </Pressable>
                   {broken ? (
                     <Pressable
@@ -109,6 +128,26 @@ export default function BankConnections() {
                     >
                       <Txt v="label" color={p.ctaFg} style={{ fontSize: 14 }}>
                         Reconnect
+                      </Txt>
+                    </Pressable>
+                  ) : fresh ? (
+                    <Pressable
+                      accessibilityRole="button"
+                      accessibilityLabel={`Add new account at ${l.name}`}
+                      onPress={() => void addAccounts(l)}
+                      style={({ pressed }) => ({
+                        minHeight: 44,
+                        minWidth: 44,
+                        borderRadius: 22,
+                        paddingHorizontal: 18,
+                        backgroundColor: p.cta,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        opacity: pressed ? 0.8 : 1,
+                      })}
+                    >
+                      <Txt v="label" color={p.ctaFg} style={{ fontSize: 14 }}>
+                        Add
                       </Txt>
                     </Pressable>
                   ) : null}
@@ -151,6 +190,7 @@ export default function BankConnections() {
           <Row label="Practice: Netflix charges more" chevron={false} onPress={() => void practice('price', 'Netflix charged $22.99 today. Check the card on Home.')} />
           <Row label="Practice: Hulu stops charging" chevron={false} onPress={() => void practice('cancelled', 'No Hulu charge for 40 days. Check the card on Home.')} />
           <Row label="Practice: bank signs Ditch out" chevron={false} onPress={() => void practice('relogin', 'The practice bank needs a sign-in. Check Home and this page.')} />
+          <Row label="Practice: bank finds a new account" chevron={false} onPress={() => void practice('newaccounts', 'The practice bank has a new account. Check Home and this page.')} />
         </Group>
       ) : null}
 

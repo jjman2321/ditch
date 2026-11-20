@@ -29,9 +29,11 @@ import {
   answerSuggestion,
   applySync,
   bankToKv,
+  clearNewAccounts,
   dismiss,
   emptyBank,
   laterLink,
+  laterNewAccounts,
   parseBank,
   priceKey,
   redoFind,
@@ -67,6 +69,10 @@ type BankValue = {
   runSync: (opts?: { toast?: boolean; onboarding?: boolean; repaired?: string }) => Promise<{ added: Sub[] }>;
   reconnect: (linkId: string) => Promise<void>;
   later: (linkId: string) => Promise<void>;
+  /** The bank has a new account: its sign-in opens in update mode with Account Select, so the person can tick it. */
+  addAccounts: (linkId: string) => Promise<void>;
+  /** "Not now" on the new-account card: hidden for 30 days. */
+  laterAccounts: (linkId: string) => Promise<void>;
   disconnect: (linkId?: string) => Promise<void>;
   /** Undo an auto-add: the sub goes and never comes back. */
   undo: (subId: string) => Promise<void>;
@@ -249,6 +255,17 @@ export function BankProvider({ children }: { children: ReactNode }) {
         await runSync({ repaired: linkId });
       },
       later: (linkId: string) => put(laterLink(ref.current, linkId, clockToday())),
+      addAccounts: async (linkId: string) => {
+        // Same connection, opened in update mode with Account Select: the person ticks the new account. No exchange.
+        const { linkToken } = await bank.createLinkToken({ mode: 'update', linkId, newAccounts: true });
+        let accounts: string | null = null;
+        if (bank.BANK_LIVE) accounts = (await signIn(linkToken)).accounts;
+        await put(clearNewAccounts(ref.current, linkId, accounts));
+        // Like reconnect: wait for a sync in flight, then send ours, which also clears the flag on the server.
+        await inFlight.current?.catch(() => {});
+        await runSync({ repaired: linkId });
+      },
+      laterAccounts: (linkId: string) => put(laterNewAccounts(ref.current, linkId, clockToday())),
       disconnect: async (linkId?: string) => {
         await bank.removeBank(linkId).catch(() => {});
         await put(removeLink(ref.current, linkId));
@@ -314,7 +331,7 @@ type DemoKit = {
   app: { setPro: (plan: 'yearly' | null, o?: { startTrial?: boolean }) => Promise<void>; addSub: (s: Sub) => Promise<void> };
 };
 
-/** ?bank=connected|toast|price|cancelled|reconnect|recap|check: a practice Chase in that state. */
+/** ?bank=connected|toast|price|cancelled|reconnect|newaccounts|recap|check: a practice Chase in that state. */
 async function runDemo(kind: string, kit: DemoKit) {
   const today: DateOnly = clockToday();
   const chase = bankEntry('chase')!;
@@ -352,4 +369,6 @@ async function runDemo(kind: string, kit: DemoKit) {
     for (const c of kit.ref.current.priceChanges) await kit.put(dismiss(kit.ref.current, priceKey(c)));
   }
   if (kind === 'price' || kind === 'cancelled' || kind === 'reconnect') await kit.apply(bank.practiceSync(kind === 'reconnect' ? 'relogin' : kind, kit.ref.current.links, today, 1));
+  // The bank opened a new account (Plaid NEW_ACCOUNTS_AVAILABLE).
+  if (kind === 'newaccounts') await kit.apply(bank.practiceSync('newaccounts', kit.ref.current.links, today, 1));
 }

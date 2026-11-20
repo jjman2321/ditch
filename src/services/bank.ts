@@ -11,7 +11,16 @@
 import { requireOptionalNativeModule } from 'expo-modules-core';
 
 import { today } from './clock';
-import { BankApiError, createBankMock, type BankListResponse, type BankSyncResponse, type EntitlementSyncResponse, type ExchangeResponse, type LinkTokenResponse } from './bankShared';
+import {
+  BankApiError,
+  createBankMock,
+  type BankListResponse,
+  type BankSyncResponse,
+  type EntitlementSyncResponse,
+  type ExchangeResponse,
+  type LinkTokenRequest,
+  type LinkTokenResponse,
+} from './bankShared';
 
 export * from './bankShared';
 
@@ -119,9 +128,12 @@ export function listBanks(): Promise<BankListResponse> {
   return API_URL ? call('bank-list') : mock.listBanks();
 }
 
-/** A Link token to open the bank's sign-in. `update` re-logs-in an existing bank (same connection). */
-export function createLinkToken(opts: { mode: 'new' } | { mode: 'update'; linkId: string } = { mode: 'new' }): Promise<LinkTokenResponse> {
-  return API_URL ? call('bank-link-token', opts) : mock.createLinkToken();
+/**
+ * A Link token to open the bank's sign-in. `update` re-logs-in an existing bank (same connection);
+ * with `newAccounts` it also lets the person tick the bank's new accounts (Plaid Account Select).
+ */
+export function createLinkToken(opts: LinkTokenRequest = { mode: 'new' }): Promise<LinkTokenResponse> {
+  return API_URL ? call('bank-link-token', opts) : mock.createLinkToken(opts);
 }
 
 /** After the bank sign-in succeeds: hand the one-time public token to the server. */

@@ -37,6 +37,7 @@ import { BankToastView, SyncCardView, type SyncHandlers } from '@/bank/HomeCards
 import { openUrl } from '@/ditch/CancelHelp';
 import { tell } from '@/ui/alert';
 import { useApp, useAppMoney } from '@/state/app';
+import { BankApiError } from '@/services/bank';
 import { useBank } from '@/state/bank';
 import { foundTagShows } from '@/state/bankLogic';
 import { BottomFade, Card, Chip, Gear, IconButton, Plus, RowDivider, SectionHeader, SurfaceContext, Txt, Wordmark, brand, haptic, useInsets, usePalette, usePageEdge } from '@/ui/sunflower';
@@ -178,7 +179,7 @@ export default function Home() {
   // Price watch (Pro): our checked price for their plan changed. Dismissed keys share the overlaps list.
   const change = useMemo(() => priceChanges(subs, priceRow).find((c) => !settings.dismissedOverlaps.includes(c.key)) ?? null, [subs, settings.dismissedOverlaps]);
   const dismiss = (key: string) => void app.updateSettings({ dismissedOverlaps: [...settings.dismissedOverlaps, key].slice(-DISMISSED_KEEP) });
-  // Bank sync (DECISIONS #70): one card at a time, reconnect > price change > looks cancelled > check these > trial recap.
+  // Bank sync (DECISIONS #70): one card at a time, reconnect > new account > price change > looks cancelled > check these > trial recap.
   const bank = useBank();
   const sync = bank.cards[0] ?? null;
   // At most two cards above the list on every phone, so the list starts on the first screen:
@@ -276,6 +277,13 @@ export default function Home() {
     markDitched: (id) => void ditch(id),
     reconnect: (id) => void bank.reconnect(id).catch(() => tell('Couldn’t reconnect', 'Check your connection and try again in a bit.')),
     later: (id) => void bank.later(id),
+    addAccounts: (id) =>
+      void bank.addAccounts(id).catch((e: unknown) => {
+        // Closing the bank's sheet without finishing isn't an error.
+        if (e instanceof BankApiError && e.code === 'link_closed') return;
+        tell(`Couldn’t reach ${bank.state.links.find((l) => l.id === id)?.name ?? 'your bank'}`, 'Check your connection and try again in a bit.');
+      }),
+    laterAccounts: (id) => void bank.laterAccounts(id),
     answer: (key, yes) => {
       haptic.select();
       void bank.answer(key, yes);

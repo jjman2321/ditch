@@ -9,12 +9,15 @@ import {
   applySync,
   bankToKv,
   canAddLink,
+  clearNewAccounts,
   dismiss,
   emptyBank,
   findTotals,
   foundTagShows,
   laterLink,
+  laterNewAccounts,
   linkStatusWords,
+  NEW_ACCOUNTS_LATER_DAYS,
   parseBank,
   rememberKeys,
   removeLink,
@@ -151,6 +154,76 @@ describe('Home sync cards', () => {
     const recap = syncCards(s, list, TODAY, '2026-11-21').find((c) => c.kind === 'recap');
     expect(recap).toMatchObject({ found: b.added.length, bank: 'Chase', caught: { name: 'Netflix', deltaMinor: 500 } });
     expect(syncCards(dismiss(s, recap!.key), list, TODAY, '2026-11-21').some((c) => c.kind === 'recap')).toBe(false);
+  });
+});
+
+describe('New account at the bank (Plaid NEW_ACCOUNTS_AVAILABLE)', () => {
+  const netflix = makeSub({ id: 'nflx', name: 'Netflix', catalogId: 'netflix', cycle: 'monthly', anchor: '2026-12-10', dateSource: 'next', amountMinor: 1799, currency: 'USD' });
+  const hulu = makeSub({ id: 'hulu', name: 'Hulu', catalogId: 'hulu', cycle: 'monthly', anchor: '2026-12-12', dateSource: 'next', amountMinor: 999, currency: 'USD' });
+  const subs = [netflix, hulu];
+  const base = () => applySync(chase(), res(sampleBankTxns(TODAY)), subs, OPTS);
+  const kinds = (s: BankState, list: Sub[], today = TODAY, trialEnds: string | null = null) => syncCards(s, list, today, trialEnds).map((c) => c.kind);
+
+  it('applySync takes the flag from the server; a server that says nothing keeps what the phone had', () => {
+    const b = base();
+    const on = applySync(b.state, practiceSync('newaccounts', b.state.links, TODAY, 1), subs, OPTS).state;
+    expect(on.links[0]).toMatchObject({ newAccounts: true, newAccountsLaterUntil: null });
+    // Older server / practice bank: no newAccounts in the entry.
+    expect(applySync(on, res([]), subs, OPTS).state.links[0].newAccounts).toBe(true);
+    // Cleared on the server: gone, and "Not now" is forgotten with it.
+    const hidden = laterNewAccounts(on, 'l1', TODAY);
+    const off = applySync(hidden, res([], { newAccounts: false }), subs, OPTS).state;
+    expect(off.links[0]).toMatchObject({ newAccounts: false, newAccountsLaterUntil: null });
+    // A link that never had it isn't touched.
+    expect('newAccounts' in applySync(chase(), res([]), subs, OPTS).state.links[0]).toBe(false);
+  });
+
+  it('ranks right after reconnect: reconnect > new account > price > looks cancelled > check these > trial recap', () => {
+    const b = base();
+    const list = withAdded(subs, b.added);
+    // A second bank that needs a sign-in, so both bank cards can wait at once.
+    let s = addLink(b.state, { id: 'l2', bankId: 'amex', name: 'Amex', status: 'active', accounts: null, connectedOn: TODAY });
+    s = applySync(s, practiceSync('price', s.links, TODAY, 1), list, OPTS).state;
+    s = applySync(s, practiceSync('cancelled', s.links, TODAY, 2), list, OPTS).state;
+    s = applySync(s, practiceSync('newaccounts', s.links, TODAY, 3), list, OPTS).state;
+    s = applySync(s, { links: [{ linkId: 'l2', institutionName: 'Amex', status: 'needs_relogin', ready: true, added: [], modified: [], removed: [], syncToken: null }] }, list, OPTS).state;
+    expect(kinds(s, list, TODAY, '2026-11-21')).toEqual(['reconnect', 'newAccounts', 'price', 'cancelled', 'check', 'recap']);
+    const card = syncCards(s, list, TODAY)[1];
+    expect(card).toMatchObject({ kind: 'newAccounts', key: 'bank-newaccounts:l1', link: { id: 'l1', name: 'Chase' } });
+    // Home shows the first: with the reconnect put off, the new-account card is on top.
+    expect(kinds(laterLink(s, 'l2', TODAY), list)[0]).toBe('newAccounts');
+  });
+
+  it('"Not now" hides it for 30 days, then it\'s back; adding it clears it for good', () => {
+    const b = base();
+    const s = applySync(b.state, practiceSync('newaccounts', b.state.links, TODAY, 1), subs, OPTS).state;
+    expect(kinds(s, subs)).toContain('newAccounts');
+    expect(NEW_ACCOUNTS_LATER_DAYS).toBe(30);
+    const later = laterNewAccounts(s, 'l1', TODAY);
+    expect(later.links[0].newAccountsLaterUntil).toBe('2026-12-19');
+    expect(kinds(later, subs)).not.toContain('newAccounts');
+    expect(kinds(later, subs, '2026-12-18')).not.toContain('newAccounts');
+    expect(kinds(later, subs, '2026-12-19')).toContain('newAccounts');
+    // Added (update mode with Account Select): gone, and the bank's accounts line is updated when Plaid says.
+    const added = clearNewAccounts(s, 'l1', 'Checking ending 1005 · Savings ending 2231');
+    expect(added.links[0]).toMatchObject({ newAccounts: false, newAccountsLaterUntil: null, accounts: 'Checking ending 1005 · Savings ending 2231' });
+    expect(kinds(added, subs)).not.toContain('newAccounts');
+    expect(clearNewAccounts(s, 'l1', null).links[0].accounts).toBe(s.links[0].accounts);
+    // It's saved with the bank.
+    expect(parseBank(bankToKv(later)).links[0]).toEqual(later.links[0]);
+  });
+
+  it('hidden while the same bank needs a sign-in: Reconnect first, then the new account', () => {
+    const b = base();
+    let s = applySync(b.state, practiceSync('newaccounts', b.state.links, TODAY, 1), subs, OPTS).state;
+    s = applySync(s, practiceSync('relogin', s.links, TODAY, 2), subs, OPTS).state;
+    expect(s.links[0]).toMatchObject({ status: 'needs_relogin', newAccounts: true });
+    expect(kinds(s, subs)).toEqual(['reconnect', 'check']);
+    // "Later" on the reconnect card doesn't let the new-account card through either.
+    expect(kinds(laterLink(s, 'l1', TODAY), subs)).toEqual(['check']);
+    // Signed back in: now the new account shows.
+    s = applySync(s, practiceSync('back', s.links, TODAY, 3), subs, OPTS).state;
+    expect(kinds(s, subs)[0]).toBe('newAccounts');
   });
 });
 

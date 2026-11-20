@@ -15,6 +15,8 @@ export type BankLinkInfo = {
   needsReloginSince: string | null;
   /** The bank has new charges waiting (the app checks on open and in background refresh). */
   updatesAvailable: boolean;
+  /** The bank has an account not shared with Ditch yet (Plaid NEW_ACCOUNTS_AVAILABLE). Missing from older servers. */
+  newAccounts?: boolean;
   createdAt: string;
 };
 
@@ -31,6 +33,8 @@ export type SyncedLink = {
   linkId: string;
   institutionName: string | null;
   status: BankLinkStatus;
+  /** The bank has an account not shared with Ditch yet. Missing from older servers (keep what the phone had). */
+  newAccounts?: boolean;
   /** False while the bank's history is still loading (first minutes after connecting). */
   ready: boolean;
   added: ServerTxn[];
@@ -41,6 +45,8 @@ export type SyncedLink = {
 
 export type BankSyncResponse = { links: SyncedLink[] };
 export type BankListResponse = { links: BankLinkInfo[]; access: BankAccess; maxLinks: number };
+/** What bank-link-token takes: a new bank, or update mode on one (`newAccounts`: with Account Select, to share new accounts). */
+export type LinkTokenRequest = { mode: 'new' } | { mode: 'update'; linkId: string; newAccounts?: boolean };
 export type LinkTokenResponse = { linkToken: string; expiration: string | null; provider: 'plaid' | 'stripe'; mode: 'new' | 'update' };
 export type ExchangeResponse = { link: BankLinkInfo; replaced: string | null };
 export type EntitlementSyncResponse = {
@@ -120,7 +126,7 @@ export function sampleBankTxns(today: DateOnly, bank = 0): ServerTxn[] {
 }
 
 /** Test builds only: the practice bank's next sync, so every Home card can be tried before real banks. */
-export type PracticeEvent = 'new' | 'price' | 'cancelled' | 'relogin' | 'back';
+export type PracticeEvent = 'new' | 'price' | 'cancelled' | 'relogin' | 'back' | 'newaccounts';
 
 export function practiceSync(kind: PracticeEvent, links: { id: string; name: string }[], today: DateOnly, seq = Date.now()): BankSyncResponse {
   const first = links[0];
@@ -138,6 +144,7 @@ export function practiceSync(kind: PracticeEvent, links: { id: string; name: str
   let modified: ServerTxn[] = [];
   let removed: string[] = [];
   let status: BankLinkStatus = 'active';
+  let newAccounts: boolean | undefined;
   if (kind === 'new') {
     // A new one that's sure: two Disney+ charges a month apart.
     added = [txn('dis1', addDays(today, -31), 'DISNEY PLUS 888-905-7888', 'Disney+', 1199), txn('dis2', addDays(today, -1), 'DISNEY PLUS 888-905-7888', 'Disney+', 1199)];
@@ -150,8 +157,11 @@ export function practiceSync(kind: PracticeEvent, links: { id: string; name: str
     modified = [{ id: 's-hulu-1', date: addDays(today, -40), text: 'HULU 877-8244858 CA', merchantName: 'Hulu', amountMinor: 999, currency: 'USD', pending: false }];
   } else if (kind === 'relogin') {
     status = 'needs_relogin';
+  } else if (kind === 'newaccounts') {
+    // The bank opened a new account (Plaid NEW_ACCOUNTS_AVAILABLE).
+    newAccounts = true;
   }
-  return { links: [{ linkId: first.id, institutionName: first.name, status, ready: true, added, modified, removed, syncToken: null }] };
+  return { links: [{ linkId: first.id, institutionName: first.name, status, ...(newAccounts ? { newAccounts } : {}), ready: true, added, modified, removed, syncToken: null }] };
 }
 
 export const SAMPLE_BANK: BankLinkInfo = {
@@ -172,7 +182,9 @@ export function createBankMock(today: () => DateOnly) {
     async listBanks(): Promise<BankListResponse> {
       return { links, access, maxLinks: 3 };
     },
-    async createLinkToken(): Promise<LinkTokenResponse> {
+    async createLinkToken(opts: LinkTokenRequest = { mode: 'new' }): Promise<LinkTokenResponse> {
+      // Update mode (reconnect, add new accounts) works on a bank already counted.
+      if (opts.mode === 'update') return { linkToken: opts.newAccounts ? 'link-sample-update-accounts' : 'link-sample-update', expiration: null, provider: 'plaid', mode: 'update' };
       if (links.length >= 3) throw new BankApiError(409, 'bank_limit');
       return { linkToken: 'link-sample', expiration: null, provider: 'plaid', mode: 'new' };
     },

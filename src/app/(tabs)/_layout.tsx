@@ -4,7 +4,7 @@ import { Tabs } from 'expo-router';
 import { type ColorValue } from 'react-native';
 import Svg, { Path, Rect } from 'react-native-svg';
 
-import { F, paletteFor, useInsets, useIsDark, usePalette } from '@/ui/sunflower';
+import { EDGE, F, paletteFor, useInsets, useIsDark, usePageEdge, usePalette } from '@/ui/sunflower';
 
 type IconProps = { color: ColorValue; focused: boolean };
 
@@ -39,6 +39,7 @@ function StampIcon({ color, focused }: IconProps) {
 export default function TabsLayout() {
   const p = paletteFor('cream', useIsDark());
   const insets = useInsets();
+  const edge = usePageEdge();
   // 54pt + the home indicator on every device (UIKit's is 49). No home indicator (SE): 6pt under the labels.
   const bottomPad = Math.max(insets.bottom, 6);
   const bar = { height: 54 + bottomPad, paddingBottom: bottomPad };
@@ -48,7 +49,8 @@ export default function TabsLayout() {
         headerShown: false,
         tabBarActiveTintColor: p.fg,
         tabBarInactiveTintColor: p.mute,
-        tabBarStyle: { backgroundColor: p.bg, borderTopColor: p.rule, ...bar },
+        // iPad / open Duo: the three tabs sit under the content's centred column, not at the far edges (audit, Nov 20).
+        tabBarStyle: { backgroundColor: p.bg, borderTopColor: p.rule, ...bar, paddingHorizontal: edge > EDGE ? edge : 0 },
         // The built-in item gives the label only 11pt (49pt bar - 28pt icon box - padding),
         // which cut the bottoms off our letters. The bar is 5pt taller here, so a 14pt label fits.
         tabBarLabelStyle: { fontFamily: F.semi, fontSize: 11, lineHeight: 14 },

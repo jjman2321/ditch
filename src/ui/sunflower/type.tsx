@@ -77,7 +77,8 @@ export function Txt({
       maxFontSizeMultiplier={maxFontSizeMultiplier ?? max}
       lineBreakStrategyIOS="push-out"
       {...rest}
-      style={[prettyWrap, t, { color: color ?? p[tone] }, num && tabular, center && { textAlign: 'center' }, style]}
+      // Not on one-line text: on the web it switched wrapping back on, so the preview wrapped what the iPhone cuts with "…".
+      style={[rest.numberOfLines === 1 ? null : prettyWrap, t, { color: color ?? p[tone] }, num && tabular, center && { textAlign: 'center' }, style]}
     />
   );
 }

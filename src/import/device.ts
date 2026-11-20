@@ -6,7 +6,7 @@
 import { Platform } from 'react-native';
 
 type TextExtractor = { isSupported: boolean; extractTextFromImage: (uri: string) => Promise<string[]> };
-type PdfText = { isAvailable: () => boolean; extractText: (path: string) => Promise<string> };
+type PdfText = { isAvailable: () => boolean; extractText: (path: string, password?: string) => Promise<string> };
 
 function load<T>(get: () => T): T | null {
   try {
@@ -30,15 +30,31 @@ export const canReadPdfs = !!pdf?.isAvailable?.();
 export async function readImage(uri: string): Promise<string[]> {
   if (!ocr?.isSupported) throw new Error('unsupported');
   const lines = await ocr.extractTextFromImage(uri);
-  return lines.flatMap((l) => l.split(/\r?\n/)).map((l) => l.trim()).filter(Boolean);
+  return lines
+    .flatMap((l) => l.split(/\r?\n/))
+    .map((l) => l.trim())
+    .filter(Boolean);
 }
 
-/** A picked statement file as text: CSV directly, PDF through PDFKit. */
-export async function readDocument(asset: { uri: string; name?: string | null; mimeType?: string | null }): Promise<string> {
+/** Why a file couldn't be read, so the screen can say what to do next. */
+export type ReadFailure = 'pdf-unsupported' | 'password' | 'wrong-password' | 'broken';
+
+/** Sorts a reader error. The PDF reader puts PASSWORD_REQUIRED / INCORRECT_PASSWORD on `.code`. */
+export function readFailure(e: unknown): ReadFailure {
+  const err = e as { code?: string; message?: string };
+  if (err?.message === 'pdf-unsupported') return 'pdf-unsupported';
+  if (err?.code === 'PASSWORD_REQUIRED') return 'password';
+  if (err?.code === 'INCORRECT_PASSWORD') return 'wrong-password';
+  if (/password/i.test(err?.message ?? '')) return 'password';
+  return 'broken';
+}
+
+/** A picked statement file as text: CSV directly, PDF through PDFKit (with the password, if it has one). */
+export async function readDocument(asset: { uri: string; name?: string | null; mimeType?: string | null }, password?: string): Promise<string> {
   const isPdf = /pdf/i.test(asset.mimeType ?? '') || /\.pdf$/i.test(asset.name ?? '');
   if (isPdf) {
     if (!pdf?.isAvailable?.()) throw new Error('pdf-unsupported');
-    return pdf.extractText(asset.uri.replace(/^file:\/\//, ''));
+    return pdf.extractText(asset.uri.replace(/^file:\/\//, ''), password);
   }
   const res = await fetch(asset.uri);
   return res.text();

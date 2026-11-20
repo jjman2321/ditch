@@ -15,15 +15,19 @@ import { canReadImages, readImage } from '@/import/device';
 import { SAMPLE_APPLE_LINES } from '@/import/samples';
 import { setFindResult } from '@/import/session';
 import { useApp } from '@/state/app';
-import { Button, External, Txt, usePalette } from '@/ui/sunflower';
+import { Button, External, Notice, usePalette } from '@/ui/sunflower';
 
-const CANT_READ = 'This iPhone can’t read screenshots yet. Use a statement or pick them yourself.';
+type Problem = { title: string; line: string; action?: 'statement' };
+// This build has no text reader: point to what works now.
+const NO_READER: Problem = { title: 'Screenshots need the newest Ditch', line: 'Use a bank statement for now.', action: 'statement' };
+// The reader ran but failed on this picture.
+const BAD_PICTURE: Problem = { title: 'We couldn’t read that picture', line: 'Try a fresh screenshot of the Subscriptions page.' };
 
 export default function AppleScreenshot() {
   const p = usePalette();
   const app = useApp();
   const [busy, setBusy] = useState(false);
-  const [problem, setProblem] = useState<string | null>(null);
+  const [problem, setProblem] = useState<Problem | null>(null);
   const dayFirst = !['US', 'CA'].includes(app.settings.country ?? 'US');
   // iPhones with a Home button (SE, 8) are 667pt tall and screenshot with side + Home.
   const homeButton = useWindowDimensions().height <= 667;
@@ -32,7 +36,7 @@ export default function AppleScreenshot() {
   const finish = (lines: string[]) => {
     const found = readAppleSubscriptions(lines, app.today, app.settings.currency, dayFirst ? 'dmy' : 'mdy');
     if (!found.length) {
-      setProblem('We couldn’t read any subscriptions in that. Make sure it’s the Subscriptions list, then try again.');
+      setProblem({ title: 'No subscriptions in that one', line: 'Make sure it’s the Subscriptions list, then pick it again.' });
       return;
     }
     setFindResult({ found, source: 'apple', appleCharges: 0, note: null });
@@ -42,7 +46,7 @@ export default function AppleScreenshot() {
   const pick = async () => {
     // This build can't read screenshots: say so and point to the other ways, instead of a dead button.
     if (!canReadImages) {
-      setProblem(CANT_READ);
+      setProblem(NO_READER);
       return;
     }
     setProblem(null);
@@ -54,7 +58,7 @@ export default function AppleScreenshot() {
       for (const a of res.assets) lines.push(...(await readImage(a.uri)));
       finish(lines);
     } catch {
-      setProblem(CANT_READ);
+      setProblem(BAD_PICTURE);
     } finally {
       setBusy(false);
     }
@@ -66,6 +70,16 @@ export default function AppleScreenshot() {
       intro="Free trials show up there too, so we can remind you before they end."
       footer={
         <>
+          {/* Problems sit right above the buttons, so they're on screen even on an SE (audit, Nov 20). */}
+          {problem ? (
+            <Notice
+              title={problem.title}
+              line={problem.line}
+              action={problem.action === 'statement' ? 'Use a statement' : undefined}
+              onAction={() => router.replace('/find/statement')}
+              style={{ marginBottom: 10 }}
+            />
+          ) : null}
           <Button label="Open Apple subscriptions" hint="Opens outside Ditch" right={<External color={p.ctaFg} size={19} />} onPress={() => openUrl(APPLE_SUBSCRIPTIONS_URL)} />
           <Button kind="secondary" label={busy ? 'Reading…' : 'Pick screenshots'} disabled={busy} onPress={pick} style={{ marginTop: 6 }} />
           <PrivateNote />
@@ -85,11 +99,6 @@ export default function AppleScreenshot() {
       />
       <Steps steps={['Tap **Open Apple subscriptions** below.', `Take a screenshot: **${shot}**. Long list? Scroll and take another.`, 'Come back and tap **Pick screenshots**.']} />
       {busy ? <ActivityIndicator style={{ marginTop: 20 }} /> : null}
-      {problem ? (
-        <Txt v="body" style={{ marginTop: 16 }} accessibilityLiveRegion="polite">
-          {problem}
-        </Txt>
-      ) : null}
     </FindPage>
   );
 }

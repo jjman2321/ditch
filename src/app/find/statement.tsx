@@ -4,16 +4,24 @@
 import * as DocumentPicker from 'expo-document-picker';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Alert, Platform } from 'react-native';
 
 import { FindPage, PrivateNote, SHOW_SAMPLES } from '@/find/Parts';
 import { PhoneMock, Steps, type MockRow } from '@/find/Visual';
-import { readDocument } from '@/import/device';
+import { readDocument, readFailure, type ReadFailure } from '@/import/device';
 import { SAMPLE_STATEMENT } from '@/import/samples';
 import { setFindResult } from '@/import/session';
 import { readStatement } from '@/import/statement';
 import { useApp } from '@/state/app';
-import { Button, Segmented, Txt } from '@/ui/sunflower';
+import { Button, Notice, Segmented } from '@/ui/sunflower';
+
+type Asset = DocumentPicker.DocumentPickerAsset;
+type Problem = { title: string; line: string };
+const PROBLEMS = {
+  password: { title: 'This PDF has a password', line: 'Your bank’s PDFs often do. Type it once and we’ll read it. It isn’t saved.' },
+  noPdf: { title: 'PDFs need the newest Ditch', line: 'Export a CSV from your bank instead. That works now.' },
+  broken: { title: 'That file wouldn’t open', line: 'Download it again from your bank, or use the CSV.' },
+} satisfies Record<string, Problem>;
 
 type Source = 'bank' | 'card' | 'paypal';
 const SOURCES: { key: Source; label: string; screen: string; rows: MockRow[]; steps: string[] }[] = [
@@ -63,18 +71,60 @@ export default function Statement() {
   const [source, setSource] = useState<Source>('bank');
   const src = sources.find((x) => x.key === source) ?? sources[0];
   const [busy, setBusy] = useState(false);
-  const [problem, setProblem] = useState<string | null>(null);
+  const [problem, setProblem] = useState<Problem | null>(null);
+  const [locked, setLocked] = useState<Asset[]>([]);
   const dayFirst = !['US', 'CA'].includes(app.settings.country ?? 'US');
 
-  const finish = (text: string | string[]) => {
+  const finish = (text: string | string[], skipped = 0) => {
     const r = readStatement(text, app.today, app.settings.currency, dayFirst ? 'dmy' : 'mdy');
     if (!r.read) {
-      setProblem('We couldn’t find any charges in that file. Try the CSV export, or a different month.');
+      setProblem({ title: 'No charges in that file', line: 'Try the CSV export, or a different month.' });
       return;
     }
-    const note = r.found.length ? null : `We read ${r.read} charges but none repeat yet. Add 2–3 months to find more.`;
+    const skippedLine = skipped ? ` We couldn’t open ${skipped === 1 ? '1 file' : `${skipped} files`}, so we skipped ${skipped === 1 ? 'it' : 'them'}.` : '';
+    const note = r.found.length ? skippedLine.trim() || null : `We read ${r.read} charges but none repeat yet. Add 2–3 months to find more.${skippedLine}`;
     setFindResult({ found: r.found, source: 'statement', appleCharges: r.appleCharges, note });
     router.push('/find/review');
+  };
+
+  // Each file on its own, so one bad file doesn't sink the others (audit, Nov 20).
+  const read = async (assets: Asset[], password?: string) => {
+    setBusy(true);
+    setProblem(null);
+    const texts: string[] = [];
+    const failures: ReadFailure[] = [];
+    const needPassword: Asset[] = [];
+    for (const a of assets) {
+      try {
+        texts.push(await readDocument(a, password));
+      } catch (e) {
+        const why = readFailure(e);
+        if (why === 'password' || why === 'wrong-password') needPassword.push(a);
+        failures.push(why);
+      }
+    }
+    setBusy(false);
+    if (needPassword.length) {
+      setLocked(needPassword);
+      // A statement PDF with a password: ask for it right away (iPhone's own secure prompt).
+      if (Platform.OS === 'ios')
+        Alert.prompt(
+          failures.includes('wrong-password') ? 'That password didn’t work' : 'This PDF has a password',
+          'Type it once so we can read it. It isn’t saved.',
+          [
+            { text: 'Cancel', style: 'cancel', onPress: () => setProblem(PROBLEMS.password) },
+            { text: 'Open', onPress: (pw?: string) => void read(needPassword, pw ?? '') },
+          ],
+          'secure-text',
+        );
+      else setProblem(PROBLEMS.password);
+      if (!texts.length) return;
+    }
+    if (!texts.length) {
+      setProblem(failures.includes('pdf-unsupported') ? PROBLEMS.noPdf : PROBLEMS.broken);
+      return;
+    }
+    finish(texts, failures.length - needPassword.length);
   };
 
   const pick = async () => {
@@ -86,16 +136,7 @@ export default function Statement() {
       multiple: true,
     });
     if (res.canceled || !res.assets.length) return;
-    setBusy(true);
-    try {
-      const texts: string[] = [];
-      for (const a of res.assets.slice(0, 3)) texts.push(await readDocument(a));
-      finish(texts);
-    } catch (e) {
-      setProblem(String((e as Error).message).includes('pdf') ? 'Reading PDFs needs the new Ditch build. A CSV export works now.' : 'We couldn’t open that file. Try exporting it again as CSV.');
-    } finally {
-      setBusy(false);
-    }
+    await read(res.assets.slice(0, 3));
   };
 
   return (
@@ -104,6 +145,16 @@ export default function Statement() {
       intro="2–3 months finds the most: a monthly charge has to show up twice."
       footer={
         <>
+          {/* Problems sit right above the button, so they're on screen even on an SE (audit, Nov 20). */}
+          {problem ? (
+            <Notice
+              title={problem.title}
+              line={problem.line}
+              action={problem === PROBLEMS.password && locked.length && Platform.OS === 'ios' ? 'Enter password' : undefined}
+              onAction={() => void read(locked)}
+              style={{ marginBottom: 10 }}
+            />
+          ) : null}
           <Button label={busy ? 'Reading…' : 'Pick 1–3 files'} hint="CSV or PDF statements" disabled={busy} onPress={pick} />
           <PrivateNote text="Read on your iPhone. Never uploaded or kept." />
           {SHOW_SAMPLES ? <Button kind="text" label="Try with a sample (test builds)" onPress={() => finish(SAMPLE_STATEMENT)} /> : null}
@@ -115,11 +166,6 @@ export default function Statement() {
       <PhoneMock title={src.screen} rows={src.rows} label={`Picture of the ${src.screen} screen, with ${src.rows.find((r) => r.hi)?.text ?? ''} highlighted`} />
       <Steps steps={src.steps} />
       {busy ? <ActivityIndicator style={{ marginTop: 20 }} /> : null}
-      {problem ? (
-        <Txt v="body" style={{ marginTop: 16 }} accessibilityLiveRegion="polite">
-          {problem}
-        </Txt>
-      ) : null}
     </FindPage>
   );
 }

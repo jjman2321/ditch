@@ -22,3 +22,4 @@ export * from './Wordmark';
 export * from './KeyboardDone';
 export * from './BottomFade';
 export * from './motion';
+export * from './Notice';

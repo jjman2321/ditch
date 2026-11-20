@@ -1,8 +1,9 @@
 // The pure half of purchases (no native code, so Jest and the web preview can load it):
-// the static plans, turning App Store products into plans, trial eligibility, and which plan
-// the store says is active. src/services/purchases.ts does the StoreKit calls.
+// the static plans, turning RevenueCat's offering into plans, trial eligibility, and which plan
+// the "pro" entitlement gives. src/services/purchases.ts does the RevenueCat calls.
 
-import { ALL_PRODUCT_IDS, PRODUCT_IDS, planIdForProduct } from '@/config/products';
+import { PACKAGE_IDS, PACKAGE_TYPES, planIdForProduct } from '@/config/products';
+import { toDateOnly, type DateOnly } from '@/domain/dates';
 import { currencyDigits, roundMinor } from '@/domain/money';
 import type { ProPlan } from '@/domain/settings';
 
@@ -28,47 +29,35 @@ export const STATIC_PLANS: Plan[] = [
   { id: 'weekly', title: 'Weekly', priceString: '$6.99', priceMinor: 699, currency: 'USD', period: 'week', trialDays: 0 },
 ];
 
-/** The parts of an expo-iap product we read (iOS). */
+/** The parts of a RevenueCat store product we read (PurchasesStoreProduct). */
 export type StoreProduct = {
-  id: string;
-  displayPrice: string;
-  price?: number | null;
-  currency: string;
-  subscriptionOffers?: { type: string; paymentMode?: string | null; period?: { unit: string; value: number } | null; periodCount?: number | null }[] | null;
-  introductoryPricePaymentModeIOS?: string | null;
-  introductoryPriceNumberOfPeriodsIOS?: string | null;
-  introductoryPriceSubscriptionPeriodIOS?: string | null;
-  subscriptionGroupIdIOS?: string | null;
+  identifier: string;
+  priceString: string;
+  price: number;
+  currencyCode: string;
+  introPrice?: { price: number; periodUnit: string; periodNumberOfUnits: number; cycles: number } | null;
 };
 
-/** The parts of an expo-iap purchase (a StoreKit 2 transaction) we read. */
-export type StorePurchase = {
-  productId: string;
-  purchaseState?: string;
-  /** iOS: the transaction's signed JWS. */
-  purchaseToken?: string | null;
-  expirationDateIOS?: number | null;
-  revocationDateIOS?: number | null;
+/** The parts of a RevenueCat package we read (PurchasesPackage). */
+export type StorePackage = { identifier: string; packageType?: string; product: StoreProduct };
+
+/** The parts of RevenueCat's "pro" entitlement we read (PurchasesEntitlementInfo). */
+export type StoreEntitlement = {
+  isActive: boolean;
+  productIdentifier: string;
+  periodType?: string;
+  expirationDateMillis?: number | null;
 };
 
-const UNIT_DAYS: Record<string, number> = { day: 1, week: 7, month: 30, year: 365 };
+const UNIT_DAYS: Record<string, number> = { DAY: 1, WEEK: 7, MONTH: 30, YEAR: 365 };
 
-/** Length of the product's introductory free trial in days (0 when it has none). Doesn't check eligibility. */
+/** Length of the product's introductory free trial in days (0 when it has none, or it's a paid intro price). Doesn't check eligibility. */
 export function freeTrialDays(p: StoreProduct): number {
-  const intro = p.subscriptionOffers?.find((o) => o.type === 'introductory');
-  if (intro) {
-    if (intro.paymentMode !== 'free-trial' || !intro.period) return 0;
-    const unit = UNIT_DAYS[intro.period.unit];
-    if (!unit || !(intro.period.value > 0)) return 0;
-    return unit * intro.period.value * Math.max(1, intro.periodCount ?? 1);
-  }
-  // Older shape: the period is already normalized (7 days -> 1 week) and multiplied by the count.
-  if (p.introductoryPricePaymentModeIOS === 'free-trial') {
-    const unit = UNIT_DAYS[p.introductoryPriceSubscriptionPeriodIOS ?? ''];
-    const n = Number(p.introductoryPriceNumberOfPeriodsIOS);
-    if (unit && n > 0) return unit * n;
-  }
-  return 0;
+  const intro = p.introPrice;
+  if (!intro || intro.price !== 0) return 0;
+  const unit = UNIT_DAYS[intro.periodUnit?.toUpperCase()];
+  if (!unit || !(intro.periodNumberOfUnits > 0)) return 0;
+  return unit * intro.periodNumberOfUnits * Math.max(1, intro.cycles || 1);
 }
 
 /** The store's price in whole minor units, respecting the currency's decimals (JPY 0, USD 2). */
@@ -82,49 +71,55 @@ export function storePriceMinor(price: number, currency: string): number {
  * charge today instead of "$0 due today". Null when the product is missing a price.
  */
 export function planFromProduct(base: Plan, p: StoreProduct, introEligible: boolean | null): Plan | null {
-  if (typeof p.price !== 'number' || !Number.isFinite(p.price) || p.price < 0 || !p.currency || !p.displayPrice) return null;
+  if (typeof p.price !== 'number' || !Number.isFinite(p.price) || p.price < 0 || !p.currencyCode || !p.priceString) return null;
   return {
     ...base,
-    priceString: p.displayPrice,
-    priceMinor: storePriceMinor(p.price, p.currency),
-    currency: p.currency,
+    priceString: p.priceString,
+    priceMinor: storePriceMinor(p.price, p.currencyCode),
+    currency: p.currencyCode,
     trialDays: base.period !== 'once' && introEligible === true ? freeTrialDays(p) : 0,
   };
 }
 
+/** The offering's package for a plan: RevenueCat's standard identifier ($rc_annual...), else its package type. */
+export function packageFor(packages: StorePackage[], id: PlanId): StorePackage | null {
+  return packages.find((p) => p.identifier === PACKAGE_IDS[id]) ?? packages.find((p) => p.packageType === PACKAGE_TYPES[id]) ?? null;
+}
+
 /**
- * All three plans from the store, or null to keep the static ones. All or nothing, so the paywall
+ * All three plans from the offering, or null to keep the static ones. All or nothing, so the paywall
  * never mixes the store's currency with the static US prices.
  */
-export function plansFromStore(products: StoreProduct[], introEligible: boolean | null): Plan[] | null {
+export function plansFromStore(packages: StorePackage[], introEligible: boolean | null): Plan[] | null {
   const out: Plan[] = [];
   for (const base of STATIC_PLANS) {
-    const p = products.find((x) => x.id === PRODUCT_IDS[base.id]);
-    const plan = p ? planFromProduct(base, p, introEligible) : null;
+    const pkg = packageFor(packages, base.id);
+    const plan = pkg ? planFromProduct(base, pkg.product, introEligible) : null;
     if (!plan) return null;
     out.push(plan);
   }
   return new Set(out.map((p) => p.currency)).size === 1 ? out : null;
 }
 
-function isActive(p: StorePurchase, nowMs: number): boolean {
-  if (p.purchaseState === 'pending') return false;
-  if (p.revocationDateIOS != null) return false;
-  if (p.expirationDateIOS != null && p.expirationDateIOS <= nowMs) return false;
-  return true;
+/** RevenueCat's intro eligibility status: only ELIGIBLE (2) counts. UNKNOWN (0) and INELIGIBLE (1) don't. */
+export function isIntroEligible(status: unknown): boolean {
+  return status === 2;
 }
 
-const PRIORITY: PlanId[] = ['lifetime', 'yearly', 'weekly'];
-
-/** Which Pro plan the store's current entitlements give (Lifetime wins over a subscription), or null. */
-export function activePlan(purchases: StorePurchase[], nowMs: number): PlanId | null {
-  const ids = new Set(purchases.filter((p) => isActive(p, nowMs)).map((p) => planIdForProduct(p.productId)));
-  return PRIORITY.find((id) => ids.has(id)) ?? null;
+/**
+ * Which Pro plan the "pro" entitlement gives, or null when it isn't active. RevenueCat keeps it
+ * active through Apple's billing grace period. A product we don't know (e.g. Pro granted in the
+ * RevenueCat dashboard) counts as Lifetime when it never expires, else as Yearly.
+ */
+export function planFromEntitlement(e: StoreEntitlement | null | undefined): PlanId | null {
+  if (!e || !e.isActive) return null;
+  return planIdForProduct(e.productIdentifier) ?? (e.expirationDateMillis == null ? 'lifetime' : 'yearly');
 }
 
-/** The signed transactions (JWS) of our products, for the server's entitlement sync. */
-export function entitlementJws(purchases: StorePurchase[]): string[] {
-  return purchases.filter((p) => ALL_PRODUCT_IDS.includes(p.productId) && p.purchaseToken).map((p) => p.purchaseToken as string);
+/** The day a running free trial ends (date-only, local), so a restore can bring back the "Ditch Pro trial" entry. */
+export function trialEndFromEntitlement(e: StoreEntitlement | null | undefined): DateOnly | null {
+  if (!e || !e.isActive || e.periodType !== 'TRIAL' || e.expirationDateMillis == null) return null;
+  return toDateOnly(new Date(e.expirationDateMillis));
 }
 
 /**
@@ -140,16 +135,14 @@ export function reconcilePro(current: ProPlan | null, active: PlanId | null, opt
 
 export type PurchaseErrorKind = 'cancelled' | 'pending' | 'error';
 
-/** How a thrown StoreKit error should be treated: the person closed the sheet, Ask to Buy, or a real failure. */
-export function purchaseErrorKind(code: unknown): PurchaseErrorKind {
-  if (typeof code !== 'string') return 'error';
-  const c = code
-    .trim()
-    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
-    .replace(/_/g, '-')
-    .toLowerCase()
-    .replace(/^e-/, '');
-  if (c === 'user-cancelled' || c === 'user-canceled' || c === 'cancelled' || c === 'canceled') return 'cancelled';
-  if (c === 'deferred-payment' || c === 'pending') return 'pending';
+/**
+ * How a RevenueCat error should be treated: the person closed Apple's sheet (PURCHASE_CANCELLED_ERROR, "1"),
+ * Ask to Buy is waiting for a parent (PAYMENT_PENDING_ERROR, "20"), or a real failure.
+ */
+export function purchaseErrorKind(e: unknown): PurchaseErrorKind {
+  if (typeof e !== 'object' || e === null) return 'error';
+  const { code, userCancelled } = e as { code?: unknown; userCancelled?: unknown };
+  if (userCancelled === true || code === '1' || code === 1) return 'cancelled';
+  if (code === '20' || code === 20) return 'pending';
   return 'error';
 }

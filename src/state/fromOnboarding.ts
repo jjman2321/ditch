@@ -32,8 +32,8 @@ export function subFromPick(p: Picked, opts: { freePick: boolean; nowIso: string
   );
 }
 
-/** Ditch's own trial on the user's list, so it gets the same heads-ups (DECISIONS #15). */
-export function proTrialSub(today: DateOnly, nowIso: string): Sub {
+/** Ditch's own trial on the user's list, so it gets the same heads-ups (DECISIONS #15). `endsOn`: the store's own end date, when known. */
+export function proTrialSub(today: DateOnly, nowIso: string, endsOn?: DateOnly): Sub {
   const yearly = planById('yearly');
   return makeSub(
     {
@@ -44,7 +44,7 @@ export function proTrialSub(today: DateOnly, nowIso: string): Sub {
       currency: yearly.currency,
       cycle: 'yearly',
       priceSource: 'catalog',
-      anchor: addDays(today, yearly.trialDays),
+      anchor: endsOn ?? addDays(today, yearly.trialDays),
       dateSource: 'next',
       isTrial: true,
       source: 'trial',

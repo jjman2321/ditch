@@ -1,10 +1,15 @@
-// Jest has no StoreKit module, like Expo Go, the web preview and TestFlight builds made before
-// expo-iap: everything must behave exactly like before (static prices, nothing charged, no crash).
+// Jest has no RevenueCat native module (and no key), like Expo Go, the web preview and TestFlight builds
+// made before it: everything must behave exactly like before (static prices, nothing charged, no crash).
 
 import { PLANS, PURCHASES_LIVE, billedLabel, currentEntitlement, planById, purchase, restorePurchases, startPurchases } from '../purchases';
 
-describe('purchases without the StoreKit module', () => {
-  it('is not live and never loads expo-iap', () => {
+// Loading the SDK here would be the Nov 19 TestFlight crash: fail loudly if anything requires it.
+jest.mock('react-native-purchases', () => {
+  throw new Error('react-native-purchases must not load without its native module');
+});
+
+describe('purchases without RevenueCat', () => {
+  it('is not live and never loads react-native-purchases', () => {
     expect(PURCHASES_LIVE).toBe(false);
     expect(() => startPurchases()).not.toThrow();
   });

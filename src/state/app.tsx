@@ -75,7 +75,7 @@ type Actions = {
    * has the last word: launch and foreground checks set this to what StoreKit says (`preview` = a test build's
    * "Preview Pro", which the store doesn't know about, so it isn't switched off by those checks).
    */
-  setPro: (plan: ProPlan | null, opts?: { startTrial?: boolean; preview?: boolean }) => Promise<void>;
+  setPro: (plan: ProPlan | null, opts?: { startTrial?: boolean; preview?: boolean; trialEndsOn?: DateOnly | null }) => Promise<void>;
   finishOnboarding: (r: OnboardingResult) => Promise<void>;
   /** After a failed load: open the list again. */
   retryLoad: () => void;
@@ -250,13 +250,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
   // A test build's "Preview Pro" (Settings), which the App Store checks below leave alone. Not saved: a relaunch ends it.
   const previewRef = useRef(false);
   const setPro = useCallback(
-    async (plan: ProPlan | null, opts?: { startTrial?: boolean; preview?: boolean }) => {
+    async (plan: ProPlan | null, opts?: { startTrial?: boolean; preview?: boolean; trialEndsOn?: DateOnly | null }) => {
       previewRef.current = !!opts?.preview && plan !== null;
       const now = () => new Date().toISOString();
       await updateSettings({ proPlan: plan });
       const hasTrial = ref.current.subs.some((s) => isProTrial(s) && s.status === 'active');
       // No trial entry when this Apple Account can't get the free week (it was charged today instead).
       if (plan === 'yearly' && opts?.startTrial && !hasTrial && planById('yearly').trialDays > 0) await commit([proTrialSub(ref.current.today, now())]);
+      // A trial the store says is running (e.g. restored on a new phone): its entry, ending when the store says.
+      else if (plan === 'yearly' && opts?.trialEndsOn && !hasTrial) await commit([proTrialSub(ref.current.today, now(), opts.trialEndsOn)]);
       // Ditch's trial entry (and its "trial ends" reminders) only belongs to a yearly trial.
       const trials = ref.current.subs.filter((s) => isProTrial(s) && s.status === 'active');
       if (plan !== 'yearly' && trials.length) await commit(trials.map((s) => ({ ...s, status: 'deleted' as const, updatedAt: now() })));
@@ -269,15 +271,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [updateSettings, commit],
   );
 
-  // The App Store has the last word on Pro (StoreKit 2, DECISIONS #59): on launch, when the app comes back to
-  // the front, and after a purchase, restore or store update. No StoreKit in this build (Expo Go, web, older
-  // TestFlight builds) or no answer: nothing changes. Only after onboarding, which saves its own pick.
+  // The App Store, through RevenueCat (DECISIONS #79), has the last word on Pro: on launch, when the app comes
+  // back to the front, and after a purchase, restore or store update. No RevenueCat in this build (Expo Go, web,
+  // older TestFlight builds) or no answer: nothing changes. Only after onboarding, which saves its own pick.
   const checkPro = useCallback(async () => {
     if (!ref.current.ready || !ref.current.settings.onboardingDone) return;
     const ent = await currentEntitlement();
     if (!ent || !ref.current.ready || !ref.current.settings.onboardingDone) return;
     const change = reconcilePro(ref.current.settings.proPlan, ent.plan, { preview: previewRef.current });
-    if (change) await setPro(change.plan);
+    if (change) await setPro(change.plan, { trialEndsOn: ent.trialEndsOn });
   }, [setPro]);
 
   useEffect(() => {

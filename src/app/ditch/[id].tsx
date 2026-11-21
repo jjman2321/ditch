@@ -259,7 +259,8 @@ export default function Ditched() {
                 </Card>
               </Animated.View>
               {/* The money, on the yellow under the card like the website (option B, Nov 20): the one big thing on
-                  the screen. "once you cancel" stays: ditching doesn't cancel anything. */}
+                  the screen. Just "a year you won't pay." (owner, Nov 21): "Next, cancel it with Netflix." under the headline
+                  already says ditching doesn't cancel anything. */}
               <Animated.View style={[{ marginTop: compact ? 14 : 22 }, amountStyle]}>
                 {yearly !== null && sub.currency ? (
                   <>
@@ -273,7 +274,7 @@ export default function Ditched() {
                       {money(yearly, sub.currency)}
                     </Txt>
                     <Txt v="lead" style={{ fontSize: tiny ? 17 : 19, lineHeight: tiny ? 22 : 25, fontFamily: F.wideBold }}>
-                      {'a year you won’t pay,\nonce\u00A0you\u00A0cancel.'}
+                      {'a year you won’t pay.'}
                     </Txt>
                   </>
                 ) : (

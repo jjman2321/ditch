@@ -360,7 +360,7 @@ Web preview: add `&import=1` to the address. On the iPhone this needs the develo
 
 ## 1ab. Ditched screen option B (Nov 20, matches the website)
 - [ ] Hold Netflix on Home to ditch it. The card shows Netflix with a **filled black "✓ DITCHED" pill** (orange tick, yellow letters) and the last reminder. Nothing else in the card.
-- [ ] Under the card, on the yellow: a big **$239.88** and "a year you won't pay, once you cancel." The duck still pops up on the card's corner.
+- [ ] Under the card, on the yellow: a big **$239.88** and one line "a year you won't pay." (Nov 21: "once you cancel" dropped; "Next, cancel it with Netflix." at the top says it). The duck still pops up on the card's corner.
 - [ ] "Open Netflix to cancel", "I cancelled it" and "Open Apple subscriptions" are all on screen without scrolling, even on a small phone.
 - [ ] Dark mode: the tag is a yellow pill with black letters; the number is light.
 - [ ] Home and the Ditched tab: rows waiting to be cancelled show the same small filled tag.

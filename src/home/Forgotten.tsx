@@ -27,7 +27,7 @@ export function placeUrl(pl: Place, country?: string | null): string | undefined
 
 export const PLACES: Place[] = [
   { id: 'apple', title: 'Apple subscriptions', where: 'Everything billed to your Apple Account', url: APPLE_SUBSCRIPTIONS_URL },
-  { id: 'google', title: 'Google Play', where: 'Android or Google apps you’ve paid for', url: 'https://play.google.com/store/account/subscriptions' },
+  { id: 'google', title: 'Google Play', where: 'Opens your subscriptions', url: 'https://play.google.com/store/account/subscriptions' },
   { id: 'paypal', title: 'PayPal', where: 'Opens your automatic payments', url: 'https://www.paypal.com/myaccount/autopay/' },
   { id: 'amazon', title: 'Amazon', where: 'Opens Memberships & Subscriptions', url: 'https://www.amazon.com/yourmembershipsandsubscriptions' },
   { id: 'bank', title: 'Your bank or card app', where: 'The same amount, the same day, each month' },

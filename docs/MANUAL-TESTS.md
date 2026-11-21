@@ -808,7 +808,8 @@ Why: an app feels premium when the bad moments are handled well, not only the ha
 2. Tap that row, then close the sheet. The tag is gone from that row.
 3. Other rows the bank added keep their tag until you open them (or 7 days pass).
 
-## 1ae. Find your subscriptions: only links that open something (Nov 21)
-- [ ] Home → Find my subscriptions. Under "Or check the usual places" there are exactly 3 rows: Google Play, PayPal, Amazon. No "Your bank or card app", no "Your email".
-- [ ] Tap each one: it opens the right page (Google Play subscriptions, PayPal automatic payments, Amazon Memberships & Subscriptions).
-- [ ] On a smaller phone the list ends with some room at the bottom; dark mode looks right.
+## 1ae. Find your subscriptions: same cards as onboarding, logo links (Nov 21)
+- [ ] Home → Find my subscriptions. The cards look exactly like onboarding's "Where should we look?": My bank or card (US/Canada), Apple subscriptions "A screenshot of your list.", A bank statement "PDF or CSV from any bank.", each on one line with its tag.
+- [ ] Under "Or check the usual places" there are exactly 3 rows, each with its real logo: Google Play ("Opens your subscriptions"), PayPal, Amazon. No "Your bank or card app", no "Your email".
+- [ ] Tap each one: it opens the right page (Google Play subscriptions, PayPal automatic payments, Amazon Memberships & Subscriptions). The row dims while pressed.
+- [ ] Dark mode: logos sit cleanly on the dark card, text readable. iPhone SE: nothing cut off.

@@ -8,7 +8,7 @@ import { Pressable, ScrollView, View, type StyleProp, type ViewStyle } from 'rea
 import { Image } from 'expo-image';
 
 import { OnbRoot } from '@/onboarding/Parts';
-import { Bank, Button, Check, ChevronLeft, F, IconButton, STEP_HEADER_H, Sheet, Txt, Wordmark, brand, tileRadius, useInsets, usePageEdge, usePalette } from '@/ui/sunflower';
+import { Bank, Button, Check, ChevronLeft, F, IconButton, STEP_HEADER_H, Sheet, Txt, Wordmark, brand, tileRadius, useHeadlineGap, useInsets, usePageEdge, usePalette } from '@/ui/sunflower';
 
 import type { BankEntry } from './banks';
 
@@ -86,9 +86,11 @@ export function BankPage({ children, footer, onBack, scroll = true, brand: showB
   );
 }
 
-export function BigTitle({ children, style }: { children: string; style?: StyleProp<ViewStyle> }) {
+/** A bank page headline. `brandBar`: it sits under the wordmark bar, which needs more air (DECISIONS #85). */
+export function BigTitle({ children, style, brandBar = false }: { children: string; style?: StyleProp<ViewStyle>; brandBar?: boolean }) {
+  const gap = useHeadlineGap(brandBar);
   return (
-    <View style={style}>
+    <View style={[{ marginTop: gap }, style]}>
       <Txt v="title" accessibilityRole="header" style={{ fontSize: 32, lineHeight: 36 }}>
         {children}
       </Txt>

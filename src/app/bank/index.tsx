@@ -10,7 +10,7 @@ import { BankPage, BigTitle, TextLink, TickLine, WhatWeSee } from '@/bank/Parts'
 import { useBankFlow } from '@/bank/flow';
 import { setFindTarget } from '@/import/session';
 import { planById } from '@/services/purchases';
-import { Button, Txt } from '@/ui/sunflower';
+import { Button, GAP, Txt } from '@/ui/sunflower';
 
 export default function BankExplainer() {
   const flow = useBankFlow();
@@ -31,7 +31,7 @@ export default function BankExplainer() {
           </>
         }
       >
-        <BigTitle style={{ marginTop: 8 }}>US and Canada for now.</BigTitle>
+        <BigTitle brandBar>US and Canada for now.</BigTitle>
         <Txt v="leadS" tone="fg2" style={{ marginTop: 10 }}>
           Bank sync works with US and Canadian banks for now. Screenshots and statements work anywhere.
         </Txt>
@@ -57,16 +57,16 @@ export default function BankExplainer() {
       }
     >
       {/* Owner, Nov 20: "Your bank already knows" didn't make sense. Says what happens instead (9/10 of 3 options). */}
-      <BigTitle style={{ marginTop: 8 }}>{'Connect once.\nWe find the rest.'}</BigTitle>
-      <Txt v="leadS" tone="fg2" style={{ marginTop: 10 }}>
+      <BigTitle brandBar>{'Connect once.\nWe find the rest.'}</BigTitle>
+      <Txt v="leadS" tone="fg2" style={{ marginTop: GAP.lead }}>
         Ditch finds what you pay for, adds it to your list and spots new ones as they start.
       </Txt>
-      <View style={{ marginTop: 18 }}>
+      <View style={{ marginTop: 20 }}>
         <TickLine>Read-only. Ditch can’t move money.</TickLine>
         <TickLine>You sign in with your bank. We never see your password.</TickLine>
         <TickLine>Disconnect any time in Settings.</TickLine>
       </View>
-      <Txt v="fine" tone="mute" style={{ marginTop: 8 }}>
+      <Txt v="fine" tone="mute" style={{ marginTop: 14 }}>
         Apple subscriptions show as one “Apple” charge. A screenshot of your Apple list names them.
       </Txt>
       <TextLink label="What we see" onPress={() => setSee(true)} hint="Opens a short note on what Ditch reads" />

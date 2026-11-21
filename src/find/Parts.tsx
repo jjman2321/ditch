@@ -6,7 +6,7 @@ import { Platform, Pressable, ScrollView, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { DEV_TOOLS } from '@/dev/flags';
-import { BottomFade, ChevronLeft, ChevronRight, F, Lock, Txt, brand, useInsets, usePageEdge, usePalette, usePressScale } from '@/ui/sunflower';
+import { BottomFade, ChevronLeft, ChevronRight, F, GAP, Lock, Txt, brand, useHeadlineGap, useInsets, usePageEdge, usePalette, usePressScale } from '@/ui/sunflower';
 
 /** Sample buttons: web preview and test builds only, never the App Store build. */
 export const SHOW_SAMPLES = Platform.OS === 'web' || DEV_TOOLS;
@@ -28,6 +28,7 @@ export function FindPage({ title, back = 'Back', intro, children, footer }: { ti
   const p = usePalette();
   const insets = useInsets();
   const edge = usePageEdge();
+  const gap = useHeadlineGap();
   return (
     <View style={{ flex: 1, backgroundColor: p.bg }}>
       <View style={{ flex: 1 }}>
@@ -44,11 +45,11 @@ export function FindPage({ title, back = 'Back', intro, children, footer }: { ti
               {back}
             </Txt>
           </Pressable>
-          <Txt v="title" accessibilityRole="header" style={{ marginTop: 2, fontSize: 28, lineHeight: 34 }}>
+          <Txt v="title" accessibilityRole="header" style={{ marginTop: gap, fontSize: 28, lineHeight: 34 }}>
             {title}
           </Txt>
           {intro ? (
-            <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
+            <Txt v="leadS" tone="fg2" style={{ marginTop: GAP.lead }}>
               {intro}
             </Txt>
           ) : null}

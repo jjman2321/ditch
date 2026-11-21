@@ -23,3 +23,4 @@ export * from './KeyboardDone';
 export * from './BottomFade';
 export * from './motion';
 export * from './Notice';
+export * from './spacing';

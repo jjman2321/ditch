@@ -6,7 +6,7 @@ import { router } from 'expo-router';
 import { Children, useRef, type ReactNode } from 'react';
 import { PixelRatio, Pressable, ScrollView, View, useWindowDimensions } from 'react-native';
 
-import { Card, ChevronLeft, ChevronRight, F, Txt, usePalette, useInsets, usePageEdge } from '@/ui/sunflower';
+import { Card, ChevronLeft, ChevronRight, F, GAP, Txt, usePalette, useInsets, usePageEdge } from '@/ui/sunflower';
 
 /** Back button, large title and the grey intro: the top of every Settings page. */
 export function SettingsHeader({ title, back = 'Settings', intro }: { title: string; back?: string; intro?: string }) {
@@ -25,11 +25,11 @@ export function SettingsHeader({ title, back = 'Settings', intro }: { title: str
           {back}
         </Txt>
       </Pressable>
-      <Txt v="displayM" accessibilityRole="header" style={{ fontSize: 32, lineHeight: 40, marginTop: 2 }}>
+      <Txt v="displayM" accessibilityRole="header" style={{ fontSize: 32, lineHeight: 40, marginTop: GAP.listTitle }}>
         {title}
       </Txt>
       {intro ? (
-        <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
+        <Txt v="leadS" tone="fg2" style={{ marginTop: GAP.lead }}>
           {intro}
         </Txt>
       ) : null}

@@ -15,7 +15,7 @@ import { addDays, daysBetween, parseDate, shortDate, weekdayDate } from '@/domai
 import { DaySheet, nextChargeLabel } from '@/onboarding/DaySheet';
 import { OnbRoot } from '@/onboarding/Parts';
 import { byYearlyDesc, chargeOf, onboardingToday, pickHasDate, useOnboarding, usePickedList, type Picked } from '@/state/onboarding';
-import { Button, F, LogoTile, StepHeaderSpace, Txt, brand, haptic, useFrame, usePalette } from '@/ui/sunflower';
+import { Button, F, GAP, LogoTile, StepHeaderSpace, Txt, brand, haptic, useFrame, usePalette } from '@/ui/sunflower';
 
 const CYCLE_LABEL = { weekly: 'Weekly', biweekly: 'Every 2 weeks', monthly: 'Monthly', quarterly: 'Every 3 months', semiannual: 'Every 6 months', yearly: 'Yearly' } as const;
 
@@ -109,10 +109,10 @@ export default function Dates() {
       <View style={{ flex: 1, paddingTop: f.top, paddingHorizontal: f.edge }}>
         <StepHeaderSpace />
         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: footerH + 8 }}>
-          <Txt v="title" accessibilityRole="header" style={[{ marginTop: f.tiny ? 10 : 16 }, f.tiny && { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 }]}>
+          <Txt v="title" accessibilityRole="header" style={[{ marginTop: f.tiny ? 10 : f.small ? GAP.headlineSmall : GAP.headline }, f.tiny && { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 }]}>
             {'Which day does each one\u00A0charge?'}
           </Txt>
-          <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
+          <Txt v="leadS" tone="fg2" style={{ marginTop: GAP.lead }}>
             It’s in your bank app or the receipt email. Skip any you’re not sure of.
           </Txt>
           <View style={{ marginTop: f.tiny ? 12 : f.small ? 16 : 20, backgroundColor: p.card, borderRadius: 20, paddingHorizontal: 16 }}>

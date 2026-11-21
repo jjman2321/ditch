@@ -16,7 +16,7 @@ import { useApp } from '@/state/app';
 import { useOnboarding } from '@/state/onboarding';
 import { setFindTarget } from '@/import/session';
 import { OnbRoot } from '@/onboarding/Parts';
-import { Bank, ChevronLeft, IconButton, ListCheck, PhoneList, STEP_HEADER_H, StatementIcon, Txt, brand, paletteFor, useFrame, useInsets, useIsDark, usePageEdge } from '@/ui/sunflower';
+import { Bank, ChevronLeft, IconButton, ListCheck, PhoneList, GAP, STEP_HEADER_H, StatementIcon, Txt, brand, useHeadlineGap, paletteFor, useFrame, useInsets, useIsDark, usePageEdge } from '@/ui/sunflower';
 
 // No entrance of its own (motion pass 2): the cards arrive with the push itself, ready to tap on
 // the first frame. A stagger after the slide read as "slides in, then builds again". Each card
@@ -38,6 +38,7 @@ export default function Where() {
   const app = useApp();
   const { country } = useOnboarding();
   const bank = showBankSync(country ?? app.settings.country, app.settings.currency);
+  const gap = useHeadlineGap();
   return (
     <OnbRoot surface="cream">
       <ScrollView
@@ -49,10 +50,10 @@ export default function Where() {
             <ChevronLeft color={chevron} />
           </IconButton>
         </View>
-        <Txt v="title" accessibilityRole="header" style={{ marginTop: 16 }}>
+        <Txt v="title" accessibilityRole="header" style={{ marginTop: gap }}>
           {'Where should we\u00A0look?'}
         </Txt>
-        <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
+        <Txt v="leadS" tone="fg2" style={{ marginTop: GAP.lead }}>
           Pick one. You check them all first.
         </Txt>
         {/* Four equal cards, most complete first (owner, Nov 19: the old card style, order matters).

@@ -64,7 +64,7 @@ export default function BankPick() {
 
   return (
     <BankPage brand>
-      <BigTitle style={{ marginTop: 8 }}>{'Which bank pays\nyour subs?'}</BigTitle>
+      <BigTitle brandBar>{'Which bank pays\nyour subs?'}</BigTitle>
       <View
         style={{
           marginTop: 16,

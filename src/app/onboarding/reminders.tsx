@@ -19,7 +19,7 @@ import { useFirstReminders } from '@/onboarding/useFirstReminders';
 import { getNotifStatus, requestNotifPermission, type NotifStatus } from '@/services/notifications';
 import { isPriced as isPricedPick } from '@/state/picks';
 import { byYearlyDesc, onboardingToday, useMoney, useOnboarding, usePickedList } from '@/state/onboarding';
-import { Bell, Button, Camera, Duck, F, Flashlight, ForceLightContext, Lock, NotificationPreview, STEP_HEADER_H, Txt, brand, haptic, useFrame, usePalette } from '@/ui/sunflower';
+import { Bell, Button, Camera, Duck, F, Flashlight, GAP as PAGE_GAP, ForceLightContext, Lock, NotificationPreview, STEP_HEADER_H, Txt, brand, haptic, useFrame, usePalette } from '@/ui/sunflower';
 
 const NB = ' ';
 
@@ -150,7 +150,7 @@ export default function Reminders() {
           v="title"
           accessibilityRole="header"
           style={[
-            { marginTop: f.tiny ? 10 : 16 },
+            { marginTop: f.tiny ? 10 : f.small ? PAGE_GAP.headlineSmall : PAGE_GAP.headline },
             f.tiny
               ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 }
               : f.small
@@ -162,7 +162,7 @@ export default function Reminders() {
         >
           {`Get a reminder\nbefore you’re${NB}charged.`}
         </Txt>
-        <Txt v="leadS" tone="fg2" style={{ marginTop: 8 }}>
+        <Txt v="leadS" tone="fg2" style={{ marginTop: PAGE_GAP.lead }}>
           {'3 days and 1 day before. You pick the time.\nOnly about your subscriptions.'}
         </Txt>
 

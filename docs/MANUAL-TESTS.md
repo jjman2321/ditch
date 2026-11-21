@@ -813,3 +813,12 @@ Why: an app feels premium when the bad moments are handled well, not only the ha
 - [ ] Under "Or check the usual places" there are exactly 3 rows, each with its real logo: Google Play ("Opens your subscriptions"), PayPal, Amazon. No "Your bank or card app", no "Your email".
 - [ ] Tap each one: it opens the right page (Google Play subscriptions, PayPal automatic payments, Amazon Memberships & Subscriptions). The row dims while pressed.
 - [ ] Dark mode: logos sit cleanly on the dark card, text readable. iPhone SE: nothing cut off.
+
+## 1af. Page spacing rule (Nov 21, DECISIONS #85)
+- [ ] Bank intro ("Connect once. We find the rest.") and bank picker: clear air (about a thumb's width) between the ditch logo bar and the headline. Not cramped, not floating.
+- [ ] Find my subscriptions, Screenshot your Apple list, Drop in a statement: the headline sits a little lower under "< Back" than before; intro line has a bit more room under the headline.
+- [ ] Onboarding steps (Where should we look?, What do you pay for?, Which day…, Get a reminder…): titles a touch lower, same on every step.
+- [ ] Settings and its pages (Ditch Pro, Bank connections, Currency…): one-line title a little further from "< Settings", like Apple's own Settings.
+- [ ] Bank finds nothing ("Nothing repeating at …"): duck, title and line are centred, like "Didn't find your bank?".
+- [ ] iPhone SE (or Display Zoom): Screenshot your Apple list shows all 3 steps above the buttons (no picture on SE); every other page still fits.
+

@@ -118,14 +118,15 @@ export default function BankResults() {
         }
       >
         <View style={{ flex: 0.6 }} />
-        <View style={{ alignItems: 'flex-start' }}>
+        {/* Empty states are centred, like "Didn't find your bank?" and Find review (DECISIONS #85). */}
+        <View style={{ alignItems: 'center' }}>
           <Duck width={92} bottom={0} style={{ position: 'relative' }} />
         </View>
         {/* Long bank names shrink a little instead of a 3rd line (audit, Nov 20). */}
-        <Txt v="title" accessibilityRole="header" numberOfLines={2} adjustsFontSizeToFit minimumFontScale={0.75} style={[{ marginTop: 18, fontSize: 32, lineHeight: 36 }, narrow && { fontSize: 27, lineHeight: 32 }]}>
+        <Txt v="title" accessibilityRole="header" numberOfLines={2} adjustsFontSizeToFit minimumFontScale={0.75} center style={[{ marginTop: 18, fontSize: 32, lineHeight: 36 }, narrow && { fontSize: 27, lineHeight: 32 }]}>
           {`Nothing repeating at ${name}.`}
         </Txt>
-        <Txt v="leadS" tone="fg2" style={{ marginTop: 10 }}>
+        <Txt v="leadS" tone="fg2" center style={{ marginTop: 10 }}>
           Your subscriptions might be on another card.
         </Txt>
       </BankPage>

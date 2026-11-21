@@ -89,6 +89,7 @@ export default function AppleScreenshot() {
     >
       {/* The screen they'll see, then three taps (no arrow chains, owner Nov 19). */}
       <PhoneMock
+        hideOnSmall
         title="Subscriptions"
         rows={[
           { text: 'Netflix', sub: 'Renews Dec 3' },

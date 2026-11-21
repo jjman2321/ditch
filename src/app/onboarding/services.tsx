@@ -21,7 +21,7 @@ import { PlanSheet } from '@/onboarding/PlanSheet';
 import { PriceSheet } from '@/onboarding/PriceSheet';
 import { isPriced, onboardingToday, totalsFor, useCountry, useMoney, useOnboarding, usePickedList, type Picked } from '@/state/onboarding';
 import { setOwnPrice } from '@/state/picks';
-import { Button, ChevronRight, EASE_OUT, F, LogoTile, Plus, POP, PRESS, RELEASE, Search, StepHeaderSpace, TickPop, Txt, haptic, radius, useFrame, usePalette } from '@/ui/sunflower';
+import { Button, ChevronRight, EASE_OUT, F, GAP, LogoTile, Plus, POP, PRESS, RELEASE, Search, StepHeaderSpace, TickPop, Txt, haptic, radius, useFrame, usePalette } from '@/ui/sunflower';
 
 const NB = ' ';
 
@@ -304,7 +304,7 @@ export default function Services() {
         <Txt
           v="title"
           accessibilityRole="header"
-          style={[{ marginTop: f.tiny ? 10 : 16 }, f.tiny ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 } : f.small ? { fontSize: 24, lineHeight: 30, letterSpacing: -0.7 } : null]}
+          style={[{ marginTop: f.tiny ? 10 : f.small ? GAP.headlineSmall : GAP.headline }, f.tiny ? { fontSize: 22, lineHeight: 27, letterSpacing: -0.6 } : f.small ? { fontSize: 24, lineHeight: 30, letterSpacing: -0.7 } : null]}
         >
           {`What do you pay${NB}for?`}
         </Txt>

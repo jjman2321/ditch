@@ -11,11 +11,13 @@ import { F, Txt, brand, usePalette } from '@/ui/sunflower';
 export type MockRow = { text: string; sub?: string; hi?: boolean };
 
 /** A phone screen cut off at the bottom of a tinted panel, showing one screen of another app. */
-export function PhoneMock({ title, rows, label }: { title: string; rows: MockRow[]; label: string }) {
+/** `hideOnSmall`: on an SE the steps matter more than the picture (the Apple page's 3 steps + 2 buttons don't fit with it). */
+export function PhoneMock({ title, rows, label, hideOnSmall = false }: { title: string; rows: MockRow[]; label: string; hideOnSmall?: boolean }) {
   const p = usePalette();
   // Shorter on small phones (SE), so the steps start on the first screen.
   const height = useWindowDimensions().height;
   const small = height < 720;
+  if (small && hideOnSmall) return null;
   const frame = p.dark ? '#3A362F' : brand.ink;
   const screen = p.dark ? '#1C1A16' : '#FFFFFF';
   return (

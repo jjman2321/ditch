@@ -71,7 +71,8 @@
     "fx": "node scripts/build-fx.mjs",
     "rights": "node scripts/build-rights.mjs",
     "preview:build": "EXPO_PUBLIC_APP_ENV=web-preview EXPO_PUBLIC_DEV_TOOLS=1 expo export -p web --output-dir dist-web",
-    "preview:deploy": "npm run preview:build && cd preview-site && ../web/node_modules/.bin/wrangler deploy"
+    "preview:deploy": "npm run preview:build && cd preview-site && ../web/node_modules/.bin/wrangler deploy",
+    "update:testflight": "EXPO_PUBLIC_APP_ENV=testflight EXPO_PUBLIC_DEV_TOOLS=1 DITCH_SKIP_ASSOCIATED_DOMAINS=1 npx -y eas-cli@latest update --channel testflight --environment production --platform ios --non-interactive --message"
   },
   "private": true,
   "jest": {

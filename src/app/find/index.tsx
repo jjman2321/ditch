@@ -41,7 +41,9 @@ export default function FindHub() {
         Or check the usual places
       </Txt>
       <View style={{ backgroundColor: p.card, borderRadius: 20, paddingHorizontal: 16, borderWidth: p.dark ? 1 : 0, borderColor: p.cardBorder }}>
-        {PLACES.filter((x) => x.id !== 'apple').map((pl, i) => (
+        {/* Only rows that open something (owner, Nov 21): the bank and statement cards above cover "your bank app",
+            and a row that does nothing on tap feels broken. Apple has its own card. */}
+        {PLACES.filter((x) => x.id !== 'apple' && x.url).map((pl, i) => (
           <Pressable
             key={pl.id}
             accessibilityRole={pl.url ? 'link' : 'text'}

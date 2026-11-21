@@ -807,3 +807,8 @@ Why: an app feels premium when the bad moments are handled well, not only the ha
 1. Test build, Settings → Bank connections → Practice: a new subscription. Back to Home: the new row has the FOUND IN YOUR BANK tag.
 2. Tap that row, then close the sheet. The tag is gone from that row.
 3. Other rows the bank added keep their tag until you open them (or 7 days pass).
+
+## 1ae. Find your subscriptions: only links that open something (Nov 21)
+- [ ] Home → Find my subscriptions. Under "Or check the usual places" there are exactly 3 rows: Google Play, PayPal, Amazon. No "Your bank or card app", no "Your email".
+- [ ] Tap each one: it opens the right page (Google Play subscriptions, PayPal automatic payments, Amazon Memberships & Subscriptions).
+- [ ] On a smaller phone the list ends with some room at the bottom; dark mode looks right.

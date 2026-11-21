@@ -41,7 +41,7 @@ export default function Where() {
   return (
     <OnbRoot surface="cream">
       <ScrollView
-        contentContainerStyle={[{ flexGrow: 1, paddingTop: insets.top, paddingHorizontal: edge, paddingBottom: 24 }, tablet && { flexGrow: 1, justifyContent: 'center', paddingBottom: insets.top + 24 }]}
+        contentContainerStyle={[{ paddingTop: insets.top, paddingHorizontal: edge, paddingBottom: 24 }, tablet && { flexGrow: 1, justifyContent: 'center', paddingBottom: insets.top + 24 }]}
         showsVerticalScrollIndicator={false}
       >
         <View style={{ height: STEP_HEADER_H, flexDirection: 'row', alignItems: 'center' }}>
@@ -49,9 +49,6 @@ export default function Where() {
             <ChevronLeft color={chevron} />
           </IconButton>
         </View>
-        {/* Tall phones: up to 96pt of the spare room goes above the title, the rest below the cards (audit, Nov 20:
-            240-385pt was all at the bottom). SE has no spare room, so nothing moves there. */}
-        {tablet ? null : <View style={{ flexGrow: 1, maxHeight: 96 }} />}
         <Txt v="title" accessibilityRole="header" style={{ marginTop: 16 }}>
           {'Where should we\u00A0look?'}
         </Txt>

@@ -57,8 +57,6 @@ export default function BankExplainer() {
       }
     >
       {/* Owner, Nov 20: "Your bank already knows" didn't make sense. Says what happens instead (9/10 of 3 options). */}
-      {/* Tall phones: up to 120pt of the spare room goes above the title (audit, Nov 20: 300-420pt sat under it). */}
-      <View style={{ flexGrow: 1, maxHeight: 120 }} />
       <BigTitle style={{ marginTop: 8 }}>{'Connect once.\nWe find the rest.'}</BigTitle>
       <Txt v="leadS" tone="fg2" style={{ marginTop: 10 }}>
         Ditch finds what you pay for, adds it to your list and spots new ones as they start.

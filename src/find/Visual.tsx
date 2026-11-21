@@ -14,7 +14,8 @@ export type MockRow = { text: string; sub?: string; hi?: boolean };
 export function PhoneMock({ title, rows, label }: { title: string; rows: MockRow[]; label: string }) {
   const p = usePalette();
   // Shorter on small phones (SE), so the steps start on the first screen.
-  const small = useWindowDimensions().height < 720;
+  const height = useWindowDimensions().height;
+  const small = height < 720;
   const frame = p.dark ? '#3A362F' : brand.ink;
   const screen = p.dark ? '#1C1A16' : '#FFFFFF';
   return (
@@ -25,7 +26,8 @@ export function PhoneMock({ title, rows, label }: { title: string; rows: MockRow
       style={{
         // SE: 110 so all three steps show above the buttons without scrolling (audit, Nov 20).
         marginTop: small ? 10 : 18,
-        height: small ? 110 : 200,
+        // Tall phones get a taller picture (more of the list shows) instead of an empty band above the buttons.
+        height: small ? 110 : height >= 900 ? 280 : height >= 800 ? 240 : 200,
         borderRadius: 20,
         backgroundColor: p.dark ? '#2A2516' : '#FFF1BC',
         overflow: 'hidden',

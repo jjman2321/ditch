@@ -49,7 +49,7 @@ export function SettingsPage({ title, back = 'Settings', children, intro }: { ti
   const pad = useSettingsPagePadding();
   return (
     <View style={{ flex: 1, backgroundColor: p.bg }}>
-      <ScrollView contentContainerStyle={pad} showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={[pad, { flexGrow: 1 }]} showsVerticalScrollIndicator={false}>
         <SettingsHeader title={title} back={back} intro={intro} />
         {children}
       </ScrollView>

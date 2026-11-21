@@ -263,7 +263,7 @@ export default function Calendar() {
                     day={d}
                     w={cellW}
                     h={cellH}
-                    logo={big ? 30 : 24}
+                    logo={big ? 30 : cellW < 46 ? 20 : 24}
                     payday={d.date === paydayDate}
                     selected={d.date === selected}
                     blocked={blocked}
@@ -432,6 +432,10 @@ function DayCell({
     day.charges.length ? `, ${day.charges.map((c) => c.sub.name).join(', ')}` : ''
   }${day.headsUp ? (blocked ? ', reminder day, but reminders are off' : ', reminder day') : ''}${payday ? ', payday' : ''}`;
   const numColor = selected ? brand.ink : day.past ? p.mute : p.cardFg;
+  // Narrow cells (SE, ~43pt): a smaller today circle and a "+N" tucked inside the corner, so the circle, the
+  // logo and the badge never touch each other or the cell's border (audit, Nov 20).
+  const tight = w < 46;
+  const todaySize = tight ? 21 : 24;
   return (
     <Pressable
       accessibilityRole="button"
@@ -454,8 +458,8 @@ function DayCell({
           to the corner on dot days). Today keeps its ink circle even when selected. */}
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', height: 22 }}>
         {day.today ? (
-          <View style={{ width: 24, height: 24, borderRadius: 12, backgroundColor: p.dark && !selected ? p.fg : brand.ink, alignItems: 'center', justifyContent: 'center', marginLeft: -2 }}>
-            <Txt v="label" num color={p.dark && !selected ? brand.ink : brand.white} style={{ fontFamily: F.bold, fontSize: 13.5 }} maxFontSizeMultiplier={1.1}>
+          <View style={{ width: todaySize, height: todaySize, borderRadius: todaySize / 2, backgroundColor: p.dark && !selected ? p.fg : brand.ink, alignItems: 'center', justifyContent: 'center', marginLeft: tight ? -1 : -2 }}>
+            <Txt v="label" num color={p.dark && !selected ? brand.ink : brand.white} style={{ fontFamily: F.bold, fontSize: tight ? 12.5 : 13.5 }} maxFontSizeMultiplier={1.1}>
               {d}
             </Txt>
           </View>
@@ -484,7 +488,7 @@ function DayCell({
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <View>
             <SubLogo sub={first.sub} size={logo} ditched={first.pending} />
-            {day.charges.length > 1 ? <MoreBadge n={day.charges.length - 1} ring={selected ? brand.sunflower : p.card} /> : null}
+            {day.charges.length > 1 ? <MoreBadge n={day.charges.length - 1} ring={selected ? brand.sunflower : p.card} tight={tight} /> : null}
           </View>
         </View>
       ) : payday ? (
@@ -500,16 +504,16 @@ function DayCell({
 }
 
 /** "+2": how many more charges share the day, on the logo's top-right corner, cut out by a ring in the cell's colour. */
-function MoreBadge({ n, ring }: { n: number; ring: string }) {
+function MoreBadge({ n, ring, tight }: { n: number; ring: string; tight?: boolean }) {
   const p = usePalette();
   return (
     <View
       style={{
         position: 'absolute',
-        top: -6,
-        right: -9,
-        minWidth: 17,
-        height: 17,
+        top: tight ? -5 : -6,
+        right: tight ? -7 : -9,
+        minWidth: tight ? 15 : 17,
+        height: tight ? 15 : 17,
         paddingHorizontal: 2.5,
         borderRadius: 9,
         borderWidth: 1.5,
@@ -519,7 +523,7 @@ function MoreBadge({ n, ring }: { n: number; ring: string }) {
         justifyContent: 'center',
       }}
     >
-      <Txt v="label" num color={p.dark ? brand.ink : brand.white} style={{ fontFamily: F.bold, fontSize: 9.5, lineHeight: 11, letterSpacing: -0.2 }} maxFontSizeMultiplier={1}>
+      <Txt v="label" num color={p.dark ? brand.ink : brand.white} style={{ fontFamily: F.bold, fontSize: tight ? 8.5 : 9.5, lineHeight: tight ? 10 : 11, letterSpacing: -0.2 }} maxFontSizeMultiplier={1}>
         {n > 99 ? '99+' : `+${n}`}
       </Txt>
     </View>

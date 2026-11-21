@@ -22,6 +22,9 @@ function onTestFlight(): boolean {
 export default function About() {
   return (
     <SettingsPage title="About Ditch">
+      {/* Tall phones: the brand block comes down a little and the version sits at the bottom, so the page
+          doesn't end halfway with an empty half below (audit, Nov 20). */}
+      <View style={{ flexGrow: 1, maxHeight: 64 }} />
       <View style={{ alignItems: 'center', marginTop: 24, gap: 10 }}>
         <DuckIcon size={76} />
         <Wordmark size={30} />
@@ -34,7 +37,8 @@ export default function About() {
         <Row label="Privacy" onPress={() => openUrl('https://ditchsubs.app/privacy')} />
         <Row label="Sources" hint="The studies behind the numbers in Ditch" onPress={() => router.push('/settings/sources')} />
       </Group>
-      <Txt v="fine" tone="mute" style={{ textAlign: 'center', marginTop: 24 }}>
+      <View style={{ flexGrow: 1, minHeight: 24 }} />
+      <Txt v="fine" tone="mute" style={{ textAlign: 'center' }}>
         Ditch {SHORT_VERSION} · Grasp Labs LLC
       </Txt>
       {onTestFlight() ? (
